@@ -563,6 +563,7 @@ Skip navigation links for keyboard users.
 ```
 
 Provides links to:
+
 - Main content (`#main-content`)
 - Navigation (`#main-nav`)
 - Search (`#search`)
@@ -782,4 +783,3 @@ Layout for authenticated portal pages.
 
 **Document Compliance**: D00-D15, WCAG 2.2 AA  
 **Component Playground**: `/dev/components` (development only)
-

@@ -39,25 +39,33 @@ class HelpdeskAuthenticatedFormTest extends TestCase
 
     /**
      * Test that authenticated users can advance from step 1 without filling guest fields
+     * and form auto-fills user information (v3.6.0 Requirement 2.3)
      */
-    public function test_authenticated_user_can_advance_from_step_1_without_guest_validation(): void
+    #[Test]
+    public function authenticated_user_form_auto_fill_and_advance_without_guest_validation(): void
     {
-        // Arrange: Create and authenticate a user
+        // Arrange: Create and authenticate a user with BM-appropriate data
         $user = User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@motac.gov.my',
+            'name' => 'Ahmad Bin Hassan',
+            'email' => 'ahmad.hassan@motac.gov.my',
             'phone' => '03-12345678',
             'staff_id' => 'MOTAC001',
         ]);
 
         $division = Division::first();
 
-        // Act: Load the form as authenticated user and try to advance to step 2
+        // Act: Load the form as authenticated user and verify auto-fill
         $component = Livewire::actingAs($user)
             ->test(\App\Livewire\Helpdesk\SubmitTicket::class)
             ->set('division_id', $division->id)
             ->set('job_grade', 'Gred 41')
             ->set('declaration_accepted', true);
+
+        // Assert: Form should auto-fill user information (Requirement 2.3)
+        $component->assertSee('Ahmad Bin Hassan'); // User name auto-filled
+        $component->assertSee('ahmad.hassan@motac.gov.my'); // Email auto-filled
+        $component->assertSee('03-12345678'); // Phone auto-filled
+        $component->assertSee('MOTAC001'); // Staff ID auto-filled
 
         // Assert: Starting at step 1
         $component->assertSet('currentStep', 1);
@@ -71,15 +79,58 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     }
 
     /**
-     * Test that guest users MUST fill contact fields on step 1
+     * Ensure authenticated user's division is auto-filled and displays Bahasa Melayu name
+     * (v3.6.0 Requirement 2.3 - Form Auto-Fill)
      */
-    public function test_guest_user_must_fill_contact_fields_on_step_1(): void
+    #[Test]
+    public function authenticated_user_division_auto_fill_with_bahasa_melayu_name(): void
+    {
+        $division = Division::factory()->create([
+            'code' => 'ICT',
+            'name_ms' => 'Bahagian Pengurusan Maklumat',
+            'name_en' => 'Information Management Division',
+            'is_active' => true,
+        ]);
+
+        $user = User::factory()->create([
+            'division_id' => $division->id,
+            'name' => 'Siti Aminah',
+            'email' => 'siti.aminah@motac.gov.my',
+        ]);
+
+        // Act: Load form as authenticated user
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Helpdesk\SubmitTicket::class);
+
+        // The division_id should be auto-filled from user's division (Requirement 2.3)
+        $component->assertSet('division_id', $division->id);
+
+        // The division record must display Bahasa Melayu name (v3.6.0 BM-only)
+        $dbDivision = Division::find($component->get('division_id'));
+        $this->assertNotNull($dbDivision);
+        $this->assertSame('Bahagian Pengurusan Maklumat', $dbDivision->name_ms);
+
+        // Verify BM content is available (division name may not be displayed in form but is auto-filled)
+        // The important part is that division_id is auto-filled and the division has BM name
+        $this->assertNotEmpty($dbDivision->name_ms, 'Division should have Bahasa Melayu name for v3.6.0');
+    }
+
+    /**
+     * Test that guest users MUST fill contact fields on step 1 (no auto-fill)
+     * Contrasts with authenticated users who get auto-fill (Requirement 2.3)
+     */
+    #[Test]
+    public function guest_user_must_fill_contact_fields_without_auto_fill(): void
     {
         // Act: Load the form as guest (not authenticated) and try to advance without filling fields
         $component = Livewire::test(\App\Livewire\Helpdesk\SubmitTicket::class);
 
         // Assert: Starting at step 1
         $component->assertSet('currentStep', 1);
+
+        // Assert: No auto-fill for guest users (contrast with authenticated auto-fill)
+        $component->assertDontSee('ahmad.hassan@motac.gov.my'); // No auto-filled email
+        $component->assertSee('Nama penuh'); // BM label for name field
 
         // Act: Try to advance to step 2 without filling required fields
         $component->call('nextStep');
@@ -98,18 +149,19 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     }
 
     /**
-     * Test that guest users can advance when all fields are filled
+     * Test that guest users can advance when all fields are manually filled
+     * (no auto-fill available, contrasts with authenticated users)
      */
     #[Test]
-    public function guest_user_can_advance_when_contact_fields_filled(): void
+    public function guest_user_can_advance_when_contact_fields_manually_filled(): void
     {
         // Arrange: Create a division
         $division = Division::first();
 
-        // Act: Load the form as guest and fill all required fields including new fields
+        // Act: Load the form as guest and manually fill all required fields (no auto-fill)
         $component = Livewire::test(\App\Livewire\Helpdesk\SubmitTicket::class)
-            ->set('guest_name', 'John Doe')
-            ->set('guest_email', 'john@example.com')
+            ->set('guest_name', 'Fatimah Binti Ahmad')
+            ->set('guest_email', 'fatimah.ahmad@motac.gov.my')
             ->set('guest_phone', '012-3456789')
             ->set('division_id', $division->id)
             ->set('job_grade', 'Gred 41')
@@ -117,6 +169,10 @@ class HelpdeskAuthenticatedFormTest extends TestCase
 
         // Assert: Starting at step 1
         $component->assertSet('currentStep', 1);
+
+        // Assert: Values are manually entered (no auto-fill for guests)
+        $component->assertSet('guest_name', 'Fatimah Binti Ahmad');
+        $component->assertSet('guest_email', 'fatimah.ahmad@motac.gov.my');
 
         // Act: Advance to step 2
         $component->call('nextStep');
@@ -175,45 +231,47 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     }
 
     /**
-     * Test that authenticated user sees their info displayed (not form fields)
+     * Test that authenticated user sees their auto-filled info displayed (not form fields)
+     * (v3.6.0 Requirement 2.3 - Form Auto-Fill for Authenticated Users)
      */
     #[Test]
-    public function authenticated_user_sees_their_info_displayed(): void
+    public function authenticated_user_sees_auto_filled_info_displayed(): void
     {
-        // Arrange: Create and authenticate a user
+        // Arrange: Create and authenticate a user with BM-appropriate name
         $user = User::factory()->create([
-            'name' => 'Lee Superuser',
-            'email' => 'superuser@motac.gov.my',
+            'name' => 'Datuk Seri Rahman',
+            'email' => 'datuk.rahman@motac.gov.my',
             'phone' => '03-12345681',
             'staff_id' => 'MOTAC004',
         ]);
 
-        // Act & Assert: Authenticated user should see their info
+        // Act & Assert: Authenticated user should see their auto-filled info (Requirement 2.3)
         Livewire::actingAs($user)
             ->test(\App\Livewire\Helpdesk\SubmitTicket::class)
-            ->assertSee('Lee Superuser')
-            ->assertSee('superuser@motac.gov.my')
-            ->assertSee('03-12345681')
-            ->assertSee('MOTAC004')
-            // Should NOT see input fields for guest data
+            ->assertSee('Datuk Seri Rahman') // Auto-filled name
+            ->assertSee('datuk.rahman@motac.gov.my') // Auto-filled email
+            ->assertSee('03-12345681') // Auto-filled phone
+            ->assertSee('MOTAC004') // Auto-filled staff ID
+            // Should NOT see input fields for guest data (auto-fill replaces manual entry)
             ->assertDontSee('wire:model.live.debounce.300ms="guest_name"')
             ->assertDontSee('wire:model.live.debounce.300ms="guest_email"');
     }
 
     /**
-     * Test that guest user sees input form fields (not user info)
+     * Test that guest user sees Bahasa Melayu input form fields (no auto-fill)
+     * Contrasts with authenticated users who get auto-filled info (Requirement 2.3)
      */
     #[Test]
-    public function guest_user_sees_form_fields(): void
+    public function guest_user_sees_bahasa_melayu_form_fields_without_auto_fill(): void
     {
-        // Act & Assert: Guest user should see input fields
+        // Act & Assert: Guest user should see BM input fields (no auto-fill)
         Livewire::test(\App\Livewire\Helpdesk\SubmitTicket::class)
-            ->assertSee(__('helpdesk.full_name'))
-            ->assertSee(__('helpdesk.email_address'))
-            ->assertSee(__('helpdesk.phone_number'))
-            ->assertSee(__('helpdesk.division'))
-            // Should NOT see authenticated user info display
-            ->assertDontSee(__('helpdesk.your_information'));
+            ->assertSee('Nama penuh') // BM: Full name
+            ->assertSee('Alamat e-mel') // BM: Email address
+            ->assertSee('Nombor telefon') // BM: Phone number
+            ->assertSee('Bahagian') // BM: Division
+            // Should NOT see authenticated user auto-filled info display
+            ->assertDontSee('Maklumat anda'); // BM: Your information
     }
 
     /**

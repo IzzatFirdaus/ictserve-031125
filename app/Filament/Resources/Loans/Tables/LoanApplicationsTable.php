@@ -10,7 +10,6 @@ use App\Filament\Resources\Loans\Actions\ProcessIssuanceAction;
 use App\Filament\Resources\Loans\Actions\ProcessReturnAction;
 use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Models\LoanApplication;
-use App\Services\LoanApplicationPdfExporter;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -43,6 +42,14 @@ class LoanApplicationsTable
                     ->label(__('filament.labels.application_number'))
                     ->searchable()
                     ->sortable(),
+
+                // Form Reference Code - Requirement 24.2
+                Tables\Columns\TextColumn::make('form_reference_code')
+                    ->label(__('filament.labels.form_reference'))
+                    ->default('PK.(S).MOTAC.07.(L3)')
+                    ->badge()
+                    ->color('info')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('applicant_name')
                     ->label(__('filament.labels.applicant'))
                     ->sortable()
@@ -228,6 +235,33 @@ class LoanApplicationsTable
                     ->color(fn (LoanApplication $record) => $record->user_id ? 'success' : 'warning')
                     ->icon(fn (LoanApplication $record) => $record->user_id ? 'heroicon-o-user-circle' : 'heroicon-o-user')
                     ->toggleable(),
+
+                // Responsible Officer indicator - Requirement 25.5
+                Tables\Columns\TextColumn::make('responsible_officer_status')
+                    ->label(__('filament.labels.responsible_officer'))
+                    ->badge()
+                    ->state(function (LoanApplication $record): string {
+                        if ($record->is_applicant_responsible) {
+                            return __('filament.status.applicant_is_responsible');
+                        }
+
+                        return $record->responsible_officer_name ?? __('filament.status.different_officer');
+                    })
+                    ->color(fn (LoanApplication $record): string => $record->is_applicant_responsible ? 'gray' : 'info')
+                    ->icon(fn (LoanApplication $record): string => $record->is_applicant_responsible
+                        ? 'heroicon-o-user'
+                        : 'heroicon-o-user-group')
+                    ->tooltip(function (LoanApplication $record): ?string {
+                        if ($record->is_applicant_responsible) {
+                            return __('filament.tooltips.applicant_responsible');
+                        }
+
+                        return __('filament.tooltips.different_responsible_officer', [
+                            'name' => $record->responsible_officer_name,
+                            'grade' => $record->responsible_officer_grade,
+                        ]);
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 // Enhanced filter organization
@@ -344,12 +378,13 @@ class LoanApplicationsTable
 
                 Tables\Filters\Filter::make('overdue')
                     ->label(__('filament.filters.overdue'))
-                    ->query(fn ($query) => $query
-                        ->whereIn('status', [
-                            LoanStatus::IN_USE->value,
-                            LoanStatus::RETURN_DUE->value,
-                        ])
-                        ->whereDate('loan_end_date', '<', now()->toDateString())
+                    ->query(
+                        fn ($query) => $query
+                            ->whereIn('status', [
+                                LoanStatus::IN_USE->value,
+                                LoanStatus::RETURN_DUE->value,
+                            ])
+                            ->whereDate('loan_end_date', '<', now()->toDateString())
                     )
                     ->toggle()
                     ->indicator(__('filament.filters.overdue_indicator')),
@@ -484,7 +519,7 @@ class LoanApplicationsTable
                     ->label(__('filament.actions.export_excel'))
                     ->icon('heroicon-o-table-cells')
                     ->color('success'),
-                \Filament\Actions\Action::make('exportPdfReport')
+                Action::make('exportPdfReport')
                     ->label(__('filament.actions.export_report'))
                     ->icon('heroicon-o-document-chart-bar')
                     ->color('warning')
@@ -492,7 +527,8 @@ class LoanApplicationsTable
                     ->modalHeading('Export PDF Report')
                     ->modalDescription('This will generate a PDF report with statistics for all loan applications.')
                     ->action(function () {
-                        $applications = \App\Models\LoanApplication::with(['division'])->get();
+                        $applications = LoanApplication::with(['division'])->get();
+
                         return app(\App\Services\LoanApplicationPdfExporter::class)->exportReport($applications);
                     }),
             ])

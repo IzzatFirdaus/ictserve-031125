@@ -22,7 +22,7 @@ class ViewAudit extends ViewRecord
 
     public function getTitle(): string|Htmlable
     {
-        if (! $this->record instanceof \OwenIt\Auditing\Models\Audit) {
+        if (! $this->record instanceof Audit) {
             return __('Audit Record');
         }
 
@@ -70,9 +70,9 @@ class ViewAudit extends ViewRecord
                 ->label('View Related Records')
                 ->icon('heroicon-o-link')
                 ->color('info')
-                ->visible(fn () => $this->record instanceof \OwenIt\Auditing\Models\Audit && $this->record->auditable_type && $this->record->auditable_id)
+                ->visible(fn () => $this->record instanceof Audit && $this->record->auditable_type && $this->record->auditable_id)
                 ->url(function () {
-                    if (! $this->record instanceof \OwenIt\Auditing\Models\Audit) {
+                    if (! $this->record instanceof Audit) {
                         return null;
                     }
                     $model = $this->record->auditable_type;
@@ -80,10 +80,10 @@ class ViewAudit extends ViewRecord
 
                     // Map model to Filament resource URL
                     $resourceMap = [
-                        'App\\Models\\User' => 'users',
-                        'App\\Models\\HelpdeskTicket' => 'helpdesk-tickets',
-                        'App\\Models\\LoanApplication' => 'loan-applications',
-                        'App\\Models\\Asset' => 'assets',
+                        \App\Models\User::class => 'users',
+                        \App\Models\HelpdeskTicket::class => 'helpdesk-tickets',
+                        \App\Models\LoanApplication::class => 'loan-applications',
+                        \App\Models\Asset::class => 'assets',
                     ];
 
                     $resource = $resourceMap[$model] ?? null;
@@ -100,8 +100,8 @@ class ViewAudit extends ViewRecord
                 ->label('View User Activity')
                 ->icon('heroicon-o-user')
                 ->color('warning')
-                ->visible(fn () => $this->record instanceof \OwenIt\Auditing\Models\Audit && $this->record->user_id)
-                ->url(fn () => $this->record instanceof \OwenIt\Auditing\Models\Audit
+                ->visible(fn () => $this->record instanceof Audit && $this->record->user_id)
+                ->url(fn () => $this->record instanceof Audit
                     ? "/admin/audit-trail?tableFilters[user_id][value]={$this->record->user_id}"
                     : null)
                 ->openUrlInNewTab(),

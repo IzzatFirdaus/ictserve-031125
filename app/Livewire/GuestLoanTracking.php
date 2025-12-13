@@ -9,7 +9,11 @@ use Livewire\Component;
 class GuestLoanTracking extends Component
 {
     public string $applicationNumber = '';
+
+    public string $email = '';
+
     public $application = null;
+
     public bool $searched = false;
 
     public function mount($ref = null): void
@@ -27,18 +31,37 @@ class GuestLoanTracking extends Component
         ]);
 
         $this->searched = true;
-        
+
         $this->application = LoanApplication::where('application_number', $this->applicationNumber)
             ->with(['loanItems', 'division'])
             ->first();
 
-        if (!$this->application) {
+        if (! $this->application) {
+            $this->addError('applicationNumber', __('loan.messages.application_not_found'));
+        }
+    }
+
+    public function trackByToken(): void
+    {
+        $this->validate([
+            'applicationNumber' => 'required|string|min:5',
+            'email' => 'required|email',
+        ]);
+
+        $this->searched = true;
+
+        $this->application = LoanApplication::where('application_number', $this->applicationNumber)
+            ->where('applicant_email', $this->email)
+            ->with(['loanItems', 'division'])
+            ->first();
+
+        if (! $this->application) {
             $this->addError('applicationNumber', __('loan.messages.application_not_found'));
         }
     }
 
     #[Layout('layouts.front')]
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.guest-loan-tracking');
     }

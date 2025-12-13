@@ -5,11 +5,11 @@ Complete guide for configuring Model Context Protocol (MCP) servers with Codex e
 ## Overview
 
 MCP servers extend Codex capabilities with:
+
 - **Memory**: Persistent context across sessions
 - **Sequential Thinking**: Complex reasoning tasks
 - **Chrome DevTools**: Browser automation and debugging
 - **Playwright**: E2E testing (optional)
-- **Mimir**: Knowledge graph memory
 - **Laravel Boost**: Laravel-specific tools
 
 ## Configuration File
@@ -23,6 +23,7 @@ Location: `C:\Users\exatf\.codex\config.toml`
 Use npm-based servers running on your machine.
 
 **Prerequisites:**
+
 ```powershell
 # Install MCP servers globally
 npm install -g @modelcontextprotocol/server-memory
@@ -37,6 +38,7 @@ npm install -g chrome-devtools-mcp
 Use containerized MCP servers via Docker Compose.
 
 **Start Docker servers:**
+
 ```powershell
 # Start all MCP containers
 docker compose up -d mcp-memory mcp-sequential-thinking mcp-chrome-devtools
@@ -46,6 +48,7 @@ docker ps --filter "name=ictserve-mcp"
 ```
 
 **Switch to Docker mode:**
+
 ```powershell
 .\scripts\switch-mcp-mode.ps1 -Mode docker
 ```
@@ -67,6 +70,7 @@ docker ps --filter "name=ictserve-mcp"
 Edit `C:\Users\exatf\.codex\config.toml`:
 
 **For Local Mode:**
+
 ```toml
 [mcp_servers.memory]
 disabled = false  # Enable local
@@ -76,6 +80,7 @@ disabled = true   # Disable Docker
 ```
 
 **For Docker Mode:**
+
 ```toml
 [mcp_servers.memory]
 disabled = true   # Disable local
@@ -91,11 +96,13 @@ disabled = false  # Enable Docker
 **Purpose:** Persistent context storage across sessions
 
 **Local:**
+
 - Command: Node.js
 - Path: `@modelcontextprotocol/server-memory`
 - Status: Enabled by default
 
 **Docker:**
+
 - Container: `ictserve-mcp-memory`
 - Command: `docker exec -i ictserve-mcp-memory node /app/dist/index.js`
 
@@ -104,11 +111,13 @@ disabled = false  # Enable Docker
 **Purpose:** Complex reasoning and multi-step problem solving
 
 **Local:**
+
 - Command: Node.js
 - Path: `@modelcontextprotocol/server-sequential-thinking`
 - Status: Enabled by default
 
 **Docker:**
+
 - Container: `ictserve-mcp-sequential-thinking`
 - Command: `docker exec -i ictserve-mcp-sequential-thinking node /app/dist/index.js`
 
@@ -117,34 +126,22 @@ disabled = false  # Enable Docker
 **Purpose:** Browser automation and debugging
 
 **Local:**
+
 - Command: Node.js
 - Path: `chrome-devtools-mcp`
 - Status: Enabled by default
 
 **Docker:**
+
 - Container: `ictserve-mcp-chrome-devtools`
 - Command: `docker exec -i ictserve-mcp-chrome-devtools node /app/build/index.js`
-
-### Mimir Server
-
-**Purpose:** Knowledge graph memory system
-
-**Type:** HTTP-based (not stdio)
-- URL: `http://localhost:9042/mcp`
-- Status: Enabled by default
-- Requires: Mimir server running
-
-**Start Mimir:**
-```powershell
-cd Mimir
-docker compose up -d
-```
 
 ### Laravel Boost Server
 
 **Purpose:** Laravel-specific development tools
 
 **Type:** Local PHP artisan command
+
 - Command: `php artisan boost:mcp`
 - Status: Enabled by default
 - Requires: Laravel application
@@ -161,6 +158,7 @@ docker compose up -d
 ### Test MCP Servers
 
 **Local servers:**
+
 ```powershell
 # Test memory server
 node "C:\Users\exatf\AppData\Roaming\npm\node_modules\@modelcontextprotocol\server-memory\dist\index.js"
@@ -169,6 +167,7 @@ node "C:\Users\exatf\AppData\Roaming\npm\node_modules\@modelcontextprotocol\serv
 ```
 
 **Docker servers:**
+
 ```powershell
 # Test memory container
 docker exec -i ictserve-mcp-memory node /app/dist/index.js
@@ -193,6 +192,7 @@ docker compose logs -f mcp-chrome-devtools
 ### Servers Not Starting
 
 **Check Codex output:**
+
 1. VS Code → View → Output
 2. Select "Codex"
 3. Look for error messages
@@ -201,9 +201,10 @@ docker compose logs -f mcp-chrome-devtools
 
 1. **Node.js not found**
    - Verify: `node --version`
-   - Install: https://nodejs.org/
+   - Install: <https://nodejs.org/>
 
 2. **npm packages not installed**
+
    ```powershell
    npm install -g @modelcontextprotocol/server-memory
    npm install -g @modelcontextprotocol/server-sequential-thinking
@@ -211,6 +212,7 @@ docker compose logs -f mcp-chrome-devtools
    ```
 
 3. **Docker containers not running**
+
    ```powershell
    docker compose up -d mcp-memory mcp-sequential-thinking mcp-chrome-devtools
    ```
@@ -222,6 +224,7 @@ docker compose logs -f mcp-chrome-devtools
 ### Timeout Errors
 
 Increase timeout in config.toml:
+
 ```toml
 [mcp_servers.memory]
 startup_timeout_sec = 180  # Increase from 120
@@ -301,11 +304,13 @@ Copy-Item config.dev.toml config.toml
 ## Support
 
 **Issues:**
+
 - Check Codex output panel for errors
 - Review Docker logs: `docker compose logs mcp-memory`
 - Verify container status: `docker ps`
 
 **Scripts:**
+
 - Switch mode: `.\scripts\switch-mcp-mode.ps1`
 - Health check: `.\scripts\mcp-health-check.ps1`
 - Test servers: `.\scripts\test-mcp-servers.ps1`

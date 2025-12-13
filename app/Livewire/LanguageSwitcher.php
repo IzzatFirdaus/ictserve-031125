@@ -1,35 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
-class LanguageSwitcher extends Component
+final class LanguageSwitcher extends Component
 {
-    public string $currentLocale;
+    public string $locale;
 
     public function mount(): void
     {
-        $this->currentLocale = App::getLocale();
+        $this->locale = config('app.locale', 'ms');
+        App::setLocale($this->locale);
+        Session::put('locale', $this->locale);
     }
 
-    public function switchLocale(string $locale): void
+    public function switchLocale(?string $locale = null): void
     {
-        if (! in_array($locale, ['en', 'ms'])) {
-            return;
-        }
+        // v3.6.0: Language switching is deprecated; force Bahasa Melayu.
+        $this->locale = config('app.locale', 'ms');
 
-        Session::put('locale', $locale);
-        App::setLocale($locale);
-        $this->currentLocale = $locale;
-        
-        $this->dispatch('localeChanged', $locale);
-        $this->redirect(request()->header('Referer'), navigate: true);
+        App::setLocale($this->locale);
+        Session::put('locale', $this->locale);
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.language-switcher');
     }

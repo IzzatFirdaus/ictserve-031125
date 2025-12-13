@@ -32,9 +32,8 @@ class LoanTransactionAccessory extends Model implements Auditable
     /** @use HasFactory<\Database\Factories\LoanTransactionAccessoryFactory> */
     use HasFactory;
 
-    // TODO: Add LogsActivity trait when spatie/laravel-activitylog is installed
-    // use Spatie\Activitylog\Traits\LogsActivity;
     use \OwenIt\Auditing\Auditable;
+    use \Spatie\Activitylog\Traits\LogsActivity;
 
     protected $fillable = [
         'loan_transaction_id',
@@ -63,17 +62,22 @@ class LoanTransactionAccessory extends Model implements Auditable
 
     /**
      * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
      */
-    protected static $logAttributes = [
-        'loan_transaction_id',
-        'accessory_type',
-        'present_at_checkout',
-        'present_at_checkin',
-    ];
-
-    protected static $logName = 'loan_transaction_accessory';
-
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logOnly([
+                'loan_transaction_id',
+                'accessory_type',
+                'present_at_checkout',
+                'present_at_checkin',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('loan')
+            ->setDescriptionForEvent(fn (string $eventName) => "Loan accessory {$eventName}");
+    }
 
     // Relationships
 

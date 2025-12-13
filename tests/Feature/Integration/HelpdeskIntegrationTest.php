@@ -43,8 +43,8 @@ class HelpdeskIntegrationTest extends TestCase
     public function it_completes_guest_workflow_end_to_end(): void
     {
         // Setup
-        Division::factory()->create(['id' => 1]);
-        TicketCategory::factory()->hardware()->create(['id' => 1]);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
 
         // Guest submits ticket
         $ticket = $this->service->createGuestTicket([
@@ -54,7 +54,7 @@ class HelpdeskIntegrationTest extends TestCase
             'guest_staff_id' => 'MOTAC001',
             'guest_grade' => 'Grade 41',
             'guest_division' => 'IT Division',
-            'category_id' => 1,
+            'category_id' => $category->id,
             'priority' => 'normal',
             'title' => 'Hardware Issue',
             'description' => 'My computer is not working properly',
@@ -84,8 +84,8 @@ class HelpdeskIntegrationTest extends TestCase
     public function it_completes_authenticated_workflow_end_to_end(): void
     {
         // Setup
-        Division::factory()->create(['id' => 1]);
-        TicketCategory::factory()->hardware()->create(['id' => 1]);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
         $user = User::factory()->create([
             'name' => 'Jane Smith',
             'email' => 'jane@motac.gov.my',
@@ -93,7 +93,7 @@ class HelpdeskIntegrationTest extends TestCase
 
         // Authenticated user submits ticket
         $ticket = $this->service->createAuthenticatedTicket([
-            'category_id' => 1,
+            'category_id' => $category->id,
             'priority' => 'high',
             'title' => 'Software Issue',
             'description' => 'Application crashes frequently',
@@ -127,8 +127,8 @@ class HelpdeskIntegrationTest extends TestCase
     public function it_allows_ticket_claiming_by_authenticated_users(): void
     {
         // Setup
-        Division::factory()->create(['id' => 1]);
-        TicketCategory::factory()->hardware()->create(['id' => 1]);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
         $user = User::factory()->create([
             'email' => 'john@motac.gov.my',
         ]);
@@ -141,7 +141,7 @@ class HelpdeskIntegrationTest extends TestCase
             'guest_staff_id' => 'MOTAC001',
             'guest_grade' => null,
             'guest_division' => null,
-            'category_id' => 1,
+            'category_id' => $category->id,
             'priority' => 'normal',
             'title' => 'Test Issue',
             'description' => 'Test description',
@@ -197,8 +197,8 @@ class HelpdeskIntegrationTest extends TestCase
     public function it_creates_cross_module_integration_when_asset_selected(): void
     {
         // Setup
-        Division::factory()->create(['id' => 1]);
-        TicketCategory::factory()->hardware()->create(['id' => 1]);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
         $asset = Asset::factory()->create();
 
         // Create loan application and link it to asset via loan items
@@ -222,7 +222,7 @@ class HelpdeskIntegrationTest extends TestCase
             'guest_staff_id' => 'MOTAC001',
             'guest_grade' => null,
             'guest_division' => null,
-            'category_id' => 1,
+            'category_id' => $category->id,
             'priority' => 'normal',
             'title' => 'Asset Issue',
             'description' => 'Asset has a problem',
@@ -244,8 +244,8 @@ class HelpdeskIntegrationTest extends TestCase
     public function it_provides_user_accessible_tickets_for_hybrid_access(): void
     {
         // Setup
-        Division::factory()->create(['id' => 1]);
-        TicketCategory::factory()->hardware()->create(['id' => 1]);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
         $user = User::factory()->create([
             'email' => 'user@motac.gov.my',
         ]);
@@ -258,7 +258,7 @@ class HelpdeskIntegrationTest extends TestCase
             'guest_staff_id' => 'MOTAC001',
             'guest_grade' => null,
             'guest_division' => null,
-            'category_id' => 1,
+            'category_id' => $category->id,
             'priority' => 'normal',
             'title' => 'Guest Ticket',
             'description' => 'Guest ticket description',
@@ -267,7 +267,7 @@ class HelpdeskIntegrationTest extends TestCase
 
         // Create authenticated ticket
         $authTicket = $this->service->createAuthenticatedTicket([
-            'category_id' => 1,
+            'category_id' => $category->id,
             'priority' => 'normal',
             'title' => 'Auth Ticket',
             'description' => 'Auth ticket description',
@@ -283,7 +283,7 @@ class HelpdeskIntegrationTest extends TestCase
             'guest_staff_id' => 'MOTAC002',
             'guest_grade' => null,
             'guest_division' => null,
-            'category_id' => 1,
+            'category_id' => $category->id,
             'priority' => 'normal',
             'title' => 'Other Ticket',
             'description' => 'Other ticket description',
@@ -318,8 +318,8 @@ class HelpdeskIntegrationTest extends TestCase
     public function it_maintains_performance_targets(): void
     {
         // Setup
-        Division::factory()->create(['id' => 1]);
-        TicketCategory::factory()->hardware()->create(['id' => 1]);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
 
         // Measure ticket creation time
         $startTime = microtime(true);
@@ -331,7 +331,7 @@ class HelpdeskIntegrationTest extends TestCase
             'guest_staff_id' => 'MOTAC001',
             'guest_grade' => null,
             'guest_division' => null,
-            'category_id' => 1,
+            'category_id' => $category->id,
             'priority' => 'normal',
             'title' => 'Performance Test',
             'description' => 'Testing performance',

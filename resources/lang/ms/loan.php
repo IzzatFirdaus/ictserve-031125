@@ -16,11 +16,15 @@
 return [
     'form' => [
         'title' => 'Borang Permohonan Pinjaman Peralatan ICT',
+        'guest_loan_application' => 'Borang Permohonan Pinjaman Tetamu',
         'subtitle' => 'Untuk Kegunaan Rasmi Kementerian Pelancongan, Seni dan Budaya',
         'section_label' => 'BORANG',
         'of_4_pages' => 'daripada 4 muka surat',
         'of_7_steps' => 'daripada 7 langkah',
         'required_fields_note' => 'Tanda * adalah WAJIB diisi.',
+        'responsible_officer_note' => 'Pegawai Bertanggungjawab bertanggungjawab terhadap peralatan sepanjang tempoh pinjaman.',
+        'responsible_officer_acknowledgement' => 'Saya mengakui bahawa saya bertanggungjawab untuk menjaga dan menggunakan peralatan yang dipinjam dengan betul sepanjang tempoh pinjaman. Saya akan memastikan peralatan dipulangkan dalam keadaan baik pada atau sebelum tarikh yang ditetapkan.',
+        'progress' => 'Kemajuan Permohonan',
 
         // Step labels
         'step_1_label' => 'Maklumat Pemohon',
@@ -74,11 +78,22 @@ return [
         'your_information' => 'Maklumat Anda',
     ],
 
+    'tracking' => [
+        'title' => 'Jejak Permohonan Pinjaman',
+        'subtitle' => 'Masukkan nombor permohonan untuk melihat status pinjaman anda',
+    ],
+
     'fields' => [
+        'application_number' => 'Nombor Permohonan',
+        'applicant' => 'Pemohon',
+        'submitted_on' => 'Dihantar pada :date',
+        'items' => 'Peralatan',
         'applicant_name' => 'Nama Penuh',
         'position_grade' => 'Jawatan & Gred',
         'phone' => 'No. Telefon',
+        'email' => 'Alamat E-mel',
         'division_unit' => 'Bahagian/Unit',
+        'applicant_is_responsible' => 'Saya adalah Pegawai Bertanggungjawab untuk peralatan ini',
         'purpose' => 'Tujuan Permohonan',
         'location' => 'Lokasi',
         'loan_start_date' => 'Tarikh Pinjaman',
@@ -107,6 +122,8 @@ return [
         'staff_id' => 'No. Kakitangan',
         'grade' => 'Gred',
         'approver_name' => 'Nama Pelulus',
+        'emergency_request' => 'Permohonan Kecemasan',
+        'emergency_justification' => 'Justifikasi Kecemasan',
     ],
 
     'placeholders' => [
@@ -133,12 +150,17 @@ return [
     ],
 
     'actions' => [
+        'track' => 'Jejak',
         'previous' => 'Kembali',
         'next' => 'Seterusnya',
         'submit_application' => 'Hantar Permohonan',
         'add_equipment' => 'Tambah Peralatan',
         'remove_equipment' => 'Buang Peralatan',
         'change_approver' => 'Tukar Pelulus',
+    ],
+
+    'common' => [
+        'days' => 'hari',
     ],
 
     'status' => [
@@ -169,6 +191,7 @@ return [
         'phone' => '03-2161 2345',
         'if_applicable' => 'jika ada',
         'is_responsible_officer' => 'Tandakan jika anda adalah pegawai yang bertanggungjawab untuk peralatan ini',
+        'applicant_is_responsible' => 'Jika ditandakan, anda akan bertanggungjawab terhadap peralatan sepanjang tempoh pinjaman.',
     ],
 
     'units' => [
@@ -179,6 +202,8 @@ return [
         'application_submitted' => 'Permohonan anda telah berjaya dihantar. Nombor permohonan: :application_number',
         'submission_failed' => 'Permohonan gagal dihantar. Sila cuba lagi.',
         'not_provided' => 'Tidak dinyatakan',
+        'unknown' => 'Tidak diketahui',
+        'no_assets_requested' => 'Tiada aset dipohon',
         'info_from_profile' => 'Maklumat ini diambil dari profil pengguna anda.',
         'no_approvers_found' => 'Tiada pegawai pelulus dijumpai. Sila cuba dengan kata kunci lain.',
         'approver_selected' => 'Pegawai Pelulus Dipilih',
@@ -187,6 +212,8 @@ return [
         'click_to_view_terms' => 'Klik untuk melihat 11 Terma dan Syarat PK.(S).MOTAC.07.(L3)',
         'please_expand_to_read_terms' => 'Sila kembangkan untuk membaca semua terma dan syarat',
         'please_read_all_terms' => 'Sila baca semua terma dan syarat sebelum meneruskan',
+        'responsible_officer_required' => 'Sila berikan butiran Pegawai Bertanggungjawab di bawah.',
+        'applicant_is_responsible_confirmed' => 'Anda telah mengesahkan bahawa anda adalah Pegawai Bertanggungjawab untuk peralatan ini.',
     ],
 
     'declaration' => [
@@ -220,6 +247,12 @@ return [
         'quantity_required' => 'Masukkan kuantiti bagi setiap item peralatan.',
         'quantity_integer' => 'Kuantiti peralatan mestilah nombor penuh.',
         'quantity_min' => 'Kuantiti peralatan mestilah sekurang-kurangnya 1.',
+        'min_lead_time' => 'Tarikh pinjaman mestilah sekurang-kurangnya 3 hari bekerja dari hari ini. Tarikh paling awal yang tersedia: :date',
+        'responsible_officer_name_required' => 'Nama pegawai bertanggungjawab adalah wajib.',
+        'responsible_officer_position_required' => 'Jawatan pegawai bertanggungjawab adalah wajib.',
+        'responsible_officer_phone_required' => 'No. telefon pegawai bertanggungjawab adalah wajib.',
+        'emergency_justification_required' => 'Justifikasi permohonan kecemasan adalah wajib.',
+        'emergency_justification_min' => 'Justifikasi permohonan kecemasan mestilah sekurang-kurangnya 50 aksara.',
     ],
 
     // Realistic purpose examples for forms and testing
@@ -421,5 +454,58 @@ return [
         'asset_utilization_rate' => 'Kadar Penggunaan Aset',
         'overdue_items' => 'Item Tertunggak',
         'assets_borrowed_of_total' => 'aset dipinjam daripada jumlah',
+    ],
+
+    'success' => [
+        'title' => 'Permohonan Berjaya Dihantar',
+        'message' => 'Permohonan pinjaman anda telah dihantar dan sedang menunggu kelulusan.',
+        'reference_number' => 'Nombor Rujukan',
+        'next_steps' => 'Apa yang berlaku seterusnya?',
+        'step_1' => 'Permohonan anda akan disemak oleh pegawai pelulus yang dipilih.',
+        'step_2' => 'Anda akan menerima notifikasi e-mel setelah diluluskan.',
+        'step_3' => 'Ambil peralatan anda di pejabat BPM selepas kelulusan.',
+        'track_application' => 'Jejak Permohonan',
+    ],
+
+    'approval' => [
+        'approved' => 'Diluluskan',
+        'rejected' => 'Ditolak',
+        'unknown' => 'Tidak Diketahui',
+        'success_title' => 'Kelulusan Direkodkan',
+        'success_message' => 'Keputusan anda telah direkodkan dengan jayanya. Pemohon akan dimaklumkan melalui e-mel.',
+        'token_required' => 'Token kelulusan diperlukan.',
+        'token_invalid' => 'Pautan kelulusan tidak sah. Pautan mungkin telah digunakan atau tidak betul.',
+        'token_expired' => 'Pautan kelulusan ini telah tamat tempoh. Sila hubungi pemohon untuk permintaan kelulusan baru.',
+        'already_processed' => 'Permohonan ini telah diproses (status semasa: :status).',
+        'load_error' => 'Tidak dapat memuatkan permintaan kelulusan. Sila cuba lagi kemudian.',
+        'approved_via_email' => 'Diluluskan melalui pautan e-mel',
+        'approved_success' => 'Permohonan :application_number telah diluluskan dengan jayanya. Pemohon akan dimaklumkan melalui e-mel.',
+        'process_error' => 'Gagal memproses keputusan anda. Sila cuba lagi atau hubungi sokongan.',
+        'rejection_reason_required' => 'Sebab diperlukan untuk menolak permohonan ini.',
+        'rejection_reason_min' => 'Sebab penolakan mestilah sekurang-kurangnya 10 aksara.',
+        'rejected_success' => 'Permohonan :application_number telah ditolak. Pemohon akan dimaklumkan melalui e-mel.',
+        'page_title' => 'Kelulusan Pinjaman',
+        'page_subtitle' => 'Semak butiran permohonan di bawah dan rekodkan keputusan anda.',
+        'decision_recorded' => 'Keputusan Direkodkan',
+        'token_expired_title' => 'Pautan Kelulusan Tamat Tempoh',
+        'token_invalid_title' => 'Pautan Kelulusan Tidak Sah',
+        'error_title' => 'Tidak Dapat Memproses Kelulusan',
+        'contact_support' => 'Jika anda percaya ini adalah ralat, sila hubungi pemohon untuk meminta pautan kelulusan baru.',
+        'application_summary' => 'Ringkasan Permohonan',
+        'reference' => 'Rujukan',
+        'applicant_info' => 'Maklumat Pemohon',
+        'loan_period' => 'Tempoh Pinjaman',
+        'requested_equipment' => 'Peralatan Diminta',
+        'your_decision' => 'Keputusan Anda',
+        'decision_instruction' => 'Semak butiran permohonan dan pilih untuk meluluskan atau menolak. Catatan adalah pilihan untuk kelulusan dan wajib untuk penolakan.',
+        'remarks_label' => 'Catatan',
+        'required_for_rejection' => 'Wajib untuk penolakan',
+        'remarks_placeholder' => 'Tambah sebarang catatan atau syarat untuk keputusan ini...',
+        'remarks_help' => 'Catatan adalah pilihan untuk kelulusan dan wajib untuk penolakan. Maksimum 1000 aksara.',
+        'approve_button' => 'Luluskan Permohonan',
+        'reject_button' => 'Tolak Permohonan',
+        'security_notice_title' => 'Notis Keselamatan',
+        'security_notice_text' => 'Pautan kelulusan ini sah selama 7 hari dan hanya boleh digunakan sekali. Keputusan anda akan direkodkan dalam jejak audit sistem.',
+        'help_text' => 'Jika anda mempunyai sebarang pertanyaan mengenai permohonan ini, sila hubungi pasukan Sokongan ICT.',
     ],
 ];

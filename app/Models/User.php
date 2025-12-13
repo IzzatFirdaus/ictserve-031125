@@ -13,18 +13,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements Auditable, FilamentUser, MustVerifyEmail
 {
+    use HasApiTokens;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
     use HasRoles;
-
-    // TODO: Add LogsActivity trait when spatie/laravel-activitylog is installed
-    // use Spatie\Activitylog\Traits\LogsActivity;
+    use LogsActivity;
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
@@ -32,6 +35,7 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
         'password_changed_at',
         'require_password_change',
@@ -61,6 +65,11 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
         'google_id',
         'google_token',
         'google_refresh_token',
+        // UI Preferences (v3.5.0 Phase 9)
+        'theme_preference',
+        'saved_filters',
+        'dashboard_layout',
+        'onboarding_completed',
     ];
 
     protected $hidden = [
@@ -83,21 +92,26 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
 
     /**
      * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
      */
-    protected static $logAttributes = [
-        'role',
-        'name',
-        'email',
-        'staff_number',
-        'division_code',
-        'grade',
-        'is_active',
-        'last_login_at',
-    ];
-
-    protected static $logName = 'user';
-
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'role',
+                'name',
+                'email',
+                'staff_number',
+                'division_code',
+                'grade',
+                'is_active',
+                'last_login_at',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('auth')
+            ->setDescriptionForEvent(fn (string $eventName) => "User {$eventName}");
+    }
 
     protected function casts(): array
     {
@@ -116,6 +130,11 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
             'guest_submissions_linked' => 'integer',
             'google_token' => 'encrypted',
             'google_refresh_token' => 'encrypted',
+            // UI Preferences (v3.5.0 Phase 9)
+            'theme_preference' => 'string',
+            'saved_filters' => 'array',
+            'dashboard_layout' => 'array',
+            'onboarding_completed' => 'boolean',
         ];
     }
 
@@ -521,6 +540,19 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     // v3.5.0 True Hybrid Architecture Methods
 
     /**
+     * Get SSO audit logs for this user.
+     *
+     * @return HasMany<SsoAuditLog, self>
+     */
+    public function ssoAuditLogs(): HasMany
+    {
+        /** @var HasMany<SsoAuditLog, self> $relation */
+        $relation = $this->hasMany(SsoAuditLog::class);
+
+        return $relation;
+    }
+
+    /**
      * Check if user has linked their Google account
      */
     public function isGoogleLinked(): bool
@@ -540,10 +572,33 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
 
     /**
      * Get user's preferred locale
+     *
+     * @deprecated v3.6.0 Always returns 'ms' - Bahasa Melayu only interface
      */
     public function getPreferredLocale(): string
     {
-        return $this->locale ?? 'ms';
+        return 'ms';
+    }
+
+    /**
+     * Get locale attribute
+     *
+     * @deprecated v3.6.0 Always returns 'ms' regardless of database value
+     */
+    public function getLocaleAttribute(): string
+    {
+        return 'ms';
+    }
+
+    /**
+     * Set locale attribute
+     *
+     * @deprecated v3.6.0 No-op - locale is always 'ms'
+     */
+    public function setLocaleAttribute(mixed $value): void
+    {
+        // v3.6.0: No-op - locale is always 'ms'
+        // Database value is not updated to preserve historical data
     }
 
     /**

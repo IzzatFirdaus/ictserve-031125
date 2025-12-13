@@ -10,9 +10,9 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use UnitEnum;
@@ -54,10 +54,10 @@ class BilingualManagement extends Page implements HasForms
         return __('admin_pages.bilingual_management.group');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
         return $schema
-            ->schema([
+            ->components([
                 \Filament\Schemas\Components\Section::make('Statistik Terjemahan')
                     ->schema([
                         \Filament\Forms\Components\Placeholder::make('ms_stats')

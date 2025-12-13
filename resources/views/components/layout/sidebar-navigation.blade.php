@@ -84,12 +84,12 @@
 
 <aside id="sidebar-navigation" role="navigation" aria-label="{{ __('common.sidebar_navigation') }}" x-data="{ collapsed: false, mobile: false }"
     :class="{ 'w-64': !collapsed, 'w-20': collapsed }"
-    class="hidden lg:flex flex-col bg-white border-r border-gray-200 transition-all duration-300">
+    class="hidden lg:flex flex-col bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 theme-transition">
 
     {{-- Collapse Toggle Button --}}
-    <div class="flex items-center justify-end p-4 border-b border-gray-200">
+    <div class="flex items-center justify-end p-4 border-b border-gray-200 dark:border-gray-700">
         <button type="button" @click="collapsed = !collapsed"
-            class="p-2 text-gray-600 hover:text-motac-blue hover:bg-gray-100 rounded-md focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all"
+            class="p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md focus:outline-none focus:ring-4 focus:ring-motac-blue dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 min-h-11 min-w-11 flex items-center justify-center transition-all"
             :aria-label="collapsed ? '{{ __('common.expand_sidebar') }}' : '{{ __('common.collapse_sidebar') }}'">
             <svg class="h-6 w-6 transition-transform" :class="{ 'rotate-180': collapsed }" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor">
@@ -103,20 +103,20 @@
     <nav class="flex-1 overflow-y-auto p-4 space-y-1">
         @foreach ($visibleItems as $item)
             @if (isset($item['divider']) && $item['divider'])
-                <div class="my-4 border-t border-gray-200"></div>
+                <div class="my-4 border-t border-gray-200 dark:border-gray-700"></div>
             @endif
 
             <a href="{{ route($item['route']) }}"
-                class="flex items-center px-3 py-2.5 text-sm font-medium rounded-md transition-all min-h-[44px]
+                class="flex items-center px-3 py-2.5 text-sm font-medium rounded-md transition-all min-h-11
                       {{ request()->routeIs($item['route'])
-                          ? 'bg-motac-blue text-white'
-                          : 'text-gray-700 hover:bg-gray-100 hover:text-motac-blue' }}
-                      focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2"
+                          ? 'bg-motac-blue dark:bg-primary-600 text-white'
+                          : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-motac-blue dark:hover:text-primary-400' }}
+                      focus:outline-none focus:ring-4 focus:ring-motac-blue dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                 :class="{ 'justify-center': collapsed }"
                 aria-current="{{ request()->routeIs($item['route']) ? 'page' : 'false' }}">
 
                 {{-- Icon --}}
-                <span class="flex-shrink-0">
+                <span class="shrink-0">
                     @switch($item['icon'])
                         @case('home')
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -187,19 +187,21 @@
     </nav>
 
     {{-- User Info (Collapsed State) --}}
-    <div class="p-4 border-t border-gray-200">
+    <div class="p-4 border-t border-gray-200 dark:border-gray-700">
         <div x-show="!collapsed" x-transition class="flex items-center space-x-3">
-            <div class="h-10 w-10 rounded-full bg-motac-blue text-white flex items-center justify-center font-semibold">
+            <div
+                class="h-10 w-10 rounded-full bg-motac-blue dark:bg-primary-600 text-white flex items-center justify-center font-semibold">
                 {{ strtoupper(substr($user->name, 0, 1)) }}
             </div>
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-900 truncate">{{ $user->name }}</p>
-                <p class="text-xs text-gray-500 truncate">{{ ucfirst($user->role) }}</p>
+                <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ $user->name }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ ucfirst($user->role) }}</p>
             </div>
         </div>
 
         <div x-show="collapsed" x-transition class="flex justify-center">
-            <div class="h-10 w-10 rounded-full bg-motac-blue text-white flex items-center justify-center font-semibold">
+            <div
+                class="h-10 w-10 rounded-full bg-motac-blue dark:bg-primary-600 text-white flex items-center justify-center font-semibold">
                 {{ strtoupper(substr($user->name, 0, 1)) }}
             </div>
         </div>
@@ -210,7 +212,7 @@
 <div x-data="{ open: false }" @keydown.escape.window="open = false" class="lg:hidden">
     {{-- Mobile Menu Button --}}
     <button type="button" @click="open = true"
-        class="fixed bottom-4 right-4 z-40 p-3 bg-motac-blue text-white rounded-full shadow-lg hover:bg-motac-blue-dark focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-[56px] min-w-[56px] flex items-center justify-center"
+        class="fixed bottom-4 right-4 z-40 p-3 bg-motac-blue dark:bg-primary-600 text-white rounded-full shadow-lg hover:bg-motac-blue-dark dark:hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-motac-blue dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 min-h-14 min-w-14 flex items-center justify-center"
         aria-label="{{ __('common.open_navigation_menu') }}">
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -221,20 +223,20 @@
     <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-50 bg-gray-900 bg-opacity-50" @click="open = false" aria-hidden="true"></div>
+        class="fixed inset-0 z-50 bg-gray-900/50 dark:bg-black/60" @click="open = false" aria-hidden="true"></div>
 
     <aside x-show="open" x-transition:enter="transition ease-out duration-300 transform"
         x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
         x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
-        class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl flex flex-col" role="dialog" aria-modal="true"
-        aria-label="{{ __('common.mobile_navigation') }}">
+        class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 shadow-xl flex flex-col" role="dialog"
+        aria-modal="true" aria-label="{{ __('common.mobile_navigation') }}" x-trap.noscroll="open">
 
         {{-- Mobile Header --}}
-        <div class="flex items-center justify-between p-4 border-b border-gray-200">
-            <span class="text-lg font-semibold text-gray-900">{{ __('common.menu') }}</span>
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('common.menu') }}</span>
             <button type="button" @click="open = false"
-                class="p-2 text-gray-600 hover:text-motac-blue hover:bg-gray-100 rounded-md focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                class="p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md focus:outline-none focus:ring-4 focus:ring-motac-blue dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 min-h-11 min-w-11 flex items-center justify-center"
                 aria-label="{{ __('common.close_menu') }}">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -246,19 +248,19 @@
         <nav class="flex-1 overflow-y-auto p-4 space-y-1">
             @foreach ($visibleItems as $item)
                 @if (isset($item['divider']) && $item['divider'])
-                    <div class="my-4 border-t border-gray-200"></div>
+                    <div class="my-4 border-t border-gray-200 dark:border-gray-700"></div>
                 @endif
 
                 <a href="{{ route($item['route']) }}" @click="open = false"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-md transition-all min-h-[44px]
+                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-md transition-all min-h-11
                           {{ request()->routeIs($item['route'])
-                              ? 'bg-motac-blue text-white'
-                              : 'text-gray-700 hover:bg-gray-100 hover:text-motac-blue' }}
-                          focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2"
+                              ? 'bg-motac-blue dark:bg-primary-600 text-white'
+                              : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-motac-blue dark:hover:text-primary-400' }}
+                          focus:outline-none focus:ring-4 focus:ring-motac-blue dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                     aria-current="{{ request()->routeIs($item['route']) ? 'page' : 'false' }}">
 
                     {{-- Icon (same as desktop) --}}
-                    <span class="flex-shrink-0">
+                    <span class="shrink-0">
                         @switch($item['icon'])
                             @case('home')
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -327,15 +329,15 @@
         </nav>
 
         {{-- Mobile User Info --}}
-        <div class="p-4 border-t border-gray-200">
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700">
             <div class="flex items-center space-x-3">
                 <div
-                    class="h-10 w-10 rounded-full bg-motac-blue text-white flex items-center justify-center font-semibold">
+                    class="h-10 w-10 rounded-full bg-motac-blue dark:bg-primary-600 text-white flex items-center justify-center font-semibold">
                     {{ strtoupper(substr($user->name, 0, 1)) }}
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 truncate">{{ $user->name }}</p>
-                    <p class="text-xs text-gray-500 truncate">{{ ucfirst($user->role) }}</p>
+                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ $user->name }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ ucfirst($user->role) }}</p>
                 </div>
             </div>
         </div>

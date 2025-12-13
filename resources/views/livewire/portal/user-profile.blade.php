@@ -51,7 +51,7 @@ new #[Layout('layouts.portal')] class extends Component
         $this->mobile = $user->mobile ?? '';
         $this->bio = $user->bio ?? '';
         $this->notification_preferences = $user->getNotificationPreferences();
-        $this->language = session('locale', config('app.locale', 'ms'));
+        $this->language = 'ms';
     }
 
     /**
@@ -116,6 +116,8 @@ new #[Layout('layouts.portal')] class extends Component
      */
     public function updateLanguage(): void
     {
+        $this->language = 'ms';
+
         session(['locale' => $this->language]);
         cookie()->queue('locale', $this->language, 60 * 24 * 365);
 
@@ -336,7 +338,7 @@ new #[Layout('layouts.portal')] class extends Component
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         placeholder="{{ __('profile.bio_placeholder') }}"></textarea>
                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        {{ strlen($bio) }}/500 {{ __('profile.characters') }}
+                        {{ strlen($bio ?? '') }}/500 {{ __('profile.characters') }}
                     </p>
                     @error('bio')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -432,11 +434,6 @@ new #[Layout('layouts.portal')] class extends Component
                         <input type="radio" wire:model="language" value="ms"
                             class="form-radio text-primary-600 focus:ring-primary-500">
                         <span class="ml-2 text-gray-700 dark:text-gray-300">Bahasa Melayu</span>
-                    </label>
-                    <label class="inline-flex items-center">
-                        <input type="radio" wire:model="language" value="en"
-                            class="form-radio text-primary-600 focus:ring-primary-500">
-                        <span class="ml-2 text-gray-700 dark:text-gray-300">English</span>
                     </label>
                 </div>
 

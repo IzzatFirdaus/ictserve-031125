@@ -6,7 +6,6 @@ namespace App\Mail;
 
 use App\Models\LoanApplication;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,7 +16,8 @@ class LoanStatusUpdated extends Mailable
     use Queueable, SerializesModels;
 
     public function __construct(
-        public LoanApplication $loanApplication,
+        public LoanApplication $application,
+        public ?string $previousStatus = null,
     ) {}
 
     /**
@@ -26,7 +26,7 @@ class LoanStatusUpdated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Loan Application Status Update: ' . $this->loanApplication->application_id,
+            subject: 'Loan Application Status Update: '.$this->application->application_number,
         );
     }
 

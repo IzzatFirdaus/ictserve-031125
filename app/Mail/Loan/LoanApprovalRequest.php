@@ -23,7 +23,7 @@ class LoanApprovalRequest extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('loan.email.approval_request_subject', [
+            subject: (string) __('loan.email.approval_request_subject', [
                 'number' => $this->application->application_number,
             ])
         );

@@ -19,11 +19,19 @@ RUN apk add --no-cache --update \
     netcat-openbsd \
     nodejs \
     npm \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
     $PHPIZE_DEPS
 
 # Configure and install PHP extensions used by Laravel
-RUN docker-php-ext-configure intl \
- && docker-php-ext-install -j$(nproc) pdo_mysql zip mbstring intl bcmath opcache
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+ && docker-php-ext-configure intl \
+ && docker-php-ext-install -j$(nproc) pdo_mysql zip mbstring intl bcmath opcache gd
+
+# Install redis php extension (phpredis) for cache/queue/session support
+RUN pecl install redis \
+ && docker-php-ext-enable redis
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -38,11 +46,9 @@ ARG INSTALL_DEV=false
 COPY composer.json composer.lock ./
 
 # Install composer dependencies: with dev when INSTALL_DEV=true, otherwise without dev dependencies
-RUN if [ "$INSTALL_DEV" = "true" ]; then \
-            composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts; \
-        else \
-            composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts || true; \
-        fi
+# NOTE: Dependency installation is done on the host during `composer install`
+# This Dockerfile expects vendor/ to already be present from the host mount
+RUN echo "Skipping composer install in Docker build - vendor should be mounted from host"
 
 # Copy application
 COPY . .

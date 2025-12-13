@@ -23,7 +23,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
-- phpunit/phpunit (PHPUNIT) - v11
+- phpunit/phpunit (PHPUNIT) - v12
 - tailwindcss (TAILWINDCSS) - v3
 
 ## Conventions
@@ -665,12 +665,79 @@ $delete = fn(Product $product) => $product->delete();
 
 ## PHPUnit Core
 
-- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use `php artisan make:test --phpunit <name>` to create a new test.
+- This application uses PHPUnit 12 for testing. All tests must be written as PHPUnit classes using PHP 8 attributes.
+- Use `php artisan make:test --phpunit <name>` to create a new test.
+- **CRITICAL**: Use PHP 8 attributes (`#[Test]`, `#[DataProvider]`) instead of deprecated PHPDoc annotations (`@test`, `@dataProvider`).
 - If you see a test using "Pest", convert it to PHPUnit.
 - Every time a test has been updated, run that singular test.
 - When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
 - Tests should test all of the happy paths, failure paths, and weird paths.
 - You must not remove any tests or test files from the tests directory without approval. These are not temporary or helper files, these are core to the application.
+
+### PHP 8 Attributes for Testing
+
+**REQUIRED**: Use PHP 8 attributes instead of PHPDoc annotations:
+
+```php
+// ✅ CORRECT: PHP 8 Attributes (PHPUnit 12)
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+class ExampleTest extends TestCase
+{
+    #[Test]
+    public function it_can_create_user(): void
+    {
+        // Test implementation
+    }
+
+    #[Test]
+    #[DataProvider('userDataProvider')]
+    public function it_validates_user_data(string $name, string $email): void
+    {
+        // Test implementation
+    }
+
+    public static function userDataProvider(): array
+    {
+        return [
+            ['John Doe', 'john@example.com'],
+            ['Jane Smith', 'jane@example.com'],
+        ];
+    }
+}
+```
+
+```php
+// ❌ WRONG: PHPDoc Annotations (Deprecated)
+class ExampleTest extends TestCase
+{
+    /** @test */
+    public function it_can_create_user(): void
+    {
+        // Test implementation
+    }
+
+    /**
+     * @test
+     * @dataProvider userDataProvider
+     */
+    public function it_validates_user_data(string $name, string $email): void
+    {
+        // Test implementation
+    }
+}
+```
+
+### Common PHPUnit 12 Attributes
+
+- `#[Test]` - Marks a method as a test (replaces `@test`)
+- `#[DataProvider('methodName')]` - Provides test data (replaces `@dataProvider`)
+- `#[Depends('testMethodName')]` - Test dependencies (replaces `@depends`)
+- `#[Group('groupName')]` - Test grouping (replaces `@group`)
+- `#[TestDox('Custom test description')]` - Custom test descriptions (replaces `@testdox`)
+- `#[Before]` - Setup method (replaces `@before`)
+- `#[After]` - Teardown method (replaces `@after`)
 
 ### Running Tests
 

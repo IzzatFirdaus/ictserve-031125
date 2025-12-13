@@ -41,13 +41,59 @@
                 role="document">
                 {{-- Progress Bar --}}
                 <div class="h-2 w-full bg-gray-200" role="progressbar" aria-valuenow="{{ $progressPercentage }}"
-                    aria-valuemin="0" aria-valuemax="100">
+                    aria-valuemin="0" aria-valuemax="100"
+                    aria-label="{{ __('portal.tour.progress_label', ['current' => $currentStep + 1, 'total' => $totalSteps]) }}">
                     <div class="h-full bg-primary-600 transition-all duration-300"
                         style="width: {{ $progressPercentage }}%"></div>
                 </div>
 
                 {{-- Tour Content --}}
                 <div class="p-6">
+                    {{-- Step Progress Indicator (Dots) --}}
+                    <nav class="mb-6" aria-label="{{ __('portal.tour.progress_navigation') }}">
+                        <ol class="flex items-center justify-center gap-2" role="list">
+                            @for ($i = 0; $i < $totalSteps; $i++)
+                                <li class="flex items-center">
+                                    @if ($i < $currentStep)
+                                        {{-- Completed Step --}}
+                                        <button type="button" wire:click="goToStep({{ $i }})"
+                                            class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-white transition-all duration-200 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                                            aria-label="{{ __('portal.tour.go_to_step', ['step' => $i + 1]) }} ({{ __('portal.tour.completed') }})"
+                                            aria-current="false">
+                                            <x-heroicon-s-check class="h-4 w-4" aria-hidden="true" />
+                                            <span
+                                                class="sr-only">{{ __('portal.tour.step_completed', ['step' => $i + 1]) }}</span>
+                                        </button>
+                                    @elseif ($i === $currentStep)
+                                        {{-- Current Step --}}
+                                        <span
+                                            class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary-600 bg-primary-50 text-sm font-semibold text-primary-700"
+                                            aria-current="step"
+                                            aria-label="{{ __('portal.tour.current_step', ['step' => $i + 1, 'total' => $totalSteps]) }}">
+                                            {{ $i + 1 }}
+                                        </span>
+                                    @else
+                                        {{-- Upcoming Step --}}
+                                        <span
+                                            class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white text-sm font-medium text-gray-500"
+                                            aria-label="{{ __('portal.tour.upcoming_step', ['step' => $i + 1]) }}">
+                                            {{ $i + 1 }}
+                                        </span>
+                                    @endif
+
+                                    {{-- Connector Line (except for last item) --}}
+                                    @if ($i < $totalSteps - 1)
+                                        <div class="ml-2 h-0.5 w-4 {{ $i < $currentStep ? 'bg-primary-600' : 'bg-gray-300' }}"
+                                            aria-hidden="true"></div>
+                                    @endif
+                                </li>
+                            @endfor
+                        </ol>
+                        {{-- Screen Reader Progress Summary --}}
+                        <p class="sr-only" aria-live="polite">
+                            {{ __('portal.tour.progress_summary', ['current' => $currentStep + 1, 'total' => $totalSteps, 'percentage' => $progressPercentage]) }}
+                        </p>
+                    </nav>
                     {{-- Step Icon --}}
                     <div class="mb-4 flex items-center justify-center">
                         <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary-100">
@@ -69,9 +115,13 @@
                         {{ $currentStepData['description'] ?? __('portal.tour.welcome_description') }}
                     </p>
 
-                    {{-- Step Counter --}}
-                    <div class="mb-6 text-center text-sm text-gray-500">
-                        {{ __('portal.tour.step_counter', ['current' => $currentStep + 1, 'total' => $totalSteps]) }}
+                    {{-- Step Counter (Text) --}}
+                    <div class="mb-6 text-center">
+                        <span
+                            class="inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700">
+                            <x-heroicon-s-map class="h-4 w-4" aria-hidden="true" />
+                            {{ __('portal.tour.step_counter', ['current' => $currentStep + 1, 'total' => $totalSteps]) }}
+                        </span>
                     </div>
 
                     {{-- Navigation Buttons --}}

@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 12.40.1.
+ * Generated for Laravel 12.40.2.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -5178,7 +5178,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function lock($name, $seconds = 0, $owner = null)
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->lock($name, $seconds, $owner);
         }
 
@@ -5192,7 +5192,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function restoreLock($name, $owner)
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->restoreLock($name, $owner);
         }
 
@@ -5204,71 +5204,82 @@ namespace Illuminate\Support\Facades {
          */
         public static function flush()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->flush();
         }
 
         /**
-         * Get the full path for the given cache key.
+         * Remove all expired tag set entries.
          *
-         * @param string $key
-         * @return string
+         * @return void
          * @static
          */
-        public static function path($key)
+        public static function flushStaleTags()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->path($key);
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            $instance->flushStaleTags();
         }
 
         /**
-         * Get the Filesystem instance.
+         * Get the Redis connection instance.
          *
-         * @return \Illuminate\Filesystem\Filesystem
+         * @return \Illuminate\Redis\Connections\Connection
          * @static
          */
-        public static function getFilesystem()
+        public static function connection()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->getFilesystem();
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->connection();
         }
 
         /**
-         * Get the working directory of the cache.
+         * Get the Redis connection instance that should be used to manage locks.
          *
-         * @return string
+         * @return \Illuminate\Redis\Connections\Connection
          * @static
          */
-        public static function getDirectory()
+        public static function lockConnection()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->getDirectory();
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->lockConnection();
         }
 
         /**
-         * Set the working directory of the cache.
+         * Specify the name of the connection that should be used to store data.
          *
-         * @param string $directory
-         * @return \Illuminate\Cache\FileStore
+         * @param string $connection
+         * @return void
          * @static
          */
-        public static function setDirectory($directory)
+        public static function setConnection($connection)
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->setDirectory($directory);
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            $instance->setConnection($connection);
         }
 
         /**
-         * Set the cache directory where locks should be stored.
+         * Specify the name of the connection that should be used to manage locks.
          *
-         * @param string|null $lockDirectory
-         * @return \Illuminate\Cache\FileStore
+         * @param string $connection
+         * @return \Illuminate\Cache\RedisStore
          * @static
          */
-        public static function setLockDirectory($lockDirectory)
+        public static function setLockConnection($connection)
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->setLockDirectory($lockDirectory);
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->setLockConnection($connection);
+        }
+
+        /**
+         * Get the Redis database instance.
+         *
+         * @return \Illuminate\Contracts\Redis\Factory
+         * @static
+         */
+        public static function getRedis()
+        {
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->getRedis();
         }
 
         /**
@@ -5279,8 +5290,21 @@ namespace Illuminate\Support\Facades {
          */
         public static function getPrefix()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->getPrefix();
+        }
+
+        /**
+         * Set the cache key prefix.
+         *
+         * @param string $prefix
+         * @return void
+         * @static
+         */
+        public static function setPrefix($prefix)
+        {
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            $instance->setPrefix($prefix);
         }
 
             }
@@ -12732,6 +12756,21 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Pause a queue by its connection and name for a given amount of time.
+         *
+         * @param string $connection
+         * @param string $queue
+         * @param \DateTimeInterface|\DateInterval|int $ttl
+         * @return void
+         * @static
+         */
+        public static function pauseFor($connection, $queue, $ttl)
+        {
+            /** @var \Illuminate\Queue\QueueManager $instance */
+            $instance->pauseFor($connection, $queue, $ttl);
+        }
+
+        /**
          * Resume a paused queue by its connection and name.
          *
          * @param string $connection
@@ -14854,6 +14893,34 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Sets the list of HTTP methods that can be overridden.
+         * 
+         * Set to null to allow all methods to be overridden (default). Set to an
+         * empty array to disallow overrides entirely. Otherwise, provide the list
+         * of uppercased method names that are allowed.
+         *
+         * @param \Symfony\Component\HttpFoundation\uppercase-string[]|null $methods
+         * @static
+         */
+        public static function setAllowedHttpMethodOverride($methods)
+        {
+            //Method inherited from \Symfony\Component\HttpFoundation\Request 
+            return \Illuminate\Http\Request::setAllowedHttpMethodOverride($methods);
+        }
+
+        /**
+         * Gets the list of HTTP methods that can be overridden.
+         *
+         * @return \Symfony\Component\HttpFoundation\uppercase-string[]|null
+         * @static
+         */
+        public static function getAllowedHttpMethodOverride()
+        {
+            //Method inherited from \Symfony\Component\HttpFoundation\Request 
+            return \Illuminate\Http\Request::getAllowedHttpMethodOverride();
+        }
+
+        /**
          * Whether the request contains a Session which was started in one of the
          * previous requests.
          *
@@ -15284,7 +15351,18 @@ namespace Illuminate\Support\Facades {
 
         /**
          * Gets the format associated with the mime type.
+         * 
+         * Resolution order:
+         *   1) Exact match on the full MIME type (e.g. "application/json").
+         *   2) Match on the canonical MIME type (i.e. before the first ";" parameter).
+         *   3) If the type is "application/*+suffix", use the structured syntax suffix
+         *      mapping (e.g. "application/foo+json" → "json"), when available.
+         *   4) If $subtypeFallback is true and no match was found:
+         *      - return the MIME subtype (without "x-" prefix), provided it does not
+         *        contain a "+" (e.g. "application/x-yaml" → "yaml", "text/csv" → "csv").
          *
+         * @param string|null $mimeType The mime type to check
+         * @param bool $subtypeFallback Whether to fall back to the subtype if no exact match is found
          * @static
          */
         public static function getFormat($mimeType)
@@ -15297,6 +15375,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Associates a format with mime types.
          *
+         * @param string $format The format to set
          * @param string|string[] $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
          * @static
          */
@@ -23096,6 +23175,687 @@ namespace AnourValar\EloquentSerialize\Facades {
             }
     }
 
+namespace Barryvdh\DomPDF\Facade {
+    /**
+     * @method static BasePDF setBaseHost(string $baseHost)
+     * @method static BasePDF setBasePath(string $basePath)
+     * @method static BasePDF setCanvas(\Dompdf\Canvas $canvas)
+     * @method static BasePDF setCallbacks(array<string, mixed> $callbacks)
+     * @method static BasePDF setCss(\Dompdf\Css\Stylesheet $css)
+     * @method static BasePDF setDefaultView(string $defaultView, array<string, mixed> $options)
+     * @method static BasePDF setDom(\DOMDocument $dom)
+     * @method static BasePDF setFontMetrics(\Dompdf\FontMetrics $fontMetrics)
+     * @method static BasePDF setHttpContext(resource|array<string, mixed> $httpContext)
+     * @method static BasePDF setPaper(string|float[] $paper, string $orientation = 'portrait')
+     * @method static BasePDF setProtocol(string $protocol)
+     * @method static BasePDF setTree(\Dompdf\Frame\FrameTree $tree)
+     */
+    class Pdf {
+        /**
+         * Get the DomPDF instance
+         *
+         * @static
+         */
+        public static function getDomPDF()
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->getDomPDF();
+        }
+
+        /**
+         * Show or hide warnings
+         *
+         * @static
+         */
+        public static function setWarnings($warnings)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->setWarnings($warnings);
+        }
+
+        /**
+         * Load a HTML string
+         *
+         * @param string|null $encoding Not used yet
+         * @static
+         */
+        public static function loadHTML($string, $encoding = null)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->loadHTML($string, $encoding);
+        }
+
+        /**
+         * Load a HTML file
+         *
+         * @static
+         */
+        public static function loadFile($file)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->loadFile($file);
+        }
+
+        /**
+         * Add metadata info
+         *
+         * @param array<string, string> $info
+         * @static
+         */
+        public static function addInfo($info)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->addInfo($info);
+        }
+
+        /**
+         * Load a View and convert to HTML
+         *
+         * @param array<string, mixed> $data
+         * @param array<string, mixed> $mergeData
+         * @param string|null $encoding Not used yet
+         * @static
+         */
+        public static function loadView($view, $data = [], $mergeData = [], $encoding = null)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->loadView($view, $data, $mergeData, $encoding);
+        }
+
+        /**
+         * Set/Change an option (or array of options) in Dompdf
+         *
+         * @param array<string, mixed>|string $attribute
+         * @param null|mixed $value
+         * @static
+         */
+        public static function setOption($attribute, $value = null)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->setOption($attribute, $value);
+        }
+
+        /**
+         * Replace all the Options from DomPDF
+         *
+         * @param array<string, mixed> $options
+         * @static
+         */
+        public static function setOptions($options, $mergeWithDefaults = false)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->setOptions($options, $mergeWithDefaults);
+        }
+
+        /**
+         * Output the PDF as a string.
+         * 
+         * The options parameter controls the output. Accepted options are:
+         * 
+         * 'compress' = > 1 or 0 - apply content stream compression, this is
+         *    on (1) by default
+         *
+         * @param array<string, int> $options
+         * @return string The rendered PDF as string
+         * @static
+         */
+        public static function output($options = [])
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->output($options);
+        }
+
+        /**
+         * Save the PDF to a file
+         *
+         * @static
+         */
+        public static function save($filename, $disk = null)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->save($filename, $disk);
+        }
+
+        /**
+         * Make the PDF downloadable by the user
+         *
+         * @static
+         */
+        public static function download($filename = 'document.pdf')
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->download($filename);
+        }
+
+        /**
+         * Return a response with the PDF to show in the browser
+         *
+         * @static
+         */
+        public static function stream($filename = 'document.pdf')
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->stream($filename);
+        }
+
+        /**
+         * Render the PDF
+         *
+         * @static
+         */
+        public static function render()
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->render();
+        }
+
+        /**
+         * @param array<string> $pc
+         * @static
+         */
+        public static function setEncryption($password, $ownerpassword = '', $pc = [])
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->setEncryption($password, $ownerpassword, $pc);
+        }
+
+            }
+    }
+
+namespace Laravel\Pulse\Facades {
+    /**
+     * @method static void store(\Illuminate\Support\Collection $items)
+     * @method static void trim()
+     * @method static void purge(array $types = null)
+     * @method static \Illuminate\Support\Collection values(string $type, array $keys = null)
+     * @method static \Illuminate\Support\Collection graph(array $types, string $aggregate, \Carbon\CarbonInterval $interval)
+     * @method static \Illuminate\Support\Collection aggregate(string $type, string|array $aggregates, \Carbon\CarbonInterval $interval, string|null $orderBy = null, string $direction = 'desc', int $limit = 101)
+     * @method static \Illuminate\Support\Collection aggregateTypes(string|array $types, string $aggregate, \Carbon\CarbonInterval $interval, string|null $orderBy = null, string $direction = 'desc', int $limit = 101)
+     * @method static float|\Illuminate\Support\Collection aggregateTotal(string|array $types, string $aggregate, \Carbon\CarbonInterval $interval)
+     * @see \Laravel\Pulse\Pulse
+     */
+    class Pulse {
+        /**
+         * Register a recorder.
+         *
+         * @param array<class-string, array<mixed>|bool> $recorders
+         * @static
+         */
+        public static function register($recorders)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->register($recorders);
+        }
+
+        /**
+         * Record an entry.
+         *
+         * @static
+         */
+        public static function record($type, $key, $value = null, $timestamp = null)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->record($type, $key, $value, $timestamp);
+        }
+
+        /**
+         * Record a value.
+         *
+         * @static
+         */
+        public static function set($type, $key, $value, $timestamp = null)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->set($type, $key, $value, $timestamp);
+        }
+
+        /**
+         * Lazily capture items.
+         *
+         * @static
+         */
+        public static function lazy($closure)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->lazy($closure);
+        }
+
+        /**
+         * Report the throwable exception to Pulse.
+         *
+         * @static
+         */
+        public static function report($e)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->report($e);
+        }
+
+        /**
+         * Start recording.
+         *
+         * @static
+         */
+        public static function startRecording()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->startRecording();
+        }
+
+        /**
+         * Stop recording.
+         *
+         * @static
+         */
+        public static function stopRecording()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->stopRecording();
+        }
+
+        /**
+         * Execute the given callback without recording.
+         *
+         * @template TReturn
+         * @param (callable(): TReturn) $callback
+         * @return TReturn
+         * @static
+         */
+        public static function ignore($callback)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->ignore($callback);
+        }
+
+        /**
+         * Flush the queue.
+         *
+         * @static
+         */
+        public static function flush()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->flush();
+        }
+
+        /**
+         * Filter items before storage using the provided filter.
+         *
+         * @param (callable(\Laravel\Pulse\Entry|\Laravel\Pulse\Value): bool) $filter
+         * @static
+         */
+        public static function filter($filter)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->filter($filter);
+        }
+
+        /**
+         * Ingest the entries.
+         *
+         * @static
+         */
+        public static function ingest()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->ingest();
+        }
+
+        /**
+         * Digest the entries.
+         *
+         * @static
+         */
+        public static function digest()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->digest();
+        }
+
+        /**
+         * Determine if Pulse wants to ingest entries.
+         *
+         * @static
+         */
+        public static function wantsIngesting()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->wantsIngesting();
+        }
+
+        /**
+         * Get the registered recorders.
+         *
+         * @return \Illuminate\Support\Collection<int, object>
+         * @static
+         */
+        public static function recorders()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->recorders();
+        }
+
+        /**
+         * Resolve the user details for the given user IDs.
+         *
+         * @param \Illuminate\Support\Collection<int, string> $keys
+         * @static
+         */
+        public static function resolveUsers($keys)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->resolveUsers($keys);
+        }
+
+        /**
+         * Resolve the users' details using the given closure.
+         *
+         * @deprecated
+         * @param callable(\Illuminate\Support\Collection<int, mixed>):  ?iterable<int|string, array{name: string, email?: ?string, avatar?: ?string, extra?: ?string}>  $callback
+         * @static
+         */
+        public static function users($callback)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->users($callback);
+        }
+
+        /**
+         * Resolve the user's details using the given closure.
+         *
+         * @param callable(\Illuminate\Contracts\Auth\Authenticatable):  array{name: string, email?: ?string, avatar?: ?string, extra?: ?string}  $callback
+         * @static
+         */
+        public static function user($callback)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->user($callback);
+        }
+
+        /**
+         * Get the authenticated user ID resolver.
+         *
+         * @return callable(): (int|string|null)
+         * @static
+         */
+        public static function authenticatedUserIdResolver()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->authenticatedUserIdResolver();
+        }
+
+        /**
+         * Resolve the authenticated user id.
+         *
+         * @static
+         */
+        public static function resolveAuthenticatedUserId()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->resolveAuthenticatedUserId();
+        }
+
+        /**
+         * Remember the authenticated user's ID.
+         *
+         * @static
+         */
+        public static function rememberUser($user)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->rememberUser($user);
+        }
+
+        /**
+         * Register or return CSS for the Pulse dashboard.
+         *
+         * @param string|\Illuminate\Contracts\Support\Htmlable|list<string|Htmlable>|null $css
+         * @static
+         */
+        public static function css($css = null)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->css($css);
+        }
+
+        /**
+         * Return the compiled JavaScript from the vendor directory.
+         *
+         * @static
+         */
+        public static function js()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->js();
+        }
+
+        /**
+         * The default "vendor" cache keys that should be ignored by Pulse.
+         *
+         * @return list<string>
+         * @static
+         */
+        public static function defaultVendorCacheKeys()
+        {
+            return \Laravel\Pulse\Pulse::defaultVendorCacheKeys();
+        }
+
+        /**
+         * Determine if Pulse may register routes.
+         *
+         * @static
+         */
+        public static function registersRoutes()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->registersRoutes();
+        }
+
+        /**
+         * Configure Pulse to not register its routes.
+         *
+         * @static
+         */
+        public static function ignoreRoutes()
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->ignoreRoutes();
+        }
+
+        /**
+         * Handle exceptions using the given callback.
+         *
+         * @param (callable(\Throwable): mixed) $callback
+         * @static
+         */
+        public static function handleExceptionsUsing($callback)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->handleExceptionsUsing($callback);
+        }
+
+        /**
+         * Execute the given callback handling any exceptions.
+         *
+         * @template TReturn
+         * @param (callable(): TReturn) $callback
+         * @return TReturn|null
+         * @static
+         */
+        public static function rescue($callback)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->rescue($callback);
+        }
+
+        /**
+         * Set the container instance.
+         *
+         * @param \Illuminate\Contracts\Foundation\Application $container
+         * @return \Laravel\Pulse\Pulse
+         * @static
+         */
+        public static function setContainer($container)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->setContainer($container);
+        }
+
+        /**
+         * Configure the class after resolving.
+         *
+         * @static
+         */
+        public static function afterResolving($app, $class, $callback)
+        {
+            /** @var \Laravel\Pulse\Pulse $instance */
+            return $instance->afterResolving($app, $class, $callback);
+        }
+
+            }
+    }
+
+namespace Laravel\Socialite\Facades {
+    /**
+     */
+    class Socialite extends \Illuminate\Support\Manager {
+        /**
+         * Get a driver instance.
+         *
+         * @param string $driver
+         * @return mixed
+         * @static
+         */
+        public static function with($driver)
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->with($driver);
+        }
+
+        /**
+         * Build an OAuth 2 provider instance.
+         *
+         * @param string $provider
+         * @param array $config
+         * @return \Laravel\Socialite\Two\AbstractProvider
+         * @static
+         */
+        public static function buildProvider($provider, $config)
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->buildProvider($provider, $config);
+        }
+
+        /**
+         * Format the server configuration.
+         *
+         * @param array $config
+         * @return array
+         * @static
+         */
+        public static function formatConfig($config)
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->formatConfig($config);
+        }
+
+        /**
+         * Forget all of the resolved driver instances.
+         *
+         * @return \Laravel\Socialite\SocialiteManager
+         * @static
+         */
+        public static function forgetDrivers()
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->forgetDrivers();
+        }
+
+        /**
+         * Set the container instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Container\Container $container
+         * @return \Laravel\Socialite\SocialiteManager
+         * @static
+         */
+        public static function setContainer($container)
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->setContainer($container);
+        }
+
+        /**
+         * Get the default driver name.
+         *
+         * @return string
+         * @throws \InvalidArgumentException
+         * @static
+         */
+        public static function getDefaultDriver()
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->getDefaultDriver();
+        }
+
+        /**
+         * Get a driver instance.
+         *
+         * @param string|null $driver
+         * @return mixed
+         * @throws \InvalidArgumentException
+         * @static
+         */
+        public static function driver($driver = null)
+        {
+            //Method inherited from \Illuminate\Support\Manager 
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->driver($driver);
+        }
+
+        /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \Laravel\Socialite\SocialiteManager
+         * @static
+         */
+        public static function extend($driver, $callback)
+        {
+            //Method inherited from \Illuminate\Support\Manager 
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->extend($driver, $callback);
+        }
+
+        /**
+         * Get all of the created "drivers".
+         *
+         * @return array
+         * @static
+         */
+        public static function getDrivers()
+        {
+            //Method inherited from \Illuminate\Support\Manager 
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->getDrivers();
+        }
+
+        /**
+         * Get the container instance used by the manager.
+         *
+         * @return \Illuminate\Contracts\Container\Container
+         * @static
+         */
+        public static function getContainer()
+        {
+            //Method inherited from \Illuminate\Support\Manager 
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->getContainer();
+        }
+
+            }
+    }
+
 namespace Livewire {
     /**
      * @see \Livewire\LivewireManager
@@ -23526,7 +24286,933 @@ namespace Livewire {
             }
     }
 
+namespace Maatwebsite\Excel\Facades {
+    /**
+     */
+    class Excel {
+        /**
+         * @param object $export
+         * @param string|null $fileName
+         * @param string $writerType
+         * @param array $headers
+         * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+         * @throws \PhpOffice\PhpSpreadsheet\Exception
+         * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+         * @static
+         */
+        public static function download($export, $fileName, $writerType = null, $headers = [])
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->download($export, $fileName, $writerType, $headers);
+        }
+
+        /**
+         * @param string|null $disk Fallback for usage with named properties
+         * @param object $export
+         * @param string $filePath
+         * @param string|null $diskName
+         * @param string $writerType
+         * @param mixed $diskOptions
+         * @return bool
+         * @throws \PhpOffice\PhpSpreadsheet\Exception
+         * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+         * @static
+         */
+        public static function store($export, $filePath, $diskName = null, $writerType = null, $diskOptions = [], $disk = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->store($export, $filePath, $diskName, $writerType, $diskOptions, $disk);
+        }
+
+        /**
+         * @param object $export
+         * @param string $filePath
+         * @param string|null $disk
+         * @param string $writerType
+         * @param mixed $diskOptions
+         * @return \Illuminate\Foundation\Bus\PendingDispatch
+         * @static
+         */
+        public static function queue($export, $filePath, $disk = null, $writerType = null, $diskOptions = [])
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->queue($export, $filePath, $disk, $writerType, $diskOptions);
+        }
+
+        /**
+         * @param object $export
+         * @param string $writerType
+         * @return string
+         * @static
+         */
+        public static function raw($export, $writerType)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->raw($export, $writerType);
+        }
+
+        /**
+         * @param object $import
+         * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $filePath
+         * @param string|null $disk
+         * @param string|null $readerType
+         * @return \Maatwebsite\Excel\Reader|\Illuminate\Foundation\Bus\PendingDispatch
+         * @static
+         */
+        public static function import($import, $filePath, $disk = null, $readerType = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->import($import, $filePath, $disk, $readerType);
+        }
+
+        /**
+         * @param object $import
+         * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $filePath
+         * @param string|null $disk
+         * @param string|null $readerType
+         * @return array
+         * @static
+         */
+        public static function toArray($import, $filePath, $disk = null, $readerType = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->toArray($import, $filePath, $disk, $readerType);
+        }
+
+        /**
+         * @param object $import
+         * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $filePath
+         * @param string|null $disk
+         * @param string|null $readerType
+         * @return \Illuminate\Support\Collection
+         * @static
+         */
+        public static function toCollection($import, $filePath, $disk = null, $readerType = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->toCollection($import, $filePath, $disk, $readerType);
+        }
+
+        /**
+         * @param \Illuminate\Contracts\Queue\ShouldQueue $import
+         * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $filePath
+         * @param string|null $disk
+         * @param string $readerType
+         * @return \Illuminate\Foundation\Bus\PendingDispatch
+         * @static
+         */
+        public static function queueImport($import, $filePath, $disk = null, $readerType = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->queueImport($import, $filePath, $disk, $readerType);
+        }
+
+        /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param object|callable $macro
+         * @param-closure-this static  $macro
+         * @return void
+         * @static
+         */
+        public static function macro($name, $macro)
+        {
+            \Maatwebsite\Excel\Excel::macro($name, $macro);
+        }
+
+        /**
+         * Mix another object into the class.
+         *
+         * @param object $mixin
+         * @param bool $replace
+         * @return void
+         * @throws \ReflectionException
+         * @static
+         */
+        public static function mixin($mixin, $replace = true)
+        {
+            \Maatwebsite\Excel\Excel::mixin($mixin, $replace);
+        }
+
+        /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool
+         * @static
+         */
+        public static function hasMacro($name)
+        {
+            return \Maatwebsite\Excel\Excel::hasMacro($name);
+        }
+
+        /**
+         * Flush the existing macros.
+         *
+         * @return void
+         * @static
+         */
+        public static function flushMacros()
+        {
+            \Maatwebsite\Excel\Excel::flushMacros();
+        }
+
+        /**
+         * @param string $concern
+         * @param callable $handler
+         * @param string $event
+         * @static
+         */
+        public static function extend($concern, $handler, $event = 'Maatwebsite\\Excel\\Events\\BeforeWriting')
+        {
+            return \Maatwebsite\Excel\Excel::extend($concern, $handler, $event);
+        }
+
+        /**
+         * When asserting downloaded, stored, queued or imported, use regular expression
+         * to look for a matching file path.
+         *
+         * @return void
+         * @static
+         */
+        public static function matchByRegex()
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            $instance->matchByRegex();
+        }
+
+        /**
+         * When asserting downloaded, stored, queued or imported, use regular string
+         * comparison for matching file path.
+         *
+         * @return void
+         * @static
+         */
+        public static function doNotMatchByRegex()
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            $instance->doNotMatchByRegex();
+        }
+
+        /**
+         * @param string $fileName
+         * @param callable|null $callback
+         * @static
+         */
+        public static function assertDownloaded($fileName, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertDownloaded($fileName, $callback);
+        }
+
+        /**
+         * @param string $filePath
+         * @param string|callable|null $disk
+         * @param callable|null $callback
+         * @static
+         */
+        public static function assertStored($filePath, $disk = null, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertStored($filePath, $disk, $callback);
+        }
+
+        /**
+         * @param string $filePath
+         * @param string|callable|null $disk
+         * @param callable|null $callback
+         * @static
+         */
+        public static function assertQueued($filePath, $disk = null, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertQueued($filePath, $disk, $callback);
+        }
+
+        /**
+         * @static
+         */
+        public static function assertQueuedWithChain($chain)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertQueuedWithChain($chain);
+        }
+
+        /**
+         * @param string $classname
+         * @param callable|null $callback
+         * @static
+         */
+        public static function assertExportedInRaw($classname, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertExportedInRaw($classname, $callback);
+        }
+
+        /**
+         * @param string $filePath
+         * @param string|callable|null $disk
+         * @param callable|null $callback
+         * @static
+         */
+        public static function assertImported($filePath, $disk = null, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertImported($filePath, $disk, $callback);
+        }
+
+            }
+    }
+
+namespace PragmaRX\Google2FALaravel {
+    /**
+     */
+    class Facade extends \PragmaRX\Google2FAQRCode\Google2FA {
+        /**
+         * Set the QRCode Backend.
+         *
+         * @param string $qrCodeBackend
+         * @return self
+         * @static
+         */
+        public static function setQrCodeBackend($qrCodeBackend)
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setQrCodeBackend($qrCodeBackend);
+        }
+
+        /**
+         * Authenticator boot.
+         *
+         * @param $request
+         * @return \Google2FA
+         * @static
+         */
+        public static function boot($request)
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->boot($request);
+        }
+
+        /**
+         * The QRCode Backend.
+         *
+         * @return mixed
+         * @static
+         */
+        public static function getQRCodeBackend()
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getQRCodeBackend();
+        }
+
+        /**
+         * Check if the 2FA is activated for the user.
+         *
+         * @return bool
+         * @static
+         */
+        public static function isActivated()
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->isActivated();
+        }
+
+        /**
+         * Set current auth as valid.
+         *
+         * @static
+         */
+        public static function login()
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->login();
+        }
+
+        /**
+         * OTP logout.
+         *
+         * @static
+         */
+        public static function logout()
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->logout();
+        }
+
+        /**
+         * Verify the OTP.
+         *
+         * @param $secret
+         * @param $one_time_password
+         * @return mixed
+         * @static
+         */
+        public static function verifyGoogle2FA($secret, $one_time_password)
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->verifyGoogle2FA($secret, $one_time_password);
+        }
+
+        /**
+         * Generates a QR code data url to display inline.
+         *
+         * @param string $company
+         * @param string $holder
+         * @param string $secret
+         * @param int $size
+         * @param string $encoding Default to UTF-8
+         * @return string
+         * @static
+         */
+        public static function getQRCodeInline($company, $holder, $secret, $size = 200, $encoding = 'utf-8')
+        {
+            //Method inherited from \PragmaRX\Google2FAQRCode\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getQRCodeInline($company, $holder, $secret, $size, $encoding);
+        }
+
+        /**
+         * Service setter
+         *
+         * @return \PragmaRX\Google2FAQRCode\QRCode\QRCodeServiceContract
+         * @static
+         */
+        public static function getQrCodeService()
+        {
+            //Method inherited from \PragmaRX\Google2FAQRCode\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getQrCodeService();
+        }
+
+        /**
+         * Service setter
+         *
+         * @return self
+         * @static
+         */
+        public static function setQrCodeService($service)
+        {
+            //Method inherited from \PragmaRX\Google2FAQRCode\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setQrCodeService($service);
+        }
+
+        /**
+         * Create the QR Code service instance
+         *
+         * @return \PragmaRX\Google2FAQRCode\QRCode\QRCodeServiceContract
+         * @static
+         */
+        public static function qrCodeServiceFactory($imageBackEnd = null)
+        {
+            //Method inherited from \PragmaRX\Google2FAQRCode\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->qrCodeServiceFactory($imageBackEnd);
+        }
+
+        /**
+         * Find a valid One Time Password.
+         *
+         * @param string $secret
+         * @param string $key
+         * @param int|null $window
+         * @param int $startingTimestamp
+         * @param int $timestamp
+         * @param int|null $oldTimestamp
+         * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+         * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
+         * @return bool|int
+         * @static
+         */
+        public static function findValidOTP($secret, $key, $window, $startingTimestamp, $timestamp, $oldTimestamp = null)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->findValidOTP($secret, $key, $window, $startingTimestamp, $timestamp, $oldTimestamp);
+        }
+
+        /**
+         * Generate a digit secret key in base32 format.
+         *
+         * @param int $length
+         * @param string $prefix
+         * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+         * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
+         * @return string
+         * @static
+         */
+        public static function generateSecretKey($length = 16, $prefix = '')
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->generateSecretKey($length, $prefix);
+        }
+
+        /**
+         * Get the current one time password for a key.
+         *
+         * @param string $secret
+         * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+         * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
+         * @return string
+         * @static
+         */
+        public static function getCurrentOtp($secret)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getCurrentOtp($secret);
+        }
+
+        /**
+         * Get the HMAC algorithm.
+         *
+         * @return string
+         * @static
+         */
+        public static function getAlgorithm()
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getAlgorithm();
+        }
+
+        /**
+         * Get key regeneration.
+         *
+         * @return int
+         * @static
+         */
+        public static function getKeyRegeneration()
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getKeyRegeneration();
+        }
+
+        /**
+         * Get OTP length.
+         *
+         * @return int
+         * @static
+         */
+        public static function getOneTimePasswordLength()
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getOneTimePasswordLength();
+        }
+
+        /**
+         * Get secret.
+         *
+         * @param string|null $secret
+         * @return string
+         * @static
+         */
+        public static function getSecret($secret = null)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getSecret($secret);
+        }
+
+        /**
+         * Returns the current Unix Timestamp divided by the $keyRegeneration
+         * period.
+         *
+         * @return int
+         * @static
+         */
+        public static function getTimestamp()
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getTimestamp();
+        }
+
+        /**
+         * Get the OTP window.
+         *
+         * @param null|int $window
+         * @return int
+         * @static
+         */
+        public static function getWindow($window = null)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getWindow($window);
+        }
+
+        /**
+         * Takes the secret key and the timestamp and returns the one time
+         * password.
+         *
+         * @param string $secret Secret key in binary form.
+         * @param int $counter Timestamp as returned by getTimestamp.
+         * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+         * @throws Exceptions\IncompatibleWithGoogleAuthenticatorException
+         * @return string
+         * @static
+         */
+        public static function oathTotp($secret, $counter)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->oathTotp($secret, $counter);
+        }
+
+        /**
+         * Extracts the OTP from the SHA1 hash.
+         *
+         * @param string $hash
+         * @return string
+         * @static
+         */
+        public static function oathTruncate($hash)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->oathTruncate($hash);
+        }
+
+        /**
+         * Remove invalid chars from a base 32 string.
+         *
+         * @param string $string
+         * @return string|null
+         * @static
+         */
+        public static function removeInvalidChars($string)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->removeInvalidChars($string);
+        }
+
+        /**
+         * Setter for the enforce Google Authenticator compatibility property.
+         *
+         * @param mixed $enforceGoogleAuthenticatorCompatibility
+         * @return \PragmaRX\Google2FALaravel\Google2FA
+         * @static
+         */
+        public static function setEnforceGoogleAuthenticatorCompatibility($enforceGoogleAuthenticatorCompatibility)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setEnforceGoogleAuthenticatorCompatibility($enforceGoogleAuthenticatorCompatibility);
+        }
+
+        /**
+         * Set the HMAC hashing algorithm.
+         *
+         * @param mixed $algorithm
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidAlgorithmException
+         * @return \PragmaRX\Google2FA\Google2FA
+         * @static
+         */
+        public static function setAlgorithm($algorithm)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setAlgorithm($algorithm);
+        }
+
+        /**
+         * Set key regeneration.
+         *
+         * @param mixed $keyRegeneration
+         * @static
+         */
+        public static function setKeyRegeneration($keyRegeneration)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setKeyRegeneration($keyRegeneration);
+        }
+
+        /**
+         * Set OTP length.
+         *
+         * @param mixed $oneTimePasswordLength
+         * @static
+         */
+        public static function setOneTimePasswordLength($oneTimePasswordLength)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setOneTimePasswordLength($oneTimePasswordLength);
+        }
+
+        /**
+         * Set secret.
+         *
+         * @param mixed $secret
+         * @static
+         */
+        public static function setSecret($secret)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setSecret($secret);
+        }
+
+        /**
+         * Set the OTP window.
+         *
+         * @param mixed $window
+         * @static
+         */
+        public static function setWindow($window)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setWindow($window);
+        }
+
+        /**
+         * Verifies a user inputted key against the current timestamp. Checks $window
+         * keys either side of the timestamp.
+         *
+         * @param string $key User specified key
+         * @param string $secret
+         * @param null|int $window
+         * @param null|int $timestamp
+         * @param null|int $oldTimestamp
+         * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+         * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
+         * @return bool|int
+         * @static
+         */
+        public static function verify($key, $secret, $window = null, $timestamp = null, $oldTimestamp = null)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->verify($key, $secret, $window, $timestamp, $oldTimestamp);
+        }
+
+        /**
+         * Verifies a user inputted key against the current timestamp. Checks $window
+         * keys either side of the timestamp.
+         *
+         * @param string $secret
+         * @param string $key User specified key
+         * @param int|null $window
+         * @param null|int $timestamp
+         * @param null|int $oldTimestamp
+         * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+         * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
+         * @return bool|int
+         * @static
+         */
+        public static function verifyKey($secret, $key, $window = null, $timestamp = null, $oldTimestamp = null)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->verifyKey($secret, $key, $window, $timestamp, $oldTimestamp);
+        }
+
+        /**
+         * Verifies a user inputted key against the current timestamp. Checks $window
+         * keys either side of the timestamp, but ensures that the given key is newer than
+         * the given oldTimestamp. Useful if you need to ensure that a single key cannot
+         * be used twice.
+         *
+         * @param string $secret
+         * @param string $key User specified key
+         * @param int|null $oldTimestamp The timestamp from the last verified key
+         * @param int|null $window
+         * @param int|null $timestamp
+         * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+         * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
+         * @return bool|int
+         * @static
+         */
+        public static function verifyKeyNewer($secret, $key, $oldTimestamp, $window = null, $timestamp = null)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->verifyKeyNewer($secret, $key, $oldTimestamp, $window, $timestamp);
+        }
+
+        /**
+         * Creates a QR code url.
+         *
+         * @param string $company
+         * @param string $holder
+         * @param string $secret
+         * @return string
+         * @static
+         */
+        public static function getQRCodeUrl($company, $holder, $secret)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getQRCodeUrl($company, $holder, $secret);
+        }
+
+        /**
+         * Generate a digit secret key in base32 format.
+         *
+         * @param int $length
+         * @param string $prefix
+         * @throws \Exception
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+         * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
+         * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
+         * @return string
+         * @static
+         */
+        public static function generateBase32RandomKey($length = 16, $prefix = '')
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->generateBase32RandomKey($length, $prefix);
+        }
+
+        /**
+         * Decodes a base32 string into a binary string.
+         *
+         * @param string $b32
+         * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+         * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
+         * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
+         * @return string
+         * @static
+         */
+        public static function base32Decode($b32)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->base32Decode($b32);
+        }
+
+        /**
+         * Encode a string to Base32.
+         *
+         * @param string $string
+         * @return string
+         * @static
+         */
+        public static function toBase32($string)
+        {
+            //Method inherited from \PragmaRX\Google2FA\Google2FA 
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->toBase32($string);
+        }
+
+        /**
+         * Get a config value.
+         *
+         * @param $string
+         * @throws \Exception
+         * @return mixed
+         * @static
+         */
+        public static function config($string, $default = null)
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->config($string, $default);
+        }
+
+        /**
+         * Get the request property.
+         *
+         * @return mixed
+         * @static
+         */
+        public static function getRequest()
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->getRequest();
+        }
+
+        /**
+         * Set the request property.
+         *
+         * @param mixed $request
+         * @return \PragmaRX\Google2FALaravel\Google2FA
+         * @static
+         */
+        public static function setRequest($request)
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setRequest($request);
+        }
+
+        /**
+         * Get a session var value.
+         *
+         * @param null $var
+         * @return mixed
+         * @static
+         */
+        public static function sessionGet($var = null, $default = null)
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->sessionGet($var, $default);
+        }
+
+        /**
+         * @param mixed $stateless
+         * @return \PragmaRX\Google2FALaravel\Authenticator
+         * @static
+         */
+        public static function setStateless($stateless = true)
+        {
+            /** @var \PragmaRX\Google2FALaravel\Google2FA $instance */
+            return $instance->setStateless($stateless);
+        }
+
+            }
+    }
+
 namespace Illuminate\Support {
+    /**
+     * @template TKey of array-key
+     * @template-covariant TValue
+     * @implements \ArrayAccess<TKey, TValue>
+     * @implements \Illuminate\Support\Enumerable<TKey, TValue>
+     */
+    class Collection {
+        /**
+         * @see \Maatwebsite\Excel\Mixins\DownloadCollectionMixin::downloadExcel()
+         * @param string $fileName
+         * @param string|null $writerType
+         * @param mixed $withHeadings
+         * @param array $responseHeaders
+         * @static
+         */
+        public static function downloadExcel($fileName, $writerType = null, $withHeadings = false, $responseHeaders = [])
+        {
+            return \Illuminate\Support\Collection::downloadExcel($fileName, $writerType, $withHeadings, $responseHeaders);
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\StoreCollectionMixin::storeExcel()
+         * @param string $filePath
+         * @param string|null $disk
+         * @param string|null $writerType
+         * @param mixed $withHeadings
+         * @static
+         */
+        public static function storeExcel($filePath, $disk = null, $writerType = null, $withHeadings = false)
+        {
+            return \Illuminate\Support\Collection::storeExcel($filePath, $disk, $writerType, $withHeadings);
+        }
+
+            }
     /**
      */
     class Str {
@@ -29155,6 +30841,56 @@ namespace  {
         }
 
         /**
+         * @see \Maatwebsite\Excel\Mixins\DownloadQueryMacro::__invoke()
+         * @param string $fileName
+         * @param string|null $writerType
+         * @param mixed $withHeadings
+         * @static
+         */
+        public static function downloadExcel($fileName, $writerType = null, $withHeadings = false)
+        {
+            return \Illuminate\Database\Eloquent\Builder::downloadExcel($fileName, $writerType, $withHeadings);
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\StoreQueryMacro::__invoke()
+         * @param string $filePath
+         * @param string|null $disk
+         * @param string|null $writerType
+         * @param mixed $withHeadings
+         * @static
+         */
+        public static function storeExcel($filePath, $disk = null, $writerType = null, $withHeadings = false)
+        {
+            return \Illuminate\Database\Eloquent\Builder::storeExcel($filePath, $disk, $writerType, $withHeadings);
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\ImportMacro::__invoke()
+         * @param string $filename
+         * @param string|null $disk
+         * @param string|null $readerType
+         * @static
+         */
+        public static function import($filename, $disk = null, $readerType = null)
+        {
+            return \Illuminate\Database\Eloquent\Builder::import($filename, $disk, $readerType);
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\ImportAsMacro::__invoke()
+         * @param string $filename
+         * @param callable $mapping
+         * @param string|null $disk
+         * @param string|null $readerType
+         * @static
+         */
+        public static function importAs($filename, $mapping, $disk = null, $readerType = null)
+        {
+            return \Illuminate\Database\Eloquent\Builder::importAs($filename, $mapping, $disk, $readerType);
+        }
+
+        /**
          * Set the columns to be selected.
          *
          * @param mixed $columns
@@ -32017,7 +33753,12 @@ namespace  {
     class View extends \Illuminate\Support\Facades\View {}
     class Vite extends \Illuminate\Support\Facades\Vite {}
     class EloquentSerialize extends \AnourValar\EloquentSerialize\Facades\EloquentSerializeFacade {}
+    class PDF extends \Barryvdh\DomPDF\Facade\Pdf {}
+    class Pulse extends \Laravel\Pulse\Facades\Pulse {}
+    class Socialite extends \Laravel\Socialite\Facades\Socialite {}
     class Livewire extends \Livewire\Livewire {}
+    class Excel extends \Maatwebsite\Excel\Facades\Excel {}
+    class Google2FA extends \PragmaRX\Google2FALaravel\Facade {}
 }
 
 

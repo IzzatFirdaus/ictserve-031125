@@ -10,18 +10,23 @@ use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use Livewire\Attributes\On;
 
 /**
  * Helpdesk Statistics Overview Widget
  *
- * Displays key metrics for helpdesk tickets including guest vs authenticated submission ratios,
- * SLA compliance statistics, and ticket volume trends. Uses WCAG 2.2 AA compliant colors for
- * all indicators with 5-minute caching strategy.
+ * Displays key metrics for helpdesk tickets including:
+ * - Open/In-Progress/Resolved counts
+ * - SLA compliance percentage
+ * - Real-time updates via Laravel Reverb WebSocket
  *
- * @trace Requirements: Requirement 3.2, 4.1, 13.1
+ * Uses WCAG 2.2 AA compliant colors for all indicators with 5-minute caching strategy.
+ *
+ * @trace Requirements: Requirement 5.1 (Admin Helpdesk Management)
  *
  * @see D04 §3.2 Dashboard widgets
  * @see D12 UI/UX Design Guide - Compliant color palette
+ * @see D16 Broadcasting Setup - Laravel Reverb integration
  */
 class HelpdeskStatsOverview extends StatsOverviewWidget
 {
@@ -29,11 +34,40 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
 
     protected static bool $isLazy = false; // Critical widget - load immediately
 
-    protected ?string $pollingInterval = '30s'; // Real-time updates
+    protected ?string $pollingInterval = '30s'; // Fallback polling for real-time updates
 
     protected int|string|array $columnSpan = 'full'; // Full width for stats overview
 
     protected array|int|null $columns = 2; // 2-column grid layout
+
+    /**
+     * Listen for ticket status changes via Laravel Reverb WebSocket
+     * Refreshes widget stats when a ticket status is updated
+     */
+    #[On('echo-private:admin-dashboard,TicketStatsUpdated')]
+    public function refreshOnTicketUpdate(): void
+    {
+        // Clear cache to force fresh data
+        Cache::forget('dashboard:helpdesk-stats');
+    }
+
+    /**
+     * Listen for new ticket creation via Laravel Reverb WebSocket
+     */
+    #[On('echo-private:admin-dashboard,TicketCreated')]
+    public function refreshOnTicketCreated(): void
+    {
+        Cache::forget('dashboard:helpdesk-stats');
+    }
+
+    /**
+     * Listen for SLA breach events via Laravel Reverb WebSocket
+     */
+    #[On('echo-private:admin-dashboard,SLABreachDetected')]
+    public function refreshOnSLABreach(): void
+    {
+        Cache::forget('dashboard:helpdesk-stats');
+    }
 
     /**
      * @return array<int, Stat>
@@ -54,12 +88,14 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
     protected function calculateStats(): array
     {
         // Optimized: Single query with selectRaw for counts
+        // Includes Open/In-Progress/Resolved counts per Requirement 5.1
         /** @var HelpdeskTicket|null $stats */
         $stats = HelpdeskTicket::selectRaw('
             COUNT(*) as total,
             SUM(CASE WHEN user_id IS NULL THEN 1 ELSE 0 END) as guest,
             SUM(CASE WHEN user_id IS NOT NULL THEN 1 ELSE 0 END) as authenticated,
             SUM(CASE WHEN status = "open" THEN 1 ELSE 0 END) as open,
+            SUM(CASE WHEN status = "in_progress" THEN 1 ELSE 0 END) as in_progress,
             SUM(CASE WHEN status = "resolved" THEN 1 ELSE 0 END) as resolved
         ')->first();
 
@@ -69,6 +105,7 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
         $guestTickets = isset($statsArray['guest']) && is_numeric($statsArray['guest']) ? (int) $statsArray['guest'] : 0;
         $authenticatedTickets = isset($statsArray['authenticated']) && is_numeric($statsArray['authenticated']) ? (int) $statsArray['authenticated'] : 0;
         $openTickets = isset($statsArray['open']) && is_numeric($statsArray['open']) ? (int) $statsArray['open'] : 0;
+        $inProgressTickets = isset($statsArray['in_progress']) && is_numeric($statsArray['in_progress']) ? (int) $statsArray['in_progress'] : 0;
         $resolvedTickets = isset($statsArray['resolved']) && is_numeric($statsArray['resolved']) ? (int) $statsArray['resolved'] : 0;
 
         $slaBreached = HelpdeskTicket::whereNotNull('sla_resolution_due_at')
@@ -115,6 +152,12 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
                 ->description(__('widgets.waiting_for_action'))
                 ->descriptionIcon('heroicon-o-clock')
                 ->color('gray')
+                ->url($this->getHelpdeskIndexUrl()),
+
+            Stat::make(__('widgets.in_progress_tickets'), $inProgressTickets)
+                ->description(__('widgets.currently_being_worked_on'))
+                ->descriptionIcon('heroicon-o-arrow-path')
+                ->color('info')
                 ->url($this->getHelpdeskIndexUrl()),
 
             Stat::make(__('widgets.resolved_tickets'), $resolvedTickets)

@@ -50,7 +50,7 @@ class TicketClaimedMail extends BaseMailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('helpdesk.email.ticket_claimed_subject', [
+            subject: (string) __('helpdesk.email.ticket_claimed_subject', [
                 'ticket_number' => $this->ticket->ticket_number,
             ]),
         );

@@ -39,6 +39,17 @@
       0 => 'BladeUI\\Icons\\BladeIconsServiceProvider',
     ),
   ),
+  'cloudstudio/ollama-laravel' => 
+  array (
+    'aliases' => 
+    array (
+      'Ollama' => 'Cloudstudio\\Ollama\\Facades\\Ollama',
+    ),
+    'providers' => 
+    array (
+      0 => 'Cloudstudio\\Ollama\\OllamaServiceProvider',
+    ),
+  ),
   'filament/actions' => 
   array (
     'providers' => 
@@ -141,6 +152,17 @@
       0 => 'Laravel\\Pail\\PailServiceProvider',
     ),
   ),
+  'laravel/pulse' => 
+  array (
+    'aliases' => 
+    array (
+      'Pulse' => 'Laravel\\Pulse\\Facades\\Pulse',
+    ),
+    'providers' => 
+    array (
+      0 => 'Laravel\\Pulse\\PulseServiceProvider',
+    ),
+  ),
   'laravel/reverb' => 
   array (
     'aliases' => 
@@ -158,6 +180,31 @@
     'providers' => 
     array (
       0 => 'Laravel\\Roster\\RosterServiceProvider',
+    ),
+  ),
+  'laravel/sanctum' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
+    ),
+  ),
+  'laravel/socialite' => 
+  array (
+    'aliases' => 
+    array (
+      'Socialite' => 'Laravel\\Socialite\\Facades\\Socialite',
+    ),
+    'providers' => 
+    array (
+      0 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    ),
+  ),
+  'laravel/telescope' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Telescope\\TelescopeServiceProvider',
     ),
   ),
   'laravel/tinker' => 
@@ -251,6 +298,13 @@
     'providers' => 
     array (
       0 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
+    ),
+  ),
+  'spatie/laravel-activitylog' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
     ),
   ),
   'spatie/laravel-permission' => 

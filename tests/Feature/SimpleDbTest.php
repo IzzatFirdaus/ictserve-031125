@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\User;
@@ -12,7 +14,7 @@ class SimpleDbTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_db_connection(): void
+    public function db_connection(): void
     {
         $user = User::factory()->create();
         $this->assertDatabaseCount('users', 1);

@@ -147,7 +147,7 @@
                             </button>
                         @endif
 
-                        <a href="{{ route('welcome') }}"
+                        <a href="{{ url('/') }}"
                             class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg text-center focus:outline-none focus:ring-4 focus:ring-gray-300 transition-colors"
                             aria-label="{{ __('common.cancel') }}">
                             {{ __('common.cancel') }}

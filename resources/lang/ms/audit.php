@@ -20,4 +20,27 @@ return [
             ],
         ],
     ],
+    
+    // PDF Export translations
+    'pdf' => [
+        'title' => 'Laporan Log Audit Bersepadu',
+        'ministry' => 'Kementerian Pelancongan, Seni dan Budaya Malaysia',
+        'department' => 'Bahagian Pengurusan Maklumat',
+        'generated_at' => 'Dijana Pada',
+        'generated_by' => 'Dijana Oleh',
+        'filter' => 'Penapis',
+        'date_from' => 'Tarikh Dari',
+        'date_to' => 'Tarikh Hingga',
+        'total_records' => 'Jumlah Rekod',
+        'timestamp' => 'Cap Masa',
+        'source' => 'Sumber',
+        'user' => 'Pengguna',
+        'action' => 'Tindakan',
+        'entity' => 'Entiti',
+        'description_changes' => 'Penerangan/Perubahan',
+        'no_records' => 'Tiada rekod dijumpai.',
+        'footer_title' => 'ICTServe v3.5.0 - Laporan Log Audit Bersepadu',
+        'confidential' => 'SULIT - Untuk Kegunaan Dalaman Sahaja',
+        'page' => 'Halaman',
+    ],
 ];

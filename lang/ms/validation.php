@@ -207,4 +207,26 @@ return [
     'ip_blocked' => 'Akses anda telah disekat sementara kerana aktiviti yang mencurigakan.',
     'ip_blocked_until' => 'Akses anda telah disekat. Ia akan dipulihkan :time.',
 
+    /*
+    |--------------------------------------------------------------------------
+    | reCAPTCHA Enterprise
+    |--------------------------------------------------------------------------
+    */
+
+    'recaptcha_required' => 'Pengesahan reCAPTCHA diperlukan.',
+    'recaptcha_invalid' => 'Token reCAPTCHA tidak sah. Sila muat semula halaman dan cuba lagi.',
+    'recaptcha_action_mismatch' => 'Tindakan reCAPTCHA tidak sepadan. Sila muat semula halaman.',
+    'recaptcha_suspicious' => 'Aktiviti mencurigakan dikesan. Sila cuba lagi.',
+    'recaptcha_configuration_error' => 'Ralat konfigurasi reCAPTCHA. Sila hubungi pentadbir.',
+    'recaptcha_failed' => 'Pengesahan reCAPTCHA gagal. Sila cuba lagi.',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pengimbasan Virus (ClamAV)
+    |--------------------------------------------------------------------------
+    */
+
+    'virus_detected' => 'Fail :attribute mengandungi virus (:virus) dan telah ditolak.',
+    'virus_scan_failed' => 'Pengimbasan virus untuk :attribute gagal: :error',
+
 ];

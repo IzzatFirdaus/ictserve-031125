@@ -5,89 +5,63 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Session;
 
+/**
+ * BilingualSupportService
+ *
+ * @deprecated v3.6.0 Bilingual support disabled. All methods now return 'ms' locale only.
+ *             This service is retained for backward compatibility but language switching
+ *             functionality is disabled. ICTServe now uses Bahasa Melayu-only interface.
+ *             English translation files in lang/en/ are retained for technical reference.
+ */
 class BilingualSupportService
 {
     /**
-     * Supported locales
+     * v3.6.0: Only Bahasa Melayu is supported
      */
-    private const SUPPORTED_LOCALES = ['ms', 'en'];
+    private const SUPPORTED_LOCALES = ['ms'];
 
     /**
-     * Default locale
+     * v3.6.0: Default and only locale
      */
     private const DEFAULT_LOCALE = 'ms';
 
     /**
-     * Cookie name for language preference
-     */
-    private const COOKIE_NAME = 'ictserve_locale';
-
-    /**
-     * Cookie expiration (1 year in minutes)
-     */
-    private const COOKIE_EXPIRATION = 525600;
-
-    /**
      * Set application locale
+     *
+     * @deprecated v3.6.0 Always sets to 'ms' regardless of parameter
      */
     public function setLocale(string $locale): void
     {
-        if (! in_array($locale, self::SUPPORTED_LOCALES)) {
-            $locale = self::DEFAULT_LOCALE;
-        }
-
-        App::setLocale($locale);
-        Session::put('locale', $locale);
-        Cookie::queue(self::COOKIE_NAME, $locale, self::COOKIE_EXPIRATION);
+        // v3.6.0: Always use Bahasa Melayu - ignore parameter
+        App::setLocale(self::DEFAULT_LOCALE);
     }
 
     /**
      * Get current locale
+     *
+     * @deprecated v3.6.0 Always returns 'ms'
      */
     public function getCurrentLocale(): string
     {
-        return App::getLocale();
+        return self::DEFAULT_LOCALE;
     }
 
     /**
-     * Get locale from priority: session > cookie > Accept-Language > config
+     * Detect locale from request
+     *
+     * @deprecated v3.6.0 Always returns 'ms' - user preferences ignored
      */
     public function detectLocale(): string
     {
-        // Priority 1: Session
-        if (Session::has('locale')) {
-            $locale = Session::get('locale');
-            if (in_array($locale, self::SUPPORTED_LOCALES)) {
-                return $locale;
-            }
-        }
-
-        // Priority 2: Cookie
-        if (Cookie::has(self::COOKIE_NAME)) {
-            $locale = Cookie::get(self::COOKIE_NAME);
-            if (in_array($locale, self::SUPPORTED_LOCALES)) {
-                return $locale;
-            }
-        }
-
-        // Priority 3: Accept-Language header
-        $acceptLanguage = request()->header('Accept-Language');
-        if ($acceptLanguage) {
-            $locale = substr($acceptLanguage, 0, 2);
-            if (in_array($locale, self::SUPPORTED_LOCALES)) {
-                return $locale;
-            }
-        }
-
-        // Priority 4: Config fallback
-        return config('app.locale', self::DEFAULT_LOCALE);
+        // v3.6.0: Always return Bahasa Melayu - ignore session/cookie/browser
+        return self::DEFAULT_LOCALE;
     }
 
     /**
      * Get supported locales with metadata
+     *
+     * @deprecated v3.6.0 Only returns 'ms' locale
      *
      * @return array<string, array{name: string, code: string, flag: string}>
      */
@@ -99,32 +73,28 @@ class BilingualSupportService
                 'code' => 'ms',
                 'flag' => '🇲🇾',
             ],
-            'en' => [
-                'name' => 'English',
-                'code' => 'en',
-                'flag' => '🇬🇧',
-            ],
         ];
     }
 
     /**
      * Get locale display name
+     *
+     * @deprecated v3.6.0 Only 'ms' is active
      */
     public function getLocaleDisplayName(string $locale): string
     {
-        return match ($locale) {
-            'ms' => 'Bahasa Melayu',
-            'en' => 'English',
-            default => $locale,
-        };
+        // v3.6.0: Always return Bahasa Melayu name
+        return 'Bahasa Melayu';
     }
 
     /**
-     * Switch locale (for Livewire components)
+     * Switch locale
+     *
+     * @deprecated v3.6.0 No-op - language switching disabled
      */
     public function switchLocale(string $locale): void
     {
-        $this->setLocale($locale);
+        // v3.6.0: No-op - language switching disabled
     }
 
     /**
@@ -132,11 +102,7 @@ class BilingualSupportService
      */
     public function getDateFormat(): string
     {
-        return match ($this->getCurrentLocale()) {
-            'ms' => 'd/m/Y',
-            'en' => 'm/d/Y',
-            default => 'd/m/Y',
-        };
+        return 'd/m/Y'; // Malaysian date format
     }
 
     /**
@@ -144,7 +110,7 @@ class BilingualSupportService
      */
     public function getTimeFormat(): string
     {
-        return 'H:i'; // 24-hour format for both locales
+        return 'H:i'; // 24-hour format
     }
 
     /**
@@ -152,28 +118,32 @@ class BilingualSupportService
      */
     public function getCurrencyFormat(): string
     {
-        return 'MYR'; // Malaysian Ringgit for both locales
+        return 'MYR'; // Malaysian Ringgit
     }
 
     /**
+     * Get translation statistics
+     *
+     * @deprecated v3.6.0 Only returns 'ms' stats
+     *
      * @return array<string, array{total_keys: int, translated_keys: int, completion_percentage: float}>
      */
     public function getTranslationStats(): array
     {
-        $stats = [];
-
-        foreach (self::SUPPORTED_LOCALES as $locale) {
-            $stats[$locale] = [
+        return [
+            'ms' => [
                 'total_keys' => 100,
                 'translated_keys' => 100,
                 'completion_percentage' => 100.0,
-            ];
-        }
-
-        return $stats;
+            ],
+        ];
     }
 
     /**
+     * Validate translations
+     *
+     * @deprecated v3.6.0 Always returns empty arrays
+     *
      * @return array<string, array<int, string>>
      */
     public function validateTranslations(): array
@@ -185,31 +155,40 @@ class BilingualSupportService
     }
 
     /**
+     * Get language switcher data
+     *
+     * @deprecated v3.6.0 Language switcher removed in v3.6.0
+     *
      * @return array<string, array{name: string, locale: string}>
      */
     public function getLanguageSwitcherData(): array
     {
-        $locales = [];
-
-        foreach (self::SUPPORTED_LOCALES as $locale) {
-            $locales[$locale] = [
-                'name' => $this->getLocaleDisplayName($locale),
-                'locale' => $locale,
-            ];
-        }
-
-        return $locales;
+        // v3.6.0: Language switcher removed - return minimal data for backward compatibility
+        return [
+            'ms' => [
+                'name' => 'Bahasa Melayu',
+                'locale' => 'ms',
+            ],
+        ];
     }
 
+    /**
+     * Export translations
+     *
+     * @deprecated v3.6.0 Placeholder only
+     */
     public function exportTranslations(string $format = 'json'): string
     {
-        // Placeholder export content; real implementation would read translation files.
         return '{}';
     }
 
+    /**
+     * Import translations
+     *
+     * @deprecated v3.6.0 Placeholder only
+     */
     public function importTranslations(string $payload, string $format = 'json'): bool
     {
-        // Placeholder import; real implementation would parse and persist translations.
         return $payload !== '';
     }
 }

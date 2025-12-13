@@ -14,7 +14,7 @@
 
 | Atribut              | Nilai                                                                        |
 | -------------------- | ---------------------------------------------------------------------------- |
-| **Versi**            | 3.5.0                                                                        |
+| **Versi**            | 3.6.0                                                                        |
 | **Tarikh Kemaskini** | 1 Disember 2025                                                              |
 | **Status**           | Aktif                                                                        |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                                       |
@@ -37,6 +37,7 @@
 | 3.2.0 | 29 November 2025 | Dual layout system: app.blade.php vs guest.blade.php, auth-optional components                                                                                                                                                                     | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Submission History table, Navbar dual state                                                                                                                           | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration form UI (@motac.gov.my), flexible login UI, email verification page, account linking prompt, notification preferences panel, Laravel Pulse dashboard, Google SSO button. Penyelarasan dengan D00-D11 v3.5.0. | Pasukan BPM |
+| 3.6.0 | 9 Disember 2025  | Bahasa Melayu sahaja (language switcher dikeluarkan), Theme Switcher (mod terang/gelap) dengan mod terang sebagai lalai, localStorage persistence, FOUT prevention. | Pasukan BPM |
 
 ---
 
@@ -51,7 +52,7 @@
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Framework Frontend UI/UX (implementasi teknikal)
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX (visual style)
-- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa Dwibahasa
+- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa (Bahasa Melayu sahaja, v3.6.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
@@ -59,7 +60,7 @@
 ## Nota Bahasa (Language Convention)
 
 - Dokumen ini menggunakan Bahasa Melayu sebagai bahasa utama.
-- Istilah teknikal dan label UI kritikal disertakan terjemahan ringkas Bahasa Inggeris dalam kurungan.
+- **Bahasa Melayu sahaja (v3.6.0)**: Antara muka pengguna menggunakan Bahasa Melayu eksklusif. Istilah teknikal Bahasa Inggeris mungkin digunakan untuk kejelasan.
 - Pengecam kod (class, method, file path) kekal dalam Bahasa Inggeris demi ketekalan dengan kod sumber.
 
 ---
@@ -198,7 +199,7 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 ```text
 +---------------------------------------------------------+
 |                    HEADER/NAVBAR                         |
-|  Logo | Navigation | Language Switcher | User Menu       |
+|  Logo | Navigation | User Menu (BM sahaja, v3.6.0)        |
 +---------------------------------------------------------+
 | SIDEBAR |              MAIN CONTENT                      |
 | (Admin) |  +-----------------------------------------+   |
@@ -295,7 +296,7 @@ ICTServe menggunakan sistem grid responsif 12-8-4 yang selaras dengan garis pand
 
 ```blade
 {{-- Desktop: 12-column grid --}}
-<div class="grid grid-cols-12 gap-6 px-6 max-w-[1280px] mx-auto">
+<div class="grid grid-cols-12 gap-6 px-6 max-w-7xl mx-auto">
     <div class="col-span-8">Main Content</div>
     <div class="col-span-4">Sidebar</div>
 </div>
@@ -807,7 +808,7 @@ if (Auth::check()) {
 
 | Komponen                     | Lokasi          | Fungsi                       |
 | ---------------------------- | --------------- | ---------------------------- |
-| `LanguageSwitcher`           | `app/Livewire/` | Bilingual language toggle    |
+| `LanguageSwitcher`           | `app/Livewire/` | **DILUMPUHKAN v3.6.0** (BM sahaja) |
 | `NotificationBell`           | `app/Livewire/` | Real-time notifications      |
 | `NotificationCenter`         | `app/Livewire/` | Notification management      |
 | `GlobalSearch`               | `app/Livewire/` | Cross-module search          |
@@ -873,14 +874,14 @@ if (Auth::check()) {
 </form>
 ```
 
-### 7.4. Language Switcher Component
+### 7.4. Language Switcher Component (DILUMPUHKAN v3.6.0)
 
 **Implementation**: Livewire 3.x dengan WCAG 2.2 AA compliance
 **Location**: `app/Livewire/LanguageSwitcher.php`
 
 **Accessibility Features:**
 
-- `role="navigation"` dengan `aria-label="Language Switcher"`
+- `role="navigation"` dengan `aria-label="Language Switcher"` - **DILUMPUHKAN v3.6.0**
 - `aria-expanded` tracks dropdown state
 - `aria-current="true"` marks selected language
 - Keyboard navigation: Tab, Enter/Space, Arrow keys
@@ -1284,7 +1285,7 @@ Sistem True Hybrid Architecture v3.5.0 menyediakan pengalaman pengguna yang flek
 - **D11_TECHNICAL_DESIGN_DOCUMENTATION.md** - Rekabentuk teknikal
 - **D13_UI_UX_FRONTEND_FRAMEWORK.md** - Framework frontend dan implementasi teknikal
 - **D14_UI_UX_STYLE_GUIDE.md** - Panduan gaya visual terperinci
-- **D15_LANGUAGE_MS_EN.md** - Panduan bahasa dwibahasa
+- **D15_LANGUAGE_MS_EN.md** - Panduan bahasa (Bahasa Melayu sahaja, v3.6.0)
 
 ### Rujukan Luaran
 

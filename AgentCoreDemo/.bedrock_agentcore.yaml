@@ -1,0 +1,13 @@
+default_agent: DemoAgent
+agents:
+  DemoAgent:
+    name: DemoAgent
+    entrypoint: main.py
+    runtime:
+      mode: NO_MEMORY  # Start without memory for simplicity
+      timeout: 300
+    model:
+      provider: bedrock
+      model_id: global.anthropic.claude-opus-4-5-20251101-v1:0
+    observability:
+      enabled: true

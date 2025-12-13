@@ -2,6 +2,7 @@
     "agents": [
         "claude_code",
         "codex",
+        "codex",
         "copilot",
         "cursor",
         "gemini",
@@ -10,11 +11,13 @@
     ],
     "editors": [
         "claude_code",
+        "codex",
         "cursor",
         "gemini",
         "opencode",
         "phpstorm",
         "vscode"
     ],
-    "guidelines": []
+    "guidelines": [],
+    "herd_mcp": true
 }

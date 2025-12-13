@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -15,8 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\Action;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Users Table Configuration
@@ -133,13 +134,13 @@ class UsersTable
 
                 TrashedFilter::make(),
             ])
-            ->actions([
+            ->recordActions([
                 Action::make('impersonate')
                     ->label('Impersonate')
                     ->icon('heroicon-o-user-plus')
                     ->url(fn (User $record) => route('impersonate.start', $record))
                     ->openUrlInNewTab(false)
-                    ->visible(fn (User $record) => auth()->user()->hasRole('Super Admin') && $record->id !== auth()->id()),
+                    ->visible(fn (User $record) => Auth::user()?->hasRole('Super Admin') && $record->id !== Auth::id()),
                 ViewAction::make(),
                 EditAction::make(),
             ])

@@ -6,17 +6,18 @@ inclusion: always
 
 ## Project Identity
 
-**Project**: ICTServe — Laravel 12 Enterprise Application  
-**Stack**: PHP 8.2, Laravel 12, Filament 4, Livewire 3, Tailwind 3  
-**Standards**: ISO/IEC 12207, 15288, 29148, 8000, 27701, IEEE 1016  
-**Compliance**: PDPA 2010, WCAG 2.2 AA, PSR-12  
-**Documentation**: D00–D15 (System Overview → UI/UX Style Guide)
+**Project**: ICTServe — Laravel 12 Enterprise Application v3.6.0  
+**Stack**: PHP 8.2.12, Laravel 12.40.1, Filament 4.1.10, Livewire 3.7.0, Tailwind 4.1.17  
+**Standards**: ISO/IEC/IEEE 12207, 15288, 29148, 8000, 27701, 42010  
+**Compliance**: PDPA 2010, WCAG 2.2 AA, PSR-12, MyGOV Digital Service Standards v2.1.0  
+**Documentation**: D00–D17 (System Overview → Queue Management)  
+**Language**: Bahasa Melayu sahaja (v3.6.0 - Language switcher disabled)
 
 ## Core Purpose
 
 You are an AI assistant working **exclusively** within the ICTServe Laravel 12
 repository. Deliver incremental, reversible, and well-tested changes that align
-with documented requirements (D00–D15). When requirements conflict or are
+with documented requirements (D00–D17). When requirements conflict or are
 ambiguous, pause and request human guidance from designated stakeholders.
 
 ### Key Responsibilities
@@ -25,7 +26,7 @@ ambiguous, pause and request human guidance from designated stakeholders.
   documented in D03
 - **Maintain code quality** through PSR-12 compliance, strict typing, and
   comprehensive testing
-- **Ensure traceability** by referencing D00–D15 documentation in all
+- **Ensure traceability** by referencing D00–D17 documentation in all
   significant changes
 - **Preserve security** through PDPA 2010 compliance and audit logging per
   D09/D11
@@ -61,7 +62,7 @@ inconsistencies.**
 **ENFORCEMENT**: This step is NON-NEGOTIABLE. Every interaction MUST begin
 with memory entity creation.
 
-2. **MANDATORY: Query ICTServe System Context**:
+1. **MANDATORY: Query ICTServe System Context**:
 
       - REQUIRED: `search_nodes` for relevant ICTServe patterns before starting work
       - REQUIRED: `open_nodes` "ictserve\_implementation\_status" to check current progress
@@ -69,14 +70,14 @@ with memory entity creation.
       - **ENFORCEMENT**: No development work may proceed without querying existing
         system context.
 
-3. **MANDATORY: Plan Complex Work** (Sequential Thinking):
+2. **MANDATORY: Plan Complex Work** (Sequential Thinking):
 
       - For multi-phase tasks: MUST use `sequentialthinking` tool
       - REQUIRED: Break into analysis → design → implementation → testing → validation
       - REQUIRED: Document decision trees and trade-offs in memory
       - **ENFORCEMENT**: Complex tasks without sequential planning are prohibited.
 
-4. **MANDATORY: Reference Official Docs & Store Insights**:
+3. **MANDATORY: Reference Official Docs & Store Insights**:
 
       - REQUIRED: Trace requirements to D03 (SRS) or D04 (Design)
       - REQUIRED: Check D11 for infrastructure/deployment decisions
@@ -202,7 +203,7 @@ When facing unclear or conflicting requirements:
 **Allowed Actions**:
 
 - ✅ Implement Laravel 12/Filament v4/Livewire v3 features per D03 requirements
-- ✅ Create/update tests (PHPUnit v11, Livewire, Volt) for changed behavior
+- ✅ Create/update tests (PHPUnit v12 with PHP 8 attributes, Livewire, Volt) for changed behavior
 - ✅ Add localized documentation with D00–D15 traceability
 - ✅ Refactor code while maintaining backward compatibility
 - ✅ Update migrations with paired rollback plans
@@ -222,9 +223,74 @@ When facing unclear or conflicting requirements:
 ```bash
 vendor/bin/pint                    # PSR-12 compliance
 vendor/bin/phpstan analyse         # Static analysis (Larastan v3)
-php artisan test                   # Unit + feature tests (PHPUnit v11)
+php artisan test                   # Unit + feature tests (PHPUnit v12)
 npm run build                      # Frontend asset compilation
 ```
+
+### PHPUnit 12 Testing Standards (MANDATORY)
+
+**CRITICAL ENFORCEMENT**: All test files created or updated by Kiro MUST use PHPUnit 12 with PHP 8 attributes. This is a non-negotiable requirement for ICTServe v3.6.0.
+
+**Required Testing Patterns**:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+
+class ExampleTest extends TestCase
+{
+    #[Test]
+    public function it_can_perform_basic_operation(): void
+    {
+        // Test implementation with strict typing
+        $result = $this->performOperation();
+        $this->assertInstanceOf(ExpectedClass::class, $result);
+    }
+
+    #[Test]
+    #[DataProvider('validDataProvider')]
+    public function it_validates_input_data(string $input, bool $expected): void
+    {
+        $result = $this->validateInput($input);
+        $this->assertSame($expected, $result);
+    }
+
+    public static function validDataProvider(): array
+    {
+        return [
+            'valid email' => ['test@example.com', true],
+            'invalid email' => ['invalid-email', false],
+        ];
+    }
+}
+```
+
+**Prohibited Patterns** (Legacy PHPDoc):
+
+```php
+// ❌ FORBIDDEN: PHPDoc annotations
+/** @test */
+public function it_can_perform_operation() { }
+
+/**
+ * @test
+ * @dataProvider validDataProvider
+ */
+public function it_validates_data($input, $expected) { }
+```
+
+**Enforcement Protocol**:
+
+1. **MANDATORY**: All new test files MUST use `#[Test]` attributes
+2. **REQUIRED**: Data providers MUST use `#[DataProvider('methodName')]` attributes
+3. **ENFORCED**: Strict typing with `declare(strict_types=1);` header
+4. **CRITICAL**: Return type declarations for all test methods (`: void`)
+5. **MANDATORY**: Static data provider methods with proper return types
 
 ### File Error & Lint Enforcement (MANDATORY)
 
@@ -261,7 +327,9 @@ Enforcement notes:
 
 **Testing Requirements**:
 
-- All behavior changes require new or updated tests
+- All behavior changes require new or updated tests using PHPUnit 12 with PHP 8 attributes
+- Use `#[Test]` attribute instead of `/** @test */` PHPDoc annotation
+- Use `#[DataProvider('providerName')]` instead of `/** @dataProvider providerName */`
 - Cover happy paths, failure paths, and edge cases
 - Livewire/Volt tests must assert notifications and redirects
 - Database tests must verify audit logs per D09

@@ -554,7 +554,7 @@ class ApprovalInterface extends Component
     /**
      * Render the component
      */
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.staff.approval-interface', [
             'applications' => $this->pendingApprovals,

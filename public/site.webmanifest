@@ -1,21 +1,28 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "ICTServe - MOTAC BPM",
+  "short_name": "ICTServe",
+  "description": "ICT Service Management Platform for MOTAC BPM (Bahagian Pengurusan Maklumat)",
   "icons": [
     {
-      "src": "/public/web-app-manifest-192x192.png",
+      "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/public/web-app-manifest-512x512.png",
+      "src": "/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",
+  "theme_color": "#0056b3",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait-primary",
+  "lang": "ms",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"]
 }

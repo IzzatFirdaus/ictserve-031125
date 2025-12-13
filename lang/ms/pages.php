@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Bahasa Melayu Public Pages Translations
  *
- * Terjemahan untuk halaman pernyataan kebolehcapaian, hubungi kami, dan perkhidmatan.
+ * Terjemahan untuk pernyataan kebolehcapaian, hubungi kami, dasar privasi, dan perkhidmatan.
  */
 
 return [
@@ -94,6 +94,68 @@ return [
         'emergency_text' => 'Untuk isu ICT mendesak yang menjejaskan operasi kritikal, sila hubungi talian hotline kecemasan kami:',
         'emergency_phone' => '+60 3-1234 9999',
         'emergency_available' => 'Tersedia 24/7',
+    ],
+
+    // Halaman Dasar Privasi
+    'privacy' => [
+        'title' => 'Dasar Privasi',
+        'breadcrumb' => 'Dasar Privasi',
+        'last_updated' => 'Kemas kini terakhir',
+        'introduction_title' => 'Pengenalan',
+        'introduction_text_1' => 'Bahagian Pengurusan Maklumat (BPM), Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) komited untuk melindungi privasi dan data peribadi anda. Dasar privasi ini menerangkan bagaimana kami mengumpul, menggunakan, mendedahkan dan melindungi maklumat peribadi anda melalui sistem ICTServe.',
+        'introduction_text_2' => 'Dasar ini disediakan selaras dengan Akta Perlindungan Data Peribadi 2010 (PDPA 2010) dan peraturan-peraturan berkaitan.',
+        'pdpa_title' => 'Pematuhan PDPA 2010',
+        'pdpa_intro' => 'Kami mematuhi tujuh prinsip perlindungan data peribadi seperti yang ditetapkan dalam PDPA 2010:',
+        'principle_general' => 'Prinsip Am',
+        'principle_general_desc' => 'Data peribadi diproses dengan persetujuan subjek data.',
+        'principle_notice' => 'Prinsip Notis dan Pilihan',
+        'principle_notice_desc' => 'Subjek data dimaklumkan tentang pengumpulan dan penggunaan data.',
+        'principle_disclosure' => 'Prinsip Pendedahan',
+        'principle_disclosure_desc' => 'Data peribadi tidak didedahkan tanpa persetujuan.',
+        'principle_security' => 'Prinsip Keselamatan',
+        'principle_security_desc' => 'Langkah keselamatan yang munasabah diambil untuk melindungi data.',
+        'principle_retention' => 'Prinsip Penyimpanan',
+        'principle_retention_desc' => 'Data peribadi tidak disimpan lebih lama daripada yang diperlukan.',
+        'principle_integrity' => 'Prinsip Integriti Data',
+        'principle_integrity_desc' => 'Data peribadi adalah tepat, lengkap dan terkini.',
+        'principle_access' => 'Prinsip Akses',
+        'principle_access_desc' => 'Subjek data boleh mengakses dan membetulkan data peribadi mereka.',
+        'data_collected_title' => 'Data yang Dikumpul',
+        'data_collected_intro' => 'Kami mengumpul data peribadi berikut melalui sistem ICTServe:',
+        'personal_info_title' => 'Maklumat Peribadi',
+        'personal_info_name' => 'Nama penuh',
+        'personal_info_email' => 'Alamat e-mel rasmi',
+        'personal_info_phone' => 'Nombor telefon',
+        'personal_info_division' => 'Bahagian/Unit',
+        'personal_info_grade' => 'Gred jawatan',
+        'technical_info_title' => 'Maklumat Teknikal',
+        'technical_info_ip' => 'Alamat IP (di-hash untuk privasi)',
+        'technical_info_browser' => 'Maklumat pelayar web',
+        'technical_info_timestamp' => 'Cap masa aktiviti',
+        'technical_info_audit' => 'Log audit sistem',
+        'rights_title' => 'Hak Subjek Data',
+        'rights_intro' => 'Di bawah PDPA 2010, anda mempunyai hak-hak berikut:',
+        'right_access' => 'Hak Akses',
+        'right_access_desc' => 'Anda boleh meminta salinan data peribadi anda yang disimpan oleh kami.',
+        'right_correction' => 'Hak Pembetulan',
+        'right_correction_desc' => 'Anda boleh meminta pembetulan data peribadi yang tidak tepat atau tidak lengkap.',
+        'right_withdraw' => 'Hak Menarik Balik Persetujuan',
+        'right_withdraw_desc' => 'Anda boleh menarik balik persetujuan untuk pemprosesan data peribadi anda pada bila-bila masa.',
+        'right_prevent' => 'Hak Mengehadkan Pemprosesan',
+        'right_prevent_desc' => 'Anda boleh meminta kami menghentikan pemprosesan data anda untuk tujuan tertentu.',
+        'manage_rights_btn' => 'Urus Hak Data Saya',
+        'retention_title' => 'Tempoh Penyimpanan Data',
+        'retention_intro' => 'Data peribadi anda disimpan mengikut tempoh berikut:',
+        'retention_data_type' => 'Jenis Data',
+        'retention_period' => 'Tempoh Penyimpanan',
+        'retention_helpdesk' => 'Rekod tiket helpdesk',
+        'retention_loan' => 'Rekod pinjaman aset',
+        'retention_audit' => 'Log audit',
+        'retention_inactive' => 'Akaun pengguna tidak aktif',
+        'retention_7_years' => '7 tahun',
+        'retention_2_years' => '2 tahun selepas ketidakaktifan',
+        'security_title' => 'Langkah Keselamatan',
+        'security_intro' => 'Kami mengambil langkah keselamatan fizikal, teknikal, dan organisasi yang munasabah untuk melindungi data peribadi anda.',
     ],
 
     // Halaman Perkhidmatan

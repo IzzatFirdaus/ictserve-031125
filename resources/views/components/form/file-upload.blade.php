@@ -11,40 +11,40 @@
 --}}
 
 @props([
-    'id' => 'file-upload-' . uniqid(),
-    'name' => 'files',
-    'label' => __('Choose files'),
-    'accept' => '',
-    'multiple' => false,
-    'maxSize' => '5MB',
-    'required' => false,
-    'error' => '',
-    'helpText' => '',
+'id' => 'file-upload-' . uniqid(),
+'name' => 'files',
+'label' => __('Choose files'),
+'accept' => '',
+'multiple' => false,
+'maxSize' => '5MB',
+'required' => false,
+'error' => '',
+'helpText' => '',
 ])
 
 @php
-    $multipleAttr = $multiple ? 'multiple' : '';
-    $requiredAttr = $required ? 'required' : '';
-    $ariaRequired = $required ? 'true' : 'false';
-    $ariaInvalid = $error ? 'true' : 'false';
-    $describedBy = [];
-    if ($helpText) $describedBy[] = $id . '-help';
-    if ($error) $describedBy[] = $id . '-error';
-    $ariaDescribedBy = !empty($describedBy) ? implode(' ', $describedBy) : null;
+$multipleAttr = $multiple ? 'multiple' : '';
+$requiredAttr = $required ? 'required' : '';
+$ariaRequired = $required ? 'true' : 'false';
+$ariaInvalid = $error ? 'true' : 'false';
+$describedBy = [];
+if ($helpText) $describedBy[] = $id . '-help';
+if ($error) $describedBy[] = $id . '-error';
+$ariaDescribedBy = !empty($describedBy) ? implode(' ', $describedBy) : null;
 @endphp
 
 <div {{ $attributes->merge(['class' => 'w-full']) }}>
     @if($label)
-        <label for="{{ $id }}" class="block text-sm font-medium text-gray-900 mb-2">
-            {{ $label }}
-            @if($required)
-                <span class="text-red-700" aria-label="{{ __('required') }}">*</span>
-            @endif
-        </label>
+    <label for="{{ $id }}" class="block text-sm font-medium text-gray-900 mb-2">
+        {{ $label }}
+        @if($required)
+        <span class="text-danger-500" aria-label="{{ __('forms.required') }}">*</span>
+        @endif
+    </label>
     @endif
 
     @if($helpText)
-        <p id="{{ $id }}-help" class="text-sm text-gray-700 mb-2">{{ $helpText }}</p>
+    <p id="{{ $id }}-help" class="text-sm text-gray-700 mb-2">{{ $helpText }}</p>
     @endif
 
     <div
@@ -65,15 +65,13 @@
                 this.files = files;
             }
         }"
-        class="relative"
-    >
+        class="relative">
         <div
             @dragover.prevent="isDragging = true"
             @dragleave.prevent="isDragging = false"
             @drop.prevent="isDragging = false; handleFiles($event.dataTransfer.files)"
-            :class="{ 'border-blue-600 bg-blue-50': isDragging, 'border-gray-300': !isDragging }"
-            class="border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200"
-        >
+            :class="{ 'border-primary-600 bg-primary-50': isDragging, 'border-gray-300': !isDragging }"
+            class="border-2 border-dashed rounded-m p-6 text-center transition-colors duration-200">
             <input
                 type="file"
                 id="{{ $id }}"
@@ -86,32 +84,30 @@
                 class="sr-only"
                 aria-required="{{ $ariaRequired }}"
                 aria-invalid="{{ $ariaInvalid }}"
-                @if($ariaDescribedBy) aria-describedby="{{ $ariaDescribedBy }}" @endif
-            >
+                @if($ariaDescribedBy) aria-describedby="{{ $ariaDescribedBy }}" @endif>
 
             <label
                 for="{{ $id }}"
-                class="cursor-pointer block"
-            >
+                class="cursor-pointer block">
                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
 
                 <div class="mt-4">
-                    <span class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 min-h-[44px]">
-                        {{ __('Select files') }}
+                    <span class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-m shadow-sm text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:outline-none min-h-11">
+                        {{ __('forms.Select files') }}
                     </span>
                     <p class="mt-2 text-sm text-gray-700">
-                        {{ __('or drag and drop files here') }}
+                        {{ __('forms.or drag and drop files here') }}
                     </p>
                 </div>
 
                 <p class="text-xs text-gray-600 mt-2">
                     @if($accept)
-                        {{ __('Accepted file types:') }} {{ $accept }}
+                    {{ __('forms.Accepted file types:') }} {{ $accept }}
                     @endif
                     @if($maxSize)
-                        <br>{{ __('Maximum file size:') }} {{ $maxSize }}
+                    <br>{{ __('forms.Maximum file size:') }} {{ $maxSize }}
                     @endif
                 </p>
             </label>
@@ -120,12 +116,12 @@
         <!-- Selected files list -->
         <template x-if="files.length > 0">
             <div class="mt-4 space-y-2">
-                <p class="text-sm font-medium text-gray-900">{{ __('Selected files:') }}</p>
+                <p class="text-sm font-medium text-gray-900">{{ __('forms.Selected files:') }}</p>
                 <ul class="divide-y divide-gray-200 border border-gray-200 rounded-md" role="list">
                     <template x-for="(file, index) in files" :key="index">
                         <li class="flex items-center justify-between p-3 hover:bg-gray-50">
                             <div class="flex items-center flex-1 min-w-0">
-                                <svg class="flex-shrink-0 h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                <svg class="shrink-0 h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
                                 </svg>
                                 <span class="ml-2 text-sm text-gray-900 truncate" x-text="file.name"></span>
@@ -134,9 +130,8 @@
                             <button
                                 type="button"
                                 @click="removeFile(index)"
-                                class="ml-4 flex-shrink-0 text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600 rounded p-1 min-h-[44px] min-w-[44px] flex items-center justify-center"
-                                :aria-label="'{{ __('Remove file') }} ' + file.name"
-                            >
+                                class="ml-4 shrink-0 text-danger-600 hover:text-danger-800 focus:outline-none rounded p-1 min-h-11 min-w-11 flex items-center justify-center"
+                                :aria-label="'{{ __('forms.Remove file') }} ' + file.name">
                                 <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                                 </svg>
@@ -149,6 +144,6 @@
     </div>
 
     @if($error)
-        <p id="{{ $id }}-error" class="mt-2 text-sm text-red-700" role="alert">{{ $error }}</p>
+    <p id="{{ $id }}-error" class="mt-2 text-sm text-danger-700" role="alert">{{ $error }}</p>
     @endif
 </div>

@@ -6,13 +6,15 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class HeaderViewTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_header_renders_with_name_array(): void
+    #[Test]
+    public function header_renders_with_name_array(): void
     {
         $user = User::factory()->create();
 

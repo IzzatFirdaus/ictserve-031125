@@ -11,6 +11,7 @@ use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -31,14 +32,14 @@ class ReportScheduleResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        return \Illuminate\Support\Facades\Auth::user()?->hasAnyRole(['admin', 'superuser']) ?? false;
     }
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Maklumat Asas')
+                Section::make('Maklumat Asas')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Laporan')
@@ -74,7 +75,7 @@ class ReportScheduleResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Tetapan Jadual')
+                Section::make('Tetapan Jadual')
                     ->schema([
                         Forms\Components\Select::make('frequency')
                             ->label('Kekerapan')
@@ -115,7 +116,7 @@ class ReportScheduleResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Penerima dan Penapis')
+                Section::make('Penerima dan Penapis')
                     ->schema([
                         Forms\Components\TagsInput::make('recipients')
                             ->label('Penerima E-mel')
@@ -205,7 +206,7 @@ class ReportScheduleResource extends Resource
                     ->trueLabel('Aktif')
                     ->falseLabel('Tidak Aktif'),
             ])
-            ->actions([
+            ->recordActions([
                 Action::make('run_now')
                     ->label('Jana Sekarang')
                     ->icon('heroicon-o-play')

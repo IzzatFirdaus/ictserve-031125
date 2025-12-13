@@ -1,0 +1,216 @@
+﻿---
+inclusion: always
+description: "MCP server capabilities, tools, and usage guidelines"
+version: "3.5.0"
+last_updated: "2025-11-30"
+---
+
+# MCP Capabilities & Usage
+
+## Purpose & Scope
+
+This document defines how to leverage Model Context Protocol (MCP) servers within the ICTServe v3.5.0 ecosystem. These tools are essential for implementing the **True Hybrid Architecture** (Guest + Authenticated Staff), enforcing **Dual Audit** systems, and managing **Real-Time** features via Laravel Reverb.
+
+## Current MCP Server Configuration
+
+### Active Servers
+
+**Core Development & Analysis**:
+
+- **sequentialthinking**: Complex problem decomposition for Hybrid logic (Guest vs. Auth flows).
+- **memory**: **MANDATORY**. Stores v3.5.0 Knowledge Graph (Hybrid Spec, Dual Audit Spec, Reverb Config).
+- **context7**: Retrieval of external library documentation (Livewire 3, Filament 4, Laravel 12).
+- **fetch**: HTTP requests for API interactions and documentation retrieval.
+
+**Laravel-Specific Operations**:
+
+- **laravel-boost**: Laravel-specific tooling, Artisan commands, Tinker, and framework operations (16 tools).
+
+**Browser & Testing Tools**:
+
+- **chrome-devtools**: WebSocket inspection (Reverb) and WCAG contrast analysis.
+- **playwright**: E2E testing for Guest forms and Authenticated Dashboards.
+
+**Data & Translation**:
+
+- **firecrawl**: Web scraping and external content processing.
+- **deepl**: Bahasa Melayu ↔ English translation (Required for D15 compliance).
+
+**AI & Cloud Integration**:
+
+- **bedrock-opus**: Access to AWS Bedrock Claude Opus for complex architecture planning.
+- **github**: Repository management (PRs, Issues) via Personal Access Token.
+- **gitkraken**: AI-powered git workflows.
+
+### Configuration Architecture
+
+**Workspace Config** (`.kiro/settings/mcp.json`):
+
+- Defines all available servers.
+- **Strictly** uses `$env:VARIABLE_NAME` for all paths and credentials to prevent secret leakage.
+- No hardcoded secrets allowed.
+
+**Environment Variables** (`.env`):
+
+- Centralized API keys and configuration.
+- Keys: `CONTEXT7_API_KEY`, `FIRECRAWL_API_KEY`, `DEEPL_API_KEY`, `GITHUB_TOKEN`, `AWS_ACCESS_KEY_ID`.
+
+### MCP Configuration Schema
+
+**JSON Schema with Environment Variables**:
+
+```json
+{
+ "mcpServers": {
+  "laravel-boost": {
+   "command": "php",
+   "args": ["artisan", "boost:mcp"],
+   "disabled": false,
+   "autoApprove": [
+    "application-info",
+    "database-schema",
+    "list-routes",
+    "search-docs"
+   ]
+  },
+  "memory": {
+   "command": "npx",
+   "args": [
+    "-y",
+    "@modelcontextprotocol/server-memory",
+    "$env:MEMORY_FILE_PATH"
+   ],
+   "disabled": false,
+   "autoApprove": ["read_graph", "add_observations"]
+  },
+  "bedrock-opus": {
+   "command": "node",
+   "args": ["$env:BEDROCK_SERVER_SCRIPT_PATH"],
+   "env": {
+    "AWS_ACCESS_KEY_ID": "$env:AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY": "$env:AWS_SECRET_ACCESS_KEY",
+    "AWS_BEDROCK_REGION": "$env:AWS_BEDROCK_REGION"
+   },
+   "disabled": false
+  },
+  "playwright": {
+   "command": "npx",
+   "args": ["-y", "@playwright/mcp@latest"],
+   "disabled": false,
+   "autoApprove": ["browser_navigate", "browser_click", "browser_fill"]
+  }
+ }
+}
+```
+
+## Usage Policies & Guardrails
+
+### Security & Access Control
+
+- **Production Safety**: Never use `laravel-boost` database tools (`database-query`) on production without `superuser` authorization.
+- **Credential Safety**: Ensure `.env` is in `.gitignore`. Never commit `mcp.json` with hardcoded keys.
+- **Self-Registration**: Validate all user creation flows via `laravel-boost` logic to ensure `@motac.gov.my` domain restriction.
+
+### Memory MCP Server Enforcement (CRITICAL)
+
+**MANDATORY MEMORY INTEGRATION**: No MCP tool may be used without first querying the `memory` server to understand the current v3.5.0 context.
+
+#### File Creation Prohibition
+
+**PROHIBITED**: `*-report.md`, `*-summary.md`, `*-audit.md`.
+**REQUIRED**: Use `add_observations()` to store findings in the Knowledge Graph.
+
+## MCP Integration Patterns (v3.5.0)
+
+### Development Workflows
+
+**1. Hybrid Architecture Implementation**
+
+- **Step 1 (Plan)**: Use `sequentialthinking` to map the Guest vs. Auth decision tree.
+- **Step 2 (Context)**: Query `memory` for "Hybrid Data Association" (FR-050).
+- **Step 3 (Code)**: Use `laravel-boost` (`search-docs`, `tinker`) to implement `Auth::check()` logic in Controllers.
+- **Step 4 (Verify)**: Use `playwright` to simulate a Guest submission (ensure `user_id` is NULL) and a Staff submission (ensure `user_id` is linked).
+
+**2. Dual Audit System Verification**
+
+- **Step 1 (Inspect)**: Use `laravel-boost` (`database-schema`) to verify `audits` (Owen-It) and `activity_log` (Spatie) tables exist.
+- **Step 2 (Simulate)**: Use `laravel-boost` (`tinker`) to perform a model update.
+- **Step 3 (Validate)**: Use `laravel-boost` (`database-query`) to confirm records were created in **BOTH** tables.
+
+**3. Real-Time Debugging (Reverb)**
+
+- **Step 1 (Monitor)**: Use `chrome-devtools` to inspect WebSocket frames on the admin dashboard.
+- **Step 2 (Trigger)**: Use `laravel-boost` (`tinker`) to dispatch a `TicketUpdated` event.
+- **Step 3 (Confirm)**: Verify the payload reaches the client via `private-user.{id}` channel.
+
+## Tool-Specific Guidelines
+
+### laravel-boost
+
+**Purpose**: Laravel-specific operations.
+**Key Tools**:
+
+- `database-schema`: Verify v3.5.0 schema changes (e.g., `users.staff_number`).
+- `list-routes`: Check for `reverb` and `auth` routes.
+- `tinker`: Test `Auth::login()` and Policy logic interactively.
+- `artisan`: Run custom commands like `ict:link-historical-submissions`.
+
+### memory
+
+**Purpose**: Persistent v3.5.0 Knowledge Graph.
+**Required Entities**:
+
+- `ictserve_system_spec`: Defines Hybrid (Guest/Auth) rules.
+- `audit_architecture`: Defines Dual Audit requirements.
+- `broadcasting_config`: Defines Reverb channels.
+
+### playwright
+
+**Purpose**: Testing Hybrid User Flows.
+**Usage**:
+
+- Test **Guest Flow**: Access `/helpdesk`, submit form, verify Token generation.
+- Test **Staff Flow**: Login via `/login`, access `/dashboard`, verify Auto-fill.
+
+### bedrock-opus
+
+**Purpose**: High-level architectural reasoning.
+**Usage**:
+
+- Use for generating complex migration strategies (e.g., "How to migrate legacy data to the new `users` schema while preserving guest links?").
+
+### memory (Preferred)
+
+**Status**: Preferred and enabled by default (JSONL-backed Memory MCP)
+**Usage**: Uses `storage/mcp/memory.jsonl` via `npx -y @modelcontextprotocol/server-memory storage/mcp/memory.jsonl`
+**Note**: Legacy Mimir stack is retired; do not start Neo4j/Mimir containers.
+
+## Error Handling & Recovery
+
+### Connection Errors
+
+**MCP Error -32000**:
+
+- **Cause**: Missing `.env` variable or incorrect path in `mcp.json`.
+- **Fix**: Check `.env` for `AWS_ACCESS_KEY_ID` or `REVERB_APP_KEY`. Ensure `args` in `mcp.json` use `$env:` syntax correctly.
+
+### Reverb Connection Issues
+
+- **Symptom**: WebSocket connection fails in `chrome-devtools`.
+- **Fix**: Verify `REVERB_PORT` in `.env`. Ensure `php artisan reverb:start` is running via `laravel-boost`.
+
+## Compliance Verification
+
+**Before marking a task complete:**
+
+1. **Memory**: Did you query `memory` for v3.5.0 specs?
+2. **Audit**: Did you verify both `audits` and `activity_log` entries?
+3. **Hybrid**: Did you test both Guest and Auth paths?
+4. **Documentation**: Did you store the result in `memory`?
+
+---
+
+**Last Updated**: 2025-12-06
+**Active Servers**: memory, laravel-boost, bedrock-opus
+**Critical**: memory MCP JSONL is the only supported knowledge store.
+**Enforcement**: **Strict**. Memory integration required for all operations.

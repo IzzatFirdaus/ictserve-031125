@@ -175,7 +175,7 @@ class QuickActions extends Component
     /**
      * Render the quick actions component with optimized data passing.
      */
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.quick-actions');
     }

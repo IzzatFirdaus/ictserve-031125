@@ -195,6 +195,17 @@ return [
         'statement_3' => 'Saya bersetuju untuk mematuhi semua terma dan syarat yang ditetapkan dan akan memulangkan peralatan dalam keadaan baik pada atau sebelum tarikh yang ditetapkan.',
     ],
 
+    'accessory' => [
+        'POWER_ADAPTER' => 'Penyesuai Kuasa',
+        'BAG' => 'Beg',
+        'MOUSE' => 'Tetikus',
+        'USB_CABLE' => 'Kabel USB',
+        'HDMI_VGA_CABLE' => 'Kabel HDMI/VGA',
+        'REMOTE' => 'Alat Kawalan Jauh',
+        'OTHERS' => 'Lain-lain',
+        'others' => 'Aksesori lain',
+    ],
+
     'terms' => [
         'line_1' => '1. Peralatan ICT ini dipinjamkan untuk kegunaan rasmi Kementerian Pelancongan, Seni dan Budaya Malaysia sahaja.',
         'line_2' => '2. Peminjam bertanggungjawab sepenuhnya terhadap keselamatan dan penyelenggaraan peralatan yang dipinjam.',
@@ -422,4 +433,45 @@ return [
         'overdue_items' => 'Item Tertunggak',
         'assets_borrowed_of_total' => 'aset dipinjam daripada jumlah',
     ],
+
+    // v3.5.0 Halaman Kelulusan (Komponen Volt) - Keperluan 4.2, 4.3
+    'approval' => [
+        'page_title' => 'Kelulusan Permohonan Pinjaman',
+        'page_subtitle' => 'Semak dan luluskan atau tolak permohonan pinjaman di bawah',
+        'application_summary' => 'Ringkasan Permohonan',
+        'reference' => 'Rujukan',
+        'applicant_info' => 'Maklumat Pemohon',
+        'loan_period' => 'Tempoh Pinjaman',
+        'requested_equipment' => 'Peralatan Dimohon',
+        'your_decision' => 'Keputusan Anda',
+        'decision_instruction' => 'Sila semak butiran permohonan di atas dan buat keputusan anda.',
+        'remarks_label' => 'Catatan / Komen',
+        'remarks_placeholder' => 'Masukkan sebarang komen atau nota untuk keputusan ini...',
+        'remarks_help' => 'Maksimum 1000 aksara. Wajib untuk penolakan.',
+        'required_for_rejection' => 'Wajib untuk penolakan',
+        'approve_button' => 'Luluskan Permohonan',
+        'reject_button' => 'Tolak Permohonan',
+        'security_notice_title' => 'Notis Keselamatan',
+        'security_notice_text' => 'Keputusan anda akan direkodkan dengan cap masa dan alamat IP untuk tujuan audit. Tindakan ini tidak boleh dibatalkan.',
+        'help_text' => 'Jika anda mempunyai sebarang pertanyaan, sila hubungi BPM di extension 2145.',
+        'decision_recorded' => 'Keputusan Direkodkan',
+        'approved_success' => 'Permohonan :application_number telah diluluskan dengan jayanya. Pemohon akan dimaklumkan.',
+        'rejected_success' => 'Permohonan :application_number telah ditolak. Pemohon akan dimaklumkan.',
+        'approved_via_email' => 'Diluluskan melalui pautan e-mel',
+        'token_required' => 'Token kelulusan diperlukan untuk mengakses halaman ini.',
+        'token_invalid' => 'Pautan kelulusan tidak sah atau telah digunakan.',
+        'token_invalid_title' => 'Pautan Tidak Sah',
+        'token_expired' => 'Pautan kelulusan telah tamat tempoh. Sila hubungi BPM untuk meminta pautan baharu.',
+        'token_expired_title' => 'Pautan Tamat Tempoh',
+        'error_title' => 'Ralat',
+        'load_error' => 'Ralat berlaku semasa memuatkan permohonan. Sila cuba lagi.',
+        'process_error' => 'Ralat berlaku semasa memproses keputusan anda. Sila cuba lagi.',
+        'already_processed' => 'Permohonan ini telah diproses. Status semasa: :status',
+        'contact_support' => 'Sila hubungi sokongan BPM di extension 2145 untuk bantuan.',
+        'rejection_reason_required' => 'Sila berikan sebab untuk menolak permohonan ini.',
+        'rejection_reason_min' => 'Sebab penolakan mestilah sekurang-kurangnya 10 aksara.',
+    ],
+
+    // Terjemahan Kod QR (Keperluan 20.5)
+    'scan_for_status' => 'Imbas untuk semak status pinjaman',
 ];

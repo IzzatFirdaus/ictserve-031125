@@ -30,7 +30,7 @@ class AssetPreparationNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('asset_loan.email.asset_preparation_subject', [
+            subject: (string) __('asset_loan.email.asset_preparation_subject', [
                 'application_number' => $this->application->application_number,
             ]),
         );

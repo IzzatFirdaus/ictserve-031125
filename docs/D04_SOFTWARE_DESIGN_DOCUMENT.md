@@ -30,6 +30,7 @@
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
+| 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini semua modul (registration, login, account linking, notifications) kepada Bahasa Melayu sahaja. Language switcher dilumpuhkan. Bilingual support→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                 | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Restore user_id nullable FK dalam HelpdeskTicket/LoanApplication. Auth::check() logic untuk auto-fill. ERD update: user_id (0..1 relationship). Penyelarasan dengan D00/D02 v3.4.0.                                                                  | Pasukan Pembangunan BPM |
 | 3.3.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D03 v3.2.0.                                                 | Pasukan Pembangunan BPM |
 | 3.2.0 | 29 November 2025 | Kemaskini rekabentuk guest-first: penjelasan aliran kerja tanpa akaun pengguna, token-based approval, status checking, dan integrasi real-time WebSocket untuk notifikasi pentadbir                                                                                       | Pasukan Pembangunan BPM |
@@ -55,7 +56,7 @@
 - **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX guidelines (v3.5.0)
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend framework (v3.5.0)
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.5.0)
-- **[D15_LANGUAGE_MS_EN.md]** - Bilingual localization
+- **[D15_LANGUAGE_MS_EN.md]** - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
 - **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
 - **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
@@ -407,7 +408,7 @@ Di luar skop:
 
 1. **Staff mengakses borang pendaftaran** (`/register`):
 
-   - Display bilingual registration form (WCAG 2.2 AA compliant)
+   - Display Bahasa Melayu registration form (WCAG 2.2 AA compliant)
    - Fields: Name, Email (@motac.gov.my), Password, Password Confirmation
    - Additional fields: Staff Number, Division, Grade, Phone
    - Real-time email domain validation (client-side + server-side)
@@ -416,7 +417,7 @@ Di luar skop:
 2. **Email domain validation** (`RegistrationService::validateEmailDomain()`):
 
    - Enforce @motac.gov.my domain restriction
-   - Reject non-MOTAC emails with bilingual error message
+   - Reject non-MOTAC emails with Bahasa Melayu error message
    - Check for existing accounts with same email
    - Prevent duplicate registrations
 
@@ -432,7 +433,7 @@ Di luar skop:
 4. **Email verification dispatch** (queued job):
 
    - Send verification email with signed URL
-   - Include bilingual instructions
+   - Include Bahasa Melayu instructions
    - Token valid for 24 hours (configurable via `config/auth.php`)
    - Resend option available on login attempt
 
@@ -458,7 +459,7 @@ Di luar skop:
 - **CSRF protection**: All forms protected with CSRF token
 - **Audit trail**: Registration events logged in activity_log
 - **WCAG compliance**: Form with proper labels, error messages, keyboard navigation
-- **Bilingual support**: All messages in Bahasa Melayu and English
+- **Bahasa Melayu sahaja (v3.6.0)**: All messages in Bahasa Melayu only
 
 ### 4.7. Flexible Login Module (v3.5.0)
 
@@ -473,7 +474,7 @@ Di luar skop:
 
 1. **Staff mengakses borang login** (`/login`):
 
-   - Display bilingual login form
+   - Display Bahasa Melayu login form
    - Single input field: "Email or Username"
    - Password field with show/hide toggle
    - Remember me checkbox
@@ -514,7 +515,7 @@ Di luar skop:
 - **Session management**: Secure session cookies (httpOnly, secure, sameSite)
 - **Audit trail**: All login attempts logged (success and failure)
 - **WCAG compliance**: Accessible form with proper labels and error announcements
-- **Bilingual support**: All messages in Bahasa Melayu and English
+- **Bahasa Melayu sahaja (v3.6.0)**: All messages in Bahasa Melayu only
 
 ### 4.8. Account Linking Module (v3.5.0)
 
@@ -570,7 +571,7 @@ Di luar skop:
 - **Privacy**: Only staff can link their own submissions (email must match)
 - **Performance**: Index on `submitter_email` and `applicant_email` for fast queries
 - **WCAG compliance**: Accessible table with keyboard navigation
-- **Bilingual support**: All messages in Bahasa Melayu and English
+- **Bahasa Melayu sahaja (v3.6.0)**: All messages in Bahasa Melayu only
 
 ### 4.9. Laravel Pulse Integration (v3.5.0)
 
@@ -832,7 +833,7 @@ Di luar skop:
 - Display ministry name: "Kementerian Pelancongan, Seni dan Budaya Malaysia"
 - Display division name: "Bahagian Pengurusan Maklumat"
 - Responsive layout (hide text on mobile, show on sm+)
-- Bilingual support (Bahasa Melayu / English)
+- Bahasa Melayu sahaja (v3.6.0)
 
 **MOTAC Footer Component:**
 
@@ -866,7 +867,7 @@ Di luar skop:
 - **Accessibility**: All logos with proper alt text
 - **Responsive**: Logos scale appropriately on mobile
 - **Performance**: SVG for vector graphics, optimized PNG for raster
-- **Localization**: Bilingual text for all branding elements
+- **Localization**: Bahasa Melayu text for all branding elements (v3.6.0)
 
 ---
 
@@ -1300,7 +1301,7 @@ Refer to D05 (Data Migration Plan) and D06 (Data Migration Specification) for le
 
 **Components:**
 
-- Language switcher (MS/EN) - Cookie-based, no user account required
+- Language switcher (MS/EN) - **DILUMPUHKAN v3.6.0** (Bahasa Melayu sahaja)
 - Breadcrumb navigation
 - Progress indicators untuk multi-step forms
 - Toast notifications (WCAG 2.2 AA compliant)

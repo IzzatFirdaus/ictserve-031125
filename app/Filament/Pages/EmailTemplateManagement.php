@@ -9,17 +9,17 @@ use App\Services\EmailTemplateService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
@@ -45,8 +45,6 @@ class EmailTemplateManagement extends Page implements HasForms
     /** @var array<string, mixed> */
     public array $previewData = [];
 
-    public mixed $form = null;
-
     public static function shouldRegisterNavigation(): bool
     {
         return Auth::user()?->hasRole('superuser') ?? false;
@@ -67,74 +65,76 @@ class EmailTemplateManagement extends Page implements HasForms
         return __('admin_pages.email_templates.group');
     }
 
-    public function form(Form $form): Form
+    protected function getForms(): array
     {
-        return $schema
-            ->schema([
-                Section::make('Email Template Editor')
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('name')
-                                    ->label('Template Name')
-                                    ->required()
-                                    ->maxLength(255),
+        return [
+            'form' => Schema::make($this)
+                ->schema([
+                    Section::make('Email Template Editor')
+                        ->schema([
+                            Grid::make(2)
+                                ->schema([
+                                    TextInput::make('name')
+                                        ->label('Template Name')
+                                        ->required()
+                                        ->maxLength(255),
 
-                                Select::make('category')
-                                    ->label('Category')
-                                    ->options([
-                                        'ticket_confirmation' => 'Ticket Confirmation',
-                                        'loan_approval' => 'Loan Approval',
-                                        'status_update' => 'Status Update',
-                                        'reminder' => 'Reminder',
-                                        'sla_breach' => 'SLA Breach',
-                                    ])
-                                    ->required()
-                                    ->reactive(),
+                                    Select::make('category')
+                                        ->label('Category')
+                                        ->options([
+                                            'ticket_confirmation' => 'Ticket Confirmation',
+                                            'loan_approval' => 'Loan Approval',
+                                            'status_update' => 'Status Update',
+                                            'reminder' => 'Reminder',
+                                            'sla_breach' => 'SLA Breach',
+                                        ])
+                                        ->required()
+                                        ->reactive(),
 
-                                Select::make('locale')
-                                    ->label('Language')
-                                    ->options([
-                                        'ms' => 'Bahasa Melayu',
-                                        'en' => 'English',
-                                    ])
-                                    ->required()
-                                    ->default('ms'),
+                                    Select::make('locale')
+                                        ->label('Language')
+                                        ->options([
+                                            'ms' => 'Bahasa Melayu',
+                                            'en' => 'English',
+                                        ])
+                                        ->required()
+                                        ->default('ms'),
 
-                                Toggle::make('is_active')
-                                    ->label('Active')
-                                    ->default(true),
-                            ]),
+                                    Toggle::make('is_active')
+                                        ->label('Active')
+                                        ->default(true),
+                                ]),
 
-                        TextInput::make('subject')
-                            ->label('Email Subject')
-                            ->required()
-                            ->maxLength(255)
-                            ->helperText('Use {{variable_name}} for dynamic content'),
+                            TextInput::make('subject')
+                                ->label('Email Subject')
+                                ->required()
+                                ->maxLength(255)
+                                ->helperText('Use {{variable_name}} for dynamic content'),
 
-                        RichEditor::make('body_html')
-                            ->label('Email Body (HTML)')
-                            ->required()
-                            ->toolbarButtons([
-                                'bold',
-                                'italic',
-                                'underline',
-                                'link',
-                                'bulletList',
-                                'orderedList',
-                                'h2',
-                                'h3',
-                                'blockquote',
-                            ])
-                            ->helperText('Use {{variable_name}} for dynamic content. Ensure WCAG 2.2 AA compliance.'),
+                            RichEditor::make('body_html')
+                                ->label('Email Body (HTML)')
+                                ->required()
+                                ->toolbarButtons([
+                                    'bold',
+                                    'italic',
+                                    'underline',
+                                    'link',
+                                    'bulletList',
+                                    'orderedList',
+                                    'h2',
+                                    'h3',
+                                    'blockquote',
+                                ])
+                                ->helperText('Use {{variable_name}} for dynamic content. Ensure WCAG 2.2 AA compliance.'),
 
-                        Textarea::make('body_text')
-                            ->label('Email Body (Plain Text)')
-                            ->rows(8)
-                            ->helperText('Plain text version for accessibility'),
-                    ]),
-            ])
-            ->statePath('data');
+                            Textarea::make('body_text')
+                                ->label('Email Body (Plain Text)')
+                                ->rows(8)
+                                ->helperText('Plain text version for accessibility'),
+                        ]),
+                ])
+                ->statePath('data'),
+        ];
     }
 
     protected function getHeaderActions(): array
@@ -308,7 +308,7 @@ class EmailTemplateManagement extends Page implements HasForms
      */
     private function getFormState(): array
     {
-        if (is_object($this->form) && method_exists($this->form, 'getState')) {
+        if (property_exists($this, 'form') && is_object($this->form) && method_exists($this->form, 'getState')) {
             $state = $this->form->getState();
 
             return is_array($state) ? $state : $this->data;
@@ -322,8 +322,12 @@ class EmailTemplateManagement extends Page implements HasForms
      */
     private function fillForm(?array $state = null): void
     {
-        if (is_object($this->form) && method_exists($this->form, 'fill')) {
+        if (property_exists($this, 'form') && is_object($this->form) && method_exists($this->form, 'fill')) {
             $this->form->fill($state ?? []);
+
+            return;
         }
+
+        $this->data = $state ?? $this->data;
     }
 }

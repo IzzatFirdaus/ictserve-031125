@@ -13,46 +13,42 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MemoryAdapter extends Model
 {
-    /** @use HasFactory<\Database\Factories\MemoryAdapterFactory> */
-    use HasFactory;
+    use HasFactory, HasUuids, SoftDeletes;
 
-    use HasUuids;
-    use SoftDeletes;
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int,string>
+     */
     protected $fillable = [
-        'name',
         'provider',
+        'name',
+        'description',
         'config',
+        'capabilities',
+        'is_active',
         'last_synced_at',
+        'sync_cursor',
     ];
 
     protected function casts(): array
     {
         return [
             'config' => 'array',
+            'capabilities' => 'array',
+            'is_active' => 'boolean',
             'last_synced_at' => 'datetime',
         ];
     }
 
-    /**
-     * @return HasMany<MemoryAdapterSync, MemoryAdapter>
-     */
     public function syncs(): HasMany
     {
-        return $this->hasMany(MemoryAdapterSync::class);
+        return $this->hasMany(MemoryAdapterSync::class, 'memory_adapter_id');
     }
 
-    /**
-     * @return BelongsToMany<MemoryEntity, MemoryAdapter>
-     */
     public function entities(): BelongsToMany
     {
-        return $this->belongsToMany(MemoryEntity::class, 'memory_adapter_entity')
-            ->withPivot(['metadata'])
+        return $this->belongsToMany(MemoryEntity::class, 'memory_adapter_entity', 'memory_adapter_id', 'memory_entity_id')
             ->withTimestamps();
     }
 }

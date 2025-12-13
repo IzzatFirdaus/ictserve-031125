@@ -81,7 +81,7 @@ class SessionManager extends Component
         $this->dispatch('logged-out-other-devices');
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.staff.session-manager');
     }

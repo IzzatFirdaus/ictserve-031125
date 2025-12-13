@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Services\TokenService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -40,7 +41,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 1.5
      */
-    public function test_generates_status_token_for_helpdesk_ticket(): void
+    #[Test]
+    public function generates_status_token_for_helpdesk_ticket(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
 
@@ -62,7 +64,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 1.5
      */
-    public function test_generates_status_token_for_loan_application(): void
+    #[Test]
+    public function generates_status_token_for_loan_application(): void
     {
         $loan = LoanApplication::factory()->create();
 
@@ -84,7 +87,8 @@ class TokenServiceTest extends TestCase
      * @trace Requirement 14.4
      * @trace D03 §8.1
      */
-    public function test_status_token_uses_sha512_hashing(): void
+    #[Test]
+    public function status_token_uses_sha512_hashing(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
 
@@ -101,7 +105,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 1.5
      */
-    public function test_validates_status_token_for_ticket(): void
+    #[Test]
+    public function validates_status_token_for_ticket(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
         $token = $this->service->generateStatusToken($ticket);
@@ -118,7 +123,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 1.5
      */
-    public function test_validates_status_token_for_loan(): void
+    #[Test]
+    public function validates_status_token_for_loan(): void
     {
         $loan = LoanApplication::factory()->create();
         $token = $this->service->generateStatusToken($loan);
@@ -135,7 +141,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 14.4
      */
-    public function test_invalid_status_token_returns_null(): void
+    #[Test]
+    public function invalid_status_token_returns_null(): void
     {
         $invalidToken = str_repeat('a', 64);
 
@@ -149,7 +156,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 4.1
      */
-    public function test_generates_approval_token_for_loan(): void
+    #[Test]
+    public function generates_approval_token_for_loan(): void
     {
         $loan = LoanApplication::factory()->create();
 
@@ -177,7 +185,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 4.1
      */
-    public function test_approval_token_has_default_72_hour_expiry(): void
+    #[Test]
+    public function approval_token_has_default72_hour_expiry(): void
     {
         $loan = LoanApplication::factory()->create();
 
@@ -192,7 +201,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 4.1
      */
-    public function test_approval_token_accepts_custom_expiry(): void
+    #[Test]
+    public function approval_token_accepts_custom_expiry(): void
     {
         $loan = LoanApplication::factory()->create();
 
@@ -208,7 +218,8 @@ class TokenServiceTest extends TestCase
      * @trace Requirement 14.4
      * @trace D03 §8.1
      */
-    public function test_approval_token_uses_sha512_hashing(): void
+    #[Test]
+    public function approval_token_uses_sha512_hashing(): void
     {
         $loan = LoanApplication::factory()->create();
 
@@ -224,7 +235,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 4.1
      */
-    public function test_validates_approval_token_with_valid_token(): void
+    #[Test]
+    public function validates_approval_token_with_valid_token(): void
     {
         $loan = LoanApplication::factory()->create();
         $result = $this->service->generateApprovalToken($loan);
@@ -239,7 +251,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 14.4
      */
-    public function test_validates_approval_token_rejects_invalid_token(): void
+    #[Test]
+    public function validates_approval_token_rejects_invalid_token(): void
     {
         $loan = LoanApplication::factory()->create();
         $this->service->generateApprovalToken($loan);
@@ -255,7 +268,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 4.1
      */
-    public function test_validates_approval_token_rejects_expired_token(): void
+    #[Test]
+    public function validates_approval_token_rejects_expired_token(): void
     {
         $loan = LoanApplication::factory()->create();
         $result = $this->service->generateApprovalToken($loan, 1);
@@ -273,7 +287,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 4.1
      */
-    public function test_regenerates_approval_token(): void
+    #[Test]
+    public function regenerates_approval_token(): void
     {
         $loan = LoanApplication::factory()->create();
         $originalResult = $this->service->generateApprovalToken($loan);
@@ -299,7 +314,8 @@ class TokenServiceTest extends TestCase
      *
      * @trace Requirement 14.4
      */
-    public function test_tokens_are_cryptographically_unique(): void
+    #[Test]
+    public function tokens_are_cryptographically_unique(): void
     {
         $ticket1 = HelpdeskTicket::factory()->create();
         $ticket2 = HelpdeskTicket::factory()->create();
@@ -319,7 +335,8 @@ class TokenServiceTest extends TestCase
      * @trace Requirement 14.4
      * @trace D03 §8.1
      */
-    public function test_token_validation_prevents_timing_attacks(): void
+    #[Test]
+    public function token_validation_prevents_timing_attacks(): void
     {
         $loan = LoanApplication::factory()->create();
         $result = $this->service->generateApprovalToken($loan);

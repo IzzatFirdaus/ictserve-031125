@@ -12,18 +12,23 @@ use App\Models\LoanApplication;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\On;
 
 /**
  * Asset Loan Statistics Overview Widget
  *
- * Displays key metrics for asset loan applications including utilization,
- * approval workflow statistics, and overdue items. Uses WCAG 2.2 AA compliant
- * colors for all indicators with 5-minute caching strategy.
+ * Displays key metrics for asset loan applications including:
+ * - Pending/Active/Overdue counts
+ * - Asset utilization statistics
+ * - Real-time updates via Laravel Reverb WebSocket
  *
- * @trace Requirements: Requirement 3.2, 4.1, 13.1
+ * Uses WCAG 2.2 AA compliant colors for all indicators with 5-minute caching strategy.
+ *
+ * @trace Requirements: Requirement 6.4 (Admin Asset Loan Management)
  *
  * @see D04 §3.2 Dashboard widgets
  * @see D12 UI/UX Design Guide - Compliant color palette
+ * @see D16 Broadcasting Setup - Laravel Reverb integration
  */
 class AssetLoanStatsOverview extends StatsOverviewWidget
 {
@@ -31,9 +36,56 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
 
     protected static bool $isLazy = false; // Critical widget - load immediately
 
-    protected ?string $pollingInterval = '30s'; // Real-time updates
+    protected ?string $pollingInterval = '30s'; // Fallback polling for real-time updates
 
     protected array|int|null $columns = 2; // 2-column grid layout
+
+    /**
+     * Listen for loan status changes via Laravel Reverb WebSocket
+     * Refreshes widget stats when a loan status is updated
+     */
+    #[On('echo-private:admin-dashboard,LoanStatsUpdated')]
+    public function refreshOnLoanUpdate(): void
+    {
+        // Clear cache to force fresh data
+        Cache::forget('dashboard:loan-stats');
+    }
+
+    /**
+     * Listen for new loan application creation via Laravel Reverb WebSocket
+     */
+    #[On('echo-private:admin-dashboard,LoanApplicationCreated')]
+    public function refreshOnLoanCreated(): void
+    {
+        Cache::forget('dashboard:loan-stats');
+    }
+
+    /**
+     * Listen for loan approval events via Laravel Reverb WebSocket
+     */
+    #[On('echo-private:admin-dashboard,LoanApprovalDecision')]
+    public function refreshOnApprovalDecision(): void
+    {
+        Cache::forget('dashboard:loan-stats');
+    }
+
+    /**
+     * Listen for asset check-out/check-in events via Laravel Reverb WebSocket
+     */
+    #[On('echo-private:admin-dashboard,AssetTransactionCompleted')]
+    public function refreshOnAssetTransaction(): void
+    {
+        Cache::forget('dashboard:loan-stats');
+    }
+
+    /**
+     * Listen for overdue loan detection events via Laravel Reverb WebSocket
+     */
+    #[On('echo-private:admin-dashboard,LoanOverdueDetected')]
+    public function refreshOnOverdueDetected(): void
+    {
+        Cache::forget('dashboard:loan-stats');
+    }
 
     /**
      * @return array<int, Stat>

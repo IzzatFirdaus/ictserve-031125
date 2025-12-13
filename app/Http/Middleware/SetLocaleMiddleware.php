@@ -42,9 +42,14 @@ class SetLocaleMiddleware
     {
         $locale = $this->detectLocale($request);
 
-        // Validate locale against supported locales
-        if ($this->isValidLocale($locale)) {
-            App::setLocale($locale);
+        if (! $this->isValidLocale($locale)) {
+            $locale = config('app.locale', 'ms');
+        }
+
+        App::setLocale($locale);
+
+        if ($request->hasSession() && ! $request->session()->has('locale')) {
+            $request->session()->put('locale', $locale);
         }
 
         return $next($request);
@@ -58,47 +63,22 @@ class SetLocaleMiddleware
         // Priority 1: Session storage (explicit user choice)
         if ($request->hasSession() && $request->session()->has('locale')) {
             $locale = $request->session()->get('locale');
-            if (is_string($locale)) {
+            if (\is_string($locale)) {
                 return $locale;
             }
         }
 
         // Priority 2: Cookie storage (persistent preference)
-        $cookieLocale = $request->cookie('locale');
-        if ($cookieLocale && is_string($cookieLocale)) {
+        // Check both cookie names for compatibility
+        $cookieLocale = $request->cookie('locale') ?? $request->cookie('ictserve_locale');
+        if ($cookieLocale && \is_string($cookieLocale)) {
             return $cookieLocale;
         }
 
-        // Priority 3: Accept-Language header (browser preference)
-        $browserLocale = $this->parseAcceptLanguageHeader($request);
-        if ($browserLocale !== null) {
-            return $browserLocale;
-        }
+        // Priority 3: Config fallback (system default) — D15 §2: default Bahasa Melayu
+        $defaultLocale = config('app.locale', 'ms');
 
-        // Priority 4: Config fallback (system default)
-        $defaultLocale = config('app.locale', 'en');
-
-        return is_string($defaultLocale) ? $defaultLocale : 'en';
-    }
-
-    /**
-     * Parse Accept-Language header to extract preferred locale.
-     */
-    protected function parseAcceptLanguageHeader(Request $request): ?string
-    {
-        $acceptLanguage = $request->header('Accept-Language');
-
-        if (! $acceptLanguage) {
-            return null;
-        }
-
-        // Simple detection: check if Malay is preferred
-        if (str_contains(strtolower($acceptLanguage), 'ms')) {
-            return 'ms';
-        }
-
-        // Default to English for other languages
-        return 'en';
+        return \is_string($defaultLocale) ? $defaultLocale : 'ms';
     }
 
     /**
@@ -108,14 +88,14 @@ class SetLocaleMiddleware
     {
         $supportedLocalesConfig = config('app.supported_locales', ['en', 'ms']);
         $supportedLocales = array_values(array_filter(
-            is_array($supportedLocalesConfig) ? $supportedLocalesConfig : [],
-            static fn ($supportedLocale): bool => is_string($supportedLocale)
+            \is_array($supportedLocalesConfig) ? $supportedLocalesConfig : [],
+            '\is_string'
         ));
 
         if ($supportedLocales === []) {
             $supportedLocales = ['en', 'ms'];
         }
 
-        return in_array($locale, $supportedLocales, true);
+        return \in_array($locale, $supportedLocales, true);
     }
 }

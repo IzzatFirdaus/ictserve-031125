@@ -292,12 +292,18 @@ class RegistrationService implements RegistrationServiceInterface
     private function logRegistrationActivity(User $user): void
     {
         // Log to Laravel's log system for audit trail
-        // TODO: When spatie/laravel-activitylog is installed, use:
-        // activity('registration')
-        //     ->performedOn($user)
-        //     ->causedBy($user)
-        //     ->withProperties([...])
-        //     ->log('User self-registered');
+        activity('registration')
+            ->performedOn($user)
+            ->causedBy($user)
+            ->withProperties([
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+                'timestamp' => now()->toIso8601String(),
+            ])
+            ->log('User self-registered');
 
         Log::channel('single')->info('User registration activity', [
             'action' => 'user_self_registered',

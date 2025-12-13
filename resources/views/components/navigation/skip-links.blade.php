@@ -20,21 +20,21 @@
     <ul class="bg-motac-blue text-white p-4 rounded-br-lg shadow-lg flex flex-col gap-2">
         <li>
             <a id="skip-to-content" data-skip-link href="#main-content" tabindex="-1"
-                class="touch-target flex h-[44px] items-center justify-center px-4 bg-white text-motac-blue rounded-md hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue font-medium"
+                class="touch-target flex h-11 items-center justify-center px-4 bg-white text-motac-blue rounded-md hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue font-medium"
                 style="height:44px;min-width:44px;line-height:44px;" accesskey="m">
                 {{ __('common.skip_to_main_content') }} <span class="ml-2 text-sm">(Alt+M)</span>
             </a>
         </li>
         <li>
             <a data-skip-link href="#sidebar-navigation" tabindex="-1"
-                class="touch-target flex h-[44px] items-center justify-center px-4 bg-white text-motac-blue rounded-md hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue font-medium"
+                class="touch-target flex h-11 items-center justify-center px-4 bg-white text-motac-blue rounded-md hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue font-medium"
                 style="height:44px;min-width:44px;line-height:44px;" accesskey="s">
                 {{ __('common.skip_to_sidebar') }} <span class="ml-2 text-sm">(Alt+S)</span>
             </a>
         </li>
         <li>
             <a data-skip-link href="#user-menu" tabindex="-1"
-                class="touch-target flex h-[44px] items-center justify-center px-4 bg-white text-motac-blue rounded-md hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue font-medium"
+                class="touch-target flex h-11 items-center justify-center px-4 bg-white text-motac-blue rounded-md hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue font-medium"
                 style="height:44px;min-width:44px;line-height:44px;" accesskey="u">
                 {{ __('common.skip_to_user_menu') }} <span class="ml-2 text-sm">(Alt+U)</span>
             </a>

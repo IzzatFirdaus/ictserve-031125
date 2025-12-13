@@ -1,44 +1,18 @@
 {{--
 /**
- * Uncategorized - Danger Button Blade Component
+ * Danger Button Component - MyDS Design System
  *
- * Legacy component - consider categorization
- *
- * @component
- * @name Danger Button
- * @description Legacy component - consider categorization
+ * @component danger-button
+ * @description Destructive action button with danger styling and WCAG 2.2 AA compliance
  * @author Pasukan BPM MOTAC
- * @version 1.0.0
- * @since 2025-11-03
- *
- * Requirements: 6.1, 14.1
- * WCAG Level: AA (SC 1.4.3, 2.1.1)
- * Standards: D04 §6.1, D10 §7, D12 §9, D14 §8
- * Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
- *
- * Usage:
- * <x-uncategorized.danger-button.blade />
+ * @trace D13 §2.2-2.7 (MyDS Design Tokens)
+ * @trace D12 §4.1 (44px Touch Targets)
+ * @trace D14 §6.5 (Button Styling)
+ * @version 2.0.0
+ * @updated 2025-12-06
  */
 --}}
-
-{{--
-/**
- * Danger Button Blade Component
- *
- * Reusable Blade component for consistent UI patterns
- *
- * @trace D04 §6.1
- * @trace D10 §7
- * @trace D12 §9
- * @trace D14 §8
- * @wcag WCAG 2.2 Level AA
- * @browsers Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
- * @version 1.0.0
- * @author Pasukan BPM MOTAC
- * @created 2025-11-03
- * @updated 2025-11-03
- */
---}}
-<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center px-4 py-2 bg-danger border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-danger active:bg-danger-dark focus:outline-none focus:ring-2 focus:ring-danger focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150']) }}>
+<button
+    {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center justify-center px-4 py-2 min-h-11 min-w-11 bg-danger-500 border border-transparent rounded-m font-semibold text-sm text-white shadow-button hover:bg-danger-600 active:bg-danger-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200']) }}>
     {{ $slot }}
 </button>

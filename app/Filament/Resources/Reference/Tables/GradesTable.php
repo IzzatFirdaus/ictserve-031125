@@ -36,7 +36,7 @@ class GradesTable
                     ->boolean(),
             ])
             ->filters([])
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
             ])

@@ -12,10 +12,11 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 /**
@@ -74,10 +75,10 @@ class ApprovalMatrixConfiguration extends Page
         return __('admin_pages.approval_matrix.title');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
         return $schema
-            ->schema([
+            ->components([
                 Repeater::make('matrix.rules')
                     ->label('Peraturan Kelulusan')
                     ->schema([
@@ -342,6 +343,6 @@ class ApprovalMatrixConfiguration extends Page
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 }

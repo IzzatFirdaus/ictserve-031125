@@ -55,21 +55,13 @@
                     <button wire:click="switchTab('tickets')" type="button" role="tab"
                         aria-selected="{{ $activeTab === 'tickets' ? 'true' : 'false' }}" aria-controls="tickets-panel"
                         class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm min-h-44 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 {{ $activeTab === 'tickets' ? 'border-motac-blue text-motac-blue' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                        <svg class="inline-block h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
+                        <x-heroicon-o-clipboard-document-list class="inline-block h-5 w-5 mr-2" aria-hidden="true" />
                         {{ __('common.my_tickets') }}
                     </button>
                     <button wire:click="switchTab('loans')" type="button" role="tab"
                         aria-selected="{{ $activeTab === 'loans' ? 'true' : 'false' }}" aria-controls="loans-panel"
                         class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm min-h-44 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 {{ $activeTab === 'loans' ? 'border-motac-blue text-motac-blue' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                        <svg class="inline-block h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                        </svg>
+                        <x-heroicon-o-cube class="inline-block h-5 w-5 mr-2" aria-hidden="true" />
                         {{ __('common.my_loan_requests') }}
                     </button>
                 </nav>
@@ -131,22 +123,14 @@
                     <div class="ml-4 flex items-center gap-2">
                         <button wire:click="resetFilters" type="button"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-44 min-w-44">
-                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
+                            <x-heroicon-o-arrow-path class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('common.reset_filters') }}
                         </button>
                         {{-- Export CSV Button --}}
                         <button wire:click="{{ $activeTab === 'tickets' ? 'exportTicketsCSV' : 'exportLoansCSV' }}"
                             type="button"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-44 min-w-44">
-                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
+                            <x-heroicon-o-arrow-down-tray class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('common.export_csv') }}
                         </button>
                         {{-- Export PDF/Print Button --}}
@@ -154,11 +138,7 @@
                             data-export-pdf-url="{{ route('portal.submissions.export-pdf', ['type' => $activeTab]) }}"
                             x-on:click="window.open($el.dataset.exportPdfUrl, '_blank')"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-44 min-w-44">
-                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                            </svg>
+                            <x-heroicon-o-printer class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('common.print_pdf') }}
                         </button>
                     </div>
@@ -181,21 +161,13 @@
                         <div class="flex items-center gap-2">
                             <button wire:click="bulkExportCSV" type="button"
                                 class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-md text-sm font-medium text-motac-blue bg-white hover:bg-motac-blue-light focus:outline-none focus:ring-2 focus:ring-motac-blue">
-                                <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                </svg>
+                                <x-heroicon-o-arrow-down-tray class="h-4 w-4 mr-1.5" aria-hidden="true" />
                                 {{ __('common.export_selected') }}
                             </button>
                             @if ($activeTab === 'tickets')
                                 <button wire:click="bulkMarkAsRead" type="button"
                                     class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-md text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus:ring-2 focus:ring-motac-blue">
-                                    <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
+                                    <x-heroicon-o-check class="h-4 w-4 mr-1.5" aria-hidden="true" />
                                     {{ __('common.mark_as_read') }}
                                 </button>
                             @endif
@@ -209,11 +181,7 @@
                 <div id="tickets-panel" role="tabpanel" aria-labelledby="tickets-tab" class="p-6">
                     @if ($this->filteredTickets->isEmpty())
                         <div class="text-center py-12">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
+                            <x-heroicon-o-clipboard-document-list class="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
                             <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('common.no_tickets_found') }}
                             </h3>
                             <p class="mt-1 text-sm text-gray-500">{{ __('common.try_adjusting_filters') }}</p>
@@ -236,17 +204,11 @@
                                                 aria-sort="{{ $sortField === 'ticket_number' ? ($sortDirection === 'asc' ? 'ascending' : 'descending') : 'none' }}">
                                                 {{ __('common.ticket_number') }}
                                                 @if ($sortField === 'ticket_number')
-                                                    <svg class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                                        @if ($sortDirection === 'asc')
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M5 15l7-7 7 7" />
-                                                        @else
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M19 9l-7 7-7-7" />
-                                                        @endif
-                                                    </svg>
+                                                    @if ($sortDirection === 'asc')
+                                                        <x-heroicon-o-chevron-up class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                                    @else
+                                                        <x-heroicon-o-chevron-down class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                                    @endif
                                                 @endif
                                             </button>
                                         </th>
@@ -269,17 +231,11 @@
                                                 aria-sort="{{ $sortField === 'created_at' ? ($sortDirection === 'asc' ? 'ascending' : 'descending') : 'none' }}">
                                                 {{ __('common.created_date') }}
                                                 @if ($sortField === 'created_at')
-                                                    <svg class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                                        @if ($sortDirection === 'asc')
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M5 15l7-7 7 7" />
-                                                        @else
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M19 9l-7 7-7-7" />
-                                                        @endif
-                                                    </svg>
+                                                    @if ($sortDirection === 'asc')
+                                                        <x-heroicon-o-chevron-up class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                                    @else
+                                                        <x-heroicon-o-chevron-down class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                                    @endif
                                                 @endif
                                             </button>
                                         </th>
@@ -339,11 +295,7 @@
                 <div id="loans-panel" role="tabpanel" aria-labelledby="loans-tab" class="p-6">
                     @if ($this->filteredLoans->isEmpty())
                         <div class="text-center py-12">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                            </svg>
+                            <x-heroicon-o-cube class="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
                             <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('common.no_loans_found') }}</h3>
                             <p class="mt-1 text-sm text-gray-500">{{ __('common.try_adjusting_filters') }}</p>
                         </div>
@@ -452,14 +404,7 @@
         class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
         <div class="bg-white rounded-lg p-6 shadow-xl">
             <div class="flex items-center space-x-3">
-                <svg class="animate-spin h-5 w-5 text-motac-blue" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                        stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
-                </svg>
+                <x-heroicon-o-arrow-path class="animate-spin h-5 w-5 text-motac-blue" />
                 <span class="text-sm font-medium text-gray-900">{{ __('common.loading') }}...</span>
             </div>
         </div>

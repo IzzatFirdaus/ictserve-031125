@@ -43,7 +43,7 @@ class LoanTransactionFactory extends Factory
             'condition_after' => null,
             'accessories' => null,
             'damage_report' => null,
-            'notes' => fake()->optional(0.3)->sentence(10),
+            'notes' => \random_int(0, 100) < 30 ? 'Standard transaction' : null,
         ];
     }
 
@@ -52,22 +52,28 @@ class LoanTransactionFactory extends Factory
      */
     public function issue(): static
     {
-        return $this->state(function (array $attributes) {
-            $accessories = fake()->randomElements([
-                'Power Adapter',
-                'Carrying Case',
-                'Wireless Mouse',
-                'USB-C Hub',
-                'HDMI Cable',
-            ], fake()->numberBetween(2, 4));
+        $accessoriesPool = [
+            'Power Adapter',
+            'Carrying Case',
+            'Wireless Mouse',
+            'USB-C Hub',
+            'HDMI Cable',
+        ];
+        $conditions = [AssetCondition::EXCELLENT, AssetCondition::GOOD, AssetCondition::FAIR];
+        
+        return $this->state(function (array $attributes) use ($accessoriesPool, $conditions) {
+            $keys = \array_rand($accessoriesPool, \random_int(2, 4));
+            if (!\is_array($keys)) {
+                $keys = [$keys];
+            }
+            $accessories = [];
+            foreach ($keys as $k) {
+                $accessories[] = $accessoriesPool[$k];
+            }
 
             return [
                 'transaction_type' => TransactionType::ISSUE,
-                'condition_before' => fake()->randomElement([
-                    AssetCondition::EXCELLENT,
-                    AssetCondition::GOOD,
-                    AssetCondition::FAIR,
-                ]),
+                'condition_before' => $conditions[\array_rand($conditions)],
                 'accessories' => $accessories,
                 'notes' => 'Asset issued to borrower',
             ];
@@ -79,20 +85,26 @@ class LoanTransactionFactory extends Factory
      */
     public function return(): static
     {
-        return $this->state(function (array $attributes) {
-            $conditionBefore = fake()->randomElement([
-                AssetCondition::EXCELLENT,
-                AssetCondition::GOOD,
-                AssetCondition::FAIR,
-            ]);
+        $accessoriesPool = [
+            'Power Adapter',
+            'Carrying Case',
+            'Wireless Mouse',
+            'USB-C Hub',
+            'HDMI Cable',
+        ];
+        $conditions = [AssetCondition::EXCELLENT, AssetCondition::GOOD, AssetCondition::FAIR];
+        
+        return $this->state(function (array $attributes) use ($accessoriesPool, $conditions) {
+            $keys = \array_rand($accessoriesPool, \random_int(2, 4));
+            if (!\is_array($keys)) {
+                $keys = [$keys];
+            }
+            $accessories = [];
+            foreach ($keys as $k) {
+                $accessories[] = $accessoriesPool[$k];
+            }
 
-            $accessories = fake()->randomElements([
-                'Power Adapter',
-                'Carrying Case',
-                'Wireless Mouse',
-                'USB-C Hub',
-                'HDMI Cable',
-            ], fake()->numberBetween(2, 4));
+            $conditionBefore = $conditions[\array_rand($conditions)];
 
             return [
                 'transaction_type' => TransactionType::RETURN,
@@ -109,20 +121,15 @@ class LoanTransactionFactory extends Factory
      */
     public function returnDamaged(): static
     {
-        return $this->state(function (array $attributes) {
-            $conditionBefore = fake()->randomElement([
-                AssetCondition::EXCELLENT,
-                AssetCondition::GOOD,
-            ]);
-
+        $conditionsBefore = [AssetCondition::EXCELLENT, AssetCondition::GOOD];
+        $conditionsAfter = [AssetCondition::POOR, AssetCondition::DAMAGED];
+        
+        return $this->state(function (array $attributes) use ($conditionsBefore, $conditionsAfter) {
             return [
                 'transaction_type' => TransactionType::RETURN,
-                'condition_before' => $conditionBefore,
-                'condition_after' => fake()->randomElement([
-                    AssetCondition::POOR,
-                    AssetCondition::DAMAGED,
-                ]),
-                'damage_report' => fake()->sentence(15),
+                'condition_before' => $conditionsBefore[\array_rand($conditionsBefore)],
+                'condition_after' => $conditionsAfter[\array_rand($conditionsAfter)],
+                'damage_report' => 'Damage detected upon return',
                 'notes' => 'Asset returned with damage - maintenance ticket created',
             ];
         });
@@ -135,7 +142,7 @@ class LoanTransactionFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'transaction_type' => TransactionType::EXTEND,
-            'notes' => 'Loan period extended by '.fake()->numberBetween(7, 14).' days',
+            'notes' => 'Loan period extended by ' . \random_int(7, 14) . ' days',
         ]);
     }
 
@@ -156,7 +163,7 @@ class LoanTransactionFactory extends Factory
     public function recent(): static
     {
         return $this->state(fn (array $attributes) => [
-            'processed_at' => now()->subHours(fake()->numberBetween(1, 24)),
+            'processed_at' => now()->subHours(\random_int(1, 24)),
         ]);
     }
 
@@ -166,7 +173,7 @@ class LoanTransactionFactory extends Factory
     public function past(): static
     {
         return $this->state(fn (array $attributes) => [
-            'processed_at' => now()->subDays(fake()->numberBetween(7, 90)),
+            'processed_at' => now()->subDays(\random_int(7, 90)),
         ]);
     }
 
@@ -175,8 +182,15 @@ class LoanTransactionFactory extends Factory
      */
     public function withNotes(): static
     {
+        $notes = [
+            'Processed with special handling due to high-value equipment',
+            'Equipment required inspection before issuance',
+            'Borrower provided additional security deposit',
+            'Extended loan due to project requirements',
+            'Multiple follow-ups required during loan period',
+        ];
         return $this->state(fn (array $attributes) => [
-            'notes' => fake()->paragraph(3),
+            'notes' => $notes[\array_rand($notes)],
         ]);
     }
 }

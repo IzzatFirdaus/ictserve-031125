@@ -13,7 +13,6 @@ use App\Models\TicketCategory;
 use App\Models\User;
 use App\Services\CrossModuleIntegrationService;
 use App\Services\HybridHelpdeskService;
-use App\Services\NotificationService;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -37,7 +36,7 @@ class HybridHelpdeskWorkflowTest extends TestCase
     }
 
     #[Test]
-    public function guest_ticket_creation_persists_enhanced_fields(): void
+    public function guest_ticket_creation_with_null_user_id_and_submitter_fields(): void
     {
         $division = Division::factory()->create();
         $category = TicketCategory::factory()->hardware()->create([
@@ -46,29 +45,34 @@ class HybridHelpdeskWorkflowTest extends TestCase
         ]);
 
         $ticket = $this->hybridHelpdeskService->createGuestTicket([
-            'guest_name' => 'Guest User',
-            'guest_email' => 'guest@example.com',
+            'guest_name' => 'Ahmad Bin Ali',
+            'guest_email' => 'ahmad.ali@motac.gov.my',
             'guest_phone' => '+60123456789',
             'guest_staff_id' => 'MOTAC001',
             'guest_grade' => 'N41',
-            'guest_division' => 'ICT Division',
+            'guest_division' => 'Bahagian ICT',
             'division_id' => $division->id,
             'job_grade' => 'Gred 41',
             'declaration_accepted' => true,
             'category_id' => $category->id,
             'priority' => 'high',
-            'subject' => 'Laptop power issue',
-            'description' => 'Guest laptop is not powering on after system update.',
+            'subject' => 'Masalah kuasa laptop',
+            'description' => 'Laptop tetamu tidak dapat dihidupkan selepas kemas kini sistem.',
         ]);
 
+        // Verify hybrid data association: guest submission has user_id=NULL
+        $this->assertNull($ticket->user_id, 'Guest submissions must have user_id=NULL for v3.6.0 hybrid architecture');
         $this->assertTrue($ticket->isGuestSubmission());
         $this->assertStringStartsWith('HD', $ticket->ticket_number);
+
+        // Verify submitter_* fields are captured for guest submissions
         $this->assertDatabaseHas('helpdesk_tickets', [
             'id' => $ticket->id,
-            'guest_name' => 'Guest User',
-            'guest_email' => 'guest@example.com',
+            'user_id' => null, // Critical: NULL for guest submissions
+            'guest_name' => 'Ahmad Bin Ali',
+            'guest_email' => 'ahmad.ali@motac.gov.my',
             'guest_grade' => 'N41',
-            'guest_division' => 'ICT Division',
+            'guest_division' => 'Bahagian ICT',
             'division_id' => $division->id,
             'job_grade' => 'Gred 41',
             'declaration_accepted' => true,
@@ -80,7 +84,7 @@ class HybridHelpdeskWorkflowTest extends TestCase
     }
 
     #[Test]
-    public function authenticated_ticket_creation_stores_internal_notes(): void
+    public function authenticated_ticket_creation_with_user_id_linked_and_auto_fill(): void
     {
         $division = Division::factory()->create();
         $category = TicketCategory::factory()->create([
@@ -90,7 +94,11 @@ class HybridHelpdeskWorkflowTest extends TestCase
             'sla_response_hours' => 2,
             'sla_resolution_hours' => 12,
         ]);
-        $user = User::factory()->create(['email' => 'staff@motac.gov.my']);
+        $user = User::factory()->create([
+            'email' => 'siti.rahman@motac.gov.my',
+            'name' => 'Siti Rahman',
+            'division_id' => $division->id,
+        ]);
 
         $ticket = $this->hybridHelpdeskService->createAuthenticatedTicket([
             'division_id' => $division->id,
@@ -98,76 +106,106 @@ class HybridHelpdeskWorkflowTest extends TestCase
             'declaration_accepted' => true,
             'category_id' => $category->id,
             'priority' => 'urgent',
-            'subject' => 'VPN connection failure',
-            'description' => 'Unable to establish VPN connection from remote office.',
-            'internal_notes' => 'Escalate to network operations for review.',
+            'subject' => 'Kegagalan sambungan VPN',
+            'description' => 'Tidak dapat mewujudkan sambungan VPN dari pejabat jauh.',
+            'internal_notes' => 'Eskalasi kepada operasi rangkaian untuk semakan.',
         ], $user);
 
+        // Verify hybrid data association: authenticated submission has user_id linked
+        $this->assertNotNull($ticket->user_id, 'Authenticated submissions must have user_id linked for v3.6.0 hybrid architecture');
         $this->assertTrue($ticket->isAuthenticatedSubmission());
         $this->assertEquals($user->id, $ticket->user_id);
+
+        // Verify guest_* fields are NULL for authenticated submissions
         $this->assertDatabaseHas('helpdesk_tickets', [
             'id' => $ticket->id,
-            'user_id' => $user->id,
+            'user_id' => $user->id, // Critical: Linked for authenticated submissions
             'division_id' => $division->id,
             'job_grade' => 'Gred 44',
             'declaration_accepted' => true,
-            'internal_notes' => 'Escalate to network operations for review.',
-            'guest_email' => null,
+            'internal_notes' => 'Eskalasi kepada operasi rangkaian untuk semakan.',
+            'guest_email' => null, // NULL for authenticated submissions
+            'guest_name' => null,  // NULL for authenticated submissions
             'status' => 'open',
         ]);
     }
 
     #[Test]
-    public function ticket_claiming_process_attaches_authenticated_user_and_logs_comment(): void
+    public function hybrid_ticket_claiming_transitions_from_guest_to_authenticated(): void
     {
-        $user = User::factory()->create(['email' => 'owner@example.com']);
+        $user = User::factory()->create(['email' => 'farid.hassan@motac.gov.my']);
         $ticket = HelpdeskTicket::factory()
             ->guest()
             ->create([
-                'guest_email' => 'owner@example.com',
+                'user_id' => null, // Initially NULL for guest submission
+                'guest_email' => 'farid.hassan@motac.gov.my',
+                'guest_name' => 'Farid Hassan',
                 'status' => 'open',
             ]);
+
+        // Verify initial guest state
+        $this->assertNull($ticket->user_id, 'Ticket should start as guest submission with user_id=NULL');
+        $this->assertTrue($ticket->isGuestSubmission());
 
         $result = $this->hybridHelpdeskService->claimGuestTicket($ticket, $user);
 
         $this->assertTrue($result);
         $ticket->refresh();
-        $this->assertEquals($user->id, $ticket->user_id);
+
+        // Verify hybrid data association after claiming
+        $this->assertEquals($user->id, $ticket->user_id, 'After claiming, user_id should be linked');
+        $this->assertTrue($ticket->isAuthenticatedSubmission(), 'After claiming, ticket becomes authenticated');
         $this->assertTrue($ticket->comments()->where('comment', 'Ticket claimed by authenticated user.')->where('is_internal', true)->exists());
     }
 
     #[Test]
-    public function get_user_accessible_tickets_returns_owned_and_email_matched_records(): void
+    public function hybrid_data_association_returns_owned_and_email_matched_records(): void
     {
-        $user = User::factory()->create(['email' => 'hybrid@motac.gov.my']);
+        $user = User::factory()->create(['email' => 'zainab.ibrahim@motac.gov.my']);
 
+        // Authenticated ticket (user_id linked)
         $ownedTicket = HelpdeskTicket::factory()->create([
             'user_id' => $user->id,
+            'guest_email' => null,
             'status' => 'open',
         ]);
+
+        // Guest ticket (user_id=NULL, email matched)
         $guestTicket = HelpdeskTicket::factory()
             ->guest()
             ->create([
-                'guest_email' => 'hybrid@motac.gov.my',
+                'user_id' => null, // Critical: NULL for guest submissions
+                'guest_email' => 'zainab.ibrahim@motac.gov.my',
                 'status' => 'open',
             ]);
+
+        // Other user's guest ticket (should not be accessible)
         HelpdeskTicket::factory()
             ->guest()
             ->create([
-                'guest_email' => 'other@example.com',
+                'user_id' => null,
+                'guest_email' => 'other.user@motac.gov.my',
             ]);
 
         $tickets = $this->hybridHelpdeskService
             ->getUserAccessibleTickets($user)
             ->get();
 
-        $this->assertCount(2, $tickets);
+        // Verify hybrid data association works correctly
+        $this->assertCount(2, $tickets, 'User should access both authenticated (user_id linked) and guest (email matched) tickets');
         $this->assertTrue($tickets->contains(fn (HelpdeskTicket $ticket) => $ticket->id === $ownedTicket->id));
         $this->assertTrue($tickets->contains(fn (HelpdeskTicket $ticket) => $ticket->id === $guestTicket->id));
+
+        // Verify data association types
+        $authenticatedTickets = $tickets->filter(fn (HelpdeskTicket $ticket) => $ticket->user_id !== null);
+        $guestTickets = $tickets->filter(fn (HelpdeskTicket $ticket) => $ticket->user_id === null);
+
+        $this->assertCount(1, $authenticatedTickets, 'Should have 1 authenticated ticket (user_id linked)');
+        $this->assertCount(1, $guestTickets, 'Should have 1 guest ticket (user_id=NULL, email matched)');
     }
 
     #[Test]
-    public function cross_module_integration_is_created_when_ticket_links_to_asset_loan(): void
+    public function cross_module_integration_created_when_authenticated_ticket_links_to_asset_loan(): void
     {
         $division = Division::factory()->ict()->create();
         $category = TicketCategory::factory()->create([
@@ -178,7 +216,7 @@ class HybridHelpdeskWorkflowTest extends TestCase
             'sla_resolution_hours' => 18,
         ]);
         $user = User::factory()->create([
-            'email' => 'staff.maintenance@motac.gov.my',
+            'email' => 'ahmad.maintenance@motac.gov.my',
             'role' => 'staff',
             'division_id' => $division->id,
         ]);
@@ -186,20 +224,22 @@ class HybridHelpdeskWorkflowTest extends TestCase
         $loanApplication = LoanApplication::factory()
             ->authenticated()
             ->create([
-                'user_id' => $user->id,
+                'user_id' => $user->id, // Authenticated loan application
                 'division_id' => $division->id,
             ]);
 
+        // Create authenticated ticket (user_id linked)
         $ticket = $this->hybridHelpdeskService->createAuthenticatedTicket([
             'category_id' => $category->id,
             'priority' => 'high',
-            'subject' => 'Asset requires maintenance',
-            'description' => 'Projector lamp failure detected during inspection.',
+            'subject' => 'Aset memerlukan penyelenggaraan',
+            'description' => 'Kegagalan lampu projektor dikesan semasa pemeriksaan.',
             'asset_id' => $asset->id,
         ], $user);
 
-        $notificationService = \Mockery::mock(NotificationService::class)->shouldIgnoreMissing();
-        $this->app->instance(NotificationService::class, $notificationService);
+        // Verify this is an authenticated ticket (user_id linked)
+        $this->assertNotNull($ticket->user_id, 'Cross-module integration should work with authenticated tickets (user_id linked)');
+        $this->assertEquals($user->id, $ticket->user_id);
 
         $integrationService = app(CrossModuleIntegrationService::class);
         $integration = $integrationService->linkTicketToLoan($ticket, $loanApplication);
@@ -212,6 +252,7 @@ class HybridHelpdeskWorkflowTest extends TestCase
             'integration_type' => CrossModuleIntegration::TYPE_ASSET_TICKET_LINK,
             'trigger_event' => CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED,
         ]);
+
         $integrationData = $integration->integration_data;
         $this->assertIsArray($integrationData);
         $this->assertArrayHasKey('asset_id', $integrationData);

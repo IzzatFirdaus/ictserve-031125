@@ -6,10 +6,12 @@ Complete documentation for ICTServe system - BPM MOTAC ICT Management Platform.
 
 ### Docker Deployment
 
-- [Docker README](docker/README.md) - Overview and quick start
-- [Setup Guide](docker/SETUP.md) - Complete installation
-- [Architecture](docker/ARCHITECTURE.md) - Container design
-- [Troubleshooting](docker/TROUBLESHOOTING.md) - Common issues
+- **[Docker Documentation](docker/README.md)** - Overview and quick start
+  - [Setup Guide](docker/setup.md) - Complete installation
+  - [Architecture](docker/architecture.md) - Container design
+  - [Troubleshooting](docker/troubleshooting.md) - Common issues
+  - [Windows Guide](docker/windows.md) - Windows-specific instructions
+  - [Container Specs](docker/container-specs.md) - Container specifications
 
 ### System Documentation (D00-D17)
 
@@ -34,8 +36,16 @@ Complete documentation for ICTServe system - BPM MOTAC ICT Management Platform.
 
 ### Technical References
 
-- [Performance Guide](reference/performance-optimization-guide.md) - Optimization
-- [Deployment Checklist](reference/deployment-checklist.md) - Production deployment
+- **[Reference Documentation](reference/README.md)** - Setup guides and operational procedures
+  - [Laragon Setup](reference/laragon-setup.md)
+  - [Laravel Boost Setup](reference/laravel-boost-setup.md)
+  - [Virtual Host Setup](reference/vhost-setup-guide.md)
+  - [Deployment Checklist](reference/deployment-checklist.md)
+  - [Performance Guide](reference/performance-optimization-guide.md)
+  - [Production Troubleshooting](reference/troubleshooting-production.md)
+
+### Additional Resources
+
 - [Glossary](GLOSSARY.md) - Terminology
 - [Index](INDEX.md) - Complete documentation index
 
@@ -48,14 +58,25 @@ docs/
 │   ├── SETUP.md
 │   ├── ARCHITECTURE.md
 │   ├── TROUBLESHOOTING.md
-│   ├── SUCCESS.md       # Deployment verification
-│   ├── UPDATE_PLAN.md   # Update history
-│   └── NEXT_STEPS.md    # Future improvements
+│   └── (deployment docs)
 │
 ├── reference/           # Technical references
-│   └── (various guides)
+│   ├── README.md
+│   ├── laragon-setup.md
+│   ├── laravel-boost-setup.md
+│   ├── vhost-setup-guide.md
+│   ├── deployment-checklist.md
+│   ├── performance-optimization-guide.md
+│   ├── troubleshooting-production.md
+│   ├── rtm/             # Requirements traceability
+│   └── legacy/          # Archived docs
 │
-└── D00-D17 docs         # System documentation
+├── mcp/                 # MCP server documentation
+├── frontend/            # Frontend guides
+├── security/            # Security documentation
+├── api/                 # API documentation
+│
+└── D00-D17.md           # System documentation
 ```
 
 ## Getting Started
@@ -133,6 +154,7 @@ When updating documentation:
 
 | Version | Date       | Description                                       |
 | ------- | ---------- | ------------------------------------------------- |
+| v3.5.0  | 2025-12-05 | Reference docs reorganization |
 | v3.1.0  | 2025-11-29 | Added D17 Queue Management, documentation cleanup |
 | v3.0.0  | 2025-01-25 | Docker deployment integration                     |
 | v2.0.0  | 2024-11-01 | Complete D00-D16 documentation                    |
@@ -140,5 +162,5 @@ When updating documentation:
 
 ---
 
-**Last Updated**: 2025-11-29
+**Last Updated**: 2025-12-05  
 **Maintained By**: BPM MOTAC ICT Team

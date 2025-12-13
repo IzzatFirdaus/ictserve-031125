@@ -7,10 +7,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Sanctum\PersonalAccessToken;
 use OwenIt\Auditing\Contracts\Auditable;
-
-// TODO: Install Laravel Sanctum (composer require laravel/sanctum)
-// use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * ApiTokenUsageLog Model - v3.5.0 True Hybrid Architecture
@@ -72,14 +70,12 @@ class ApiTokenUsageLog extends Model implements Auditable
 
     /**
      * Get the personal access token this log belongs to
-     * TODO: Update return type when Laravel Sanctum is installed
      *
-     * @return BelongsTo<Model, ApiTokenUsageLog>
+     * @return BelongsTo<PersonalAccessToken, ApiTokenUsageLog>
      */
     public function personalAccessToken(): BelongsTo
     {
-        // TODO: Update to PersonalAccessToken::class when Sanctum is installed
-        return $this->belongsTo(Model::class, 'personal_access_token_id');
+        return $this->belongsTo(PersonalAccessToken::class, 'personal_access_token_id');
     }
 
     /**

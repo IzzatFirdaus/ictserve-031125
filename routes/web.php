@@ -4,11 +4,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/dev/components', function () {
     return view('dev.components');
 })->name('dev.components');
+
+Route::get('/dev/figma-examples', function () {
+    return view('examples.figma-button-examples');
+})->name('dev.figma-examples');
+
+// Temporary Verification Route
+Route::get('/admin-login-verify', function () {
+    return view('admin.admin_login_full');
+});
 // Public Information Pages (No Authentication Required)
 Route::view('/accessibility', 'pages.accessibility')->name('accessibility');
 Route::view('/contact', 'pages.contact')->name('contact');
@@ -39,6 +48,43 @@ Route::prefix('loan')->name('loan.guest.')->middleware(['guest.ratelimit'])->gro
     Route::get('/tracking/{applicationNumber?}', App\Livewire\GuestLoanTracking::class)->name('tracking');
     Route::get('/track-application', App\Livewire\GuestLoanTracking::class)->name('track-token');
 });
+
+// Loan Application - New 3-step wizard (v3.6.0)
+Route::get('/loan/create', App\Livewire\Loans\SubmitApplication::class)
+    ->middleware(['guest.ratelimit'])
+    ->name('loan.create');
+
+// Legacy 7-step form (deprecated, kept for reference)
+Route::get('/loan/create-legacy', App\Livewire\GuestLoanApplication::class)
+    ->middleware(['guest.ratelimit'])
+    ->name('loan.create.legacy');
+
+// Loan Application Wizard (v3.5.0 True Hybrid - Multi-step wizard)
+// @see Requirements 3.1, 3.2, 3.4, 24.2, 25.1, 25.2, 25.3, 25.6
+Route::prefix('loan')->name('loan.')->middleware(['guest.ratelimit'])->group(function () {
+    Route::get('/wizard', App\Livewire\GuestLoanApplication::class)->name('wizard');
+    Route::get('/success', fn () => view('loan.success'))->name('success');
+});
+
+// Unified Status Checker (Token-based lookup for tickets and loans) - v3.5.0 True Hybrid
+// @see Requirements 2.1, 2.2
+Route::prefix('status')->name('status.')->middleware(['guest.ratelimit'])->group(function () {
+    Route::get('/', App\Livewire\Status\StatusChecker::class)->name('check');
+    Route::get('/{token}', App\Livewire\Status\StatusChecker::class)->name('check.token');
+});
+
+// ICT Staff Directory - Contact information for BPM ICT support
+// @see figma-ui-redesign Requirements 31
+Route::get('/directory', App\Livewire\Directory\StaffDirectory::class)->name('directory');
+
+// ============================================================================
+// AI FAQ BOT ROUTES (v3.6.0 Ollama Integration)
+// ============================================================================
+// @trace D03-FR-AI-001 (FAQ Bot System)
+// @trace D00 v3.6.0 (True Hybrid Architecture - Guest + Authenticated Access)
+
+// Public FAQ Bot - Accessible without authentication (Guest Access)
+Route::get('/ai/faq', App\Livewire\Ollama\FaqBot::class)->name('ai.faq');
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +130,11 @@ Route::get('dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+// Account Linking at /dashboard/link-submissions per Requirement 18.1
+Route::get('dashboard/link-submissions', App\Livewire\Staff\AccountLinking::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.link-submissions');
+
 // Portal Routes (Alias for Staff Routes)
 Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->group(function () {
     Route::get('/dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)->name('dashboard');
@@ -96,6 +147,10 @@ Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->grou
         ->name('submissions.export-pdf');
     Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals');
     Route::get('/delegations', App\Livewire\Staff\DelegationManager::class)->name('delegations');
+
+    // Account Linking (v3.5.0 True Hybrid - Link historical guest submissions)
+    // @see Requirements 18.1, 18.2, 18.3, 18.4, 18.5
+    Route::get('/link-submissions', App\Livewire\Staff\AccountLinking::class)->name('link-submissions');
 });
 
 Route::view('profile', 'profile')
@@ -120,6 +175,10 @@ Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.'
     // Submission Management
     Route::get('/history', App\Livewire\Staff\SubmissionHistory::class)->name('history');
     Route::get('/claim-submissions', App\Livewire\Staff\ClaimSubmissions::class)->name('claim-submissions');
+
+    // Account Linking (v3.5.0 True Hybrid - Link historical guest submissions)
+    // @see Requirements 18.1, 18.2, 18.3, 18.4, 18.5
+    Route::get('/link-submissions', App\Livewire\Staff\AccountLinking::class)->name('link-submissions');
 
     // My Submissions (alias)
     Route::get('/my-submissions', App\Livewire\Staff\SubmissionHistory::class)->name('my-submissions');
@@ -169,13 +228,27 @@ Route::middleware(['auth', 'verified'])->prefix('loans')->name('loans.')->group(
     Route::get('/history', App\Livewire\Loans\LoanHistory::class)->name('history');
 });
 
+// Loan history alias for compatibility with dashboard links and tests
+Route::middleware(['auth', 'verified'])
+    ->get('/loan/history', App\Livewire\Loans\LoanHistory::class)
+    ->name('loan.history');
+
 // Email Approval Routes (No Authentication Required)
 Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
+    // v3.5.0 Volt Component - Guest-accessible approval page per Requirements 4.2, 4.3
+    Route::get('/review/{token}', fn (string $token) => view('livewire.loan.approval-page', ['token' => $token]))
+        ->name('review');
+
+    // Legacy controller-based routes (kept for backward compatibility)
     Route::get('/approve/{token}', [App\Http\Controllers\LoanApprovalController::class, 'showApprovalForm'])->name('approve');
     Route::post('/approve', [App\Http\Controllers\LoanApprovalController::class, 'approve'])->name('approve.process');
     Route::get('/decline/{token}', [App\Http\Controllers\LoanApprovalController::class, 'showDeclineForm'])->name('decline');
     Route::post('/decline', [App\Http\Controllers\LoanApprovalController::class, 'decline'])->name('decline.process');
 });
+
+// Responsible Officer Sponsorship Routes (No Authentication Required)
+Route::get('/loan/sponsorship/acknowledge/{token}', [App\Http\Controllers\LoanSponsorshipController::class, 'acknowledge'])
+    ->name('loan.sponsorship.acknowledge');
 
 // Email Approval Workflow Routes (Test Support)
 Route::get('/loan/approve', [App\Http\Controllers\LoanApprovalController::class, 'processApproval'])->name('loan.approve');
@@ -231,6 +304,31 @@ Route::middleware(['auth', 'verified'])->prefix('admin/analytics')->name('admin.
 });
 
 Route::get('/bedrock-chat/{id?}', App\Livewire\BedrockChat::class)->name('bedrock.chat');
+
+// AI FAQ Bot Routes (True Hybrid Architecture - D00 v3.6.0)
+// Supports both guest and authenticated access with Bahasa Melayu sahaja (D15 v3.6.0)
+Route::prefix('ai')->name('ai.')->middleware(['guest.ratelimit'])->group(function () {
+    // FAQ Bot - Main interface (guest + authenticated access)
+    Route::get('/faq', App\Livewire\Ollama\FaqBot::class)->name('faq');
+
+    // FAQ Bot - Embedded widget (for floating chat bot)
+    Route::get('/faq/widget', App\Livewire\Ollama\FaqBotWidget::class)->name('faq.widget');
+
+    // FAQ Bot - API endpoint for AJAX requests
+    Route::post('/faq/query', [App\Http\Controllers\Api\FaqController::class, 'query'])->name('faq.query');
+});
+
+// Authenticated AI Routes (Enhanced features for logged-in users)
+Route::middleware(['auth', 'verified'])->prefix('ai')->name('ai.authenticated.')->group(function () {
+    // AI Dashboard with conversation history
+    Route::get('/dashboard', App\Livewire\Ollama\AIDashboard::class)->name('dashboard');
+
+    // Conversation history management
+    Route::get('/conversations', App\Livewire\Ollama\ConversationHistory::class)->name('conversations');
+
+    // Account linking for guest conversations
+    Route::get('/link-conversations', App\Livewire\Ollama\LinkConversations::class)->name('link-conversations');
+});
 
 require __DIR__.'/auth.php';
 

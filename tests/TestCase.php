@@ -6,6 +6,7 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\File;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -14,6 +15,8 @@ abstract class TestCase extends BaseTestCase
     /** @var bool Prevent automatic database seeding for all tests */
     protected $seed = false;
 
+    protected static bool $viewsInitialized = false;
+
     /**
      * Setup the test environment.
      */
@@ -21,8 +24,25 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        // Clear view cache to prevent Filament component pollution
-        $this->artisan('view:clear');
+        if (! static::$viewsInitialized) {
+            // Clear compiled views once to prevent Filament component pollution
+            // Skip view:cache on Windows due to file locking issues that cause test timeouts
+            $this->artisan('view:clear');
+
+            $compiledViewPath = storage_path('framework/views_testing');
+            File::ensureDirectoryExists($compiledViewPath);
+            File::cleanDirectory($compiledViewPath);
+
+            // Normalize permissions on compiled Volt views to avoid Windows access issues during tests
+            @chmod($compiledViewPath, 0777);
+            foreach (File::glob("{$compiledViewPath}/*") as $viewFile) {
+                @chmod($viewFile, 0666);
+            }
+
+            // Note: view:cache is skipped to prevent Windows file locking timeouts
+            // Views will be compiled on-demand during tests
+            static::$viewsInitialized = true;
+        }
 
         // Create roles and permissions for all tests
         $this->createRolesAndPermissions();
@@ -34,7 +54,7 @@ abstract class TestCase extends BaseTestCase
         ];
 
         foreach ($filamentViews as $view) {
-            $backup = $view.'.backup';
+            $backup = $view . '.backup';
             if (file_exists($view) && ! file_exists($backup)) {
                 // Use @ to suppress file system errors (file may be locked on Windows)
                 @rename($view, $backup);
@@ -88,7 +108,7 @@ abstract class TestCase extends BaseTestCase
         ];
 
         foreach ($filamentViews as $view) {
-            $backup = $view.'.backup';
+            $backup = $view . '.backup';
             if (file_exists($backup)) {
                 // Use @ to suppress file system errors (file may be locked on Windows)
                 @rename($backup, $view);

@@ -36,7 +36,7 @@ enum LoanStatus: string
      */
     public function label(): string
     {
-        return match ($this) {
+        return (string) match ($this) {
             self::DRAFT => __('loan.status.draft'),
             self::SUBMITTED => __('loan.status.submitted'),
             self::UNDER_REVIEW => __('loan.status.under_review'),

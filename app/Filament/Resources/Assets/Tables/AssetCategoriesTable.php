@@ -53,7 +53,7 @@ class AssetCategoriesTable
                     ->label('Status'),
             ])
             ->defaultSort('sort_order')
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),

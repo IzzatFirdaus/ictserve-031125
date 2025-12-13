@@ -20,6 +20,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -56,7 +57,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test creating maintenance ticket for damaged asset.
      */
-    public function test_create_maintenance_ticket_for_damaged_asset(): void
+    #[Test]
+    public function create_maintenance_ticket_for_damaged_asset(): void
     {
         $user = User::factory()->create();
         $asset = Asset::factory()->create([
@@ -96,7 +98,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test get unified asset history returns combined loan and ticket history.
      */
-    public function test_get_unified_asset_history_returns_combined_history(): void
+    #[Test]
+    public function get_unified_asset_history_returns_combined_history(): void
     {
         $user = User::factory()->create();
         $asset = Asset::factory()->create();
@@ -134,7 +137,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test link ticket to loan creates integration record.
      */
-    public function test_link_ticket_to_loan_creates_integration_record(): void
+    #[Test]
+    public function link_ticket_to_loan_creates_integration_record(): void
     {
         $user = User::factory()->create();
         $asset = Asset::factory()->create();
@@ -158,7 +162,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test has pending maintenance tickets returns true when tickets exist.
      */
-    public function test_has_pending_maintenance_tickets_returns_true_when_tickets_exist(): void
+    #[Test]
+    public function has_pending_maintenance_tickets_returns_true_when_tickets_exist(): void
     {
         $asset = Asset::factory()->create();
 
@@ -182,7 +187,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test has pending maintenance tickets returns false when no tickets.
      */
-    public function test_has_pending_maintenance_tickets_returns_false_when_no_tickets(): void
+    #[Test]
+    public function has_pending_maintenance_tickets_returns_false_when_no_tickets(): void
     {
         $asset = Asset::factory()->create();
 
@@ -194,7 +200,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test get asset maintenance stats returns correct statistics.
      */
-    public function test_get_asset_maintenance_stats_returns_correct_statistics(): void
+    #[Test]
+    public function get_asset_maintenance_stats_returns_correct_statistics(): void
     {
         $asset = Asset::factory()->create();
 
@@ -228,7 +235,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test sync asset status updates to maintenance when tickets exist.
      */
-    public function test_sync_asset_status_updates_to_maintenance_when_tickets_exist(): void
+    #[Test]
+    public function sync_asset_status_updates_to_maintenance_when_tickets_exist(): void
     {
         $asset = Asset::factory()->create([
             'status' => AssetStatus::AVAILABLE,
@@ -255,7 +263,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test sync asset status updates to available when no tickets.
      */
-    public function test_sync_asset_status_updates_to_available_when_no_tickets(): void
+    #[Test]
+    public function sync_asset_status_updates_to_available_when_no_tickets(): void
     {
         $asset = Asset::factory()->create([
             'status' => AssetStatus::MAINTENANCE,
@@ -270,7 +279,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test schedule maintenance creates ticket with scheduled date.
      */
-    public function test_schedule_maintenance_creates_ticket_with_scheduled_date(): void
+    #[Test]
+    public function schedule_maintenance_creates_ticket_with_scheduled_date(): void
     {
         $asset = Asset::factory()->create([
             'name' => 'Test Projector',
@@ -280,7 +290,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $scheduledDate = now()->addDays(7);
         $maintenanceData = [
             'description' => 'Quarterly preventive maintenance',
-            'priority' => 'medium',
+            'priority' => 'normal',
             'scheduled_date' => $scheduledDate,
         ];
 
@@ -288,7 +298,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
 
         $this->assertInstanceOf(HelpdeskTicket::class, $ticket);
         $this->assertStringContainsString('Scheduled Maintenance', $ticket->subject);
-        $this->assertEquals('medium', $ticket->priority);
+        $this->assertEquals('normal', $ticket->priority);
 
         // Verify asset next maintenance date updated
         $asset->refresh();
@@ -298,7 +308,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test get unified analytics returns all module metrics.
      */
-    public function test_get_unified_analytics_returns_all_module_metrics(): void
+    #[Test]
+    public function get_unified_analytics_returns_all_module_metrics(): void
     {
         // Create some test data
         $user = User::factory()->create();
@@ -322,7 +333,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test unified search returns results from all modules.
      */
-    public function test_unified_search_returns_results_from_all_modules(): void
+    #[Test]
+    public function unified_search_returns_results_from_all_modules(): void
     {
         $user = User::factory()->create();
 
@@ -358,7 +370,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test get ticket integrations returns related integrations.
      */
-    public function test_get_ticket_integrations_returns_related_integrations(): void
+    #[Test]
+    public function get_ticket_integrations_returns_related_integrations(): void
     {
         $user = User::factory()->create();
         $ticket = HelpdeskTicket::factory()->create();
@@ -378,7 +391,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
     /**
      * Test get loan integrations returns related integrations.
      */
-    public function test_get_loan_integrations_returns_related_integrations(): void
+    #[Test]
+    public function get_loan_integrations_returns_related_integrations(): void
     {
         $user = User::factory()->create();
         $ticket = HelpdeskTicket::factory()->create();

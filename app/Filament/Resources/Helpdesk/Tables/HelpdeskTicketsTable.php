@@ -25,6 +25,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Excel as ExcelFormat;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Helpdesk Ticket table definition with SLA indicators and bulk workflows.
@@ -38,32 +42,32 @@ class HelpdeskTicketsTable
             ->recordUrl(null)
             ->columns([
                 Tables\Columns\TextColumn::make('ticket_number')
-                    ->label(__('helpdesk.ticket_number'))
+                    ->label((string) __('helpdesk.ticket_number'))
                     ->searchable()
                     ->sortable(),
 
                 // Hybrid submission type badge
                 Tables\Columns\TextColumn::make('submission_type')
-                    ->label(__('helpdesk.submission_type'))
+                    ->label((string) __('helpdesk.submission_type'))
                     ->badge()
-                    ->state(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? __('helpdesk.submission_type_guest') : __('helpdesk.submission_type_authenticated'))
+                    ->state(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? (string) __('helpdesk.submission_type_guest') : (string) __('helpdesk.submission_type_authenticated'))
                     ->color(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'warning' : 'success')
                     ->icon(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'heroicon-o-user' : 'heroicon-o-user-circle')
                     ->tooltip(fn (HelpdeskTicket $record): string => $record->isGuestSubmission()
-                        ? __('helpdesk.submission_tooltip_guest', ['name' => $record->guest_name, 'email' => $record->guest_email])
-                        : __('helpdesk.submission_tooltip_authenticated', ['name' => $record->user?->name, 'email' => $record->user?->email]))
+                        ? (string) __('helpdesk.submission_tooltip_guest', ['name' => $record->guest_name, 'email' => $record->guest_email])
+                        : (string) __('helpdesk.submission_tooltip_authenticated', ['name' => $record->user?->name, 'email' => $record->user?->email]))
                     ->sortable(query: fn ($query, $direction) => $query->orderByRaw("CASE WHEN user_id IS NULL THEN 0 ELSE 1 END {$direction}")),
 
                 Tables\Columns\TextColumn::make('subject')
-                    ->label(__('helpdesk.subject'))
+                    ->label((string) __('helpdesk.subject'))
                     ->limit(40)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category.name_ms')
-                    ->label(__('helpdesk.category'))
+                    ->label((string) __('helpdesk.category'))
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('priority')
-                    ->label(__('helpdesk.priority'))
+                    ->label((string) __('helpdesk.priority'))
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
                         'low' => 'gray',
@@ -110,7 +114,8 @@ class HelpdeskTicketsTable
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
 
-                // SLA status indicator used by tests ("overdue" when due date passed)
+                // SLA status indicator with warning for approaching breach (25% remaining time)
+                // Per Requirements 5.5 - SLA indicators and warning display
                 Tables\Columns\TextColumn::make('sla_status')
                     ->label(__('helpdesk.sla_status'))
                     ->state(function (HelpdeskTicket $record): string {
@@ -130,10 +135,61 @@ class HelpdeskTicketsTable
                             }
                         }
 
-                        return ($dueAt && now()->greaterThan($dueAt)) ? 'overdue' : 'ok';
+                        if (! $dueAt) {
+                            return 'ok';
+                        }
+
+                        $now = now();
+
+                        // Check if already breached
+                        if ($now->greaterThan($dueAt)) {
+                            return 'overdue';
+                        }
+
+                        // Check if approaching breach (25% remaining time)
+                        // Calculate total SLA duration and remaining time
+                        $createdAt = $record->created_at;
+                        if ($createdAt instanceof Carbon) {
+                            $totalDuration = $createdAt->diffInMinutes($dueAt);
+                            $remainingTime = $now->diffInMinutes($dueAt, false);
+                            $percentRemaining = $totalDuration > 0 ? ($remainingTime / $totalDuration) * 100 : 0;
+
+                            if ($percentRemaining <= 25 && $percentRemaining > 0) {
+                                return 'at_risk';
+                            }
+                        }
+
+                        return 'ok';
                     })
                     ->badge()
-                    ->color(fn (string $state) => $state === 'overdue' ? 'danger' : 'success')
+                    ->color(fn (string $state) => match ($state) {
+                        'overdue' => 'danger',
+                        'at_risk' => 'warning',
+                        default => 'success',
+                    })
+                    ->icon(fn (string $state) => match ($state) {
+                        'overdue' => 'heroicon-o-exclamation-triangle',
+                        'at_risk' => 'heroicon-o-clock',
+                        default => 'heroicon-o-check-circle',
+                    })
+                    ->formatStateUsing(fn (string $state) => match ($state) {
+                        'overdue' => __('helpdesk.sla_overdue'),
+                        'at_risk' => __('helpdesk.sla_at_risk'),
+                        default => __('helpdesk.sla_on_track'),
+                    })
+                    ->tooltip(function (HelpdeskTicket $record): ?string {
+                        $dueAt = $record->sla_resolution_due_at;
+                        if (! $dueAt) {
+                            return null;
+                        }
+
+                        $now = now();
+                        if ($now->greaterThan($dueAt)) {
+                            return __('helpdesk.sla_breached_tooltip', ['time' => $dueAt->diffForHumans()]);
+                        }
+
+                        return __('helpdesk.sla_due_tooltip', ['time' => $dueAt->diffForHumans()]);
+                    })
                     ->toggleable(),
             ])
             ->filters([
@@ -195,12 +251,37 @@ class HelpdeskTicketsTable
                     ->preload()
                     ->multiple(),
 
-                // Enhanced SLA filter with better visibility
+                // Enhanced SLA filter with better visibility - Per Requirements 5.5
+                Tables\Filters\SelectFilter::make('sla_status')
+                    ->label(__('helpdesk.sla_status'))
+                    ->options([
+                        'breached' => '🔴 '.__('helpdesk.sla_overdue'),
+                        'at_risk' => '🟡 '.__('helpdesk.sla_at_risk'),
+                        'on_track' => '🟢 '.__('helpdesk.sla_on_track'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        $now = now();
+
+                        return match ($data['value'] ?? null) {
+                            'breached' => $query->whereNotNull('sla_resolution_due_at')
+                                ->where('sla_resolution_due_at', '<', $now),
+                            'at_risk' => $query->whereNotNull('sla_resolution_due_at')
+                                ->where('sla_resolution_due_at', '>=', $now)
+                                ->whereRaw('TIMESTAMPDIFF(MINUTE, created_at, sla_resolution_due_at) * 0.25 >= TIMESTAMPDIFF(MINUTE, ?, sla_resolution_due_at)', [$now]),
+                            'on_track' => $query->where(function ($q) use ($now) {
+                                $q->whereNull('sla_resolution_due_at')
+                                    ->orWhere('sla_resolution_due_at', '>', $now);
+                            }),
+                            default => $query,
+                        };
+                    })
+                    ->indicator(__('helpdesk.filter_indicator_sla')),
+
                 Tables\Filters\Filter::make('sla_breached')
                     ->label(__('helpdesk.filter_sla_breached'))
                     ->query(fn ($query) => $query->whereNotNull('sla_resolution_due_at')->where('sla_resolution_due_at', '<', now()))
                     ->toggle()
-                    ->indicator(__('helpdesk.filter_indicator_sla')),
+                    ->indicator(__('helpdesk.filter_indicator_sla_breached')),
 
                 // Additional useful filters
                 Tables\Filters\Filter::make('unassigned')
@@ -229,10 +310,10 @@ class HelpdeskTicketsTable
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if ($data['created_from'] ?? null) {
-                            $indicators[] = __('helpdesk.date_from').': '.\Carbon\Carbon::parse($data['created_from'])->format('d M Y');
+                            $indicators[] = __('helpdesk.date_from').': '.Carbon::parse($data['created_from'])->format('d M Y');
                         }
                         if ($data['created_until'] ?? null) {
-                            $indicators[] = __('helpdesk.date_to').': '.\Carbon\Carbon::parse($data['created_until'])->format('d M Y');
+                            $indicators[] = __('helpdesk.date_to').': '.Carbon::parse($data['created_until'])->format('d M Y');
                         }
 
                         return $indicators;
@@ -248,11 +329,12 @@ class HelpdeskTicketsTable
             ])
             ->persistFiltersInSession()
             ->poll('60s')
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 AssignTicketAction::make(),
                 \Filament\Actions\DeleteAction::make()
                     ->visible(fn (HelpdeskTicket $record) => Auth::user()?->can('delete', $record) === true),
+                // Status update action with required comment per Requirements 5.3
                 Action::make('updateStatus')
                     ->label(__('helpdesk.update_status'))
                     ->icon('heroicon-o-arrow-path')
@@ -273,7 +355,9 @@ class HelpdeskTicketsTable
                             Textarea::make('notes')
                                 ->label(__('helpdesk.status_change_notes'))
                                 ->rows(3)
-                                ->helperText(__('helpdesk.status_update_notes_helper')),
+                                ->required() // Per Requirements 5.3 - Status management with required comment
+                                ->minLength(10)
+                                ->helperText(__('helpdesk.status_update_notes_required_helper')),
                         ];
                     })
                     ->action(function (HelpdeskTicket $record, array $data) {
@@ -423,15 +507,71 @@ class HelpdeskTicketsTable
                             $format = $data['format'];
                             $filename = 'helpdesk-tickets-'.now()->format('Y-m-d-His').'.'.$format;
 
-                            // Export logic would go here
-                            // For now, just show notification
+                            if ($records->isEmpty()) {
+                                Notification::make()
+                                    ->title(__('helpdesk.error_title'))
+                                    ->danger()
+                                    ->body(__('No tickets selected for export.'))
+                                    ->send();
+
+                                return null;
+                            }
+
+                            $rows = $records->map(function (HelpdeskTicket $ticket): array {
+                                $category = app()->getLocale() === 'ms'
+                                    ? $ticket->category?->name_ms
+                                    : $ticket->category?->name_en;
+
+                                $division = app()->getLocale() === 'ms'
+                                    ? $ticket->assignedDivision?->name_ms
+                                    : $ticket->assignedDivision?->name_en;
+
+                                return [
+                                    __('helpdesk.ticket_number') => $ticket->ticket_number,
+                                    __('helpdesk.subject') => $ticket->subject,
+                                    __('helpdesk.status') => ucfirst(str_replace('_', ' ', $ticket->status)),
+                                    __('helpdesk.priority') => ucfirst($ticket->priority),
+                                    __('helpdesk.submission_type') => $ticket->isGuestSubmission()
+                                        ? __('helpdesk.submission_type_guest')
+                                        : __('helpdesk.submission_type_authenticated'),
+                                    __('helpdesk.category') => $category ?? '-',
+                                    __('helpdesk.assigned_to') => $ticket->assignedUser?->name ?? '-',
+                                    __('helpdesk.assigned_division') => $division ?? '-',
+                                    __('helpdesk.created_at') => $ticket->created_at?->format('Y-m-d H:i:s') ?? '-',
+                                    __('helpdesk.sla_resolution_due_at') => $ticket->sla_resolution_due_at?->format('Y-m-d H:i:s') ?? '-',
+                                ];
+                            });
+
+                            $export = new class($rows) implements FromCollection, WithHeadings
+                            {
+                                public function __construct(private readonly Collection $rows) {}
+
+                                public function collection(): Collection
+                                {
+                                    return $this->rows;
+                                }
+
+                                public function headings(): array
+                                {
+                                    return $this->rows->isNotEmpty()
+                                        ? array_keys($this->rows->first())
+                                        : [];
+                                }
+                            };
+
+                            $writerType = match ($format) {
+                                'xlsx' => ExcelFormat::XLSX,
+                                'pdf' => ExcelFormat::DOMPDF,
+                                default => ExcelFormat::CSV,
+                            };
+
                             Notification::make()
                                 ->title(__('helpdesk.export_initiated'))
                                 ->success()
                                 ->body(__('helpdesk.bulk_export_count', ['count' => $records->count(), 'format' => $format]))
                                 ->send();
 
-                            // TODO: Implement actual export functionality
+                            return Excel::download($export, $filename, $writerType);
                         }),
 
                     BulkAction::make('close')

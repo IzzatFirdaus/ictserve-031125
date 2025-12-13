@@ -22,7 +22,6 @@ docker build --no-cache -t test . 2>&1 | grep "transferring context"
 ```
 vendor/
 node_modules/
-Mimir/
 docs/
 tests/
 storage/logs/

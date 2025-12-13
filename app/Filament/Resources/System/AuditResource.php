@@ -6,13 +6,16 @@ namespace App\Filament\Resources\System;
 
 use App\Filament\Clusters\System as SystemCluster;
 use App\Filament\Resources\System\AuditResource\Pages;
-use Filament\Actions;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use OwenIt\Auditing\Models\Audit;
 
 /**
@@ -48,12 +51,12 @@ class AuditResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     public static function canViewAny(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     public static function canCreate(): bool
@@ -65,8 +68,8 @@ class AuditResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Audit Information')
-                    ->schema([
+                Section::make('Audit Information')
+                    ->components([
                         Forms\Components\TextInput::make('auditable_type')
                             ->label('Entity Type')
                             ->disabled(),
@@ -98,8 +101,8 @@ class AuditResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Change Details')
-                    ->schema([
+                Section::make('Change Details')
+                    ->components([
                         Forms\Components\KeyValue::make('old_values')
                             ->label('Previous Values')
                             ->disabled(),
@@ -202,7 +205,7 @@ class AuditResource extends Resource
 
                 Tables\Filters\Filter::make('created_at')
                     ->label('Date Range')
-                    ->form([
+                    ->schema([
                         Forms\Components\DatePicker::make('created_from')
                             ->label('From Date'),
                         Forms\Components\DatePicker::make('created_until')
@@ -233,7 +236,7 @@ class AuditResource extends Resource
 
                 Tables\Filters\Filter::make('ip_address')
                     ->label('IP Address')
-                    ->form([
+                    ->schema([
                         Forms\Components\TextInput::make('ip_address')
                             ->label('IP Address')
                             ->placeholder('192.168.1.1'),
@@ -245,13 +248,13 @@ class AuditResource extends Resource
                         );
                     }),
             ])
-            ->actions([
-                Actions\ViewAction::make()
+            ->recordActions([
+                ViewAction::make()
                     ->label('View Details'),
             ])
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    \Filament\Actions\ExportBulkAction::make()
                         ->label('Export Selected')
                         ->icon('heroicon-o-arrow-down-tray'),
                 ]),

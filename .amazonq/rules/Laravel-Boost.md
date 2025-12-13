@@ -39,7 +39,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/breeze (BREEZE) - v2.3.8
 - laravel/mcp (MCP) - v0.3.4
 - laravel/pint (PINT) - v1.26.0
-- phpunit/phpunit (PHPUNIT) - v11.5.44
+- phpunit/phpunit (PHPUNIT) - v12.x
 - alpinejs (ALPINEJS) - v3
 - laravel-echo (ECHO) - v2.2.6
 - tailwindcss (TAILWINDCSS) - v4.1.17
@@ -538,8 +538,10 @@ $delete = fn(Product $product) => $product->delete();
 
 ## PHPUnit Core
 
-- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use `php artisan make:test --phpunit <name>` to create a new test.
-- If you see a test using "Pest", convert it to PHPUnit.
+- This application uses PHPUnit 12 for testing. All tests must be written as PHPUnit classes using PHP 8 attributes.
+- Use `php artisan make:test --phpunit <name>` to create a new test.
+- **CRITICAL**: Use PHP 8 attributes (`#[Test]`, `#[DataProvider]`) instead of deprecated PHPDoc annotations (`@test`, `@dataProvider`).
+- If you see a test using "Pest" or deprecated PHPDoc annotations, convert it to PHPUnit 12 with attributes.
 - Every time a test has been updated, run that singular test.
 - When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
 - Tests should test all of the happy paths, failure paths, and weird paths.

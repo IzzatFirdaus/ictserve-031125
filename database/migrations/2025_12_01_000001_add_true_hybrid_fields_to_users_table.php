@@ -68,6 +68,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Drop indexes first
+            $table->dropUnique('users_google_id_unique');
             $table->dropIndex('idx_users_google_id');
             $table->dropIndex('idx_users_locale');
             $table->dropIndex('idx_users_staff_number');

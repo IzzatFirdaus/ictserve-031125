@@ -87,31 +87,31 @@ class AdminPanelProvider extends PanelProvider
                         width: 1.5rem;
                         height: 1.5rem;
                     }
-                    
+
                     /* Notification icon sizing */
                     .fi-no-icon svg {
                         width: 1.25rem;
                         height: 1.25rem;
                     }
-                    
+
                     /* Table action icons */
                     .fi-ta-icon svg {
                         width: 1.25rem;
                         height: 1.25rem;
                     }
-                    
+
                     /* Global search improvements */
                     [x-data*="globalSearchPanel"] .fi-global-search-input {
                         padding: 0.75rem 1rem;
                     }
-                    
+
                     [x-data*="globalSearchPanel"] .fi-global-search-no-results {
                         text-align: center;
                         padding: 2rem 1rem;
                         color: rgb(107 114 128);
                         font-size: 0.875rem;
                     }
-                    
+
                     [x-data*="globalSearchPanel"] .fi-global-search-results {
                         padding: 0.5rem;
                     }
@@ -145,9 +145,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->authGuard('web')
             ->login()
-            // Use default Filament CSS from vendor/published assets; do not load
-            // the custom theme CSS so Filament's default styles are used consistently.
-            // (theme.css intentionally removed — environment should keep vendor CSS)
+            // MOTAC Branding Theme (Requirements 5.1, D14 §4.1)
+            // Custom theme CSS for WCAG 2.2 AA compliance and MOTAC branding
+            ->viteTheme('resources/css/filament/admin/theme.css')
             // WCAG 2.2 AA Compliant Color Palette (Requirements 14.1, 15.1)
             ->colors([
                 'primary' => Color::hex('#0056b3'),   // 6.8:1 contrast ratio
@@ -155,11 +155,12 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::hex('#ff8c00'),   // 4.5:1 contrast ratio
                 'danger' => Color::hex('#b50c0c'),    // 8.2:1 contrast ratio
             ])
-            // Branding Configuration (Requirements 16.1)
+            // Branding Configuration (Requirements 16.1, 21.4)
             ->brandName('ICTServe Admin')
-            ->brandLogo(asset('images/motac-logo.jpeg'))
+            ->brandLogo(asset('images/motac-logo.png'))
             ->brandLogoHeight('2.5rem')
-            ->favicon(asset('images/favicon.ico'))
+            ->darkModeBrandLogo(asset('images/motac-logo.png'))
+            ->favicon(asset('favicon.ico'))
             // Navigation Groups (Requirements 16.1)
             ->navigationGroups([
                 NavigationGroup::make(__('filament::navigation.operations'))

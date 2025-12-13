@@ -26,7 +26,7 @@ class AssetDueTodayReminder extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('asset_loan.email.due_today_subject', [
+            subject: (string) __('asset_loan.email.due_today_subject', [
                 'application_number' => $this->application->application_number,
             ]),
         );

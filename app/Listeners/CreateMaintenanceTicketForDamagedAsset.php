@@ -9,11 +9,15 @@ use App\Events\AssetReturnedDamaged;
 use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
+use App\Models\User;
+use App\Mail\SystemAlertMail;
 use App\Services\Notifications\TicketNotificationService;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Create Maintenance Ticket For Damaged Asset Listener
@@ -249,6 +253,43 @@ class CreateMaintenanceTicketForDamagedAsset implements ShouldQueue
 			'trace' => $exception->getTraceAsString(),
 		]);
 
-		// TODO: Send alert to system administrators about failed automatic ticket creation
+		try {
+			$alertData = [
+				'type' => 'maintenance_auto_ticket_failed',
+				'severity' => 'critical',
+				'message' => 'Automatic maintenance ticket creation failed after maximum retries.',
+				'details' => [
+					'asset_id' => $event->asset->id ?? null,
+					'asset_tag' => $event->asset->asset_tag ?? null,
+					'transaction_id' => $event->transaction->id ?? null,
+					'error' => $exception->getMessage(),
+				],
+			];
+
+			$recipients = User::whereHas('roles', function ($query) {
+				$query->whereIn('name', ['admin', 'superuser']);
+			})
+				->where('is_active', true)
+				->whereNotNull('email')
+				->get();
+
+			foreach ($recipients as $recipient) {
+				FilamentNotification::make()
+					->title('Automatic maintenance ticket creation failed')
+					->body(sprintf(
+						'System could not create a maintenance ticket for asset %s. Check logs for details.',
+						$alertData['details']['asset_tag'] ?? 'unknown'
+					))
+					->icon('heroicon-o-exclamation-triangle')
+					->color('danger')
+					->sendToDatabase($recipient);
+
+				Mail::to($recipient->email)->queue(new SystemAlertMail($alertData));
+			}
+		} catch (\Throwable $alertException) {
+			Log::error('Failed to dispatch admin alert for maintenance ticket failure', [
+				'error' => $alertException->getMessage(),
+			]);
+		}
 	}
 }

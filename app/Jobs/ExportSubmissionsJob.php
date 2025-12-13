@@ -12,6 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -68,7 +69,7 @@ class ExportSubmissionsJob implements ShouldQueue
             );
         } catch (\Exception $e) {
             // Log error and re-throw for retry
-            \Log::error('Export job failed', [
+            Log::error('Export job failed', [
                 'job_id' => $this->jobId,
                 'user_id' => $this->user->id,
                 'format' => $this->format,
@@ -84,13 +85,27 @@ class ExportSubmissionsJob implements ShouldQueue
      */
     public function failed(\Throwable $exception): void
     {
-        \Log::error('Export job failed permanently', [
+        Log::error('Export job failed permanently', [
             'job_id' => $this->jobId,
             'user_id' => $this->user->id,
             'format' => $this->format,
             'error' => $exception->getMessage(),
         ]);
 
-        // TODO: Send failure notification to user
+        try {
+            Mail::raw(
+                "We couldn't complete your {$this->format} export (Job ID: {$this->jobId}). Please try again or contact support if the issue persists.",
+                function (\Illuminate\Mail\Message $message): void {
+                    $message->to($this->user->email, $this->user->name)
+                        ->subject('Export Failed - ICTServe');
+                }
+            );
+        } catch (\Throwable $notificationException) {
+            Log::error('Failed to send export failure notification', [
+                'job_id' => $this->jobId,
+                'user_id' => $this->user->id,
+                'error' => $notificationException->getMessage(),
+            ]);
+        }
     }
 }

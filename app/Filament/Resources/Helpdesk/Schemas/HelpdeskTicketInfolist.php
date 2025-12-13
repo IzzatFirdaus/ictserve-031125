@@ -192,7 +192,7 @@ class HelpdeskTicketInfolist
                                 return '-';
                             }
 
-                            $loans = \App\Models\LoanApplication::where('asset_id', $record->asset_id)
+                            $loans = LoanApplication::where('asset_id', $record->asset_id)
                                 ->with('user')
                                 ->latest()
                                 ->limit(5)

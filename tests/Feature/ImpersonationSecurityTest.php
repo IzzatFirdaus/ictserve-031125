@@ -126,7 +126,7 @@ class ImpersonationSecurityTest extends TestCase
         $this->actingAs($this->admin);
 
         // Store original admin ID before impersonation
-        $originalAdminId = auth()->id();
+        $originalAdminId = $this->admin->id;
 
         // Start impersonation
         session([

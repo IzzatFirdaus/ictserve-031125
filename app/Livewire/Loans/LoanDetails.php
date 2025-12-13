@@ -10,6 +10,7 @@ use App\Models\LoanTransaction;
 use App\Services\LoanApplicationService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class LoanDetails extends Component
@@ -164,8 +165,9 @@ class LoanDetails extends Component
         };
     }
 
-    public function render(): View
+    #[Layout('layouts.portal')]
+    public function render(): \Illuminate\View\View
     {
-        return view('livewire.loans.loan-details')->layout('layouts.portal');
+        return view('livewire.loans.loan-details');
     }
 }
