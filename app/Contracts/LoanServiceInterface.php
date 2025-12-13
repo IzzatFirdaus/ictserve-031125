@@ -27,7 +27,7 @@ interface LoanServiceInterface
      * - If Auth::check() === true: Links to user_id, auto-fills from profile
      * - If Auth::check() === false: Sets user_id = NULL, uses guest fields
      *
-     * @param  array  $data  Application data
+     * @param  array<string, mixed>  $data  Application data
      * @param  User|null  $user  Authenticated user (null for guest)
      * @return LoanApplication The created application with status token
      *
@@ -41,11 +41,11 @@ interface LoanServiceInterface
      * Validates that requested assets are available for the specified date range.
      * Detects conflicts with existing approved/active loan applications.
      *
-     * @param  array  $assetIds  Array of asset IDs to check
+     * @param  array<int, int>  $assetIds  Array of asset IDs to check
      * @param  Carbon  $startDate  Loan start date
      * @param  Carbon  $endDate  Loan end date
      * @param  int|null  $excludeApplicationId  Exclude this application from conflict check
-     * @return array{available: bool, conflicts: array, alternatives: array}
+     * @return array{available: bool, conflicts: array<int, mixed>, alternatives: array<int, mixed>}
      *
      * @see Requirements 3.2 Real-time availability checking
      */
@@ -86,7 +86,7 @@ interface LoanServiceInterface
      *
      * @param  LoanApplication  $application  The loan application
      * @param  User  $admin  Admin performing check-out
-     * @param  array  $transactionData  Transaction data including:
+     * @param  array<string, mixed>  $transactionData  Transaction data including:
      *                                  - condition_notes (optional)
      *                                  - accessories (optional array)
      *
@@ -109,7 +109,7 @@ interface LoanServiceInterface
      *
      * @param  LoanApplication  $application  The loan application
      * @param  User  $admin  Admin performing check-in
-     * @param  array  $returnData  Return data including:
+     * @param  array<string, mixed>  $returnData  Return data including:
      *                             - condition_notes (optional)
      *                             - damage_reported (boolean)
      *                             - damage_photos (optional array)
@@ -134,7 +134,7 @@ interface LoanServiceInterface
      * @param  LoanApplication  $application  The loan application
      * @param  Asset  $asset  The damaged asset
      * @param  string  $damageDescription  Description of damage
-     * @param  array  $damagePhotos  Optional array of photo paths
+     * @param  array<int, string>  $damagePhotos  Optional array of photo paths
      * @return HelpdeskTicket The created maintenance ticket
      *
      * @throws \Exception If ticket creation fails
