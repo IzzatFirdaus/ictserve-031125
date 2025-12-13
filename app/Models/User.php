@@ -35,6 +35,7 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
         'password_changed_at',
         'require_password_change',
@@ -537,6 +538,19 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     }
 
     // v3.5.0 True Hybrid Architecture Methods
+
+    /**
+     * Get SSO audit logs for this user.
+     *
+     * @return HasMany<SsoAuditLog, self>
+     */
+    public function ssoAuditLogs(): HasMany
+    {
+        /** @var HasMany<SsoAuditLog, self> $relation */
+        $relation = $this->hasMany(SsoAuditLog::class);
+
+        return $relation;
+    }
 
     /**
      * Check if user has linked their Google account

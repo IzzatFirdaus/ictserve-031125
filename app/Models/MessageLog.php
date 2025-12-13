@@ -32,8 +32,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class MessageLog extends Model implements AuditableContract
 {
-    use HasFactory;
-    use Auditable; // owen-it untuk compliance audit
+    use Auditable;
+    use HasFactory; // owen-it untuk compliance audit
     use LogsActivity; // spatie untuk operational logging
 
     /**
@@ -50,6 +50,9 @@ class MessageLog extends Model implements AuditableContract
         'user_id',
         'sanitized_input',
         'response_summary',
+        'bedrock_model_used',
+        'bedrock_cost',
+        'web_sources_used',
         'metadata',
         'hash',
         'previous_hash',
@@ -63,6 +66,8 @@ class MessageLog extends Model implements AuditableContract
     {
         return [
             'metadata' => 'array',
+            'web_sources_used' => 'array',
+            'bedrock_cost' => 'decimal:6',
             'processed_at' => 'datetime',
         ];
     }

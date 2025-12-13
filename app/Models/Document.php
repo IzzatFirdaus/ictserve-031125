@@ -31,14 +31,17 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  */
 class Document extends Model implements AuditableContract
 {
-    use HasFactory, SoftDeletes, Auditable;
+    use Auditable, HasFactory, SoftDeletes;
 
     /**
      * Document processing statuses
      */
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_PROCESSING = 'processing';
+
     public const STATUS_COMPLETED = 'completed';
+
     public const STATUS_FAILED = 'failed';
 
     /**
@@ -51,6 +54,8 @@ class Document extends Model implements AuditableContract
         'metadata',
         'uploaded_by',
         'status',
+        'processing_model',
+        'bedrock_analysis',
     ];
 
     /**
@@ -62,14 +67,13 @@ class Document extends Model implements AuditableContract
     {
         return [
             'metadata' => 'array',
+            'bedrock_analysis' => 'array',
         ];
     }
 
     /**
      * Hubungan dengan User yang memuat naik dokumen
      * True Hybrid Architecture: nullable untuk sokongan guest/authenticated
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function uploader(): BelongsTo
     {
@@ -78,8 +82,6 @@ class Document extends Model implements AuditableContract
 
     /**
      * Hubungan dengan DocumentChunk
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function chunks(): HasMany
     {
@@ -89,8 +91,7 @@ class Document extends Model implements AuditableContract
     /**
      * Scope untuk dokumen dengan status tertentu
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $status
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithStatus($query, string $status)
@@ -101,7 +102,7 @@ class Document extends Model implements AuditableContract
     /**
      * Scope untuk dokumen yang telah selesai diproses
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeCompleted($query)
@@ -112,7 +113,7 @@ class Document extends Model implements AuditableContract
     /**
      * Scope untuk dokumen yang gagal diproses
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeFailed($query)
@@ -122,8 +123,6 @@ class Document extends Model implements AuditableContract
 
     /**
      * Semak sama ada dokumen sedang diproses
-     *
-     * @return bool
      */
     public function isProcessing(): bool
     {
@@ -132,8 +131,6 @@ class Document extends Model implements AuditableContract
 
     /**
      * Semak sama ada dokumen telah selesai diproses
-     *
-     * @return bool
      */
     public function isCompleted(): bool
     {
@@ -142,8 +139,6 @@ class Document extends Model implements AuditableContract
 
     /**
      * Semak sama ada dokumen gagal diproses
-     *
-     * @return bool
      */
     public function isFailed(): bool
     {
@@ -152,27 +147,23 @@ class Document extends Model implements AuditableContract
 
     /**
      * Dapatkan saiz fail dalam format yang boleh dibaca
-     *
-     * @return string|null
      */
     public function getFileSizeAttribute(): ?string
     {
         $size = $this->metadata['size'] ?? null;
 
-        if (!$size) {
+        if (! $size) {
             return null;
         }
 
         $units = ['B', 'KB', 'MB', 'GB'];
         $power = $size > 0 ? floor(log($size, 1024)) : 0;
 
-        return number_format($size / pow(1024, $power), 2, '.', ',') . ' ' . $units[$power];
+        return number_format($size / pow(1024, $power), 2, '.', ',').' '.$units[$power];
     }
 
     /**
      * Dapatkan jenis fail
-     *
-     * @return string|null
      */
     public function getFileTypeAttribute(): ?string
     {

@@ -3,6 +3,53 @@
 declare(strict_types=1);
 
 return [
+    'bedrock_routing' => [
+        'title' => 'Konfigurasi Penghalaan Bedrock',
+        'label' => 'Penghalaan Bedrock',
+        'group' => 'Ollama AI',
+        'sections' => [
+            'general' => 'Tetapan Umum',
+            'general_desc' => 'Tetapkan sama ada Bedrock diaktifkan dan perlindungan PII.',
+            'routing' => 'Logik Penghalaan',
+            'routing_desc' => 'Tetapan cache dan had input untuk keputusan penghalaan.',
+            'rate_limits' => 'Had Kadar',
+            'rate_limits_desc' => 'Kawalan had kadar permintaan Bedrock. Had per-model mengikut konfigurasi aplikasi.',
+            'classification' => 'Pengelasan Data',
+            'classification_desc' => 'Tetapan asas untuk mengawal pemprosesan cloud mengikut pengelasan data.',
+            'budgets' => 'Bajet & Kos',
+            'budgets_desc' => 'Tetapan asas bajet bulanan dan kawalan henti keras (hard stop).',
+        ],
+        'fields' => [
+            'enabled' => 'Aktifkan Bedrock',
+            'prevent_cloud_pii' => 'Sekat PII ke Cloud',
+            'enforce_malaysia_residency' => 'Kuatkuasakan Residensi Malaysia',
+            'enforce_malaysia_residency_help' => 'Jika diaktifkan, Bedrock hanya digunakan apabila residensi Malaysia disahkan oleh pemanggil.',
+            'cache_ttl_seconds' => 'Tempoh Cache (saat)',
+            'simple_faq_max_words' => 'Had Maksimum Perkataan (FAQ ringkas)',
+            'max_prompt_chars' => 'Had Maksimum Aksara Prompt',
+            'rate_limit_enabled' => 'Aktifkan Had Kadar',
+            'max_attempts_per_minute' => 'Had Maksimum Percubaan/Min',
+            'require_consent_for_internal' => 'Perlu Persetujuan untuk Data Dalaman',
+            'block_restricted' => 'Sekat Data Terhad (Restricted)',
+            'budget_enabled' => 'Aktifkan Bajet',
+            'monthly_budget_usd' => 'Bajet Bulanan (USD)',
+            'budget_hard_stop' => 'Henti Keras Bila Bajet Habis',
+        ],
+        'actions' => [
+            'save' => 'Simpan',
+            'reset' => 'Tetapkan Semula',
+        ],
+        'notifications' => [
+            'saved_title' => 'Disimpan',
+            'saved_body' => 'Konfigurasi penghalaan Bedrock berjaya dikemas kini.',
+            'save_failed_title' => 'Simpan Gagal',
+            'save_failed_body' => 'Gagal menyimpan konfigurasi. Sila cuba lagi.',
+            'reset_title' => 'Ditentukan Semula',
+            'reset_body' => 'Konfigurasi telah ditetapkan semula ke nilai lalai.',
+            'reset_failed_title' => 'Tetapkan Semula Gagal',
+            'reset_failed_body' => 'Gagal menetapkan semula konfigurasi. Sila cuba lagi.',
+        ],
+    ],
     'email_templates' => [
         'title' => 'Pengurusan Template Email',
         'label' => 'Template Email',
