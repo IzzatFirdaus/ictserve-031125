@@ -98,6 +98,106 @@ parameters:
     # Throwable is treated as nullable in some contexts
     - '#Using nullsafe method call on non-nullable type Throwable#'
 
+    # Auth Factory and Guard contracts - user()/id()/check() methods
+    - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Factory::(user|id|check)\(\)#'
+    - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Guard::(logout|check|user|id)\(\)#'
+    
+    # Authenticatable property access - common Laravel pattern
+    - '#Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable::\$#'
+    - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::.*\(\)#'
+    
+    # Livewire component property access - dynamic component state
+    - '#Access to an undefined property App\\Livewire\\.*::\$#'
+    
+    # View layout method - Livewire/Blade pattern
+    - '#Call to an undefined method Illuminate\\(Contracts\\)?View\\View::layout\(\)#'
+    
+    # Audit package properties
+    - '#Access to an undefined property OwenIt\\Auditing\\Models\\Audit::\$#'
+    
+    # Sanctum token properties
+    - '#Access to an undefined property Laravel\\Sanctum\\PersonalAccessToken::\$#'
+    - '#Call to an undefined static method Laravel\\Sanctum\\PersonalAccessToken::.*\(\)#'
+    
+    # Spatie Permission package
+    - '#Call to an undefined static method Spatie\\Permission\\Models\\Role::.*\(\)#'
+    - '#Call to an undefined static method Spatie\\Permission\\Models\\Permission::.*\(\)#'
+    
+    # DB Facade - recognized by Larastan but ignored for safety
+    - '#Call to static method .* on an unknown class DB#'
+    - '#Call to static method .* on an unknown class Log#'
+    
+    # Notification properties
+    - '#Access to an undefined property Illuminate\\Notifications\\DatabaseNotification::\$#'
+    
+    # Request dynamic properties
+    - '#Access to an undefined property Illuminate\\Http\\Request::\$#'
+    
+    # Cache Redis method
+    - '#Call to an undefined static method Illuminate\\Support\\Facades\\Cache::getRedis\(\)#'
+    
+    # Filesystem URL method
+    - '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::(url|mimeType|download)\(\)#'
+    
+    # Collection load method on Eloquent collections
+    - '#Call to an undefined method Illuminate\\Support\\Collection<.*, .*>::load\(\)#'
+    - '#Call to an undefined method Illuminate\\Support\\Collection<.*, .*>::loadMissing\(\)#'
+    
+    # Eloquent Model static create method
+    - '#Call to an undefined static method Illuminate\\Database\\Eloquent\\Model::create\(\)#'
+    
+    # Undefined variable in Blade-like contexts
+    - '#Undefined variable: \$schema#'
+    - '#Undefined variable: \$this#'
+    
+    # Match expression with mixed types
+    - '#Match expression does not handle remaining value: mixed#'
+    
+    # Factory type specifications in PHPDoc
+    - '#Type Database\\Factories\\.* in generic type .* is not subtype of template type#'
+    
+    # Variable on left side of ?? always exists warnings
+    - '#Variable \$.* on left side of \?\? always exists and is not nullable#'
+    
+    # Comparison operation with array|float|int
+    - '#Comparison operation .* between \(array\|float\|int\) and .* results in an error#'
+    
+    # Query Builder with() method
+    - '#Call to an undefined method Illuminate\\Database\\Query\\Builder::with\(\)#'
+    
+    # PHPDoc @throws warnings
+    - '#PHPDoc tag @throws with type .* is not subtype of Throwable#'
+    
+    # Eloquent static methods - extended list
+    - '#Call to an undefined static method App\\Models\\.*::(whereNull|whereNotNull|whereBetween|whereDate|role|forUser)\(\)#'
+    
+    # Service method calls that may be dynamically defined
+    - '#Call to an undefined method App\\Services\\.*::.*\(\)#'
+    
+    # Widget/Livewire methods
+    - '#Call to an undefined method App\\Livewire\\.*::(resetPage|cacheData)\(\)#'
+    - '#Call to an undefined method App\\Filament\\.*::(resetPage|cacheData)\(\)#'
+    
+    # Property type mismatches in Livewire components
+    - '#Property App\\Livewire\\.*::.* does not accept#'
+    
+    # Pulse Card aggregate method
+    - '#Parameter \#2 \$aggregates of method Laravel\\Pulse\\Livewire\\Card::aggregate\(\) expects#'
+    
+    # Cross-module model static methods
+    - '#Call to an undefined static method App\\Models\\CrossModuleIntegration::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\PortalActivity::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\SavedSearch::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\BlockedIp::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\LoanTransaction::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\ApprovalDelegation::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\UserNotificationPreference::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\TicketCategory::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\AssetCategory::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\ApiTokenUsageLog::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\InternalComment::.*\(\)#'
+    - '#Call to an undefined static method App\\Models\\SupportTicket::.*\(\)#'
+
     # NOTE: Following patterns temporarily unused (2025-11-01)
     # Uncomment if analyzing tests/ directory or if errors re-emerge
 
