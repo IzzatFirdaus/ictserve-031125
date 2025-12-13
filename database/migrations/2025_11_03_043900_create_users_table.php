@@ -29,8 +29,24 @@ return new class extends Migration
             // Four-role RBAC system
             $table->enum('role', ['staff', 'approver', 'admin', 'superuser'])->default('staff');
 
+            // Google OAuth SSO fields (v3.5.0 True Hybrid Architecture)
+            $table->string('google_id', 255)->nullable()->unique()
+                ->comment('Google OAuth user ID for SSO');
+            $table->text('google_token')->nullable()
+                ->comment('Encrypted Google OAuth access token');
+            $table->text('google_refresh_token')->nullable()
+                ->comment('Encrypted Google OAuth refresh token');
+
+            // Locale preference (DEPRECATED v3.6.0: Always ms. Retained for potential future use.)
+            $table->string('locale', 10)->default('ms')
+                ->comment('DEPRECATED v3.6.0: Always ms. Retained for potential future use.');
+
             // Organizational structure
             $table->string('staff_id', 50)->unique()->nullable();
+            $table->string('staff_number', 50)->nullable()
+                ->comment('MOTAC staff number for identification');
+            $table->string('division_code', 20)->nullable()
+                ->comment('Division code for organizational structure');
             $table->foreignId('division_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('grade_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('position_id')->nullable()->constrained()->onDelete('set null');
@@ -46,6 +62,12 @@ return new class extends Migration
             // Status
             $table->boolean('is_active')->default(true);
             $table->timestamp('last_login_at')->nullable();
+            $table->string('last_login_ip', 45)->nullable()
+                ->comment('IP address of last login for audit');
+
+            // Account linking counter (v3.5.0)
+            $table->unsignedInteger('guest_submissions_linked')->default(0)
+                ->comment('Count of guest submissions linked to this account');
 
             // Password management
             $table->timestamp('password_changed_at')->nullable();
@@ -58,6 +80,16 @@ return new class extends Migration
             $table->json('notification_preferences')
                 ->nullable()
                 ->comment('User notification preferences for email alerts');
+
+            // UI Preferences (v3.5.0+)
+            $table->string('theme_preference', 10)->default('system')
+                ->comment('User theme preference: light|dark|system');
+            $table->json('saved_filters')->nullable()
+                ->comment('Saved filter combinations for tables');
+            $table->json('dashboard_layout')->nullable()
+                ->comment('Dashboard widget arrangement preferences');
+            $table->boolean('onboarding_completed')->default(false)
+                ->comment('Whether user has completed onboarding tour');
 
             // Data governance
             $table->timestamp('anonymized_at')->nullable();
@@ -73,6 +105,15 @@ return new class extends Migration
             $table->index(['role', 'is_active']);
             $table->index(['division_id', 'is_active']);
             $table->index('anonymized_at');
+
+            // v3.5.0 True Hybrid Architecture indexes
+            $table->index('google_id', 'idx_users_google_id');
+            $table->index('locale', 'idx_users_locale');
+            $table->index('staff_number', 'idx_users_staff_number');
+            $table->index('division_code', 'idx_users_division_code');
+
+            // Performance indexes (consolidated from 2025_01_21_000001)
+            $table->index('grade_id', 'idx_users_grade'); // For approver filtering
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -88,6 +129,9 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
+
+            // Performance index for cleanup (consolidated from 2025_01_21_000001)
+            $table->index('last_activity', 'idx_sessions_last_activity');
         });
     }
 

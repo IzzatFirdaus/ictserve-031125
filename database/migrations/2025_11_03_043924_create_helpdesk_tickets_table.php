@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,6 +15,12 @@ return new class extends Migration
         Schema::create('helpdesk_tickets', function (Blueprint $table) {
             $table->id();
             $table->string('ticket_number', 50)->unique(); // HD[YYYY][000001-999999]
+
+            // v3.5.0 True Hybrid Architecture fields
+            $table->string('status_token_hash', 128)->nullable()
+                ->comment('SHA-512 hash of status token for guest status checking');
+            $table->string('form_reference_code', 50)->default('PK.(S).MOTAC.07.(L1)')
+                ->comment('Official MOTAC form reference code');
 
             // HYBRID ARCHITECTURE - Nullable user_id for guest submissions
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
@@ -108,7 +115,26 @@ return new class extends Migration
             $table->index(['status', 'sla_breached_at'], 'idx_helpdesk_status_sla_breach');
             $table->index(['user_id', 'status'], 'idx_helpdesk_user_status');
             $table->index(['sla_resolution_due_at', 'status'], 'idx_helpdesk_sla_status');
+
+            // v3.5.0 True Hybrid Architecture indexes
+            $table->index('status_token_hash', 'idx_helpdesk_status_token');
+            $table->index('form_reference_code', 'idx_helpdesk_form_ref');
+
+            // Performance indexes (consolidated from 2025_01_21_000001)
+            $table->index(['status', 'priority'], 'idx_tickets_status_priority');
+            $table->index('created_at', 'idx_tickets_created_at');
+            $table->index(['sla_resolution_due_at', 'status'], 'idx_tickets_sla_due');
         });
+
+        // Add FULLTEXT index for cross-module search (MySQL only)
+        if (config('database.default') === 'mysql') {
+            DB::statement('
+                ALTER TABLE helpdesk_tickets
+                ADD FULLTEXT INDEX idx_helpdesk_fulltext_search (
+                    ticket_number, subject, description, guest_name, guest_email
+                )
+            ');
+        }
     }
 
     /**

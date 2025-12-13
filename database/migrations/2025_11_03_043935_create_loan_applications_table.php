@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Enhanced Loan Applications Migration with ICTServe Integration
@@ -27,7 +28,14 @@ return new class extends Migration
         Schema::create('loan_applications', function (Blueprint $table) {
             $table->id();
             $table->string('application_number', 20)->unique()->comment('Format: LA[YYYY][MM][0001-9999]');
+
+            // v3.5.0 True Hybrid Architecture fields
+            $table->string('form_reference_code', 50)->default('PK.(S).MOTAC.07.(L3)')
+                ->comment('Official MOTAC form reference code');
+
             $table->string('tracking_token', 64)->nullable()->unique();
+            $table->string('status_token_hash', 128)->nullable()
+                ->comment('SHA-512 hash of status token for guest status checking');
             $table->timestamp('tracking_token_expires_at')->nullable();
 
             // Hybrid architecture: user_id nullable for guest applications
@@ -78,6 +86,8 @@ return new class extends Migration
             $table->string('approved_by_name')->nullable()->comment('Name of approver');
             $table->timestamp('approved_at')->nullable()->comment('Approval timestamp');
             $table->string('approval_token')->nullable()->unique()->comment('Secure token for email approval');
+            $table->string('approval_token_hash', 128)->nullable()
+                ->comment('SHA-512 hash of approval token for secure validation');
             $table->timestamp('approval_token_expires_at')->nullable()->comment('Token expiration (7 days)');
             $table->string('approval_method', 20)->nullable()->comment('Approval decision source: email or portal');
             $table->text('approval_remarks')->nullable()->comment('Remarks provided during the approval decision');
@@ -96,6 +106,8 @@ return new class extends Migration
             $table->string('responsible_officer_grade')->nullable();
             $table->string('responsible_officer_phone')->nullable();
             $table->string('responsible_officer_email')->nullable();
+            $table->boolean('responsible_officer_acknowledgement')->default(false)
+                ->comment('Responsible officer has acknowledged responsibility');
             $table->timestamp('responsible_officer_acknowledged_at')->nullable();
             $table->string('sponsorship_token')->nullable()->unique();
             $table->timestamp('sponsorship_token_expires_at')->nullable();
@@ -150,7 +162,25 @@ return new class extends Migration
             $table->index(['status', 'created_at'], 'idx_loan_status_created');
             $table->index(['user_id', 'status'], 'idx_loan_user_status');
             $table->index(['status', 'loan_end_date'], 'idx_status_end_date');
+
+            // v3.5.0 True Hybrid Architecture indexes
+            $table->index('status_token_hash', 'idx_loan_status_token');
+            $table->index('approval_token_hash', 'idx_loan_approval_token_hash');
+            $table->index('form_reference_code', 'idx_loan_form_ref');
+
+            // Performance indexes (consolidated from 2025_01_21_000001)
+            $table->index(['approver_id', 'status'], 'idx_loans_approver');
         });
+
+        // Add FULLTEXT index for cross-module search (MySQL only)
+        if (config('database.default') === 'mysql') {
+            DB::statement('
+                ALTER TABLE loan_applications
+                ADD FULLTEXT INDEX idx_loan_fulltext_search (
+                    application_number, purpose, applicant_name, applicant_email
+                )
+            ');
+        }
     }
 
     /**

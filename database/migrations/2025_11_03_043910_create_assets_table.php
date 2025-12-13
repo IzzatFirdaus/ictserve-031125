@@ -84,6 +84,9 @@ return new class extends Migration
             $table->index(['last_maintenance_date', 'next_maintenance_date'], 'idx_asset_maintenance');
             $table->index('serial_number', 'idx_asset_serial');
             $table->index(['status', 'updated_at'], 'idx_assets_status_updated');
+
+            // Additional performance indexes (consolidated from 2025_01_21_000001)
+            $table->index(['status', 'condition'], 'idx_assets_status_condition');
         });
     }
 
