@@ -63,7 +63,7 @@
 - **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
 - **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
 - **docs/loan_form_to_model.md** - Asset loan data mapping
-- **docs/api/ollama-ai-api-documentation.md** - Ollama AI Integration API specifications (v3.6.0)
+- **docs/api/ollama-ai-api-documentation.md** - Ollama AI Integration API specifications
 - **docs/api/ollama-ai-integration-api.md** - AI FAQ Bot, Auto-Reply, Document Analysis API
 - **docs/ollama-laravel-README.md** - Ollama-Laravel package integration guide
 - **docs/aws_bedrock/** - AWS Bedrock AI integration documentation (future)
