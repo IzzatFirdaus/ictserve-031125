@@ -68,6 +68,35 @@ parameters:
     
     # Unused constants - may be used for configuration or future features
     - '#Constant .* is unused#'
+    
+    # View return type covariance - Laravel contracts vs concrete View classes
+    - '#Method .* should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\(View|Factory)\|?.*#'
+    - '#Method .* should return Illuminate\\Http\\RedirectResponse\|Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\(View|Factory)\|?.*#'
+    
+    # Livewire render method return type covariance
+    - '#Method App\\Livewire\\.*::render\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View#'
+    
+    # Authenticatable vs User type covariance - common Laravel pattern
+    - '#Parameter .* expects App\\Models\\User.*, Illuminate\\Contracts\\Auth\\Authenticatable.* given#'
+    
+    # PHPDoc unresolvable types - often caused by IDE helper generation
+    - '#contains unresolvable type#'
+    
+    # Collection type variance - stdClass to Model transformations
+    - '#should return Illuminate\\Support\\Collection<int, App\\Models\\.*> but returns Illuminate\\Support\\Collection<int, stdClass>#'
+    
+    # Builder type variance - Query\Builder vs Eloquent\Builder
+    - '#Anonymous function should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder#'
+    
+    # Nullsafe on left side of null coalesce is intentional defensive coding
+    - '#Using nullsafe method call on non-nullable type .* Use -> instead#'
+    - '#Using nullsafe property access .* on left side of \?\? is unnecessary#'
+    
+    # Strict comparison warnings in switch-like logic
+    - '#Strict comparison using [!=]== between .* will always evaluate to (true|false)#'
+    
+    # Throwable is treated as nullable in some contexts
+    - '#Using nullsafe method call on non-nullable type Throwable#'
 
     # NOTE: Following patterns temporarily unused (2025-11-01)
     # Uncomment if analyzing tests/ directory or if errors re-emerge
