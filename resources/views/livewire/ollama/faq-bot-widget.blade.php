@@ -62,15 +62,17 @@
             {{-- Header Actions --}}
             <div class="flex items-center space-x-1">
                 {{-- Minimize Button --}}
+                {{-- WCAG 2.5.8: Touch target minimum 44×44px (min-h-11 min-w-11) --}}
                 <button wire:click="minimizeWidget"
-                    class="p-1 hover:bg-primary-500 rounded transition-colors min-h-8 min-w-8"
+                    class="p-2 hover:bg-primary-500 rounded transition-colors min-h-11 min-w-11 flex items-center justify-center"
                     aria-label="{{ __('ollama.widget.minimize', [], 'ms') }}" type="button">
                     <x-heroicon-o-minus class="w-4 h-4" aria-hidden="true" />
                 </button>
 
                 {{-- Close Button --}}
+                {{-- WCAG 2.5.8: Touch target minimum 44×44px (min-h-11 min-w-11) --}}
                 <button wire:click="closeWidget"
-                    class="p-1 hover:bg-primary-500 rounded transition-colors min-h-8 min-w-8"
+                    class="p-2 hover:bg-primary-500 rounded transition-colors min-h-11 min-w-11 flex items-center justify-center"
                     aria-label="{{ __('ollama.widget.close', [], 'ms') }}" type="button">
                     <x-heroicon-o-x-mark class="w-4 h-4" aria-hidden="true" />
                 </button>

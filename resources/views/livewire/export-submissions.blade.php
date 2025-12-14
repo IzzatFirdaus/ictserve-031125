@@ -1,5 +1,5 @@
 <div class="space-y-6">
-    <h1 class="text-2xl font-semibold">Export Submissions</h1>
+    <h1 class="text-2xl font-semibold">{{ __('export.export_submissions') }}</h1>
 
     <div class="flex items-center gap-6">
         <label class="inline-flex items-center gap-2">

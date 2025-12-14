@@ -144,7 +144,7 @@
         <div class="email-header" role="banner">
             <h1>{{ __('ICTServe') }}</h1>
             <p style="margin: 8px 0 0 0; color: #ffffff; font-size: 14px;">
-                {{ __('Ministry of Tourism, Arts & Culture Malaysia') }}
+                {{ __('common.kementerian_pelancongan_seni_budaya') }}
             </p>
         </div>
 
@@ -155,11 +155,11 @@
 
         <!-- Footer -->
         <div class="email-footer" role="contentinfo">
-            <p>{{ __('This is an automated message from ICTServe. Please do not reply to this email.') }}</p>
-            <p>{{ __('For assistance, please contact') }}: <a href="mailto:support@motac.gov.my"
+            <p>{{ __('common.automated_message_ms') }}</p>
+            <p>{{ __('common.for_assistance_contact_ms') }}: <a href="mailto:support@motac.gov.my"
                     style="color: #0056b3;">support@motac.gov.my</a></p>
             <p style="margin-top: 16px; font-size: 12px;">
-                &copy; {{ date('Y') }} {{ __('Ministry of Tourism, Arts & Culture Malaysia') }}
+                &copy; {{ date('Y') }} {{ __('common.kementerian_pelancongan_seni_budaya') }}
             </p>
         </div>
     </div>
