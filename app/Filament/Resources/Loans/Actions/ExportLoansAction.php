@@ -29,7 +29,7 @@ class ExportLoansAction extends Action
     {
         parent::setUp();
 
-        $this->label('Eksport Data')
+        $this->label(__('filament.actions.export_data'))
             ->icon('heroicon-o-arrow-down-tray')
             ->color('gray')
             ->action(function () {
