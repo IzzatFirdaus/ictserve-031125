@@ -31,6 +31,8 @@ class FaqTest extends TestCase
             'answer',
             'tags',
             'match_score',
+            'preferred_model',
+            'complexity_score',
             'created_by',
         ];
 
@@ -46,6 +48,7 @@ class FaqTest extends TestCase
 
         $this->assertEquals('array', $casts['tags']);
         $this->assertEquals('float', $casts['match_score']);
+        $this->assertEquals('float', $casts['complexity_score']);
     }
 
     #[Test]
