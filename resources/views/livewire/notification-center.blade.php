@@ -9,6 +9,10 @@
                     </span>
                 @endif
             </h1>
+            {{-- WCAG 4.1.3 Status Messages: announce unread count changes --}}
+            <div class="sr-only" role="status" aria-live="polite" aria-atomic="true">
+                {{ $unreadCount > 0 ? __('notifications.unread_count', ['count' => $unreadCount]) : __('common.no_new_notifications') }}
+            </div>
         </div>
         <div class="mt-4 flex flex-wrap md:mt-0 md:ml-4 gap-2">
             @if(count($selectedIds) > 0)
