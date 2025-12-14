@@ -16,28 +16,28 @@ This implementation plan provides a unified approach to modernizing and aligning
 
 ## Phase 1: Core Language & Authentication Tests (High Priority)
 
-- [ ] 1. Update Languthentication Foundation
+- [x] 1. Update Languthentication Foundation
 
-  - [ ] 1.1 Update tests/Feature/LanguageControllerTest.php
+  - [x] 1.1 Update tests/Feature/LanguageControllerTest.php
     - Convert to #[Test] attributes, remove test_ prefix
     - Update assertions to expect Bahasa Melayu content
     - Verify language switcher is disabled/hidden
     - _Requirements: 1.1, 1.4, 3.1, 3.2, 3.3_
 
-  - [ ] 1.2 Update tests/Feature/LanguageSwitcherTest.php
+  - [x] 1.2 Update tests/Feature/LanguageSwitcherTest.php
     - Convert to #[Test] attributes
     - Update to verify switcher is disabled in v3.6.0
     - Update assertions for BM-only UI
     - _Requirements: 1.1, 3.3_
 
-  - [ ] 1.3 Update tests/Feature/Auth/RegistrationTest.php
+  - [x] 1.3 Update tests/Feature/Auth/RegistrationTest.php
     - Convert to #[Test] attributes
     - Verify @motac.gov.my email domain restriction
     - Verify email verification flow with signed URL
     - Update assertions for BM content
     - _Requirements: 1.1, 5.1, 5.2, 5.5_
 
-  - [ ] 1.4 Update tests/Feature/Auth/AuthenticationTest.php
+  - [x] 1.4 Update tests/Feature/Auth/AuthenticationTest.php
     - Convert to #[Test] attributes
     - Verify both full email and short username login
     - Update assertions for BM content
@@ -55,25 +55,25 @@ This implementation plan provides a unified approach to modernizing and aligning
 
 ## Phase 2: Hybrid Architecture Core Tests
 
-- [ ] 2. Update Helpdesk Hybrid Workflow Tests
+- [x] 2. Update Helpdesk Hybrid Workflow Tests
 
-  - [ ] 2.1 Update tests/Feature/HybridHelpdeskWorkflowTest.php
-    - Convert to #[Test] attributes
-    - Verify both authenticated (user_id linked) and guest (user_id=NULL) paths
-    - Update assertions for hybrid data association
-    - Update BM content assertions
+  - [x] 2.1 Update tests/Feature/HybridHelpdeskWorkflowTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify both authenticated (user_id linked) and guest (user_id=NULL) paths ✓
+    - Update assertions for hybrid data association ✓
+    - Update BM content assertions ✓ (added comprehensive BM interface tests)
     - _Requirements: 1.1, 4.1, 4.4, 4.5_
 
-  - [ ] 2.2 Update tests/Feature/HelpdeskAuthenticatedFormTest.php
-    - Convert to #[Test] attributes
-    - Verify form auto-fill for authenticated users
-    - Update to use BM content assertions
+  - [x] 2.2 Update tests/Feature/HelpdeskAuthenticatedFormTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify form auto-fill for authenticated users ✓
+    - Update to use BM content assertions ✓ (added comprehensive BM validation)
     - _Requirements: 1.1, 4.3_
 
-  - [ ] 2.3 Update tests/Unit/Models/HelpdeskTicketTest.php
-    - Convert to #[Test] attributes
-    - Verify nullable user_id FK behavior
-    - Test submitter_* field capture for guests
+  - [x] 2.3 Update tests/Unit/Models/HelpdeskTicketHybridTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify nullable user_id FK behavior ✓
+    - Test submitter_* field capture for guests ✓
     - _Requirements: 1.1, 4.4, 4.5_
 
   - [ ]* 2.4 Write property test for hybrid submission paths

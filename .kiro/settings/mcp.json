@@ -96,7 +96,10 @@
         "browser_snapshot",
         "browser_fill",
         "browser_evaluate",
-        "browser_close"
+        "browser_close",
+        "browser_type",
+        "browser_fill_form",
+        "browser_wait_for"
       ]
     },
     "context7": {
@@ -212,7 +215,7 @@
       "args": [
         "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
       ],
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "search_agentcore_docs",
         "fetch_agentcore_doc",
@@ -226,7 +229,7 @@
       "args": [
         "strands-agents-mcp-server"
       ],
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "search_docs",
         "fetch_doc"
