@@ -31,6 +31,7 @@
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Laravel Socialite (Google SSO optional), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini keperluan UI dwibahasa→UI Bahasa Melayu sahaja. Language switcher dilumpuhkan. Email notifications→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                                                              | Pasukan Pembangunan BPM |
+| 3.6.1 | 14 Disember 2025 | **Cloud Hybrid AI Integration:** Tambah keperluan perniagaan AI (§4.4) untuk D18 Cloud Hybrid Architecture. Kemaskini objektif terukur dengan AI automation targets. Tambah stakeholder AI Services dan Data Residency Officer. Cross-reference D18 v1.0.0. | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: FR-001 ubah 'Portal (login pilihan)', tambah FR-050 'Staff boleh akses sebagai tetamu atau pengguna berdaftar'. Penyelarasan dengan D00/D04 v3.4.0.                                                                                                  | Pasukan Pembangunan BPM |
 | 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus rujukan 'Portal Intranet (Login)' untuk staf, ganti dengan 'Guest Form'. Penyelarasan dengan D00/D04/D05 v3.3.0.                                                                                                                      | Pasukan Pembangunan BPM |
 | 3.2.1 | 29 November 2025 | Penjajaran kepada seni bina "Guest-First": Staf/Pengguna Dalaman menggunakan borang tetamu (tanpa log masuk). Authentication terhad kepada admin/superuser sahaja. Penyelarasan dengan D00 v3.2.1 dan D04 v3.2.1.                                                         | Pasukan Pembangunan BPM |
@@ -57,6 +58,7 @@
 - **[D12_UI_UX_DESIGN_GUIDE.md]**
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]**
 - **[D14_UI_UX_STYLE_GUIDE.md]**
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.0)
 - **docs/helpdesk_form_to_model.md**
 - **docs/loan_form_to_model.md**
 - **docs/frontend/accessibility-guidelines.md**
@@ -137,6 +139,9 @@ Bahagian Pengurusan Maklumat (BPM) MOTAC bertanggungjawab mengurus perkhidmatan 
 | Pegawai Kelulusan (Gred 41+)| Meluluskan/menolak permohonan pinjaman aset melalui pautan e-mel bertanda tangan                            | Sederhana   |
 | Pembekal / Vendor           | Sokongan luaran, pembaikan perkhidmatan, penyelenggaraan peralatan (jika diperlukan)                        | Rendah      |
 | Unit Sumber Manusia         | Maklumat perubahan staf (pindah/persaraan) untuk pengurusan profil pengguna                                 | Rendah      |
+| **AI Services Team**         | **Pengurusan Ollama server, AWS Bedrock configuration, model optimization, AI response quality**            | **Tinggi**  |
+| **Data Residency Officer**   | **Memastikan pematuhan data sovereignty, klasifikasi data untuk pemprosesan tempatan vs cloud**             | **Tinggi**  |
+| **Cost Management Officer**  | **Pemantauan kos AWS Bedrock, optimization budget AI services, ROI analysis**                               | **Sederhana** |
 
 ---
 
@@ -157,6 +162,9 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 7. **Menyediakan pemantauan proaktif** melalui Laravel Pulse untuk mengesan isu prestasi sebelum memberi kesan kepada pengguna.
 8. **Mempersiapkan integrasi masa depan** dengan infrastruktur API (Laravel Sanctum) untuk aplikasi mudah alih dan sistem luaran.
 9. **Meningkatkan kepuasan pengguna** dengan sasaran ≥85% kepuasan pelanggan melalui maklum balas dan pengalaman pengguna yang dioptimumkan.
+10. **Menyediakan sokongan AI yang pintar** melalui FAQ Bot untuk mengurangkan beban helpdesk ≥30% dan meningkatkan masa respons kepada <5 saat.
+11. **Mengoptimumkan kos operasi AI** dengan model routing pintar (Ollama local + AWS Bedrock cloud) untuk mencapai 82% penjimatan kos berbanding cloud-only.
+12. **Memastikan kedaulatan data** dengan pemprosesan tempatan untuk data sensitif dan cloud processing untuk data awam sahaja (PDPA 2010 compliance).
 
 ### 4.3. Arkitektur Bisnes (Business Architecture)
 
@@ -387,6 +395,34 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
   Butang "Sign in with Google" dipaparkan pada halaman log masuk bersama log masuk tradisional e-mel/kata laluan. Jika OAuth Google gagal, sistem memaparkan mesej ralat yang jelas dan fallback kepada log masuk tradisional.
 - **Audit dan Keselamatan:**  
   Semua peristiwa pengesahan Google OAuth dilog dalam audit trail untuk pematuhan keselamatan dan governance.
+
+### 6.7. Cloud Hybrid AI Services (D18 Integration)
+
+> **Trace:** D18 v1.0.0 (Cloud Hybrid AI Architecture), True Hybrid Architecture alignment
+
+- **FAQ Bot dengan Model Routing Pintar:**  
+  Sistem menyediakan chatbot AI yang boleh diakses oleh guest dan authenticated users melalui `/ai/chat`. Model routing pintar menganalisis pertanyaan dan menghalakan kepada Ollama (local, percuma) untuk FAQ atau AWS Bedrock Claude (cloud, berbayar) untuk penaakulan kompleks. Sasaran masa respons <5 saat dengan 82% penjimatan kos berbanding cloud-only.
+
+- **Auto-Reply Generation untuk Helpdesk:**  
+  AI menjana draf respons untuk kategori tiket biasa menggunakan model routing pintar. Admin menyemak dan meluluskan draf melalui aliran kerja kelulusan sebelum dihantar kepada pengguna. Sistem belajar dari resolusi sejarah untuk meningkatkan kualiti respons.
+
+- **Document Analysis dengan Data Sovereignty:**  
+  AI menganalisis dokumen yang dimuat naik (PDF, DOCX, images) menggunakan AWS Bedrock Nova Pro untuk dokumen awam dan Ollama untuk dokumen sensitif. Klasifikasi data automatik memastikan pematuhan kedaulatan data Malaysia dan PDPA 2010.
+
+- **Conversation Management:**  
+  Authenticated users mendapat memori perbualan jangka panjang yang dipautkan kepada user_id. Guest users mendapat storan berasaskan sesi (24 jam). Semua perbualan boleh disimpan, dimuat, dan dieksport ke PDF.
+
+- **Multi-Model Intelligence:**  
+  Sistem menyokong multiple AI models: Claude Opus 4.5 (complex reasoning), Sonnet 4.5 (balanced), Haiku 4.5 (fast responses), Nova Pro (multimodal), Nova Lite/Micro (cost-effective). Task-specific routing berdasarkan analisis kompleksiti.
+
+- **Cost Optimization & Monitoring:**  
+  Real-time cost tracking untuk AWS Bedrock usage dengan rate limiting per-user dan per-model. Monthly usage reports untuk admin dengan cost estimation untuk complex queries. Ollama prioritization untuk 82% cost savings.
+
+- **Data Residency Compliance:**  
+  Automatic data classification untuk pemprosesan tempatan (Ollama) vs cloud (Bedrock). PII detection dan sanitization untuk PDPA 2010 compliance. Audit trail untuk semua data processing decisions dengan 7 tahun retention.
+
+- **Emergency Procedures:**  
+  Comprehensive fallback chain: Ollama → Bedrock → static FAQ. Health monitoring untuk multi-system services dengan auto-alert untuk failures. Disaster recovery procedures untuk AI data dan configurations.
 
 ---
 

@@ -38,6 +38,7 @@
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Staf boleh log masuk (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu. Nullable user_id FK dalam tickets/loans. Penyelarasan dengan D00/D02/D03/D04 v3.4.0.                                                | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). Penambahan Laravel Pulse v1.3.0 (performance monitoring), Laravel Sanctum v4.0 (API authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen). Spec files: 38 requirements, 100 correctness properties, 19 implementation phases. | Pasukan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Penyelarasan dokumentasi D00-D17.                                                                                                                                                              | Pasukan BPM |
+| 3.6.1 | 14 Disember 2025 | **Cloud Hybrid AI Integration:** Tambah fasa pembangunan AI (§6.1-6.13) untuk integrasi D18 Cloud Hybrid Architecture. Kemaskini jadual pembangunan dengan 13 fasa AI implementation. Tambah keperluan infrastruktur untuk Ollama server dan AWS Bedrock. Kemaskini risiko dan mitigasi untuk AI services. Cross-reference D18 v1.0.0. | Pasukan BPM |
 
 ---
 
@@ -79,6 +80,7 @@ Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembanguna
 7. **Real-time Communication** - WebSocket dengan Laravel Reverb 1.6.2 dan Laravel Echo 2.2.6
 8. **Performance Monitoring** - Laravel Pulse v1.3.0 untuk real-time performance dashboard (admin/superuser)
 9. **API Authentication** - Laravel Sanctum v4.0 untuk token-based API access (future mobile/external integrations)
+10. **Cloud Hybrid AI** - Ollama (local) + AWS Bedrock (cloud) untuk FAQ Bot, Document Analysis, Auto-Reply (D18 v1.0.0)
 
 **Rujukan:** Lihat **[D00_SYSTEM_OVERVIEW.md]** untuk ringkasan modul dan **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** untuk spesifikasi fungsional lengkap.
 
@@ -228,6 +230,28 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 | Deployment           | 1 minggu   | Production deployment, monitoring setup              |
 | Maintenance          | Berterusan | Patch, backup, support, monitoring                   |
 
+### 6.1. Fasa Pembangunan AI (AI Development Phases)
+
+> **Trace:** D18 v1.0.0 (Cloud Hybrid AI Architecture), 13 fasa pelaksanaan komprehensif
+
+| Fasa AI              | Tempoh     | Deliverable                                          | Status      |
+| -------------------- | ---------- | ---------------------------------------------------- | ----------- |
+| **Fasa 1:** Asas & Infrastruktur | 1 minggu | OllamaClient, config/ollama.php, health checks | ✅ Selesai |
+| **Fasa 2:** Skema Pangkalan Data | 1 minggu | Faq, Document, MessageLog models, migrations | ✅ Selesai |
+| **Fasa 3:** Core AI Services | 2 minggu | RagService, DocumentService, EmbeddingService | ✅ Selesai |
+| **Fasa 4:** Background Jobs | 1 minggu | DocumentIngestJob, EmbeddingJob, queue setup | ✅ Selesai |
+| **Fasa 5:** API Endpoints | 1 minggu | FaqController, DocumentController, routes | ✅ Selesai |
+| **Fasa 6:** Filament Admin | 1 minggu | FaqResource, DocumentResource, widgets | ✅ Selesai |
+| **Fasa 7:** Security & Compliance | 1 minggu | PIIDetectionService, Policies, audit | ✅ Selesai |
+| **Fasa 8:** Livewire Components | 1 minggu | FaqBot, FaqBotWidget, chat interface | ✅ Selesai |
+| **Fasa 9:** Email Notifications | 1 minggu | ApprovalEmailToken, signed URLs | ✅ Selesai |
+| **Fasa 10:** Performance Optimization | 1 minggu | Redis caching, Laravel Pulse integration | ✅ Selesai |
+| **Fasa 11:** Testing & Documentation | 1 minggu | PHPUnit 12 tests, API documentation | ✅ Selesai |
+| **Fasa 12:** Deployment & Monitoring | 1 minggu | Health checks, alerting, production setup | ✅ Selesai |
+| **Fasa 13:** Cloud Hybrid AI (Bedrock) | 2 minggu | BedrockService, ModelRouter, hybrid responses | ✅ Selesai |
+
+**Total Tempoh AI:** 14 minggu (termasuk dalam jadual utama)
+
 ---
 
 ## 7. RISIKO & MITIGASI (Risks & Mitigation)
@@ -247,6 +271,14 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 | API token misuse              | Rate limiting, token expiration, usage logging        |
 | Google SSO unavailability     | Fallback to Laravel Breeze login                      |
 | Performance monitoring gaps   | Laravel Pulse dengan 7-day retention, alerts          |
+| **AI Service Failures**       | **Multi-system fallback: Ollama → Bedrock → static FAQ** |
+| **AWS Bedrock Cost Overrun**   | **Cost monitoring, rate limiting, Ollama prioritization** |
+| **Ollama Server Crashes**      | **Health monitoring, auto-restart, graceful degradation** |
+| **Model Access Denied**        | **Inference profile format, model access verification** |
+| **Data Residency Violations**  | **Automatic data classification, local-first processing** |
+| **AI Response Quality Issues** | **Content filtering, confidence scoring, human review** |
+| **Vector Embedding Failures**  | **Fallback to keyword search, embedding regeneration** |
+| **MCP Server Integration**      | **Standardized interface, error handling, monitoring** |
 
 ---
 

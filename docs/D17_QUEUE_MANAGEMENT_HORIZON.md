@@ -165,7 +165,230 @@ Sistem ICTServe mengandungi lima kelas pekerjaan dalam `app/Jobs/`:
 | `PruneExpiredApiTokens`         | Bersihkan API token yang tamat tempoh (v3.5.0)    | default     | System maintenance job                     |
 | `SyncGoogleWorkspaceAccounts`   | Sinkronkan akaun Google Workspace (v3.5.0)        | default     | System maintenance job                     |
 
-### 4.2. Pemberitahuan Bergilir (Queued Notifications - True Hybrid v3.5.0)
+### 4.2. AI Job Processing (D18 Integration v3.6.0)
+
+Sistem ICTServe v3.6.0 menambah sokongan untuk **Cloud Hybrid AI Architecture** dengan pekerjaan latar belakang untuk pemprosesan AI:
+
+| Pekerjaan AI                    | Tujuan                                            | Baris Gilir | Priority | Timeout |
+| ------------------------------- | ------------------------------------------------- | ----------- | -------- | ------- |
+| `ProcessAiConversation`         | Proses perbualan AI dengan model routing         | ai-high     | High     | 300s    |
+| `ProcessAiStreamingResponse`    | Proses streaming response untuk real-time chat   | ai-high     | High     | 180s    |
+| `ProcessAiWebSearch`            | Proses web-augmented search untuk AI responses   | ai-medium   | Medium   | 120s    |
+| `ProcessAiDocumentAnalysis`     | Analisis dokumen PDF/Word menggunakan AI         | ai-medium   | Medium   | 600s    |
+| `ProcessAiFaqGeneration`        | Jana FAQ suggestions berdasarkan pertanyaan      | ai-low      | Low      | 60s     |
+| `ProcessAiConversationPersist`  | Simpan perbualan AI ke pangkalan data           | ai-low      | Low      | 30s     |
+| `ProcessAiModelFallback`        | Fallback ke model lain jika model utama gagal    | ai-high     | High     | 120s    |
+| `ProcessAiUsageMetrics`         | Kumpul dan proses metrik penggunaan AI          | ai-low      | Low      | 60s     |
+| `ProcessAiEmbeddingGeneration`  | Jana vector embeddings untuk RAG system         | ai-medium   | Medium   | 300s    |
+| `ProcessAiCacheWarmup`          | Panaskan cache untuk model AI yang kerap digunakan | ai-low    | Low      | 180s    |
+| `ProcessAiErrorRecovery`        | Pemulihan automatik dari ralat AI               | ai-high     | High     | 60s     |
+| `CleanupAiConversations`        | Bersihkan perbualan AI lama (maintenance)       | default     | Low      | 300s    |
+
+**AI Queue Configuration**:
+
+```php
+// config/queue.php - AI-specific queues
+'connections' => [
+    'redis' => [
+        'driver' => 'redis',
+        'connection' => 'default',
+        'queue' => env('REDIS_QUEUE', 'default'),
+        'retry_after' => 90,
+        'block_for' => null,
+    ],
+    'ai-high' => [
+        'driver' => 'redis',
+        'connection' => 'default',
+        'queue' => 'ai-high',
+        'retry_after' => 300,
+        'block_for' => 5,
+    ],
+    'ai-medium' => [
+        'driver' => 'redis',
+        'connection' => 'default',
+        'queue' => 'ai-medium',
+        'retry_after' => 180,
+        'block_for' => 3,
+    ],
+    'ai-low' => [
+        'driver' => 'redis',
+        'connection' => 'default',
+        'queue' => 'ai-low',
+        'retry_after' => 120,
+        'block_for' => 1,
+    ],
+],
+```
+
+**AI Job Implementation Example**:
+
+```php
+// app/Jobs/ProcessAiConversation.php
+<?php
+
+namespace App\Jobs;
+
+use App\Models\BedrockConversation;
+use App\Services\BedrockService;
+use App\Events\AiStreamingStarted;
+use App\Events\AiStreamingCompleted;
+use App\Events\AiErrorOccurred;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+
+class ProcessAiConversation implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public $timeout = 300; // 5 minutes
+    public $tries = 3;
+    public $maxExceptions = 2;
+
+    public function __construct(
+        public BedrockConversation $conversation,
+        public string $userMessage,
+        public ?string $selectedModel = null
+    ) {
+        $this->onQueue('ai-high');
+    }
+
+    public function handle(BedrockService $bedrockService): void
+    {
+        try {
+            // Start streaming event
+            event(new AiStreamingStarted($this->conversation));
+
+            // Process with selected model or auto-routing
+            $response = $bedrockService->processConversation(
+                $this->conversation,
+                $this->userMessage,
+                $this->selectedModel
+            );
+
+            // Update conversation with response
+            $this->conversation->update([
+                'messages' => array_merge($this->conversation->messages ?? [], [
+                    [
+                        'role' => 'user',
+                        'content' => $this->userMessage,
+                        'timestamp' => now()->toISOString(),
+                    ],
+                    [
+                        'role' => 'assistant',
+                        'content' => $response['content'],
+                        'model_used' => $response['model_used'],
+                        'response_time' => $response['response_time'],
+                        'web_augmented' => $response['web_augmented'] ?? false,
+                        'sources' => $response['sources'] ?? [],
+                        'timestamp' => now()->toISOString(),
+                    ]
+                ]),
+                'last_activity_at' => now(),
+                'total_tokens' => ($this->conversation->total_tokens ?? 0) + ($response['tokens_used'] ?? 0),
+            ]);
+
+            // Complete streaming event
+            event(new AiStreamingCompleted($this->conversation, $response));
+
+            Log::info('AI conversation processed successfully', [
+                'conversation_id' => $this->conversation->id,
+                'model_used' => $response['model_used'],
+                'response_time' => $response['response_time'],
+                'tokens_used' => $response['tokens_used'] ?? 0,
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('AI conversation processing failed', [
+                'conversation_id' => $this->conversation->id,
+                'error' => $e->getMessage(),
+                'attempt' => $this->attempts(),
+            ]);
+
+            // Trigger error event
+            event(new AiErrorOccurred($this->conversation, $e->getMessage()));
+
+            // Try fallback model if available
+            if ($this->attempts() < $this->tries) {
+                ProcessAiModelFallback::dispatch($this->conversation, $this->userMessage)
+                    ->delay(now()->addSeconds(5));
+            }
+
+            throw $e;
+        }
+    }
+
+    public function failed(\Throwable $exception): void
+    {
+        Log::error('AI conversation job failed permanently', [
+            'conversation_id' => $this->conversation->id,
+            'error' => $exception->getMessage(),
+            'attempts' => $this->attempts(),
+        ]);
+
+        // Update conversation with error status
+        $this->conversation->update([
+            'status' => 'failed',
+            'error_message' => $exception->getMessage(),
+            'failed_at' => now(),
+        ]);
+
+        // Notify user of failure
+        event(new AiErrorOccurred($this->conversation, 'Pemprosesan AI gagal. Sila cuba lagi.'));
+    }
+}
+```
+
+**AI Worker Configuration**:
+
+```bash
+# Supervisor configuration for AI workers
+# /etc/supervisor/conf.d/ictserve-ai-workers.conf
+
+[program:ictserve-ai-high]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path/to/ictserve/artisan queue:work redis --queue=ai-high --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=3
+redirect_stderr=true
+stdout_logfile=/path/to/ictserve/storage/logs/ai-high-worker.log
+stopwaitsecs=3600
+
+[program:ictserve-ai-medium]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path/to/ictserve/artisan queue:work redis --queue=ai-medium --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/path/to/ictserve/storage/logs/ai-medium-worker.log
+stopwaitsecs=3600
+
+[program:ictserve-ai-low]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path/to/ictserve/artisan queue:work redis --queue=ai-low --sleep=5 --tries=2 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/path/to/ictserve/storage/logs/ai-low-worker.log
+stopwaitsecs=3600
+```
+
+### 4.3. Pemberitahuan Bergilir (Queued Notifications - True Hybrid v3.5.0)
 
 Sistem menggunakan **Hybrid Notification Logic**:
 
@@ -584,6 +807,73 @@ php artisan queue:restart
 
 # Pekerja akan selesaikan pekerjaan semasa sebelum keluar
 # Supervisor akan memulakan semula pekerja secara automatik
+
+# Mulakan semula AI workers (v3.6.0)
+sudo supervisorctl restart ictserve-ai-high:*
+sudo supervisorctl restart ictserve-ai-medium:*
+sudo supervisorctl restart ictserve-ai-low:*
+```
+
+### 8.4. AI Queue Monitoring (D18 Integration v3.6.0)
+
+**AI-Specific Monitoring Commands**:
+
+```bash
+# Monitor AI queue status
+php artisan queue:monitor ai-high,ai-medium,ai-low
+
+# Check AI job statistics
+php artisan queue:stats --queue=ai-high
+php artisan queue:stats --queue=ai-medium
+php artisan queue:stats --queue=ai-low
+
+# Monitor AI conversation processing
+php artisan ai:monitor-conversations
+
+# Check AI model usage statistics
+php artisan ai:usage-stats --period=24h
+
+# Monitor AI error rates
+php artisan ai:error-rates --model=all
+```
+
+**AI Performance Metrics (Laravel Pulse Integration)**:
+
+```php
+// config/pulse.php - AI-specific recorders
+'recorders' => [
+    // ... existing recorders
+    
+    // AI-specific recorders
+    \App\Pulse\Recorders\AiConversationRecorder::class => [
+        'enabled' => env('PULSE_AI_CONVERSATIONS_ENABLED', true),
+        'sample_rate' => env('PULSE_AI_CONVERSATIONS_SAMPLE_RATE', 1),
+    ],
+    
+    \App\Pulse\Recorders\AiModelUsageRecorder::class => [
+        'enabled' => env('PULSE_AI_MODEL_USAGE_ENABLED', true),
+        'sample_rate' => env('PULSE_AI_MODEL_USAGE_SAMPLE_RATE', 1),
+    ],
+    
+    \App\Pulse\Recorders\AiTokenUsageRecorder::class => [
+        'enabled' => env('PULSE_AI_TOKEN_USAGE_ENABLED', true),
+        'sample_rate' => env('PULSE_AI_TOKEN_USAGE_SAMPLE_RATE', 1),
+    ],
+],
+```
+
+**AI Queue Health Monitoring**:
+
+```bash
+# Schedule AI health checks in crontab
+# Check AI queue health every 5 minutes
+*/5 * * * * cd /path/to/ictserve && php artisan ai:health-check --alert
+
+# Daily AI usage report
+0 9 * * * cd /path/to/ictserve && php artisan ai:daily-report
+
+# Weekly AI performance analysis
+0 9 * * 1 cd /path/to/ictserve && php artisan ai:weekly-analysis
 ```
 
 ---

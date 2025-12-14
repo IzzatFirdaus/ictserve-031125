@@ -29,7 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                | Penulis                 |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 13 Disember 2025 | **Documentation Update**: Tambah §3.2 AI & Automasi (Ollama Integration), §7 tambah AI Assistant & Asset Management modules. Kemaskini cross-references dengan D03 v3.6.1 untuk comprehensive AI features (FAQ Bot, Auto-Reply, Document Analysis) dan asset lifecycle management (maintenance, transfers, inventory).                 | Pasukan Pembangunan BPM |
+| 3.6.1 | 14 Disember 2025 | **Cloud Hybrid AI Integration**: Kemaskini §3.2 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah model routing pintar, streaming responses, web-augmented responses, conversation management. Kemaskini §7 dengan AI Assistant comprehensive features dan Asset Management lifecycle. Cross-reference D18 v1.0.0. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | **Bahasa Melayu sahaja untuk antara muka pengguna**: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Dokumentasi D00-D17 dikemaskini. Rujuk D15 v3.6.0 untuk butiran penuh. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0 (performance monitoring untuk admin/superuser), Laravel Sanctum v4.0 (API token authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen untuk @motac.gov.my). Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases.                        | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara.                                                                | Pasukan Pembangunan BPM |
@@ -59,6 +59,10 @@
 - **[D12_UI_UX_DESIGN_GUIDE.md]**
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]**
 - **[D14_UI_UX_STYLE_GUIDE.md]**
+- **[D15_LANGUAGE_MS_EN.md]** - Language Implementation (Bahasa Melayu sahaja v3.6.0)
+- **[D16_BROADCASTING_SETUP.md]** - Real-time Broadcasting & WebSocket Setup
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue Management & Background Jobs
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.0)
 - **docs/helpdesk_form_to_model.md**
 - **docs/loan_form_to_model.md**
 - **docs/frontend/accessibility-guidelines.md**
@@ -146,39 +150,80 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **Analitik Gabungan**  
   `superuser` mengakses papan pemuka yang menggabungkan data tiket dan pinjaman untuk analisa trend (contoh, aset dengan kadar kerosakan tinggi).
 
-### 3.2. Integrasi AI & Automasi (v3.6.1)
+### 3.2. Integrasi AI & Automasi (v3.6.1) - Cloud Hybrid Architecture
 
-**Ollama Local LLM Integration** - Sistem ICTServe mengintegrasikan kecerdasan buatan (AI) melalui Ollama untuk meningkatkan pengalaman pengguna dan automasi operasi.
+**Cloud Hybrid AI Integration** - Sistem ICTServe melaksanakan **True Hybrid AI Architecture** yang menggabungkan Ollama (local LLM) dengan AWS Bedrock (cloud AI) untuk memberikan pengalaman AI yang optimum dengan penghalaan pintar berdasarkan jenis pertanyaan. Rujuk **D18 v1.0.0** untuk dokumentasi teknikal penuh.
 
-- **FAQ Bot (Chatbot Tempatan)**
-  - Accessible untuk guest dan authenticated users melalui `/ai/faq`
-  - Natural language processing menggunakan Ollama LLM model (llama3.2)
-  - Response time < 5 saat dengan confidence scoring
-  - Conversation history tracking (session-based untuk guests, user-linked untuk staff)
-  - **Data Sovereignty**: Semua processing dilakukan secara local, tiada external API calls, mematuhi PDPA 2010
+#### 3.2.1. Seni Bina Hibrid AI (Hybrid AI Architecture)
 
-- **Auto-Reply Suggestions**
-  - AI-generated response templates untuk common ticket categories
-  - Admin review dan approve templates sebelum deployment
-  - Learning dari historical ticket resolutions
-  - Reduce admin response time untuk standard queries
+- **Antara Muka Tunggal**: Pengguna berinteraksi dengan SATU sistem chat yang menghalakan pertanyaan secara automatik
+- **Penghalaan Pintar**: Sistem menganalisis pertanyaan dan memilih AI yang optimum:
+  - **FAQ Queries** → Ollama RAG (percuma, pantas, data sovereignty)
+  - **Complex Reasoning** → AWS Bedrock Claude (berbayar, kualiti tinggi)
+  - **Hybrid Queries** → Kedua-dua sistem (fakta + analisis)
+- **Respons Hibrid**: Menggabungkan pengetahuan tempatan dengan keupayaan penaakulan cloud
+- **Pengoptimuman Kos**: 82% penjimatan kos dengan penggunaan Ollama untuk FAQ
+- **Multi-Model Intelligence**: Claude Opus 4.5 (complex), Sonnet 4.5 (balanced), Haiku 4.5 (fast), Nova Pro/Lite/Micro
+- **Data Residency Compliance**: Klasifikasi automatik untuk pemprosesan tempatan vs cloud (PDPA 2010)
 
-- **Document Analysis**
-  - AI-powered parsing untuk extract key information dari uploaded attachments (PDF, DOCX)
-  - Automated categorization dan tag suggestions
-  - Admin review untuk final classification
+#### 3.2.2. Komponen AI Utama
 
-- **Admin Management**
-  - Dedicated Filament resources: FAQ entries, Auto-Reply templates, Message logs
-  - Bulk operations: import/export FAQ database, model parameter tuning
-  - Health monitoring: Ollama server status, model loading status, response time metrics
-  - Content filtering untuk compliance dengan government communication guidelines
+- **FAQ Bot (Cloud Hybrid)**
+  - Accessible untuk guest dan authenticated users melalui `/ai/chat`
+  - **Model Routing**: Ollama (FAQ) + AWS Bedrock Claude (complex queries)
+  - **Multi-Model Intelligence**: Opus 4.5 (complex), Sonnet 4.5 (balanced), Haiku 4.5 (fast), Nova Pro/Lite/Micro
+  - Response time < 5 saat dengan confidence scoring dan source attribution
+  - **Enhanced Conversation Management**: Save/load/delete conversations dengan memori jangka panjang
+  - **Web-Augmented Responses**: Integrasi DuckDuckGo untuk konteks terkini
+  - **Streaming Responses**: Server-Sent Events (SSE) untuk pengalaman responsif (future)
 
-**Technical Architecture**:
-- Ollama server (localhost:11434) - isolated dari public internet
-- Model: llama3.2 (default), mistral, codellama (configurable)
-- Storage: `faqs`, `auto_reply_templates`, `message_logs`, `documents` tables
-- API endpoints: `/api/v1/ollama/*` (documented dalam `docs/api/ollama-ai-api-documentation.md`)
+- **Auto-Reply Generation (AI-Enhanced)**
+  - **Streaming Responses**: Server-Sent Events (SSE) untuk pengalaman responsif (future)
+  - AI-generated response drafts menggunakan model routing pintar
+  - Admin review dan approve melalui aliran kerja kelulusan
+  - Learning dari historical resolutions dengan pattern recognition
+  - **Token-based Approval**: Email approval tanpa login untuk department heads
+
+- **Document Analysis (Multi-Modal)**
+  - AI-powered parsing untuk PDF/DOCX/images menggunakan AWS Bedrock Nova Pro
+  - **Semantic Search**: Vector embeddings untuk carian dokumen yang cerdas
+  - Automated categorization dengan confidence scoring
+  - **Data Classification**: Automatik untuk pemprosesan tempatan vs cloud
+  - **PII Detection**: Automatic sanitization untuk PDPA 2010 compliance
+
+- **MCP Server Integration**
+  - 3 tools untuk AI assistants: Amazon Q, Kiro IDE, external integrations
+  - Standardized interface untuk AI tool access
+  - **API Gateway**: Unified access untuk multiple AI services
+  - **Health Monitoring**: Multi-system status (Ollama + Bedrock + DuckDuckGo)
+
+#### 3.2.3. Pematuhan & Keselamatan
+
+- **Data Residency**: Klasifikasi automatik untuk pemprosesan Malaysia vs cloud
+- **PDPA 2010 Compliance**: PII detection dan sanitization
+- **Audit Trail**: Comprehensive logging untuk semua AI interactions
+- **Content Filtering**: Government communication guidelines compliance
+- **Rate Limiting**: Per-user dan per-model untuk cost control
+
+#### 3.2.4. Pengurusan Admin (Filament Integration)
+
+- **AI Dashboard**: Real-time metrics untuk penggunaan model dan kos
+- **Model Configuration**: Parameter tuning untuk Ollama dan Bedrock models
+- **FAQ Management**: Bulk operations untuk knowledge base
+- **Conversation Analytics**: Usage patterns dan performance insights
+- **Health Monitoring**: Multi-system status (Ollama + Bedrock + DuckDuckGo)
+
+**Technical Architecture** (D18 v1.0.0):
+
+- **Local**: Ollama server (localhost:11434) untuk FAQ dan data sovereignty
+- **Cloud**: AWS Bedrock (us-east-1) untuk complex reasoning dan multimodal tasks
+- **Models**: llama3.1 (Ollama), Claude Opus/Sonnet/Haiku 4.5, Nova Pro/Lite/Micro, Titan Text Express/Lite (Bedrock)
+- **Storage**: Enhanced tables dengan conversation management dan vector embeddings
+- **API**: `/api/v1/bedrock/*` dan `/api/v1/ollama/*` (documented dalam D18)
+- **Integration**: MCP servers untuk external AI tool access
+- **Monitoring**: Laravel Pulse + Telescope + health checks untuk multi-system status
+- **Queue**: Laravel Horizon untuk AI job processing (document ingestion, embeddings, auto-reply)
+- **Real-time**: Laravel Reverb untuk AI notifications dan streaming responses
 
 ---
 
@@ -226,14 +271,16 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
   - Audit logging untuk semua OAuth events
 - **Keselamatan**  
   CSRF untuk borang tetamu, rate limiting, reCAPTCHA Enterprise (mode invisible) untuk mencegah spam, sanitasi input ketat bagi lampiran, 2FA berasaskan TOTP untuk akaun `superuser` pada panel Filament, serta imbasan virus fail menggunakan ClamAV sebelum disimpan.
-- **Real-time Communication**  
-  Laravel Reverb (WebSocket server) untuk real-time updates, Laravel Echo untuk client-side event handling.
+- **Real-time Communication (D16)**  
+  Laravel Reverb 1.6.2 (WebSocket server) untuk real-time updates dengan dual channel strategy: `private-user.{id}` untuk authenticated users dan `private-ticket.{uuid}`/`private-loan.{uuid}` untuk guests. Laravel Echo 2.2.6 untuk client-side event handling. Sokongan AI streaming events untuk real-time chat responses (rujuk D16 v3.6.0).
 - **Laravel Telescope**  
   Alat debugging dan monitoring untuk `superuser` sahaja. Akses penuh tanpa sekatan kepada semua ciri: requests, commands, jobs, exceptions, logs, queries, models, events, mail, notifications, cache, dan Redis.
 - **Pendaftaran Sendiri (Self-Registration)**  
   Staf MOTAC boleh mendaftar akaun menggunakan e-mel `@motac.gov.my`. Pengesahan e-mel diperlukan sebelum akses penuh. Selepas pendaftaran, staf boleh log masuk menggunakan e-mel penuh (`user@motac.gov.my`) atau nama pengguna pendek (`user`).
 - **Google Workspace SSO (Opsyen)**  
   Staf MOTAC boleh log masuk menggunakan akaun Google Workspace `@motac.gov.my` sebagai alternatif kepada Laravel Breeze. Sistem akan auto-create akaun baharu atau link ke akaun sedia ada.
+- **Queue Management (D17)**  
+  Laravel queue system dengan Redis backend untuk pemprosesan asinkron. Sokongan untuk 17 jenis pekerjaan termasuk email notifications, AI processing (12 AI-specific jobs), API token management, dan Google SSO events. Queue workers diurus menggunakan Supervisor dengan 3 priority levels: ai-high, ai-medium, ai-low (rujuk D17 v3.6.0).
 
 ### 4.2. Database Design
 
@@ -291,7 +338,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 | Helpdesk Guest Form        | Borang aduan, pengurusan SLA, lampiran, e-mel tetamu                          | `admin` memproses tiket melalui Filament                                                                 |
 | Asset Loan Guest Form      | Borang pinjaman, kelulusan e-mel, rekod transaksi                             | `admin` mengurus permohonan & aset                                                                       |
 | My Dashboard (Portal Staf) | Paparan sejarah tiket/permohonan, profil, dan notifikasi untuk staf berdaftar | `staff` (role='staff') melalui guard `web`; data diambil dari users, helpdesk_tickets, loan_applications |
-| AI Assistant (FAQ Bot)     | Chatbot AI tempatan untuk soalan lazim, auto-reply suggestions, document analysis | Ollama LLM server (on-premise); `admin` urus FAQ database & templates melalui Filament                 |
+| AI Assistant (Cloud Hybrid) | Cloud Hybrid AI dengan model routing pintar, streaming responses, web-augmented answers, conversation management, document analysis, auto-reply generation | Ollama + AWS Bedrock; `admin` urus model configuration, conversation analytics, FAQ management, health monitoring melalui Filament (D18 v1.0.0) |
 | Asset Management           | Pengurusan lifecycle aset: registration, tracking, maintenance, transfers     | `admin` urus aset inventory, preventive maintenance schedules, inter-department transfers                |
 | Filament Admin             | Dashboard operasi, laporan gabungan, pengurusan aset                          | `admin` & `superuser` sahaja                                                                             |
 | Sistem Audit & Notifikasi  | Queue e-mel/SMS, log audit, pemantauan                                        | `superuser` memantau, `admin` bertindak                                                                  |
@@ -316,7 +363,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - Palet baharu: Primary `#0056B3`, Secondary `#0B4D8F`, Success `#1B7C54`, Warning `#CC7700`, Danger `#B3002D`.
 - Inline focus ring 3px warna `#0B4D8F`, jarak minimum 16px.
 - Layout asas `guest.blade.php` menggunakan `aria` landmarks (`header`, `main`, `footer`, `nav`).
-- **Bahasa Melayu sahaja** (v3.6.0): Sistem menggunakan Bahasa Melayu secara eksklusif untuk semua antara muka pengguna. Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal sahaja (rujuk D15 v3.6.0).
+- **Bahasa Melayu sahaja** (v3.6.0): Sistem menggunakan Bahasa Melayu secara eksklusif untuk semua antara muka pengguna. Language switcher telah dilumpuhkan dan semua komponen UI menggunakan `lang="ms"`. Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal sahaja. Komponen yang dilumpuhkan: `LanguageSwitcher`, `BilingualSupportService`, `SetLocale` middleware, `ictserve_locale` cookie (rujuk D15 v3.6.0).
 - Semua komponen diuji terhadap `accessibility-testing-checklist.md` dan pencapaian Lighthouse 90+ (rujuk `core-web-vitals-testing-guide.md`).
 
 ### 9.2. Ciri-ciri Utama
@@ -325,11 +372,194 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - Borang berbilang langkah dengan status indicator.
 - Komponen tetingkap modal untuk status kelulusan (untuk tetamu) dengan tumpuan (focus trap) mematuhi ARIA.
 
+### 9.3. Implementasi Bahasa (Language Implementation) - D15 v3.6.0
+
+**Bahasa Melayu Sahaja (Monolingual Implementation):**
+
+- **Antara Muka Pengguna**: 100% Bahasa Melayu untuk semua UI components, form labels, error messages, dan navigation
+- **HTML Lang Attributes**: Semua halaman menggunakan `lang="ms"` untuk Bahasa Melayu Malaysia
+- **Komponen Dilumpuhkan**: Language switcher, bilingual support service, locale middleware, dan locale cookies telah dipadam/dilumpuhkan
+- **Fail Terjemahan**: `lang/en/` dikekalkan untuk rujukan teknikal sahaja; `lang/ms/` sebagai sumber utama
+- **WCAG 2.2 AA Compliance**: Audit score 95/100 dengan sokongan screen reader (NVDA/JAWS) dalam Bahasa Melayu
+- **Contoh Label**: `Nama Penuh`, `Bahagian`, `Hantar`, `Laman Utama`, `Perkhidmatan`, `Hubungi`
+- **Mesej Ralat**: `Medan ini wajib diisi`, `Emel tidak sah`, `Sila pilih kategori`
+- **Notifikasi**: Email dan WebSocket notifications dalam Bahasa Melayu dengan format yang konsisten
+
+**Technical Implementation:**
+
+- `config('app.locale')` ditetapkan kepada 'ms' secara kekal
+- Middleware `SetLocale` sentiasa mengembalikan 'ms' locale
+- User model `locale` column dilumpuhkan (sentiasa 'ms')
+- Frontend JavaScript tidak lagi menghandle language switching
+- Translation files coverage: 36 files per bahasa (72 files keseluruhan)
+
 ---
 
-## 10. Migrasi Data & Integrasi (Data Migration & Integration)
+## 10. Komunikasi Masa Nyata & Penyiaran (Real-time Communication & Broadcasting) - D16 v3.6.0
 
-### 10.1. Integrasi Luaran (External Integration)
+### 10.1. Seni Bina Penyiaran (Broadcasting Architecture)
+
+**Laravel Reverb WebSocket Server:**
+
+- **Penyedia Utama**: Laravel Reverb 1.6.2 sebagai WebSocket server rasmi Laravel
+- **Konfigurasi**: `BROADCAST_CONNECTION=reverb` dengan sokongan horizontal scaling via Redis
+- **Performance**: Dioptimumkan untuk 100+ concurrent connections dengan low latency
+- **Security**: Private channel authorization dengan token-based access untuk guests
+
+### 10.2. Strategi Saluran Dwi (Dual Channel Strategy)
+
+**True Hybrid Architecture Support:**
+
+- **Authenticated Users**: Listen pada `private-user.{userId}` untuk personalized notifications
+- **Guest Users**: Listen pada `private-ticket.{ticketUuid}` atau `private-loan.{loanUuid}` dengan status token authorization
+- **AI Conversations**: Listen pada `private-conversation.{conversationUuid}` untuk AI streaming responses
+
+### 10.3. Acara Penyiaran Sedia Ada (Broadcasting Events)
+
+**Core System Events:**
+
+| Acara | Saluran Auth | Saluran Guest | Tujuan |
+|-------|-------------|---------------|---------|
+| `NotificationCreated` | `private-user.{id}` | `private-ticket.{uuid}` | Notifikasi baharu |
+| `StatusUpdated` | `private-user.{id}` | `private-ticket.{uuid}` | Kemaskini status |
+| `CommentPosted` | `private-user.{id}` | `private-submission.{type}.{id}` | Ulasan baharu |
+| `AssetReturnedDamaged` | `private-user.{id}` | `private-loan.{uuid}` | Aset rosak |
+| `EmailVerified` | `private-user.{id}` | N/A | Email disahkan |
+| `AccountLinked` | `private-user.{id}` | N/A | Akaun dipautkan |
+
+**AI Real-time Events (D18 Integration):**
+
+| Acara AI | Saluran Auth | Saluran Guest | Tujuan |
+|----------|-------------|---------------|---------|
+| `AiStreamingStarted` | `private-user.{id}` | `private-conversation.{uuid}` | AI streaming dimulakan |
+| `AiStreamingChunk` | `private-user.{id}` | `private-conversation.{uuid}` | Chunk respons AI |
+| `AiStreamingCompleted` | `private-user.{id}` | `private-conversation.{uuid}` | AI streaming selesai |
+| `AiModelSwitched` | `private-user.{id}` | `private-conversation.{uuid}` | Model AI ditukar |
+| `AiWebSearchStarted` | `private-user.{id}` | `private-conversation.{uuid}` | Web search dimulakan |
+| `AiErrorOccurred` | `private-user.{id}` | `private-conversation.{uuid}` | Ralat AI berlaku |
+
+### 10.4. Integrasi Frontend (Frontend Integration)
+
+**Laravel Echo Configuration:**
+
+- **Reverb Primary**: Auto-detection dengan fallback ke Pusher
+- **Client Libraries**: Laravel Echo 2.2.6 + Pusher-JS untuk WebSocket communication
+- **Event Handling**: Livewire v3 integration dengan `#[On]` attributes untuk real-time updates
+- **Error Handling**: Automatic reconnection dengan exponential backoff
+
+**JavaScript Implementation:**
+
+```javascript
+// Authenticated users
+if (window.userId) {
+  window.Echo.private(`user.${window.userId}`)
+    .listen('.notification.created', handleNotification)
+    .listen('.status.updated', updateStatus);
+}
+
+// Guest users dengan token authorization
+if (window.ticketUuid && window.statusToken) {
+  window.Echo.private(`ticket.${window.ticketUuid}`)
+    .listen('.notification.created', handleNotification)
+    .listen('.status.updated', updateStatus);
+}
+```
+
+---
+
+## 11. Pengurusan Baris Gilir & Pekerjaan Latar Belakang (Queue Management & Background Jobs) - D17 v3.6.0
+
+### 11.1. Seni Bina Baris Gilir (Queue Architecture)
+
+**Queue Configuration:**
+
+- **Default Driver**: Database untuk development, Redis untuk production
+- **Queue Workers**: Supervisor-managed processes dengan auto-restart
+- **Failed Jobs**: Database storage dengan UUID tracking untuk retry/recovery
+- **Monitoring**: Laravel Pulse integration untuk queue metrics dan performance
+
+### 11.2. Pekerjaan Sistem Sedia Ada (System Background Jobs)
+
+**Core Application Jobs (5 jobs):**
+
+| Pekerjaan | Tujuan | Hybrid Support |
+|-----------|---------|----------------|
+| `SendTicketCreatedEmail` | Email pengesahan tiket | Conditional: DB+Email or Email-only |
+| `SendLoanApprovedEmail` | Email kelulusan pinjaman | Conditional: DB+Email or Email-only |
+| `SendAssetOverdueEmail` | Email peringatan tertunggak | Conditional: DB+Email or Email-only |
+| `RetryFailedEmail` | Retry email gagal | Email-only retry mechanism |
+| `ExportSubmissionsJob` | Export data submissions | Authenticated users only |
+
+**True Hybrid Architecture Jobs (12 jobs):**
+
+| Pekerjaan | Tujuan | Target Users |
+|-----------|---------|--------------|
+| `SendEmailVerification` | Email verification untuk self-registration | Self-registered staff |
+| `SendWelcomeEmail` | Welcome email selepas verification | Verified staff |
+| `SendAccountLinkedEmail` | Confirmation email untuk account linking | Staff yang link submissions |
+| `ProcessNotificationDigest` | Daily/weekly notification digest | Users dengan digest preference |
+| `ProcessApiTokenCreated` | API token creation notification | Sanctum token users |
+| `ProcessGoogleSsoLinked` | Google SSO linking notification | Google Workspace users |
+| `ProcessAccessoryCheckout` | Accessory checkout notification | Hybrid: Auth + Guest |
+| `ProcessResponsibleOfficer` | Responsible officer assignment | Authenticated users |
+| `PruneExpiredApiTokens` | Cleanup expired tokens | System maintenance |
+| `SyncGoogleWorkspaceAccounts` | Google account synchronization | System maintenance |
+
+**AI Processing Jobs (12 jobs):**
+
+| Pekerjaan AI | Queue | Priority | Timeout | Tujuan |
+|--------------|-------|----------|---------|---------|
+| `ProcessAiConversation` | ai-high | High | 300s | Process AI conversations |
+| `ProcessAiStreamingResponse` | ai-high | High | 180s | Real-time streaming |
+| `ProcessAiWebSearch` | ai-medium | Medium | 120s | Web-augmented search |
+| `ProcessAiDocumentAnalysis` | ai-medium | Medium | 600s | Document analysis |
+| `ProcessAiFaqGeneration` | ai-low | Low | 60s | FAQ suggestions |
+| `ProcessAiModelFallback` | ai-high | High | 120s | Model fallback |
+| `ProcessAiUsageMetrics` | ai-low | Low | 60s | Usage metrics |
+| `ProcessAiEmbeddingGeneration` | ai-medium | Medium | 300s | Vector embeddings |
+| `ProcessAiCacheWarmup` | ai-low | Low | 180s | Cache warming |
+| `ProcessAiErrorRecovery` | ai-high | High | 60s | Error recovery |
+| `CleanupAiConversations` | default | Low | 300s | Conversation cleanup |
+
+### 11.3. Notifikasi Bergilir (Queued Notifications)
+
+**Hybrid Notification Logic:**
+
+- **Authenticated Users**: Database Notification + Email via `User::notify()`
+- **Guest Users**: Email Only via `Mail::to()->send()`
+- **Decision Tree**: Check `user_id` existence untuk determine notification channels
+
+**Notification Types (25+ notifications):**
+
+- Helpdesk: Ticket created, status updated, comment added, assigned, SLA breach
+- Asset Loan: Application submitted, approved/rejected, asset overdue, returned
+- System: Email verification, welcome, account linked, API token events
+- AI: Conversation saved, model switched, error occurred, usage metrics
+
+### 11.4. Pengurusan Pekerja (Worker Management)
+
+**Supervisor Configuration:**
+
+```ini
+[program:ictserve-queue]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/ictserve/artisan queue:work redis --queue=default --sleep=3 --tries=3
+autostart=true
+autorestart=true
+numprocs=2
+```
+
+**AI-Specific Workers:**
+
+- **ai-high**: 3 processes untuk critical AI operations
+- **ai-medium**: 2 processes untuk standard AI tasks  
+- **ai-low**: 1 process untuk background AI maintenance
+
+---
+
+## 12. Migrasi Data & Integrasi (Data Migration & Integration)
+
+### 12.1. Integrasi Luaran (External Integration)
 
 | Sistem                         | Tujuan                                       | Integrasi                                                                   |
 | ------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------- |
@@ -344,7 +574,7 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 ---
 
-## 11. Pematuhan Piawaian (Standards Compliance)
+## 13. Pematuhan Piawaian (Standards Compliance)
 
 - **WCAG 2.2 AA** – Lihat `accessibility-guidelines.md` & `color-contrast-accessibility.md`.
 - **Performance Optimisation** – `performance-optimization-report.md`, `core-web-vitals-testing-guide.md`.
@@ -354,9 +584,9 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 ---
 
-## 11a. Arsitektur Penempatan (Deployment Architecture)
+## 13a. Arsitektur Penempatan (Deployment Architecture)
 
-### 11a.1. Infrastruktur Penempatan (Deployment Infrastructure)
+### 13a.1. Infrastruktur Penempatan (Deployment Infrastructure)
 
 **Development Environment:**
 
@@ -372,7 +602,7 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 - **Object Storage**: MinIO/S3 untuk lampiran tetamu dengan polisi retention
 - **WebSocket**: Laravel Reverb untuk real-time communication
 
-### 11a.2. Keselamatan Penempatan (Deployment Security)
+### 13a.2. Keselamatan Penempatan (Deployment Security)
 
 - Enforce HTTPS + HSTS
 - WAF menapis trafik robot/spam ke borang tetamu
@@ -383,9 +613,9 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 ---
 
-## 12. Glosari & Rujukan (Glossary & References)
+## 14. Glosari & Rujukan (Glossary & References)
 
-### 12.1. Istilah Utama
+### 14.1. Istilah Utama
 
 | Istilah                  | Takrif                                                                      |
 | ------------------------ | --------------------------------------------------------------------------- |
@@ -402,8 +632,14 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 | **Sanctum**              | Laravel API token authentication system.                                    |
 | **Socialite**            | Laravel OAuth 2.0 library untuk Google Workspace SSO.                       |
 | **API Token**            | Token Sanctum untuk akses API dengan abilities dan expiration.              |
+| **Broadcasting**         | Laravel real-time event system menggunakan WebSocket.                       |
+| **Queue Worker**         | Background process yang memproses queued jobs secara asinkron.              |
+| **Private Channel**      | WebSocket channel dengan authorization untuk authenticated/guest users.     |
+| **Dual Channel Strategy** | Hybrid approach: private-user.{id} untuk auth, private-ticket.{uuid} untuk guest. |
+| **AI Streaming**         | Real-time AI response delivery menggunakan Server-Sent Events.              |
+| **Bahasa Melayu Sahaja** | Monolingual implementation - UI menggunakan Bahasa Melayu eksklusif.        |
 
-### 12.2. Versi Teknologi
+### 14.2. Versi Teknologi
 
 | Teknologi         | Versi   | Tujuan                                |
 | ----------------- | ------- | ------------------------------------- |
@@ -440,4 +676,8 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 Peralihan kepada seni bina hybrid (guest-first + portal staf) memastikan ICTServe memenuhi mandat BPM untuk menyediakan perkhidmatan digital yang boleh diakses umum sambil mengekalkan kawalan ketat di peringkat pentadbiran. Staf MOTAC yang berdaftar boleh log masuk melalui Laravel Breeze atau Google Workspace SSO (opsyen) untuk menggunakan My Dashboard, manakala tetamu kekal menggunakan borang tetamu sebagai pintu masuk utama. Akaun pentadbir kekal terhad kepada `admin` dan `superuser` dengan 2FA berasaskan TOTP untuk `superuser`, dan semua interaksi penting direkodkan dalam jejak audit.
 
-Sistem kini dilengkapi dengan Laravel Pulse untuk pemantauan prestasi masa nyata, Laravel Sanctum untuk API authentication (future-ready untuk aplikasi mobile), dan Laravel Socialite untuk Google Workspace SSO sebagai alternatif log masuk. Kesemua ciri baharu ini menyokong visi Digital MOTAC 2025 dan pematuhan MyGOV Digital Service Standards v2.1.0.
+Sistem kini dilengkapi dengan Laravel Pulse untuk pemantauan prestasi masa nyata, Laravel Sanctum untuk API authentication (future-ready untuk aplikasi mobile), dan Laravel Socialite untuk Google Workspace SSO sebagai alternatif log masuk.
+
+**Kemaskini v3.6.0** memperkenalkan implementasi **Bahasa Melayu sahaja** (D15) dengan language switcher dilumpuhkan, **Laravel Reverb WebSocket** (D16) untuk komunikasi masa nyata dengan dual channel strategy, dan **sistem queue management** (D17) yang komprehensif dengan sokongan 29+ jenis pekerjaan termasuk 12 AI-specific jobs. Real-time broadcasting menyokong AI streaming responses, notification updates, dan status changes untuk kedua-dua authenticated users dan guests.
+
+Kesemua ciri baharu ini menyokong visi Digital MOTAC 2025 dan pematuhan MyGOV Digital Service Standards v2.1.0 dengan penekanan kepada pengalaman pengguna yang responsif, komunikasi masa nyata, dan pemprosesan latar belakang yang cekap.
