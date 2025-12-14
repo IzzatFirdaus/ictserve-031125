@@ -34,6 +34,7 @@ class ComponentMarkupTest extends TestCase
         $contents = file_get_contents($buttonPath);
 
         $this->assertStringContainsString("'primary' => 'bg-primary-600", $contents);
-        $this->assertStringContainsString('min-h-44 min-w-44', $contents);
+        // min-h-11 min-w-11 = 44px touch target (11 × 4px = 44px per Tailwind spacing scale)
+        $this->assertStringContainsString('min-h-11 min-w-11', $contents);
     }
 }

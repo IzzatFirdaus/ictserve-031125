@@ -263,4 +263,60 @@ class HybridHelpdeskWorkflowTest extends TestCase
         $this->assertArrayHasKey('linked_at', $integrationData);
         $this->assertNotNull($integrationData['linked_at']);
     }
+
+    #[Test]
+    public function hybrid_helpdesk_interface_displays_bahasa_melayu_content(): void
+    {
+        $user = User::factory()->create(['email' => 'test.user@motac.gov.my']);
+
+        // Test guest form page (BM content)
+        $guestResponse = $this->get('/helpdesk/guest/create');
+        $guestResponse->assertStatus(200);
+        $guestResponse->assertSee('Borang Aduan ICT', false); // BM: ICT Complaint Form
+        $guestResponse->assertSee('Nama Penuh', false); // BM: Full Name
+        $guestResponse->assertSee('E-mel Rasmi', false); // BM: Official Email
+        $guestResponse->assertSee('Hantar Aduan', false); // BM: Submit Complaint
+
+        // Test authenticated dashboard (BM content)
+        $dashboardResponse = $this->actingAs($user)->get('/helpdesk/dashboard');
+        $dashboardResponse->assertStatus(200);
+        $dashboardResponse->assertSee('Papan Pemuka', false); // BM: Dashboard
+        $dashboardResponse->assertSee('Aduan Saya', false); // BM: My Complaints
+        $dashboardResponse->assertSee('Sejarah Aduan', false); // BM: Complaint History
+
+        // Verify language switcher is disabled/hidden in v3.6.0
+        $guestResponse->assertDontSee('English');
+        $guestResponse->assertDontSee('language-switcher');
+        $dashboardResponse->assertDontSee('English');
+        $dashboardResponse->assertDontSee('language-switcher');
+    }
+
+    #[Test]
+    public function hybrid_ticket_status_messages_use_bahasa_melayu(): void
+    {
+        $user = User::factory()->create(['email' => 'status.test@motac.gov.my']);
+
+        // Create authenticated ticket
+        $ticket = HelpdeskTicket::factory()->create([
+            'user_id' => $user->id,
+            'status' => 'open',
+            'subject' => 'Ujian status BM',
+        ]);
+
+        // Test ticket detail page shows BM status
+        $response = $this->actingAs($user)->get("/helpdesk/tickets/{$ticket->id}");
+        $response->assertStatus(200);
+        $response->assertSee('open', false); // Status value: open
+        $response->assertSee('Status', false); // BM: Status
+        $response->assertSee('Butiran', false); // BM: Details
+
+        // Update ticket status and verify BM status messages
+        $ticket->update(['status' => 'in_progress']);
+        $response = $this->actingAs($user)->get("/helpdesk/tickets/{$ticket->id}");
+        $response->assertSee('Dalam Proses', false); // BM: In Progress
+
+        $ticket->update(['status' => 'resolved']);
+        $response = $this->actingAs($user)->get("/helpdesk/tickets/{$ticket->id}");
+        $response->assertSee('Diselesaikan', false); // BM: Resolved
+    }
 }
