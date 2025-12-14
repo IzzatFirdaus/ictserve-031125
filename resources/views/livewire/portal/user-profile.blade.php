@@ -13,15 +13,13 @@
 --}}
 <?php
 
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.portal')] class extends Component
-{
+new #[Layout('layouts.portal')] class extends Component {
     // Editable fields
     public string $name = '';
     public string $phone = '';
@@ -136,23 +134,25 @@ new #[Layout('layouts.portal')] class extends Component
     public function requestCorrection(string $field): void
     {
         $user = Auth::user();
-        $currentValue = match($field) {
+        $currentValue = match ($field) {
             'email' => $user->email,
             'staff_id' => $user->staff_id,
-            'grade' => $user->grade?->name_ms ?? $user->grade?->name_en ?? '-',
-            'department' => $user->division?->name_ms ?? $user->division?->name_en ?? '-',
+            'grade' => $user->grade?->name_ms ?? ($user->grade?->name_en ?? '-'),
+            'department' => $user->division?->name_ms ?? ($user->division?->name_en ?? '-'),
             default => '-',
         };
 
         // Redirect to helpdesk form with pre-filled data
-        $this->redirect(route('helpdesk.create', [
-            'category' => 'profile_data_correction',
-            'prefill_title' => __('profile.correction_request_title', ['field' => __("profile.{$field}")]),
-            'prefill_description' => __('profile.correction_request_desc', [
-                'field' => __("profile.{$field}"),
-                'current_value' => $currentValue,
+        $this->redirect(
+            route('helpdesk.create', [
+                'category' => 'profile_data_correction',
+                'prefill_title' => __('profile.correction_request_title', ['field' => __("profile.{$field}")]),
+                'prefill_description' => __('profile.correction_request_desc', [
+                    'field' => __("profile.{$field}"),
+                    'current_value' => $currentValue,
+                ]),
             ]),
-        ]));
+        );
     }
 }; ?>
 
@@ -208,7 +208,7 @@ new #[Layout('layouts.portal')] class extends Component
                         </div>
                     </div>
                     <button wire:click="requestCorrection('email')"
-                        class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline">
+                        class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline min-h-11 px-2">
                         {{ __('profile.request_correction') }}
                     </button>
                 </div>
@@ -228,7 +228,7 @@ new #[Layout('layouts.portal')] class extends Component
                         </div>
                     </div>
                     <button wire:click="requestCorrection('staff_id')"
-                        class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline">
+                        class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline min-h-11 px-2">
                         {{ __('profile.request_correction') }}
                     </button>
                 </div>
@@ -250,7 +250,7 @@ new #[Layout('layouts.portal')] class extends Component
                         </div>
                     </div>
                     <button wire:click="requestCorrection('grade')"
-                        class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline">
+                        class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline min-h-11 px-2">
                         {{ __('profile.request_correction') }}
                     </button>
                 </div>
@@ -272,7 +272,7 @@ new #[Layout('layouts.portal')] class extends Component
                         </div>
                     </div>
                     <button wire:click="requestCorrection('department')"
-                        class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline">
+                        class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline min-h-11 px-2">
                         {{ __('profile.request_correction') }}
                     </button>
                 </div>
@@ -295,13 +295,15 @@ new #[Layout('layouts.portal')] class extends Component
                 {{-- Name --}}
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('profile.name') }} <span class="text-danger-500">*</span>
+                        {{ __('profile.name') }} <span class="text-danger-500" aria-hidden="true">*</span>
                     </label>
                     <input type="text" id="name" wire:model="name"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm min-h-11"
+                        aria-required="true" aria-describedby="name-error" @error('name') aria-invalid="true" @enderror
                         required>
                     @error('name')
-                        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                        <p id="name-error" class="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">
+                            {{ $message }}</p>
                     @enderror
                 </div>
 
@@ -311,9 +313,13 @@ new #[Layout('layouts.portal')] class extends Component
                         {{ __('profile.phone') }}
                     </label>
                     <input type="tel" id="phone" wire:model="phone" placeholder="+60 3-XXXX XXXX"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm">
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm min-h-11"
+                        aria-describedby="phone-hint phone-error">
+                    <p id="phone-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        {{ __('profile.phone_format_hint') ?: 'Format: +60 3-XXXX XXXX' }}</p>
                     @error('phone')
-                        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                        <p id="phone-error" class="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">
+                            {{ $message }}</p>
                     @enderror
                 </div>
 
@@ -323,9 +329,13 @@ new #[Layout('layouts.portal')] class extends Component
                         {{ __('profile.mobile') }}
                     </label>
                     <input type="tel" id="mobile" wire:model="mobile" placeholder="+60 1X-XXX XXXX"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm">
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm min-h-11"
+                        aria-describedby="mobile-hint mobile-error">
+                    <p id="mobile-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        {{ __('profile.mobile_format_hint') ?: 'Format: +60 1X-XXX XXXX' }}</p>
                     @error('mobile')
-                        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                        <p id="mobile-error" class="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">
+                            {{ $message }}</p>
                     @enderror
                 </div>
 
@@ -336,21 +346,32 @@ new #[Layout('layouts.portal')] class extends Component
                     </label>
                     <textarea id="bio" wire:model="bio" rows="3" maxlength="500"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
-                        placeholder="{{ __('profile.bio_placeholder') }}"></textarea>
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        aria-describedby="bio-hint bio-error" placeholder="{{ __('profile.bio_placeholder') }}"></textarea>
+                    <p id="bio-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                         {{ strlen($bio ?? '') }}/500 {{ __('profile.characters') }}
                     </p>
                     @error('bio')
-                        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                        <p id="bio-error" class="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">
+                            {{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="flex justify-end">
                     <button type="submit"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                        wire:loading.attr="disabled">
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-h-11"
+                        wire:loading.attr="disabled" wire:loading.class="opacity-75 cursor-wait">
                         <span wire:loading.remove wire:target="updateProfile">{{ __('profile.save_changes') }}</span>
-                        <span wire:loading wire:target="updateProfile">{{ __('profile.saving') }}</span>
+                        <span wire:loading wire:target="updateProfile" class="inline-flex items-center">
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            {{ __('profile.saving') }}
+                        </span>
                     </button>
                 </div>
             </form>
@@ -371,26 +392,35 @@ new #[Layout('layouts.portal')] class extends Component
                 {{-- Current Password --}}
                 <div>
                     <label for="current_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('profile.current_password') }} <span class="text-danger-500">*</span>
+                        {{ __('profile.current_password') }} <span class="text-danger-500"
+                            aria-hidden="true">*</span>
                     </label>
                     <input type="password" id="current_password" wire:model="current_password"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm min-h-11"
+                        aria-required="true" aria-describedby="current-password-error"
+                        @error('current_password') aria-invalid="true" @enderror autocomplete="current-password"
                         required>
                     @error('current_password')
-                        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                        <p id="current-password-error" class="mt-1 text-sm text-danger-600 dark:text-danger-400"
+                            role="alert">{{ $message }}</p>
                     @enderror
                 </div>
 
                 {{-- New Password --}}
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('profile.new_password') }} <span class="text-danger-500">*</span>
+                        {{ __('profile.new_password') }} <span class="text-danger-500" aria-hidden="true">*</span>
                     </label>
                     <input type="password" id="password" wire:model="password"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
-                        required>
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm min-h-11"
+                        aria-required="true" aria-describedby="password-hint password-error"
+                        @error('password') aria-invalid="true" @enderror autocomplete="new-password" required>
+                    <p id="password-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        {{ __('profile.password_requirements') ?: 'Minimum 8 characters with uppercase, lowercase, and number' }}
+                    </p>
                     @error('password')
-                        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                        <p id="password-error" class="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">
+                            {{ $message }}</p>
                     @enderror
                 </div>
 
@@ -398,20 +428,31 @@ new #[Layout('layouts.portal')] class extends Component
                 <div>
                     <label for="password_confirmation"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('profile.confirm_password') }} <span class="text-danger-500">*</span>
+                        {{ __('profile.confirm_password') }} <span class="text-danger-500"
+                            aria-hidden="true">*</span>
                     </label>
                     <input type="password" id="password_confirmation" wire:model="password_confirmation"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
-                        required>
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm min-h-11"
+                        aria-required="true" autocomplete="new-password" required>
                 </div>
 
                 <div class="flex justify-end">
                     <button type="submit"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                        wire:loading.attr="disabled">
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-h-11"
+                        wire:loading.attr="disabled" wire:loading.class="opacity-75 cursor-wait">
                         <span wire:loading.remove
                             wire:target="updatePassword">{{ __('profile.update_password') }}</span>
-                        <span wire:loading wire:target="updatePassword">{{ __('profile.updating') }}</span>
+                        <span wire:loading wire:target="updatePassword" class="inline-flex items-center">
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            {{ __('profile.updating') }}
+                        </span>
                     </button>
                 </div>
             </form>
@@ -439,11 +480,21 @@ new #[Layout('layouts.portal')] class extends Component
 
                 <div class="mt-4 flex justify-end">
                     <button wire:click="updateLanguage"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                        wire:loading.attr="disabled">
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-h-11"
+                        wire:loading.attr="disabled" wire:loading.class="opacity-75 cursor-wait">
                         <span wire:loading.remove
                             wire:target="updateLanguage">{{ __('profile.save_language') }}</span>
-                        <span wire:loading wire:target="updateLanguage">{{ __('profile.saving') }}</span>
+                        <span wire:loading wire:target="updateLanguage" class="inline-flex items-center">
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            {{ __('profile.saving') }}
+                        </span>
                     </button>
                 </div>
             </div>
@@ -480,12 +531,22 @@ new #[Layout('layouts.portal')] class extends Component
 
                 <div class="pt-4 flex justify-end">
                     <button wire:click="updateNotificationPreferences"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                        wire:loading.attr="disabled">
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-h-11"
+                        wire:loading.attr="disabled" wire:loading.class="opacity-75 cursor-wait">
                         <span wire:loading.remove
                             wire:target="updateNotificationPreferences">{{ __('profile.save_preferences') }}</span>
-                        <span wire:loading
-                            wire:target="updateNotificationPreferences">{{ __('profile.saving') }}</span>
+                        <span wire:loading wire:target="updateNotificationPreferences"
+                            class="inline-flex items-center">
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            {{ __('profile.saving') }}
+                        </span>
                     </button>
                 </div>
             </div>
