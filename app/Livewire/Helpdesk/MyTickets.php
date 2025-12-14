@@ -97,9 +97,9 @@ class MyTickets extends Component
 
         if ($success) {
             $this->dispatch('ticket-claimed');
-            session()->flash('success', __('Tiket berjaya dituntut.'));
+            session()->flash('success', __('helpdesk.ticket_claimed_successfully'));
         } else {
-            session()->flash('error', __('Tiket tidak dapat dituntut. Sila cuba lagi.'));
+            session()->flash('error', __('helpdesk.ticket_claim_failed'));
         }
     }
 

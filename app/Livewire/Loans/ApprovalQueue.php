@@ -9,7 +9,6 @@ use App\Models\LoanApplication;
 use App\Services\DualApprovalService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -34,7 +33,8 @@ class ApprovalQueue extends Component
 
     public function mount(): void
     {
-        abort_unless(Auth::user()?->canApprove(), 403);
+        $user = Auth::user();
+        abort_unless($user instanceof \App\Models\User && $user->canApprove(), 403);
     }
 
     public function updatingSearch(): void
@@ -57,10 +57,14 @@ class ApprovalQueue extends Component
     {
         $user = Auth::user();
 
+        if (! $user || ! $user->email) {
+            return new LengthAwarePaginator([], 0, 10);
+        }
+
         return LoanApplication::query()
             ->with(['division'])
             ->where('status', LoanStatus::UNDER_REVIEW)
-            ->whereRaw('LOWER(approver_email) = ?', [strtolower((string) $user->email)])
+            ->whereRaw('LOWER(approver_email) = ?', [strtolower($user->email)])
             ->when($this->search, function ($query) {
                 $query->where(function ($inner) {
                     $inner->where('application_number', 'like', '%'.$this->search.'%')
@@ -72,11 +76,11 @@ class ApprovalQueue extends Component
             ->paginate(10);
     }
 
-    public function render(): \Illuminate\View\View
+    public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.loans.approval-queue', [
             'applications' => $this->applications(),
-        ])->layout('layouts.portal');
+        ]);
     }
 
     private function handleDecision(int $applicationId, DualApprovalService $service, bool $approve): void
@@ -96,11 +100,11 @@ class ApprovalQueue extends Component
         );
 
         if ($response['success'] ?? false) {
-            session()->flash('message', $response['message'] ?? __('Tindakan berjaya.'));
+            session()->flash('message', $response['message'] ?? __('common.action_success'));
             unset($this->remarks[$applicationId]);
             $this->resetPage();
         } else {
-            session()->flash('error', $response['message'] ?? __('Tindakan gagal. Sila cuba lagi.'));
+            session()->flash('error', $response['message'] ?? __('common.action_failed'));
         }
     }
 

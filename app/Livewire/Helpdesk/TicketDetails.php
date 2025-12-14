@@ -11,7 +11,6 @@ use App\Services\HybridHelpdeskService;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -57,7 +56,7 @@ class TicketDetails extends Component
 
         $this->refreshTicket();
 
-        session()->flash('message', __('Tiket berjaya dituntut ke akaun anda.'));
+        session()->flash('message', __('helpdesk.ticket_claimed_successfully'));
     }
 
     public function addComment(): void

@@ -119,7 +119,7 @@ class ThemeToggle extends Component
         // Update user preference if authenticated
         if (Auth::check()) {
             $user = Auth::user();
-            if ($user) {
+            if ($user instanceof \App\Models\User) {
                 $user->update(['theme_preference' => $theme]);
             }
         }

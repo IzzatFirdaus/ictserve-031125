@@ -14,7 +14,6 @@ use App\Models\SavedSearch;
 use App\Services\SubmissionService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -236,7 +235,7 @@ class SubmissionHistory extends Component
 
         $this->closeSaveSearchModal();
 
-        session()->flash('success', __('Carian berjaya disimpan'));
+        session()->flash('success', __('portal.search_saved_successfully'));
     }
 
     /**
@@ -262,7 +261,7 @@ class SubmissionHistory extends Component
 
         $this->resetPage();
 
-        session()->flash('success', __('Carian berjaya digunakan'));
+        session()->flash('success', __('portal.search_applied_successfully'));
     }
 
     /**
@@ -275,7 +274,7 @@ class SubmissionHistory extends Component
             ->where('user_id', Auth::id())
             ->delete();
 
-        session()->flash('success', __('Carian berjaya dipadam'));
+        session()->flash('success', __('portal.search_deleted_successfully'));
     }
 
     /**
