@@ -4,6 +4,9 @@
 /* Mobile-specific portal styles */
 @import "./portal-mobile.css";
 
+/* Mobile optimization styles (Phase 13) */
+@import "./mobile.css";
+
 /* Performance optimization styles */
 @import "./performance.css";
 
