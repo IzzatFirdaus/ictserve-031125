@@ -15,7 +15,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-blue-100 font-semibold tracking-wide uppercase">
-                        {{ __('status.page_tagline') ?? 'Status Semasa' }}</p>
+                        {{ __('status.page_tagline') }}</p>
                     <h1 id="status-heading" class="text-3xl md:text-4xl font-heading font-bold tracking-tight">
                         {{ __('status.title') }}</h1>
                 </div>
@@ -41,7 +41,7 @@
                                     class="text-2xl font-heading font-semibold text-gray-900 dark:text-gray-100">
                                     {{ __('status.form_label') }}</h2>
                                 <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                    {{ __('status.form_helper') ?? __('status.subtitle') }}</p>
+                                    {{ __('status.form_helper') }}</p>
                             </div>
                         </div>
 
@@ -447,14 +447,14 @@
                     <div
                         class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-card dark:shadow-dropdown p-6">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                            {{ __('status.quick_help_title') ?? 'Bantuan Pantas' }}</h3>
+                            {{ __('status.quick_help_title') }}</h3>
                         <ul class="space-y-3 text-sm text-gray-700 dark:text-gray-200">
                             <li class="flex items-start gap-2">
                                 <x-heroicon-o-envelope class="w-5 h-5 text-primary-600 dark:text-primary-300 mt-0.5" />
                                 <div>
                                     <p class="font-semibold">helpdesk@motac.gov.my</p>
                                     <p class="text-gray-600 dark:text-gray-300">
-                                        {{ __('status.quick_help_email') ?? 'Emel sokongan BPM' }}</p>
+                                        {{ __('status.quick_help_email') }}</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-2">
@@ -462,7 +462,7 @@
                                 <div>
                                     <p class="font-semibold">+603-8891 7000</p>
                                     <p class="text-gray-600 dark:text-gray-300">
-                                        {{ __('status.quick_help_phone') ?? 'Talian bantuan helpdesk' }}</p>
+                                        {{ __('status.quick_help_phone') }}</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-2">
@@ -470,9 +470,9 @@
                                     class="w-5 h-5 text-primary-600 dark:text-primary-300 mt-0.5" />
                                 <div>
                                     <p class="font-semibold">
-                                        {{ __('status.quick_help_ticket') ?? 'Hantar tiket baharu' }}</p>
+                                        {{ __('status.quick_help_ticket') }}</p>
                                     <a href="{{ route('helpdesk.submit') }}"
-                                        class="text-primary-600 dark:text-primary-300 font-semibold hover:underline focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-sm">{{ __('status.quick_help_ticket_cta') ?? 'Pergi ke borang helpdesk' }}</a>
+                                        class="text-primary-600 dark:text-primary-300 font-semibold hover:underline focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-sm">{{ __('status.quick_help_ticket_cta') }}</a>
                                 </div>
                             </li>
                         </ul>

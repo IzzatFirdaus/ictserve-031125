@@ -8,6 +8,7 @@ use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Services\LoanApplicationService;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -25,6 +26,7 @@ class ApproverDashboard extends Component
 {
     use WithPagination;
 
+    #[Layout('layouts.portal')]
     #[Validate('nullable|string|max:255')]
     public ?string $search = null;
 
@@ -141,6 +143,6 @@ class ApproverDashboard extends Component
 
         return view('livewire.approver.approver-dashboard', [
             'applications' => $applications,
-        ])->layout('layouts.portal');
+        ]);
     }
 }

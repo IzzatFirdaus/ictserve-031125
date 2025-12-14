@@ -7,9 +7,8 @@ namespace App\Livewire;
 use App\Models\BedrockConversation;
 use App\Models\WebSearchLog;
 use App\Services\BedrockService;
-use App\Services\ModelRouter;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -18,7 +17,7 @@ class BedrockChat extends Component
 {
     public string $prompt = '';
 
-    public string $model = 'opus';
+    public string $model = '';
 
     public array $messages = [];
 
@@ -30,219 +29,295 @@ class BedrockChat extends Component
 
     public bool $sending = false;
 
+    public ?string $context = null;
+
+    public array $faqSuggestions = [];
+
+    /**
+     * Validation rules for the component
+     */
+    protected $rules = [
+        'model' => 'required|in:opus,sonnet,haiku,nova_micro,nova_lite,nova_pro,titan_text_lite,titan_text_express',
+        'prompt' => 'required|string|min:1|max:4000',
+        'useInternet' => 'boolean',
+    ];
+
+    /**
+     * Custom validation messages
+     */
+    protected function messages(): array
+    {
+        return [
+            'model.required' => 'Sila pilih model AI sebelum menghantar mesej.',
+            'model.in' => 'Model yang dipilih tidak sah.',
+            'prompt.required' => 'Sila masukkan mesej anda.',
+            'prompt.min' => 'Mesej terlalu pendek.',
+            'prompt.max' => 'Mesej terlalu panjang (maksimum 4000 aksara).',
+        ];
+    }
+
     public function mount(?int $id = null): void
     {
+        // Handle context parameter from request
+        $this->context = request()->get('context');
+
+        // Set FAQ suggestions if context is FAQ
+        if ($this->context === 'faq') {
+            $this->faqSuggestions = [
+                'Bagaimana cara menghantar tiket helpdesk?',
+                'Apakah prosedur untuk memohon pinjaman aset ICT?',
+                'Bagaimana cara menyemak status permohonan saya?',
+                'Siapa yang boleh menggunakan sistem ICTServe?',
+                'Bagaimana cara mendaftar akaun baru?',
+            ];
+        }
+
         if ($id) {
-            $conversation = BedrockConversation::find($id);
-            if ($conversation) {
-                $this->conversationId = $conversation->id;
-                $this->messages = $conversation->messages;
-                $this->model = $conversation->model;
-            }
+            $this->loadConversation($id);
+        } else {
+            $this->initializeConversation();
+        }
+
+        // Restore conversation from session if available (for page refresh)
+        $sessionMessages = session('bedrock_temp_messages');
+        if ($sessionMessages && empty($this->messages)) {
+            $this->messages = $sessionMessages;
         }
     }
 
-    public function send(): void
+    public function initializeConversation(): void
     {
-        if (empty($this->prompt) || $this->sending) {
-            return;
-        }
+        $this->messages = [];
+        $this->conversationId = null;
 
-        $this->sending = true;
-
-        $requestId = (string) Str::uuid();
-
-        $modelMap = [
-            'opus' => 'global.anthropic.claude-opus-4-5-20251101-v1:0',
-            'sonnet' => 'us.anthropic.claude-sonnet-4-5-20250929-v1:0',
-            'haiku' => 'us.anthropic.claude-haiku-4-5-20251001-v1:0',
-        ];
-
-        $prompt = $this->prompt;
-
-        if ($this->useInternet && ! empty($this->prompt)) {
-            $searchResults = $this->searchWeb($this->prompt, $requestId);
-            $prompt = "Hasil carian web:\n{$searchResults}\n\nSoalan pengguna: {$prompt}";
-        }
-
-        $this->messages[] = ['role' => 'user', 'content' => $this->prompt];
-
-        $router = app(ModelRouter::class);
-        $route = $router->routeTextGeneration($prompt, [
-            'user_id' => Auth::id(),
-            'session_id' => session()->getId(),
-            'operation_type' => 'bedrock_chat',
-        ]);
-
-        if (($route['provider'] ?? null) !== 'bedrock') {
+        // Add system message based on context
+        if ($this->context === 'faq') {
             $this->messages[] = [
-                'role' => 'assistant',
-                'content' => 'Permintaan tidak boleh diproses menggunakan Bedrock. '.(string) ($route['reason'] ?? 'Sila cuba lagi.'),
-                'model' => $this->model,
-            ];
-
-            $this->saveConversation();
-            $this->prompt = '';
-            $this->sending = false;
-
-            return;
-        }
-
-        $bedrock = app(BedrockService::class);
-        $effectiveModelId = (string) ($route['model_id'] ?? ($modelMap[$this->model] ?? config('bedrock.model_id')));
-        $result = $bedrock->invoke($prompt, 4096, $effectiveModelId, [
-            'request_id' => $requestId,
-            'user_id' => Auth::id(),
-            'session_id' => session()->getId(),
-            'operation_type' => 'bedrock_chat',
-        ]);
-
-        if ($result['success']) {
-            $assistantMessage = [
-                'role' => 'assistant',
-                'content' => $result['content'],
-                'model' => (string) ($route['model_key'] ?? $this->model),
-            ];
-
-            if (isset($result['usage']) && is_array($result['usage']) && array_key_exists('output_tokens', $result['usage'])) {
-                $assistantMessage['tokens'] = $result['usage']['output_tokens'];
-            }
-
-            $this->messages[] = $assistantMessage;
-        } else {
-            Log::warning('Bedrock invoke failed', [
-                'model' => $this->model,
-                'error_code' => $result['error_code'] ?? null,
-                'content' => $result['content'] ?? null,
-            ]);
-
-            $this->messages[] = [
-                'role' => 'assistant',
-                'content' => (string) ($result['content'] ?? 'Maaf, permintaan tidak berjaya. Sila cuba lagi.'),
-                'model' => (string) ($route['model_key'] ?? $this->model),
+                'role' => 'system',
+                'content' => 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. Bantu pengguna dengan soalan berkaitan perkhidmatan helpdesk, pinjaman aset ICT, dan penggunaan sistem. Jawab dalam Bahasa Melayu.',
             ];
         }
-
-        $this->saveConversation();
-        $this->prompt = '';
-        $this->sending = false;
     }
 
     public function newConversation(): void
     {
-        $this->conversationId = null;
-        $this->messages = [];
-        $this->sending = false;
+        $this->initializeConversation();
+        $this->prompt = '';
+        $this->model = '';
     }
 
     public function loadConversation(int $id): void
     {
         $conversation = BedrockConversation::find($id);
-        if ($conversation) {
+
+        if ($conversation && ($conversation->user_id === Auth::id() || ! Auth::check())) {
             $this->conversationId = $conversation->id;
-            $this->messages = $conversation->messages;
-            $this->model = $conversation->model;
-            $this->sending = false;
+            $this->messages = $conversation->messages ?? [];
+        } else {
+            $this->initializeConversation();
         }
     }
 
     public function deleteConversation(int $id): void
     {
-        BedrockConversation::find($id)?->delete();
-        if ($this->conversationId === $id) {
-            $this->newConversation();
+        $conversation = BedrockConversation::find($id);
+
+        if ($conversation && ($conversation->user_id === Auth::id() || ! Auth::check())) {
+            $conversation->delete();
+
+            if ($this->conversationId === $id) {
+                $this->newConversation();
+            }
+        }
+    }
+
+    public function useFaqSuggestion(string $suggestion): void
+    {
+        $this->prompt = $suggestion;
+        $this->send();
+    }
+
+    public function send(): void
+    {
+        // Validate before sending
+        $this->validate();
+
+        if (empty($this->prompt)) {
+            return;
+        }
+
+        $this->sending = true;
+
+        try {
+            // Add user message
+            $this->messages[] = [
+                'role' => 'user',
+                'content' => $this->prompt,
+            ];
+
+            // Get AI response
+            $response = $this->getAIResponse();
+
+            if ($response && ($response['success'] ?? false)) {
+                $this->messages[] = [
+                    'role' => 'assistant',
+                    'content' => $response['content'],
+                    'model' => $this->model,
+                    'tokens' => $response['usage']['output_tokens'] ?? null,
+                ];
+            } else {
+                $this->messages[] = [
+                    'role' => 'assistant',
+                    'content' => 'Maaf, terdapat ralat semasa memproses permintaan anda. Sila cuba lagi.',
+                    'model' => $this->model,
+                    'error' => true,
+                ];
+            }
+
+            // Save conversation
+            $this->saveConversation();
+
+            // Clear prompt
+            $this->prompt = '';
+        } catch (\Exception $e) {
+            Log::error('Bedrock chat error: '.$e->getMessage());
+
+            $this->messages[] = [
+                'role' => 'assistant',
+                'content' => 'Maaf, terdapat ralat semasa memproses permintaan anda. Sila cuba lagi.',
+                'model' => $this->model,
+                'error' => true,
+            ];
+
+            // Save conversation even on error
+            $this->saveConversation();
+
+            // Clear prompt
+            $this->prompt = '';
+        } finally {
+            $this->sending = false;
+        }
+    }
+
+    private function getAIResponse(): ?array
+    {
+        $bedrockService = app(BedrockService::class);
+
+        // Call Bedrock service using the invoke method with the current prompt
+        return $bedrockService->invoke(
+            prompt: $this->prompt,
+            maxTokens: 1000,
+            modelId: $this->getModelId(),
+            context: [
+                'user_id' => Auth::id(),
+                'context' => $this->context,
+                'use_internet' => $this->useInternet,
+            ]
+        );
+    }
+
+    private function getModelId(): string
+    {
+        return match ($this->model) {
+            // Claude 4.5 Models
+            'opus' => config('bedrock.models.opus'),
+            'sonnet' => config('bedrock.models.sonnet'),
+            'haiku' => config('bedrock.models.haiku'),
+
+            // Amazon Nova Models
+            'nova_micro' => config('bedrock.models.nova_micro'),
+            'nova_lite' => config('bedrock.models.nova_lite'),
+            'nova_pro' => config('bedrock.models.nova_pro'),
+
+            // Amazon Titan Models
+            'titan_text_lite' => config('bedrock.models.titan_text_lite'),
+            'titan_text_express' => config('bedrock.models.titan_text_express'),
+
+            // Default fallback
+            default => config('bedrock.models.sonnet'),
+        };
+    }
+
+    private function performWebSearch(string $query): ?array
+    {
+        try {
+            // Log the search
+            WebSearchLog::create([
+                'user_id' => Auth::id(),
+                'query' => $query,
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+            ]);
+
+            // Perform search (implement your web search logic here)
+            // This is a placeholder - you would integrate with your preferred search API
+            return [
+                'query' => $query,
+                'results' => [],
+            ];
+        } catch (\Exception $e) {
+            Log::error('Web search error: '.$e->getMessage());
+
+            return null;
         }
     }
 
     private function saveConversation(): void
     {
-        $title = $this->messages[0]['content'] ?? 'Perbualan Baharu';
-        $title = function_exists('mb_substr')
-            ? mb_substr($title, 0, 50)
-            : substr($title, 0, 50);
+        // Always save to session for page refresh persistence
+        session(['bedrock_temp_messages' => $this->messages]);
 
-        if ($this->conversationId) {
-            BedrockConversation::find($this->conversationId)?->update([
-                'messages' => $this->messages,
-                'model' => $this->model,
-            ]);
-        } else {
+        if (! $this->conversationId) {
+            // Create new conversation
             $conversation = BedrockConversation::create([
-                'title' => $title,
+                'user_id' => Auth::id(),
+                'title' => $this->generateConversationTitle(),
                 'messages' => $this->messages,
-                'model' => $this->model,
+                'context' => $this->context,
             ]);
+
             $this->conversationId = $conversation->id;
+        } else {
+            // Update existing conversation
+            $conversation = BedrockConversation::find($this->conversationId);
+            if ($conversation) {
+                $conversation->update([
+                    'messages' => $this->messages,
+                    'updated_at' => now(),
+                ]);
+            }
         }
     }
 
-    private function searchWeb(string $query, ?string $requestId = null): string
+    private function generateConversationTitle(): string
     {
-        try {
-            // Use DuckDuckGo HTML search and parse results
-            $response = Http::timeout(10)
-                ->withHeaders(['User-Agent' => 'Mozilla/5.0'])
-                ->get('https://html.duckduckgo.com/html/', ['q' => $query]);
+        $userMessages = array_filter($this->messages, fn ($message) => $message['role'] === 'user');
 
-            if ($response->successful()) {
-                $html = $response->body();
+        if (! empty($userMessages)) {
+            $firstMessage = reset($userMessages)['content'];
 
-                // Extract search result snippets using regex
-                preg_match_all('/<a class="result__snippet"[^>]*>([^<]+)<\/a>/i', $html, $matches);
-
-                if (! empty($matches[1])) {
-                    $results = collect($matches[1])
-                        ->take(5)
-                        ->map(fn ($text) => html_entity_decode(strip_tags($text)))
-                        ->filter()
-                        ->join("\n\n");
-
-                    try {
-                        WebSearchLog::query()->create([
-                            'request_id' => $requestId ?? (string) Str::uuid(),
-                            'search_query' => $query,
-                            'provider' => 'duckduckgo',
-                            'results_count' => count($matches[1]),
-                            'sources_used' => [],
-                            'cost' => null,
-                            'user_id' => Auth::id(),
-                        ]);
-                    } catch (\Throwable $e) {
-                        // Jangan gagalkan carian jika logging gagal.
-                    }
-
-                    return $results ?: 'Tiada hasil carian yang relevan ditemui.';
-                }
-
-                try {
-                    WebSearchLog::query()->create([
-                        'request_id' => $requestId ?? (string) Str::uuid(),
-                        'search_query' => $query,
-                        'provider' => 'duckduckgo',
-                        'results_count' => 0,
-                        'sources_used' => [],
-                        'cost' => null,
-                        'user_id' => Auth::id(),
-                    ]);
-                } catch (\Throwable $e) {
-                    // Jangan gagalkan carian jika logging gagal.
-                }
-
-                return 'Tiada hasil carian ditemui.';
-            }
-        } catch (\Exception $e) {
-            Log::error('Carian web gagal', ['error' => $e->getMessage()]);
-
-            return 'Carian tidak tersedia buat sementara waktu.';
+            return Str::limit($firstMessage, 50);
         }
 
-        return 'Carian tidak tersedia.';
+        return 'Perbualan Baharu';
+    }
+
+    public function getConversationsProperty(): Collection
+    {
+        if (Auth::check()) {
+            return BedrockConversation::where('user_id', Auth::id())
+                ->orderBy('updated_at', 'desc')
+                ->limit(10)
+                ->get();
+        }
+
+        return collect();
     }
 
     public function render(): \Illuminate\View\View
     {
         return view('livewire.bedrock-chat', [
-            'conversations' => BedrockConversation::latest()->get(),
+            'conversations' => $this->conversations,
         ]);
     }
 }
