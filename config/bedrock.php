@@ -26,12 +26,23 @@ return [
     // Selaras dengan spesifikasi (Claude 4.5): Haiku sebagai lalai untuk respons pantas.
     'model_id' => env('AWS_BEDROCK_MODEL_ID', 'us.anthropic.claude-haiku-4-5-20251001-v1:0'),
 
-    // Pemetaan model untuk ModelRouter (Haiku/Sonnet/Opus).
-    // Selaras dengan spesifikasi (Claude 4.5).
+    // Pemetaan model untuk ModelRouter (Claude 4.5 + Nova + Titan).
+    // Selaras dengan spesifikasi (Claude 4.5) dan Nova models baharu.
     'models' => [
+        // Claude 4.5 Models (Existing)
         'opus' => env('AWS_BEDROCK_MODEL_OPUS', 'global.anthropic.claude-opus-4-5-20251101-v1:0'),
         'sonnet' => env('AWS_BEDROCK_MODEL_SONNET', 'us.anthropic.claude-sonnet-4-5-20250929-v1:0'),
         'haiku' => env('AWS_BEDROCK_MODEL_HAIKU', 'us.anthropic.claude-haiku-4-5-20251001-v1:0'),
+
+        // Amazon Nova Models (New)
+        'nova_micro' => env('AWS_BEDROCK_MODEL_NOVA_MICRO', 'amazon.nova-micro-v1:0'),
+        'nova_lite' => env('AWS_BEDROCK_MODEL_NOVA_LITE', 'amazon.nova-lite-v1:0'),
+        'nova_pro' => env('AWS_BEDROCK_MODEL_NOVA_PRO', 'amazon.nova-pro-v1:0'),
+
+        // Amazon Titan Models (New)
+        'titan_text_lite' => env('AWS_BEDROCK_MODEL_TITAN_TEXT_LITE', 'amazon.titan-text-lite-v1'),
+        'titan_text_express' => env('AWS_BEDROCK_MODEL_TITAN_TEXT_EXPRESS', 'amazon.titan-text-express-v1'),
+        'titan_embed_image' => env('AWS_BEDROCK_MODEL_TITAN_EMBED_IMAGE', 'amazon.titan-embed-image-v1'),
     ],
 
     // Had kadar (rate limit) untuk panggilan Bedrock.
@@ -45,6 +56,7 @@ return [
         // Had per model (requests/tokens per minit).
         // Nota: Penguatkuasaan tokens/minit adalah berdasarkan anggaran.
         'models' => [
+            // Claude 4.5 Models
             'opus' => [
                 'requests_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_OPUS_RPM', 10),
                 'tokens_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_OPUS_TPM', 20000),
@@ -56,6 +68,30 @@ return [
             'haiku' => [
                 'requests_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_HAIKU_RPM', 50),
                 'tokens_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_HAIKU_TPM', 100000),
+            ],
+
+            // Amazon Nova Models
+            'nova_micro' => [
+                'requests_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_NOVA_MICRO_RPM', 100),
+                'tokens_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_NOVA_MICRO_TPM', 150000),
+            ],
+            'nova_lite' => [
+                'requests_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_NOVA_LITE_RPM', 80),
+                'tokens_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_NOVA_LITE_TPM', 120000),
+            ],
+            'nova_pro' => [
+                'requests_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_NOVA_PRO_RPM', 40),
+                'tokens_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_NOVA_PRO_TPM', 60000),
+            ],
+
+            // Amazon Titan Models
+            'titan_text_lite' => [
+                'requests_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_TITAN_TEXT_LITE_RPM', 60),
+                'tokens_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_TITAN_TEXT_LITE_TPM', 80000),
+            ],
+            'titan_text_express' => [
+                'requests_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_TITAN_TEXT_EXPRESS_RPM', 30),
+                'tokens_per_minute' => (int) env('AWS_BEDROCK_RATE_LIMIT_TITAN_TEXT_EXPRESS_TPM', 50000),
             ],
         ],
     ],

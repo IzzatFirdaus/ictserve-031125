@@ -68,11 +68,28 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(BedrockRuntimeClient::class, function () {
-            return new BedrockRuntimeClient([
+            $credentials = config('bedrock.credentials');
+
+            $config = [
                 'region' => config('bedrock.region'),
                 'version' => config('bedrock.version'),
-                'credentials' => config('bedrock.credentials'),
-            ]);
+            ];
+
+            if (
+                is_array($credentials)
+                && is_string($credentials['key'] ?? null)
+                && is_string($credentials['secret'] ?? null)
+                && $credentials['key'] !== ''
+                && $credentials['secret'] !== ''
+            ) {
+                $config['credentials'] = [
+                    'key' => $credentials['key'],
+                    'secret' => $credentials['secret'],
+                    'token' => $credentials['token'] ?? null,
+                ];
+            }
+
+            return new BedrockRuntimeClient($config);
         });
 
         $this->app->singleton(BedrockService::class);
