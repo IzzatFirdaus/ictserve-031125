@@ -13,14 +13,28 @@ use Filament\Widgets\Widget;
  * Quick Actions Widget
  *
  * Provides one-click access to common tasks with modal forms.
+ * Displays role-based quick actions for common workflows.
  *
- * @trace Requirements 6.4
+ * Features:
+ * - Create ticket shortcut
+ * - Manage loans shortcut
+ * - Manage assets shortcut
+ * - Permission-based visibility
+ *
+ * @trace Requirements: 8.4, 10.2
+ *
+ * @see D04 §3.2 Dashboard widgets
  */
 class QuickActionsWidget extends Widget
 {
     protected string $view = 'filament.widgets.quick-actions';
 
     protected int|string|array $columnSpan = 'full';
+
+    /**
+     * Sort order - display after critical alerts
+     */
+    protected static ?int $sort = 0;
 
     protected function getViewData(): array
     {

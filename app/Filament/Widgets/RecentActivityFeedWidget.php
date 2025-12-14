@@ -36,6 +36,11 @@ class RecentActivityFeedWidget extends BaseWidget
     protected ?string $pollingInterval = '30s'; // Fallback polling for real-time updates
 
     /**
+     * Sort order - display at bottom of dashboard
+     */
+    protected static ?int $sort = 100;
+
+    /**
      * Listen for new ticket creation via Laravel Reverb WebSocket
      */
     #[On('echo-private:admin-dashboard,TicketCreated')]
