@@ -48,6 +48,10 @@ return [
     'division_required' => 'Bahagian/Unit diperlukan.',
     'job_grade' => 'Gred Jawatan',
     'grade' => 'Gred',
+
+    // Additional helpdesk messages (v3.6.0)
+    'ticket_claimed_successfully' => 'Tiket berjaya dituntut ke akaun anda',
+    'ticket_claim_failed' => 'Tiket tidak dapat dituntut. Sila cuba lagi',
     'job_grade_required' => 'Gred diperlukan.',
     'select_grade' => 'Pilih gred anda',
     'email' => 'E-mel',
@@ -329,4 +333,21 @@ return [
     'submitter_information' => 'Maklumat Penghantar',
     'issue_details' => 'Butiran Isu',
     'scan_for_status' => 'Imbas untuk semak status tiket',
+
+    // Email Template Keys (v3.6.0 - Bahasa Melayu sahaja)
+    'email' => [
+        'ticket_created_subject' => 'Tiket Helpdesk Dicipta - :number',
+        'ticket_status_updated_subject' => 'Status Tiket :ticket_number Dikemaskini - :status',
+        'sla_breach_alert_subject' => 'Amaran Pelanggaran SLA - Tiket :ticket_number',
+        'ticket_received_message' => 'Tiket helpdesk anda telah berjaya dihantar dan sedang diproses oleh pasukan sokongan ICT kami.',
+        'ticket_details' => 'Butiran Tiket',
+        'next_steps' => 'Langkah Seterusnya',
+        'step_1_email_updates' => 'Anda akan menerima kemaskini e-mel apabila status tiket anda berubah.',
+        'step_2_reference_number' => 'Gunakan nombor tiket anda untuk menjejaki kemajuan pada bila-bila masa.',
+        'step_3_response_time' => 'Pasukan kami akan memberi respons dalam jangka masa SLA berdasarkan keutamaan.',
+        'guest_claim_message' => 'Jika anda mempunyai akaun kakitangan, anda boleh menuntut tiket ini untuk mengurusnya dari papan pemuka anda.',
+        'thank_you' => 'Terima kasih kerana menggunakan ICTServe.',
+        'signature' => 'Yang benar',
+        'bpm_motac' => 'Pasukan Sokongan ICT BPM MOTAC',
+    ],
 ];
