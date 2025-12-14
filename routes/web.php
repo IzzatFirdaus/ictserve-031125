@@ -23,6 +23,9 @@ Route::view('/accessibility', 'pages.accessibility')->name('accessibility');
 Route::view('/contact', 'pages.contact')->name('contact');
 Route::view('/services', 'pages.services')->name('services');
 
+// Offline Page (PWA Support)
+Route::view('/offline', 'pages.offline')->name('offline');
+
 // Language Switcher Route (No Authentication Required)
 Route::get('/change-locale/{locale}', [App\Http\Controllers\LanguageController::class, 'change'])
     ->where('locale', 'en|ms')
@@ -304,6 +307,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin/analytics')->name('admin.
 });
 
 Route::get('/bedrock-chat/{id?}', App\Livewire\BedrockChat::class)->name('bedrock.chat');
+
+// Bedrock Chat with Context Support (FAQ Integration)
+Route::get('/bedrock-chat', App\Livewire\BedrockChat::class)->name('bedrock.chat.context');
 
 // AI FAQ Bot Routes (True Hybrid Architecture - D00 v3.6.0)
 // Supports both guest and authenticated access with Bahasa Melayu sahaja (D15 v3.6.0)

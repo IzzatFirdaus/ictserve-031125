@@ -83,17 +83,20 @@ class SetLocaleMiddleware
 
     /**
      * Validate locale against supported locales.
+     *
+     * v3.6.0: Only Bahasa Melayu ('ms') is supported per government directive.
      */
     protected function isValidLocale(string $locale): bool
     {
-        $supportedLocalesConfig = config('app.supported_locales', ['en', 'ms']);
+        // v3.6.0: Bahasa Melayu sahaja - only 'ms' locale is supported
+        $supportedLocalesConfig = config('app.supported_locales', ['ms']);
         $supportedLocales = array_values(array_filter(
             \is_array($supportedLocalesConfig) ? $supportedLocalesConfig : [],
             '\is_string'
         ));
 
         if ($supportedLocales === []) {
-            $supportedLocales = ['en', 'ms'];
+            $supportedLocales = ['ms'];
         }
 
         return \in_array($locale, $supportedLocales, true);
