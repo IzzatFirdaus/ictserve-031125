@@ -1,3 +1,3 @@
 <div>
-    <h1>Security Settings</h1>
+    <h1>{{ __('portal.security_settings') }}</h1>
 </div>
