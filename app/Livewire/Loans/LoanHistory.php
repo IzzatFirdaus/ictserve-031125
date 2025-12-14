@@ -9,7 +9,6 @@ use App\Models\LoanApplication;
 use App\Services\LoanApplicationService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
@@ -49,7 +48,7 @@ class LoanHistory extends Component
 
         try {
             $service->claimGuestApplication($application, $user);
-            session()->flash('message', __('Permohonan berjaya dituntut.'));
+            session()->flash('message', __('loan.messages.application_claimed_successfully'));
         } catch (\Throwable $exception) {
             session()->flash('error', $exception->getMessage());
         }

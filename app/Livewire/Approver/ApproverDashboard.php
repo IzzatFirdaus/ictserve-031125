@@ -8,8 +8,6 @@ use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Services\LoanApplicationService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -19,6 +17,7 @@ use Livewire\WithPagination;
  * Description: Interface for Grade 41+ officers to review and approve/reject loan applications
  *
  * @author Pasukan BPM MOTAC
+ *
  * @trace D03-FR-023 (Approval Workflow)
  * @trace D04 §5.4 (Approver Interface)
  */
@@ -38,6 +37,7 @@ class ApproverDashboard extends Component
     public string $remarks = '';
 
     public bool $showApprovalModal = false;
+
     public bool $showRejectionModal = false;
 
     protected $queryString = [
@@ -50,7 +50,7 @@ class ApproverDashboard extends Component
     {
         // Ensure user is eligible to be an approver (Grade 41+)
         $user = Auth::user();
-        if (!$user || !$user->grade || $user->grade->level < 41) {
+        if (! $user || ! $user->grade || $user->grade->level < 41) {
             abort(403, 'Unauthorized. Only Grade 41+ officers can access this area.');
         }
     }
@@ -95,7 +95,7 @@ class ApproverDashboard extends Component
         $this->selectedApplication = null;
         $this->remarks = '';
 
-        session()->flash('message', __('Permohonan telah diluluskan.'));
+        session()->flash('message', __('loan.messages.application_approved'));
     }
 
     public function reject(LoanApplicationService $service): void
@@ -114,7 +114,7 @@ class ApproverDashboard extends Component
         $this->selectedApplication = null;
         $this->remarks = '';
 
-        session()->flash('message', __('Permohonan telah ditolak.'));
+        session()->flash('message', __('loan.messages.application_rejected'));
     }
 
     public function render(): \Illuminate\View\View
@@ -131,9 +131,9 @@ class ApproverDashboard extends Component
             })
             ->when($this->search, function ($query) {
                 $query->where(function ($inner) {
-                    $inner->where('application_number', 'like', '%' . $this->search . '%')
-                        ->orWhere('applicant_name', 'like', '%' . $this->search . '%')
-                        ->orWhere('purpose', 'like', '%' . $this->search . '%');
+                    $inner->where('application_number', 'like', '%'.$this->search.'%')
+                        ->orWhere('applicant_name', 'like', '%'.$this->search.'%')
+                        ->orWhere('purpose', 'like', '%'.$this->search.'%');
                 });
             })
             ->latest()

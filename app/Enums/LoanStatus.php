@@ -18,6 +18,7 @@ enum LoanStatus: string
     case DRAFT = 'draft';
     case SUBMITTED = 'submitted';
     case UNDER_REVIEW = 'under_review';
+    case PENDING_APPROVAL = 'pending_approval';
     case PENDING_INFO = 'pending_info';
     case APPROVED = 'approved';
     case REJECTED = 'rejected';
@@ -40,6 +41,7 @@ enum LoanStatus: string
             self::DRAFT => 'loan.status.draft',
             self::SUBMITTED => 'loan.status.submitted',
             self::UNDER_REVIEW => 'loan.status.under_review',
+            self::PENDING_APPROVAL => 'loan.status.pending_approval',
             self::PENDING_INFO => 'loan.status.pending_info',
             self::APPROVED => 'loan.status.approved',
             self::REJECTED => 'loan.status.rejected',
@@ -53,7 +55,7 @@ enum LoanStatus: string
             self::OVERDUE => 'loan.status.overdue',
             self::MAINTENANCE_REQUIRED => 'loan.status.maintenance_required',
         };
-        
+
         return trans($key);
     }
 
@@ -68,6 +70,7 @@ enum LoanStatus: string
             self::DRAFT => 'gray',
             self::SUBMITTED => 'blue',
             self::UNDER_REVIEW => 'yellow',
+            self::PENDING_APPROVAL => 'yellow',
             self::PENDING_INFO => 'orange',
             self::APPROVED => 'green',
             self::REJECTED => 'red',
@@ -130,6 +133,7 @@ enum LoanStatus: string
     {
         return [
             self::APPROVED,
+            self::PENDING_APPROVAL,
             self::READY_ISSUANCE,
             self::RETURNING,
             self::MAINTENANCE_REQUIRED,

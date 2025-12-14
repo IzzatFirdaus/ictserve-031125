@@ -15,7 +15,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
@@ -41,8 +40,10 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.front')]
 class SubmitTicket extends Component
 {
-    use OptimizedFormPerformance;
-    use OptimizedLivewireComponent;
+    use OptimizedFormPerformance, OptimizedLivewireComponent {
+        OptimizedFormPerformance::getSelectColumns as getFormSelectColumns;
+        OptimizedLivewireComponent::getSelectColumns as getComponentSelectColumns;
+    }
     use WithFileUploads;
 
     // Wizard state
@@ -103,6 +104,23 @@ class SubmitTicket extends Component
     public bool $isSubmitting = false;
 
     public ?string $ticketNumber = null;
+
+    /**
+     * Resolve trait method collision for getSelectColumns().
+     *
+     * OptimizedFormPerformance expects a model class string parameter, while
+     * OptimizedLivewireComponent expects no parameters.
+     *
+     * @return array<int, string>
+     */
+    protected function getSelectColumns(?string $model = null): array
+    {
+        if ($model !== null) {
+            return $this->getFormSelectColumns($model);
+        }
+
+        return $this->getComponentSelectColumns();
+    }
 
     /**
      * Initialize component state.
@@ -415,10 +433,13 @@ class SubmitTicket extends Component
                 foreach ($this->attachments as $attachment) {
                     $path = $attachment->store('helpdesk-attachments', 'private');
                     $ticket->attachments()->create([
-                        'file_name' => $attachment->getClientOriginalName(),
+                        'filename' => $attachment->getClientOriginalName(),
+                        'original_filename' => $attachment->getClientOriginalName(),
                         'file_path' => $path,
                         'file_size' => $attachment->getSize(),
                         'mime_type' => $attachment->getMimeType(),
+                        'disk' => 'private',
+                        'user_id' => Auth::id(),
                     ]);
                 }
             }
