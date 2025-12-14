@@ -201,6 +201,12 @@ return [
     'messages' => [
         'application_submitted' => 'Permohonan anda telah berjaya dihantar. Nombor permohonan: :application_number',
         'submission_failed' => 'Permohonan gagal dihantar. Sila cuba lagi.',
+        'application_submitted_check_email' => 'Permohonan berjaya dihantar! Sila semak emel anda.',
+        'application_linked_successfully' => 'Permohonan berjaya dipautkan ke akaun anda',
+        'extension_request_submitted' => 'Permohonan lanjutan telah dihantar untuk kelulusan',
+        'application_claimed_successfully' => 'Permohonan berjaya dituntut',
+        'application_approved' => 'Permohonan telah diluluskan',
+        'application_rejected' => 'Permohonan telah ditolak',
         'not_provided' => 'Tidak dinyatakan',
         'unknown' => 'Tidak diketahui',
         'no_assets_requested' => 'Tiada aset dipohon',

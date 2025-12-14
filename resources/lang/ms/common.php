@@ -289,4 +289,36 @@ return [
     'searching' => 'Sedang mencari...',
     'try_again' => 'Cuba Lagi',
     'start_over' => 'Mula Semula',
+
+    // Email Template Keys (v3.6.0 - Bahasa Melayu sahaja)
+    'email_templates' => [
+        'yang_dihormati' => 'Yang Dihormati',
+        'dear' => 'Dear',
+        'thank_you_ms' => 'Terima kasih atas penggunaan ICTServe',
+        'thank_you_en' => 'Thank you for using ICTServe',
+        'regards_ms' => 'Yang benar',
+        'regards_en' => 'Best regards',
+        'bpm_team_ms' => 'Pasukan BPM MOTAC',
+        'bpm_team' => 'BPM MOTAC Team',
+        'approve_ms' => 'Luluskan',
+        'approve' => 'Approve',
+        'reject_ms' => 'Tolak',
+        'reject' => 'Reject',
+        'track_status_ms' => 'Jejak Status',
+        'track_status' => 'Track Status',
+        'expires_on_ms' => 'Tamat tempoh pada',
+        'expires_on' => 'Expires on',
+        'estimated_response_time_ms' => 'Anggaran masa respons',
+        'estimated_response_time' => 'Estimated response time',
+    ],
+
+    // System and Ministry Information
+    'jata_negara_malaysia' => 'Jata Negara Malaysia',
+    'motac_logo_alt' => 'Logo MOTAC',
+    'kementerian_pelancongan_seni_budaya' => 'Kementerian Pelancongan, Seni dan Budaya Malaysia',
+    'ministry_tourism_arts_culture' => 'Ministry of Tourism, Arts & Culture Malaysia',
+    'automated_message_ms' => 'Ini adalah mesej automatik daripada ICTServe. Sila jangan balas e-mel ini.',
+    'automated_message_en' => 'This is an automated message from ICTServe. Please do not reply to this email.',
+    'for_assistance_contact_ms' => 'Untuk bantuan, sila hubungi',
+    'for_assistance_contact_en' => 'For assistance, please contact',
 ];

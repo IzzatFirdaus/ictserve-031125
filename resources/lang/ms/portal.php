@@ -48,6 +48,13 @@ return [
     'cancellation_reason_placeholder' => 'Nyatakan sebab pembatalan (minimum 10 aksara).',
     'cannot_cancel_submission' => 'Permohonan ini tidak boleh dibatalkan.',
     'cannot_claim_submission' => 'Permohonan ini tidak boleh dituntut.',
+
+    // Additional portal messages (v3.6.0)
+    'search_saved_successfully' => 'Carian berjaya disimpan',
+    'search_applied_successfully' => 'Carian berjaya digunakan',
+    'search_deleted_successfully' => 'Carian berjaya dipadam',
+    'security_settings' => 'Tetapan Keselamatan',
+    'notification_preferences' => 'Keutamaan Pemberitahuan',
     'category' => 'Kategori',
     'change_password' => 'Tukar kata laluan',
     'characters' => 'aksara',
