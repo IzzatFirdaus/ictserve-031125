@@ -19,22 +19,22 @@ class GradeForm
             Section::make('Maklumat Gred')
                 ->schema([
                     TextInput::make('code')
-                        ->label('Kod')
+                        ->label(__('filament.reference.code'))
                         ->required()
                         ->unique(ignoreRecord: true)
                         ->maxLength(10),
                     TextInput::make('name_ms')
-                        ->label('Nama (BM)')
+                        ->label(__('filament.reference.name_ms'))
                         ->required()
                         ->maxLength(255),
                     Hidden::make('name_en')
                         ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('name_ms')),
                     TextInput::make('level')
-                        ->label('Tahap')
+                        ->label(__('filament.reference.level'))
                         ->numeric()
                         ->required(),
                     Toggle::make('can_approve_loans')
-                        ->label('Boleh Lulus Pinjaman (G41+)')
+                        ->label(__('filament.reference.can_approve_loans'))
                         ->inline(false),
                 ])
                 ->columns(2),

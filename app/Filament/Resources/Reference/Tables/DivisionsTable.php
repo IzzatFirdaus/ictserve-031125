@@ -19,21 +19,21 @@ class DivisionsTable
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
-                    ->label('Kod')
+                    ->label(__('filament.reference.code'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name_ms')
-                    ->label('Nama (BM)')
+                    ->label(__('filament.reference.name_ms'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent.name_ms')
-                    ->label('Induk')
+                    ->label(__('filament.reference.parent'))
                     ->toggleable(),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('Aktif')
+                    ->label(__('filament.reference.active'))
                     ->boolean(),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active')->label('Status'),
+                Tables\Filters\TernaryFilter::make('is_active')->label(__('filament.reference.status')),
             ])
             ->recordActions([
                 ViewAction::make(),
