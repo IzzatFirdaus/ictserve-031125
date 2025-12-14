@@ -275,6 +275,76 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     }
 
     /**
+     * Test comprehensive Bahasa Melayu content in authenticated form (v3.6.0 BM-only interface)
+     */
+    #[Test]
+    public function authenticated_form_displays_comprehensive_bahasa_melayu_content(): void
+    {
+        $user = User::factory()->create(['email' => 'test.bm@motac.gov.my']);
+        $division = Division::first();
+
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Helpdesk\SubmitTicket::class)
+            ->set('division_id', $division->id)
+            ->set('job_grade', 'Gred 41')
+            ->set('declaration_accepted', true);
+
+        // Step 1 - Personal Information (BM content)
+        $component->assertSee('Maklumat Hubungan', false); // BM: Contact Information
+        $component->assertSee('Bahagian', false); // BM: Division
+        $component->assertSee('Gred Jawatan', false); // BM: Job Grade
+        $component->assertSee('Pengisytiharan', false); // BM: Declaration
+
+        // Step navigation (BM content)
+        $component->assertSee('Seterusnya', false); // BM: Next
+
+        // Advance to step 2
+        $component->call('nextStep');
+
+        // Step 2 - Ticket Category (BM content)
+        $component->assertSee('Perincian Isu', false); // BM: Issue Details
+        $component->assertSee('Keutamaan', false); // BM: Priority
+        $component->assertSee('Rendah', false); // BM: Low
+        $component->assertSee('Normal', false); // BM: Normal
+        $component->assertSee('Tinggi', false); // BM: High
+        $component->assertSee('Segera', false); // BM: Urgent
+
+        // Verify no English content is displayed (v3.6.0 BM-only)
+        $component->assertDontSee('Personal Information');
+        $component->assertDontSee('Division');
+        $component->assertDontSee('Job Grade');
+        $component->assertDontSee('Next');
+        $component->assertDontSee('Priority');
+        $component->assertDontSee('Low');
+        $component->assertDontSee('Normal');
+        $component->assertDontSee('High');
+        $component->assertDontSee('Critical');
+    }
+
+    /**
+     * Test that form validation messages are in Bahasa Melayu (v3.6.0)
+     */
+    #[Test]
+    public function form_validation_messages_display_in_bahasa_melayu(): void
+    {
+        $user = User::factory()->create(['email' => 'validation.test@motac.gov.my']);
+
+        // Test validation without required fields
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Helpdesk\SubmitTicket::class)
+            ->set('declaration_accepted', false)
+            ->call('nextStep');
+
+        // Should show BM validation messages (check for validation errors)
+        $component->assertHasErrors(['declaration_accepted']); // Validation error exists
+        // Note: Actual validation messages may be handled by Laravel's validation system
+
+        // Should NOT show English validation messages
+        $component->assertDontSee('field is required');
+        $component->assertDontSee('must be accepted');
+    }
+
+    /**
      * Test that job_grade and declaration_accepted are validated at submission for authenticated users
      */
     #[Test]

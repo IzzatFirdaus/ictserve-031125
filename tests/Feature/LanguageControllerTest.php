@@ -51,15 +51,15 @@ class LanguageControllerTest extends TestCase
     #[Test]
     public function english_locale_switching_is_disabled(): void
     {
-        // Act & Assert - English locale switching should return 404 or redirect
-        // Since language switching is disabled in v3.6.0
+        // Act & Assert - English locale switching should return 400 (Invalid locale)
+        // Since language switching is disabled in v3.6.0, only 'ms' is supported
         $response = $this->get('/change-locale/en');
 
-        // Should either be 404 (route not found) or redirect to home with ms locale
-        $this->assertTrue(
-            $response->status() === 404 ||
-                ($response->isRedirect() && session('locale', 'ms') === 'ms')
-        );
+        // Should return 400 Bad Request for invalid locale
+        $response->assertStatus(400);
+
+        // Locale should remain 'ms'
+        $this->assertEquals('ms', app()->getLocale());
     }
 
     /**
@@ -130,7 +130,7 @@ class LanguageControllerTest extends TestCase
      * Test guest users see Bahasa Melayu content.
      */
     #[Test]
-    public function guest_users_see_basaha_melayu_content(): void
+    public function guest_users_see_bahasa_melayu_content(): void
     {
         // Act - Visit guest-accessible pages
         $loginResponse = $this->get('/login');
@@ -148,7 +148,7 @@ class LanguageControllerTest extends TestCase
      * Test authenticated users see Bahasa Melayu content.
      */
     #[Test]
-    public function authenticated_users_see_basaha_melayu_content(): void
+    public function authenticated_users_see_bahasa_melayu_content(): void
     {
         // Arrange
         /** @var \App\Models\User $user */
@@ -174,11 +174,14 @@ class LanguageControllerTest extends TestCase
         foreach ($invalidLocales as $locale) {
             $response = $this->get("/change-locale/{$locale}");
 
-            // Should either return 404 or maintain 'ms' locale
+            // Should return 400 Bad Request for invalid locale or 404 if route doesn't match
             $this->assertTrue(
-                $response->status() === 404 ||
-                    app()->getLocale() === 'ms'
+                $response->status() === 400 || $response->status() === 404,
+                "Expected 400 or 404 for locale '{$locale}', got {$response->status()}"
             );
+
+            // Locale should remain 'ms'
+            $this->assertEquals('ms', app()->getLocale());
         }
     }
 
