@@ -1898,4 +1898,5 @@ Document is now structured according to the D02 KRISA standard, with content dev
 The document outlines the business requirements for the ICTServe (iServe) system for MOTAC's ICT service
 management, including helpdesk/servicedesk functionality and ICT asset loan management.
 ````
+
 ````
