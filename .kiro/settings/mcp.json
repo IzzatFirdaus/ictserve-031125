@@ -68,7 +68,10 @@
         "get_console_message",
         "resize_page",
         "emulate",
-        "select_page"
+        "select_page",
+        "new_page",
+        "press_key",
+        "wait_for"
       ]
     },
     "firecrawl": {

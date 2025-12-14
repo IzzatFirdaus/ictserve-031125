@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**  
 **Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 11 Disember 2025  
+**Tarikh Kemaskini:** 14 Disember 2025  
 **Status:** Aktif - Consolidated from filament-admin-access and staff-dashboard-profile specs  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 
@@ -12,11 +12,13 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Version** | 3.6.0 |
-| **Last Updated** | 11 December 2025 |
-| **Status** | Active - Consolidated Design |
+| **Version** | 3.6.0-r3 |
+| **Last Updated** | 14 December 2025 |
+| **Status** | Active - Updated with FRONTPAGE_DESIGN_ANALYSIS_v3.6.0 and FRONTEND-DEVELOPMENT-v3-6-0 findings |
 | **Classification** | Restricted - Internal BPM MOTAC |
-| **Dependencies** | requirements.md v3.6.0 |
+| **Dependencies** | requirements.md v3.6.0-r6 |
+| **ISO Document Reference** | PK.(S).MOTAC.07.(L1) - ICTServe Portal |
+| **Source Documents** | FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md |
 
 ---
 
@@ -368,6 +370,325 @@ class FigmaDesignContext
 *For any* form input, validation should provide real-time feedback in Bahasa Melayu with proper ARIA attributes and error state management
 **Validates: Requirements 19.1, 19.2, 19.3**
 
+### Property 11: Landing Page Hybrid Color Scheme (FRONTPAGE_DESIGN_ANALYSIS)
+
+*For any* landing page section, the color scheme should maintain WCAG 2.2 AA contrast ratios with dark hero section (text white on gray-900) and light services section (text gray-900 on white)
+**Validates: Requirements 16.2, 16.3, 7.1**
+
+### Property 12: FAQ Bot Accessibility
+
+*For any* FAQ Bot interaction, the chatbox should implement proper ARIA dialog pattern with focus trap, keyboard navigation (ESC to close, Tab navigation), and minimum 44×44px touch targets for all interactive elements
+**Validates: Requirements 17.3, 17.4, 17.5, 7.5**
+
+### Property 13: Service Modal True Hybrid Architecture
+
+*For any* service selection modal, the dialog should clearly present guest vs authenticated options with proper focus management, ARIA attributes, and dismissal mechanisms (ESC, close button, backdrop click)
+**Validates: Requirements 18.1, 18.2, 18.3, 18.4, 18.5**
+
+### Property 14: Translation Key Completeness
+
+*For any* user-facing text element, the translation key should exist in the language file and return properly translated Bahasa Melayu text without displaying raw translation keys
+**Validates: Requirements 21.1, 21.2, 21.3, 21.4, 21.5**
+
+### Property 15: Multi-Step Wizard Progress
+
+*For any* multi-step form wizard, the progress indicator should accurately reflect current step, completed steps should show checkmark icons, and navigation between steps should maintain form state
+**Validates: Requirements 20.1, 20.5**
+
+### Property 16: ISO Document Reference Display
+
+*For any* government form page (helpdesk, loan application), the ISO document reference PK.(S).MOTAC.07.(L1) or appropriate variant should be displayed per government compliance requirements
+**Validates: Requirements 16.5, 20.6**
+
+### Property 17: Guest Helpdesk Form Multi-Step Wizard (FRONTPAGE_DESIGN_ANALYSIS)
+
+*For any* guest helpdesk form submission, the multi-step wizard should maintain form state across steps, display accurate progress indicators with checkmarks for completed steps, and implement Optimistic UI pattern for immediate feedback
+**Validates: Requirements 20.1, 20.2, 20.3, 20.4, 20.5**
+
+### Property 18: Status Check Page Translation Completeness (FRONTPAGE_DESIGN_ANALYSIS)
+
+*For any* status check page element, all translation keys should resolve to proper Bahasa Melayu text without displaying raw keys like `status.quick_help_title` or `STATUS.PAGE_TAGLINE`
+**Validates: Requirements 21.1, 21.2, 21.3, 21.4, 21.5**
+
+### Property 19: Searchable Division Select Accessibility
+
+*For any* searchable select component (division/unit selection), the component should support keyboard navigation, provide ARIA-compliant dropdown behavior, and maintain proper focus management
+**Validates: Requirements 7.3, 7.4, 20.3**
+
+### Property 20: Malaysian Government Grade System Completeness
+
+*For any* grade selection dropdown, the component should include all government grades (1-56), JUSA grades (A, B, C), and Turus grades (I, II, III) organized by optgroup for easy navigation
+**Validates: Requirements 20.3**
+
+## Page-Level Design Specifications (FRONTPAGE_DESIGN_ANALYSIS)
+
+### Landing Page (Welcome Page) Design
+
+Based on FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md analysis:
+
+#### Hybrid Color Scheme Architecture
+
+```mermaid
+graph TB
+    subgraph "Landing Page Color Zones"
+        A[Header Section<br/>Primary-600 #0056B3<br/>Text: White] --> B[Hero Section<br/>Gray-900 to Gray-800<br/>Text: White]
+        B --> C[Services Section<br/>Gray-50 Background<br/>Text: Gray-900]
+        C --> D[FAQ Section<br/>White Background<br/>Text: Gray-900]
+        D --> E[Footer Section<br/>Gray-800<br/>Text: White]
+    end
+```
+
+#### Component Specifications
+
+| Component | Background | Text Color | Contrast Ratio | Status |
+|-----------|------------|------------|----------------|--------|
+| Header | Primary-600 (#0056B3) | White (#FFFFFF) | 7.2:1 | ✅ WCAG AA |
+| Hero Title | Gray-900 | White (#FFFFFF) | 15:1 | ✅ Excellent |
+| Hero Subtitle | Gray-900 | White/90% | 12:1 | ✅ Excellent |
+| CTA Buttons | White bg / Primary-600 text | 7.2:1 | ✅ WCAG AA |
+| Service Cards | White (#FFFFFF) | Gray-900 | 15.4:1 | ✅ Excellent |
+| Card Shadows | shadow-card | - | - | ✅ MyDS |
+
+### FAQ Bot Widget Design
+
+Based on FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md Section 9:
+
+```blade
+{{-- FAQ Bot Widget Structure --}}
+<div class="fixed bottom-4 right-4 z-50">
+    {{-- Toggle Button: 44×44px minimum touch target --}}
+    <button class="min-h-11 min-w-11 rounded-full bg-primary-600 text-white shadow-lg"
+            aria-label="Buka FAQ Bot ICTServe"
+            aria-expanded="false">
+        <x-heroicon-o-chat-bubble-left-right class="w-6 h-6" />
+    </button>
+    
+    {{-- Chat Panel with ARIA dialog pattern --}}
+    <div role="dialog" 
+         aria-modal="true" 
+         aria-labelledby="faq-bot-title"
+         class="bg-white rounded-lg shadow-dropdown">
+        {{-- Header with 44×44px action buttons --}}
+        <header class="bg-primary-600 text-white p-4">
+            <h2 id="faq-bot-title">FAQ Bot ICTServe</h2>
+            <button class="min-h-11 min-w-11" aria-label="Tutup">×</button>
+        </header>
+        
+        {{-- Messages with aria-live for announcements --}}
+        <div role="log" aria-live="polite" aria-atomic="false">
+            <!-- Chat messages -->
+        </div>
+    </div>
+</div>
+```
+
+### Service Selection Modal Design
+
+Based on FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md Section 10:
+
+```blade
+{{-- True Hybrid Architecture Modal --}}
+<div x-data="{ showModal: false }"
+     @keydown.escape.window="showModal = false">
+    
+    <div x-show="showModal"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="modal-title"
+         class="fixed inset-0 z-50 flex items-center justify-center">
+        
+        {{-- Backdrop with click-to-dismiss --}}
+        <div @click="showModal = false" 
+             class="absolute inset-0 bg-gray-900/50"></div>
+        
+        {{-- Modal Content --}}
+        <div class="relative bg-white rounded-l shadow-dropdown max-w-md w-full mx-4">
+            {{-- Header --}}
+            <header class="bg-primary-600 text-white p-4 rounded-t-l">
+                <h2 id="modal-title" class="text-lg font-semibold">
+                    Buat Aduan ICT
+                </h2>
+                <button @click="showModal = false"
+                        class="min-h-11 min-w-11"
+                        aria-label="Tutup modal">×</button>
+            </header>
+            
+            {{-- Content: True Hybrid Options --}}
+            <div class="p-6">
+                <h3 class="text-gray-900 font-medium">
+                    Adakah anda sudah log masuk?
+                </h3>
+                
+                {{-- Info Box --}}
+                <div class="mt-4 p-4 bg-primary-50 border border-primary-200 rounded-m">
+                    <h4 class="font-semibold text-primary-800">Maklumat Penting</h4>
+                    <ul class="mt-2 text-sm text-primary-700 space-y-1">
+                        <li>• Pengguna tetamu boleh membuat permohonan tanpa log masuk</li>
+                        <li>• Pengguna berdaftar mendapat akses kepada dashboard</li>
+                        <li>• Nombor rujukan dihantar melalui emel</li>
+                    </ul>
+                </div>
+                
+                {{-- Action Buttons --}}
+                <div class="mt-6 flex gap-3">
+                    <a href="/helpdesk/create" 
+                       class="flex-1 btn-secondary min-h-11">
+                        Tidak (Tetamu)
+                    </a>
+                    <a href="/login?redirect=/helpdesk/create" 
+                       class="flex-1 btn-primary min-h-11">
+                        Ya (Log Masuk)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+### Status Check Page Design
+
+Based on FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md Section 13:
+
+#### Translation Keys Required
+
+```php
+// lang/ms/status.php - Missing keys identified
+return [
+    'page_tagline' => 'Status Semasa',
+    'form_helper' => 'Masukkan token untuk menyemak status permohonan anda.',
+    'quick_help_title' => 'Bantuan Pantas',
+    'quick_help_email' => 'Emel sokongan BPM',
+    'quick_help_phone' => 'Talian bantuan helpdesk',
+    'quick_help_ticket' => 'Hantar tiket baharu',
+    'quick_help_ticket_cta' => 'Pergi ke borang helpdesk',
+];
+```
+
+#### Dark Mode Support
+
+| Element | Light Mode | Dark Mode | Contrast |
+|---------|------------|-----------|----------|
+| Hero Background | Primary-600 | Primary-700 | - |
+| Page Background | Slate-50 | Gray-900 | - |
+| Form Card | White | Gray-800 | - |
+| Input Background | White | Gray-700 | - |
+| Label Text | Gray-800 | Gray-100 | 12.6:1 / 15.4:1 |
+| Helper Text | Gray-600 | Gray-300 | 7.5:1 / 10.3:1 |
+
+### Guest Helpdesk Form Design
+
+Based on FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md Section 14:
+
+#### Multi-Step Wizard Structure
+
+```mermaid
+graph LR
+    A[Step 1<br/>Maklumat Peribadi] --> B[Step 2<br/>Butiran Isu]
+    B --> C[Step 3<br/>Perakuan]
+    C --> D[Success State<br/>Optimistic UI]
+```
+
+#### Progress Indicator Design
+
+```blade
+{{-- Step indicator with WCAG compliance --}}
+<div class="flex items-center justify-center w-10 h-10 rounded-full border 
+            transition-colors duration-200 min-h-11 min-w-11 text-sm font-semibold shadow-button
+            {{ $step < $currentStep ? 'bg-success-600 border-success-400/70 text-white' : '' }}
+            {{ $step === $currentStep ? 'bg-primary-600 border-primary-400/70 text-white ring-2 ring-primary-400/40' : '' }}
+            {{ $step > $currentStep ? 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-400' : '' }}">
+    @if($step < $currentStep)
+        <x-heroicon-s-check class="w-5 h-5" />
+    @else
+        {{ $step }}
+    @endif
+</div>
+```
+
+#### Optimistic UI Pattern
+
+```php
+// Optimistic submission flow
+public function submit(): void
+{
+    // Step 1: Generate optimistic ticket number immediately
+    $this->optimisticTicketNumber = $this->generateOptimisticTicketNumber();
+    
+    // Step 2: Enter optimistic state - show success immediately
+    $this->isOptimisticState = true;
+    $this->submitted = true;
+    $this->ticketNumber = $this->optimisticTicketNumber;
+    
+    // Step 3: Dispatch optimistic success event for Alpine.js
+    $this->dispatch('optimistic-submission-started', [
+        'ticketNumber' => $this->optimisticTicketNumber,
+        'email' => $this->guest_email,
+    ]);
+    
+    // Step 4: Process server-side operations asynchronously
+    // ... create ticket, send email ...
+    
+    // Step 5: Update with actual ticket number or rollback on error
+    $this->ticketNumber = $ticket->ticket_number;
+    $this->isOptimisticState = false;
+}
+```
+
+#### Malaysian Government Grade System
+
+```blade
+<x-form.select wire:model.live="job_grade" label="{{ __('helpdesk.grade') }}" required>
+    <option value="">{{ __('helpdesk.select_grade') }}</option>
+    <optgroup label="Kumpulan Sokongan (Gred 1-40)">
+        @foreach (range(1, 40) as $grade)
+            <option value="{{ $grade }}">Gred {{ $grade }}</option>
+        @endforeach
+    </optgroup>
+    <optgroup label="Kumpulan Pengurusan & Profesional (Gred 41-56)">
+        @foreach (range(41, 56) as $grade)
+            <option value="{{ $grade }}">Gred {{ $grade }}</option>
+        @endforeach
+    </optgroup>
+    <optgroup label="Jawatan Utama Sektor Awam (JUSA)">
+        <option value="JUSA_C">JUSA C</option>
+        <option value="JUSA_B">JUSA B</option>
+        <option value="JUSA_A">JUSA A</option>
+    </optgroup>
+    <optgroup label="Turus (Premier Grade)">
+        <option value="TURUS_III">Turus III</option>
+        <option value="TURUS_II">Turus II</option>
+        <option value="TURUS_I">Turus I</option>
+    </optgroup>
+</x-form.select>
+```
+
+#### Mandatory Declaration Gate
+
+```blade
+<div class="rounded-lg border-2 border-warning-300 bg-warning-50 dark:bg-warning-900/20 p-4"
+     role="region" aria-labelledby="perakuan-heading">
+    <h3 id="perakuan-heading" class="text-base font-semibold text-gray-900 dark:text-white mb-3">
+        {{ __('Perakuan / Declaration') }}
+    </h3>
+    
+    {{-- Exact Legacy Legal Text (Bahasa Melayu) --}}
+    <p class="text-sm text-gray-700 dark:text-gray-300">
+        Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam
+        eBorang Laporan Kerosakan ini adalah benar dan tepat...
+    </p>
+    
+    {{-- Mandatory Checkboxes --}}
+    <x-form.checkbox wire:model.live="declaration_accepted"
+        label="{{ __('Saya telah membaca dan bersetuju dengan perakuan di atas') }}"
+        required />
+    
+    <x-form.checkbox wire:model.live="terms_accepted"
+        label="{{ __('Saya bersetuju dengan terma dan syarat perkhidmatan') }}"
+        required />
+</div>
+```
+
 ## Error Handling
 
 ### Frontend Error Management
@@ -499,6 +820,34 @@ class FrontendPropertiesTest extends TestCase
             }
         }
     }
+    
+    /**
+     * **Feature: frontend-comprehensive-v3.6, Property 17: Guest Helpdesk Form Multi-Step Wizard**
+     */
+    public function test_multi_step_wizard_maintains_state_across_steps()
+    {
+        Livewire::test(GuestTicketForm::class)
+            ->set('guest_name', 'Test User')
+            ->set('guest_email', 'test@motac.gov.my')
+            ->call('nextStep')
+            ->assertSet('currentStep', 2)
+            ->assertSet('guest_name', 'Test User')
+            ->assertSet('guest_email', 'test@motac.gov.my');
+    }
+    
+    /**
+     * **Feature: frontend-comprehensive-v3.6, Property 18: Status Check Page Translation Completeness**
+     */
+    public function test_status_page_has_no_raw_translation_keys()
+    {
+        $response = $this->get('/status/check');
+        
+        $response->assertDontSee('status.quick_help_title');
+        $response->assertDontSee('STATUS.PAGE_TAGLINE');
+        $response->assertDontSee('status.form_helper');
+        $response->assertSee('Bantuan Pantas');
+        $response->assertSee('Status Semasa');
+    }
 }
 
 // Unit test example
@@ -586,8 +935,10 @@ class PerformanceTest extends TestCase
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: 2025-12-11  
+**Document Version**: 3.6.0-r3  
+**Last Updated**: 2025-12-14  
 **Author**: Frontend Engineering Team  
 **Status**: Ready for Implementation Phase  
-**Dependencies**: requirements.md v1.0
+**Dependencies**: requirements.md v3.6.0-r6  
+**Source Documents**: FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md  
+**Compliance**: D00-D17 v3.6.0, MyDS Design System v2025.2, WCAG 2.2 AA
