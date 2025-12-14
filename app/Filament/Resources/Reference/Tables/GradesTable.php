@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Reference\Tables;
 
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\RestoreBulkAction;
@@ -37,11 +36,9 @@ class GradesTable
                 ViewAction::make(),
                 EditAction::make(),
             ])
-            ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+            ->groupedBulkActions([
+                DeleteBulkAction::make(),
+                RestoreBulkAction::make(),
             ]);
     }
 }

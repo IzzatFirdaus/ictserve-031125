@@ -139,13 +139,13 @@ class RecentActivityFeedWidget extends BaseWidget
         // Query tickets with safe null handling
         /** @var Builder<HelpdeskTicket> $query */
         $query = HelpdeskTicket::query()
-            ->select(
+            ->select([
                 'helpdesk_tickets.id',
                 'helpdesk_tickets.subject',
                 'helpdesk_tickets.created_at',
                 'helpdesk_tickets.user_id',
-                'helpdesk_tickets.guest_name'
-            )
+                'helpdesk_tickets.guest_name',
+            ])
             ->selectRaw("'Tiket' as activity_type")
             ->selectRaw("COALESCE(users.name, helpdesk_tickets.guest_name, 'Tetamu') as created_by")
             ->leftJoin('users', 'helpdesk_tickets.user_id', '=', 'users.id')
@@ -190,7 +190,7 @@ class RecentActivityFeedWidget extends BaseWidget
                     'description' => $loan->purpose ?? __('widgets.loan_application'),
                     'user' => $loan->user?->name ?? $loan->applicant_name ?? __('widgets.guest'),
                     'created_at' => $loan->created_at,
-                    'reference' => $loan->reference,
+                    'reference' => $loan->application_number,
                     'status' => $loan->status?->value ?? 'unknown',
                 ]);
 
