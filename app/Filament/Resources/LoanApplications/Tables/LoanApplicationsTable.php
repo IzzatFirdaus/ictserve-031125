@@ -20,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Loan Applications Table Configuration v3.6.0
@@ -385,14 +386,22 @@ class LoanApplicationsTable
                 ->label(__('filament.actions.approve'))
                 ->color('success')
                 ->icon('heroicon-o-check')
-                ->visible(fn (LoanApplication $record) => auth()->user()?->can('approve', $record) ?? false)
+                ->visible(function (LoanApplication $record): bool {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+
+                    return $user?->can('approve', $record) ?? false;
+                })
                 ->schema([
                     Textarea::make('remarks')
                         ->label(__('filament.actions.approval_remarks'))
                         ->maxLength(500),
                 ])
                 ->action(function (LoanApplication $record, array $data) {
-                    abort_unless(auth()->user()?->can('approve', $record) ?? false, 403);
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+
+                    abort_unless($user?->can('approve', $record) ?? false, 403);
 
                     $record->update([
                         'status' => LoanStatus::APPROVED,
@@ -405,7 +414,12 @@ class LoanApplicationsTable
                 ->label(__('filament.actions.decline'))
                 ->color('danger')
                 ->icon('heroicon-o-x-mark')
-                ->visible(fn (LoanApplication $record) => auth()->user()?->can('approve', $record) ?? false)
+                ->visible(function (LoanApplication $record): bool {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+
+                    return $user?->can('approve', $record) ?? false;
+                })
                 ->schema([
                     Textarea::make('reason')
                         ->label(__('filament.actions.rejection_reason'))
@@ -413,7 +427,10 @@ class LoanApplicationsTable
                         ->maxLength(500),
                 ])
                 ->action(function (LoanApplication $record, array $data): void {
-                    abort_unless(auth()->user()?->can('approve', $record) ?? false, 403);
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+
+                    abort_unless($user?->can('approve', $record) ?? false, 403);
 
                     $record->update([
                         'status' => LoanStatus::REJECTED,

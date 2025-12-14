@@ -47,7 +47,10 @@ class EmailTemplateManagement extends Page implements HasForms
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('superuser') ?? false;
     }
 
     public function mount(): void

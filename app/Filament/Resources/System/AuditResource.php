@@ -206,7 +206,7 @@ class AuditResource extends Resource
 
                 Tables\Filters\SelectFilter::make('user_id')
                     ->label('Pengguna')
-                    ->options(fn () => \App\Models\User::pluck('name', 'id')->toArray())
+                    ->options(fn () => User::pluck('name', 'id')->toArray())
                     ->searchable()
                     ->preload(),
 
