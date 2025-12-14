@@ -19,7 +19,7 @@
         @foreach($this->visibleActions as $action)
             <a href="{{ route($action['route']) }}"
                @class([
-                   'flex flex-col items-center p-4 min-h-44 min-w-44 rounded-lg transition-colors duration-150 group focus:outline-none focus:ring-4',
+                   'flex flex-col items-center p-4 min-h-11 min-w-11 rounded-lg transition-colors duration-150 group focus:outline-none focus:ring-4',
                    'bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 border border-blue-200 dark:border-blue-800 focus:ring-blue-300 dark:focus:ring-blue-800/50' => $action['color'] === 'primary',
                    'bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 border border-green-200 dark:border-green-800 focus:ring-green-300 dark:focus:ring-green-800/50' => $action['color'] === 'success',
                    'bg-cyan-50 dark:bg-cyan-900/20 hover:bg-cyan-100 dark:hover:bg-cyan-900/30 border border-cyan-200 dark:border-cyan-800 focus:ring-cyan-300 dark:focus:ring-cyan-800/50' => $action['color'] === 'info',

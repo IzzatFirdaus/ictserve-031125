@@ -68,13 +68,13 @@
                         id="current-password"
                         wire:model="currentPassword"
                         autocomplete="current-password"
-                        class="block w-full px-4 py-2 pr-12 min-h-44 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                     >
                     <button
                         type="button"
                         wire:click="toggleCurrentPasswordVisibility"
-                        class="absolute inset-y-0 right-0 flex items-center pr-3 min-h-44 min-w-44"
+                        class="absolute inset-y-0 right-0 flex items-center pr-3 min-h-11 min-w-11"
                         aria-label="{{ $showCurrentPassword ? __('portal.hide_password') : __('portal.show_password') }}"
                     >
                         @if($showCurrentPassword)
@@ -103,13 +103,13 @@
                         id="new-password"
                         wire:model.live.debounce.300ms="newPassword"
                         autocomplete="new-password"
-                        class="block w-full px-4 py-2 pr-12 min-h-44 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                     >
                     <button
                         type="button"
                         wire:click="toggleNewPasswordVisibility"
-                        class="absolute inset-y-0 right-0 flex items-center pr-3 min-h-44 min-w-44"
+                        class="absolute inset-y-0 right-0 flex items-center pr-3 min-h-11 min-w-11"
                         aria-label="{{ $showNewPassword ? __('portal.hide_password') : __('portal.show_password') }}"
                     >
                         @if($showNewPassword)
@@ -154,7 +154,7 @@
                     id="new-password-confirmation"
                     wire:model="newPasswordConfirmation"
                     autocomplete="new-password"
-                    class="block w-full px-4 py-2 min-h-44 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="block w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                 >
                 @error('newPasswordConfirmation') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -199,7 +199,7 @@
 
             {{-- Submit Button --}}
             <div class="flex justify-end">
-                <button type="submit" class="inline-flex items-center px-6 py-3 min-h-44 min-w-44 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button type="submit" class="inline-flex items-center px-6 py-3 min-h-11 min-w-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     {{ __('portal.change_password') }}
                 </button>
             </div>
