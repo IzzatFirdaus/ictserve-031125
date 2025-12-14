@@ -24,12 +24,14 @@ use Filament\Widgets\Widget;
  * @trace WCAG 2.2 AA - Interactive Controls
  *
  * @author ICTServe Development Team
+ *
  * @version 3.6.0
+ *
  * @created 2025-12-14
  */
 class ThemeToggleWidget extends Widget
 {
-    protected static string $view = 'filament.widgets.theme-toggle-widget';
+    protected string $view = 'filament.widgets.theme-toggle-widget';
 
     protected int|string|array $columnSpan = 'full';
 
