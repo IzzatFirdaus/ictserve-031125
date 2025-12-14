@@ -31,6 +31,7 @@
 | ----- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), MOTAC branding. Penyelarasan dengan D00-D04 v3.5.0. | Pasukan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini rujukan bilingual support→Bahasa Melayu sahaja dalam migration plan. Penyelarasan dengan D00-D17 v3.6.0.                                                  | Pasukan BPM |
+| 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah migrasi data AI (FAQ, dokumen, embeddings, conversation history). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture (Ollama + AWS Bedrock).                                    | Pasukan BPM |
 | 3.4.0 | 30 November 2025 | Hybrid Architecture v3.4.0: Migrate legacy staff to users table, link historical submissions via email, restore LDAP/SSO as optional authentication. Penyelarasan dengan D00-D08 v3.4.0.                 | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan versi dengan D00 v3.3.0 dan D04 v3.3.0: standardisasi dokumentasi guest-first architecture, token-based workflows, disaster recovery plan, dan teknologi stack terkini (Playwright 1.56.1). | Pasukan BPM |
 | 3.1.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12). Penyelarasan dengan D00-D04.                                                                              | Pasukan BPM |
@@ -50,6 +51,7 @@
 - **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (target schema, dual audit)
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
 - **[D15_LANGUAGE_MS_EN.md]** - Panduan Lokalisasi (Bahasa Melayu sahaja, v3.6.0)
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - AI Chatbot Integration (Cloud Hybrid AI, v1.0.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
