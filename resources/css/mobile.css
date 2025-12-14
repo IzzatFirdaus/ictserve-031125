@@ -1,0 +1,511 @@
+/**
+ * ICTServe Mobile Optimization Styles
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-015 (Mobile Optimization)
+ * @trace D12 §6.8 (Responsive Design)
+ * @trace D15 §3.1 (Mobile Optimization)
+ * @wcag WCAG 2.2 Level AA (SC 2.5.5 Target Size, SC 1.4.10 Reflow)
+ * @version 1.0.0
+ * @created 2025-12-14
+ *
+ * MyDS Breakpoints:
+ * - Mobile: <768px (4 columns)
+ * - Tablet: 768px-1279px (8 columns)
+ * - Desktop: ≥1280px (12 columns)
+ */
+
+/* ==========================================================================
+   1. Touch Target Optimization
+   ========================================================================== */
+
+/**
+ * Ensure minimum 44×44px touch targets for all interactive elements
+ * WCAG 2.2 SC 2.5.5 Target Size (Minimum)
+ */
+@media (max-width: 767px) {
+	/* Buttons */
+	button,
+	[role="button"],
+	.btn,
+	input[type="button"],
+	input[type="submit"],
+	input[type="reset"] {
+		min-height: 44px;
+		min-width: 44px;
+	}
+
+	/* Links in navigation */
+	nav a,
+	.nav-link,
+	.menu-item {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	/* Form inputs */
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	input[type="tel"],
+	input[type="url"],
+	input[type="search"],
+	input[type="number"],
+	input[type="date"],
+	input[type="time"],
+	input[type="datetime-local"],
+	select,
+	textarea {
+		min-height: 44px;
+		font-size: 16px; /* Prevent iOS zoom on focus */
+	}
+
+	/* Checkboxes and radios */
+	input[type="checkbox"],
+	input[type="radio"] {
+		min-width: 24px;
+		min-height: 24px;
+	}
+
+	/* Checkbox/radio labels */
+	input[type="checkbox"] + label,
+	input[type="radio"] + label {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		padding-left: 8px;
+	}
+}
+
+/* ==========================================================================
+   2. Mobile Typography
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Increase base font size for readability */
+	html {
+		font-size: 16px;
+	}
+
+	/* Heading adjustments */
+	h1,
+	.text-4xl {
+		font-size: 1.75rem; /* 28px */
+		line-height: 1.2;
+	}
+
+	h2,
+	.text-3xl {
+		font-size: 1.5rem; /* 24px */
+		line-height: 1.25;
+	}
+
+	h3,
+	.text-2xl {
+		font-size: 1.25rem; /* 20px */
+		line-height: 1.3;
+	}
+
+	h4,
+	.text-xl {
+		font-size: 1.125rem; /* 18px */
+		line-height: 1.35;
+	}
+
+	/* Body text */
+	body {
+		font-size: 1rem; /* 16px */
+		line-height: 1.5;
+	}
+
+	/* Small text minimum */
+	.text-sm,
+	small {
+		font-size: 0.875rem; /* 14px - minimum for readability */
+	}
+
+	/* Prevent text from being too small */
+	.text-xs {
+		font-size: 0.75rem; /* 12px - absolute minimum */
+	}
+}
+
+/* ==========================================================================
+   3. Mobile Spacing
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Reduce padding on containers */
+	.container,
+	.max-w-7xl,
+	.max-w-6xl,
+	.max-w-5xl {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	/* Card padding */
+	.card,
+	[class*="rounded-lg"][class*="shadow"] {
+		padding: 1rem;
+	}
+
+	/* Section spacing */
+	section,
+	.section {
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+	}
+
+	/* Form group spacing */
+	.form-group,
+	.space-y-4 > * + * {
+		margin-top: 1rem;
+	}
+}
+
+/* ==========================================================================
+   4. Mobile Navigation
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Hide desktop navigation */
+	.desktop-nav,
+	.nav-desktop {
+		display: none !important;
+	}
+
+	/* Show mobile navigation */
+	.mobile-nav,
+	.nav-mobile {
+		display: flex !important;
+	}
+
+	/* Bottom navigation spacing */
+	.has-bottom-nav {
+		padding-bottom: 4rem; /* 64px for bottom nav */
+	}
+
+	/* Safe area for notched devices */
+	.safe-area-bottom {
+		padding-bottom: env(safe-area-inset-bottom, 0px);
+	}
+
+	.safe-area-top {
+		padding-top: env(safe-area-inset-top, 0px);
+	}
+}
+
+/* ==========================================================================
+   5. Mobile Tables
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Responsive table wrapper */
+	.table-responsive {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	/* Stack table cells on mobile */
+	.table-stack {
+		display: block;
+	}
+
+	.table-stack thead {
+		display: none;
+	}
+
+	.table-stack tbody,
+	.table-stack tr,
+	.table-stack td {
+		display: block;
+		width: 100%;
+	}
+
+	.table-stack tr {
+		margin-bottom: 1rem;
+		border: 1px solid var(--otl-divider, #e5e7eb);
+		border-radius: 0.5rem;
+		padding: 1rem;
+	}
+
+	.table-stack td {
+		padding: 0.5rem 0;
+		border: none;
+	}
+
+	.table-stack td::before {
+		content: attr(data-label);
+		font-weight: 600;
+		display: block;
+		margin-bottom: 0.25rem;
+		color: var(--txt-black-500, #6b7280);
+		font-size: 0.75rem;
+		text-transform: uppercase;
+	}
+}
+
+/* ==========================================================================
+   6. Mobile Forms
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Full-width form elements */
+	.form-control,
+	.form-input,
+	.form-select,
+	.form-textarea {
+		width: 100%;
+	}
+
+	/* Stack form labels */
+	.form-label {
+		display: block;
+		margin-bottom: 0.5rem;
+	}
+
+	/* Inline form to stack */
+	.form-inline {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.form-inline > * {
+		width: 100%;
+		margin-bottom: 0.75rem;
+	}
+
+	/* Button groups stack */
+	.btn-group {
+		flex-direction: column;
+	}
+
+	.btn-group > button,
+	.btn-group > a {
+		width: 100%;
+		margin-bottom: 0.5rem;
+	}
+
+	.btn-group > button:last-child,
+	.btn-group > a:last-child {
+		margin-bottom: 0;
+	}
+}
+
+/* ==========================================================================
+   7. Mobile Cards and Lists
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Full-width cards */
+	.card-grid {
+		grid-template-columns: 1fr;
+	}
+
+	/* List item touch targets */
+	.list-item,
+	.list-group-item {
+		min-height: 48px;
+		padding: 0.75rem 1rem;
+	}
+
+	/* Swipeable list items */
+	.swipeable {
+		touch-action: pan-y;
+	}
+}
+
+/* ==========================================================================
+   8. Mobile Modals and Dialogs
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Full-screen modals on mobile */
+	.modal-content,
+	[role="dialog"] > div {
+		max-width: 100%;
+		max-height: 100%;
+		margin: 0;
+		border-radius: 0;
+	}
+
+	/* Bottom sheet style modals */
+	.modal-bottom-sheet {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		top: auto;
+		border-radius: 1rem 1rem 0 0;
+		max-height: 90vh;
+	}
+
+	/* Modal close button */
+	.modal-close {
+		min-width: 44px;
+		min-height: 44px;
+	}
+}
+
+/* ==========================================================================
+   9. Mobile Images and Media
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Responsive images */
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	/* Video containers */
+	.video-container {
+		position: relative;
+		padding-bottom: 56.25%; /* 16:9 aspect ratio */
+		height: 0;
+		overflow: hidden;
+	}
+
+	.video-container iframe,
+	.video-container video {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+/* ==========================================================================
+   10. Mobile Utilities
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	/* Hide on mobile */
+	.hidden-mobile,
+	.md\:block:not(.block) {
+		display: none !important;
+	}
+
+	/* Show only on mobile */
+	.visible-mobile {
+		display: block !important;
+	}
+
+	/* Full width on mobile */
+	.w-full-mobile {
+		width: 100% !important;
+	}
+
+	/* Text alignment */
+	.text-center-mobile {
+		text-align: center !important;
+	}
+
+	/* Flex direction */
+	.flex-col-mobile {
+		flex-direction: column !important;
+	}
+
+	/* Gap adjustments */
+	.gap-mobile-2 {
+		gap: 0.5rem !important;
+	}
+
+	.gap-mobile-4 {
+		gap: 1rem !important;
+	}
+}
+
+/* ==========================================================================
+   11. Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* ==========================================================================
+   12. High Contrast Mode Support
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+	/* Increase border visibility */
+	button,
+	input,
+	select,
+	textarea {
+		border-width: 2px;
+	}
+
+	/* Ensure focus visibility */
+	:focus {
+		outline: 3px solid currentColor !important;
+		outline-offset: 2px !important;
+	}
+}
+
+/* ==========================================================================
+   13. Offline Indicator
+   ========================================================================== */
+
+.offline-indicator {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	padding: 0.5rem 1rem;
+	background-color: var(--color-warning-500, #ff8c00);
+	color: white;
+	text-align: center;
+	font-size: 0.875rem;
+	font-weight: 500;
+	transform: translateY(-100%);
+	transition: transform 0.3s ease-out;
+}
+
+.offline-indicator.visible {
+	transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.offline-indicator {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   14. PWA Install Prompt
+   ========================================================================== */
+
+.pwa-install-prompt {
+	position: fixed;
+	bottom: 80px; /* Above bottom navigation */
+	left: 1rem;
+	right: 1rem;
+	z-index: 50;
+	padding: 1rem;
+	background-color: white;
+	border-radius: 0.75rem;
+	box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+		0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.dark .pwa-install-prompt {
+	background-color: #1f2937;
+}
+
+@media (min-width: 768px) {
+	.pwa-install-prompt {
+		display: none;
+	}
+}
