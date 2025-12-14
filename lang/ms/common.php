@@ -535,4 +535,15 @@ return [
     'Penyulitan data dalam transit (TLS 1.3) dan semasa rehat (AES-256)' => 'Penyulitan data dalam transit (TLS 1.3) dan semasa rehat (AES-256)',
     'Kawalan akses berasaskan peranan (RBAC)' => 'Kawalan akses berasaskan peranan (RBAC)',
     'Pengesahan dua faktor (2FA) untuk akaun pentadbir' => 'Pengesahan dua faktor (2FA) untuk akaun pentadbir',
+
+    // Real-time connection status (Phase 9)
+    'connected' => 'Disambungkan',
+    'disconnected' => 'Terputus',
+    'reconnecting' => 'Menyambung semula...',
+    'connection_lost' => 'Sambungan terputus. Menyambung semula...',
+    'connection_restored' => 'Sambungan dipulihkan',
+    'someone' => 'Seseorang',
+    'new' => 'Baharu',
+    'read' => 'Dibaca',
+    'deselect_all' => 'Nyahpilih semua',
 ];

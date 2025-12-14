@@ -54,7 +54,7 @@ return [
     'ticket_claim_failed' => 'Tiket tidak dapat dituntut. Sila cuba lagi',
     'job_grade_required' => 'Gred diperlukan.',
     'select_grade' => 'Pilih gred anda',
-    'email' => 'E-mel',
+    'email_label' => 'E-mel',
     'email.portal_features_title' => 'Ciri-ciri Portal',
     'email.sla_breach_alert_title' => 'Amaran Pelanggaran SLA',
     'email.ticket_created_title' => 'Tiket Meja Bantuan Dicipta',

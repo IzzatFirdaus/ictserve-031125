@@ -251,7 +251,6 @@ return [
     'notification_loan_approval_description' => 'Terima pemberitahuan untuk kelulusan atau penolakan permohonan pinjaman.',
     'notification_overdue_reminders' => 'Peringatan tertunggak',
     'notification_overdue_reminders_description' => 'Terima peringatan apabila pinjaman tertunggak untuk dipulangkan.',
-    'notification_preferences' => 'Tetapan pemberitahuan',
     'notification_preferences_description' => 'Pilih pemberitahuan yang anda ingin terima melalui e-mel.',
     'notification_summary' => 'Ringkasan pemberitahuan',
     'notification_summary_description' => ':count daripada 6 jenis pemberitahuan diaktifkan.',
@@ -325,7 +324,6 @@ return [
     'quantity' => 'Kuantiti',
     'of' => 'daripada',
     'optional' => 'Pilihan',
-    'security_settings' => 'Tetapan keselamatan',
     'security_settings_description' => 'Urus kata laluan dan keselamatan akaun anda.',
     'show_password' => 'Tunjuk kata laluan',
     'profile' => [
