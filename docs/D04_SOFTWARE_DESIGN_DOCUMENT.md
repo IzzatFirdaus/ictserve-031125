@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                               |
 | -------------------- | --------------------------------------------------- |
-| **Versi**            | 3.5.0                                               |
-| **Tarikh Kemaskini** | 30 November 2025                                    |
+| **Versi**            | 3.6.1                                               |
+| **Tarikh Kemaskini** | 14 Disember 2025                                    |
 | **Status**           | Aktif                                               |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                          |
 | **Pematuhi**         | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA |
@@ -29,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.6.1 | 14 Disember 2025 | **Cloud Hybrid AI Integration**: Tambah §8 AI Integration Layer dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Model routing pintar, streaming responses, web-augmented responses, conversation management. Service layer design untuk RagService, BedrockService, ModelRouter. | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini semua modul (registration, login, account linking, notifications) kepada Bahasa Melayu sahaja. Language switcher dilumpuhkan. Bilingual support→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                 | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Restore user_id nullable FK dalam HelpdeskTicket/LoanApplication. Auth::check() logic untuk auto-fill. ERD update: user_id (0..1 relationship). Penyelarasan dengan D00/D02 v3.4.0.                                                                  | Pasukan Pembangunan BPM |
@@ -59,6 +60,7 @@
 - **[D15_LANGUAGE_MS_EN.md]** - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
 - **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.0)
 - **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
 - **docs/loan_form_to_model.md** - Asset loan data mapping
 
@@ -1968,7 +1970,421 @@ test("guest can submit helpdesk ticket", async ({ page }) => {
 
 ---
 
-## 12. PENUTUP
+## 12. AI INTEGRATION LAYER (Cloud Hybrid Architecture)
+
+> **Trace:** D18 v1.0.0 (Cloud Hybrid AI Architecture), D03 §5.9 (AI Requirements), D00 §3.2 (AI Integration)
+
+### 12.1. Architecture Overview
+
+ICTServe mengintegrasikan **True Hybrid AI Architecture** yang menggabungkan Ollama (local LLM) dengan AWS Bedrock (cloud AI) untuk memberikan pengalaman AI yang optimum dengan penghalaan pintar berdasarkan jenis pertanyaan.
+
+**Core Principles:**
+
+- **Single Interface**: Pengguna berinteraksi dengan SATU sistem chat yang menghalakan pertanyaan secara automatik
+- **Smart Routing**: Sistem menganalisis pertanyaan dan memilih AI yang optimum
+- **Hybrid Responses**: Menggabungkan pengetahuan tempatan dengan keupayaan penaakulan cloud
+- **Cost Optimization**: 82% penjimatan kos dengan penggunaan Ollama untuk FAQ
+- **Data Sovereignty**: Klasifikasi automatik untuk pemprosesan tempatan vs cloud (PDPA 2010)
+
+### 12.2. Service Layer Design
+
+#### 12.2.1. Core AI Services
+
+```php
+// Service Layer Architecture
+app/Services/
+├── AI/
+│   ├── RagService.php              // Ollama RAG integration
+│   ├── BedrockService.php          // AWS Bedrock wrapper
+│   ├── ModelRouter.php             // Smart model selection
+│   ├── EmbeddingService.php        // Vector operations
+│   ├── DocumentService.php         // Document analysis
+│   ├── ConversationService.php     // Conversation management
+│   ├── PIIDetectionService.php     // PII sanitization
+│   └── WebSearchService.php        // DuckDuckGo integration
+├── OllamaClient.php                // HTTP client for Ollama
+└── BedrockClient.php               // AWS SDK wrapper
+```
+
+#### 12.2.2. Service Interfaces
+
+**RagService Interface:**
+
+```php
+interface RagServiceContract
+{
+    public function processQuery(string $query, array $context = []): array;
+    public function searchFAQ(string $query, float $threshold = 0.3): array;
+    public function generateEmbeddings(string $text): array;
+    public function healthCheck(): bool;
+}
+```
+
+**BedrockService Interface:**
+
+```php
+interface BedrockServiceContract
+{
+    public function invoke(string $modelId, array $payload): array;
+    public function invokeWithStreaming(string $modelId, array $payload): Generator;
+    public function estimateCost(string $modelId, int $inputTokens, int $outputTokens): float;
+    public function healthCheck(): bool;
+}
+```
+
+**ModelRouter Interface:**
+
+```php
+interface ModelRouterContract
+{
+    public function analyzeQuery(string $query): string; // 'faq_specific', 'complex_reasoning', 'hybrid'
+    public function selectModel(string $taskType, array $context): string;
+    public function routeRequest(string $query, array $context): array;
+}
+```
+
+### 12.3. Data Layer Design
+
+#### 12.3.1. Enhanced Models
+
+**BedrockConversation Model:**
+
+```php
+class BedrockConversation extends Model
+{
+    use HasFactory, Auditable, LogsActivity;
+    
+    protected $fillable = [
+        'user_id', 'title', 'messages', 'model_used', 
+        'total_tokens', 'cost_estimate', 'metadata'
+    ];
+    
+    protected $casts = [
+        'messages' => 'array',
+        'metadata' => 'array',
+        'total_tokens' => 'integer',
+        'cost_estimate' => 'decimal:4'
+    ];
+    
+    // Relationships
+    public function user(): BelongsTo;
+    public function messageLogs(): HasMany;
+}
+```
+
+**Enhanced Database Schema:**
+
+```sql
+-- AI-specific tables
+CREATE TABLE bedrock_conversations (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NULL,
+    title VARCHAR(255) NOT NULL,
+    messages JSON NOT NULL,
+    model_used VARCHAR(100) NOT NULL,
+    total_tokens INT UNSIGNED DEFAULT 0,
+    cost_estimate DECIMAL(10,4) DEFAULT 0.0000,
+    metadata JSON NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE message_logs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    conversation_id BIGINT UNSIGNED NULL,
+    user_id BIGINT UNSIGNED NULL,
+    query TEXT NOT NULL,
+    response TEXT NOT NULL,
+    model_used VARCHAR(100) NOT NULL,
+    confidence_score DECIMAL(3,2) NULL,
+    processing_time DECIMAL(8,3) NOT NULL,
+    tokens_used INT UNSIGNED DEFAULT 0,
+    cost DECIMAL(10,4) DEFAULT 0.0000,
+    source ENUM('ollama', 'bedrock', 'hybrid') NOT NULL,
+    metadata JSON NULL,
+    created_at TIMESTAMP NULL,
+    FOREIGN KEY (conversation_id) REFERENCES bedrock_conversations(id) ON DELETE SET NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE document_chunks (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    document_id BIGINT UNSIGNED NOT NULL,
+    chunk_text TEXT NOT NULL,
+    chunk_index INT UNSIGNED NOT NULL,
+    embedding JSON NULL,
+    metadata JSON NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE CASCADE
+);
+```
+
+### 12.4. API Layer Design
+
+#### 12.4.1. REST API Endpoints
+
+**Base URL:** `/api/v1/ai`
+
+```php
+// API Routes (routes/api.php)
+Route::prefix('ai')->middleware(['auth:sanctum'])->group(function () {
+    // FAQ Bot
+    Route::post('/chat', [BedrockChatController::class, 'chat']);
+    Route::get('/conversations', [BedrockChatController::class, 'conversations']);
+    Route::post('/conversations/{id}/save', [BedrockChatController::class, 'saveConversation']);
+    Route::delete('/conversations/{id}', [BedrockChatController::class, 'deleteConversation']);
+    
+    // Document Analysis
+    Route::post('/documents/upload', [DocumentController::class, 'upload']);
+    Route::get('/documents/{id}/status', [DocumentController::class, 'status']);
+    Route::get('/documents/{id}/search', [DocumentController::class, 'search']);
+    
+    // Auto-Reply
+    Route::post('/auto-reply/generate', [AutoReplyController::class, 'generate']);
+    Route::post('/auto-reply/{id}/approve', [AutoReplyController::class, 'approve']);
+    
+    // Health Check
+    Route::get('/health', [HealthController::class, 'aiHealth']);
+});
+```
+
+#### 12.4.2. Livewire Components
+
+**BedrockChat Component:**
+
+```php
+class BedrockChat extends Component
+{
+    public string $prompt = '';
+    public array $messages = [];
+    public string $selectedModel = 'sonnet';
+    public bool $internetSearch = false;
+    public ?string $conversationId = null;
+    
+    protected $listeners = ['conversationLoaded'];
+    
+    public function send(): void
+    {
+        $this->validate(['prompt' => 'required|max:500']);
+        
+        $response = app(ModelRouter::class)->routeRequest(
+            $this->prompt,
+            ['internet_search' => $this->internetSearch]
+        );
+        
+        $this->messages[] = ['role' => 'user', 'content' => $this->prompt];
+        $this->messages[] = [
+            'role' => 'assistant',
+            'content' => $response['content'],
+            'source' => $response['source'],
+            'sources' => $response['sources'] ?? []
+        ];
+        
+        $this->prompt = '';
+        $this->dispatch('message-sent');
+    }
+}
+```
+
+### 12.5. Integration Patterns
+
+#### 12.5.1. Query Routing Logic
+
+```php
+class ModelRouter implements ModelRouterContract
+{
+    public function routeRequest(string $query, array $context = []): array
+    {
+        $queryType = $this->analyzeQuery($query);
+        
+        return match($queryType) {
+            'faq_specific' => $this->handleFAQQuery($query, $context),
+            'complex_reasoning' => $this->handleComplexQuery($query, $context),
+            'hybrid' => $this->handleHybridQuery($query, $context),
+            default => $this->handleFallback($query, $context)
+        };
+    }
+    
+    private function handleHybridQuery(string $query, array $context): array
+    {
+        // Get FAQ facts from Ollama
+        $faqResponse = app(RagService::class)->processQuery($query, $context);
+        
+        // Enhance with Bedrock reasoning
+        $enhancedPrompt = "Based on these facts: {$faqResponse['answer']}\n\nQuestion: {$query}";
+        $bedrockResponse = app(BedrockService::class)->invoke(
+            config('bedrock.models.sonnet'),
+            ['messages' => [['role' => 'user', 'content' => $enhancedPrompt]]]
+        );
+        
+        return [
+            'content' => $bedrockResponse['content'],
+            'source' => 'hybrid',
+            'sources' => array_merge($faqResponse['sources'], ['AI Analysis']),
+            'tokens' => $bedrockResponse['usage']['output_tokens'] ?? 0
+        ];
+    }
+}
+```
+
+#### 12.5.2. Fallback Strategy
+
+```php
+class FallbackHandler
+{
+    public function handleFailure(string $service, \Throwable $exception): array
+    {
+        Log::error("AI Service failure: {$service}", [
+            'exception' => $exception->getMessage(),
+            'trace' => $exception->getTraceAsString()
+        ]);
+        
+        return match($service) {
+            'ollama' => $this->fallbackToBedrock(),
+            'bedrock' => $this->fallbackToStatic(),
+            default => $this->staticResponse()
+        };
+    }
+    
+    private function fallbackToBedrock(): array
+    {
+        try {
+            return app(BedrockService::class)->invoke(
+                config('bedrock.models.haiku'), // Fastest, cheapest
+                ['messages' => [['role' => 'user', 'content' => 'System unavailable, please try again later.']]]
+            );
+        } catch (\Throwable $e) {
+            return $this->staticResponse();
+        }
+    }
+}
+```
+
+### 12.6. Performance & Monitoring
+
+#### 12.6.1. Caching Strategy
+
+```php
+class CachingService
+{
+    public function getCachedResponse(string $cacheKey): ?array
+    {
+        return Cache::tags(['ai-responses'])->get($cacheKey);
+    }
+    
+    public function cacheResponse(string $cacheKey, array $response, int $ttl = 3600): void
+    {
+        Cache::tags(['ai-responses'])->put($cacheKey, $response, $ttl);
+    }
+    
+    public function generateCacheKey(string $query, array $context = []): string
+    {
+        return 'ai:' . md5($query . serialize($context));
+    }
+}
+```
+
+#### 12.6.2. Health Monitoring
+
+```php
+class AIHealthService
+{
+    public function checkAllServices(): array
+    {
+        return [
+            'ollama' => $this->checkOllama(),
+            'bedrock' => $this->checkBedrock(),
+            'duckduckgo' => $this->checkWebSearch(),
+            'overall' => $this->calculateOverallHealth()
+        ];
+    }
+    
+    private function checkOllama(): array
+    {
+        try {
+            $start = microtime(true);
+            $response = app(OllamaClient::class)->healthCheck();
+            $responseTime = (microtime(true) - $start) * 1000;
+            
+            return [
+                'status' => $response ? 'up' : 'down',
+                'response_time' => round($responseTime, 2),
+                'last_check' => now()->toISOString()
+            ];
+        } catch (\Throwable $e) {
+            return ['status' => 'down', 'error' => $e->getMessage()];
+        }
+    }
+}
+```
+
+### 12.7. Security & Compliance
+
+#### 12.7.1. PII Detection
+
+```php
+class PIIDetectionService
+{
+    private array $patterns = [
+        'email' => '/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/',
+        'phone' => '/\b\d{3}-\d{3}-\d{4}\b|\b\d{10}\b/',
+        'ic' => '/\b\d{6}-\d{2}-\d{4}\b/',
+        'credit_card' => '/\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/'
+    ];
+    
+    public function detectAndSanitize(string $text): array
+    {
+        $detectedPII = [];
+        $sanitizedText = $text;
+        
+        foreach ($this->patterns as $type => $pattern) {
+            if (preg_match_all($pattern, $text, $matches)) {
+                $detectedPII[$type] = $matches[0];
+                $sanitizedText = preg_replace($pattern, "[{$type}_redacted]", $sanitizedText);
+            }
+        }
+        
+        return [
+            'original' => $text,
+            'sanitized' => $sanitizedText,
+            'detected_pii' => $detectedPII,
+            'has_pii' => !empty($detectedPII)
+        ];
+    }
+}
+```
+
+#### 12.7.2. Data Classification
+
+```php
+class DataClassificationService
+{
+    public function classifyForProcessing(string $content): string
+    {
+        $piiResult = app(PIIDetectionService::class)->detectAndSanitize($content);
+        
+        if ($piiResult['has_pii']) {
+            return 'local_only'; // Process with Ollama only
+        }
+        
+        // Check for sensitive keywords
+        $sensitiveKeywords = ['confidential', 'rahsia', 'sulit', 'internal'];
+        foreach ($sensitiveKeywords as $keyword) {
+            if (stripos($content, $keyword) !== false) {
+                return 'local_only';
+            }
+        }
+        
+        return 'allow_cloud'; // Can use Bedrock
+    }
+}
+```
+
+---
+
+## 13. PENUTUP
 
 Rekabentuk ini memastikan ICTServe mematuhi mandat **hybrid architecture**:
 

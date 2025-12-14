@@ -138,6 +138,98 @@ Sistem ICTServe menggunakan **Dual Channel Strategy**:
 | `App\Events\AccessoryReturned`        | `private-user.{userId}` | `private-loan.{loanUuid}`        | `accessory.returned`     | Loan accessory returned (v3.5.0)                         |
 | `App\Events\ResponsibleOfficerAssigned` | `private-user.{userId}` | N/A (auth only)                | `officer.assigned`       | Responsible Officer assigned to ticket/loan (v3.5.0)     |
 
+### 3.4. AI Real-Time Events (D18 Integration v3.6.0)
+
+Sistem ICTServe v3.6.0 menambah sokongan untuk **Cloud Hybrid AI Architecture** dengan acara masa nyata untuk streaming responses, conversation management, dan model switching:
+
+| Acara AI                              | Saluran (Auth Users)    | Saluran (Guests)                 | Peristiwa                | Catatan                                                  |
+| ------------------------------------- | ----------------------- | -------------------------------- | ------------------------ | -------------------------------------------------------- |
+| `App\Events\AiStreamingStarted`       | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.streaming.started`   | AI response streaming dimulakan                          |
+| `App\Events\AiStreamingChunk`         | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.streaming.chunk`     | Chunk respons AI (Server-Sent Events)                   |
+| `App\Events\AiStreamingCompleted`     | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.streaming.completed` | AI response streaming selesai                            |
+| `App\Events\AiModelSwitched`          | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.model.switched`      | Model AI ditukar (Auto/Opus/Sonnet/Haiku)               |
+| `App\Events\AiConversationSaved`      | `private-user.{userId}` | N/A (auth only)                  | `ai.conversation.saved`  | Perbualan AI disimpan untuk authenticated users         |
+| `App\Events\AiWebSearchStarted`       | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.web.search.started`  | Web-augmented search dimulakan                          |
+| `App\Events\AiWebSearchCompleted`     | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.web.search.completed`| Web search selesai, respons diperkaya                   |
+| `App\Events\AiFaqSuggestionGenerated` | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.faq.suggestion`      | FAQ suggestions dijana berdasarkan pertanyaan           |
+| `App\Events\AiErrorOccurred`          | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.error.occurred`      | Error dalam pemprosesan AI (fallback ke model lain)     |
+| `App\Events\AiUsageMetricsUpdated`    | `private-user.{userId}` | N/A (admin only)                 | `ai.metrics.updated`     | Metrik penggunaan AI dikemas kini (admin dashboard)     |
+
+**AI Channel Selection Logic**:
+
+```php
+// app/Events/AiStreamingChunk.php
+public function broadcastOn(): array
+{
+    if ($this->conversation->user_id) {
+        // Authenticated: Broadcast to user channel
+        return [new PrivateChannel('user.' . $this->conversation->user_id)];
+    } else {
+        // Guest: Broadcast to conversation UUID channel
+        return [new PrivateChannel('conversation.' . $this->conversation->uuid)];
+    }
+}
+
+public function broadcastWith(): array
+{
+    return [
+        'conversation_id' => $this->conversation->id,
+        'chunk' => $this->chunk,
+        'model_used' => $this->modelUsed,
+        'is_final' => $this->isFinal,
+        'timestamp' => now()->toISOString(),
+    ];
+}
+```
+
+**AI Streaming Implementation (Server-Sent Events)**:
+
+```php
+// app/Http/Controllers/AiStreamingController.php
+public function stream(Request $request, string $conversationId)
+{
+    return response()->stream(function () use ($conversationId) {
+        $conversation = BedrockConversation::findOrFail($conversationId);
+        
+        // Authorize access
+        if ($conversation->user_id && $conversation->user_id !== auth()->id()) {
+            abort(403);
+        }
+        
+        // Start streaming
+        event(new AiStreamingStarted($conversation));
+        
+        // Process with selected model
+        $service = app(BedrockService::class);
+        $chunks = $service->streamResponse($conversation);
+        
+        foreach ($chunks as $chunk) {
+            // Broadcast each chunk
+            event(new AiStreamingChunk($conversation, $chunk));
+            
+            // Send SSE
+            echo "data: " . json_encode([
+                'content' => $chunk,
+                'conversation_id' => $conversationId
+            ]) . "\n\n";
+            
+            ob_flush();
+            flush();
+        }
+        
+        // Complete streaming
+        event(new AiStreamingCompleted($conversation));
+        
+        echo "event: complete\n";
+        echo "data: {\"status\": \"completed\"}\n\n";
+    }, 200, [
+        'Content-Type' => 'text/event-stream',
+        'Cache-Control' => 'no-cache',
+        'Connection' => 'keep-alive',
+    ]);
+}
+```
+
 **Channel Selection Logic**:
 
 ```php
@@ -206,6 +298,182 @@ if (window.userId) {
    // Show API token revoked notification
   })
   .listen(".sso.google.linked", (data) => {
+   // Show Google SSO linked notification
+  });
+}
+
+// v3.6.0: AI Real-Time Events (D18 Integration)
+// Authenticated Users: AI conversation events
+if (window.userId) {
+ window.Echo.private(`user.${window.userId}`)
+  .listen(".ai.streaming.started", (data) => {
+   // Show streaming indicator
+   showAiStreamingIndicator(data.conversation_id);
+  })
+  .listen(".ai.streaming.chunk", (data) => {
+   // Append streaming content
+   appendAiStreamingChunk(data.conversation_id, data.chunk);
+  })
+  .listen(".ai.streaming.completed", (data) => {
+   // Hide streaming indicator, finalize response
+   hideAiStreamingIndicator(data.conversation_id);
+   finalizeAiResponse(data.conversation_id);
+  })
+  .listen(".ai.model.switched", (data) => {
+   // Update model selection UI
+   updateModelSelection(data.model);
+  })
+  .listen(".ai.conversation.saved", (data) => {
+   // Update conversation history sidebar
+   updateConversationHistory(data.conversation);
+  })
+  .listen(".ai.web.search.started", (data) => {
+   // Show web search indicator
+   showWebSearchIndicator(data.conversation_id);
+  })
+  .listen(".ai.web.search.completed", (data) => {
+   // Hide web search indicator, show sources
+   hideWebSearchIndicator(data.conversation_id);
+   displayWebSources(data.sources);
+  })
+  .listen(".ai.faq.suggestion", (data) => {
+   // Display FAQ suggestions
+   displayFaqSuggestions(data.suggestions);
+  })
+  .listen(".ai.error.occurred", (data) => {
+   // Show error message, suggest retry
+   showAiError(data.error, data.conversation_id);
+  })
+  .listen(".ai.metrics.updated", (data) => {
+   // Update admin dashboard metrics (admin only)
+   if (window.userRole === 'admin' || window.userRole === 'superuser') {
+     updateAiMetrics(data.metrics);
+   }
+  });
+}
+
+// Guests: AI conversation events (with conversation UUID)
+if (window.conversationUuid && window.statusToken) {
+ window.Echo.private(`conversation.${window.conversationUuid}`)
+  .listen(".ai.streaming.started", (data) => {
+   showAiStreamingIndicator(data.conversation_id);
+  })
+  .listen(".ai.streaming.chunk", (data) => {
+   appendAiStreamingChunk(data.conversation_id, data.chunk);
+  })
+  .listen(".ai.streaming.completed", (data) => {
+   hideAiStreamingIndicator(data.conversation_id);
+   finalizeAiResponse(data.conversation_id);
+  })
+  .listen(".ai.model.switched", (data) => {
+   updateModelSelection(data.model);
+  })
+  .listen(".ai.web.search.started", (data) => {
+   showWebSearchIndicator(data.conversation_id);
+  })
+  .listen(".ai.web.search.completed", (data) => {
+   hideWebSearchIndicator(data.conversation_id);
+   displayWebSources(data.sources);
+  })
+  .listen(".ai.faq.suggestion", (data) => {
+   displayFaqSuggestions(data.suggestions);
+  })
+  .listen(".ai.error.occurred", (data) => {
+   showAiError(data.error, data.conversation_id);
+  });
+}
+
+// AI Helper Functions
+function showAiStreamingIndicator(conversationId) {
+ const indicator = document.querySelector(`[data-conversation="${conversationId}"] .streaming-indicator`);
+ if (indicator) {
+  indicator.classList.remove('hidden');
+  indicator.innerHTML = '<div class="flex items-center gap-2"><div class="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div><span class="text-sm text-gray-600">AI sedang menaip...</span></div>';
+ }
+}
+
+function appendAiStreamingChunk(conversationId, chunk) {
+ const messageContainer = document.querySelector(`[data-conversation="${conversationId}"] .streaming-message .streaming-content`);
+ if (messageContainer) {
+  messageContainer.innerHTML += chunk;
+  // Auto-scroll to bottom
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+ }
+}
+
+function hideAiStreamingIndicator(conversationId) {
+ const indicator = document.querySelector(`[data-conversation="${conversationId}"] .streaming-indicator`);
+ if (indicator) {
+  indicator.classList.add('hidden');
+ }
+}
+
+function finalizeAiResponse(conversationId) {
+ const streamingMessage = document.querySelector(`[data-conversation="${conversationId}"] .streaming-message`);
+ if (streamingMessage) {
+  streamingMessage.classList.remove('streaming-message');
+  streamingMessage.classList.add('ai-message', 'completed');
+ }
+}
+
+function updateModelSelection(model) {
+ const modelButtons = document.querySelectorAll('.model-selector button');
+ modelButtons.forEach(button => {
+  if (button.dataset.model === model) {
+   button.classList.add('bg-primary-600', 'text-white');
+   button.classList.remove('bg-white', 'text-gray-600');
+  } else {
+   button.classList.remove('bg-primary-600', 'text-white');
+   button.classList.add('bg-white', 'text-gray-600');
+  }
+ });
+}
+
+function displayWebSources(sources) {
+ const sourcesContainer = document.querySelector('.web-sources');
+ if (sourcesContainer && sources.length > 0) {
+  sourcesContainer.innerHTML = sources.map(source => 
+   `<div class="flex items-center gap-2 text-sm">
+     <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+     </svg>
+     <a href="${source.url}" target="_blank" class="text-primary-600 hover:text-primary-700 truncate">${source.title}</a>
+    </div>`
+  ).join('');
+  sourcesContainer.classList.remove('hidden');
+ }
+}
+
+function displayFaqSuggestions(suggestions) {
+ const suggestionsContainer = document.querySelector('.faq-suggestions');
+ if (suggestionsContainer && suggestions.length > 0) {
+  suggestionsContainer.innerHTML = suggestions.map(suggestion => 
+   `<button onclick="selectFaqSuggestion('${suggestion}')" class="text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors">${suggestion}</button>`
+  ).join('');
+  suggestionsContainer.classList.remove('hidden');
+ }
+}
+
+function showAiError(error, conversationId) {
+ const errorContainer = document.querySelector(`[data-conversation="${conversationId}"] .ai-error`);
+ if (errorContainer) {
+  errorContainer.innerHTML = `
+   <div class="bg-red-50 border border-red-200 rounded-md p-3">
+    <div class="flex">
+     <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+     </svg>
+     <div class="ml-3">
+      <h3 class="text-sm font-medium text-red-800">Ralat AI</h3>
+      <p class="text-sm text-red-700 mt-1">${error}</p>
+      <button onclick="retryAiRequest('${conversationId}')" class="mt-2 text-sm bg-red-100 text-red-800 px-3 py-1 rounded-md hover:bg-red-200">Cuba Lagi</button>
+     </div>
+    </div>
+   </div>
+  `;
+  errorContainer.classList.remove('hidden');
+ }
+}
    // Show Google SSO linked notification
   })
   .listen(".officer.assigned", (data) => {

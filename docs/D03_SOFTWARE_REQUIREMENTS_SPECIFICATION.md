@@ -29,7 +29,7 @@
 
 | Versi | Tarikh            | Perubahan                                                                                                                                                                                                                                                                                                                                                                                           | Penulis                 |
 | ----- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 13 Disember 2025  | **Documentation Update:** Tambah keperluan komprehensif untuk modul yang telah dilaksanakan: §5.9 AI & Automasi (FAQ Bot, Auto-Reply, Document Analysis), §5.10 Pengurusan Aset, §5.11 Penyelenggaraan Aset, §5.12 Pemindahan Aset, §5.13 Laporan & Analitik. Kemaskini SSO authentication (SRS-AUTH-005 hingga AUTH-009). Tambah system monitoring features (SRS-ADM-009 hingga ADM-011).  | Pasukan Pembangunan BPM |
+| 3.6.1 | 14 Disember 2025  | **Cloud Hybrid AI Integration:** Kemaskini §5.9 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah SRS-AI-011 hingga SRS-AI-020 untuk model routing, streaming responses, web-augmented responses, conversation management. Kemaskini keperluan untuk modul Asset Management (§5.10-5.12) dan Laporan & Analitik (§5.13). Cross-reference D18 v1.0.0. Tambah keperluan MCP Server Integration (SRS-AI-016), Data Residency Compliance (SRS-AI-018), dan Emergency Procedures (SRS-AI-020). | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025   | Bahasa Melayu sahaja untuk antara muka: Kemaskini SRS-HELP-001 borang dwibahasa→Bahasa Melayu sahaja. Kemaskini rujukan bahasa dwibahasa automatik→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                                                                                                                                                                                      | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025  | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara.                                                                                                                          | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025  | Hybrid Architecture: Staff boleh log masuk (Laravel Breeze - akaun pangkalan data) untuk Dashboard ATAU gunakan borang tetamu. Tambah SRS-AUTH-001 (Dual Entry), SRS-DATA-001 (Hybrid Association). Nullable user_id FK. Penyelarasan dengan D00/D02/D04 v3.4.0.                                                                                                                                  | Pasukan Pembangunan BPM |
@@ -63,10 +63,12 @@
 - **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
 - **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
 - **docs/loan_form_to_model.md** - Asset loan data mapping
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture documentation (v1.0.0)
 - **docs/api/ollama-ai-api-documentation.md** - Ollama AI Integration API specifications
 - **docs/api/ollama-ai-integration-api.md** - AI FAQ Bot, Auto-Reply, Document Analysis API
 - **docs/ollama-laravel-README.md** - Ollama-Laravel package integration guide
-- **docs/aws_bedrock/** - AWS Bedrock AI integration documentation (future)
+- **docs/deployment/ollama-ai-deployment-guide.md** - AI deployment and configuration guide
+- **docs/deployment/emergency-procedures.md** - AI system emergency procedures and recovery
 - **docs/frontend/accessibility-guidelines.md** - WCAG 2.2 AA compliance
 - **docs/frontend/core-web-vitals-testing-guide.md** - Performance testing
 - **docs/performance-optimization-report.md** - Performance audit results
@@ -257,22 +259,39 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 | SRS-UX-006  | Keyboard Shortcuts  | Comprehensive keyboard shortcuts untuk power users. `/` untuk search, `?` untuk help, `n` untuk new ticket/loan. Shortcuts displayed in help modal.                                                      |
 | SRS-UX-007  | Dark Mode Support   | **FUTURE:** Optional dark mode untuk reduce eye strain. Maintain WCAG 2.2 AA contrast ratios. User preference saved. System-wide toggle.                                                                 |
 
-### 5.9. Modul AI & Automasi (Ollama Integration)
+### 5.9. Modul AI & Automasi (Cloud Hybrid Architecture)
 
-> **Trace:** D03-FR-AI-001 (FAQ Bot System), D00 v3.6.0 (True Hybrid Architecture), D04 §8 (AI Integration Layer)
+> **Trace:** D18 v1.0.0 (Cloud Hybrid AI Architecture), D00 v3.6.1 (True Hybrid Architecture), D04 §8 (AI Integration Layer)
+
+#### 5.9.1. Core AI Requirements
 
 | ID           | Keperluan                | Perincian                                                                                                                                                                                                           |
 | ------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SRS-AI-001   | FAQ Bot                  | Chatbot AI untuk jawab pertanyaan umum mengenai sistem ICTServe. Accessible untuk guest dan authenticated users. Natural language processing menggunakan Ollama local LLM (model: llama3.2). Response time < 5s.   |
-| SRS-AI-002   | Auto-Reply Template      | AI-generated response templates untuk common ticket categories. Admin boleh review dan edit sebelum save. Template suggestions berdasarkan historical ticket resolutions dan conversation analysis.                |
-| SRS-AI-003   | Document Analysis        | AI-powered document parsing untuk extract key information dari uploaded attachments (PDF, DOCX). Automated categorization dan tag suggestions untuk admin review.                                                  |
-| SRS-AI-004   | Message Logging          | Semua AI interactions (FAQ queries, responses, confidence scores) dilog untuk audit dan improvement. Retention 90 hari. No PII stored dalam message logs.                                                          |
-| SRS-AI-005   | Conversation History     | Users boleh view historical AI conversations. Authenticated users: linked to user_id. Guest users: session-based storage (24 jam). Export conversation to PDF untuk reference.                                      |
-| SRS-AI-006   | Admin Panel Management   | Filament resources untuk manage FAQ entries, auto-reply templates, dan document embeddings. Bulk operations: import/export FAQ database, retrain model dengan custom data.                                         |
-| SRS-AI-007   | Local Processing         | **CRITICAL:** Semua AI processing dilakukan secara local menggunakan Ollama server. Tiada external API calls. Mematuhi PDPA 2010 data sovereignty requirements.                                                    |
-| SRS-AI-008   | Model Configuration      | Admin boleh configure AI model parameters: temperature, max_tokens, context_window. Model selection: llama3.2 (default), mistral, codellama untuk specialized tasks.                                               |
-| SRS-AI-009   | Health Monitoring        | System monitor Ollama server health status real-time. Auto-fallback to static FAQ jika Ollama unavailable. Alert admin jika model loading failed atau server timeout.                                              |
-| SRS-AI-010   | Content Filtering        | AI responses filtered untuk harmful content, profanity, dan potential security risks. Blocklist maintained oleh admin. Responses comply dengan government communication guidelines.                                 |
+| SRS-AI-001   | FAQ Bot (Cloud Hybrid)   | Chatbot AI untuk jawab pertanyaan umum mengenai sistem ICTServe. Accessible untuk guest dan authenticated users melalui `/ai/chat`. Model routing pintar: Ollama (FAQ) + AWS Bedrock Claude (complex). Response time < 5s. |
+| SRS-AI-002   | Auto-Reply Generation    | AI-generated response drafts untuk common ticket categories menggunakan model routing pintar. Admin review dan approve melalui aliran kerja kelulusan. Learning dari historical resolutions dengan pattern recognition. |
+| SRS-AI-003   | Document Analysis        | AI-powered parsing untuk PDF/DOCX/images menggunakan AWS Bedrock Nova Pro. Semantic search dengan vector embeddings. Automated categorization dengan confidence scoring. Data classification untuk pemprosesan tempatan vs cloud. |
+| SRS-AI-004   | Message Logging          | Semua AI interactions (FAQ queries, responses, confidence scores, model routing decisions) dilog untuk audit dan improvement. Retention 90 hari. No PII stored dalam message logs. Dual audit system (owen-it + spatie). |
+| SRS-AI-005   | Conversation Management  | Enhanced conversation management dengan save/load/delete conversations. Authenticated users: linked to user_id dengan memori jangka panjang. Guest users: session-based storage (24 jam). Export conversation to PDF. |
+| SRS-AI-006   | Admin Panel Management   | Filament resources untuk manage FAQ entries, auto-reply templates, document embeddings, model configuration. Bulk operations: import/export FAQ database. Real-time metrics untuk penggunaan model dan kos. |
+| SRS-AI-007   | Hybrid Processing        | **CRITICAL:** Data sovereignty compliance - klasifikasi automatik untuk pemprosesan tempatan (Ollama) vs cloud (Bedrock). PII detection dan sanitization untuk PDPA 2010 compliance. |
+| SRS-AI-008   | Model Configuration      | Admin boleh configure AI model parameters untuk kedua-dua Ollama dan Bedrock. Model selection: llama3.1 (Ollama), Claude Opus/Sonnet/Haiku 4.5, Nova Pro/Lite/Micro, Titan Text Express/Lite (Bedrock). |
+| SRS-AI-009   | Health Monitoring        | Multi-system health monitoring: Ollama server, AWS Bedrock API, DuckDuckGo search. Auto-fallback chain: Ollama → Bedrock → static FAQ. Alert admin untuk service failures atau rate limit exceeded. |
+| SRS-AI-010   | Content Filtering        | AI responses filtered untuk harmful content, profanity, dan potential security risks. Blocklist maintained oleh admin. Responses comply dengan government communication guidelines. Content filtering untuk kedua-dua Ollama dan Bedrock. |
+
+#### 5.9.2. Advanced AI Features
+
+| ID           | Keperluan                | Perincian                                                                                                                                                                                                           |
+| ------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-AI-011   | Model Routing            | Smart query analysis untuk automatic model selection. FAQ queries → Ollama RAG. Complex reasoning → AWS Bedrock Claude. Hybrid queries → kedua-dua sistem (fakta + analisis). 82% cost savings dengan Ollama prioritization. |
+| SRS-AI-012   | Multi-Model Intelligence | Support untuk multiple AI models: Claude Opus 4.5 (complex), Sonnet 4.5 (balanced), Haiku 4.5 (fast), Nova Pro (multimodal), Nova Lite/Micro (cost-effective). Task-specific routing berdasarkan complexity analysis. |
+| SRS-AI-013   | Streaming Responses      | **FUTURE:** Server-Sent Events (SSE) untuk streaming AI responses. Real-time response chunks untuk pengalaman pengguna yang responsif. Timeout handling dan error recovery untuk streaming connections. |
+| SRS-AI-014   | Web-Augmented Responses  | Integrasi DuckDuckGo untuk konteks terkini dalam AI responses. Web search toggle untuk users. Cached search results untuk performance. Content filtering untuk web-sourced information. |
+| SRS-AI-015   | Vector Embeddings        | Semantic search menggunakan vector embeddings untuk dokumen dan FAQ. EmbeddingService untuk vector operations dengan caching. Similarity search dengan configurable threshold. |
+| SRS-AI-016   | MCP Server Integration   | 3 tools untuk AI assistants: Amazon Q, Kiro IDE, external integrations. Standardized interface untuk AI tool access. API Gateway untuk unified access kepada multiple AI services. |
+| SRS-AI-017   | Cost Optimization        | Real-time cost tracking untuk AWS Bedrock usage. Rate limiting per-user dan per-model untuk cost control. Cost estimation untuk complex queries. Monthly usage reports untuk admin. |
+| SRS-AI-018   | Data Residency           | Enforce Malaysia data residency untuk cloud processing. Automatic data classification: public (allow cloud), internal/confidential/restricted (local only). Compliance audit trail untuk data processing decisions. |
+| SRS-AI-019   | Performance Monitoring   | Laravel Pulse integration untuk AI service metrics. Response time monitoring (<5s target). Cache hit/miss rates untuk embeddings dan FAQ. Queue job metrics untuk background AI processing. |
+| SRS-AI-020   | Emergency Procedures     | Comprehensive emergency procedures untuk AI service failures. Rollback procedures untuk model updates. Health check endpoints untuk monitoring. Disaster recovery untuk AI data dan configurations. |
 
 ### 5.10. Modul Pengurusan Aset (Asset Management)
 
