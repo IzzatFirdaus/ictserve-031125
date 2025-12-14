@@ -36,6 +36,8 @@
 | 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts, Submission History component                                                                                                                                                                                                                         | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login, account linking, Laravel Pulse dashboard, API token management, notification preferences, Google SSO button. MyDS grid/shadow/motion alignment. Penyelarasan dengan D00-D12 v3.5.0. | Pasukan BPM |
 | 3.5.1 | 1 Disember 2025  | MyDS/MyGovEA Compliance Update: Typography system (Poppins/Inter), color token mapping, radius system, spacing system, IDN authentication reference, cognitive load principles, error prevention patterns. Full alignment with MyDS Design System v2025.2 and MyGovEA Prinsip Reka Bentuk. | Pasukan BPM |
+| 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja (v3.6.0): Language switcher dilumpuhkan, BilingualSupportService sentiasa return 'ms'. | Pasukan BPM |
+| 3.7.0 | 14 Disember 2025 | Cloud Hybrid AI Architecture v3.7.0: BedrockChat Livewire component, FaqBot widget, AI chat bubble components, streaming response UI patterns, source attribution styling, model selection dropdown, conversation management UI. Penyelarasan dengan D18 v1.0.0. | Pasukan BPM |
 
 ---
 
@@ -47,6 +49,7 @@
 - **[D12_UI_UX_DESIGN_GUIDE.md]** - Panduan Rekabentuk UI/UX (v3.5.0)
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX
 - **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa (Bahasa Melayu sahaja, v3.6.0)
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Dokumentasi AI Chatbot Ollama-Bedrock (v3.7.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ### Rujukan Luaran (External References)
@@ -933,9 +936,278 @@ class AccountLinking extends Component
 
 ---
 
-## 6. Komponen Sedia Ada (Existing Components)
+## 6. Komponen AI Chat Interface (Cloud Hybrid AI v3.7.0)
 
-### 6.1. Language Switcher (DILUMPUHKAN v3.6.0)
+> **Rujukan:** D18_AI_CHATBOT_OLLAMA_BEDROCK.md v1.0.0
+
+### 6.1. BedrockChat Component
+
+**Component**: `app/Livewire/BedrockChat.php`
+**View**: `resources/views/livewire/bedrock-chat.blade.php`
+**Access**: Authenticated users (staff, admin, superuser)
+
+```blade
+{{-- Main AI Chat Interface --}}
+<div class="flex flex-col h-[600px] bg-white rounded-lg shadow-card">
+    {{-- Header with Model Selection --}}
+    <div class="flex items-center justify-between p-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">
+            {{ __('Pembantu AI ICTServe') }}
+        </h2>
+        <div class="flex items-center gap-3">
+            {{-- Model Selection Dropdown --}}
+            <select wire:model.live="selectedModel" 
+                    class="rounded-md border-gray-300 text-sm"
+                    aria-label="{{ __('Pilih Model AI') }}">
+                <option value="haiku">Claude Haiku (Pantas)</option>
+                <option value="sonnet">Claude Sonnet (Seimbang)</option>
+                <option value="opus">Claude Opus (Kompleks)</option>
+            </select>
+            
+            {{-- Internet Search Toggle --}}
+            <label class="flex items-center gap-2 text-sm">
+                <input type="checkbox" wire:model.live="enableInternetSearch"
+                       class="rounded border-gray-300 text-primary-600">
+                <span>{{ __('Carian Web') }}</span>
+            </label>
+        </div>
+    </div>
+    
+    {{-- Chat Messages Area --}}
+    <div class="flex-1 overflow-y-auto p-4 space-y-4" 
+         x-ref="chatContainer"
+         x-init="$watch('$wire.conversationHistory', () => $el.scrollTop = $el.scrollHeight)">
+        @foreach($conversationHistory as $message)
+            <x-ai.chat-bubble 
+                :type="$message['role']"
+                :content="$message['content']"
+                :source="$message['source'] ?? null"
+                :timestamp="$message['timestamp'] ?? null" />
+        @endforeach
+        
+        {{-- Loading Indicator --}}
+        <div wire:loading wire:target="sendMessage" class="flex items-center gap-2 text-gray-500">
+            <x-heroicon-o-sparkles class="w-5 h-5 animate-pulse" />
+            <span>{{ __('AI sedang menaip...') }}</span>
+        </div>
+    </div>
+    
+    {{-- Input Area --}}
+    <div class="p-4 border-t border-gray-200">
+        <form wire:submit="sendMessage" class="flex gap-2">
+            <input type="text" wire:model="message"
+                   class="flex-1 rounded-md border-gray-300"
+                   placeholder="{{ __('Taip soalan anda...') }}"
+                   aria-label="{{ __('Mesej kepada AI') }}"
+                   autocomplete="off">
+            <button type="submit" 
+                    class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+                    wire:loading.attr="disabled">
+                <x-heroicon-o-paper-airplane class="w-5 h-5" />
+            </button>
+        </form>
+    </div>
+</div>
+```
+
+### 6.2. AI Chat Bubble Component
+
+**Component**: `resources/views/components/ai/chat-bubble.blade.php`
+
+```blade
+@props(['type', 'content', 'source' => null, 'timestamp' => null])
+
+<div @class([
+    'flex gap-3',
+    'justify-end' => $type === 'user',
+])>
+    {{-- Avatar --}}
+    @if($type === 'assistant')
+        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
+            <x-heroicon-o-cpu-chip class="w-5 h-5 text-primary-600" />
+        </div>
+    @endif
+    
+    {{-- Message Bubble --}}
+    <div @class([
+        'max-w-[80%] rounded-lg p-3',
+        'bg-primary-600 text-white' => $type === 'user',
+        'bg-gray-100 text-gray-900' => $type === 'assistant',
+    ])>
+        {{-- Content with Markdown Rendering --}}
+        <div class="prose prose-sm max-w-none {{ $type === 'user' ? 'prose-invert' : '' }}">
+            {!! Str::markdown($content) !!}
+        </div>
+        
+        {{-- Source Attribution --}}
+        @if($source && $type === 'assistant')
+            <div class="mt-2 pt-2 border-t border-gray-200 text-xs text-gray-500 flex items-center gap-1">
+                @switch($source)
+                    @case('ollama')
+                        <x-heroicon-o-book-open class="w-3 h-3" />
+                        <span>{{ __('Sumber: Pangkalan Data FAQ') }}</span>
+                        @break
+                    @case('bedrock')
+                        <x-heroicon-o-cpu-chip class="w-3 h-3" />
+                        <span>{{ __('Dijana oleh: Claude AI') }}</span>
+                        @break
+                    @case('hybrid')
+                        <x-heroicon-o-sparkles class="w-3 h-3" />
+                        <span>{{ __('Gabungan: FAQ + AI Analysis') }}</span>
+                        @break
+                @endswitch
+            </div>
+        @endif
+        
+        {{-- Timestamp --}}
+        @if($timestamp)
+            <div class="mt-1 text-xs {{ $type === 'user' ? 'text-primary-200' : 'text-gray-400' }}">
+                {{ \Carbon\Carbon::parse($timestamp)->format('H:i') }}
+            </div>
+        @endif
+    </div>
+    
+    {{-- User Avatar --}}
+    @if($type === 'user')
+        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+            <x-heroicon-o-user class="w-5 h-5 text-gray-600" />
+        </div>
+    @endif
+</div>
+```
+
+### 6.3. FaqBot Widget Component
+
+**Component**: `app/Livewire/FaqBot.php`
+**View**: `resources/views/livewire/faq-bot.blade.php`
+**Access**: Guest and Authenticated users (True Hybrid Architecture)
+
+```blade
+{{-- FAQ Bot Widget for Guest Forms --}}
+<div class="bg-white rounded-lg shadow-card p-4">
+    <div class="flex items-center gap-2 mb-4">
+        <x-heroicon-o-question-mark-circle class="w-6 h-6 text-primary-600" />
+        <h3 class="font-semibold text-gray-900">{{ __('Soalan Lazim') }}</h3>
+    </div>
+    
+    {{-- Quick Suggestions --}}
+    @if(empty($response))
+        <div class="space-y-2 mb-4">
+            <p class="text-sm text-gray-600">{{ __('Soalan popular:') }}</p>
+            @foreach($suggestions as $suggestion)
+                <button wire:click="selectSuggestion('{{ $suggestion }}')"
+                        class="block w-full text-left px-3 py-2 text-sm bg-gray-50 rounded-md hover:bg-gray-100 transition">
+                    {{ $suggestion }}
+                </button>
+            @endforeach
+        </div>
+    @endif
+    
+    {{-- Search Input --}}
+    <form wire:submit="askQuestion" class="flex gap-2">
+        <input type="text" wire:model="query"
+               class="flex-1 rounded-md border-gray-300 text-sm"
+               placeholder="{{ __('Tanya soalan...') }}"
+               aria-label="{{ __('Cari FAQ') }}">
+        <button type="submit" 
+                class="px-3 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 text-sm"
+                wire:loading.attr="disabled">
+            <span wire:loading.remove>{{ __('Cari') }}</span>
+            <span wire:loading>...</span>
+        </button>
+    </form>
+    
+    {{-- Response Display --}}
+    @if($response)
+        <div class="mt-4 p-3 bg-primary-50 rounded-md">
+            <div class="prose prose-sm max-w-none">
+                {!! Str::markdown($response['content']) !!}
+            </div>
+            @if(!empty($response['sources']))
+                <div class="mt-2 pt-2 border-t border-primary-100">
+                    <p class="text-xs text-primary-700 font-medium">{{ __('Sumber:') }}</p>
+                    <ul class="text-xs text-primary-600">
+                        @foreach($response['sources'] as $source)
+                            <li>{{ $source['title'] }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <button wire:click="clearResponse" class="mt-2 text-xs text-primary-600 hover:underline">
+                {{ __('Tanya soalan lain') }}
+            </button>
+        </div>
+    @endif
+</div>
+```
+
+### 6.4. AI Loading States
+
+```blade
+{{-- Streaming Response Placeholder (Future) --}}
+<div class="flex items-center gap-2 text-gray-500" wire:loading wire:target="sendMessage">
+    <div class="flex gap-1">
+        <span class="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style="animation-delay: 0ms"></span>
+        <span class="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style="animation-delay: 150ms"></span>
+        <span class="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style="animation-delay: 300ms"></span>
+    </div>
+    <span class="text-sm">{{ __('AI sedang menaip...') }}</span>
+</div>
+
+{{-- Model Processing Indicator --}}
+<div class="flex items-center gap-2 p-2 bg-gray-50 rounded-md text-sm text-gray-600">
+    <x-heroicon-o-cog-6-tooth class="w-4 h-4 animate-spin" />
+    <span>{{ __('Memproses dengan :model', ['model' => $selectedModel]) }}</span>
+</div>
+```
+
+### 6.5. Conversation Management UI
+
+```blade
+{{-- Conversation History Sidebar --}}
+<div class="w-64 bg-gray-50 border-r border-gray-200 p-4">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-gray-900">{{ __('Perbualan') }}</h3>
+        <button wire:click="newConversation" 
+                class="p-1 text-primary-600 hover:bg-primary-50 rounded"
+                aria-label="{{ __('Perbualan Baru') }}">
+            <x-heroicon-o-plus class="w-5 h-5" />
+        </button>
+    </div>
+    
+    <div class="space-y-2">
+        @foreach($savedConversations as $conv)
+            <button wire:click="loadConversation('{{ $conv['id'] }}')"
+                    @class([
+                        'w-full text-left px-3 py-2 rounded-md text-sm transition',
+                        'bg-primary-100 text-primary-700' => $conversationId === $conv['id'],
+                        'hover:bg-gray-100' => $conversationId !== $conv['id'],
+                    ])>
+                <div class="font-medium truncate">{{ $conv['title'] ?? __('Perbualan Tanpa Tajuk') }}</div>
+                <div class="text-xs text-gray-500">{{ $conv['updated_at']->diffForHumans() }}</div>
+            </button>
+        @endforeach
+    </div>
+</div>
+```
+
+### 6.6. AI Accessibility Requirements (WCAG 2.2 AA)
+
+| Component | Requirement | Implementation |
+|-----------|-------------|----------------|
+| Chat Input | Label & placeholder | `aria-label`, visible placeholder |
+| Model Selector | Accessible dropdown | Native `<select>` with label |
+| Chat Messages | Screen reader support | `role="log"`, `aria-live="polite"` |
+| Loading States | Announced to AT | `aria-busy="true"`, status text |
+| Source Attribution | Non-color indicators | Icon + text combination |
+| Keyboard Navigation | Full support | Tab order, Enter to send |
+| Focus Management | Visible indicators | 3px outline, 2px offset |
+
+---
+
+## 7. Komponen Sedia Ada (Existing Components)
+
+### 7.1. Language Switcher (DILUMPUHKAN v3.6.0)
 
 **Component**: `app/Livewire/LanguageSwitcher.php`
 

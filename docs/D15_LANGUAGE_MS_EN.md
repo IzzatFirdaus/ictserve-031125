@@ -30,6 +30,7 @@
 | ------ | ------------ | ------------------------------------ | -------------------------------------------------- |
 | v3.5.0 | November 2025 | Dwibahasa (Bahasa Melayu + Inggeris) | True Hybrid Architecture, Self-Registration        |
 | v3.6.0 | Disember 2025 | Bahasa Melayu sahaja                 | Language Switcher dilumpuhkan, Theme Switcher baru |
+| v3.7.0 | Disember 2025 | Bahasa Melayu sahaja                 | Cloud Hybrid AI Architecture (D18): AI responses dalam Bahasa Melayu, terminologi AI, FAQ Bot, BedrockChat |
 
 ---
 
@@ -75,6 +76,7 @@ Dokumen ini telah dikemaskini mengikut piawaian D00-D17 dan diluluskan oleh pasu
 | **D14 UI/UX Style Guide**     | `D14_UI_UX_STYLE_GUIDE.md`                   | Accessibility standards (WCAG 2.2 AA), language-specific accessibility guidelines |
 | **D16 Broadcasting Setup**    | `D16_BROADCASTING_SETUP.md`                  | Laravel Reverb WebSocket configuration for real-time bilingual notifications      |
 | **D17 Queue Management**      | `D17_QUEUE_MANAGEMENT_HORIZON.md`            | Queue management for bilingual email notifications and digests                    |
+| **D18 AI Chatbot**            | `D18_AI_CHATBOT_OLLAMA_BEDROCK.md`           | Cloud Hybrid AI Architecture - AI responses dalam Bahasa Melayu sahaja (v3.7.0)   |
 
 ---
 
@@ -583,6 +585,7 @@ Notifikasi WebSocket melalui Laravel Reverb dihantar dalam bahasa pilihan penggu
 | **SLA Breach**             | Amaran: SLA hampir tamat             | Warning: SLA breach imminent         |
 | **Aset Overdue**           | Peringatan: Aset perlu dipulangkan   | Reminder: Asset return required      |
 | **Kelulusan Diperlukan**   | Kelulusan anda diperlukan            | Your approval is required            |
+| **AI Respons Baru**        | Respons AI telah dijana              | AI response has been generated       |
 
 ### 7.3. Digest E-mel (Email Digests)
 
@@ -596,7 +599,150 @@ Pengguna authenticated boleh memilih kekerapan digest:
 
 ---
 
-## 8. Penambahbaikan Akan Datang (Future Enhancements)
+## 8. Bahasa AI Chatbot (AI Chatbot Language) - v3.7.0
+
+> **Rujukan**: Seksyen ini selaras dengan [D18_AI_CHATBOT_OLLAMA_BEDROCK.md] Cloud Hybrid AI Architecture.
+
+### 8.1. Prinsip Bahasa AI (AI Language Principles)
+
+Semua respons AI dalam sistem ICTServe v3.7.0 menggunakan **Bahasa Melayu sahaja** selaras dengan polisi bahasa v3.6.0:
+
+| Aspek | Implementasi |
+| ----- | ------------ |
+| **Respons AI** | Bahasa Melayu sahaja (tiada pilihan bahasa) |
+| **System Prompts** | Arahan kepada model AI dalam Bahasa Melayu |
+| **FAQ Knowledge Base** | Kandungan FAQ dalam Bahasa Melayu |
+| **Error Messages** | Mesej ralat AI dalam Bahasa Melayu |
+| **UI Labels** | Semua label antara muka AI dalam Bahasa Melayu |
+
+### 8.2. Terminologi AI (AI Terminology)
+
+| Istilah Teknikal | Bahasa Melayu | Konteks Penggunaan |
+| ---------------- | ------------- | ------------------ |
+| **AI Assistant** | Pembantu AI | Label umum untuk chatbot |
+| **Chat** | Perbualan | Sesi interaksi dengan AI |
+| **Message** | Mesej | Setiap input/output dalam perbualan |
+| **Response** | Respons | Jawapan yang dijana oleh AI |
+| **Model** | Model | Model AI (Opus, Sonnet, Haiku) |
+| **Streaming** | Penstriman | Respons yang dipaparkan secara berperingkat |
+| **FAQ Bot** | Bot FAQ | Sistem Q&A automatik |
+| **Knowledge Base** | Pangkalan Pengetahuan | Koleksi FAQ dan dokumen |
+| **Embedding** | Pembenaman | Perwakilan vektor teks |
+| **Query** | Pertanyaan | Soalan pengguna kepada AI |
+| **Context** | Konteks | Maklumat latar belakang untuk AI |
+| **Source** | Sumber | Asal respons (Ollama/Bedrock/Hibrid) |
+| **Internet Search** | Carian Internet | Carian web untuk konteks tambahan |
+| **Conversation** | Perbualan | Sesi chat dengan sejarah |
+| **Auto-Reply** | Balasan Automatik | Draf respons yang dijana AI |
+
+### 8.3. System Prompt Bahasa Melayu
+
+Semua system prompts untuk model AI ditulis dalam Bahasa Melayu:
+
+```text
+Anda adalah pembantu AI untuk sistem ICTServe, platform pengurusan perkhidmatan ICT 
+Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC).
+
+Arahan:
+1. Jawab semua soalan dalam Bahasa Melayu sahaja
+2. Gunakan bahasa formal dan profesional
+3. Rujuk kepada pangkalan pengetahuan FAQ untuk soalan berkaitan ICTServe
+4. Jika tidak pasti, nyatakan dengan jelas dan cadangkan untuk menghubungi BPM
+5. Patuhi PDPA 2010 - jangan dedahkan maklumat peribadi
+```
+
+### 8.4. Label Antara Muka AI (AI Interface Labels)
+
+| Element | Bahasa Melayu | Konteks |
+| ------- | ------------- | ------- |
+| **Chat Header** | Pembantu AI ICTServe | Tajuk tetingkap chat |
+| **Input Placeholder** | Taip mesej anda... | Placeholder input |
+| **Send Button** | Hantar | Butang hantar mesej |
+| **Model Selector** | Pilih Model AI | Label dropdown model |
+| **Internet Toggle** | Carian Internet | Toggle carian web |
+| **New Chat** | Perbualan Baru | Butang perbualan baru |
+| **Clear History** | Padam Sejarah | Butang padam sejarah |
+| **Loading** | Menjana respons... | Status loading |
+| **Error** | Ralat AI | Tajuk mesej ralat |
+| **Retry** | Cuba Lagi | Butang cuba semula |
+| **Source: Ollama** | FAQ Tempatan | Badge sumber Ollama |
+| **Source: Bedrock** | [Nama Model] | Badge sumber Bedrock |
+| **Source: Hybrid** | Hibrid | Badge sumber hibrid |
+| **Source: Web** | Carian Web | Badge sumber web |
+
+### 8.5. Mesej Ralat AI (AI Error Messages)
+
+| Kod Ralat | Mesej Bahasa Melayu |
+| --------- | ------------------- |
+| **AI_UNAVAILABLE** | Perkhidmatan AI tidak tersedia buat masa ini. Sila cuba sebentar lagi. |
+| **RATE_LIMIT** | Had permintaan telah dicapai. Sila tunggu sebentar sebelum mencuba lagi. |
+| **CONTEXT_TOO_LONG** | Perbualan terlalu panjang. Sila mulakan perbualan baru. |
+| **MODEL_ERROR** | Model AI mengalami ralat. Sila pilih model lain atau cuba lagi. |
+| **NETWORK_ERROR** | Ralat rangkaian. Sila semak sambungan internet anda. |
+| **PII_DETECTED** | Maklumat peribadi dikesan. Sila alih keluar sebelum menghantar. |
+| **EMPTY_RESPONSE** | AI tidak dapat menjana respons. Sila cuba soalan lain. |
+
+### 8.6. FAQ Bot Responses (Contoh)
+
+**Soalan Lazim dengan Respons AI:**
+
+| Soalan | Respons AI (Bahasa Melayu) |
+| ------ | -------------------------- |
+| Cara hantar tiket? | Untuk menghantar tiket helpdesk, sila ke bahagian "Perkhidmatan" dan pilih "Laporan Kerosakan". Isi borang dengan maklumat lengkap dan klik "Hantar". |
+| Status pinjaman aset? | Anda boleh menyemak status permohonan pinjaman aset di "Dashboard Saya" selepas log masuk. Status akan dikemaskini secara automatik. |
+| Siapa boleh meluluskan? | Kelulusan pinjaman aset memerlukan pegawai Gred 41 ke atas. Sistem akan menghantar e-mel kepada pegawai pelulus secara automatik. |
+
+### 8.7. Aksesibiliti AI (AI Accessibility)
+
+Semua komponen AI mematuhi WCAG 2.2 AA dengan sokongan Bahasa Melayu:
+
+| Requirement | Implementation |
+| ----------- | -------------- |
+| **Screen Reader** | `aria-label` dalam Bahasa Melayu untuk semua elemen AI |
+| **Live Regions** | `aria-live="polite"` untuk mesej AI baru |
+| **Error Announcements** | Mesej ralat diumumkan dalam Bahasa Melayu |
+| **Loading States** | "Menjana respons..." diumumkan kepada pembaca skrin |
+| **Focus Management** | Fokus automatik ke input selepas respons AI |
+
+### 8.8. Contoh Kod Label AI (AI Label Code Examples)
+
+```blade
+{{-- AI Chat Header --}}
+<h2 class="text-lg font-semibold">
+    {{ __('Pembantu AI ICTServe') }}
+</h2>
+
+{{-- Model Selector --}}
+<label for="ai-model" class="sr-only">
+    {{ __('Pilih Model AI') }}
+</label>
+<select id="ai-model" wire:model="selectedModel">
+    <option value="haiku">{{ __('Haiku 4.5 - Pantas') }}</option>
+    <option value="sonnet">{{ __('Sonnet 4.5 - Seimbang') }}</option>
+    <option value="opus">{{ __('Opus 4.5 - Kompleks') }}</option>
+</select>
+
+{{-- Internet Search Toggle --}}
+<button role="switch"
+        aria-checked="{{ $internetSearchEnabled ? 'true' : 'false' }}"
+        aria-label="{{ __('Carian Internet') }}">
+    <!-- Toggle content -->
+</button>
+
+{{-- Loading State --}}
+<div wire:loading wire:target="sendMessage" aria-live="polite">
+    <span class="sr-only">{{ __('Menjana respons...') }}</span>
+</div>
+
+{{-- Error Message --}}
+<div role="alert" class="text-danger">
+    {{ __('Ralat AI: Tidak dapat menjana respons. Sila cuba lagi.') }}
+</div>
+```
+
+---
+
+## 9. Penambahbaikan Akan Datang (Future Enhancements)
 
 | Penambahbaikan                           | Keutamaan | Anggaran   | Status          |
 | ---------------------------------------- | --------- | ---------- | --------------- |
