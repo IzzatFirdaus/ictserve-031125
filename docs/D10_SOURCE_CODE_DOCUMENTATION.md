@@ -32,6 +32,8 @@
 | 3.0.0 | 29 November 2025 | Kemaskini struktur kod, Laravel 12, Filament 4, Livewire 3, Tailwind CSS                                                                                                                                                                                                                   | Pasukan BPM |
 | 3.1.0 | 29 November 2025 | Selaraskan dengan Guest-First: hapus Staff/Portal, tambah Guest/Status                                                                                                                                                                                                                     | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse, Sanctum API, Google SSO, Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding. New services: GoogleSsoService, ApiTokenService, PerformanceMonitoringService, AccessoryTrackingService, ResponsibleOfficerService. Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
+| 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja (v3.6.0): Language switcher dilumpuhkan. | Pasukan BPM |
+| 3.7.0 | 14 Disember 2025 | Cloud Hybrid AI Architecture v3.7.0: OllamaClient, BedrockService, RagService, ModelRouter, EmbeddingService, PIIDetectionService, StreamingResponseService, WebSearchService. AI Livewire components: BedrockChat, FaqBot, FaqBotWidget. AI Models: Faq, Document, DocumentChunk, Embedding, BedrockConversation, MessageLog, AutoReplyTemplate, AutoReplyDraft. AI Jobs: DocumentIngestJob, EmbeddingJob, AutoReplyGenerationJob. Penyelarasan dengan D18 v1.0.0. | Pasukan BPM |
 
 ---
 
@@ -41,6 +43,7 @@
 - **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** - Pelan Pembangunan Sistem
 - **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Rekabentuk Perisian
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Dokumentasi AI Chatbot Ollama-Bedrock (v3.7.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---

@@ -30,6 +30,7 @@
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                               | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding, Enhanced UX. Penyelarasan dengan D00-D05 v3.5.0. | Pasukan BPM |
+| 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah struktur data AI (faqs, documents, embeddings, bedrock_conversations, ai_message_logs). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture (Ollama + AWS Bedrock).                                                                                                                                          | Pasukan BPM |
 | 3.4.0 | 29 November 2025   | Hybrid Architecture v3.4.0: Staff migration to users table, email-based linking, restore LDAP/SSO as optional authentication. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                       | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Hapus Section 4.4 Profil Pengguna migration (staff tidak dimigrasikan). Penyelarasan penuh Guest-First architecture.                                                                                                                                                                                                                                    | Pasukan BPM |
 | 3.2.0 | 29 November 2025 | Penyelarasan dengan Guest-First architecture: ganti FK user dengan string fields (name, email, division_code, grade). Klarifikasi hanya admin/superuser dimigrasikan ke users table.                                                                                                                                                                    | Pasukan BPM |
@@ -49,6 +50,7 @@
 - **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (target schema, dual audit)
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
 - **[D15_LANGUAGE_MS_EN.md]** - Panduan Lokalisasi (Bahasa Melayu sahaja, v3.6.0)
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - AI Chatbot Integration (Cloud Hybrid AI, v1.0.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
