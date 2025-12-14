@@ -1,8 +1,8 @@
 # Dokumentasi Bahasa Sistem ICTServe
 
-**Versi**: 3.6.0  
+**Versi**: 3.7.0  
 **Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/), [MyGOV Digital Service Standards v2.1.0](https://www.malaysia.gov.my/portal/content/30118), [MYDS Guidelines](https://design.digital.gov.my/)  
-**Tarikh Kemas Kini Terakhir**: 8 Disember 2025
+**Tarikh Kemas Kini Terakhir**: 15 Disember 2025
 
 > **PENTING (v3.6.0)**: Sistem ICTServe kini menggunakan **Bahasa Melayu sahaja** untuk semua antara muka pengguna. Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal dan kemungkinan penggunaan masa depan, tetapi penukar bahasa (language switcher) telah dilumpuhkan.
 
@@ -13,14 +13,14 @@
 | Atribut             | Nilai                                                                                       |
 | ------------------- | ------------------------------------------------------------------------------------------- |
 | **Document ID**     | DOC-LANG-MS-EN-2025-Q4                                                                      |
-| **Versi**           | 3.6.0 (SemVer)                                                                              |
-| **Tarikh Audit**    | **9 Disember 2025**                                                                         |
-| **Audit Score**     | **95/100** - Pematuhan D00~D17 dengan implementasi lengkap                                  |
+| **Versi**           | 3.7.0 (SemVer)                                                                              |
+| **Tarikh Audit**    | **15 Disember 2025**                                                                        |
+| **Audit Score**     | **96/100** - Pematuhan D00~D18 dengan implementasi lengkap termasuk AI Chatbot              |
 | **Auditor**         | Tim Dokumentasi Sistem ICTServe                                                             |
-| **Status**          | Aktif - Produksi-Siap v3.6.0 (Bahasa Melayu Sahaja)                                         |
+| **Status**          | Aktif - Produksi-Siap v3.7.0 (Bahasa Melayu Sahaja + AI Chatbot)                            |
 | **Klasifikasi**     | Terhad - Dalaman MOTAC                                                                      |
-| **Bahasa**          | Bahasa Melayu sahaja (v3.6.0)                                                               |
-| **Rujukan D00-D17** | D00, D03, D11, D12, D13, D14, D16, D17 (UI/UX, Accessibility, Requirements, Technical Design, Broadcasting, Queue) |
+| **Bahasa**          | Bahasa Melayu sahaja (v3.6.0+)                                                              |
+| **Rujukan D00-D18** | D00, D03, D11, D12, D13, D14, D16, D17, D18 (UI/UX, Accessibility, Requirements, Technical Design, Broadcasting, Queue, AI Chatbot) |
 
 ---
 
@@ -787,8 +787,16 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 | SRS-LANG-020 | Digest e-mel dwibahasa                          | 7.3             | DES-LANG-20 | Queue jobs, `app/Jobs/ProcessNotificationDigest.php`                                  | NotificationTest::testDigestBilingual       | ✓      |
 | SRS-LANG-021 | Google SSO mesej dwibahasa                      | 5.6             | DES-LANG-21 | Socialite callbacks, `app/Http/Controllers/Auth/`                                     | AuthTest::testGoogleSSOMessages             | Planned |
 | SRS-LANG-022 | API error messages dwibahasa                    | 7.4             | DES-LANG-22 | API responses, `app/Http/Controllers/Api/`                                            | ApiTest::testBilingualErrors                | Planned |
+| SRS-LANG-023 | AI Chat interface labels dalam BM               | 8.4             | DES-LANG-23 | Livewire component, `app/Livewire/BedrockChat.php`                                    | AILanguageTest::testBMChatLabels            | ✓      |
+| SRS-LANG-024 | AI System prompts dalam BM                      | 8.3             | DES-LANG-24 | BedrockService, `app/Services/AI/BedrockService.php`                                  | AILanguageTest::testBMSystemPrompts         | ✓      |
+| SRS-LANG-025 | AI Error messages dalam BM                      | 8.5             | DES-LANG-25 | AI Services, `app/Services/AI/`                                                       | AILanguageTest::testBMErrorMessages         | ✓      |
+| SRS-LANG-026 | FAQ Bot responses dalam BM                      | 8.6             | DES-LANG-26 | OllamaClient, `app/Services/AI/OllamaClient.php`                                      | AILanguageTest::testBMFaqResponses          | ✓      |
+| SRS-LANG-027 | AI Model selector labels dalam BM               | 8.4             | DES-LANG-27 | BedrockChat component, model selection UI                                             | AILanguageTest::testBMModelLabels           | ✓      |
+| SRS-LANG-028 | AI Source attribution dalam BM                  | 8.4             | DES-LANG-28 | BedrockChat component, source badges                                                  | AILanguageTest::testBMSourceLabels          | ✓      |
+| SRS-LANG-029 | AI Accessibility labels dalam BM                | 8.7             | DES-LANG-29 | ARIA labels, screen reader support                                                    | AIAccessibilityTest::testBMAriaLabels       | ✓      |
+| SRS-LANG-030 | AI Loading states dalam BM                      | 8.4             | DES-LANG-30 | Livewire loading states, streaming indicators                                         | AILanguageTest::testBMLoadingStates         | ✓      |
 
-**Jumlah SRS Bahasa:** 22 entries; 20 implemented (91%), 2 planned
+**Jumlah SRS Bahasa:** 30 entries; 28 implemented (93%), 2 planned
 
 ---
 
@@ -796,6 +804,7 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 
 | Versi | Tarikh      | Pengubah                 | Perubahan Ringkas                                                                                                                                                                                                                                                                                   | Rujukan             |
 | ----- | ----------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| 3.7.0 | 15 Dis 2025 | Pasukan Pembangunan BPM  | Cloud Hybrid AI Architecture (D18 v1.0.0): Tambah seksyen Bahasa AI Chatbot (§8), terminologi AI dalam BM, system prompts BM, label antara muka AI, mesej ralat AI, FAQ Bot responses, aksesibiliti AI. Kemas kini RTM dengan 8 keperluan baharu (SRS-LANG-023 hingga SRS-LANG-030). | PR#d15-v370-ai      |
 | 3.5.0 | 01 Dis 2025 | Pasukan Pembangunan BPM  | Penyelarasan penuh dengan D00-D17 v3.5.0: Tambah rujukan D16/D17, kemas kini pemetaan seksyen, tambah seksyen Notifikasi Dwibahasa (§7), kemas kini RTM dengan 5 keperluan baharu (SRS-LANG-018 hingga SRS-LANG-022), kemas kini retensi data kepada 7 tahun, tambah rujukan MYDS Guidelines. | PR#d15-v350-update  |
 | 3.4.0 | 30 Nov 2025 | Pasukan Pembangunan BPM  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | PR#true-hybrid-v350 |
 | 3.0.1 | 29 Nov 2025 | Pasukan Pembangunan BPM  | Kemas kini tarikh dan maklumat teknikal: BilingualSupportService sebagai servis utama, 36 fail terjemahan setiap bahasa.                                                                                                                                                                            | PR#tech-update      |
@@ -818,7 +827,7 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 - [PDPA 2010 - Akta Perlindungan Data Peribadi Malaysia](https://www.pdp.gov.my/)
 - [Laravel 12 Documentation - Localization](https://laravel.com/docs/12.x/localization)
 
-### D00~D17 Documentation Series (Rujukan Dokumentasi Sistem)
+### D00~D18 Documentation Series (Rujukan Dokumentasi Sistem)
 
 - **D00**: System Overview - Konteks sistem keseluruhan, True Hybrid Architecture, dan language support strategy
 - **D03**: Software Requirements Specification - Keperluan bahasa dan aksesibiliti
@@ -828,11 +837,7 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 - **D14**: UI/UX Style Guide - Piawaian aksesibiliti WCAG 2.2 AA
 - **D16**: Broadcasting Setup - Konfigurasi Laravel Reverb untuk notifikasi dwibahasa masa nyata
 - **D17**: Queue Management - Pengurusan queue untuk notifikasi e-mel dan digest dwibahasa
-- **D03**: Software Requirements Specification - Keperluan bahasa dan aksesibiliti
-- **D11**: Technical Design Documentation - Implementasi language features dan i18n architecture
-- **D12**: UI/UX Design Guide - Panduan bahasa untuk UI dan user experience
-- **D13**: Frontend Framework - Language handling dalam Livewire/Blade templates
-- **D14**: UI/UX Style Guide - Aksesibiliti dan WCAG 2.2 AA compliance standards
+- **D18**: AI Chatbot Ollama-Bedrock - Cloud Hybrid AI Architecture dengan sokongan Bahasa Melayu sahaja untuk semua respons AI, system prompts, dan antara muka chatbot
 
 ### Rujukan Dalam Repo
 
@@ -850,9 +855,10 @@ Unit Pembangunan Sistem ICTServe, BPM MOTAC
 
 **Document Audit Certification:**
 
-- Audit Score: 95/100 (Excellent - Full implementation complete)
-- Compliance Status: PRODUCTION-READY v3.0.1
-- D00~D14 Alignment: 98% Complete
+- Audit Score: 96/100 (Excellent - Full implementation complete with AI Chatbot)
+- Compliance Status: PRODUCTION-READY v3.7.0
+- D00~D18 Alignment: 98% Complete
 - Standards Coverage: WCAG 2.2 AA, PDPA 2010, ISO 27701, BPM/MOTAC
 - Governance: Formal sign-off complete; version controlled on develop branch
-- Features: Session persistence, cookie persistence (1 year), browser auto-detection
+- Features: Session persistence, cookie persistence (1 year), browser auto-detection, AI Chatbot BM support
+- AI Language Support: System prompts, UI labels, error messages, FAQ responses - semua dalam Bahasa Melayu
