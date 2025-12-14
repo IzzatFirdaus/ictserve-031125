@@ -699,6 +699,342 @@ interface AccountLinkingServiceInterface
 }
 ```
 
+### 7.10. AI Services (Cloud Hybrid AI Architecture v3.7.0)
+
+> **Rujukan:** D18_AI_CHATBOT_OLLAMA_BEDROCK.md v1.0.0
+
+#### 7.10.1. OllamaClient Service
+
+```php
+/**
+ * HTTP wrapper for Ollama local LLM server.
+ *
+ * @see D18 §6.1 Keperluan API Ollama Kritikal
+ */
+interface OllamaClientContract
+{
+    public function generate(array $payload): array;
+    public function embeddings(string $text): array;
+    public function chat(array $messages): array;
+    public function models(): array;
+    public function healthCheck(): bool;
+    public function getCachedResponse(string $cacheKey): ?array;
+    public function cacheResponse(string $cacheKey, array $response, int $ttl): void;
+}
+```
+
+#### 7.10.2. BedrockService
+
+```php
+/**
+ * AWS Bedrock API wrapper for Claude models.
+ * Supports Opus 4.5, Sonnet 4.5, Haiku 4.5.
+ *
+ * @see D18 §6.2 Keperluan Inference Profile AWS Bedrock
+ */
+interface BedrockClientContract
+{
+    public function invokeModel(string $modelId, array $payload): array;
+    public function invokeModelWithStreaming(string $modelId, array $payload): Generator;
+    public function listFoundationModels(): array;
+    public function getModelInfo(string $modelId): array;
+    public function healthCheck(): bool;
+    public function estimateCost(string $modelId, int $inputTokens, int $outputTokens): float;
+}
+```
+
+#### 7.10.3. RagService
+
+```php
+/**
+ * Retrieval-Augmented Generation service for FAQ knowledge base.
+ *
+ * @see D18 §3.2 Tanggungjawab Komponen
+ */
+interface RagServiceContract
+{
+    public function query(string $question, ?array $context = null): array;
+    public function retrieveContext(string $query, int $limit = 5): Collection;
+    public function generateResponse(string $query, Collection $context): string;
+    public function getConversationHistory(string $conversationId): array;
+    public function saveConversation(string $conversationId, array $messages): void;
+}
+```
+
+#### 7.10.4. ModelRouter Service
+
+```php
+/**
+ * Smart model selection based on task complexity.
+ *
+ * @see D18 §5.3 Logik Penghalaan Model
+ */
+class ModelRouter
+{
+    public function selectModel(string $taskType, array $context): string;
+    public function analyzeQuery(string $query): string; // Returns: faq_specific|complex_reasoning|hybrid
+    public function getModelConfig(string $modelName): array;
+}
+```
+
+#### 7.10.5. EmbeddingService
+
+```php
+/**
+ * Vector embeddings operations for semantic search.
+ *
+ * @see D18 §3.2 Tanggungjawab Komponen
+ */
+interface EmbeddingServiceContract
+{
+    public function generateEmbedding(string $text): array;
+    public function batchGenerateEmbeddings(array $texts): array;
+    public function searchSimilar(array $queryEmbedding, int $limit = 5): Collection;
+    public function storeEmbedding(int $documentChunkId, array $embedding): void;
+}
+```
+
+#### 7.10.6. PIIDetectionService
+
+```php
+/**
+ * PII detection and sanitization for PDPA 2010 compliance.
+ *
+ * @see D18 §3.2 Tanggungjawab Komponen
+ */
+interface PIIDetectionServiceContract
+{
+    public function detectPII(string $text): array;
+    public function sanitize(string $text): string;
+    public function classifyDataResidency(string $text): string; // Returns: local|cloud
+    public function getDetectedPatterns(): array;
+}
+```
+
+#### 7.10.7. DocumentService
+
+```php
+/**
+ * Document ingestion and analysis service.
+ *
+ * @see D18 §10.3 Document Analysis API
+ */
+interface DocumentServiceContract
+{
+    public function ingest(UploadedFile $file, array $metadata = []): Document;
+    public function analyze(Document $document): array;
+    public function chunk(Document $document, int $chunkSize = 500): Collection;
+    public function search(Document $document, string $query, int $limit = 5): Collection;
+    public function getSummary(Document $document): string;
+}
+```
+
+#### 7.10.8. StreamingResponseService (Future)
+
+```php
+/**
+ * Server-Sent Events handler for streaming AI responses.
+ *
+ * @see D18 §2.3 Ciri Utama v3.6.1 - Streaming Responses (Future)
+ */
+interface StreamingResponseServiceContract
+{
+    public function stream(string $modelId, array $payload): Generator;
+    public function handleSSE(Generator $stream): StreamedResponse;
+    public function formatChunk(string $content, string $type = 'content'): string;
+}
+```
+
+#### 7.10.9. WebSearchService
+
+```php
+/**
+ * DuckDuckGo integration for web-augmented responses.
+ *
+ * @see D18 §2.3 Ciri Utama v3.6.1 - Web-Augmented Responses
+ */
+interface WebSearchServiceContract
+{
+    public function search(string $query, int $limit = 5): array;
+    public function augmentContext(string $query, array $existingContext): array;
+    public function isEnabled(): bool;
+}
+```
+
+### 7.11. AI Models (v3.7.0)
+
+#### 7.11.1. Faq Model
+
+```php
+/**
+ * FAQ knowledge base entry.
+ *
+ * @property int $id
+ * @property string $question
+ * @property string $answer
+ * @property string $category
+ * @property int|null $user_id Nullable for guest-accessible FAQs
+ * @property bool $is_published
+ */
+class Faq extends Model implements Auditable
+{
+    use HasAuditTrail, HasFactory, SoftDeletes;
+
+    public function chunks(): HasMany;
+    public function embeddings(): HasManyThrough;
+}
+```
+
+#### 7.11.2. Document Model
+
+```php
+/**
+ * Document for AI analysis and RAG.
+ *
+ * @property int $id
+ * @property string $filename
+ * @property string $original_filename
+ * @property string $mime_type
+ * @property int $size
+ * @property string $status processing|completed|failed
+ * @property string|null $summary
+ * @property array|null $key_topics
+ */
+class Document extends Model implements Auditable
+{
+    use HasAuditTrail, HasFactory, SoftDeletes;
+
+    public function chunks(): HasMany;
+    public function user(): BelongsTo;
+}
+```
+
+#### 7.11.3. BedrockConversation Model
+
+```php
+/**
+ * Enhanced conversation management with memory.
+ *
+ * @property int $id
+ * @property string $conversation_id UUID
+ * @property int|null $user_id
+ * @property array $messages
+ * @property string $model_used
+ * @property Carbon $expires_at
+ */
+class BedrockConversation extends Model
+{
+    use HasFactory;
+
+    public function user(): BelongsTo;
+    public function addMessage(string $role, string $content): void;
+    public function getMessages(): array;
+}
+```
+
+### 7.12. AI Jobs (v3.7.0)
+
+#### 7.12.1. DocumentIngestJob
+
+```php
+/**
+ * Background job for document processing.
+ *
+ * @see D18 §6.5 Fasa Pelaksanaan - Fasa 4
+ */
+class DocumentIngestJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct(public Document $document) {}
+    public function handle(DocumentService $service): void;
+    public function failed(Throwable $exception): void;
+}
+```
+
+#### 7.12.2. EmbeddingJob
+
+```php
+/**
+ * Background job for vector embedding generation.
+ */
+class EmbeddingJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct(public DocumentChunk $chunk) {}
+    public function handle(EmbeddingService $service): void;
+}
+```
+
+#### 7.12.3. AutoReplyGenerationJob
+
+```php
+/**
+ * Background job for AI-generated auto-reply drafts.
+ *
+ * @see D18 §10.4 Auto-Reply API
+ */
+class AutoReplyGenerationJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct(
+        public string $replyableType,
+        public int $replyableId,
+        public ?int $templateId = null
+    ) {}
+    public function handle(BedrockService $bedrock, RagService $rag): void;
+}
+```
+
+### 7.13. AI Livewire Components (v3.7.0)
+
+#### 7.13.1. BedrockChat Component
+
+```php
+/**
+ * Main hybrid AI chat interface.
+ *
+ * @see D18 §3.1 Rajah Seni Bina Sistem
+ */
+class BedrockChat extends Component
+{
+    public string $message = '';
+    public string $selectedModel = 'sonnet';
+    public bool $enableInternetSearch = false;
+    public array $conversationHistory = [];
+    public ?string $conversationId = null;
+
+    public function sendMessage(): void;
+    public function selectModel(string $model): void;
+    public function toggleInternetSearch(): void;
+    public function clearConversation(): void;
+    public function loadConversation(string $id): void;
+    public function saveConversation(): void;
+}
+```
+
+#### 7.13.2. FaqBot Component
+
+```php
+/**
+ * FAQ Bot widget for guest and authenticated users.
+ *
+ * @see D18 §2.4 Konteks Integrasi Kritikal
+ */
+class FaqBot extends Component
+{
+    public string $query = '';
+    public array $suggestions = [];
+    public ?array $response = null;
+
+    public function askQuestion(): void;
+    public function selectSuggestion(string $suggestion): void;
+    public function clearResponse(): void;
+}
+```
+
 ---
 
 ## 8. Kualiti Kod (Code Quality Attributes)
