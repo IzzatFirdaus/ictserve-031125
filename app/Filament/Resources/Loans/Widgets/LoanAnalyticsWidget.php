@@ -70,43 +70,43 @@ class LoanAnalyticsWidget extends BaseWidget
             ->count();
 
         return [
-            Stat::make(__('Total Applications'), $totalApplications)
-                ->description(__('All time'))
+            Stat::make('Jumlah Permohonan', $totalApplications)
+                ->description('Sepanjang masa')
                 ->descriptionIcon('heroicon-o-clipboard-document-list')
                 ->color('primary'),
 
-            Stat::make(__('Pending Approval'), $pendingApproval)
-                ->description(__('Awaiting decision'))
+            Stat::make('Menunggu Kelulusan', $pendingApproval)
+                ->description('Menunggu keputusan')
                 ->descriptionIcon('heroicon-o-clock')
                 ->color($pendingApproval > 10 ? 'warning' : 'info'),
 
-            Stat::make(__('Active Loans'), $activeLoans)
-                ->description(__('Currently in use'))
+            Stat::make('Pinjaman Aktif', $activeLoans)
+                ->description('Sedang digunakan')
                 ->descriptionIcon('heroicon-o-arrow-trending-up')
                 ->color('success'),
 
-            Stat::make(__('Overdue Loans'), $overdueLoans)
-                ->description(__('Past due date'))
+            Stat::make('Pinjaman Tertunggak', $overdueLoans)
+                ->description('Melepasi tarikh pulang')
                 ->descriptionIcon('heroicon-o-exclamation-triangle')
                 ->color($overdueLoans > 0 ? 'danger' : 'success'),
 
-            Stat::make(__('Approval Rate'), $approvalRate.'%')
-                ->description(__('Last 30 days'))
+            Stat::make('Kadar Kelulusan', $approvalRate.'%')
+                ->description('30 hari terakhir')
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color($approvalRate > 70 ? 'success' : ($approvalRate > 50 ? 'warning' : 'danger')),
 
-            Stat::make(__('Avg Approval Time'), $avgApprovalTime.' '.__('hours'))
-                ->description(__('Last 90 days'))
+            Stat::make('Purata Masa Kelulusan', $avgApprovalTime.' jam')
+                ->description('90 hari terakhir')
                 ->descriptionIcon('heroicon-o-clock')
                 ->color($avgApprovalTime < 24 ? 'success' : ($avgApprovalTime < 48 ? 'warning' : 'danger')),
 
-            Stat::make(__('Total Active Value'), 'RM '.number_format($totalValue, 2))
-                ->description(__('Assets in circulation'))
+            Stat::make('Jumlah Nilai Aktif', 'RM '.number_format($totalValue, 2))
+                ->description('Aset dalam edaran')
                 ->descriptionIcon('heroicon-o-currency-dollar')
                 ->color('info'),
 
-            Stat::make(__('Completed (30d)'), $completedLoans)
-                ->description(__('Successfully returned'))
+            Stat::make('Selesai (30 hari)', $completedLoans)
+                ->description('Berjaya dipulangkan')
                 ->descriptionIcon('heroicon-o-check-badge')
                 ->color('success'),
         ];

@@ -58,17 +58,17 @@ class ApiTokenResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('API Tokens');
+        return 'Token API';
     }
 
     public static function getModelLabel(): string
     {
-        return __('API Token');
+        return 'Token API';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('API Tokens');
+        return 'Token API';
     }
 
     public static function shouldRegisterNavigation(): bool
@@ -108,49 +108,49 @@ class ApiTokenResource extends Resource
         return $schema
             ->components([
                 Section::make(__('Token Information'))
-                    ->description(__('Create a new API token with specific abilities and expiration.'))
+                    ->description('Cipta token API baharu dengan kebolehan dan tempoh luput tertentu.')
                     ->components([
                         Forms\Components\Select::make('user_id')
-                            ->label(__('User'))
+                            ->label('Pengguna')
                             ->relationship('tokenable', 'name')
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->helperText(__('Select the user who will own this token.')),
+                            ->helperText('Pilih pengguna yang akan memiliki token ini.'),
 
                         Forms\Components\TextInput::make('name')
-                            ->label(__('Token Name'))
+                            ->label('Nama Token')
                             ->required()
                             ->maxLength(255)
-                            ->placeholder(__('e.g., Production API, Mobile App'))
-                            ->helperText(__('A descriptive name to identify this token.')),
+                            ->placeholder('cth: API Produksi, Aplikasi Mudah Alih')
+                            ->helperText('Nama deskriptif untuk mengenal pasti token ini.'),
 
                         Forms\Components\CheckboxList::make('abilities')
-                            ->label(__('Token Abilities'))
+                            ->label('Kebolehan Token')
                             ->options([
-                                'read:tickets' => __('Read Tickets - View helpdesk tickets'),
-                                'write:tickets' => __('Write Tickets - Create/update helpdesk tickets'),
-                                'read:loans' => __('Read Loans - View loan applications'),
-                                'write:loans' => __('Write Loans - Create/update loan applications'),
-                                'admin:all' => __('Admin All - Full administrative access'),
+                                'read:tickets' => 'Baca Tiket - Lihat tiket helpdesk',
+                                'write:tickets' => 'Tulis Tiket - Cipta/kemaskini tiket helpdesk',
+                                'read:loans' => 'Baca Pinjaman - Lihat permohonan pinjaman',
+                                'write:loans' => 'Tulis Pinjaman - Cipta/kemaskini permohonan pinjaman',
+                                'admin:all' => 'Admin Penuh - Akses pentadbiran penuh',
                             ])
                             ->default(['read:tickets', 'read:loans'])
                             ->columns(2)
-                            ->helperText(__('Select the permissions this token should have.')),
+                            ->helperText('Pilih kebenaran yang perlu ada pada token ini.'),
 
                         Forms\Components\Select::make('expiration_days')
-                            ->label(__('Token Expiration'))
+                            ->label('Tempoh Luput Token')
                             ->options([
-                                7 => __('7 days'),
-                                30 => __('30 days (default)'),
-                                90 => __('90 days'),
-                                180 => __('180 days'),
-                                365 => __('1 year'),
-                                0 => __('Never expires'),
+                                7 => '7 hari',
+                                30 => '30 hari (lalai)',
+                                90 => '90 hari',
+                                180 => '180 hari',
+                                365 => '1 tahun',
+                                0 => 'Tiada tempoh luput',
                             ])
                             ->default(30)
                             ->required()
-                            ->helperText(__('How long until this token expires.')),
+                            ->helperText('Tempoh sebelum token ini luput.'),
                     ])
                     ->columns(2),
             ]);
@@ -161,23 +161,23 @@ class ApiTokenResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('Token Name'))
+                    ->label('Nama Token')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
 
                 Tables\Columns\TextColumn::make('tokenable.name')
-                    ->label(__('User'))
+                    ->label('Pengguna')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('abilities')
-                    ->label(__('Abilities'))
+                    ->label('Kebolehan')
                     ->badge()
                     ->formatStateUsing(function ($state): string {
                         if (\is_array($state)) {
                             if (\in_array('*', $state, true)) {
-                                return 'All';
+                                return 'Semua';
                             }
 
                             return \implode(', ', \array_map(
@@ -197,7 +197,7 @@ class ApiTokenResource extends Resource
                     }),
 
                 Tables\Columns\TextColumn::make('expires_at')
-                    ->label(__('Expires'))
+                    ->label('Luput')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->badge()
@@ -218,61 +218,61 @@ class ApiTokenResource extends Resource
                     })
                     ->formatStateUsing(function (?string $state): string {
                         if ($state === null) {
-                            return __('Never');
+                            return 'Tiada';
                         }
 
                         $expiresAt = Carbon::parse($state);
                         if ($expiresAt->isPast()) {
-                            return __('Expired');
+                            return 'Luput';
                         }
 
                         return $expiresAt->format('d/m/Y H:i');
                     }),
 
                 Tables\Columns\TextColumn::make('last_used_at')
-                    ->label(__('Last Used'))
+                    ->label('Terakhir Digunakan')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->placeholder(__('Never'))
+                    ->placeholder('Tiada')
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('Created'))
+                    ->label('Dicipta')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('tokenable_id')
-                    ->label(__('User'))
+                    ->label('Pengguna')
                     ->relationship('tokenable', 'name')
                     ->searchable()
                     ->preload(),
 
                 Tables\Filters\Filter::make('expired')
-                    ->label(__('Expired Tokens'))
+                    ->label('Token Luput')
                     ->query(fn (Builder $query): Builder => $query->where('expires_at', '<', Carbon::now())),
 
                 Tables\Filters\Filter::make('expiring_soon')
-                    ->label(__('Expiring Soon (7 days)'))
+                    ->label('Akan Luput (7 hari)')
                     ->query(fn (Builder $query): Builder => $query
                         ->whereNotNull('expires_at')
                         ->where('expires_at', '>', Carbon::now())
                         ->where('expires_at', '<=', Carbon::now()->addDays(7))),
 
                 Tables\Filters\Filter::make('never_expires')
-                    ->label(__('Never Expires'))
+                    ->label('Tiada Tempoh Luput')
                     ->query(fn (Builder $query): Builder => $query->whereNull('expires_at')),
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()->label('Lihat'),
                 Action::make('revoke')
-                    ->label(__('Revoke'))
+                    ->label('Batal')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->modalHeading(__('Revoke API Token'))
-                    ->modalDescription(__('Are you sure you want to revoke this token? This action cannot be undone and the token will immediately stop working.'))
+                    ->modalHeading('Batal Token API')
+                    ->modalDescription('Adakah anda pasti mahu membatalkan token ini? Tindakan ini tidak boleh diundur dan token akan berhenti berfungsi serta-merta.')
                     ->action(function (PersonalAccessToken $record): void {
                         /** @var User|null $tokenOwner */
                         $tokenOwner = $record->tokenable;
@@ -283,8 +283,8 @@ class ApiTokenResource extends Resource
 
                             Notification::make()
                                 ->success()
-                                ->title(__('Token Revoked'))
-                                ->body(__('The API token has been revoked successfully.'))
+                                ->title('Token Dibatalkan')
+                                ->body('Token API telah berjaya dibatalkan.')
                                 ->send();
                         }
                     }),
@@ -292,9 +292,9 @@ class ApiTokenResource extends Resource
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label(__('Revoke Selected'))
-                        ->modalHeading(__('Revoke Selected Tokens'))
-                        ->modalDescription(__('Are you sure you want to revoke all selected tokens? This action cannot be undone.')),
+                        ->label('Batal Dipilih')
+                        ->modalHeading('Batal Token Dipilih')
+                        ->modalDescription('Adakah anda pasti mahu membatalkan semua token yang dipilih? Tindakan ini tidak boleh diundur.'),
                 ]),
             ])
             ->defaultSort('created_at', 'desc')

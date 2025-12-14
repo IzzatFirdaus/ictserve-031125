@@ -64,7 +64,7 @@ class LoanApplicationsTable
                     ->color(fn (LoanStatus|string|null $state) => $state instanceof LoanStatus ? $state->color() : 'primary')
                     ->formatStateUsing(fn (LoanStatus|string|null $state): string => $state instanceof LoanStatus
                         ? $state->label()
-                        : (is_string($state) ? ucfirst(str_replace('_', ' ', $state)) : '-'))
+                        : (is_string($state) ? trans('loan.status.'.$state) : '-'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('priority')
                     ->label(__('filament.labels.priority'))
@@ -72,7 +72,7 @@ class LoanApplicationsTable
                     ->color(fn (LoanPriority|string|null $state) => $state instanceof LoanPriority ? $state->color() : 'secondary')
                     ->formatStateUsing(fn (LoanPriority|string|null $state): string => $state instanceof LoanPriority
                         ? $state->label()
-                        : (is_string($state) ? ucfirst(str_replace('_', ' ', $state)) : '-')),
+                        : (is_string($state) ? trans('loan.priority.'.$state) : '-')),
                 Tables\Columns\TextColumn::make('loan_start_date')
                     ->label(__('filament.labels.start_date'))
                     ->date()
@@ -231,7 +231,9 @@ class LoanApplicationsTable
                 Tables\Columns\TextColumn::make('submission_type')
                     ->label(__('filament.labels.submission_type'))
                     ->badge()
-                    ->state(fn (LoanApplication $record) => $record->user_id ? 'Authenticated' : 'Guest')
+                    ->state(fn (LoanApplication $record) => $record->user_id
+                        ? __('filament.filters.authenticated_submission')
+                        : __('filament.filters.guest_submission'))
                     ->color(fn (LoanApplication $record) => $record->user_id ? 'success' : 'warning')
                     ->icon(fn (LoanApplication $record) => $record->user_id ? 'heroicon-o-user-circle' : 'heroicon-o-user')
                     ->toggleable(),
@@ -524,8 +526,8 @@ class LoanApplicationsTable
                     ->icon('heroicon-o-document-chart-bar')
                     ->color('warning')
                     ->requiresConfirmation()
-                    ->modalHeading('Export PDF Report')
-                    ->modalDescription('This will generate a PDF report with statistics for all loan applications.')
+                    ->modalHeading('Eksport Laporan PDF')
+                    ->modalDescription('Ini akan menjana laporan PDF dengan statistik untuk semua permohonan pinjaman.')
                     ->action(function () {
                         $applications = LoanApplication::with(['division'])->get();
 

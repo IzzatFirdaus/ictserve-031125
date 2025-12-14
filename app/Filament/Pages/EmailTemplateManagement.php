@@ -141,17 +141,17 @@ class EmailTemplateManagement extends Page implements HasForms
     {
         return [
             Action::make('save')
-                ->label('Save Template')
+                ->label('Simpan Templat')
                 ->action('save')
                 ->color('primary'),
 
             Action::make('preview')
-                ->label('Preview')
+                ->label('Pratonton')
                 ->action('preview')
                 ->color('warning'),
 
             Action::make('variables')
-                ->label('Show Variables')
+                ->label('Lihat Pembolehubah')
                 ->action('showVariables')
                 ->color('info'),
         ];
@@ -168,7 +168,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
         if (! empty($errors)) {
             Notification::make()
-                ->title('Validation failed')
+                ->title('Pengesahan Gagal')
                 ->body(implode(', ', $errors))
                 ->danger()
                 ->send();
@@ -183,10 +183,10 @@ class EmailTemplateManagement extends Page implements HasForms
 
         if ($existing) {
             $existing->update($data);
-            $message = 'Template updated successfully';
+            $message = 'Templat dikemaskini berjaya';
         } else {
             EmailTemplate::create($data);
-            $message = 'Template created successfully';
+            $message = 'Templat dicipta berjaya';
         }
 
         // Clear template cache
@@ -208,7 +208,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
         if (empty($data['category'])) {
             Notification::make()
-                ->title('Please select a category first')
+                ->title('Sila pilih kategori terlebih dahulu')
                 ->warning()
                 ->send();
 
@@ -221,8 +221,8 @@ class EmailTemplateManagement extends Page implements HasForms
         $this->previewData = $service->previewTemplate($template);
 
         Notification::make()
-            ->title('Preview generated')
-            ->body('Check the preview section below')
+            ->title('Pratonton dijana')
+            ->body('Semak bahagian pratonton di bawah')
             ->success()
             ->send();
     }
@@ -233,7 +233,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
         if (empty($data['category'])) {
             Notification::make()
-                ->title('Please select a category first')
+                ->title('Sila pilih kategori terlebih dahulu')
                 ->warning()
                 ->send();
 
@@ -248,7 +248,7 @@ class EmailTemplateManagement extends Page implements HasForms
             ->implode("\n");
 
         Notification::make()
-            ->title('Available Variables')
+            ->title('Pembolehubah Tersedia')
             ->body($variableList)
             ->info()
             ->persistent()
@@ -280,7 +280,7 @@ class EmailTemplateManagement extends Page implements HasForms
             $this->selectedTemplate = $template;
 
             Notification::make()
-                ->title('Template loaded')
+                ->title('Templat dimuatkan')
                 ->success()
                 ->send();
         }
@@ -297,7 +297,7 @@ class EmailTemplateManagement extends Page implements HasForms
             $template->delete();
 
             Notification::make()
-                ->title('Template deleted successfully')
+                ->title('Templat dipadam berjaya')
                 ->success()
                 ->send();
         }

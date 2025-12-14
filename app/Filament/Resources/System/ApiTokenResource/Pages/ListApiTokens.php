@@ -13,7 +13,6 @@ use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 
 /**
@@ -30,57 +29,57 @@ class ListApiTokens extends ListRecords
 
     public function getTitle(): string|Htmlable
     {
-        return __('API Tokens');
+        return 'Token API';
     }
 
     protected function getHeaderActions(): array
     {
         return [
             Action::make('create_token')
-                ->label(__('Create Token'))
+                ->label('Cipta Token')
                 ->icon('heroicon-o-plus')
                 ->color('primary')
                 ->form([
                     Forms\Components\Select::make('user_id')
-                        ->label(__('User'))
+                        ->label('Pengguna')
                         ->options(User::pluck('name', 'id'))
                         ->searchable()
                         ->required()
-                        ->helperText(__('Select the user who will own this token.')),
+                        ->helperText('Pilih pengguna yang akan menjadi pemilik token ini.'),
 
                     Forms\Components\TextInput::make('name')
-                        ->label(__('Token Name'))
+                        ->label('Nama Token')
                         ->required()
                         ->maxLength(255)
-                        ->placeholder(__('e.g., Production API, Mobile App'))
-                        ->helperText(__('A descriptive name to identify this token.')),
+                        ->placeholder('Contoh: API Produksi, Aplikasi Mudah Alih')
+                        ->helperText('Nama deskriptif untuk mengenal pasti token ini.'),
 
                     Forms\Components\CheckboxList::make('abilities')
-                        ->label(__('Token Abilities'))
+                        ->label('Keizinan Token')
                         ->options([
-                            'read:tickets' => __('Read Tickets - View helpdesk tickets'),
-                            'write:tickets' => __('Write Tickets - Create/update helpdesk tickets'),
-                            'read:loans' => __('Read Loans - View loan applications'),
-                            'write:loans' => __('Write Loans - Create/update loan applications'),
-                            'admin:all' => __('Admin All - Full administrative access'),
+                            'read:tickets' => 'Baca Tiket - Lihat tiket helpdesk',
+                            'write:tickets' => 'Tulis Tiket - Cipta/kemaskini tiket helpdesk',
+                            'read:loans' => 'Baca Pinjaman - Lihat permohonan pinjaman',
+                            'write:loans' => 'Tulis Pinjaman - Cipta/kemaskini permohonan pinjaman',
+                            'admin:all' => 'Pentadbir - Akses pentadbiran penuh',
                         ])
                         ->default(['read:tickets', 'read:loans'])
                         ->columns(1)
-                        ->helperText(__('Select the permissions this token should have.')),
+                        ->helperText('Pilih keizinan yang perlu diberikan kepada token ini.'),
 
                     Forms\Components\Select::make('expiration_days')
-                        ->label(__('Token Expiration'))
+                        ->label('Tamat Tempoh Token')
                         ->options([
-                            7 => __('7 days'),
-                            30 => __('30 days (default)'),
-                            90 => __('90 days'),
-                            180 => __('180 days'),
-                            365 => __('1 year'),
-                            0 => __('Never expires'),
+                            7 => '7 hari',
+                            30 => '30 hari (lalai)',
+                            90 => '90 hari',
+                            180 => '180 hari',
+                            365 => '1 tahun',
+                            0 => 'Tiada tamat tempoh',
                         ])
                         ->default(30)
                         ->required()
-                        ->helperText(__('How long until this token expires.')),
+                        ->helperText('Tempoh sehingga token ini tamat.'),
                 ])
                 ->action(function (array $data): void {
                     /** @var User|null $user */
@@ -89,8 +88,8 @@ class ListApiTokens extends ListRecords
                     if ($user === null) {
                         Notification::make()
                             ->danger()
-                            ->title(__('Error'))
-                            ->body(__('User not found.'))
+                            ->title('Ralat')
+                            ->body('Pengguna tidak ditemui.')
                             ->send();
 
                         return;
@@ -114,22 +113,22 @@ class ListApiTokens extends ListRecords
                     // Show the plain text token to the user (only time it's visible)
                     Notification::make()
                         ->success()
-                        ->title(__('Token Created Successfully'))
-                        ->body(__('Copy this token now. It will not be shown again: ').$token->plainTextToken)
+                        ->title('Token berjaya dicipta')
+                        ->body('Salin token ini sekarang. Token ini tidak akan dipaparkan lagi: '.$token->plainTextToken)
                         ->persistent()
                         ->send();
                 })
-                ->modalHeading(__('Create New API Token'))
-                ->modalDescription(__('Create a new API token with specific abilities and expiration period.'))
-                ->modalSubmitActionLabel(__('Create Token')),
+                ->modalHeading('Cipta Token API Baharu')
+                ->modalDescription('Cipta token API baharu dengan keizinan dan tempoh tamat tertentu.')
+                ->modalSubmitActionLabel('Cipta Token'),
 
             Action::make('revoke_expired')
-                ->label(__('Revoke Expired'))
+                ->label('Batalkan Token Luput')
                 ->icon('heroicon-o-trash')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->modalHeading(__('Revoke All Expired Tokens'))
-                ->modalDescription(__('This will permanently delete all expired API tokens. This action cannot be undone.'))
+                ->modalHeading('Batalkan Semua Token Luput')
+                ->modalDescription('Tindakan ini akan memadam semua token API yang telah luput secara kekal. Tindakan ini tidak boleh diundur.')
                 ->action(function (): void {
                     $count = PersonalAccessToken::where('tokenable_type', User::class)
                         ->whereNotNull('expires_at')
@@ -138,20 +137,17 @@ class ListApiTokens extends ListRecords
 
                     Notification::make()
                         ->success()
-                        ->title(__('Expired Tokens Revoked'))
-                        ->body(__(':count expired tokens have been revoked.', ['count' => $count]))
+                        ->title('Token luput dibatalkan')
+                        ->body("{$count} token luput telah dibatalkan.")
                         ->send();
                 }),
 
             Action::make('usage_stats')
-                ->label(__('Usage Statistics'))
+                ->label('Statistik Penggunaan')
                 ->icon('heroicon-o-chart-bar')
                 ->color('info')
-                ->modalHeading(__('API Token Usage Statistics'))
+                ->modalHeading('Statistik Penggunaan Token API')
                 ->modalContent(function (): \Illuminate\Contracts\View\View {
-                    /** @var User|null $currentUser */
-                    $currentUser = Auth::user();
-
                     $totalTokens = PersonalAccessToken::where('tokenable_type', User::class)->count();
                     $activeTokens = PersonalAccessToken::where('tokenable_type', User::class)
                         ->where(function ($query): void {
@@ -178,7 +174,7 @@ class ListApiTokens extends ListRecords
                 })
                 ->modalActions([
                     Action::make('close')
-                        ->label(__('Close'))
+                        ->label('Tutup')
                         ->color('gray'),
                 ]),
         ];

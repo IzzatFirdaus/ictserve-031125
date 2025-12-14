@@ -40,7 +40,7 @@ class SensitiveAccessLogWidget extends TableWidget
                     ->label('Jenis Data')
                     ->formatStateUsing(fn (string $state): string => class_basename($state)),
                 Tables\Columns\TextColumn::make('ip_address')
-                    ->label('IP Address'),
+                    ->label('Alamat IP'),
             ]);
     }
 }

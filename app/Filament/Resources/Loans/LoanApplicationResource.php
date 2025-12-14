@@ -15,6 +15,7 @@ use App\Filament\Resources\Loans\Schemas\LoanApplicationForm;
 use App\Filament\Resources\Loans\Schemas\LoanApplicationInfolist;
 use App\Filament\Resources\Loans\Tables\LoanApplicationsTable;
 use App\Models\LoanApplication;
+use App\Models\User;
 use App\Services\DualApprovalService;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -23,7 +24,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
 
 class LoanApplicationResource extends Resource
 {
@@ -48,7 +48,22 @@ class LoanApplicationResource extends Resource
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->can('viewAny', LoanApplication::class);
+        return false;
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Permohonan Pinjaman';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Permohonan Pinjaman';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Permohonan Pinjaman';
     }
 
     public static function form(Schema $schema): Schema

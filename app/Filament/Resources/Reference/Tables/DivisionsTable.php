@@ -25,10 +25,6 @@ class DivisionsTable
                 Tables\Columns\TextColumn::make('name_ms')
                     ->label('Nama (BM)')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name_en')
-                    ->label('Name (EN)')
-                    ->searchable()
-                    ->toggleable(),
                 Tables\Columns\TextColumn::make('parent.name_ms')
                     ->label('Induk')
                     ->toggleable(),

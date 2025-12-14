@@ -98,13 +98,13 @@ class RecentActivityFeedWidget extends BaseWidget
                     ->label(__('widgets.type'))
                     ->badge()
                     ->color(fn (?string $state): string => match ($state) {
-                        'Ticket' => 'info',
-                        'Loan' => 'warning',
+                        'Tiket' => 'info',
+                        'Pinjaman' => 'warning',
                         default => 'gray',
                     })
                     ->icon(fn (?string $state): string => match ($state) {
-                        'Ticket' => 'heroicon-o-ticket',
-                        'Loan' => 'heroicon-o-document-text',
+                        'Tiket' => 'heroicon-o-ticket',
+                        'Pinjaman' => 'heroicon-o-document-text',
                         default => 'heroicon-o-bell',
                     }),
                 TextColumn::make('subject')
@@ -146,8 +146,8 @@ class RecentActivityFeedWidget extends BaseWidget
                 'helpdesk_tickets.user_id',
                 'helpdesk_tickets.guest_name'
             )
-            ->selectRaw("'Ticket' as activity_type")
-            ->selectRaw("COALESCE(users.name, helpdesk_tickets.guest_name, 'Guest') as created_by")
+            ->selectRaw("'Tiket' as activity_type")
+            ->selectRaw("COALESCE(users.name, helpdesk_tickets.guest_name, 'Tetamu') as created_by")
             ->leftJoin('users', 'helpdesk_tickets.user_id', '=', 'users.id')
             ->latest('helpdesk_tickets.created_at');
 
@@ -170,7 +170,7 @@ class RecentActivityFeedWidget extends BaseWidget
                 ->limit(25)
                 ->get()
                 ->map(fn (HelpdeskTicket $ticket) => [
-                    'type' => 'Ticket',
+                    'type' => 'Tiket',
                     'description' => $ticket->subject,
                     'user' => $ticket->user?->name ?? $ticket->guest_name ?? __('widgets.guest'),
                     'created_at' => $ticket->created_at,
@@ -186,7 +186,7 @@ class RecentActivityFeedWidget extends BaseWidget
                 ->limit(25)
                 ->get()
                 ->map(fn (LoanApplication $loan) => [
-                    'type' => 'Loan',
+                    'type' => 'Pinjaman',
                     'description' => $loan->purpose ?? __('widgets.loan_application'),
                     'user' => $loan->user?->name ?? $loan->applicant_name ?? __('widgets.guest'),
                     'created_at' => $loan->created_at,

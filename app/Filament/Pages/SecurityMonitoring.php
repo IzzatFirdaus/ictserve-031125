@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
+use App\Models\User;
 use App\Services\SecurityMonitoringService;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
@@ -28,7 +29,6 @@ use Illuminate\Support\Facades\Auth;
  * Requirements: D03-FR-010 (Security Monitoring), D11 §8 (Security)
  * Traceability: Phase 9.2 - Security Monitoring Page
  * WCAG 2.2 AA: Full keyboard navigation, ARIA labels, 4.5:1 contrast
- * Bilingual: MS (primary), EN (secondary)
  */
 class SecurityMonitoring extends Page
 {
@@ -36,7 +36,7 @@ class SecurityMonitoring extends Page
 
     protected string $view = 'filament.pages.security-monitoring';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'System Configuration';
+    protected static string|\UnitEnum|null $navigationGroup = 'Konfigurasi Sistem';
 
     protected static ?int $navigationSort = 11;
 
@@ -101,7 +101,7 @@ class SecurityMonitoring extends Page
      */
     public static function getNavigationLabel(): string
     {
-        return __('Security Monitoring');
+        return __('admin_pages.security_monitoring.label');
     }
 
     /**
@@ -109,7 +109,7 @@ class SecurityMonitoring extends Page
      */
     public function getTitle(): string
     {
-        return __('Security Monitoring');
+        return __('admin_pages.security_monitoring.label');
     }
 
     /**
@@ -117,7 +117,7 @@ class SecurityMonitoring extends Page
      */
     public function getHeading(): string
     {
-        return __('Security Monitoring Dashboard');
+        return 'Papan Pemuka Pemantauan Keselamatan';
     }
 
     /**
@@ -125,7 +125,7 @@ class SecurityMonitoring extends Page
      */
     public function getSubheading(): ?string
     {
-        return __('Real-time security event monitoring and incident management');
+        return 'Pemantauan acara keselamatan masa nyata dan pengurusan insiden';
     }
 
     /**
@@ -133,7 +133,10 @@ class SecurityMonitoring extends Page
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('superuser') ?? false;
     }
 
     /**
@@ -141,7 +144,10 @@ class SecurityMonitoring extends Page
      */
     public static function canAccess(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('superuser') ?? false;
     }
 
     /**

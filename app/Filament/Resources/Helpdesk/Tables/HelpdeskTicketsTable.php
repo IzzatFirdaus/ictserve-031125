@@ -25,6 +25,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Excel as ExcelFormat;
@@ -212,7 +213,7 @@ class HelpdeskTicketsTable
                     ->searchable(),
 
                 Tables\Filters\SelectFilter::make('category_id')
-                    ->relationship('category', 'name_en')
+                    ->relationship('category', 'name_ms')
                     ->label(__('helpdesk.category'))
                     ->searchable()
                     ->preload()
@@ -321,7 +322,7 @@ class HelpdeskTicketsTable
 
                 // Division filter
                 Tables\Filters\SelectFilter::make('assigned_to_division')
-                    ->relationship('assignedDivision', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
+                    ->relationship('assignedDivision', 'name_ms')
                     ->label(__('helpdesk.assigned_division'))
                     ->searchable()
                     ->preload()
@@ -333,7 +334,7 @@ class HelpdeskTicketsTable
                 EditAction::make(),
                 AssignTicketAction::make(),
                 \Filament\Actions\DeleteAction::make()
-                    ->visible(fn (HelpdeskTicket $record) => Auth::user()?->can('delete', $record) === true),
+                    ->visible(fn (HelpdeskTicket $record): bool => Gate::allows('delete', $record)),
                 // Status update action with required comment per Requirements 5.3
                 Action::make('updateStatus')
                     ->label(__('helpdesk.update_status'))
@@ -407,7 +408,7 @@ class HelpdeskTicketsTable
                         ->icon('heroicon-o-user-group')
                         ->form([
                             Select::make('assigned_to_division')
-                                ->options(fn () => Division::query()->orderBy(app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')->pluck(app()->getLocale() === 'ms' ? 'name_ms' : 'name_en', 'id'))
+                                ->options(fn () => Division::query()->orderBy('name_ms')->pluck('name_ms', 'id'))
                                 ->label(__('helpdesk.bulk_assign_division'))
                                 ->searchable()
                                 ->preload(),
@@ -511,20 +512,16 @@ class HelpdeskTicketsTable
                                 Notification::make()
                                     ->title(__('helpdesk.error_title'))
                                     ->danger()
-                                    ->body(__('No tickets selected for export.'))
+                                    ->body('Tiada tiket dipilih untuk dieksport.')
                                     ->send();
 
                                 return null;
                             }
 
                             $rows = $records->map(function (HelpdeskTicket $ticket): array {
-                                $category = app()->getLocale() === 'ms'
-                                    ? $ticket->category?->name_ms
-                                    : $ticket->category?->name_en;
+                                $category = $ticket->category?->name_ms;
 
-                                $division = app()->getLocale() === 'ms'
-                                    ? $ticket->assignedDivision?->name_ms
-                                    : $ticket->assignedDivision?->name_en;
+                                $division = $ticket->assignedDivision?->name_ms;
 
                                 return [
                                     __('helpdesk.ticket_number') => $ticket->ticket_number,

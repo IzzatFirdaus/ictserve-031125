@@ -16,16 +16,16 @@ class SystemMetricsWidget extends BaseWidget
         $metrics = $service->getSystemMetrics();
 
         return [
-            Stat::make('Response Time', number_format($metrics['response_time'] ?? 0, 0).'ms')
-                ->description('Average response time')
+            Stat::make('Masa Respons', number_format($metrics['response_time'] ?? 0, 0).'ms')
+                ->description('Purata masa respons')
                 ->color($this->getColor('response_time', $metrics['response_time'] ?? 0)),
 
-            Stat::make('Cache Hit Rate', number_format($metrics['cache_hit_rate'] ?? 0, 1).'%')
-                ->description('Cache effectiveness')
+            Stat::make('Kadar Hit Cache', number_format($metrics['cache_hit_rate'] ?? 0, 1).'%')
+                ->description('Keberkesanan cache')
                 ->color($this->getColor('cache_hit_rate', $metrics['cache_hit_rate'] ?? 0)),
 
-            Stat::make('Memory Usage', number_format($metrics['memory_usage'] ?? 0, 1).'%')
-                ->description('System memory')
+            Stat::make('Penggunaan Memori', number_format($metrics['memory_usage'] ?? 0, 1).'%')
+                ->description('Memori sistem')
                 ->color($this->getColor('memory_usage', $metrics['memory_usage'] ?? 0)),
         ];
     }

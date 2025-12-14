@@ -40,7 +40,7 @@ class LoanApplicationForm
                 TextInput::make('grade')
                     ->required(),
                 Select::make('division_id')
-                    ->relationship('division', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
+                    ->relationship('division', 'name_ms')
                     ->required(),
                 Textarea::make('purpose')
                     ->required()
@@ -73,7 +73,11 @@ class LoanApplicationForm
                     ->relationship('approver', 'name')
                     ->default(null),
                 Select::make('approval_status')
-                    ->options(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected'])
+                    ->options([
+                        'pending' => 'Menunggu',
+                        'approved' => 'Diluluskan',
+                        'rejected' => 'Ditolak',
+                    ])
                     ->default('pending')
                     ->required(),
                 DateTimePicker::make('approval_date'),
