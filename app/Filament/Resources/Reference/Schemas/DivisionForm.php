@@ -20,30 +20,30 @@ class DivisionForm
             Section::make('Maklumat Bahagian')
                 ->schema([
                     TextInput::make('code')
-                        ->label('Kod')
+                        ->label(__('filament.reference.code'))
                         ->required()
                         ->unique(ignoreRecord: true)
                         ->maxLength(20),
                     TextInput::make('name_ms')
-                        ->label('Nama (BM)')
+                        ->label(__('filament.reference.name_ms'))
                         ->required()
                         ->maxLength(255),
                     Hidden::make('name_en')
                         ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('name_ms')),
                     Select::make('parent_id')
                         ->relationship('parent', 'name_ms')
-                        ->label('Bahagian Induk')
+                        ->label(__('filament.reference.parent_division'))
                         ->searchable()
                         ->preload(),
                     Toggle::make('is_active')
-                        ->label('Aktif')
+                        ->label(__('filament.reference.active'))
                         ->default(true),
                 ])
                 ->columns(2),
             Section::make('Penerangan')
                 ->schema([
                     TextInput::make('description_ms')
-                        ->label('Deskripsi (BM)')
+                        ->label(__('filament.reference.description_ms'))
                         ->maxLength(255),
                     Hidden::make('description_en')
                         ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('description_ms')),
