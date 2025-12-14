@@ -4,7 +4,8 @@
     @wcag WCAG 2.2 AA compliant
 --}}
 @php
-    $sectionCardClasses = 'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
+    $sectionCardClasses =
+        'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
 @endphp
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
@@ -26,11 +27,10 @@
                     </p>
                 </div>
                 <div class="flex items-start gap-3">
-                    <span class="inline-flex items-center rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-1 text-xs font-mono text-gray-600 dark:text-gray-400">
+                    <span
+                        class="inline-flex items-center rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-1 text-xs font-mono text-gray-600 dark:text-gray-400">
                         PK.(S).MOTAC.07.(L1)
                     </span>
-                    {{-- Language Switcher - DISABLED: Bahasa Melayu only (v3.6) --}}
-                    {{-- <livewire:language-switcher /> --}}
                 </div>
             </div>
         </div>

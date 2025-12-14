@@ -10,7 +10,7 @@
                 name="status"
                 wire:model.live="status"
                 class="sm:w-48"
-                label="{{ __('Status') }}"
+                label="{{ __('common.Status') }}"
             >
                 <option value="">{{ __('Semua Status') }}</option>
                 @foreach (\App\Enums\LoanStatus::cases() as $statusOption)
@@ -35,7 +35,7 @@
                         {{ __('Permohonan') }}
                     </th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
-                        {{ __('Status') }}
+                        {{ __('common.Status') }}
                     </th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                         {{ __('Tempoh') }}

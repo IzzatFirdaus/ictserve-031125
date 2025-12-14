@@ -33,7 +33,6 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\User;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
@@ -105,8 +104,60 @@ class NotificationBell extends Component
 
         return [
             "echo-private:App.Models.User.{$user->id},notification" => 'handleNewNotification',
+            "echo-private:user.{$user->id},.ticket.status.changed" => 'handleTicketStatusChanged',
+            "echo-private:user.{$user->id},.loan.status.changed" => 'handleLoanStatusChanged',
+            "echo-private:user.{$user->id},.notification.created" => 'handleNewNotification',
+            "echo-private:user.{$user->id},.status.updated" => 'handleStatusUpdated',
             'refresh-notifications' => 'loadNotifications',
         ];
+    }
+
+    /**
+     * Handle ticket status change from Laravel Reverb broadcast.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    #[On('echo-private:ticket.status.changed')]
+    public function handleTicketStatusChanged(array $event): void
+    {
+        $this->loadNotifications();
+
+        $message = $event['message'] ?? __('notifications.ticket_updated');
+        $this->dispatch('toast', message: $message, type: 'info');
+        $this->dispatch('notification-received', count: $this->unreadCount);
+    }
+
+    /**
+     * Handle loan status change from Laravel Reverb broadcast.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    #[On('echo-private:loan.status.changed')]
+    public function handleLoanStatusChanged(array $event): void
+    {
+        $this->loadNotifications();
+
+        $message = $event['message'] ?? __('notifications.loan_updated');
+        $this->dispatch('toast', message: $message, type: 'info');
+        $this->dispatch('notification-received', count: $this->unreadCount);
+    }
+
+    /**
+     * Handle generic status update from Laravel Reverb broadcast.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    #[On('echo-private:status.updated')]
+    public function handleStatusUpdated(array $event): void
+    {
+        $this->loadNotifications();
+
+        $modelType = $event['model_type'] ?? 'Item';
+        $newStatus = $event['new_status'] ?? 'updated';
+        $message = __('notifications.status_updated', ['type' => $modelType, 'status' => $newStatus]);
+
+        $this->dispatch('toast', message: $message, type: 'info');
+        $this->dispatch('notification-received', count: $this->unreadCount);
     }
 
     /**
@@ -282,7 +333,7 @@ class NotificationBell extends Component
         // PHPStan complains because groupBy returns collection of collections, which toArray converts recursively.
         $categorized = collect($notifications)
             ->groupBy('category')
-            ->map(fn($group) => $group->toArray())
+            ->map(fn ($group) => $group->toArray())
             ->toArray();
 
         /** @var array<string, array<int, array<string, mixed>>> $categorized */

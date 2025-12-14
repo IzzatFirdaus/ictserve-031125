@@ -82,6 +82,7 @@ class LoanDetails extends Component
      */
     protected function buildTimeline(): array
     {
+        /** @var \Illuminate\Database\Eloquent\Collection<int, LoanTransaction> $transactions */
         $transactions = $this->application->transactions;
         $issueTransaction = $transactions->first(fn (LoanTransaction $t) => $t->isIssueTransaction());
         $returnTransaction = $transactions->first(fn (LoanTransaction $t) => $t->isReturnTransaction());
