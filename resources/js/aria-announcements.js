@@ -20,30 +20,30 @@ const ANNOUNCEMENT_CLEAR_DELAY = 5000; // Clear announcement after 5 seconds
  * @param {string} priority - 'polite' (default) or 'assertive'
  */
 export function announceToScreenReader(message, priority = "polite") {
-    const regionId =
-        priority === "assertive"
-            ? "aria-error-announcements"
-            : "aria-announcements";
+	const regionId =
+		priority === "assertive"
+			? "aria-error-announcements"
+			: "aria-announcements";
 
-    const region = document.getElementById(regionId);
+	const region = document.getElementById(regionId);
 
-    if (!region) {
-        console.warn(`ARIA live region #${regionId} not found`);
-        return;
-    }
+	if (!region) {
+		console.warn(`ARIA live region #${regionId} not found`);
+		return;
+	}
 
-    // Clear previous announcement
-    region.textContent = "";
+	// Clear previous announcement
+	region.textContent = "";
 
-    // Add new announcement after brief delay (allows screen reader to detect change)
-    setTimeout(() => {
-        region.textContent = message;
-    }, ANNOUNCEMENT_DELAY);
+	// Add new announcement after brief delay (allows screen reader to detect change)
+	setTimeout(() => {
+		region.textContent = message;
+	}, ANNOUNCEMENT_DELAY);
 
-    // Clear announcement after timeout
-    setTimeout(() => {
-        region.textContent = "";
-    }, ANNOUNCEMENT_CLEAR_DELAY);
+	// Clear announcement after timeout
+	setTimeout(() => {
+		region.textContent = "";
+	}, ANNOUNCEMENT_CLEAR_DELAY);
 }
 
 /**
@@ -52,22 +52,22 @@ export function announceToScreenReader(message, priority = "polite") {
  * @param {Object} notification - Notification object with title and message
  */
 export function announceNotification(notification) {
-    const message = `${notification.title}. ${notification.message || ""}`;
-    announceToScreenReader(message, "polite");
+	const message = `${notification.title}. ${notification.message || ""}`;
+	announceToScreenReader(message, "polite");
 
-    // Also update notification-specific live region
-    const notificationRegion = document.getElementById(
-        "aria-notification-announcements"
-    );
-    if (notificationRegion) {
-        notificationRegion.textContent = "";
-        setTimeout(() => {
-            notificationRegion.textContent = message;
-        }, ANNOUNCEMENT_DELAY);
-        setTimeout(() => {
-            notificationRegion.textContent = "";
-        }, ANNOUNCEMENT_CLEAR_DELAY);
-    }
+	// Also update notification-specific live region
+	const notificationRegion = document.getElementById(
+		"aria-notification-announcements"
+	);
+	if (notificationRegion) {
+		notificationRegion.textContent = "";
+		setTimeout(() => {
+			notificationRegion.textContent = message;
+		}, ANNOUNCEMENT_DELAY);
+		setTimeout(() => {
+			notificationRegion.textContent = "";
+		}, ANNOUNCEMENT_CLEAR_DELAY);
+	}
 }
 
 /**
@@ -76,10 +76,13 @@ export function announceNotification(notification) {
  * @param {Array} errors - Array of error messages
  */
 export function announceFormErrors(errors) {
-    const message = `Form validation failed. ${errors.length} error${
-        errors.length > 1 ? "s" : ""
-    } found: ${errors.join(", ")}`;
-    announceToScreenReader(message, "assertive");
+	// Use Bahasa Melayu for form validation announcements
+	const errorCount = errors.length;
+	const errorText = errorCount > 1 ? "ralat" : "ralat";
+	const message = `Pengesahan borang gagal. ${errorCount} ${errorText} dijumpai: ${errors.join(
+		", "
+	)}`;
+	announceToScreenReader(message, "assertive");
 }
 
 /**
@@ -88,7 +91,7 @@ export function announceFormErrors(errors) {
  * @param {string} action - Action description
  */
 export function announceSuccess(action) {
-    announceToScreenReader(`Success: ${action}`, "polite");
+	announceToScreenReader(`Berjaya: ${action}`, "polite");
 }
 
 /**
@@ -97,7 +100,7 @@ export function announceSuccess(action) {
  * @param {string} content - Content being loaded
  */
 export function announceLoading(content) {
-    announceToScreenReader(`Loading ${content}...`, "polite");
+	announceToScreenReader(`Memuatkan ${content}...`, "polite");
 }
 
 /**
@@ -106,42 +109,42 @@ export function announceLoading(content) {
  * @param {string} content - Content that was loaded
  */
 export function announceLoaded(content) {
-    announceToScreenReader(`${content} loaded`, "polite");
+	announceToScreenReader(`${content} telah dimuatkan`, "polite");
 }
 
 // Listen for Livewire events and announce them
 document.addEventListener("livewire:init", () => {
-    // Notification events
-    Livewire.on("notification-received", (event) => {
-        if (event && event.notification) {
-            announceNotification(event.notification);
-        }
-    });
+	// Notification events
+	Livewire.on("notification-received", (event) => {
+		if (event && event.notification) {
+			announceNotification(event.notification);
+		}
+	});
 
-    // Success events
-    Livewire.on("success", (event) => {
-        if (event && event.message) {
-            announceSuccess(event.message);
-        }
-    });
+	// Success events
+	Livewire.on("success", (event) => {
+		if (event && event.message) {
+			announceSuccess(event.message);
+		}
+	});
 
-    // Error events
-    Livewire.on("error", (event) => {
-        if (event && event.message) {
-            announceToScreenReader(`Error: ${event.message}`, "assertive");
-        }
-    });
+	// Error events
+	Livewire.on("error", (event) => {
+		if (event && event.message) {
+			announceToScreenReader(`Ralat: ${event.message}`, "assertive");
+		}
+	});
 
-    // Loading events
-    Livewire.hook("message.sent", (message, component) => {
-        const action = message.updateQueue[0]?.method || "content";
-        announceLoading(action);
-    });
+	// Loading events
+	Livewire.hook("message.sent", (message, component) => {
+		const action = message.updateQueue[0]?.method || "kandungan";
+		announceLoading(action);
+	});
 
-    Livewire.hook("message.processed", (message, component) => {
-        const action = message.updateQueue[0]?.method || "content";
-        announceLoaded(action);
-    });
+	Livewire.hook("message.processed", (message, component) => {
+		const action = message.updateQueue[0]?.method || "kandungan";
+		announceLoaded(action);
+	});
 });
 
 // Export for global use
