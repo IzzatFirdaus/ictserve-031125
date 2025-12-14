@@ -10,7 +10,6 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 /**
@@ -35,7 +34,7 @@ class TicketCategoryForm
                         ->maxLength(255)
                         ->label('Nama'),
                     Hidden::make('name_en')
-                        ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('name_ms')),
+                        ->dehydrateStateUsing(fn (mixed $state, callable $get): mixed => filled($state) ? $state : $get('name_ms')),
                     Select::make('parent_id')
                         ->relationship('parent', 'name_ms')
                         ->preload()
@@ -52,7 +51,7 @@ class TicketCategoryForm
                         ->rows(3)
                         ->label('Penerangan'),
                     Hidden::make('description_en')
-                        ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('description_ms')),
+                        ->dehydrateStateUsing(fn (mixed $state, callable $get): mixed => filled($state) ? $state : $get('description_ms')),
                     TextInput::make('sla_response_hours')
                         ->integer()
                         ->minValue(1)

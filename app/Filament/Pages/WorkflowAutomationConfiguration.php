@@ -40,13 +40,14 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
     /** @var array<string, mixed> */
     public array $data = [];
 
-    public mixed $form = null;
-
     public ?WorkflowRule $selectedRule = null;
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('superuser') ?? false;
     }
 
     public static function getNavigationLabel(): string
@@ -59,118 +60,120 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
         return __('admin_pages.workflow_automation.group');
     }
 
-    public function form(Schema $schema): Schema
+    protected function getForms(): array
     {
-        return $schema
-            ->components([
-                Section::make('Cipta Peraturan Aliran Kerja Baharu')
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('name')
-                                    ->label('Nama Peraturan')
-                                    ->required()
-                                    ->maxLength(255),
+        return [
+            'form' => Schema::make($this)
+                ->schema([
+                    Section::make('Cipta Peraturan Aliran Kerja Baharu')
+                        ->schema([
+                            Grid::make(2)
+                                ->schema([
+                                    TextInput::make('name')
+                                        ->label('Nama Peraturan')
+                                        ->required()
+                                        ->maxLength(255),
 
-                                Select::make('module')
-                                    ->label('Modul')
-                                    ->options([
-                                        'helpdesk' => 'Helpdesk',
-                                        'loans' => 'Pinjaman Aset',
-                                        'assets' => 'Pengurusan Aset',
-                                    ])
-                                    ->required()
-                                    ->reactive(),
-                            ]),
+                                    Select::make('module')
+                                        ->label('Modul')
+                                        ->options([
+                                            'helpdesk' => 'Helpdesk',
+                                            'loans' => 'Pinjaman Aset',
+                                            'assets' => 'Pengurusan Aset',
+                                        ])
+                                        ->required()
+                                        ->reactive(),
+                                ]),
 
-                        Textarea::make('description')
-                            ->label('Keterangan')
-                            ->rows(2),
+                            Textarea::make('description')
+                                ->label('Keterangan')
+                                ->rows(2),
 
-                        Section::make('Syarat (Jika)')
-                            ->schema([
-                                Repeater::make('conditions')
-                                    ->schema([
-                                        Grid::make(3)
-                                            ->schema([
-                                                Select::make('field')
-                                                    ->label('Medan')
-                                                    ->options(function (callable $get) {
-                                                        $module = $get('../../module');
-                                                        if (! $module) {
-                                                            return [];
-                                                        }
+                            Section::make('Syarat (Jika)')
+                                ->schema([
+                                    Repeater::make('conditions')
+                                        ->schema([
+                                            Grid::make(3)
+                                                ->schema([
+                                                    Select::make('field')
+                                                        ->label('Medan')
+                                                        ->options(function (callable $get) {
+                                                            $module = $get('../../module');
+                                                            if (! $module) {
+                                                                return [];
+                                                            }
 
-                                                        $service = app(WorkflowAutomationService::class);
+                                                            $service = app(WorkflowAutomationService::class);
 
-                                                        return $service->getAvailableConditions($module);
-                                                    })
-                                                    ->required(),
+                                                            return $service->getAvailableConditions($module);
+                                                        })
+                                                        ->required(),
 
-                                                Select::make('operator')
-                                                    ->label('Operator')
-                                                    ->options([
-                                                        '=' => 'Sama dengan',
-                                                        '!=' => 'Tidak sama dengan',
-                                                        '>' => 'Lebih besar',
-                                                        '<' => 'Kurang daripada',
-                                                        '>=' => 'Lebih besar atau sama',
-                                                        '<=' => 'Kurang atau sama',
-                                                        'contains' => 'Mengandungi',
-                                                        'in' => 'Dalam senarai',
-                                                    ])
-                                                    ->required(),
+                                                    Select::make('operator')
+                                                        ->label('Operator')
+                                                        ->options([
+                                                            '=' => 'Sama dengan',
+                                                            '!=' => 'Tidak sama dengan',
+                                                            '>' => 'Lebih besar',
+                                                            '<' => 'Kurang daripada',
+                                                            '>=' => 'Lebih besar atau sama',
+                                                            '<=' => 'Kurang atau sama',
+                                                            'contains' => 'Mengandungi',
+                                                            'in' => 'Dalam senarai',
+                                                        ])
+                                                        ->required(),
 
-                                                TextInput::make('value')
-                                                    ->label('Nilai')
-                                                    ->required(),
-                                            ]),
-                                    ])
-                                    ->addActionLabel('Tambah Syarat')
-                                    ->collapsible(),
-                            ]),
+                                                    TextInput::make('value')
+                                                        ->label('Nilai')
+                                                        ->required(),
+                                                ]),
+                                        ])
+                                        ->addActionLabel('Tambah Syarat')
+                                        ->collapsible(),
+                                ]),
 
-                        Section::make('Tindakan (Maka)')
-                            ->schema([
-                                Repeater::make('actions')
-                                    ->schema([
-                                        Grid::make(2)
-                                            ->schema([
-                                                Select::make('type')
-                                                    ->label('Jenis Tindakan')
-                                                    ->options([
-                                                        'send_email' => 'Hantar E-mel',
-                                                        'update_status' => 'Kemaskini Status',
-                                                        'assign_user' => 'Tugaskan Pengguna',
-                                                        'create_notification' => 'Cipta Pemberitahuan',
-                                                    ])
-                                                    ->required()
-                                                    ->reactive(),
+                            Section::make('Tindakan (Maka)')
+                                ->schema([
+                                    Repeater::make('actions')
+                                        ->schema([
+                                            Grid::make(2)
+                                                ->schema([
+                                                    Select::make('type')
+                                                        ->label('Jenis Tindakan')
+                                                        ->options([
+                                                            'send_email' => 'Hantar E-mel',
+                                                            'update_status' => 'Kemaskini Status',
+                                                            'assign_user' => 'Tugaskan Pengguna',
+                                                            'create_notification' => 'Cipta Pemberitahuan',
+                                                        ])
+                                                        ->required()
+                                                        ->reactive(),
 
-                                                TextInput::make('value')
-                                                    ->label('Nilai Tindakan')
-                                                    ->required(),
-                                            ]),
-                                    ])
-                                    ->addActionLabel('Tambah Tindakan')
-                                    ->collapsible(),
-                            ]),
+                                                    TextInput::make('value')
+                                                        ->label('Nilai Tindakan')
+                                                        ->required(),
+                                                ]),
+                                        ])
+                                        ->addActionLabel('Tambah Tindakan')
+                                        ->collapsible(),
+                                ]),
 
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('priority')
-                                    ->label('Keutamaan')
-                                    ->numeric()
-                                    ->default(0)
-                                    ->helperText('Nombor lebih tinggi dilaksanakan dahulu'),
+                            Grid::make(2)
+                                ->schema([
+                                    TextInput::make('priority')
+                                        ->label('Keutamaan')
+                                        ->numeric()
+                                        ->default(0)
+                                        ->helperText('Nombor lebih tinggi dilaksanakan dahulu'),
 
-                                Toggle::make('is_active')
-                                    ->label('Aktif')
-                                    ->default(true),
-                            ]),
-                    ]),
-            ])
-            ->statePath('data');
+                                    Toggle::make('is_active')
+                                        ->label('Aktif')
+                                        ->default(true),
+                                ]),
+                        ]),
+                ])
+                ->statePath('data'),
+        ];
     }
 
     protected function getHeaderActions(): array
@@ -200,7 +203,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
 
     public function save(): void
     {
-        $data = $this->form->getState();
+        $data = $this->getFormState();
 
         WorkflowRule::create($data);
 
@@ -209,7 +212,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
             ->success()
             ->send();
 
-        $this->form->fill([]);
+        $this->fillForm([]);
     }
 
     public function testRules(): void
@@ -259,5 +262,33 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
             ->toArray();
 
         return $rules;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getFormState(): array
+    {
+        if (property_exists($this, 'form') && is_object($this->form) && method_exists($this->form, 'getState')) {
+            $state = $this->form->getState();
+
+            return is_array($state) ? $state : $this->data;
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $state
+     */
+    private function fillForm(?array $state = null): void
+    {
+        if (property_exists($this, 'form') && is_object($this->form) && method_exists($this->form, 'fill')) {
+            $this->form->fill($state ?? []);
+
+            return;
+        }
+
+        $this->data = $state ?? $this->data;
     }
 }

@@ -9,7 +9,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class DivisionForm
@@ -29,7 +28,7 @@ class DivisionForm
                         ->required()
                         ->maxLength(255),
                     Hidden::make('name_en')
-                        ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('name_ms')),
+                        ->dehydrateStateUsing(fn (mixed $state, callable $get): mixed => filled($state) ? $state : $get('name_ms')),
                     Select::make('parent_id')
                         ->relationship('parent', 'name_ms')
                         ->label(__('filament.reference.parent_division'))
@@ -46,7 +45,7 @@ class DivisionForm
                         ->label(__('filament.reference.description_ms'))
                         ->maxLength(255),
                     Hidden::make('description_en')
-                        ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('description_ms')),
+                        ->dehydrateStateUsing(fn (mixed $state, callable $get): mixed => filled($state) ? $state : $get('description_ms')),
                 ])
                 ->columns(2),
         ]);

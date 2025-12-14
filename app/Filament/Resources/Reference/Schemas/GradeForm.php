@@ -8,7 +8,6 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class GradeForm
@@ -28,7 +27,7 @@ class GradeForm
                         ->required()
                         ->maxLength(255),
                     Hidden::make('name_en')
-                        ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('name_ms')),
+                        ->dehydrateStateUsing(fn (mixed $state, callable $get): mixed => filled($state) ? $state : $get('name_ms')),
                     TextInput::make('level')
                         ->label(__('filament.reference.level'))
                         ->numeric()
