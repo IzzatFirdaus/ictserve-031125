@@ -16,7 +16,7 @@
     <meta name="theme-color" content="#0056B3">
     <meta name="description" content="{{ __('meta.landing_description', ['app' => config('app.name', 'ICTServe')]) }}">
     <title>{{ config('app.name', 'ICTServe') }} - {{ __('meta.tagline') }}</title>
-    <link rel="preconnect" hrhttps://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
