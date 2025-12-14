@@ -53,28 +53,14 @@ class RagService
     private EmbeddingService $embeddingService;
 
     /**
-     * Perkhidmatan Bedrock (opsyen) untuk True Hybrid routing
-     */
-    private ?BedrockService $bedrockService;
-
-    /**
-     * Model router untuk pemilihan penyedia/model
-     */
-    private ?ModelRouter $modelRouter;
-
-    /**
      * Konstruktor
      */
     public function __construct(
         OllamaClientContract $ollamaClient,
-        EmbeddingService $embeddingService,
-        ?BedrockService $bedrockService = null,
-        ?ModelRouter $modelRouter = null
+        EmbeddingService $embeddingService
     ) {
         $this->ollamaClient = $ollamaClient;
         $this->embeddingService = $embeddingService;
-        $this->bedrockService = $bedrockService;
-        $this->modelRouter = $modelRouter;
         $this->config = config('ollama.rag', [
             'similarity_threshold' => 0.3,
             'max_results' => 5,
@@ -425,7 +411,7 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
      */
     private function generateResponse(string $prompt, ?string $sessionId = null, ?int $userId = null): array
     {
-        $modelRouter = $this->modelRouter ?? app(ModelRouter::class);
+        $modelRouter = app(ModelRouter::class);
 
         $route = $modelRouter->routeTextGeneration($prompt, [
             'session_id' => $sessionId,
@@ -433,7 +419,7 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
         ]);
 
         if (($route['provider'] ?? 'ollama') === 'bedrock') {
-            $bedrockService = $this->bedrockService ?? app(BedrockService::class);
+            $bedrockService = app(BedrockService::class);
 
             $result = $bedrockService->invoke(
                 prompt: $prompt,
