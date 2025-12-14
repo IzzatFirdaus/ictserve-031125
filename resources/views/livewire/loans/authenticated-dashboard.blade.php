@@ -137,7 +137,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                             </h2>
                             <div class="flex flex-wrap gap-3">
                                 <a href="{{ route('loan.authenticated.create') }}"
-                                    class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-44">
+                                    class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                     </svg>
@@ -145,7 +145,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                 </a>
 
                                 <a href="{{ route('staff.profile') }}"
-                                    class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-44">
+                                    class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                     </svg>
@@ -194,7 +194,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                             </div>
                             @if($this->activeLoans->count() > 3)
                                 <div class="mt-4 text-center">
-                                    <button wire:click="switchTab('active')" class="text-sm font-medium text-blue-300 hover:text-blue-400 min-h-44 inline-flex items-center">
+                                    <button wire:click="switchTab('active')" class="text-sm font-medium text-blue-300 hover:text-blue-400 min-h-11 inline-flex items-center">
                                         {{ __('loans.view_all_active') }} &rarr;
                                     </button>
                                 </div>
@@ -209,7 +209,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                             <p class="mt-1 text-sm text-slate-400">{{ __('loans.no_active_loans_description') }}</p>
                             <div class="mt-6">
                                 <a href="{{ route('loan.authenticated.create') }}"
-                                    class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-44">
+                                    class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                     </svg>
@@ -259,7 +259,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                                 </span>
                                             </td>
                                             <td class="px-4 py-4 text-sm text-right">
-                                                <a href="{{ route('loan.authenticated.show', $loan->id) }}" class="font-medium text-blue-300 hover:text-blue-400 min-h-44 inline-flex items-center">{{ __('loans.view_details') }}</a>
+                                                <a href="{{ route('loan.authenticated.show', $loan->id) }}" class="font-medium text-blue-300 hover:text-blue-400 min-h-11 inline-flex items-center">{{ __('loans.view_details') }}</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -336,12 +336,12 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                 wire:model.live.debounce.300ms="search"
                                 type="search"
                                 placeholder="{{ __('loans.search_loans') }}"
-                                class="min-h-44"
+                                class="min-h-11"
                                 aria-label="{{ __('loans.search_loans') }}"
                             />
 
                             @if($search || $statusFilter)
-                                <button wire:click="clearFilters" class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-44">
+                                <button wire:click="clearFilters" class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11">
                                     {{ __('loans.clear_filters') }}
                                 </button>
                             @endif
@@ -377,7 +377,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                                 </span>
                                             </td>
                                             <td class="px-4 py-4 text-sm text-right">
-                                                <a href="{{ route('loan.authenticated.show', $loan->id) }}" class="font-medium text-blue-300 hover:text-blue-400 min-h-44 inline-flex items-center">{{ __('loans.view') }}</a>
+                                                <a href="{{ route('loan.authenticated.show', $loan->id) }}" class="font-medium text-blue-300 hover:text-blue-400 min-h-11 inline-flex items-center">{{ __('loans.view') }}</a>
                                             </td>
                                         </tr>
                                     @endforeach
