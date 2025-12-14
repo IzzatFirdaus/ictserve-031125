@@ -1,27 +1,47 @@
+{{--
+/**
+ * Component: Staff Portal Layout
+ * Description: Main layout for staff portal with WCAG 2.2 AA compliance, theme switcher, and role-based navigation
+ * Author: Pasukan BPM MOTAC
+ * @trace D03-FR-018.1 (Staff Portal Layout)
+ * @trace D04 §6.1 (Layout Architecture)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D13 §2.2-2.7 (MyDS Design Tokens)
+ * @wcag WCAG 2.2 Level AA (SC 1.3.1, 2.1.1, 2.4.1, 2.4.7, 2.5.8)
+ * @version 3.6.0
+ * @updated 2025-12-14
+ */
+--}}
 <!DOCTYPE html>
-<html lang="ms" <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="csrf-token" content="{{ csrf_token() }}">
-@auth
-    <meta name="user-id" content="{{ auth()->id() }}">
-@endauth
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#0056B3">
+    @auth
+        <meta name="user-id" content="{{ auth()->id() }}">
+    @endauth
 
-<title>{{ e(config('app.name', 'ICTServe')) }}</title>
+    <title>{{ e(config('app.name', 'ICTServe')) }} - {{ __('common.staff_portal') }}</title>
 
-<link rel="preconnect" href="https://fonts.bunny.net">
-<link href="{{ e(config('app.fonts_url', 'https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap')) }}"
-    rel="stylesheet" />
+    {{-- Performance Optimization: Resource Hints --}}
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.bunny.net">
 
-{{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
-<x-theme-init-script />
+    {{-- Fonts: Poppins for headings, Inter for body per D13 §2.4 --}}
+    <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
+        rel="stylesheet" />
 
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
+    <x-theme-init-script />
 
-@livewireStyles
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @livewireStyles
 </head>
 
-<body class="font-sans antialiased bg-slate-950 text-slate-100">
+<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 theme-transition">
     <x-navigation.skip-links />
     {{-- ARIA Live Regions for Screen Readers (WCAG 2.2 SC 4.1.3) --}}
     <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-announcements" role="status"></div>
@@ -31,7 +51,7 @@
     {{-- ARIA Live Region for Echo Real-Time Updates (Requirements 6.1, 6.2) --}}
     <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-live-notifications" role="status"></div>
 
-    <div class="min-h-screen flex flex-col bg-slate-950">
+    <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 theme-transition">
         <livewire:navigation.portal-navigation />
 
         <main id="main-content" role="main" tabindex="-1" class="flex-1 py-6 focus:outline-none">
@@ -49,9 +69,9 @@
             </div>
         </main>
 
-        <footer class="border-t border-slate-800 bg-slate-900" role="contentinfo">
+        <footer class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 theme-transition" role="contentinfo">
             <div
-                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-gray-600 dark:text-gray-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <p>&copy; {{ now()->year }} {{ e(__('footer.ministry_name')) }}.
                     {{ e(__('footer.all_rights_reserved')) }}.
                 </p>
