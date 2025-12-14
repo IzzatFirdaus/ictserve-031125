@@ -33,7 +33,6 @@ use OwenIt\Auditing\Models\Audit;
  * Requirements: D03-FR-010 (Audit Trail), D09 §9 (Audit Requirements)
  * Traceability: Phase 9.1 - Audit Resource Implementation
  * WCAG 2.2 AA: Full keyboard navigation, ARIA labels, 4.5:1 contrast
- * Bilingual: MS (primary), EN (secondary)
  */
 class AuditResource extends Resource
 {
@@ -52,7 +51,7 @@ class AuditResource extends Resource
      */
     public static function getNavigationLabel(): string
     {
-        return __('Audit Trail');
+        return 'Jejak Audit';
     }
 
     /**
@@ -60,7 +59,7 @@ class AuditResource extends Resource
      */
     public static function getPluralLabel(): string
     {
-        return __('Audit Trail');
+        return 'Jejak Audit';
     }
 
     /**
@@ -68,7 +67,7 @@ class AuditResource extends Resource
      */
     public static function getModelLabel(): string
     {
-        return __('Audit Record');
+        return 'Rekod Audit';
     }
 
     /**
@@ -77,7 +76,10 @@ class AuditResource extends Resource
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('superuser') ?? false;
     }
 
     /**
@@ -86,7 +88,10 @@ class AuditResource extends Resource
      */
     public static function canAccess(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('superuser') ?? false;
     }
 
     /**

@@ -43,7 +43,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * @see D03 SRS-ADM-005 Audit export
  * Traceability: Phase 7 - Task 28.1
  * WCAG 2.2 AA: Full keyboard navigation, ARIA labels, 4.5:1 contrast
- * Bilingual: MS (primary), EN (secondary)
  */
 class UnifiedAuditLog extends Page implements HasTable
 {
@@ -53,7 +52,7 @@ class UnifiedAuditLog extends Page implements HasTable
 
     protected string $view = 'filament.pages.unified-audit-log';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'System Configuration';
+    protected static string|\UnitEnum|null $navigationGroup = 'Konfigurasi Sistem';
 
     protected static ?int $navigationSort = 10;
 
@@ -97,7 +96,7 @@ class UnifiedAuditLog extends Page implements HasTable
      */
     public static function getNavigationLabel(): string
     {
-        return __('Unified Audit Log');
+        return __('admin_pages.unified_audit_log.label');
     }
 
     /**
@@ -129,7 +128,9 @@ class UnifiedAuditLog extends Page implements HasTable
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        $user = Auth::user();
+
+        return $user instanceof User && $user->isSuperuser();
     }
 
     /**
@@ -137,7 +138,9 @@ class UnifiedAuditLog extends Page implements HasTable
      */
     public static function canAccess(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        $user = Auth::user();
+
+        return $user instanceof User && $user->isSuperuser();
     }
 
     /**
@@ -338,7 +341,7 @@ class UnifiedAuditLog extends Page implements HasTable
         $filters = [
             Tables\Filters\Filter::make('date_range')
                 ->label(__('Date Range'))
-                ->form([
+                ->schema([
                     Forms\Components\DatePicker::make('date_from')
                         ->label(__('From Date')),
                     Forms\Components\DatePicker::make('date_to')

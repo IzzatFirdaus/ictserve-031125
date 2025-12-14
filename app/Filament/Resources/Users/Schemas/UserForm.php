@@ -36,7 +36,7 @@ class UserForm
     {
         return $schema
             ->components([
-                Section::make('Basic Information')
+                Section::make('Maklumat Asas')
                     ->schema([
                         TextInput::make('name')
                             ->required()
@@ -57,20 +57,25 @@ class UserForm
                             ->required(fn (string $context): bool => $context === 'create')
                             ->maxLength(255)
                             ->label(__('users.password'))
-                            ->helperText('Leave blank to keep current password (edit mode)'),
+                            ->helperText('Biarkan kosong untuk kekalkan kata laluan semasa (mod kemaskini)'),
 
                         Select::make('role')
                             ->options([
-                                'staff' => 'Staff',
-                                'approver' => 'Approver (Grade 41+)',
+                                'staff' => 'Staf',
+                                'approver' => 'Pelulus (Gred 41+)',
                                 'admin' => 'Admin',
                                 'superuser' => 'Superuser',
                             ])
                             ->default('staff')
                             ->required()
                             ->label(__('users.role'))
-                            ->disabled(fn () => ! Auth::user() || ! Auth::user()->isSuperuser())
-                            ->helperText('Only superuser can change roles'),
+                            ->disabled(function (): bool {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+
+                                return ! ($user?->hasRole('superuser') ?? false);
+                            })
+                            ->helperText('Hanya superuser boleh menukar peranan'),
 
                         Toggle::make('is_active')
                             ->default(true)
@@ -78,7 +83,7 @@ class UserForm
                     ])
                     ->columns(2),
 
-                Section::make('Organizational Information')
+                Section::make('Maklumat Organisasi')
                     ->schema([
                         TextInput::make('staff_id')
                             ->maxLength(255)
@@ -104,7 +109,7 @@ class UserForm
                     ])
                     ->columns(2),
 
-                Section::make('Contact Information')
+                Section::make('Maklumat Perhubungan')
                     ->schema([
                         TextInput::make('phone')
                             ->tel()

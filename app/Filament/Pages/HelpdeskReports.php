@@ -41,7 +41,7 @@ class HelpdeskReports extends Page implements HasForms
 
     public static function getNavigationLabel(): string
     {
-        return __('Reports & Analytics');
+        return __('admin_pages.helpdesk_reports.label');
     }
 
     public static function getNavigationIcon(): string

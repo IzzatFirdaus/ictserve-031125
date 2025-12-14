@@ -28,10 +28,7 @@ class TicketCategoriesTable
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name_ms')
-                    ->label('Nama (BM)')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('name_en')
-                    ->label('Name (EN)')
+                    ->label('Nama')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent.name_ms')
                     ->label('Kategori Induk')

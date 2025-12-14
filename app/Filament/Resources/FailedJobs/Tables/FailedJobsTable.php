@@ -34,13 +34,13 @@ class FailedJobsTable
             ])
             ->recordActions([
                 Action::make('retry')
-                    ->label('Retry')
+                    ->label('Cuba Semula')
                     ->icon('heroicon-o-arrow-path')
                     ->color('warning')
                     ->action(function ($record) {
                         \Illuminate\Support\Facades\Artisan::call('queue:retry', ['id' => $record->uuid]);
                         \Filament\Notifications\Notification::make()
-                            ->title('Job retried')
+                            ->title('Kerja dicuba semula')
                             ->success()
                             ->send();
                     })

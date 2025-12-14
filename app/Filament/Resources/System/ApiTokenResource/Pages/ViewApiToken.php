@@ -34,7 +34,7 @@ class ViewApiToken extends ViewRecord
         /** @var PersonalAccessToken $record */
         $record = $this->record;
 
-        return __('API Token: :name', ['name' => $record->name]);
+        return "Token API: {$record->name}";
     }
 
     public function form(Schema $schema): Schema
@@ -44,18 +44,18 @@ class ViewApiToken extends ViewRecord
 
         return $schema
             ->components([
-                Section::make(__('Token Information'))
+                Section::make('Maklumat Token')
                     ->components([
                         Placeholder::make('name')
-                            ->label(__('Token Name'))
+                            ->label('Nama Token')
                             ->content(fn () => $record->name ?? '-'),
 
                         Placeholder::make('owner')
-                            ->label(__('Owner'))
+                            ->label('Pemilik')
                             ->content(fn () => $record->tokenable?->name ?? '-'),
 
                         Placeholder::make('abilities')
-                            ->label(__('Abilities'))
+                            ->label('Keizinan')
                             ->content(function () use ($record): string {
                                 $abilities = $record->abilities ?? [];
                                 if (\is_array($abilities)) {
@@ -66,36 +66,36 @@ class ViewApiToken extends ViewRecord
                             }),
 
                         Placeholder::make('created_at')
-                            ->label(__('Created'))
+                            ->label('Dicipta')
                             ->content(fn () => $record->created_at?->format('d/m/Y H:i:s') ?? '-'),
 
                         Placeholder::make('expires_at')
-                            ->label(__('Expires'))
+                            ->label('Tamat Tempoh')
                             ->content(function () use ($record): string {
                                 if ($record->expires_at === null) {
-                                    return __('Never');
+                                    return 'Tiada';
                                 }
 
                                 $expiresAt = Carbon::parse($record->expires_at);
                                 if ($expiresAt->isPast()) {
-                                    return __('Expired on :date', ['date' => $expiresAt->format('d/m/Y H:i')]);
+                                    return 'Luput pada '.$expiresAt->format('d/m/Y H:i');
                                 }
 
                                 $daysRemaining = (int) Carbon::now()->diffInDays($expiresAt);
 
-                                return $expiresAt->format('d/m/Y H:i').' ('.__(':days days remaining', ['days' => $daysRemaining]).')';
+                                return $expiresAt->format('d/m/Y H:i')." ({$daysRemaining} hari lagi)";
                             }),
 
                         Placeholder::make('last_used_at')
-                            ->label(__('Last Used'))
-                            ->content(fn () => $record->last_used_at?->format('d/m/Y H:i:s') ?? __('Never used')),
+                            ->label('Digunakan Kali Terakhir')
+                            ->content(fn () => $record->last_used_at?->format('d/m/Y H:i:s') ?? 'Belum pernah digunakan'),
                     ])
                     ->columns(2),
 
-                Section::make(__('Usage Statistics (Last 30 Days)'))
+                Section::make('Statistik Penggunaan (30 Hari Terakhir)')
                     ->components([
                         Placeholder::make('usage_total')
-                            ->label(__('Total Requests'))
+                            ->label('Jumlah Permintaan')
                             ->content(function () use ($record): int {
                                 return ApiTokenUsageLog::where('personal_access_token_id', $record->id)
                                     ->where('created_at', '>=', Carbon::now()->subDays(30))
@@ -103,7 +103,7 @@ class ViewApiToken extends ViewRecord
                             }),
 
                         Placeholder::make('usage_successful')
-                            ->label(__('Successful Requests'))
+                            ->label('Permintaan Berjaya')
                             ->content(function () use ($record): int {
                                 return ApiTokenUsageLog::where('personal_access_token_id', $record->id)
                                     ->where('created_at', '>=', Carbon::now()->subDays(30))
@@ -112,7 +112,7 @@ class ViewApiToken extends ViewRecord
                             }),
 
                         Placeholder::make('usage_failed')
-                            ->label(__('Failed Requests'))
+                            ->label('Permintaan Gagal')
                             ->content(function () use ($record): int {
                                 return ApiTokenUsageLog::where('personal_access_token_id', $record->id)
                                     ->where('created_at', '>=', Carbon::now()->subDays(30))
@@ -121,7 +121,7 @@ class ViewApiToken extends ViewRecord
                             }),
 
                         Placeholder::make('usage_endpoints')
-                            ->label(__('Unique Endpoints'))
+                            ->label('Endpoint Unik')
                             ->content(function () use ($record): int {
                                 return ApiTokenUsageLog::where('personal_access_token_id', $record->id)
                                     ->where('created_at', '>=', Carbon::now()->subDays(30))
@@ -137,12 +137,12 @@ class ViewApiToken extends ViewRecord
     {
         return [
             Action::make('revoke')
-                ->label(__('Revoke Token'))
+                ->label('Batalkan Token')
                 ->icon('heroicon-o-x-circle')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->modalHeading(__('Revoke API Token'))
-                ->modalDescription(__('Are you sure you want to revoke this token? This action cannot be undone and the token will immediately stop working.'))
+                ->modalHeading('Batalkan Token API')
+                ->modalDescription('Adakah anda pasti mahu membatalkan token ini? Tindakan ini tidak boleh diundur dan token akan berhenti berfungsi serta-merta.')
                 ->action(function (): void {
                     /** @var PersonalAccessToken $record */
                     $record = $this->record;
@@ -156,8 +156,8 @@ class ViewApiToken extends ViewRecord
 
                         Notification::make()
                             ->success()
-                            ->title(__('Token Revoked'))
-                            ->body(__('The API token has been revoked successfully.'))
+                            ->title('Token dibatalkan')
+                            ->body('Token API telah berjaya dibatalkan.')
                             ->send();
 
                         $this->redirect($this->getResource()::getUrl('index'));

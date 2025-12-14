@@ -63,38 +63,38 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
     {
         return $schema
             ->components([
-                Section::make('Create New Workflow Rule')
+                Section::make('Cipta Peraturan Aliran Kerja Baharu')
                     ->schema([
                         Grid::make(2)
                             ->schema([
                                 TextInput::make('name')
-                                    ->label('Rule Name')
+                                    ->label('Nama Peraturan')
                                     ->required()
                                     ->maxLength(255),
 
                                 Select::make('module')
-                                    ->label('Module')
+                                    ->label('Modul')
                                     ->options([
                                         'helpdesk' => 'Helpdesk',
-                                        'loans' => 'Asset Loans',
-                                        'assets' => 'Asset Management',
+                                        'loans' => 'Pinjaman Aset',
+                                        'assets' => 'Pengurusan Aset',
                                     ])
                                     ->required()
                                     ->reactive(),
                             ]),
 
                         Textarea::make('description')
-                            ->label('Description')
+                            ->label('Keterangan')
                             ->rows(2),
 
-                        Section::make('Conditions (If)')
+                        Section::make('Syarat (Jika)')
                             ->schema([
                                 Repeater::make('conditions')
                                     ->schema([
                                         Grid::make(3)
                                             ->schema([
                                                 Select::make('field')
-                                                    ->label('Field')
+                                                    ->label('Medan')
                                                     ->options(function (callable $get) {
                                                         $module = $get('../../module');
                                                         if (! $module) {
@@ -110,62 +110,62 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
                                                 Select::make('operator')
                                                     ->label('Operator')
                                                     ->options([
-                                                        '=' => 'Equals',
-                                                        '!=' => 'Not Equals',
-                                                        '>' => 'Greater Than',
-                                                        '<' => 'Less Than',
-                                                        '>=' => 'Greater Than or Equal',
-                                                        '<=' => 'Less Than or Equal',
-                                                        'contains' => 'Contains',
-                                                        'in' => 'In List',
+                                                        '=' => 'Sama dengan',
+                                                        '!=' => 'Tidak sama dengan',
+                                                        '>' => 'Lebih besar',
+                                                        '<' => 'Kurang daripada',
+                                                        '>=' => 'Lebih besar atau sama',
+                                                        '<=' => 'Kurang atau sama',
+                                                        'contains' => 'Mengandungi',
+                                                        'in' => 'Dalam senarai',
                                                     ])
                                                     ->required(),
 
                                                 TextInput::make('value')
-                                                    ->label('Value')
+                                                    ->label('Nilai')
                                                     ->required(),
                                             ]),
                                     ])
-                                    ->addActionLabel('Add Condition')
+                                    ->addActionLabel('Tambah Syarat')
                                     ->collapsible(),
                             ]),
 
-                        Section::make('Actions (Then)')
+                        Section::make('Tindakan (Maka)')
                             ->schema([
                                 Repeater::make('actions')
                                     ->schema([
                                         Grid::make(2)
                                             ->schema([
                                                 Select::make('type')
-                                                    ->label('Action Type')
+                                                    ->label('Jenis Tindakan')
                                                     ->options([
-                                                        'send_email' => 'Send Email',
-                                                        'update_status' => 'Update Status',
-                                                        'assign_user' => 'Assign User',
-                                                        'create_notification' => 'Create Notification',
+                                                        'send_email' => 'Hantar E-mel',
+                                                        'update_status' => 'Kemaskini Status',
+                                                        'assign_user' => 'Tugaskan Pengguna',
+                                                        'create_notification' => 'Cipta Pemberitahuan',
                                                     ])
                                                     ->required()
                                                     ->reactive(),
 
                                                 TextInput::make('value')
-                                                    ->label('Action Value')
+                                                    ->label('Nilai Tindakan')
                                                     ->required(),
                                             ]),
                                     ])
-                                    ->addActionLabel('Add Action')
+                                    ->addActionLabel('Tambah Tindakan')
                                     ->collapsible(),
                             ]),
 
                         Grid::make(2)
                             ->schema([
                                 TextInput::make('priority')
-                                    ->label('Priority')
+                                    ->label('Keutamaan')
                                     ->numeric()
                                     ->default(0)
-                                    ->helperText('Higher numbers execute first'),
+                                    ->helperText('Nombor lebih tinggi dilaksanakan dahulu'),
 
                                 Toggle::make('is_active')
-                                    ->label('Active')
+                                    ->label('Aktif')
                                     ->default(true),
                             ]),
                     ]),
@@ -177,7 +177,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
     {
         return [
             Action::make('save')
-                ->label('Save Rule')
+                ->label('Simpan Peraturan')
                 ->action('save')
                 ->color('primary'),
 
@@ -205,7 +205,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
         WorkflowRule::create($data);
 
         Notification::make()
-            ->title('Workflow rule created successfully')
+            ->title('Peraturan aliran kerja dicipta berjaya')
             ->success()
             ->send();
 
@@ -239,8 +239,8 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
         }
 
         Notification::make()
-            ->title('Rule testing completed')
-            ->body('Check logs for detailed results')
+            ->title('Ujian peraturan selesai')
+            ->body('Semak log untuk keputusan terperinci')
             ->info()
             ->send();
     }

@@ -72,7 +72,7 @@ class ExportLoansAction extends Action
         // Add UTF-8 BOM for Excel compatibility
         fwrite($output, "\xEF\xBB\xBF");
 
-        // CSV Headers (Bilingual - Malay primary)
+        // CSV Headers (Bahasa Melayu - ICTServe v3.6.0)
         fputcsv($output, [
             'No. Permohonan',
             'Nama Pemohon',

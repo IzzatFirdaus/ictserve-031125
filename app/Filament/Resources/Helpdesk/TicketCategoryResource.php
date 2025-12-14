@@ -12,6 +12,7 @@ use App\Filament\Resources\Helpdesk\Pages\ViewTicketCategory;
 use App\Filament\Resources\Helpdesk\Schemas\TicketCategoryForm;
 use App\Filament\Resources\Helpdesk\Tables\TicketCategoriesTable;
 use App\Models\TicketCategory;
+use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -22,8 +23,8 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Ticket Category Resource
  *
- * Provides full CRUD capabilities for helpdesk ticket categories including bilingual
- * labels and SLA configuration. Accessible to admin and superuser roles only.
+ * Provides full CRUD capabilities for helpdesk ticket categories with SLA configuration.
+ * Accessible to admin and superuser roles only.
  *
  * @trace D03-FR-002.2 (Helpdesk configuration)
  * @trace D04 A¶3.3 (Filament administration)
@@ -41,7 +42,10 @@ class TicketCategoryResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::check() && Auth::user()?->hasAdminAccess();
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return Auth::check() && $user?->hasAdminAccess();
     }
 
     public static function form(Schema $schema): Schema

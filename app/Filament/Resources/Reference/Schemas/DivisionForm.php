@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Reference\Schemas;
 
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class DivisionForm
@@ -26,10 +28,8 @@ class DivisionForm
                         ->label('Nama (BM)')
                         ->required()
                         ->maxLength(255),
-                    TextInput::make('name_en')
-                        ->label('Name (EN)')
-                        ->required()
-                        ->maxLength(255),
+                    Hidden::make('name_en')
+                        ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('name_ms')),
                     Select::make('parent_id')
                         ->relationship('parent', 'name_ms')
                         ->label('Bahagian Induk')
@@ -45,9 +45,8 @@ class DivisionForm
                     TextInput::make('description_ms')
                         ->label('Deskripsi (BM)')
                         ->maxLength(255),
-                    TextInput::make('description_en')
-                        ->label('Description (EN)')
-                        ->maxLength(255),
+                    Hidden::make('description_en')
+                        ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('description_ms')),
                 ])
                 ->columns(2),
         ]);

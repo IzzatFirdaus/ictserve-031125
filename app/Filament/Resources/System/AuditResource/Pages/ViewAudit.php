@@ -23,22 +23,22 @@ class ViewAudit extends ViewRecord
     public function getTitle(): string|Htmlable
     {
         if (! $this->record instanceof Audit) {
-            return __('Audit Record');
+            return 'Rekod Audit';
         }
 
-        return __('Audit Record #:id', ['id' => $this->record->id]);
+        return 'Rekod Audit #'.$this->record->id;
     }
 
     protected function getHeaderActions(): array
     {
         return [
             Action::make('export_record')
-                ->label('Export Record')
+                ->label('Eksport Rekod')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')
                 ->form([
                     \Filament\Forms\Components\Select::make('format')
-                        ->label('Export Format')
+                        ->label('Format Eksport')
                         ->options([
                             'pdf' => 'PDF',
                             'json' => 'JSON',
@@ -60,14 +60,14 @@ class ViewAudit extends ViewRecord
 
                     \Filament\Notifications\Notification::make()
                         ->success()
-                        ->title('Audit record exported successfully.')
+                        ->title('Rekod audit berjaya dieksport.')
                         ->send();
 
                     return response()->download(\Illuminate\Support\Facades\Storage::path($filename));
                 }),
 
             Action::make('view_related')
-                ->label('View Related Records')
+                ->label('Lihat Rekod Berkaitan')
                 ->icon('heroicon-o-link')
                 ->color('info')
                 ->visible(fn () => $this->record instanceof Audit && $this->record->auditable_type && $this->record->auditable_id)
@@ -97,7 +97,7 @@ class ViewAudit extends ViewRecord
                 ->openUrlInNewTab(),
 
             Action::make('view_user_activity')
-                ->label('View User Activity')
+                ->label('Lihat Aktiviti Pengguna')
                 ->icon('heroicon-o-user')
                 ->color('warning')
                 ->visible(fn () => $this->record instanceof Audit && $this->record->user_id)

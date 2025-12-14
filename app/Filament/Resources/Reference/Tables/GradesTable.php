@@ -25,9 +25,6 @@ class GradesTable
                 Tables\Columns\TextColumn::make('name_ms')
                     ->label('Nama (BM)')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name_en')
-                    ->label('Name (EN)')
-                    ->toggleable(),
                 Tables\Columns\TextColumn::make('level')
                     ->label('Tahap')
                     ->sortable(),

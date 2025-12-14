@@ -34,19 +34,19 @@ class AssetAvailabilityCalendarWidget extends Widget
     protected function getFormSchema(): array
     {
         /** @var array<int, string> $categoryOptions */
-        $categoryOptions = AssetCategory::query()->pluck('name_en', 'id')->toArray();
+        $categoryOptions = AssetCategory::query()->pluck('name', 'id')->toArray();
 
         return [
             Select::make('categoryFilter')
                 ->label(__('widgets.filter_by_category'))
                 ->options($categoryOptions)
-                ->placeholder('All Categories')
+                ->placeholder('Semua Kategori')
                 ->reactive(),
             Select::make('viewMode')
                 ->label(__('widgets.view_mode'))
                 ->options([
-                    'month' => 'Monthly View',
-                    'week' => 'Weekly View',
+                    'month' => 'Paparan Bulanan',
+                    'week' => 'Paparan Mingguan',
                 ])
                 ->default('month')
                 ->reactive(),
@@ -84,6 +84,17 @@ class AssetAvailabilityCalendarWidget extends Widget
 
         foreach ($assets as $asset) {
             $statusValue = $asset->status->value; // Convert enum to string
+
+            $statusLabel = match ($statusValue) {
+                'available' => 'Tersedia',
+                'loaned' => 'Dipinjam',
+                'reserved' => 'Ditempah',
+                'maintenance' => 'Penyelenggaraan',
+                'damaged' => 'Rosak',
+                'retired' => 'Dilupuskan',
+                default => $statusValue,
+            };
+
             $color = match ($statusValue) {
                 'available' => 'green',
                 'loaned' => 'yellow',
@@ -102,17 +113,17 @@ class AssetAvailabilityCalendarWidget extends Widget
                     'end' => $asset->currentLoan->loan_end_date?->format('Y-m-d'),
                     'color' => $color,
                     'status' => $statusValue,
-                    'category' => $asset->category?->name_en,
+                    'category' => $asset->category?->name,
                 ];
             } else {
                 // Show current status as all-day event
                 $events[] = [
                     'id' => $asset->id,
-                    'title' => "{$asset->name} ({$statusValue})",
+                    'title' => "{$asset->name} ({$statusLabel})",
                     'start' => now()->format('Y-m-d'),
                     'color' => $color,
                     'status' => $statusValue,
-                    'category' => $asset->category?->name_en,
+                    'category' => $asset->category?->name,
                     'allDay' => true,
                 ];
             }
@@ -127,11 +138,11 @@ class AssetAvailabilityCalendarWidget extends Widget
     protected function getLegend(): array
     {
         return [
-            ['color' => 'green', 'label' => 'Available', 'status' => 'available'],
-            ['color' => 'yellow', 'label' => 'Reserved/Loaned', 'status' => 'reserved'],
-            ['color' => 'orange', 'label' => 'Maintenance', 'status' => 'maintenance'],
-            ['color' => 'red', 'label' => 'Damaged', 'status' => 'damaged'],
-            ['color' => 'gray', 'label' => 'Retired', 'status' => 'retired'],
+            ['color' => 'green', 'label' => 'Tersedia', 'status' => 'available'],
+            ['color' => 'yellow', 'label' => 'Ditempah / Dipinjam', 'status' => 'reserved'],
+            ['color' => 'orange', 'label' => 'Penyelenggaraan', 'status' => 'maintenance'],
+            ['color' => 'red', 'label' => 'Rosak', 'status' => 'damaged'],
+            ['color' => 'gray', 'label' => 'Dilupuskan', 'status' => 'retired'],
         ];
     }
 }

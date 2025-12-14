@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk\Schemas;
 
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 /**
  * TicketCategory Form Schema
  *
- * Captures bilingual labels, hierarchy, and SLA configuration for helpdesk categories.
+ * Captures labels, hierarchy, and SLA configuration for helpdesk categories.
  */
 class TicketCategoryForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Category Details')
+            Section::make('Butiran Kategori')
                 ->schema([
                     TextInput::make('code')
                         ->required()
@@ -31,11 +33,9 @@ class TicketCategoryForm
                     TextInput::make('name_ms')
                         ->required()
                         ->maxLength(255)
-                        ->label('Nama (Bahasa Melayu)'),
-                    TextInput::make('name_en')
-                        ->required()
-                        ->maxLength(255)
-                        ->label('Name (English)'),
+                        ->label('Nama'),
+                    Hidden::make('name_en')
+                        ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('name_ms')),
                     Select::make('parent_id')
                         ->relationship('parent', 'name_ms')
                         ->preload()
@@ -46,14 +46,13 @@ class TicketCategoryForm
                         ->label('Aktif'),
                 ])
                 ->columns(2),
-            Section::make('Descriptions & SLA')
+            Section::make('Penerangan & SLA')
                 ->schema([
                     Textarea::make('description_ms')
                         ->rows(3)
-                        ->label('Deskripsi (Bahasa Melayu)'),
-                    Textarea::make('description_en')
-                        ->rows(3)
-                        ->label('Description (English)'),
+                        ->label('Penerangan'),
+                    Hidden::make('description_en')
+                        ->dehydrateStateUsing(fn (mixed $state, Get $get): mixed => filled($state) ? $state : $get('description_ms')),
                     TextInput::make('sla_response_hours')
                         ->integer()
                         ->minValue(1)
