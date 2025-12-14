@@ -379,8 +379,8 @@ class LoanApplicationsTable
     private static function getRecordActions(): array
     {
         return [
-            ViewAction::make()->label('Lihat'),
-            EditAction::make()->label('Kemaskini'),
+            ViewAction::make()->label(__('filament.actions.view')),
+            EditAction::make()->label(__('filament.actions.edit')),
             Action::make('approve')
                 ->label(__('filament.actions.approve'))
                 ->color('success')
@@ -563,8 +563,8 @@ class LoanApplicationsTable
                     ->failureNotificationTitle(fn (int $successCount, int $totalCount): string => $successCount
                         ? "{$successCount} daripada {$totalCount} permohonan ditolak"
                         : 'Tiada permohonan berjaya ditolak'),
-                DeleteBulkAction::make()->label('Padam Dipilih'),
-                RestoreBulkAction::make()->label('Pulih Dipilih'),
+                DeleteBulkAction::make()->label(__('filament.actions.delete_selected')),
+                RestoreBulkAction::make()->label(__('filament.actions.restore_selected')),
             ]),
         ];
     }
