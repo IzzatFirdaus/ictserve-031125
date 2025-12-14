@@ -184,6 +184,8 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
+                // Theme Toggle Widget (v3.6.0)
+                \App\Filament\Widgets\ThemeToggleWidget::class,
                 // Unified Dashboard Widgets
                 HelpdeskStatsOverview::class,
                 AssetLoanStatsOverview::class,
@@ -221,8 +223,9 @@ class AdminPanelProvider extends PanelProvider
             // Topbar Configuration
             ->topNavigation(false)
             ->sidebarCollapsibleOnDesktop()
-            // Dark Mode Support
-            ->darkMode(false) // Disabled for WCAG compliance consistency
+            // Dark Mode Support (v3.6.0 - User-controlled via ThemeToggleWidget)
+            // Light mode is default, but users can toggle to dark mode via localStorage
+            ->darkMode(true)
             // Max Content Width
             ->maxContentWidth('full')
             // Spa Mode for Better Performance
