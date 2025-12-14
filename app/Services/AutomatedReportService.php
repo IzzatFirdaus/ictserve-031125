@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Mail\Reports\ScheduledReportMail;
 use App\Models\ReportSchedule;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -68,8 +69,7 @@ class AutomatedReportService
         // Generate report using ReportBuilderService
         $reportData = $this->reportBuilderService->generateReport(
             $schedule->module,
-            $schedule->filters ?? [],
-            $schedule->format
+            $schedule->filters ?? []
         );
 
         // Create filename with timestamp
@@ -199,7 +199,7 @@ class AutomatedReportService
     {
         $totalApplications = \App\Models\LoanApplication::whereIn('status', ['approved', 'rejected'])->count();
         $compliantApplications = \App\Models\LoanApplication::whereIn('status', ['approved', 'rejected'])
-            ->where('updated_at', '<=', \DB::raw('DATE_ADD(created_at, INTERVAL 48 HOUR)'))
+            ->where('updated_at', '<=', DB::raw('DATE_ADD(created_at, INTERVAL 48 HOUR)'))
             ->count();
 
         return $totalApplications > 0 ? round(($compliantApplications / $totalApplications) * 100, 2) : 100;

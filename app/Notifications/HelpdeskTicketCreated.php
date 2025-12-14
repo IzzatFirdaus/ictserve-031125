@@ -68,7 +68,7 @@ class HelpdeskTicketCreated extends Notification implements ShouldQueue
             ->line(__('helpdesk.email.ticket_details'))
             ->line('**'.__('helpdesk.subject').':** '.$this->ticket->subject)
             ->line('**'.__('helpdesk.submitter').':** '.$this->ticket->getSubmitterName())
-            ->line('**'.__('helpdesk.email').':** '.$this->ticket->getSubmitterEmail())
+            ->line('**'.__('helpdesk.email_label').':** '.$this->ticket->getSubmitterEmail())
             ->line('**'.__('helpdesk.category').':** '.($this->ticket->category->name ?? __('common.not_specified')))
             ->line('**'.__('helpdesk.priority').':** '.ucfirst($this->ticket->priority))
             ->line('**'.__('helpdesk.status').':** '.ucfirst($this->ticket->status))
