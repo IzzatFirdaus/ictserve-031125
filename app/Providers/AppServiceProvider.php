@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Broadcasting\BroadcastManager as AppBroadcastManager;
+use App\Broadcasting\ChannelRegistrar;
 use App\Contracts\AccessoryTrackingServiceInterface;
 use App\Contracts\AccountLinkingServiceInterface;
 use App\Contracts\ApiTokenServiceInterface;
@@ -57,6 +59,7 @@ use App\Services\SsoHealthCheck;
 use App\Services\TokenService;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Illuminate\Auth\Events\Failed;
+use Illuminate\Broadcasting\BroadcastManager as FrameworkBroadcastManager;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Event;
@@ -67,6 +70,15 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->singleton(ChannelRegistrar::class);
+
+        $this->app->extend(FrameworkBroadcastManager::class, function ($manager, $app) {
+            return new AppBroadcastManager(
+                $app,
+                $app->make(ChannelRegistrar::class),
+            );
+        });
+
         $this->app->singleton(BedrockRuntimeClient::class, function () {
             $credentials = config('bedrock.credentials');
 
