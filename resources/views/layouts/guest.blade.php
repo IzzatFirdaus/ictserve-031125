@@ -83,19 +83,18 @@
         <main id="main-content"
             class="flex-1 flex flex-col sm:justify-center items-center px-4 sm:px-6 lg:px-8 pb-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             tabindex="-1">
-            {{-- Logo --}}
-            <div class="mb-8">
+            {{-- Logo (MyDS Typography - D13 §2.4) --}}
+            <div class="mb-12">
                 <a href="/" wire:navigate aria-label="{{ __('common.home') }}"
-                    class="flex flex-col items-center gap-4 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-2">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500 dark:text-gray-400" />
-                    <span
-                        class="text-2xl font-bold text-gray-900 dark:text-white">{{ config('app.name', 'ICTServe') }}</span>
+                    class="flex flex-col items-center gap-6 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-m p-4 min-h-11 min-w-11 transition-all duration-200 hover:scale-105">
+                    <x-application-logo class="w-20 h-20 fill-current text-primary-600 dark:text-primary-400 transition-colors duration-200" />
+                    <span class="text-2xl font-bold font-heading text-gray-900 dark:text-white tracking-tight">{{ config('app.name', 'ICTServe') }}</span>
                 </a>
             </div>
 
-            {{-- Login Card (Task 4.0.3 - Standardized Styling) --}}
+            {{-- Login Card (MyDS v2025.2 Compliant - D13 §2.7) --}}
             <div
-                class="w-full sm:max-w-md px-6 py-8 bg-white dark:bg-gray-800 shadow-lg overflow-hidden sm:rounded-xl border border-gray-200 dark:border-gray-700 theme-transition">
+                class="w-full sm:max-w-md px-8 py-10 bg-white dark:bg-gray-800 shadow-card overflow-hidden rounded-l border border-gray-200 dark:border-gray-700 theme-transition">
                 @isset($slot)
                     {{ $slot }}
                 @else
@@ -103,11 +102,11 @@
                 @endisset
             </div>
 
-            {{-- Footer Links --}}
-            <div class="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+            {{-- Footer Links (MyDS Spacing - D13 §2.6) --}}
+            <div class="mt-8 text-center text-sm text-gray-600 dark:text-gray-400 font-body">
                 <p>{{ __('auth.need_help') }}
                     <a href="{{ route('contact') }}"
-                        class="text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 underline focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                        class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-m min-h-11 inline-flex items-center px-2 transition-colors duration-200">
                         {{ __('auth.contact_support') }}
                     </a>
                 </p>
