@@ -7,6 +7,15 @@ applyTo: '**'
 - Use the Memory MCP JSONL store at `storage/mcp/memory.jsonl` for persistent knowledge
 - Keep helper scripts concise and focused on active services only
 
+## GitHub Codespaces Setup (2025-12-15)
+
+**Composer/Vendor Issues RESOLVED** - Configured automatic Composer auth for Codespaces:
+- `.devcontainer/devcontainer.json` - Runs setup-composer.sh on Codespaces creation
+- `.devcontainer/setup-composer.sh` - Handles GitHub token auth, HTTPS git config, vendor installation
+- `.github/workflows/composer-validate.yml` - CI/CD validation for Composer
+- Fixes: GitHub authentication (token-based), vendor conflicts (squizlabs), SSH→HTTPS redirection
+- Codespaces auto-injects `$GITHUB_TOKEN` env var - no manual setup needed
+
 ## Project Architecture
 
 - Memory system uses MCP Memory Server with JSONL storage (no external database required)
