@@ -141,22 +141,22 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     // Four-role RBAC methods
     public function isStaff(): bool
     {
-        return $this->role === 'staff';
+        return $this->role === 'staff' || $this->hasRole('staff');
     }
 
     public function isApprover(): bool
     {
-        return $this->role === 'approver';
+        return $this->role === 'approver' || $this->hasRole('approver');
     }
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === 'admin' || $this->hasRole('admin');
     }
 
     public function isSuperuser(): bool
     {
-        return $this->role === 'superuser';
+        return $this->role === 'superuser' || $this->hasRole('superuser');
     }
 
     public function canApprove(): bool

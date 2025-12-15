@@ -80,6 +80,7 @@ class HelpdeskTicket extends Model implements Auditable
         'related_loan_application_id',
 
         // SLA tracking
+        'sla_due_at',
         'sla_response_due_at',
         'sla_resolution_due_at',
         'responded_at',
@@ -137,6 +138,7 @@ class HelpdeskTicket extends Model implements Auditable
     protected function casts(): array
     {
         return [
+            'sla_due_at' => 'datetime',
             'sla_response_due_at' => 'datetime',
             'sla_resolution_due_at' => 'datetime',
             'responded_at' => 'datetime',
@@ -151,6 +153,17 @@ class HelpdeskTicket extends Model implements Auditable
             'escalation_level' => 'integer',
             'declaration_accepted' => 'boolean',
         ];
+    }
+
+    public function setPriorityAttribute(?string $value): void
+    {
+        if ($value === null) {
+            $this->attributes['priority'] = null;
+
+            return;
+        }
+
+        $this->attributes['priority'] = strtolower($value);
     }
 
     // HYBRID SUPPORT - Relationships
