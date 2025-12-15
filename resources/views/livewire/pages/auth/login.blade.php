@@ -109,7 +109,7 @@ new #[Layout('layouts.guest')] class extends Component {
         <div class="space-y-2">
             <x-input-label for="email" :value="__('auth.email_or_username')" class="text-gray-900 dark:text-white font-medium font-body" />
             <x-text-input wire:model="form.email" id="email"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-m shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
                 type="text" name="email" required autofocus autocomplete="username"
                 placeholder="{{ __('auth.email_or_username_placeholder') }}"
                 aria-describedby="login-hint" />
@@ -126,7 +126,7 @@ new #[Layout('layouts.guest')] class extends Component {
         <div class="space-y-2">
             <x-input-label for="password" :value="__('auth.password')" class="text-gray-900 dark:text-white font-medium font-body" />
             <x-text-input wire:model="form.password" id="password"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-m shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
                 type="password" name="password" required autocomplete="current-password"
                 placeholder="{{ __('auth.password_placeholder') }}" />
             @error('form.password')
@@ -138,13 +138,13 @@ new #[Layout('layouts.guest')] class extends Component {
         <div class="flex items-center justify-between pt-2">
             <label for="remember" class="inline-flex items-center cursor-pointer min-h-11 py-2 group">
                 <input wire:model="form.remember" id="remember" type="checkbox"
-                    class="w-4 h-4 rounded-xs border-gray-300 dark:border-gray-600 text-primary-600 shadow-sm focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800 transition-colors duration-200"
+                    class="w-4 h-4 rounded-sm border-gray-300 dark:border-gray-600 text-primary-600 shadow-sm focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800 transition-colors duration-200"
                     name="remember">
                 <span class="ms-3 text-sm text-gray-600 dark:text-gray-400 font-body group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors duration-200">{{ __('auth.remember_me') }}</span>
             </label>
 
             @if (Route::has('password.request'))
-                <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 rounded-m min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
+                <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 rounded-md min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
                     href="{{ route('password.request') }}" wire:navigate>
                     {{ __('auth.forgot_password') }}
                 </a>
@@ -154,7 +154,7 @@ new #[Layout('layouts.guest')] class extends Component {
         {{-- Submit Button (MyDS Button - D13 §2.7) --}}
         <div class="pt-4">
             <button type="submit"
-                class="w-full min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-m shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
+                class="w-full min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-md shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
                 wire:loading.attr="disabled"
                 wire:target="login">
                 <span wire:loading.remove wire:target="login" class="flex items-center justify-center">

@@ -1,4 +1,4 @@
-{{--
+﻿{{--
 /**
  * Component name: Register Page (Volt)
  * Description: WCAG 2.2 AA compliant bilingual registration form with @motac.gov.my validation
@@ -196,7 +196,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-text-input
                 wire:model.live.debounce.300ms="name"
                 id="name"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-m shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
                 type="text"
                 name="name"
                 required
@@ -216,7 +216,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-text-input
                 wire:model.live.debounce.300ms="email"
                 id="email"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-m shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
                 type="email"
                 name="email"
                 required
@@ -255,7 +255,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-text-input
                 wire:model.live.debounce.150ms="password"
                 id="password"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-m shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
                 type="password"
                 name="password"
                 required
@@ -279,7 +279,7 @@ new #[Layout('layouts.guest')] class extends Component
                 </div>
 
                 {{-- Password Requirements Checklist (MyDS Card - D13 §2.7) --}}
-                <div id="password-requirements" class="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-m border border-gray-200 dark:border-gray-600">
+                <div id="password-requirements" class="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-md border border-gray-200 dark:border-gray-600">
                     <p class="text-sm font-medium font-body text-gray-700 dark:text-gray-300 mb-3">{{ __('auth.password_requirements') }}:</p>
                     <ul class="space-y-2 text-sm font-body">
                         <li class="flex items-center gap-2 {{ $passwordChecks['length'] ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400' }}">
@@ -337,7 +337,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-text-input
                 wire:model.live.debounce.300ms="password_confirmation"
                 id="password_confirmation"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-m shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
                 type="password"
                 name="password_confirmation"
                 required
@@ -372,14 +372,14 @@ new #[Layout('layouts.guest')] class extends Component
 
         {{-- Form Actions (MyDS Touch Targets - D13 §2.7) --}}
         <div class="flex items-center justify-between mt-8 pt-4">
-            <a class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 underline rounded-m focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
+            <a class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 underline rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
                href="{{ route('login') }}"
                wire:navigate>
                 {{ __('auth.already_registered') }}
             </a>
 
             <button type="submit"
-                class="min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-m shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
+                class="min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-md shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
                 @if($isSubmitting) disabled @endif>
                 @if($isSubmitting)
                     <span class="flex items-center gap-2">

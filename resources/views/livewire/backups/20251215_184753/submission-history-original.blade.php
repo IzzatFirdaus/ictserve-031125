@@ -1,0 +1,412 @@
+﻿{{--
+/**
+ * Submission History View
+ *
+ * Displays comprehensive submission history for authenticated users with tabbed interface
+ * for helpdesk tickets and loan applications. Includes search, filtering, sorting, and
+ * pagination capabilities with WCAG 2.2 Level AA compliance.
+ *
+ * Features:
+ * - Tabbed interface (My Tickets | My Loan Requests)
+ * - Search functionality with debouncing (300ms)
+ * - Status filtering for both tickets and loans
+ * - Date range filtering
+ * - Sortable columns with ARIA attributes
+ * - Pagination with accessible controls
+ * - Empty states for no results
+ * - Loading states with wire:loading
+ * - Responsive design (mobile, tablet, desktop)
+ *
+ * @see D03-FR-021.1 Submission history with tabbed interface
+ * @see D03-FR-021.2 Ticket history display
+ * @see D03-FR-021.3 Loan history display
+ * @see D03-FR-021.4 Search and filter functionality
+ * @see D12 §9 WCAG 2.2 AA compliance
+ * @see D14 §4 MOTAC compliant color palette
+ *
+ * @requirements 21.1, 21.2, 21.3, 21.4
+ *
+ * @wcag-level AA
+ *
+ * @version 1.0.0
+ *
+ * @created 2025-11-05
+ *
+ * @author Frontend Engineering Team
+ */
+--}}
+
+<div>
+    {{-- Page Header --}}
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-slate-100">
+            {{ __('common.submission_history') }}
+        </h1>
+        <p class="mt-2 text-sm text-slate-300">
+            {{ __('common.view_all_submissions') }}
+        </p>
+    </div>
+
+    {{-- Tabbed Interface --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <div class="bg-white dark:bg-gray-800 shadow-card rounded-lg theme-transition">
+            <div class="border-b border-gray-200 dark:border-gray-700">
+                <nav class="-mb-px flex" role="tablist" aria-label="{{ __('common.submission_types') }}">
+                    <button wire:click="switchTab('tickets')" type="button" role="tab"
+                        aria-selected="{{ $activeTab === 'tickets' ? 'true' : 'false' }}" aria-controls="tickets-panel"
+                        class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm min-h-11 min-w-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200 {{ $activeTab === 'tickets' ? 'border-primary-600 text-primary-600 dark:border-primary-500 dark:text-primary-500' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600' }}">
+                        <x-heroicon-o-clipboard-document-list class="inline-block h-5 w-5 mr-2" aria-hidden="true" />
+                        {{ __('common.my_tickets') }}
+                    </button>
+                    <button wire:click="switchTab('loans')" type="button" role="tab"
+                        aria-selected="{{ $activeTab === 'loans' ? 'true' : 'false' }}" aria-controls="loans-panel"
+                        class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm min-h-11 min-w-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200 {{ $activeTab === 'loans' ? 'border-primary-600 text-primary-600 dark:border-primary-500 dark:text-primary-500' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600' }}">
+                        <x-heroicon-o-cube class="inline-block h-5 w-5 mr-2" aria-hidden="true" />
+                        {{ __('common.my_loan_requests') }}
+                    </button>
+                </nav>
+            </div>
+
+            {{-- Search and Filters Section --}}
+            <div class="p-6 bg-gray-50 border-b border-gray-200">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {{-- Search Input --}}
+                    <div class="sm:col-span-2">
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ __('common.search') }}
+                        </label>
+                        <input wire:model.live.debounce.300ms="search" type="text" id="search"
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm"
+                            placeholder="{{ $activeTab === 'tickets' ? __('common.search_tickets') : __('common.search_loans') }}"
+                            aria-label="{{ __('common.search') }}">
+                    </div>
+
+                    {{-- Status Filter --}}
+                    <div>
+                        <label for="status-filter" class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ __('common.status') }}
+                        </label>
+                        <select wire:model.live="statusFilter" id="status-filter"
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm">
+                            @if ($activeTab === 'tickets')
+                                @foreach ($this->ticketStatusOptions as $value => $label)
+                                    <option wire:key="ticket-status-{{ $value }}" value="{{ $value }}">
+                                        {{ $label }}</option>
+                                @endforeach
+                            @else
+                                @foreach ($this->loanStatusOptions as $value => $label)
+                                    <option wire:key="loan-status-{{ $value }}" value="{{ $value }}">
+                                        {{ $label }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
+                    {{-- Date Range Filters --}}
+                    <div>
+                        <label for="date-from" class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ __('common.from_date') }}
+                        </label>
+                        <input wire:model.live="dateFrom" type="date" id="date-from"
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm">
+                    </div>
+                </div>
+
+                <div class="mt-4 flex items-center justify-between">
+                    <div class="flex-1">
+                        <label for="date-to" class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ __('common.to_date') }}
+                        </label>
+                        <input wire:model.live="dateTo" type="date" id="date-to"
+                            class="block w-full max-w-xs min-h-11 px-3 py-2.5 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm">
+                    </div>
+                    <div class="ml-4 flex items-center gap-2">
+                        <button wire:click="resetFilters" type="button"
+                            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md shadow-button text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200">
+                            <x-heroicon-o-arrow-path class="h-5 w-5 mr-2" aria-hidden="true" />
+                            {{ __('common.reset_filters') }}
+                        </button>
+                        {{-- Export CSV Button --}}
+                        <button wire:click="{{ $activeTab === 'tickets' ? 'exportTicketsCSV' : 'exportLoansCSV' }}"
+                            type="button"
+                            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md shadow-button text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200">
+                            <x-heroicon-o-arrow-down-tray class="h-5 w-5 mr-2" aria-hidden="true" />
+                            {{ __('common.export_csv') }}
+                        </button>
+                        {{-- Export PDF/Print Button --}}
+                        <button type="button"
+                            data-export-pdf-url="{{ route('portal.submissions.export-pdf', ['type' => $activeTab]) }}"
+                            x-on:click="window.open($el.dataset.exportPdfUrl, '_blank')"
+                            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md shadow-button text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200">
+                            <x-heroicon-o-printer class="h-5 w-5 mr-2" aria-hidden="true" />
+                            {{ __('common.print_pdf') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Bulk Actions Toolbar (shown when items selected) --}}
+            @if ($this->hasSelection)
+                <div class="bg-motac-blue-light border-b border-motac-blue px-6 py-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <span class="text-sm font-medium text-motac-blue-dark">
+                                {{ $this->selectedCount }} {{ __('common.items_selected') }}
+                            </span>
+                            <button wire:click="clearSelection" type="button"
+                                class="text-sm text-motac-blue hover:text-motac-blue-dark underline focus:outline-none focus:ring-2 focus:ring-motac-blue">
+                                {{ __('common.clear_selection') }}
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button wire:click="bulkExportCSV" type="button"
+                                class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-md text-sm font-medium text-motac-blue bg-white hover:bg-motac-blue-light focus:outline-none focus:ring-2 focus:ring-motac-blue">
+                                <x-heroicon-o-arrow-down-tray class="h-4 w-4 mr-1.5" aria-hidden="true" />
+                                {{ __('common.export_selected') }}
+                            </button>
+                            @if ($activeTab === 'tickets')
+                                <button wire:click="bulkMarkAsRead" type="button"
+                                    class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-md text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus:ring-2 focus:ring-motac-blue">
+                                    <x-heroicon-o-check class="h-4 w-4 mr-1.5" aria-hidden="true" />
+                                    {{ __('common.mark_as_read') }}
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            {{-- Tickets Tab Content --}}
+            @if ($activeTab === 'tickets')
+                <div id="tickets-panel" role="tabpanel" aria-labelledby="tickets-tab" class="p-6">
+                    @if ($this->filteredTickets->isEmpty())
+                        <div class="text-center py-12">
+                            <x-heroicon-o-clipboard-document-list class="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('common.no_tickets_found') }}
+                            </h3>
+                            <p class="mt-1 text-sm text-gray-500">{{ __('common.try_adjusting_filters') }}</p>
+                        </div>
+                    @else
+                        {{-- Tickets Table --}}
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-4 py-3 w-12">
+                                            <input wire:model.live="selectAllTickets" type="checkbox"
+                                                class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                                aria-label="{{ __('common.select_all') }}">
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            <button wire:click="sortBy('ticket_number')" type="button"
+                                                class="group inline-flex items-center focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2"
+                                                aria-sort="{{ $sortField === 'ticket_number' ? ($sortDirection === 'asc' ? 'ascending' : 'descending') : 'none' }}">
+                                                {{ __('common.ticket_number') }}
+                                                @if ($sortField === 'ticket_number')
+                                                    @if ($sortDirection === 'asc')
+                                                        <x-heroicon-o-chevron-up class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                                    @else
+                                                        <x-heroicon-o-chevron-down class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                                    @endif
+                                                @endif
+                                            </button>
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ __('common.subject') }}
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ __('common.status') }}
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ __('common.priority') }}
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            <button wire:click="sortBy('created_at')" type="button"
+                                                class="group inline-flex items-center focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2"
+                                                aria-sort="{{ $sortField === 'created_at' ? ($sortDirection === 'asc' ? 'ascending' : 'descending') : 'none' }}">
+                                                {{ __('common.created_date') }}
+                                                @if ($sortField === 'created_at')
+                                                    @if ($sortDirection === 'asc')
+                                                        <x-heroicon-o-chevron-up class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                                    @else
+                                                        <x-heroicon-o-chevron-down class="ml-2 h-4 w-4 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                                    @endif
+                                                @endif
+                                            </button>
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ __('common.actions') }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @foreach ($this->filteredTickets as $ticket)
+                                        <tr wire:key="ticket-{{ $ticket->id }}"
+                                            class="{{ in_array($ticket->id, $selectedTickets) ? 'bg-motac-blue-light' : '' }}">
+                                            <td class="px-4 py-4 w-12">
+                                                <input wire:model.live="selectedTickets" type="checkbox"
+                                                    value="{{ $ticket->id }}"
+                                                    class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                                    aria-label="{{ __('common.select_item', ['item' => $ticket->ticket_number]) }}">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {{ $ticket->ticket_number }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-900">
+                                                {{ Str::limit($ticket->subject, 50) }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <x-data.status-badge :status="$ticket->status" type="helpdesk" />
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <x-data.status-badge :status="$ticket->priority" type="priority" />
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $ticket->created_at->format('Y-m-d') }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
+                                                    class="text-motac-blue hover:text-motac-blue-dark focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2">
+                                                    {{ __('common.view_details') }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {{-- Pagination --}}
+                        <div class="mt-6">
+                            {{ $this->filteredTickets->links() }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            {{-- Loans Tab Content --}}
+            @if ($activeTab === 'loans')
+                <div id="loans-panel" role="tabpanel" aria-labelledby="loans-tab" class="p-6">
+                    @if ($this->filteredLoans->isEmpty())
+                        <div class="text-center py-12">
+                            <x-heroicon-o-cube class="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('common.no_loans_found') }}</h3>
+                            <p class="mt-1 text-sm text-gray-500">{{ __('common.try_adjusting_filters') }}</p>
+                        </div>
+                    @else
+                        {{-- Select All Loans Checkbox --}}
+                        <div class="mb-4 flex items-center gap-2">
+                            <input wire:model.live="selectAllLoans" type="checkbox"
+                                class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                aria-label="{{ __('common.select_all') }}">
+                            <span class="text-sm text-gray-600">{{ __('common.select_all') }}</span>
+                        </div>
+
+                        {{-- Loans Grid --}}
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            @foreach ($this->filteredLoans as $loan)
+                                <div wire:key="loan-{{ $loan->id }}"
+                                    class="bg-white border {{ in_array($loan->id, $selectedLoans) ? 'border-motac-blue ring-2 ring-motac-blue' : 'border-gray-200' }} rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 relative">
+                                    {{-- Selection Checkbox --}}
+                                    <div class="absolute top-4 left-4">
+                                        <input wire:model.live="selectedLoans" type="checkbox"
+                                            value="{{ $loan->id }}"
+                                            class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                            aria-label="{{ __('common.select_item', ['item' => $loan->application_number]) }}">
+                                    </div>
+                                    <div class="p-6 pl-10">
+                                        {{-- Application Number and Status --}}
+                                        <div class="flex items-center justify-between mb-4">
+                                            <h3 class="text-lg font-medium text-gray-900">
+                                                {{ $loan->application_number }}
+                                            </h3>
+                                            <x-data.status-badge :status="$loan->status" type="loan" />
+                                        </div>
+
+                                        {{-- Loan Details --}}
+                                        <dl class="space-y-2">
+                                            <div>
+                                                <dt class="text-xs font-medium text-gray-500 uppercase">
+                                                    {{ __('common.items') }}
+                                                </dt>
+                                                <dd class="mt-1 text-sm text-gray-900">
+                                                    {{ $loan->loanItems->count() }} {{ __('common.items') }}
+                                                    @if ($loan->loanItems->isNotEmpty())
+                                                        <div class="mt-1 text-xs text-gray-500">
+                                                            {{ $loan->loanItems->first()->asset->name }}
+                                                            @if ($loan->loanItems->count() > 1)
+                                                                {{ __('common.and_more', ['count' => $loan->loanItems->count() - 1]) }}
+                                                            @endif
+                                                        </div>
+                                                    @endif
+                                                </dd>
+                                            </div>
+
+                                            <div>
+                                                <dt class="text-xs font-medium text-gray-500 uppercase">
+                                                    {{ __('common.loan_period') }}
+                                                </dt>
+                                                <dd class="mt-1 text-sm text-gray-900">
+                                                    {{ $loan->loan_start_date->format('Y-m-d') }} -
+                                                    {{ $loan->loan_end_date->format('Y-m-d') }}
+                                                </dd>
+                                            </div>
+
+                                            <div>
+                                                <dt class="text-xs font-medium text-gray-500 uppercase">
+                                                    {{ __('common.purpose') }}
+                                                </dt>
+                                                <dd class="mt-1 text-sm text-gray-900">
+                                                    {{ Str::limit($loan->purpose, 60) }}
+                                                </dd>
+                                            </div>
+
+                                            <div>
+                                                <dt class="text-xs font-medium text-gray-500 uppercase">
+                                                    {{ __('common.submitted_date') }}
+                                                </dt>
+                                                <dd class="mt-1 text-sm text-gray-500">
+                                                    {{ $loan->created_at->format('Y-m-d') }}
+                                                </dd>
+                                            </div>
+                                        </dl>
+
+                                        {{-- View Details Button --}}
+                                        <div class="mt-6">
+                                            <a href="{{ route('loan.show', $loan) }}"
+                                                class="block w-full text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-11">
+                                                {{ __('common.view_details') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- Pagination --}}
+                        <div class="mt-6">
+                            {{ $this->filteredLoans->links() }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+        </div>
+    </div>
+
+    {{-- Loading State --}}
+    <div wire:loading wire:target="switchTab,resetFilters,sortBy"
+        class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 shadow-xl">
+            <div class="flex items-center space-x-3">
+                <x-heroicon-o-arrow-path class="animate-spin h-5 w-5 text-motac-blue" />
+                <span class="text-sm font-medium text-gray-900">{{ __('common.loading') }}...</span>
+            </div>
+        </div>
+    </div>
+</div>
