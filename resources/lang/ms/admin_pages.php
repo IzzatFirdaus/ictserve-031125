@@ -96,6 +96,8 @@ return [
     ],
     'report_builder' => [
         'label' => 'Pembina Laporan',
+        'title' => 'Pembina Laporan',
+        'group' => 'Laporan',
     ],
     'pdpa_dashboard' => [
         'label' => 'Papan Pemuka PDPA',

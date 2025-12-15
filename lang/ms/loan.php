@@ -461,7 +461,7 @@ return [
         'token_required' => 'Token kelulusan diperlukan untuk mengakses halaman ini.',
         'token_invalid' => 'Pautan kelulusan tidak sah atau telah digunakan.',
         'token_invalid_title' => 'Pautan Tidak Sah',
-        'token_expired' => 'Pautan kelulusan telah tamat tempoh. Sila hubungi BPM untuk meminta pautan baharu.',
+        'token_expired' => 'Pautan kelulusan telah tamat tempoh (expired). Sila hubungi BPM untuk meminta pautan baharu.',
         'token_expired_title' => 'Pautan Tamat Tempoh',
         'error_title' => 'Ralat',
         'load_error' => 'Ralat berlaku semasa memuatkan permohonan. Sila cuba lagi.',

@@ -159,7 +159,7 @@ return [
         'security_notice_text' => 'Pautan kelulusan ini sah selama 7 hari dan hanya boleh digunakan sekali. Keputusan anda akan direkodkan dalam jejak audit sistem.',
         'help_text' => 'Jika anda mempunyai sebarang pertanyaan mengenai permohonan ini, sila hubungi pasukan Sokongan ICT.',
         'token_invalid' => 'Pautan kelulusan tidak sah. Pautan mungkin telah digunakan atau tidak betul.',
-        'token_expired' => 'Pautan kelulusan ini telah tamat tempoh. Sila hubungi pemohon untuk permintaan kelulusan baharu.',
+        'token_expired' => 'Pautan kelulusan ini telah tamat tempoh (expired). Sila hubungi pemohon untuk permintaan kelulusan baharu.',
         'approved_success' => 'Permohonan :application_number telah diluluskan dengan jayanya. Pemohon akan dimaklumkan melalui e-mel.',
         'declined_success' => 'Permohonan :application_number telah ditolak. Pemohon akan dimaklumkan melalui e-mel.',
         'approval_failed' => 'Gagal memproses kelulusan. Sila cuba lagi atau hubungi sokongan.',
