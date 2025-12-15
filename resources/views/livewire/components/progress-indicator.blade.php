@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Progress Indicator Volt Component v3.6.0
  *
@@ -140,7 +140,7 @@ on([
     x-transition:leave-end="opacity-0 transform -translate-y-2" class="progress-indicator" role="progressbar"
     aria-valuemin="0" aria-valuemax="{{ $total }}" aria-valuenow="{{ $isIndeterminate ? null : $progress }}"
     aria-valuetext="{{ $message }}" aria-label="Kemajuan operasi">
-    <div class="bg-white dark:bg-gray-800 rounded-l shadow-card border border-gray-200 dark:border-gray-700 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-card border border-gray-200 dark:border-gray-700 p-4">
         {{-- Header with message and percentage --}}
         <div class="flex items-center justify-between mb-3">
             <div class="flex-1">

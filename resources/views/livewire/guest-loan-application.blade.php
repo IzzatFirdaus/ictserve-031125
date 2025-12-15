@@ -1,4 +1,4 @@
-{{--
+﻿{{--
 /**
  * Component name: Guest Loan Application Form (Multi-Step) - MyDS Design System v2025.2
  * Description: WCAG 2.2 AA compliant 7-step loan application wizard with MyDS tokens
@@ -17,13 +17,13 @@
 --}}
 
 @php
-    $sectionCardClasses = 'rounded-l border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card theme-transition';
+    $sectionCardClasses = 'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card theme-transition';
 @endphp
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
     {{-- Skip Link for WCAG 2.4.1 --}}
     <a href="#main-content"
-        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-m focus:shadow-button skip-to-content">
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-md focus:shadow-button skip-to-content">
         {{ __('accessibility.skip_to_main_content') }}
     </a>
 
@@ -123,7 +123,7 @@
                         </legend>
 
                         {{-- Section Header --}}
-                        <div id="guest-loan-step-1-description" class="rounded-l border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
+                        <div id="guest-loan-step-1-description" class="rounded-lg border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-1-heading" class="text-lg font-heading font-semibold text-white">
                                 {{ __('loan.form.section_1_applicant') }}
                             </h2>
@@ -136,7 +136,7 @@
 
                         {{-- Authenticated User Information Display --}}
                         @auth
-                            <div class="rounded-l border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/20 p-6 space-y-4">
+                            <div class="rounded-lg border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/20 p-6 space-y-4">
                                 <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide">
                                     {{ __('loan.form.your_information') }}
                                 </h3>
@@ -238,7 +238,7 @@
                         </div>
 
                         {{-- Emergency Request Toggle --}}
-                        <div class="rounded-l border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4">
+                        <div class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4">
                             <div class="flex items-center justify-between mb-4">
                                 <div>
                                     <h3 class="text-sm font-medium text-gray-900 dark:text-white">
@@ -280,7 +280,7 @@
                         </legend>
 
                         {{-- Section Header --}}
-                        <div id="guest-loan-step-2-description" class="rounded-l border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
+                        <div id="guest-loan-step-2-description" class="rounded-lg border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-2-heading" class="text-lg font-heading font-semibold text-white">
                                 {{ __('loan.form.section_2_asset_selection') }}
                             </h2>
@@ -310,7 +310,7 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     @foreach ($availableAssets as $asset)
-                                        <div class="rounded-l border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4 theme-transition">
+                                        <div class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4 theme-transition">
                                             <label class="flex items-start space-x-3 cursor-pointer">
                                                 <input type="checkbox" wire:model.live="form.selected_assets"
                                                     value="{{ $asset['id'] }}"
@@ -360,7 +360,7 @@
                         </legend>
 
                         {{-- Section Header --}}
-                        <div id="guest-loan-step-3-description" class="rounded-l border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
+                        <div id="guest-loan-step-3-description" class="rounded-lg border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-3-heading" class="text-lg font-heading font-semibold text-white">
                                 {{ __('loan.form.section_3_loan_details') }}
                             </h2>
@@ -395,7 +395,7 @@
                         </legend>
 
                         {{-- Section Header --}}
-                        <div id="guest-loan-step-4-description" class="rounded-l border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
+                        <div id="guest-loan-step-4-description" class="rounded-lg border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-4-heading" class="text-lg font-heading font-semibold text-white">
                                 {{ __('loan.form.section_4_approval') }}
                             </h2>
@@ -448,7 +448,7 @@
                         </legend>
 
                         {{-- Section Header --}}
-                        <div id="guest-loan-step-5-description" class="rounded-l border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
+                        <div id="guest-loan-step-5-description" class="rounded-lg border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-5-heading" class="text-lg font-heading font-semibold text-white">
                                 {{ __('loan.form.section_5_terms') }}
                             </h2>
@@ -460,7 +460,7 @@
                         </div>
 
                         {{-- Terms & Conditions Content --}}
-                        <div class="rounded-l border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-6 space-y-4">
+                        <div class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-6 space-y-4">
                             <h3 class="text-base font-heading font-semibold text-gray-900 dark:text-white">
                                 {{ __('loan.form.terms_conditions_title') }}
                             </h3>
@@ -514,7 +514,7 @@
                         </legend>
 
                         {{-- Section Header --}}
-                        <div id="guest-loan-step-6-description" class="rounded-l border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
+                        <div id="guest-loan-step-6-description" class="rounded-lg border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-6-heading" class="text-lg font-heading font-semibold text-white">
                                 {{ __('loan.form.section_6_documents') }}
                             </h2>
@@ -537,7 +537,7 @@
                                 @dragleave.prevent="isDragging = false"
                                 @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }))"
                                 :class="{ 'border-primary-600 bg-primary-500/10': isDragging }"
-                                class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-l p-8 text-center transition-colors duration-200 theme-transition">
+                                class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center transition-colors duration-200 theme-transition">
 
                                 <input type="file" wire:model="form.supporting_documents" multiple
                                     accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="sr-only"
@@ -566,7 +566,7 @@
                             @if (!empty($form['supporting_documents']))
                                 <ul class="space-y-2">
                                     @foreach ($form['supporting_documents'] as $index => $document)
-                                        <li class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-l">
+                                        <li class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
                                             <span class="text-sm text-gray-700 dark:text-gray-300">
                                                 {{ is_object($document) ? $document->getClientOriginalName() : $document }}
                                             </span>
@@ -594,7 +594,7 @@
                         </legend>
 
                         {{-- Section Header --}}
-                        <div id="guest-loan-step-7-description" class="rounded-l border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
+                        <div id="guest-loan-step-7-description" class="rounded-lg border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-7-heading" class="text-lg font-heading font-semibold text-white">
                                 {{ __('loan.form.section_7_review') }}
                             </h2>
@@ -608,7 +608,7 @@
                         {{-- Application Summary --}}
                         <div class="space-y-6">
                             {{-- Applicant Information --}}
-                            <div class="rounded-l border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4">
+                            <div class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4">
                                 <h3 class="text-base font-heading font-semibold text-gray-900 dark:text-white mb-3">
                                     {{ __('loan.form.applicant_information') }}
                                 </h3>
@@ -633,7 +633,7 @@
                             </div>
 
                             {{-- Loan Period --}}
-                            <div class="rounded-l border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4">
+                            <div class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4">
                                 <h3 class="text-base font-heading font-semibold text-gray-900 dark:text-white mb-3">
                                     {{ __('loan.form.loan_period') }}
                                 </h3>
@@ -651,7 +651,7 @@
 
                             {{-- Selected Assets --}}
                             @if (!empty($form['selected_assets']))
-                                <div class="rounded-l border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4">
+                                <div class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4">
                                     <h3 class="text-base font-heading font-semibold text-gray-900 dark:text-white mb-3">
                                         {{ __('loan.form.selected_assets') }}
                                     </h3>
@@ -672,7 +672,7 @@
                         </div>
 
                         {{-- Final Confirmation --}}
-                        <div class="rounded-l border border-warning-300 dark:border-warning-600 bg-warning-50 dark:bg-warning-900/20 p-4">
+                        <div class="rounded-lg border border-warning-300 dark:border-warning-600 bg-warning-50 dark:bg-warning-900/20 p-4">
                             <div class="flex items-start space-x-3">
                                 <input type="checkbox" wire:model.live="form.final_confirmation"
                                     name="form.final_confirmation" id="final_confirmation"
@@ -693,7 +693,7 @@
                 <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="guest-loan-step-8-heading" role="region"></section>
                     <div class="text-center space-y-6">
                         {{-- Section Header --}}
-                        <div id="guest-loan-step-8-description" class="rounded-l border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
+                        <div id="guest-loan-step-8-description" class="rounded-lg border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-8-heading" class="text-lg font-heading font-semibold text-white">
                                 {{ __('loan.form.section_8_complete') }}
                             </h2>
@@ -716,7 +716,7 @@
                         </h2>
 
                         @if (!empty($applicationNumber))
-                            <div class="rounded-l border border-primary-500/30 bg-primary-500/10 p-6">
+                            <div class="rounded-lg border border-primary-500/30 bg-primary-500/10 p-6">
                                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
                                     {{ __('loan.form.application_number') }}
                                 </p>

@@ -1,4 +1,4 @@
-{{--
+﻿{{--
     name: authenticated-dashboard.blade.php
     description: Main staff dashboard view with real-time statistics and activity feed
     author: dev-team@motac.gov.my
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <button wire:click="dismissClaimBanner" type="button"
-                class="text-warning-500 hover:text-warning-700 dark:text-warning-400 dark:hover:text-warning-200 focus:outline-none focus:ring-2 focus:ring-warning-500 focus:ring-offset-2 rounded p-2 min-h-11 min-w-11 flex items-center justify-center transition-colors duration-200"
+                class="min-h-11 min-w-11 flex items-center justify-center p-2 rounded-md text-warning-500 hover:text-warning-700 dark:text-warning-400 dark:hover:text-warning-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-warning-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
                 aria-label="{{ __('staff.dashboard.claim_banner.close') }}">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -59,7 +59,7 @@
             {{ __('staff.dashboard.welcome', ['name' => $user->name]) }}
         </h1>
         <button wire:click="refreshStatistics" type="button"
-            class="inline-flex items-center px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 shadow-button transition-colors duration-200 min-h-11"
+            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 shadow-button transition-colors duration-200"
             aria-label="{{ __('staff.dashboard.refresh_aria') }}">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -74,7 +74,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {{-- Total Submissions --}}
             <article
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 transition-shadow duration-200 hover:shadow-dropdown">
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 theme-transition transition-shadow duration-200 hover:shadow-dropdown">
                 <div class="flex items-center gap-4">
                     <div class="shrink-0 bg-primary-500 rounded-lg p-3">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -94,7 +94,7 @@
 
             {{-- Pending Actions --}}
             <article
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 transition-shadow duration-200 hover:shadow-dropdown">
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 theme-transition transition-shadow duration-200 hover:shadow-dropdown">
                 <div class="flex items-center gap-4">
                     <div class="shrink-0 bg-warning-500 rounded-lg p-3">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -115,7 +115,7 @@
 
             {{-- Recent Updates (7 days) --}}
             <article
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 transition-shadow duration-200 hover:shadow-dropdown">
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 theme-transition transition-shadow duration-200 hover:shadow-dropdown">
                 <div class="flex items-center gap-4">
                     <div class="shrink-0 bg-success-500 rounded-lg p-3">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -136,7 +136,7 @@
 
             {{-- Profile Completeness --}}
             <article
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 transition-shadow duration-200 hover:shadow-dropdown">
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 theme-transition transition-shadow duration-200 hover:shadow-dropdown">
                 <div class="flex items-center gap-4">
                     <div class="shrink-0 bg-secondary-500 rounded-lg p-3">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -158,7 +158,7 @@
 {{-- Module Statistics - MyDS shadow-card per D14 §7.5 --}}
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {{-- Helpdesk Statistics --}}
-    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-card" aria-labelledby="helpdesk-stats-title">
+    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-card theme-transition" aria-labelledby="helpdesk-stats-title">
         <div class="p-6">
             <h2 id="helpdesk-stats-title"
                 class="text-lg font-semibold font-heading text-gray-900 dark:text-gray-100 mb-4">
@@ -195,7 +195,7 @@
     </section>
 
     {{-- Loan Statistics --}}
-    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-card" aria-labelledby="loan-stats-title">
+    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-card theme-transition" aria-labelledby="loan-stats-title">
         <div class="p-6">
             <h2 id="loan-stats-title"
                 class="text-lg font-semibold font-heading text-gray-900 dark:text-gray-100 mb-4">

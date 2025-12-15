@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Search Filter Volt Component v3.6.0
  *
@@ -176,7 +176,7 @@ on([
                 </div>
                 <input type="search" id="search-input" wire:model.live.debounce.{{ $debounceMs }}ms="search"
                     placeholder="{{ $placeholder }}"
-                    class="block w-full pl-10 pr-10 py-2.5 min-h-11 border border-gray-300 dark:border-gray-600 rounded-m bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                    class="block w-full pl-10 pr-10 py-2.5 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
                     aria-describedby="search-help">
                 {{-- Clear search button --}}
                 @if (!empty($search))
@@ -195,7 +195,7 @@ on([
             {{-- Filter Toggle Button --}}
             @if (count($filterOptions) > 0)
                 <button type="button" wire:click="toggleFilters"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 min-h-11 border border-gray-300 dark:border-gray-600 rounded-m bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
+                    class="inline-flex items-center gap-2 px-4 py-2.5 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
                     aria-expanded="{{ $showFilters ? 'true' : 'false' }}" aria-controls="filter-panel">
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                         aria-hidden="true">
@@ -223,7 +223,7 @@ on([
     {{-- Filter Panel --}}
     @if ($showFilters && count($filterOptions) > 0)
         <div id="filter-panel"
-            class="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-l border border-gray-200 dark:border-gray-700"
+            class="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700"
             role="region" aria-label="Panel penapis">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach ($filterOptions as $key => $option)
@@ -235,7 +235,7 @@ on([
 
                         @if (($option['type'] ?? 'select') === 'select')
                             <select id="filter-{{ $key }}" wire:model.live="activeFilters.{{ $key }}"
-                                class="block w-full px-3 py-2 min-h-11 border border-gray-300 dark:border-gray-600 rounded-m bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                class="block w-full px-3 py-2 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                 <option value="">{{ $option['placeholder'] ?? 'Semua' }}</option>
                                 @foreach ($option['options'] ?? [] as $value => $label)
                                     <option value="{{ $value }}">{{ $label }}</option>
@@ -244,7 +244,7 @@ on([
                         @elseif(($option['type'] ?? 'select') === 'date')
                             <input type="date" id="filter-{{ $key }}"
                                 wire:model.live="activeFilters.{{ $key }}"
-                                class="block w-full px-3 py-2 min-h-11 border border-gray-300 dark:border-gray-600 rounded-m bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                class="block w-full px-3 py-2 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                         @endif
                     </div>
                 @endforeach
@@ -254,7 +254,7 @@ on([
             <div class="mt-4 flex flex-wrap items-center gap-3">
                 @if ($this->hasActiveFilters)
                     <button type="button" wire:click="clearFilters"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-m">
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md">
                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path
                                 d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
@@ -265,7 +265,7 @@ on([
 
                 @if ($enableSavedFilters && Auth::check())
                     <button type="button" x-on:click="showSaveModal = true"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-m"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md"
                         :disabled="!{{ $this->hasActiveFilters ? 'true' : 'false' }}">
                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path
@@ -316,7 +316,7 @@ on([
         <div class="flex min-h-screen items-center justify-center p-4">
             <div class="fixed inset-0 bg-black/50" x-on:click="showSaveModal = false"></div>
 
-            <div class="relative bg-white dark:bg-gray-800 rounded-l shadow-xl max-w-md w-full p-6"
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6"
                 x-on:keydown.escape.window="showSaveModal = false">
                 <h3 id="save-filter-title" class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     Simpan Penapis
@@ -328,17 +328,17 @@ on([
                     </label>
                     <input type="text" id="filter-name" x-model="filterName"
                         placeholder="Contoh: Tiket terbuka minggu ini"
-                        class="block w-full px-3 py-2 min-h-11 border border-gray-300 dark:border-gray-600 rounded-m bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                        class="block w-full px-3 py-2 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                 </div>
 
                 <div class="flex justify-end gap-3">
                     <button type="button" x-on:click="showSaveModal = false"
-                        class="px-4 py-2 min-h-11 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-m focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        class="px-4 py-2 min-h-11 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
                         Batal
                     </button>
                     <button type="button"
                         x-on:click="$wire.saveCurrentFilters(filterName); showSaveModal = false; filterName = ''"
-                        class="px-4 py-2 min-h-11 bg-primary-600 text-white rounded-m hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="px-4 py-2 min-h-11 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
                         Simpan
                     </button>
                 </div>

@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col bg-white dark:bg-slate-900">
+﻿<div class="min-h-screen flex flex-col bg-white dark:bg-slate-900">
     <!-- Header -->
     <header class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-orange-500/20 shadow-lg"
         role="banner">
@@ -24,7 +24,7 @@
                             fill="#FF9900" />
                     </svg>
                     <h1
-                        class="text-xl font-bold bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
+                        class="text-xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
                         Sembang Bedrock
                     </h1>
                 </div>
@@ -51,7 +51,7 @@
             class="{{ $showSidebar ? 'w-64' : 'w-0' }} transition-all duration-300 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-orange-900/30 overflow-hidden">
             <div class="p-4">
                 <button wire:click="newConversation"
-                    class="w-full px-4 py-2 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg mb-4 font-semibold shadow-lg shadow-orange-500/20 min-h-11"
+                    class="w-full px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg mb-4 font-semibold shadow-lg shadow-orange-500/20 min-h-11"
                     aria-label="Perbualan baharu">
                     + Perbualan Baharu
                 </button>
@@ -164,7 +164,7 @@
                         <div class="mb-4 {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}"
                             role="article" aria-label="{{ $message['role'] }} message">
                             <div
-                                class="inline-block max-w-[80%] p-4 rounded-lg shadow-lg {{ $message['role'] === 'user' ? 'bg-linear-to-r from-orange-500 to-orange-600 text-white' : 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-orange-900/30 text-gray-900 dark:text-gray-100' }}">
+                                class="inline-block max-w-[80%] p-4 rounded-lg shadow-lg {{ $message['role'] === 'user' ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white' : 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-orange-900/30 text-gray-900 dark:text-gray-100' }}">
                                 @if ($message['role'] === 'user')
                                     <p class="whitespace-pre-wrap">{{ $message['content'] }}</p>
                                 @else
@@ -206,7 +206,7 @@
                         placeholder="{{ 'Taip mesej anda...' }}"
                         class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                     <button type="submit"
-                        class="px-8 py-3 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-11"
+                        class="px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-11"
                         wire:loading.attr="disabled" wire:target="send"
                         @if ($sending) disabled @endif aria-label="Hantar mesej">
                         <span wire:loading.remove wire:target="send" class="flex items-center gap-2">
