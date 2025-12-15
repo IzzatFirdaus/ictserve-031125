@@ -359,7 +359,7 @@ class ReportingAnalyticsTest extends TestCase
         $assetCount = 25;
 
         // Create new records for this test
-        LoanApplication::factory()->count($loanCount)->create([
+        LoanApplication::factory()->withoutLoanItems()->count($loanCount)->create([
             'division_id' => $this->division->id,
         ]);
 
@@ -662,7 +662,7 @@ class ReportingAnalyticsTest extends TestCase
         $loanCount = 15;
         $assetCount = 25;
 
-        LoanApplication::factory()->count($loanCount)->create([
+        LoanApplication::factory()->withoutLoanItems()->count($loanCount)->create([
             'division_id' => $this->division->id,
         ]);
 
@@ -689,7 +689,7 @@ class ReportingAnalyticsTest extends TestCase
         $newLoansCount = 10;
         $newAssetsCount = 20;
 
-        LoanApplication::factory()->count($newLoansCount)->create([
+        LoanApplication::factory()->withoutLoanItems()->count($newLoansCount)->create([
             'division_id' => $this->division->id,
             'status' => LoanStatus::APPROVED,
         ]);
