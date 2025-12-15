@@ -110,9 +110,13 @@ class ApiTokenResource extends Resource
                 Section::make(__('Token Information'))
                     ->description('Cipta token API baharu dengan kebolehan dan tempoh luput tertentu.')
                     ->components([
-                        Forms\Components\Select::make('user_id')
+                        Forms\Components\Hidden::make('tokenable_type')
+                            ->default(User::class)
+                            ->required(),
+
+                        Forms\Components\Select::make('tokenable_id')
                             ->label('Pengguna')
-                            ->relationship('tokenable', 'name')
+                            ->options(fn (): array => User::query()->orderBy('name')->pluck('name', 'id')->all())
                             ->searchable()
                             ->preload()
                             ->required()
@@ -245,7 +249,7 @@ class ApiTokenResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('tokenable_id')
                     ->label('Pengguna')
-                    ->relationship('tokenable', 'name')
+                    ->options(fn (): array => User::query()->orderBy('name')->pluck('name', 'id')->all())
                     ->searchable()
                     ->preload(),
 
