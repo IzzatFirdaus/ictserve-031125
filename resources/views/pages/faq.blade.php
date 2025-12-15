@@ -5,7 +5,7 @@
  * @component pages.faq
  * @description WCAG 2.2 Level AA compliant FAQ page with accordion, keyboard navigation, and theme switcher
  * @author Frontend Engineering Team
- * @trace D00 §4.1 (True Hybrid Architecture), D03-FR-004 (Public Information Pages), 
+ * @trace D00 §4.1 (True Hybrid Architecture), D03-FR-004 (Public Information Pages),
  *        D12 §6.4 (Accordion UI), D12 §6.11 (Skip Links), D13 §2.4 (Typography System),
  *        D14 §7.5 (Shadow System), D14 §7.6 (Motion System), D15 (Bahasa Melayu sahaja v3.6.0)
  * @version 3.6.0
@@ -37,11 +37,7 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <!-- Theme switcher (D12 §6.10 Motion, D14 §7.6) -->
-                    <button id="theme-toggle" aria-label="{{ __('Tukar tema') }}"
-                        class="p-2 rounded hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11">
-                        <x-heroicon-o-sun id="theme-icon-sun" class="w-5 h-5 hidden" />
-                        <x-heroicon-o-moon id="theme-icon-moon" class="w-5 h-5 hidden" />
-                    </button>
+                    <livewire:components.theme-toggle />
                     <a href="{{ route('welcome') }}"
                         class="text-sm text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors">
                         {{ __('footer.home') }}
@@ -57,7 +53,7 @@
         role="banner" aria-labelledby="page-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Enhanced Breadcrumbs (D12 §6.1, WCAG 2.2 AA) --}}
-            <nav aria-label="{{ __('Breadcrumb') }}" class="mb-6">
+            <nav aria-label="{{ __('Jejak Navigasi') }}" class="mb-6">
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
@@ -444,53 +440,11 @@
         </div>
     </section>
 
-    {{-- Theme Switcher and Search Functionality Script (D12 §6.10, D14 §7.6) --}}
+    {{-- FAQ Search Functionality Script (D13 §5.6 Search Components) --}}
     <script>
         (function() {
             'use strict';
 
-            // Theme Switcher Implementation (D14 §7.6 Motion System)
-            const root = document.documentElement;
-            const themeToggle = document.getElementById('theme-toggle');
-            const iconSun = document.getElementById('theme-icon-sun');
-            const iconMoon = document.getElementById('theme-icon-moon');
-
-            function updateThemeIcons(theme) {
-                if (!iconSun || !iconMoon) return;
-
-                if (theme === 'dark') {
-                    iconSun.classList.remove('hidden');
-                    iconMoon.classList.add('hidden');
-                } else {
-                    iconSun.classList.add('hidden');
-                    iconMoon.classList.remove('hidden');
-                }
-            }
-
-            function setTheme(theme) {
-                if (theme === 'dark') {
-                    root.classList.add('dark');
-                } else {
-                    root.classList.remove('dark');
-                }
-                localStorage.setItem('theme', theme);
-                updateThemeIcons(theme);
-            }
-
-            // Initialize theme (light default per D14 §7.6)
-            const storedTheme = localStorage.getItem('theme') || 'light';
-            setTheme(storedTheme);
-
-            // Theme toggle event listener
-            if (themeToggle) {
-                themeToggle.addEventListener('click', function() {
-                    const currentTheme = root.classList.contains('dark') ? 'dark' : 'light';
-                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                    setTheme(newTheme);
-                });
-            }
-
-            // FAQ Search Functionality (D13 §5.6 Search Components)
             const searchInput = document.getElementById('faq-search');
             const faqItems = document.querySelectorAll('.faq-item');
 

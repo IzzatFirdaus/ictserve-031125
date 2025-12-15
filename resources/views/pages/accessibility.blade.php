@@ -20,7 +20,7 @@
     <section class="bg-primary-600 dark:bg-primary-700 text-white py-12 md:py-16 theme-transition" role="banner" aria-labelledby="page-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Breadcrumbs per D12 §6.1 --}}
-            <nav aria-label="{{ __('Breadcrumb') }}" class="mb-6">
+            <nav aria-label="{{ __('Jejak Navigasi') }}" class="mb-6">
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
@@ -156,8 +156,7 @@
                     </li>
                     <li class="flex items-start gap-3">
                         <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                        <span
-                            class="text-gray-700">{{ __('Sokongan dwibahasa (Bahasa Melayu dan Bahasa Inggeris)') }}</span>
+                        <span class="text-gray-700">{{ __('Antaramuka Bahasa Melayu sepenuhnya') }}</span>
                     </li>
                     <li class="flex items-start gap-3">
                         <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
