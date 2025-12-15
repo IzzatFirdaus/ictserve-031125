@@ -223,6 +223,11 @@ Route::prefix('v1/ollama')->name('api.v1.ollama.')->middleware([
             ->name('generate')
             ->middleware(['auth:sanctum', 'ability:admin:all', 'throttle:30,1']);
 
+        // List drafts (admin only)
+        Route::get('/', [\App\Http\Controllers\Api\AutoReplyController::class, 'index'])
+            ->name('index')
+            ->middleware(['auth:sanctum', 'ability:admin:all', 'throttle:60,1']);
+
         // List pending drafts
         Route::get('/pending', [\App\Http\Controllers\Api\AutoReplyController::class, 'pending'])
             ->name('pending')
@@ -232,6 +237,11 @@ Route::prefix('v1/ollama')->name('api.v1.ollama.')->middleware([
         Route::get('/{id}/status', [\App\Http\Controllers\Api\AutoReplyController::class, 'status'])
             ->name('status')
             ->middleware(['auth:sanctum', 'ability:admin:all', 'throttle:120,1']);
+
+        // Email token action (approve/reject without auth)
+        Route::post('/email-action', [\App\Http\Controllers\Api\AutoReplyController::class, 'emailAction'])
+            ->name('email-action')
+            ->middleware('throttle:30,1');
 
         // Approve draft (supports token-based approval)
         Route::post('/{id}/approve', [\App\Http\Controllers\Api\AutoReplyController::class, 'approve'])
