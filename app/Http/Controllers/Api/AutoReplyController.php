@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AutoReplyEmailActionRequest;
 use App\Http\Requests\AutoReplyGenerateRequest;
 use App\Jobs\AutoReplyGenerationJob;
+use App\Models\ApprovalEmailToken;
 use App\Models\AutoReplyDraft;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
@@ -127,6 +129,44 @@ class AutoReplyController extends Controller
             $token = $request->input('token');
             $user = $request->user();
 
+            if ($draft->status !== AutoReplyDraft::STATUS_PENDING_REVIEW) {
+                return $this->errorResponse('Draf ini sudah diluluskan atau ditolak.', 400);
+            }
+
+            if (! $user) {
+                if (! is_string($token) || $token === '') {
+                    return $this->errorResponse('Token diperlukan untuk kelulusan.', 400);
+                }
+
+                $tokenHash = hash('sha256', $token);
+
+                $approvalToken = ApprovalEmailToken::query()
+                    ->where('auto_reply_draft_id', $draft->id)
+                    ->where('token', $tokenHash)
+                    ->where('action', 'approve')
+                    ->where('expires_at', '>', now())
+                    ->where('used', false)
+                    ->first();
+
+                if (! $approvalToken) {
+                    return $this->errorResponse('Token kelulusan tidak sah atau telah tamat tempoh.', 400);
+                }
+
+                $draft->forceFill([
+                    'status' => AutoReplyDraft::STATUS_APPROVED,
+                    'approved_by' => null,
+                    'approved_at' => now(),
+                    'rejection_reason' => null,
+                ])->save();
+
+                $approvalToken->use($request->ip());
+
+                return $this->successResponse([
+                    'message' => 'Draf berjaya diluluskan.',
+                    'draft' => $this->formatDraft($draft->fresh()),
+                ]);
+            }
+
             $success = $this->autoReplyService->approveDraft($draft, $user, $token);
 
             if ($success) {
@@ -160,6 +200,44 @@ class AutoReplyController extends Controller
             $token = $request->input('token');
             $user = $request->user();
             $reason = $request->input('reason');
+
+            if ($draft->status !== AutoReplyDraft::STATUS_PENDING_REVIEW) {
+                return $this->errorResponse('Draf ini sudah diluluskan atau ditolak.', 400);
+            }
+
+            if (! $user) {
+                if (! is_string($token) || $token === '') {
+                    return $this->errorResponse('Token diperlukan untuk penolakan.', 400);
+                }
+
+                $tokenHash = hash('sha256', $token);
+
+                $approvalToken = ApprovalEmailToken::query()
+                    ->where('auto_reply_draft_id', $draft->id)
+                    ->where('token', $tokenHash)
+                    ->where('action', 'reject')
+                    ->where('expires_at', '>', now())
+                    ->where('used', false)
+                    ->first();
+
+                if (! $approvalToken) {
+                    return $this->errorResponse('Token penolakan tidak sah atau telah tamat tempoh.', 400);
+                }
+
+                $draft->forceFill([
+                    'status' => AutoReplyDraft::STATUS_REJECTED,
+                    'approved_by' => null,
+                    'approved_at' => now(),
+                    'rejection_reason' => $reason,
+                ])->save();
+
+                $approvalToken->use($request->ip());
+
+                return $this->successResponse([
+                    'message' => 'Draf berjaya ditolak.',
+                    'draft' => $this->formatDraft($draft->fresh()),
+                ]);
+            }
 
             $success = $this->autoReplyService->rejectDraft($draft, $user, $reason, $token);
 
@@ -216,6 +294,87 @@ class AutoReplyController extends Controller
                 'per_page' => $drafts->perPage(),
                 'total' => $drafts->total(),
             ],
+        ]);
+    }
+
+    /**
+     * Senaraikan draf dengan pagination dan penapis status.
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $perPage = min($request->integer('per_page', 15), 100);
+        $status = $request->string('status')->toString();
+
+        $drafts = AutoReplyDraft::with(['generator', 'replyable'])
+            ->when($status !== '', fn ($query) => $query->where('status', $status))
+            ->latest()
+            ->paginate($perPage);
+
+        return $this->successResponse([
+            'drafts' => collect($drafts->items())->map(fn ($d) => $this->formatDraft($d)),
+            'pagination' => [
+                'current_page' => $drafts->currentPage(),
+                'last_page' => $drafts->lastPage(),
+                'per_page' => $drafts->perPage(),
+                'total' => $drafts->total(),
+            ],
+        ]);
+    }
+
+    /**
+     * Tindakan kelulusan melalui token e-mel (tanpa autentikasi).
+     */
+    public function emailAction(AutoReplyEmailActionRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $tokenHash = hash('sha256', $validated['token']);
+
+        $approvalToken = ApprovalEmailToken::query()
+            ->where('token', $tokenHash)
+            ->where('action', $validated['action'])
+            ->where('expires_at', '>', now())
+            ->where('used', false)
+            ->first();
+
+        if (! $approvalToken) {
+            return $this->errorResponse('Token telah tamat tempoh atau tidak sah.', 400);
+        }
+
+        $draft = AutoReplyDraft::find($approvalToken->auto_reply_draft_id);
+
+        if (! $draft) {
+            return $this->errorResponse('Token telah tamat tempoh atau tidak sah.', 400);
+        }
+
+        if ($draft->status !== AutoReplyDraft::STATUS_PENDING_REVIEW) {
+            return $this->errorResponse('Draf ini sudah diluluskan atau ditolak.', 400);
+        }
+
+        if ($validated['action'] === 'approve') {
+            $draft->forceFill([
+                'status' => AutoReplyDraft::STATUS_APPROVED,
+                'approved_by' => null,
+                'approved_at' => now(),
+                'rejection_reason' => null,
+            ])->save();
+        } else {
+            $draft->forceFill([
+                'status' => AutoReplyDraft::STATUS_REJECTED,
+                'approved_by' => null,
+                'approved_at' => now(),
+                'rejection_reason' => $validated['reason'],
+            ])->save();
+        }
+
+        if (! $approvalToken->use($request->ip())) {
+            return $this->errorResponse('Token telah tamat tempoh atau tidak sah.', 400);
+        }
+
+        return $this->successResponse([
+            'message' => $validated['action'] === 'approve'
+                ? 'Draf berjaya diluluskan.'
+                : 'Draf berjaya ditolak.',
         ]);
     }
 
