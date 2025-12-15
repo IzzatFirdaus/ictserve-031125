@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
+use App\Enums\LoanStatus;
 use App\Models\Activity;
 use App\Models\LoanApplication;
 use App\Services\ApprovalMatrixService;
@@ -161,7 +162,10 @@ class SuperuserConfiguration extends Page implements HasForms
     public function getExpiredApprovalLoans(): array
     {
         return LoanApplication::query()
-            ->whereIn('status', ['PENDING_SUPERVISOR_APPROVAL', 'UNDER_REVIEW'])
+            ->whereIn('status', [
+                LoanStatus::PENDING_APPROVAL->value,
+                LoanStatus::UNDER_REVIEW->value,
+            ])
             ->where(function ($query) {
                 $query->whereNull('approval_token_expires_at')
                     ->orWhere('approval_token_expires_at', '<', now());
@@ -170,13 +174,13 @@ class SuperuserConfiguration extends Page implements HasForms
             ->limit(50)
             ->get()
             ->mapWithKeys(function (LoanApplication $loan): array {
-                $reference = $loan->reference ?? $loan->application_number ?? 'N/A';
+                $applicationNumber = $loan->application_number ?? 'N/A';
                 $expiredText = $loan->approval_token_expires_at
                     ? ' ('.__('superuser_config.token_regeneration.expired_at', ['date' => $loan->approval_token_expires_at->format('d/m/Y H:i')]).')'
                     : ' ('.__('superuser_config.token_regeneration.no_token').')';
 
                 return [
-                    $reference => $reference.' - '.$loan->applicant_name.$expiredText,
+                    $applicationNumber => $applicationNumber.' - '.$loan->applicant_name.$expiredText,
                 ];
             })
             ->toArray();
@@ -274,7 +278,7 @@ class SuperuserConfiguration extends Page implements HasForms
             'approval_rules' => count($this->approvalMatrix['rules'] ?? []),
             'email_templates' => \App\Models\EmailTemplate::count(),
             'expired_tokens' => LoanApplication::query()
-                ->where('status', 'PENDING_SUPERVISOR_APPROVAL')
+                ->where('status', LoanStatus::PENDING_APPROVAL->value)
                 ->where(function ($query) {
                     $query->whereNull('approval_token_expires_at')
                         ->orWhere('approval_token_expires_at', '<', now());
@@ -302,7 +306,7 @@ class SuperuserConfiguration extends Page implements HasForms
      */
     public function getPendingApprovalsCount(): int
     {
-        return LoanApplication::where('status', 'PENDING_SUPERVISOR_APPROVAL')->count();
+        return LoanApplication::where('status', LoanStatus::PENDING_APPROVAL->value)->count();
     }
 
     public static function getNavigationLabel(): string
@@ -323,5 +327,13 @@ class SuperuserConfiguration extends Page implements HasForms
     public static function shouldRegisterNavigation(): bool
     {
         return Auth::user()?->hasRole('superuser') ?? false;
+    }
+
+    public static function canAccess(): bool
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('superuser') ?? false;
     }
 }
