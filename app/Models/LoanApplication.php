@@ -200,6 +200,30 @@ class LoanApplication extends Model implements Auditable
         'declared_at' => 'datetime',
     ];
 
+    public function setStatusAttribute(null|string|LoanStatus $value): void
+    {
+        if ($value === null) {
+            $this->attributes['status'] = null;
+
+            return;
+        }
+
+        if ($value instanceof LoanStatus) {
+            $this->attributes['status'] = $value->value;
+
+            return;
+        }
+
+        $normalized = strtolower(trim($value));
+        $normalized = str_replace(['-', ' '], '_', $normalized);
+
+        if ($normalized === 'on_loan') {
+            $normalized = LoanStatus::IN_USE->value;
+        }
+
+        $this->attributes['status'] = $normalized;
+    }
+
     /** @var array<string, string> */
     protected $auditInclude = [
         'application_number',
