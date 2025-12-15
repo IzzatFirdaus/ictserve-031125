@@ -1,4 +1,4 @@
-{{-- 
+{{--
     FAQ Bot AI Component - Clean Chat-First UI (D00-D18 Compliant)
     ICTServe v3.6.0 - Bahasa Melayu sahaja (D15 v3.6.0)
     MyDS Design System v2025.2 - WCAG 2.2 AA Compliant
