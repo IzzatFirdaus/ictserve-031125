@@ -37,7 +37,7 @@ class CreateApiToken extends CreateRecord
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         /** @var User|null $user */
-        $user = User::find($data['user_id'] ?? $data['tokenable_id'] ?? null);
+        $user = User::find($data['tokenable_id'] ?? null);
 
         if ($user === null) {
             Notification::make()

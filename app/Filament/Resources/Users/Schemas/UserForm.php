@@ -90,19 +90,19 @@ class UserForm
                             ->label(__('users.staff_id')),
 
                         Select::make('division_id')
-                            ->relationship('division', 'name')
+                            ->relationship('division', 'name_ms')
                             ->searchable()
                             ->preload()
                             ->label(__('users.division')),
 
                         Select::make('grade_id')
-                            ->relationship('grade', 'name')
+                            ->relationship('grade', 'name_ms')
                             ->searchable()
                             ->preload()
                             ->label(__('users.grade')),
 
                         Select::make('position_id')
-                            ->relationship('position', 'name')
+                            ->relationship('position', 'name_ms')
                             ->searchable()
                             ->preload()
                             ->label(__('users.position')),

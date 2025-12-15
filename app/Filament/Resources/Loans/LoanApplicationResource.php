@@ -24,6 +24,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class LoanApplicationResource extends Resource
 {
@@ -48,7 +49,7 @@ class LoanApplicationResource extends Resource
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return false;
+        return Auth::check() && Auth::user()?->can('viewAny', LoanApplication::class);
     }
 
     public static function getNavigationLabel(): string
