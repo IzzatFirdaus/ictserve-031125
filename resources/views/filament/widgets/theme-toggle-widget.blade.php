@@ -1,21 +1,16 @@
 <x-filament-widgets::widget>
-    <x-filament::section
-        :heading="null"
-        :collapsible="false"
-        class="theme-toggle-widget"
-    >
+    <x-filament::section :heading="null" :collapsible="false" class="theme-toggle-widget">
         <div class="flex items-center justify-end p-2">
             <button
                 type="button"
-                id="theme-toggle"
-                class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 min-w-[44px] min-h-[44px]"
-                aria-label="{{ __('filament.actions.toggle_theme') }}"
+                wire:click="toggleTheme"
+                wire:loading.attr="disabled"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 min-h-11 min-w-11"
+                aria-label="{{ __('Tukar tema') }}"
                 aria-live="polite"
             >
-                {{-- Sun Icon (Light Mode) --}}
                 <svg
-                    id="theme-icon-light"
-                    class="w-5 h-5 text-yellow-500 hidden"
+                    class="w-5 h-5 text-yellow-500 {{ $this->theme === 'dark' ? '' : 'hidden' }}"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -30,10 +25,8 @@
                     ></path>
                 </svg>
 
-                {{-- Moon Icon (Dark Mode) --}}
                 <svg
-                    id="theme-icon-dark"
-                    class="w-5 h-5 text-gray-700 dark:text-gray-300 hidden"
+                    class="w-5 h-5 text-gray-700 dark:text-gray-300 {{ $this->theme === 'dark' ? 'hidden' : '' }}"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -48,146 +41,64 @@
                     ></path>
                 </svg>
 
-                <span id="theme-toggle-text" class="sr-only">
-                    {{ __('filament.actions.toggle_theme') }}
-                </span>
+                <span class="sr-only">{{ __('Tukar tema') }}</span>
             </button>
         </div>
     </x-filament::section>
 
-    {{-- Theme Toggle Script with FOUT Prevention --}}
     @push('scripts')
-    <script>
-        (function() {
-            'use strict';
+        <script>
+            (function() {
+                if (window.__ictserveThemeListenerInitialized) {
+                    return;
+                }
+                window.__ictserveThemeListenerInitialized = true;
 
-            // FOUT Prevention: Apply theme before render
-            const THEME_KEY = 'theme';
-            const THEME_TTL = 365 * 24 * 60 * 60 * 1000; // 1 year in milliseconds
-
-            function getStoredTheme() {
-                try {
-                    const stored = localStorage.getItem(THEME_KEY);
-                    if (stored) {
-                        const data = JSON.parse(stored);
-                        const now = Date.now();
-                        if (data.expiry && now < data.expiry) {
-                            return data.value;
-                        }
-                        // Expired, remove
-                        localStorage.removeItem(THEME_KEY);
+                function getCookieTheme() {
+                    const match = document.cookie.match(/(?:^|;\s*)theme_preference=([^;]+)/);
+                    if (!match) {
+                        return null;
                     }
-                } catch (e) {
-                    console.error('Error reading theme from localStorage:', e);
+                    try {
+                        return decodeURIComponent(match[1]);
+                    } catch (e) {
+                        return match[1];
+                    }
                 }
-                return 'light'; // Default to light
-            }
 
-            function setStoredTheme(theme) {
-                try {
-                    const expiry = Date.now() + THEME_TTL;
-                    localStorage.setItem(THEME_KEY, JSON.stringify({
-                        value: theme,
-                        expiry: expiry
-                    }));
-                } catch (e) {
-                    console.error('Error writing theme to localStorage:', e);
-                }
-            }
+                function applyThemePreference(theme) {
+                    const normalized = theme === 'dark' ? 'dark' : 'light';
+                    const root = document.documentElement;
 
-            function applyTheme(theme) {
-                const html = document.documentElement;
-                if (theme === 'dark') {
-                    html.classList.add('dark');
-                } else {
-                    html.classList.remove('dark');
-                }
-            }
+                    try {
+                        localStorage.setItem('theme', normalized);
+                    } catch (e) {
+                        // Ignore
+                    }
 
-            function updateToggleUI(theme) {
-                const lightIcon = document.getElementById('theme-icon-light');
-                const darkIcon = document.getElementById('theme-icon-dark');
-                const toggleText = document.getElementById('theme-toggle-text');
-
-                if (lightIcon && darkIcon && toggleText) {
-                    if (theme === 'dark') {
-                        lightIcon.classList.remove('hidden');
-                        darkIcon.classList.add('hidden');
-                        toggleText.textContent = '{{ __('filament.actions.switch_to_light_mode') }}';
+                    if (normalized === 'dark') {
+                        root.classList.add('dark');
+                        root.setAttribute('data-theme', 'dark');
                     } else {
-                        lightIcon.classList.add('hidden');
-                        darkIcon.classList.remove('hidden');
-                        toggleText.textContent = '{{ __('filament.actions.switch_to_dark_mode') }}';
+                        root.classList.remove('dark');
+                        root.setAttribute('data-theme', 'light');
                     }
                 }
-            }
 
-            // Apply theme immediately (FOUT prevention)
-            const currentTheme = getStoredTheme();
-            applyTheme(currentTheme);
+                // Initial apply (best-effort, for Filament pages that don't use app.js)
+                const initial = (function() {
+                    try {
+                        return localStorage.getItem('theme');
+                    } catch (e) {
+                        return null;
+                    }
+                })() || getCookieTheme() || 'light';
+                applyThemePreference(initial);
 
-            // Initialize toggle button when DOM is ready
-            document.addEventListener('DOMContentLoaded', function() {
-                updateToggleUI(currentTheme);
-
-                const toggleButton = document.getElementById('theme-toggle');
-                if (toggleButton) {
-                    toggleButton.addEventListener('click', function() {
-                        const currentTheme = getStoredTheme();
-                        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-                        setStoredTheme(newTheme);
-                        applyTheme(newTheme);
-                        updateToggleUI(newTheme);
-
-                        // Announce theme change for screen readers
-                        const announcement = newTheme === 'dark'
-                            ? '{{ __('filament.announcements.dark_mode_enabled') }}'
-                            : '{{ __('filament.announcements.light_mode_enabled') }}';
-
-                        // Create temporary announcement element
-                        const announcer = document.createElement('div');
-                        announcer.setAttribute('role', 'status');
-                        announcer.setAttribute('aria-live', 'polite');
-                        announcer.setAttribute('aria-atomic', 'true');
-                        announcer.className = 'sr-only';
-                        announcer.textContent = announcement;
-                        document.body.appendChild(announcer);
-
-                        setTimeout(() => {
-                            document.body.removeChild(announcer);
-                        }, 1000);
-                    });
-                }
-            });
-        })();
-    </script>
-    @endpush
-
-    {{-- Styles for smooth transition --}}
-    @push('styles')
-    <style>
-        .theme-toggle-widget {
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-
-        #theme-toggle {
-            transition: all 0.2s ease;
-        }
-
-        #theme-toggle:hover {
-            transform: scale(1.05);
-        }
-
-        #theme-toggle:active {
-            transform: scale(0.95);
-        }
-
-        /* Ensure minimum touch target size for WCAG 2.2 AA */
-        #theme-toggle {
-            min-width: 44px;
-            min-height: 44px;
-        }
-    </style>
+                window.addEventListener('theme-changed', function(event) {
+                    applyThemePreference(event && event.detail ? event.detail.theme : null);
+                });
+            })();
+        </script>
     @endpush
 </x-filament-widgets::widget>
