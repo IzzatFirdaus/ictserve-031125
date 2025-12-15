@@ -7,10 +7,43 @@
     x-data="{
         isOpen: @entangle('isOpen'),
         isMinimized: @entangle('isMinimized'),
-        announcement: @entangle('announcement')
+        announcement: @entangle('announcement'),
+        focusableEls() {
+            return [...(this.$refs.panel?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') || [])]
+                .filter((el) => !el.disabled && el.offsetParent !== null);
+        },
+        trapFocus(event) {
+            if (!this.isOpen || this.isMinimized) return;
+            const els = this.focusableEls();
+            if (!els.length) return;
+            const first = els[0];
+            const last = els[els.length - 1];
+            const active = document.activeElement;
+            if (event.shiftKey && active === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && active === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        },
+        focusFirst() {
+            this.$nextTick(() => {
+                const target = this.$refs.panel?.querySelector('[data-initial-focus]') || this.focusableEls()[0];
+                target?.focus();
+            });
+        }
     }" x-init="$watch('announcement', value => {
         if (value) {
             $dispatch('announce', { message: value });
+        }
+    });
+
+    $watch('isOpen', (open) => {
+        if (open) {
+            focusFirst();
+        } else {
+            $nextTick(() => $refs.toggleButton?.focus());
         }
     });" role="region"
     aria-label="{{ __('ollama.widget.aria_label', [], 'ms') }}">
@@ -18,7 +51,7 @@
     <div aria-live="polite" aria-atomic="true" class="sr-only" x-text="announcement"></div>
 
     {{-- Widget Toggle Button (Always Visible) --}}
-    <button wire:click="toggleWidget"
+    <button wire:click="toggleWidget" x-ref="toggleButton"
         class="flex items-center justify-center w-14 h-14 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg transition-all duration-200 focus:ring-4 focus:ring-primary-500 focus:ring-offset-2 min-h-11 min-w-11"
         :class="{ 'scale-110': isOpen }" aria-label="{{ __('ollama.widget.toggle_button', [], 'ms') }}"
         aria-expanded="false" x-bind:aria-expanded="isOpen" type="button" wire:loading.attr="disabled"
@@ -40,7 +73,8 @@
         x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         class="absolute bottom-16 right-0 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
-        role="dialog" aria-modal="true" aria-labelledby="widget-title">
+        role="dialog" aria-modal="true" aria-labelledby="widget-title" x-ref="panel"
+        @keydown.tab.prevent="trapFocus($event)" @keydown.escape.prevent="$wire.closeWidget(); isOpen = false">
         {{-- Widget Header --}}
         <div class="bg-primary-600 text-white p-4 flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -157,7 +191,7 @@
                         <input type="text" id="widget-query" wire:model="query" wire:keydown.enter="submitQuery"
                             placeholder="{{ __('ollama.widget.query_placeholder', [], 'ms') }}"
                             class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                            maxlength="500" {{ $isLoading ? 'disabled' : '' }} aria-describedby="widget-query-help">
+                            maxlength="500" {{ $isLoading ? 'disabled' : '' }} aria-describedby="widget-query-help" data-initial-focus>
 
                         {{-- Send Button --}}
                         <button type="submit"

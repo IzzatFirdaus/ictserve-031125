@@ -142,7 +142,7 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
                 <button type="button" wire:click="switchProvider('ollama')"
-                    class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all min-h-8 {{ $aiProvider === 'ollama' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
+                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md transition-all min-h-11 {{ $aiProvider === 'ollama' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
                     <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
                         <path
                             d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
@@ -150,7 +150,7 @@
                     Ollama
                 </button>
                 <button type="button" wire:click="switchProvider('bedrock')"
-                    class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all min-h-8 {{ $aiProvider === 'bedrock' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
+                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md transition-all min-h-11 {{ $aiProvider === 'bedrock' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
                     <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
                         <rect x="2" y="5" width="20" height="1.5" rx="0.75" />
                         <rect x="2" y="9" width="20" height="1.5" rx="0.75" />
@@ -164,7 +164,7 @@
             {{-- Bedrock Model Selector (Compact) --}}
             @if ($aiProvider === 'bedrock')
                 <select wire:model.live="bedrockModel"
-                    class="text-xs bg-gray-100 dark:bg-gray-800 border-0 rounded-lg py-1.5 px-2 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-primary-500 min-h-8">
+                    class="text-xs bg-gray-100 dark:bg-gray-800 border-0 rounded-lg py-2.5 px-3 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-primary-500 min-h-11">
                     <optgroup label="Claude">
                         <option value="haiku">Haiku (Pantas)</option>
                         <option value="sonnet">Sonnet (Seimbang)</option>
