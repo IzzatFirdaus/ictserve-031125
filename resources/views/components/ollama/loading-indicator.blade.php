@@ -1,7 +1,7 @@
 {{--
     Accessible Loading Indicator Component
     WCAG 2.2 AA Compliant (Req 5.7)
-    
+
     Usage:
     <x-ollama.loading-indicator />
     <x-ollama.loading-indicator :show="$isLoading" text="Sedang memproses..." />
@@ -23,7 +23,7 @@
     $containerClasses = match ($variant) {
         'inline' => 'inline-flex items-center gap-2',
         'overlay' => 'fixed inset-0 z-50 flex items-center justify-center bg-black/50',
-        default => 'flex items-center gap-3 p-4 bg-gray-100 dark:bg-gray-800 rounded-l',
+        default => 'flex items-center gap-3 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg',
     };
 @endphp
 

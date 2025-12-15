@@ -24,7 +24,7 @@
 @php
 // Base classes with MyDS tokens: shadow-button, rounded-lg, transition-colors duration-200
 $baseClasses =
-'inline-flex items-center justify-center font-medium rounded-m shadow-button transition-colors duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed';
+'inline-flex items-center justify-center font-medium rounded-md shadow-button transition-colors duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed';
 
 // Variants using MyDS semantic colors (D13 §2.2)
 $variants = [

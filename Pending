@@ -1,0 +1,3 @@
+resources/views/livewire/staff/approval-interface.blade.php:197:                <span class="sr-only">Pending Approvals</span>
+resources/views/livewire/staff/approval-interface.blade.php:384:                                    <span class="sr-only">No pending approvals</span>
+resources/views/livewire/staff/approval-interface.blade.php:452:        <div aria-live="polite" aria-atomic="true" class="sr-only" id="approval-announcements"></div>

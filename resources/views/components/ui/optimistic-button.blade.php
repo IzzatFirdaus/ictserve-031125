@@ -1,4 +1,4 @@
-{{--
+﻿{{--
     Optimistic Action Button Component (x-ui.optimistic-button)
 
     Button that provides immediate UI feedback while server processes request.
@@ -53,7 +53,7 @@ $typeClasses = [
 'warning' => 'bg-warning-600 hover:bg-warning-700 text-white focus:ring-warning-500',
 ];
 
-$baseClasses = 'inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-m transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed';
+$baseClasses = 'inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed';
 $typeClass = $typeClasses[$type] ?? $typeClasses['primary'];
 @endphp
 

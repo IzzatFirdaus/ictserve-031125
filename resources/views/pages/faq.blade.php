@@ -1,4 +1,4 @@
-{{--
+﻿{{--
 /**
  * FAQ Page - Frequently Asked Questions (Enhanced v3.6.0)
  *
@@ -31,7 +31,7 @@
                     <img src="{{ asset('images/bpm-logo.png') }}" alt="{{ __('common.bpm_logo') }}" class="h-12 w-auto">
                     <div class="h-12 w-px bg-orange-500/30"></div>
                     <h1
-                        class="text-xl font-bold bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
+                        class="text-xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
                         {{ __('Soalan Lazim') }}
                     </h1>
                 </div>
@@ -49,7 +49,7 @@
 
     {{-- Page Header with Enhanced Branding (D12 §3.1, D13 §2.4) --}}
     <section
-        class="bg-linear-to-r from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white py-12 md:py-16 theme-transition"
+        class="bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white py-12 md:py-16 theme-transition"
         role="banner" aria-labelledby="page-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Enhanced Breadcrumbs (D12 §6.1, WCAG 2.2 AA) --}}
@@ -57,7 +57,7 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded-m px-2 py-1 min-h-11">
+                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded-md px-2 py-1 min-h-11">
                             {{ __('Utama') }}
                         </a>
                     </li>
@@ -97,7 +97,7 @@
                     <x-heroicon-o-magnifying-glass class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
                         aria-hidden="true" />
                     <input type="search" id="faq-search" placeholder="{{ __('Taip untuk mencari...') }}"
-                        class="block w-full min-h-11 rounded-m border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 pl-10 pr-4 py-3 shadow-sm focus:border-primary-500 focus:ring-3 focus:ring-primary-500 text-sm transition-colors duration-200"
+                        class="block w-full min-h-11 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 pl-10 pr-4 py-3 shadow-sm focus:border-primary-500 focus:ring-3 focus:ring-primary-500 text-sm transition-colors duration-200"
                         aria-describedby="faq-search-hint" />
                 </div>
                 <p id="faq-search-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
@@ -110,7 +110,7 @@
                 {{-- Enhanced Helpdesk FAQ (D03-FR-004, D12 §6.4) --}}
                 <section aria-labelledby="helpdesk-faq-heading">
                     <div
-                        class="bg-white dark:bg-gray-900 rounded-l shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
+                        class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
                         <div class="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
@@ -349,7 +349,7 @@
             {{-- AI Chat Integration Section --}}
             <div class="mt-12">
                 <div
-                    class="bg-linear-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-lg p-8 text-center text-white theme-transition">
+                    class="bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-lg p-8 text-center text-white theme-transition">
                     <div class="flex items-center justify-center mb-4">
                         <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
                             <x-heroicon-o-cpu-chip class="h-8 w-8 text-white" aria-hidden="true" />

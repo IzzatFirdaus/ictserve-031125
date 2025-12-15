@@ -1,4 +1,4 @@
-{{--
+﻿{{--
 /**
  * Skeleton List Component
  *
@@ -37,11 +37,11 @@
         <div class="flex space-x-3">
             <div class="flex-1 space-y-2">
                 <div class="flex items-center justify-between">
-                    <div class="h-4 bg-slate-700 rounded-xs w-1/3"></div>
-                    <div class="h-6 bg-slate-700 rounded-xs w-20"></div>
+                    <div class="h-4 bg-slate-700 rounded-sm w-1/3"></div>
+                    <div class="h-6 bg-slate-700 rounded-sm w-20"></div>
                 </div>
-                <div class="h-4 bg-slate-700 rounded-xs w-3/4"></div>
-                <div class="h-3 bg-slate-700 rounded-xs w-1/4"></div>
+                <div class="h-4 bg-slate-700 rounded-sm w-3/4"></div>
+                <div class="h-3 bg-slate-700 rounded-sm w-1/4"></div>
             </div>
         </div>
         </li>

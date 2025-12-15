@@ -1,4 +1,4 @@
-{{--
+﻿{{--
 /**
  * Guest Layout - Unified Authentication Interface
  *
@@ -115,7 +115,7 @@
             {{-- Logo (MyDS Typography - D13 §2.4) --}}
             <div class="mb-12">
                 <a href="/" wire:navigate aria-label="{{ __('common.home') }}"
-                    class="flex flex-col items-center gap-6 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-m p-4 min-h-11 min-w-11 transition-all duration-200 hover:scale-105">
+                    class="flex flex-col items-center gap-6 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-md p-4 min-h-11 min-w-11 transition-all duration-200 hover:scale-105">
                     <x-application-logo class="w-20 h-20 fill-current text-primary-600 dark:text-primary-400 transition-colors duration-200" />
                     <span class="text-2xl font-bold font-heading text-gray-900 dark:text-white tracking-tight">{{ config('app.name', 'ICTServe') }}</span>
                 </a>
@@ -123,7 +123,7 @@
 
             {{-- Login Card (MyDS v2025.2 Compliant - D13 §2.7) --}}
             <div
-                class="w-full sm:max-w-md px-8 py-10 bg-white dark:bg-gray-800 shadow-card overflow-hidden rounded-l border border-gray-200 dark:border-gray-700 theme-transition">
+                class="w-full sm:max-w-md px-8 py-10 bg-white dark:bg-gray-800 shadow-card overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 theme-transition">
                 @isset($slot)
                     {{ $slot }}
                 @else
@@ -135,7 +135,7 @@
             <div class="mt-8 text-center text-sm text-gray-600 dark:text-gray-400 font-body">
                 <p>{{ __('auth.need_help') }}
                     <a href="{{ route('contact') }}"
-                        class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-m min-h-11 inline-flex items-center px-2 transition-colors duration-200">
+                        class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-md min-h-11 inline-flex items-center px-2 transition-colors duration-200">
                         {{ __('auth.contact_support') }}
                     </a>
                 </p>
