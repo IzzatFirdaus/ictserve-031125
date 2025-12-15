@@ -36,7 +36,7 @@ class SecurityMonitoring extends Page
 
     protected string $view = 'filament.pages.security-monitoring';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Konfigurasi Sistem';
+    protected static string|\UnitEnum|null $navigationGroup = 'System Configuration';
 
     protected static ?int $navigationSort = 11;
 
@@ -101,7 +101,7 @@ class SecurityMonitoring extends Page
      */
     public static function getNavigationLabel(): string
     {
-        return __('admin_pages.security_monitoring.label');
+        return 'Security Monitoring';
     }
 
     /**

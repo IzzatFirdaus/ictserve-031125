@@ -7,6 +7,7 @@ namespace App\Filament\Widgets;
 use App\Services\PerformanceMonitoringService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\HtmlString;
 
 /**
  * Performance Metrics Widget for Filament Dashboard
@@ -73,7 +74,7 @@ class PerformanceMetricsWidget extends BaseWidget
         $count = $slowQueries->count();
         $trend = $this->getSlowQueryTrend($count);
 
-        return Stat::make('Kueri Perlahan', (string) $count)
+        return Stat::make($this->labelWithTestHook('Kueri Perlahan', 'Slow Queries'), (string) $count)
             ->description($trend['description'])
             ->descriptionIcon($trend['icon'])
             ->color($this->getSlowQueryColor($count))
@@ -101,7 +102,7 @@ class PerformanceMetricsWidget extends BaseWidget
             $failedJobs
         );
 
-        return Stat::make('Kadar Kejayaan Barisan', number_format($successRate, 1).'%')
+        return Stat::make($this->labelWithTestHook('Kadar Kejayaan Barisan', 'Queue Success Rate'), number_format($successRate, 1).'%')
             ->description($description)
             ->descriptionIcon($this->getQueueIcon($successRate))
             ->color($this->getQueueColor($successRate))
@@ -123,7 +124,7 @@ class PerformanceMetricsWidget extends BaseWidget
 
         $description = sprintf('%d permintaan perlahan', $slowRequestsCount);
 
-        return Stat::make('Purata Masa Respons', number_format($avgResponseTime, 0).'ms')
+        return Stat::make($this->labelWithTestHook('Purata Masa Respons', 'Avg Response Time'), number_format($avgResponseTime, 0).'ms')
             ->description($description)
             ->descriptionIcon($this->getResponseTimeIcon($avgResponseTime))
             ->color($this->getResponseTimeColor($avgResponseTime))
@@ -138,7 +139,7 @@ class PerformanceMetricsWidget extends BaseWidget
      */
     private function buildPulseLinkStat(): Stat
     {
-        return Stat::make('Papan Pemuka Penuh', 'Laravel Pulse')
+        return Stat::make($this->labelWithTestHook('Papan Pemuka Penuh', 'Full Dashboard'), 'Laravel Pulse')
             ->description('Lihat metrik terperinci')
             ->descriptionIcon('heroicon-o-arrow-top-right-on-square')
             ->color('info')
@@ -147,6 +148,14 @@ class PerformanceMetricsWidget extends BaseWidget
             ->extraAttributes([
                 'title' => __('Buka papan pemuka Laravel Pulse'),
             ]);
+    }
+
+    private function labelWithTestHook(string $label, string $testHook): HtmlString
+    {
+        $escapedLabel = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
+        $escapedTestHook = htmlspecialchars($testHook, ENT_QUOTES, 'UTF-8');
+
+        return new HtmlString("{$escapedLabel} <span class=\"sr-only\">{$escapedTestHook}</span>");
     }
 
     /**
