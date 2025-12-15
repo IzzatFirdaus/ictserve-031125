@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Components;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Session;
+use App\Services\ThemePreferenceService;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -63,38 +61,7 @@ class ThemeToggle extends Component
      */
     public function mount(): void
     {
-        $this->theme = $this->getStoredTheme();
-    }
-
-    /**
-     * Get stored theme from session/cookie or default to 'light'
-     * v3.6.0: Light mode is immutable default
-     */
-    protected function getStoredTheme(): string
-    {
-        // Check session first (authenticated users)
-        if (Session::has('theme_preference')) {
-            $theme = Session::get('theme_preference', 'light');
-
-            return in_array($theme, ['light', 'dark']) ? $theme : 'light';
-        }
-
-        // Check cookie (guest users)
-        $cookieTheme = Cookie::get('theme_preference');
-        if ($cookieTheme && in_array($cookieTheme, ['light', 'dark'])) {
-            return $cookieTheme;
-        }
-
-        // Check user preference if authenticated
-        if (Auth::check()) {
-            $user = Auth::user();
-            if ($user && $user->theme_preference && in_array($user->theme_preference, ['light', 'dark'])) {
-                return $user->theme_preference;
-            }
-        }
-
-        // Always default to light mode (v3.6.0 requirement)
-        return 'light';
+        $this->theme = app(ThemePreferenceService::class)->getStoredTheme();
     }
 
     /**
@@ -110,22 +77,20 @@ class ThemeToggle extends Component
         $this->theme = $theme;
         $this->isOpen = false;
 
-        // Persist to session
-        Session::put('theme_preference', $theme);
-
-        // Persist to cookie (30 days)
-        Cookie::queue('theme_preference', $theme, 60 * 24 * 30);
-
-        // Update user preference if authenticated
-        if (Auth::check()) {
-            $user = Auth::user();
-            if ($user instanceof \App\Models\User) {
-                $user->update(['theme_preference' => $theme]);
-            }
-        }
+        app(ThemePreferenceService::class)->setTheme($theme);
 
         // Dispatch browser event to apply theme
         $this->dispatch('theme-changed', theme: $theme);
+    }
+
+    /**
+     * Toggle between light and dark
+     */
+    public function toggleTheme(): void
+    {
+        $nextTheme = $this->theme === 'dark' ? 'light' : 'dark';
+
+        $this->setTheme($nextTheme);
     }
 
     /**
