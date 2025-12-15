@@ -33,11 +33,7 @@
                     <div class="flex items-center gap-2">
                         <div id="connection-status" class="text-sm text-orange-600 dark:text-orange-400 hidden"
                             role="status" aria-live="polite">Sambungan belum tersedia</div>
-                        <button id="theme-toggle" aria-label="Tukar tema"
-                            class="p-2 rounded hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11">
-                            <x-heroicon-o-sun id="theme-icon-sun" class="w-5 h-5 hidden" />
-                            <x-heroicon-o-moon id="theme-icon-moon" class="w-5 h-5 hidden" />
-                        </button>
+                        <livewire:components.theme-toggle />
                     </div>
                     <a href="{{ route('welcome') }}"
                         class="text-sm text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors">
@@ -283,43 +279,6 @@
     <!-- Theme toggle and localStorage script: Ensures light default and optional dark mode -->
     <script>
         (function() {
-            const root = document.documentElement;
-            const btn = document.getElementById('theme-toggle');
-            const iconSun = document.getElementById('theme-icon-sun');
-            const iconMoon = document.getElementById('theme-icon-moon');
-
-            function updateIcons(theme) {
-                if (!iconSun || !iconMoon) return;
-                if (theme === 'dark') {
-                    iconSun.classList.add('hidden');
-                    iconMoon.classList.remove('hidden');
-                } else {
-                    iconSun.classList.remove('hidden');
-                    iconMoon.classList.add('hidden');
-                }
-            }
-
-            function setTheme(theme) {
-                if (theme === 'dark') {
-                    root.classList.add('dark');
-                } else {
-                    root.classList.remove('dark');
-                }
-                localStorage.setItem('theme', theme);
-                updateIcons(theme);
-            }
-
-            // Get stored preference (light default if not set)
-            const stored = localStorage.getItem('theme') || 'light';
-            setTheme(stored);
-
-            if (btn) {
-                btn.addEventListener('click', function() {
-                    const current = root.classList.contains('dark') ? 'dark' : 'light';
-                    const next = current === 'dark' ? 'light' : 'dark';
-                    setTheme(next);
-                });
-            }
             // Provide a safe noop for keyboardShortcuts if not present to avoid Alpine errors in dev
             if (typeof window.keyboardShortcuts !== 'function') {
                 window.keyboardShortcuts = function() {
