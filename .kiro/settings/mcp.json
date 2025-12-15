@@ -15,11 +15,9 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-memory"
+        "@modelcontextprotocol/server-memory",
+        "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       ],
-      "env": {
-        "MEMORY_FILE_PATH": "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
-      },
       "disabled": false,
       "autoApprove": [
         "create_entities",
@@ -34,14 +32,11 @@
       ]
     },
     "fetch": {
-      "command": "C:\\Users\\exatf\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "command": "uvx",
       "args": [
-        "-m",
-        "mcp_server_fetch"
+        "--native-tls",
+        "mcp-server-fetch"
       ],
-      "env": {
-        "PYTHONIOENCODING": "utf-8"
-      },
       "disabled": false,
       "autoApprove": [
         "fetch"
@@ -60,18 +55,12 @@
         "click",
         "fill",
         "evaluate_script",
-        "list_pages",
         "list_console_messages",
         "list_network_requests",
-        "get_network_request",
         "take_screenshot",
-        "get_console_message",
-        "resize_page",
-        "emulate",
-        "select_page",
-        "new_page",
-        "press_key",
-        "wait_for"
+        "list_pages",
+        "wait_for",
+        "new_page"
       ]
     },
     "firecrawl": {
@@ -99,10 +88,9 @@
         "browser_snapshot",
         "browser_fill",
         "browser_evaluate",
-        "browser_close",
+        "browser_take_screenshot",
         "browser_type",
-        "browser_fill_form",
-        "browser_wait_for"
+        "browser_select_option"
       ]
     },
     "context7": {
@@ -155,7 +143,7 @@
       "env": {
         "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
       },
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "get_source_languages",
         "get_target_languages",
@@ -167,8 +155,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-github",
-        "--tools=get_file_contents,create_or_update_file,search_repositories,get_pull_request,list_commits,create_issue"
+        "@modelcontextprotocol/server-github"
       ],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
@@ -184,11 +171,7 @@
       "disabled": false,
       "autoApprove": [
         "git_status",
-        "git_add_or_commit",
-        "git_log_or_diff",
-        "git_push",
-        "git_branch",
-        "git_checkout"
+        "git_add_or_commit"
       ]
     },
     "bedrock-opus": {
@@ -210,7 +193,7 @@
     },
     "figma": {
       "url": "https://mcp.figma.com/mcp",
-      "disabled": false,
+      "disabled": true,
       "autoApprove": []
     },
     "agentcore-mcp-server": {
@@ -218,7 +201,7 @@
       "args": [
         "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "search_agentcore_docs",
         "fetch_agentcore_doc",
@@ -232,7 +215,7 @@
       "args": [
         "strands-agents-mcp-server"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "search_docs",
         "fetch_doc"

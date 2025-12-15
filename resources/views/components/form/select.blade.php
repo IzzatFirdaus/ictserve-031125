@@ -59,7 +59,7 @@ null;
                     ($disabled ? ' opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-700' : ''),
             ]) }}>
             @if ($placeholder)
-            <option value="" disabled selected>{{ $placeholder }}</option>
+            <option value="" disabled>{{ $placeholder }}</option>
             @endif
 
             @foreach ($options as $value => $text)

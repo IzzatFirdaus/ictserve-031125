@@ -32,8 +32,8 @@
 --}}
 
 <div x-data="{
-    open: @entangle('showDropdown'),
-    activeCategory: @entangle('activeCategory')
+    open: $wire.entangle('showDropdown'),
+    activeCategory: $wire.entangle('activeCategory')
 }" @click.away="open = false"
     @keydown.escape.window="if (open) { open = false; $refs.bellButton.focus(); }" class="relative"
     wire:poll.30s="refreshNotifications">

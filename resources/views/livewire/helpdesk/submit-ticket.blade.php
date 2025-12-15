@@ -284,7 +284,7 @@
                                                 class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                                                 required aria-describedby="terms-help" />
                                             <span class="text-sm text-gray-700 dark:text-gray-300">
-                                                {{ __('helpdesk.terms_of_service') }}
+                                                {!! __('helpdesk.terms_of_service', ['privacy_url' => route('privacy-policy')]) !!}
                                                 <span class="text-danger-600">*</span>
                                             </span>
                                         </label>

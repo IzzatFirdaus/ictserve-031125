@@ -1,22 +1,22 @@
 {{--
 /**
  * Personal Statistics Widget View
- * 
+ *
  * Displays personalized user statistics in a card format.
  * Supports real-time updates and responsive design.
- * 
+ *
  * @author Frontend Engineering Team
  * @version 1.0.0
  * @created 2025-11-28
  */
 --}}
 
-<div 
+<div
     class="personal-stats-widget"
     @if($liveUpdates && $pollInterval > 0)
         wire:poll.{{ $pollInterval }}s="refresh"
     @endif
-    x-data="{ visible: @entangle('visible') }"
+    x-data="{ visible: $wire.entangle('visible') }"
     x-show="visible"
     x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="opacity-0 transform scale-95"

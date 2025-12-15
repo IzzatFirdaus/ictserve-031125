@@ -80,9 +80,11 @@ class AccessibilityAuditTest extends TestCase
      * Test login page has proper accessibility features.
      *
      * Validates:
-     * - Language switcher is accessible
      * - Form inputs have labels
      * - Proper heading structure
+     * - Main landmark exists
+     *
+     * Note: Language switcher disabled in v3.6.0 (Bahasa Melayu sahaja)
      */
     public function test_login_page_has_proper_accessibility(): void
     {
@@ -93,11 +95,15 @@ class AccessibilityAuditTest extends TestCase
         // Check for main landmark
         $response->assertSee('<main', false);
 
-        // Check for language switcher
-        $response->assertSee('Language switcher', false);
-
         // Check for form structure
         $response->assertSee('<form', false);
+
+        // Check for proper form labels
+        $response->assertSee('E-mel atau Nama Pengguna');
+        $response->assertSee('Kata Laluan');
+
+        // Check for proper heading structure
+        $response->assertSee('Log Masuk');
     }
 
     /**
