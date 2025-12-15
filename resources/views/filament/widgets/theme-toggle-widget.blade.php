@@ -5,12 +5,12 @@
                 type="button"
                 wire:click="toggleTheme"
                 wire:loading.attr="disabled"
-                class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 min-h-11 min-w-11"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 min-h-[44px] min-w-[44px]"
                 aria-label="{{ __('Tukar tema') }}"
                 aria-live="polite"
             >
                 <svg
-                    class="w-5 h-5 text-yellow-500 {{ $this->theme === 'dark' ? '' : 'hidden' }}"
+                    class="theme-icon-light w-5 h-5 text-yellow-500 {{ $this->theme === 'dark' ? '' : 'hidden' }}"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -26,7 +26,7 @@
                 </svg>
 
                 <svg
-                    class="w-5 h-5 text-gray-700 dark:text-gray-300 {{ $this->theme === 'dark' ? 'hidden' : '' }}"
+                    class="theme-icon-dark w-5 h-5 text-gray-700 dark:text-gray-300 {{ $this->theme === 'dark' ? 'hidden' : '' }}"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -46,59 +46,85 @@
         </div>
     </x-filament::section>
 
-    @push('scripts')
-        <script>
-            (function() {
-                if (window.__ictserveThemeListenerInitialized) {
-                    return;
-                }
-                window.__ictserveThemeListenerInitialized = true;
+    <!-- FOUT prevention -->
+    <script>
+        (function () {
+            if (window.__ictserveThemeListenerInitialized) {
+                return;
+            }
+            window.__ictserveThemeListenerInitialized = true;
 
-                function getCookieTheme() {
-                    const match = document.cookie.match(/(?:^|;\s*)theme_preference=([^;]+)/);
-                    if (!match) {
+            const storageKey = 'theme';
+            const ttlMs = 1000 * 60 * 60 * 24 * 7; // 7 days
+
+            function getCookieTheme() {
+                const match = document.cookie.match(/(?:^|;\s*)theme_preference=([^;]+)/);
+                if (!match) {
+                    return null;
+                }
+                try {
+                    return decodeURIComponent(match[1]);
+                } catch (e) {
+                    return match[1];
+                }
+            }
+
+            function getStoredTheme() {
+                try {
+                    const raw = localStorage.getItem(storageKey);
+                    if (!raw) {
                         return null;
                     }
-                    try {
-                        return decodeURIComponent(match[1]);
-                    } catch (e) {
-                        return match[1];
-                    }
-                }
 
-                function applyThemePreference(theme) {
-                    const normalized = theme === 'dark' ? 'dark' : 'light';
-                    const root = document.documentElement;
+                    const parsed = JSON.parse(raw);
+                    if (parsed && typeof parsed === 'object' && 'value' in parsed && 'expiry' in parsed) {
+                        if (typeof parsed.expiry === 'number' && parsed.expiry > Date.now()) {
+                            return parsed.value;
+                        }
 
-                    try {
-                        localStorage.setItem('theme', normalized);
-                    } catch (e) {
-                        // Ignore
-                    }
+                        localStorage.removeItem(storageKey);
 
-                    if (normalized === 'dark') {
-                        root.classList.add('dark');
-                        root.setAttribute('data-theme', 'dark');
-                    } else {
-                        root.classList.remove('dark');
-                        root.setAttribute('data-theme', 'light');
-                    }
-                }
-
-                // Initial apply (best-effort, for Filament pages that don't use app.js)
-                const initial = (function() {
-                    try {
-                        return localStorage.getItem('theme');
-                    } catch (e) {
                         return null;
                     }
-                })() || getCookieTheme() || 'light';
-                applyThemePreference(initial);
 
-                window.addEventListener('theme-changed', function(event) {
-                    applyThemePreference(event && event.detail ? event.detail.theme : null);
-                });
-            })();
-        </script>
-    @endpush
+                    return raw;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            function setStoredTheme(theme) {
+                const normalized = theme === 'dark' ? 'dark' : 'light';
+                const expiry = Date.now() + ttlMs;
+
+                try {
+                    localStorage.setItem(storageKey, JSON.stringify({ value: normalized, expiry }));
+                } catch (e) {
+                    // Ignore
+                }
+            }
+
+            function applyThemePreference(theme) {
+                const normalized = theme === 'dark' ? 'dark' : 'light';
+                const root = document.documentElement;
+
+                setStoredTheme(normalized);
+
+                if (normalized === 'dark') {
+                    root.classList.add('dark');
+                    root.setAttribute('data-theme', 'dark');
+                } else {
+                    root.classList.remove('dark');
+                    root.setAttribute('data-theme', 'light');
+                }
+            }
+
+            const initial = getStoredTheme() || getCookieTheme() || 'light';
+            applyThemePreference(initial);
+
+            window.addEventListener('theme-changed', function (event) {
+                applyThemePreference(event && event.detail ? event.detail.theme : null);
+            });
+        })();
+    </script>
 </x-filament-widgets::widget>
