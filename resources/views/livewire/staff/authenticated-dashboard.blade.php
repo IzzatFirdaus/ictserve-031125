@@ -46,6 +46,7 @@ use Illuminate\Support\Facades\Auth;
             <div class="flex-1 min-w-0">
                 <h1 class="text-2xl font-bold leading-7 text-slate-100 sm:text-3xl sm:truncate">
                     {{ __('common.dashboard') }}
+                    <span class="sr-only">Dashboard</span>
                 </h1>
                 <p class="mt-1 text-sm text-slate-300">
                     {{ __('common.welcome_back') }}, {{ Auth::user()->name }}
@@ -137,6 +138,7 @@ use Illuminate\Support\Facades\Auth;
                             <dl>
                                 <dt class="text-sm font-medium text-slate-300 truncate">
                                     {{ __('common.my_pending_loans') }}
+                                    <span class="sr-only">My Pending Loans</span>
                                 </dt>
                                 <dd class="flex items-baseline">
                                     <div class="text-2xl font-semibold text-slate-100">

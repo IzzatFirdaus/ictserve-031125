@@ -231,7 +231,7 @@
                     @enderror
                     <div class="flex gap-3">
                         <label for="prompt" class="sr-only">{{ __('Mesej') }}</label>
-                        <input type="text" id="prompt" wire:model="prompt"
+                        <input type="text" id="prompt" wire:model="prompt" wire:keydown.enter="send"
                             placeholder="{{ 'Taip mesej anda...' }}"
                             class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('prompt') border-red-500 @enderror">
                         <button type="submit"
