@@ -50,7 +50,7 @@
             </h3>
             @if ($unreadCount > 0)
                 <button type="button" wire:click="markAllAsRead"
-                    class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:underline min-h-8 px-2"
+                    class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:underline min-h-11 px-2 py-2"
                     aria-label="{{ __('Tandakan semua sebagai dibaca') }}">
                     {{ __('Tandakan semua dibaca') }}
                 </button>
@@ -75,7 +75,7 @@
                         </div>
                         @if ($n->read_at === null)
                             <button type="button" wire:click="markAsRead('{{ $n->id }}')"
-                                class="shrink-0 text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:underline min-h-8 px-2"
+                                class="shrink-0 text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:underline min-h-11 px-2 py-2"
                                 aria-label="{{ __('Tandakan sebagai dibaca') }}">
                                 {{ __('Dibaca') }}
                             </button>
