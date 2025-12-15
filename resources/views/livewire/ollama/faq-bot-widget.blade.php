@@ -4,48 +4,9 @@
 {{-- Updated: Using Heroicons Blade components instead of inline SVGs --}}
 
 <div class="fixed z-50 {{ $position === 'bottom-right' ? 'bottom-4 right-4' : 'bottom-4 left-4' }}"
-    x-data="{
-        isOpen: @entangle('isOpen'),
-        isMinimized: @entangle('isMinimized'),
-        announcement: @entangle('announcement'),
-        focusableEls() {
-            return [...(this.$refs.panel?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') || [])]
-                .filter((el) => !el.disabled && el.offsetParent !== null);
-        },
-        trapFocus(event) {
-            if (!this.isOpen || this.isMinimized) return;
-            const els = this.focusableEls();
-            if (!els.length) return;
-            const first = els[0];
-            const last = els[els.length - 1];
-            const active = document.activeElement;
-            if (event.shiftKey && active === first) {
-                event.preventDefault();
-                last.focus();
-            } else if (!event.shiftKey && active === last) {
-                event.preventDefault();
-                first.focus();
-            }
-        },
-        focusFirst() {
-            this.$nextTick(() => {
-                const target = this.$refs.panel?.querySelector('[data-initial-focus]') || this.focusableEls()[0];
-                target?.focus();
-            });
-        }
-    }" x-init="$watch('announcement', value => {
-        if (value) {
-            $dispatch('announce', { message: value });
-        }
-    });
-
-    $watch('isOpen', (open) => {
-        if (open) {
-            focusFirst();
-        } else {
-            $nextTick(() => $refs.toggleButton?.focus());
-        }
-    });" role="region"
+    x-data="faqBotWidget"
+    x-init="initializeWidget({{ $isOpen ? 'true' : 'false' }}, {{ $isMinimized ? 'true' : 'false' }}, '{{ addslashes($announcement) }}')"
+    role="region"
     aria-label="{{ __('ollama.widget.aria_label', [], 'ms') }}">
     {{-- Screen Reader Announcements --}}
     <div aria-live="polite" aria-atomic="true" class="sr-only" x-text="announcement"></div>
@@ -264,4 +225,88 @@
             }
         });
     });
+
+    // Alpine.js component definition
+    Alpine.data('faqBotWidget', () => ({
+        isOpen: false,
+        isMinimized: false,
+        announcement: '',
+
+        init() {
+            // Initialize with default values - will be overridden by initializeWidget
+        },
+
+        initializeWidget(initialIsOpen, initialIsMinimized, initialAnnouncement) {
+            // Set initial values
+            this.isOpen = initialIsOpen;
+            this.isMinimized = initialIsMinimized;
+            this.announcement = initialAnnouncement;
+
+            // Wait for Livewire to be ready before setting up watchers
+            this.$nextTick(() => {
+                // Check if $wire is available, if not wait for livewire:init
+                if (typeof $wire !== 'undefined') {
+                    this.setupLivewireSync();
+                } else {
+                    // Listen for Livewire initialization
+                    document.addEventListener('livewire:init', () => {
+                        this.setupLivewireSync();
+                    });
+                }
+            });
+
+            // Handle announcements (this doesn't depend on $wire)
+            this.$watch('announcement', value => {
+                if (value) {
+                    this.$dispatch('announce', { message: value });
+                }
+            });
+
+            // Handle focus management (this doesn't depend on $wire)
+            this.$watch('isOpen', (open) => {
+                if (open) {
+                    this.focusFirst();
+                } else {
+                    this.$nextTick(() => this.$refs.toggleButton?.focus());
+                }
+            });
+        },
+
+        setupLivewireSync() {
+            // Sync with Livewire - only called when $wire is available
+            if (typeof $wire !== 'undefined') {
+                this.$watch(() => $wire.isOpen, (value) => this.isOpen = value);
+                this.$watch(() => $wire.isMinimized, (value) => this.isMinimized = value);
+                this.$watch(() => $wire.announcement, (value) => this.announcement = value);
+            }
+        },
+
+        focusableEls() {
+            return [...(this.$refs.panel?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') || [])]
+                .filter((el) => !el.disabled && el.offsetParent !== null);
+        },
+
+        trapFocus(event) {
+            if (!this.isOpen || this.isMinimized) return;
+            const els = this.focusableEls();
+            if (!els.length) return;
+            const first = els[0];
+            const last = els[els.length - 1];
+            const active = document.activeElement;
+            if (event.shiftKey && active === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && active === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        },
+
+        focusFirst() {
+            this.$nextTick(() => {
+                const target = this.$refs.panel?.querySelector('[data-initial-focus]') || this.focusableEls()[0];
+                target?.focus();
+            });
+        }
+    }));
 </script>
