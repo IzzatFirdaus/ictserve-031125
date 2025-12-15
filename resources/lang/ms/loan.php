@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Translation file: Loan Module (Bahasa Melayu)
  * Description: Malay language translations for loan application module
@@ -481,7 +483,7 @@ return [
         'success_message' => 'Keputusan anda telah direkodkan dengan jayanya. Pemohon akan dimaklumkan melalui e-mel.',
         'token_required' => 'Token kelulusan diperlukan.',
         'token_invalid' => 'Pautan kelulusan tidak sah. Pautan mungkin telah digunakan atau tidak betul.',
-        'token_expired' => 'Pautan kelulusan ini telah tamat tempoh. Sila hubungi pemohon untuk permintaan kelulusan baru.',
+        'token_expired' => 'Pautan kelulusan ini telah tamat tempoh (expired). Sila hubungi pemohon untuk permintaan kelulusan baharu.',
         'already_processed' => 'Permohonan ini telah diproses (status semasa: :status).',
         'load_error' => 'Tidak dapat memuatkan permintaan kelulusan. Sila cuba lagi kemudian.',
         'approved_via_email' => 'Diluluskan melalui pautan e-mel',
