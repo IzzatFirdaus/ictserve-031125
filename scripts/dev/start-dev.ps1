@@ -117,7 +117,7 @@ else {
             if (Test-Path $installer) {
                 Write-Host "Launching WSL Redis installer (PowerShell wrapper)..." -ForegroundColor Cyan
                 # Run installer synchronously
-                & powershell -NoProfile -ExecutionPolicy Bypass -File $installer -Distro "" -Force
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $installer -Force
             }
             else {
                 Write-Host "Installer script not found: $installer" -ForegroundColor Red

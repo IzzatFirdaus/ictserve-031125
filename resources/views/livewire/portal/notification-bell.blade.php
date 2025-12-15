@@ -11,7 +11,7 @@
  */
 --}}
 
-<div class="relative" x-data="{ open: @entangle('open') }" @keydown.escape.window="open = false" @click.away="open = false">
+<div class="relative" x-data="{ open: $wire.entangle('open') }" @keydown.escape.window="open = false" @click.away="open = false">
 
     {{-- Notification Bell Button --}}
     <button type="button" wire:click="toggleDropdown"

@@ -2,7 +2,7 @@
     @if($isVisible)
     <!-- Tour Overlay -->
     <div class="fixed inset-0 bg-gray-900/50 dark:bg-gray-950/75 z-50 transition-opacity"
-         x-data="{ show: @entangle('isVisible') }"
+         x-data="{ show: $wire.entangle('isVisible') }"
          x-show="show"
          x-transition:enter="ease-out duration-300"
          x-transition:enter-start="opacity-0"
@@ -15,8 +15,8 @@
     <!-- Tour Tooltip -->
     <div class="fixed z-50 max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700"
          x-data="{
-             show: @entangle('isVisible'),
-             step: @entangle('currentStep'),
+             show: $wire.entangle('isVisible'),
+             step: $wire.entangle('currentStep'),
              positionTooltip() {
                  const target = document.querySelector('{{ $stepData['target'] ?? '#dashboard' }}');
                  if (target) {

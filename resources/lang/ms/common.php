@@ -138,6 +138,7 @@ return [
     'optimize_asset_usage' => 'Optimumkan penggunaan aset sedia ada',
     'optional' => 'pilihan',
     'overdue' => 'Lewat',
+    'password' => 'Kata Laluan',
     'overdue_items' => 'Item Tertunggak',
     'all_clear' => 'Tiada tertunggak',
     'pending' => 'Menunggu',
