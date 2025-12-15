@@ -65,7 +65,7 @@
                     </a>
 
                     <!-- Desktop Navigation -->
-                    <nav class="hidden md:flex gap-2" aria-label="{{ __('navigation.main') }}">
+                    <nav class="hidden md:flex gap-2" role="navigation" aria-label="{{ __('navigation.main') }}">
                         <a href="{{ route('helpdesk.create') }}"
                             class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 flex items-center gap-2 {{ request()->routeIs('helpdesk.*') ? 'bg-white/15' : '' }}">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
