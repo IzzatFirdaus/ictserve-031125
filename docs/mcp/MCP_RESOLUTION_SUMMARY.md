@@ -1,6 +1,6 @@
 # MCP Memory Server - Resolution Summary
 
-**Date**: 2025-12-08  
+**Date**: 2025-12-08 (Updated: 2025-12-15)  
 **Issue**: `Error: MCP -32603: Unexpected non-whitespace character after JSON at position 139`  
 **Status**: ✅ **RESOLVED**
 
@@ -9,6 +9,8 @@
 ## 🎯 Root Cause
 
 The error occurs when **malformed JSON** is sent to the MCP memory server tools. The most common cause is **line breaks inside string values** which violate JSON syntax.
+
+**⚠️ IMPORTANT CLARIFICATION (2025-12-15)**: This error is from **tool input** (when calling memory tools), NOT from the configuration file itself.
 
 ### Example of Problematic Input (from your screenshot)
 
@@ -31,6 +33,7 @@ The error occurs when **malformed JSON** is sent to the MCP memory server tools.
 
 ---
 
+## ✅ Solution
 
 ### 1. **Your Configuration is Correct**
 
@@ -41,23 +44,29 @@ The error occurs when **malformed JSON** is sent to the MCP memory server tools.
   "servers": {
     "memory": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-memory",
-        "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {
+        "MEMORY_FILE_PATH": "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+      }
     }
   }
 }
 ```
 
-✅ Updated to use absolute path  
-✅ Points to correct memory.jsonl location
+**Why This Works**:
 
-✅ All required fields present
-✅ Proper JSONL format
-```
+- ✅ Uses environment variable `MEMORY_FILE_PATH` for file path
+- ✅ Absolute path is reliable across all environments
+- ✅ Points to correct memory.jsonl location
 
+**Why `${workspaceFolder}` Doesn't Work**:
+
+- ❌ Variable is NOT expanded by VS Code in mcp.json
+- ❌ MCP server receives literal string `"${workspaceFolder}/storage/mcp/memory.jsonl"`
+- ❌ Causes file not found errors
+- ✅ **Solution**: Use absolute paths with environment variables or direct args
+
+### 2. **Tool Input Validation**
 
 When calling memory tools, ensure JSON has:
 
@@ -70,6 +79,7 @@ When calling memory tools, ensure JSON has:
 ## 📚 Documentation Created
 
 ### 1. **MCP_MEMORY_USAGE_EXAMPLES.md**
+
 - Entity naming conventions
 
 ### 2. **MCP_ERROR_RESOLUTION.md**
@@ -88,9 +98,9 @@ When calling memory tools, ensure JSON has:
 ---
 
 ## 🎓 Key Learnings
+
 2. **Escape special characters** - Use `\"` for quotes, `\\n` for newlines
 3. **Test before sending** - Validate JSON with tools first
-
 
 1. **Atomic observations** - One fact per observation string
 2. **Descriptive names** - Use `PascalCase_With_Dates_2025-12-08`
@@ -101,6 +111,7 @@ When calling memory tools, ensure JSON has:
 .\scripts\validate-memory-json.ps1
 
 Recommendation:
+
 - Re-attempt programmatic entity creation via the MCP API when the service is healthy to create runtime entities and relations, using single-line strings for observations (see `docs/mcp/MCP_MEMORY_USAGE_EXAMPLES.md`). Consider creating a small health check automation that verifies MCP memory server is responsive before trying to create entities.
 
 ## ✅ Programmatic fallback executed (Laravel service)
@@ -108,15 +119,18 @@ Recommendation:
 Because the MCP API tooling remained unavailable (JSON parse errors at the tool layer), I used the local Laravel `MemoryGraphService` to register the theme entities and relations as a programmatic fallback. This was performed with a small artisan command `memory:create-theme-entities`.
 
 What happened:
+
 - The `memory:create-theme-entities` command created `Theme_Toggle_Implementation_2025-12-08`, `Theme_Init_Script_Added_2025-12-08`, `Portal_Dark_Class_Removal_2025-12-08`, and a `Theme_Toggle_Session_2025-12-08` work session in the Memory Graph database.
 - A small validation script (`scripts/check_memory_entity.php`) confirms that the Theme entity exists in the database.
 
 Recommendation:
+
 - Re-try the MCP API calls later after confirming the server is healthy. If MCP API remains unavailable, using MemoryGraphService programmatically is a valid alternative to persist entities and relations for the short term.
 $json = '{"entities":[...]}' | ConvertFrom-Json
 
 # 3. Use online validator for complex JSON
-# JSONLint: https://jsonlint.com/
+# JSONLint: <https://jsonlint.com/>
+
 ```
 
 ---

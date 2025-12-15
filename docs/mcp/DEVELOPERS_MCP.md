@@ -8,7 +8,7 @@ Quick wins (do these first)
 ---------------------------------
 
 - Do NOT store secrets in workspace files. Use IDE secret stores or OS-level secret managers. Examples: VS Code SecretStorage, JetBrains Password Safe, AWS Secrets Manager.
-- Use `${workspaceFolder}` not absolute paths in `.vscode/mcp.json`.
+- **IMPORTANT**: `${workspaceFolder}` variable expansion does NOT work reliably in VS Code's `.vscode/mcp.json`. Use absolute paths with environment variables instead (see examples below).
 - Run MCP servers in separate processes (wrapper script + stdio or network) to avoid blocking the editor.
 - Keep workspace-level `mcp.json` for shareable, non-sensitive server configs and user-level config for tokens/overrides.
 
@@ -43,21 +43,29 @@ Operational & Security Best Practices
 - Health checks: MCP servers should expose a health/readiness path (HTTP endpoint or stdio handshake), IDE should surface startup errors.
 - Observability: Keep logs accessible (developer readable), emit lightweight telemetry and request metrics (opt-in, privacy-safe).
 - Rate limiting & fallback: Client-side throttling with exponential backoff + local fallback for private/offline usage.
-- Portability: Use `${workspaceFolder}` and wrapper scripts to hide OS-specific command differences (node vs npx vs npx.cmd).
+- Portability: Use environment variables with absolute paths for reliable cross-platform compatibility. Wrapper scripts can help hide OS-specific command differences (node vs npx vs npx.cmd).
 
 Examples — workspace and user configs
 -------------------------------------
 Workspace (commitable) — `.vscode/mcp.json` (non-sensitive):
 
+**RECOMMENDED**: Use absolute paths with environment variables
+
+```json
 {
   "servers": {
     "memory": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["${workspaceFolder}/scripts/mcp-stdio-wrapper.js","npx","-y","@modelcontextprotocol/server-memory","${workspaceFolder}/storage/mcp/memory.jsonl"]
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {
+        "MEMORY_FILE_PATH": "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+      }
     }
   }
 }
+```
+
+**NOTE**: `${workspaceFolder}` variable expansion does NOT work in VS Code's mcp.json. The variable is passed literally to the MCP server process, causing file path errors. Use absolute paths or environment variables instead.
 
 User (private) — `~/.kiro/settings/mcp.json` (example — DO NOT COMMIT):
 
