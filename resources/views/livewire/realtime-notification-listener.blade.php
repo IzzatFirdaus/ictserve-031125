@@ -24,7 +24,7 @@
 --}}
 
 <div x-data="{
-    connected: @entangle('connected'),
+    connected: $wire.entangle('connected'),
     init() {
         // Listen for Echo connection events
         window.addEventListener('echo:connected', () => {
