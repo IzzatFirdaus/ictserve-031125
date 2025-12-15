@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Services\ThemePreferenceService;
 use Filament\Widgets\Widget;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Theme Toggle Widget v3.6.0
  *
  * Provides light/dark theme toggle functionality for Filament admin panel.
- * Theme preference is stored in localStorage with 1-year TTL.
+ * Theme preference is persisted via ThemePreferenceService (session + cookie + user DB redundancy).
  * Light mode is the default and cannot be changed by system detection.
  *
  * Features:
- * - Persistent theme selection (localStorage)
+ * - Persistent theme selection (session/cookie/DB)
  * - FOUT (Flash of Unstyled Text) prevention
  * - Accessible toggle button with ARIA attributes
  * - Smooth theme transition
@@ -38,11 +40,31 @@ class ThemeToggleWidget extends Widget
     protected static ?int $sort = -100; // Display at the top
 
     /**
+     * Current theme preference: 'light' or 'dark'
+     */
+    public string $theme = 'light';
+
+    public function mount(): void
+    {
+        $this->theme = app(ThemePreferenceService::class)->getStoredTheme();
+    }
+
+    public function toggleTheme(): void
+    {
+        $nextTheme = $this->theme === 'dark' ? 'light' : 'dark';
+
+        $this->theme = $nextTheme;
+        app(ThemePreferenceService::class)->setTheme($nextTheme);
+
+        $this->dispatch('theme-changed', theme: $nextTheme);
+    }
+
+    /**
      * Can view widget based on user authentication
      */
     public static function canView(): bool
     {
-        return auth()->check();
+        return Auth::check();
     }
 
     /**
