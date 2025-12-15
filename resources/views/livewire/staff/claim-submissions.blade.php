@@ -97,7 +97,7 @@
             </div>
 
             {{-- Tabbed Interface --}}
-            <div x-data="{ activeTab: @entangle('activeTab') }">
+            <div x-data="{ activeTab: $wire.entangle('activeTab') }">
                 {{-- Tab Navigation --}}
                 <div class="border-b border-gray-200 dark:border-gray-700" role="tablist"
                     aria-label="{{ __('staff.claims.submission_types') }}">
