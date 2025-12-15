@@ -32,6 +32,8 @@ class DocumentTest extends TestCase
             'metadata',
             'uploaded_by',
             'status',
+            'processing_model',
+            'bedrock_analysis',
         ];
 
         $this->assertEquals($expected, $document->getFillable());

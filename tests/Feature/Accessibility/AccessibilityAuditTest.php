@@ -151,7 +151,7 @@ class AccessibilityAuditTest extends TestCase
 
         foreach ($pages as $page) {
             $response = $this->get($page);
-            $response->assertSee('lang="en"', false);
+            $response->assertSee('lang="ms"', false);
         }
     }
 
