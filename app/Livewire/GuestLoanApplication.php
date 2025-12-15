@@ -25,7 +25,6 @@ use App\Services\LoanApplicationService;
 use App\Services\WorkingDayCalculator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -58,7 +57,7 @@ class GuestLoanApplication extends Component
         'applicant_position' => '',
         'applicant_grade' => '',
         'phone' => '',
-        'division_id' => null,
+        'division_id' => '',
         'purpose' => '',
         'location' => '',
         'loan_start_date' => '',
@@ -164,12 +163,16 @@ class GuestLoanApplication extends Component
 
     public function mount(): void
     {
+        // Explicitly ensure dropdowns start with empty values to show placeholders
+        $this->form['division_id'] = '';
+
         // Pre-fill authenticated user data
         if (Auth::check()) {
             $user = Auth::user();
             $this->form['applicant_name'] = $user->name ?? '';
             $this->form['phone'] = $user->phone ?? '';
-            $this->form['division_id'] = $user->division_id;
+            // Don't pre-fill division_id to ensure placeholder shows
+            // $this->form['division_id'] = $user->division_id;
 
             // Build position/grade from user's data
             if ($user->position) {
@@ -581,7 +584,13 @@ class GuestLoanApplication extends Component
                 'code',
                 'name_ms',
                 'name_en',
-            ]);
+            ])
+            ->map(function ($division) use ($orderColumn) {
+                return [
+                    'id' => $division->id,
+                    'name' => $division->{$orderColumn},
+                ];
+            });
 
         $layout = (Auth::check() || request()->routeIs('loan.authenticated.*'))
             ? 'layouts.portal'
