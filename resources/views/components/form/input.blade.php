@@ -87,7 +87,7 @@ $ariaDescribedBy = !empty($describedBy) ? implode(' ', $describedBy) : null;
 
 // Input classes with error state styling per D14 §4.1.1
 $inputClasses =
-'block w-full rounded-m shadow-sm sm:text-sm min-h-11 px-3 py-2 ' .
+'block w-full rounded-md shadow-sm sm:text-sm min-h-11 px-3 py-2 ' .
 'border transition-colors duration-200 ' .
 'focus:outline-none ' .
 'dark:bg-gray-800 dark:text-white ' .

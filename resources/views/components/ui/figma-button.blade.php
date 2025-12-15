@@ -25,10 +25,10 @@ $classes = [
     'text-lg px-8 py-4 min-h-12' => $size === 'lg',
 
     // Variant styles using ICTServe design tokens
-    'bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500 rounded-m shadow-button' => $variant === 'primary',
-    'bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 focus:ring-primary-500 rounded-m shadow-sm' => $variant === 'secondary',
-    'bg-success-600 hover:bg-success-700 text-white focus:ring-success-500 rounded-m shadow-button' => $variant === 'success',
-    'bg-danger-600 hover:bg-danger-700 text-white focus:ring-danger-500 rounded-m shadow-button' => $variant === 'danger',
+    'bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500 rounded-md shadow-button' => $variant === 'primary',
+    'bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 focus:ring-primary-500 rounded-md shadow-sm' => $variant === 'secondary',
+    'bg-success-600 hover:bg-success-700 text-white focus:ring-success-500 rounded-md shadow-button' => $variant === 'success',
+    'bg-danger-600 hover:bg-danger-700 text-white focus:ring-danger-500 rounded-md shadow-button' => $variant === 'danger',
 ];
 @endphp
 

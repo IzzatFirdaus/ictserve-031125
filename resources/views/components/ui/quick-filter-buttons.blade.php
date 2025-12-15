@@ -1,4 +1,4 @@
-{{--
+﻿{{--
     Quick Filter Buttons Component
     @component QuickFilterButtons
     @description Displays quick-apply buttons for saved filters
@@ -18,7 +18,7 @@
     @foreach ($filters as $filter)
     <button type="button"
         wire:click="$dispatch('apply-saved-filter', { filterId: '{{ $filter['id'] }}', context: '{{ $context }}' })"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-m min-h-11
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md min-h-11
                            transition-all duration-150 ease-out
                            {{ $appliedFilterId === $filter['id']
                                ? 'bg-primary-100 text-primary-700 border-2 border-primary-400 shadow-sm dark:bg-primary-900/50 dark:text-primary-300 dark:border-primary-600'
@@ -53,7 +53,7 @@
         class="inline-flex items-center gap-1 px-2 py-1.5 text-xs font-medium min-h-11
                            text-gray-500 hover:text-gray-700 hover:bg-gray-100
                            dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
-                           rounded-m transition-colors duration-150
+                           rounded-md transition-colors duration-150
                            focus:outline-none"
         aria-label="{{ __('Clear applied filter') }}">
         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
