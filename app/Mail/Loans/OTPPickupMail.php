@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Mail\Loans;
 
-use App\Mail\BaseMailable;
 use App\Models\LoanApplication;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailable;
 
 /**
  * OTP Pickup Mail
@@ -16,10 +13,8 @@ use Illuminate\Queue\SerializesModels;
  * Sends the 4-digit OTP to the applicant for asset pickup verification.
  * Requirement 3A: OTP Handshake for Digital Signature
  */
-class OTPPickupMail extends BaseMailable implements ShouldQueue
+class OTPPickupMail extends Mailable
 {
-    use Queueable, SerializesModels;
-
     public string $otp;
 
     public LoanApplication $application;
@@ -33,11 +28,11 @@ class OTPPickupMail extends BaseMailable implements ShouldQueue
     public function build(): self
     {
         $locale = session('locale', 'ms');
-        
+
         return $this
-            ->subject($locale === 'en' 
-                ? 'Asset Pickup OTP - ' . $this->application->application_number
-                : 'OTP Pengambilan Aset - ' . $this->application->application_number)
+            ->subject($locale === 'en'
+                ? 'Asset Pickup OTP - '.$this->application->application_number
+                : 'OTP Pengambilan Aset - '.$this->application->application_number)
             ->markdown('emails.loans.otp-pickup', [
                 'application' => $this->application,
                 'otp' => $this->otp,
