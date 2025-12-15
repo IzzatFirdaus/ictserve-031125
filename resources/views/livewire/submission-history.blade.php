@@ -41,24 +41,24 @@ last-updated: 2025-11-06
 				{{-- Helpdesk Tab --}}
 				<button id="helpdesk-tab" wire:click="switchTab('helpdesk')" type="button" role="tab"
 					aria-selected="{{ $activeTab === 'helpdesk' ? 'true' : 'false' }}" aria-controls="helpdesk-panel"
-					class="group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900
-                        @if($activeTab === 'helpdesk')
-							border-amber-500 text-amber-600 dark:text-amber-400
-						@else
-							border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300
-						@endif">
+					class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-h-11 min-w-11
+		                        @if($activeTab === 'helpdesk')
+						border-amber-500 text-amber-600 dark:text-amber-400
+					@else
+						border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300
+					@endif">
 					<x-heroicon-s-bell class="-ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
 					{{ __('portal.history_helpdesk_tab') }}
 				</button>
 
 				{{-- Loans Tab --}}
 				<button id="loans-tab" wire:click="switchTab('loans')" type="button" role="tab"
-					aria-selected="{{ $activeTab === 'loans' ? 'true' : 'false' }}" aria-controls="loans-panel" class="group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900
-                        @if($activeTab === 'loans')
-							border-amber-500 text-amber-600 dark:text-amber-400
-						@else
-							border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300
-						@endif">
+					aria-selected="{{ $activeTab === 'loans' ? 'true' : 'false' }}" aria-controls="loans-panel" class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-h-11 min-w-11
+		                        @if($activeTab === 'loans')
+						border-amber-500 text-amber-600 dark:text-amber-400
+					@else
+						border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300
+					@endif">
 					<x-heroicon-s-document class="-ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
 					{{ __('portal.history_loans_tab') }}
 				</button>
