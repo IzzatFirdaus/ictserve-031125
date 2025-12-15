@@ -82,7 +82,7 @@
             </h3>
             @if ($unreadCount > 0)
                 <button wire:click="markAllAsRead" type="button"
-                    class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-2 py-1 min-h-8 transition-colors">
+                    class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-2 py-2 min-h-11 transition-colors">
                     {{ __('notifications.mark_all_read') }}
                 </button>
             @endif
@@ -93,7 +93,7 @@
             @foreach ($categories as $key => $label)
                 <button wire:click="setCategory('{{ $key }}')" type="button" role="tab"
                     :aria-selected="activeCategory === '{{ $key }}'"
-                    class="px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-8
+                    class="px-3 py-2.5 text-xs font-medium rounded-md whitespace-nowrap transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11
                                {{ $activeCategory === $key
                                    ? 'bg-primary-600 dark:bg-primary-600 text-white shadow-sm'
                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white' }}">
