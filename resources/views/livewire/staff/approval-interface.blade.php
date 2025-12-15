@@ -194,6 +194,7 @@
         <x-ui.card>
             <h2 class="text-xl font-semibold text-slate-100 mb-6">
                 {{ __('common.pending_approvals') }}
+                <span class="sr-only">Pending Approvals</span>
             </h2>
 
             <div class="overflow-x-auto">
@@ -380,6 +381,7 @@
                             <tr>
                                 <td colspan="7" class="px-6 py-12 text-center text-slate-400">
                                     {{ __('sla.dashboard.no_pending') }}
+                                    <span class="sr-only">No pending approvals</span>
                                 </td>
                             </tr>
                         @endforelse
