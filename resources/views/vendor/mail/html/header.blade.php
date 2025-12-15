@@ -18,7 +18,7 @@
         {{-- MOTAC Logo --}}
         {{-- Logo clear space: minimum 8px padding around all logos per Requirement 22.2 --}}
         <a href="{{ $url }}" style="display: inline-block; text-decoration: none; padding: 8px;">
-            <img src="{{ asset('images/motac-logo.jpeg') }}"
+            <img src="{{ asset('images/motac-logo.png') }}"
                  alt="{{ __('common.motac_logo') }}"
                  style="height: 50px; display: block; margin-left: auto; margin-right: auto;">
         </a>

@@ -1,49 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="ms">
 <head>
-    <title>Loan Application Status Update</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kemaskini Status Permohonan</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
-        .header { background-color: #f4f4f4; padding: 10px; text-align: center; border-bottom: 1px solid #ddd; }
-        .content { padding: 20px; }
-        .footer { margin-top: 20px; font-size: 12px; text-align: center; color: #777; }
-        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 4px; color: white; font-weight: bold; }
-        .status-approved { background-color: #28a745; }
-        .status-rejected { background-color: #dc3545; }
-        .status-pending { background-color: #ffc107; color: #333; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #111827; }
+        .container { max-width: 640px; margin: 0 auto; padding: 24px; }
+        .card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; }
+        .muted { color: #6b7280; font-size: 12px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h2>Loan Application Update</h2>
-        </div>
-        <div class="content">
-            <p>Dear {{ $loanApplication->applicant_name }},</p>
-            
-            <p>The status of your loan application (<strong>{{ $loanApplication->application_id }}</strong>) has been updated.</p>
-            
-            <p><strong>New Status:</strong> <span class="status-badge status-{{ strtolower($loanApplication->status) }}">{{ ucfirst($loanApplication->status) }}</span></p>
-            
-            @if($loanApplication->rejection_reason && $loanApplication->status === 'rejected')
-                <p><strong>Reason:</strong> {{ $loanApplication->rejection_reason }}</p>
+        <div class="card">
+            <h2 style="margin: 0 0 16px;">Kemaskini Status Permohonan</h2>
+
+            <p style="margin: 0 0 12px;">Tuan/Puan {{ $application->applicant_name }},</p>
+
+            <p style="margin: 0 0 16px;">Status permohonan pinjaman ICT anda telah dikemaskini.</p>
+
+            <p style="margin: 0 0 8px;"><strong>Permohonan:</strong> {{ $application->application_number }}</p>
+            <p style="margin: 0 0 8px;"><strong>Status:</strong> {{ $application->status instanceof \BackedEnum ? $application->status->value : $application->status }}</p>
+
+            @if($previousStatus)
+                <p style="margin: 0 0 16px;"><strong>Status Sebelumnya:</strong> {{ $previousStatus }}</p>
             @endif
 
-            <p><strong>Loan Details:</strong></p>
-            <ul>
-                <li><strong>Start Date:</strong> {{ $loanApplication->start_date_time->format('d M Y H:i') }}</li>
-                <li><strong>End Date:</strong> {{ $loanApplication->end_date_time->format('d M Y H:i') }}</li>
-                <li><strong>Purpose:</strong> {{ $loanApplication->purpose }}</li>
-            </ul>
-
-            <p>You can view the full details of your application by logging into the portal.</p>
-            
-            <p>Thank you,<br>ICTServe Team</p>
+            <p style="margin: 16px 0 0;">Terima kasih kerana menggunakan ICTServe.</p>
+            <p style="margin: 12px 0 0;">Yang benar,<br>{{ config('app.name') }}</p>
         </div>
-        <div class="footer">
-            <p>&copy; {{ date('Y') }} ICTServe. All rights reserved.</p>
-        </div>
+        <p class="muted" style="margin: 16px 0 0;">E-mel ini dijana secara automatik. Sila abaikan jika anda tidak membuat permohonan pinjaman aset.</p>
     </div>
 </body>
 </html>
