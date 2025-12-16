@@ -101,10 +101,37 @@ class OllamaClient implements OllamaClientContract
 
             $this->updateStats($startTime);
 
+            // Dispatch event for AIServiceMetrics Pulse recorder
+            // trace: D03-SRS-AI-019, D18-§6.1
+            try {
+                event(new \App\Events\AIRequestCompleted(
+                    service: 'ollama',
+                    responseTimeMs: (int) ((microtime(true) - $startTime) * 1000),
+                    modelId: $payload['model'] ?? $this->config['model'],
+                    queryType: $payload['query_type'] ?? 'faq_specific',
+                ));
+            } catch (\Throwable $dispatchError) {
+                // Jangan gagalkan permintaan jika event dispatch bermasalah.
+            }
+
             return $response;
         } catch (\Exception $e) {
             $this->stats['errors']++;
             $this->updateStats($startTime);
+
+            // Dispatch failure event for AIServiceMetrics Pulse recorder
+            // trace: D03-SRS-AI-019, D18-§6.1
+            try {
+                event(new \App\Events\AIRequestFailed(
+                    service: 'ollama',
+                    responseTimeMs: (int) ((microtime(true) - $startTime) * 1000),
+                    errorMessage: $e->getMessage(),
+                    modelId: $payload['model'] ?? $this->config['model'],
+                    queryType: $payload['query_type'] ?? null,
+                ));
+            } catch (\Throwable $dispatchError) {
+                // Jangan gagalkan permintaan jika event dispatch bermasalah.
+            }
 
             Log::error('Ollama generate error', [
                 'error' => $e->getMessage(),

@@ -402,12 +402,14 @@ public function callback()
 ### Redirect URI Mismatch
 
 Ensure redirect URI in Google Console matches exactly:
+
 - `http://localhost/auth/google/callback` (development)
 - `https://ictserve.motac.gov.my/auth/google/callback` (production)
 
 ### Invalid Client Error
 
 Check:
+
 1. Client ID and Secret are correct
 2. Google+ API is enabled
 3. OAuth consent screen is configured
@@ -433,6 +435,6 @@ if ($user->tokenExpired()) {
 
 ## References
 
-- Official Documentation: https://laravel.com/docs/12.x/socialite
-- GitHub Repository: https://github.com/laravel/socialite
-- Google OAuth Documentation: https://developers.google.com/identity/protocols/oauth2
+- Official Documentation: <https://laravel.com/docs/12.x/socialite>
+- GitHub Repository: <https://github.com/laravel/socialite>
+- Google OAuth Documentation: <https://developers.google.com/identity/protocols/oauth2>
