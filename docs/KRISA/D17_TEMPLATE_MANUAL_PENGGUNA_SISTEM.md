@@ -10,13 +10,13 @@
 | **NAMA AGENSI**       | : Bahagian Pengurusan Maklumat (BPM), MOTAC      |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia |
 | **TARIKH DOKUMEN**    | : 15 Disember 2025                               |
-| **VERSI DOKUMEN**     | : 3.6.1                                          |
+| **VERSI DOKUMEN**     | : 3.7.0 (True Hybrid Architecture & Cloud Hybrid AI) |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Seksyen ini adalah ruangan untuk menyatakan secara ringkas keterangan berkenaan dokumen Manual Pengguna Sistem yang disediakan. Manual ini menyediakan panduan lengkap untuk pengguna (Staf, Tetamu, dan Pegawai Kelulusan) dalam menggunakan sistem ICTServe bagi tujuan pengurusan aduan kerosakan ICT dan permohonan pinjaman aset.
+Manual ini menyediakan panduan lengkap untuk pengguna (Staf, Tetamu, dan Pegawai Pelulus) dalam menggunakan ICTServe v3.7.0, merangkumi pendaftaran, akses tetamu, modul Helpdesk, Pinjaman Aset, Pembantu AI, serta penyelesaian masalah asas. Dokumen mematuhi piawaian KRISA dan menekankan ciri **True Hybrid Architecture** dan **Cloud Hybrid AI**.
 
 ---
 
@@ -44,10 +44,11 @@ Seksyen ini adalah ruangan bagi pegawai-pegawai yang bertanggungjawab untuk mela
 
 ### KAWALAN DOKUMEN
 
-| No. Versi | Tarikh            | Ringkasan Pindaan                                                                 | Penyedia                |
-| --------- | ----------------- | --------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1     | 15 Disember 2025  | Kemaskini manual pengguna selaras dengan versi sistem 3.6.1 (Hybrid AI & Access). | Pasukan Pembangunan BPM |
-| 3.0.0     | 31 Oktober 2025   | Versi awal manual pengguna untuk sistem ICTServe v3.0.                            | Pasukan Pembangunan BPM |
+| No. Versi | Tarikh            | Ringkasan Pindaan                                                        | Penyedia                |
+| --------- | ----------------- | ------------------------------------------------------------------------ | ----------------------- |
+| 3.7.0     | 15 Disember 2025  | Kemas kini Cloud Hybrid AI, True Hybrid Access, Bahasa Melayu sahaja.   | Pasukan Pembangunan BPM |
+| 3.6.1     | 15 Disember 2025  | Kemaskini manual pengguna selaras dengan versi sistem 3.6.1 (Hybrid AI).| Pasukan Pembangunan BPM |
+| 3.0.0     | 31 Oktober 2025   | Versi awal manual pengguna untuk sistem ICTServe v3.0.                  | Pasukan Pembangunan BPM |
 
 ---
 
@@ -101,7 +102,20 @@ Seksyen ini adalah ruangan bagi pegawai-pegawai yang bertanggungjawab untuk mela
 
 ## v. Senarai Gambarajah
 
-*(Senarai gambarajah akan dikemaskini setelah tangkapan skrin dimasukkan)*
+| Rajah | Penerangan                                               | Fail Imej                                                     |
+| ----- | -------------------------------------------------------- | ------------------------------------------------------------- |
+| 1     | Halaman Utama (Welcome) — Desktop (Cerah)               | ../public/images/development/welcome-desktop-light.png        |
+| 2     | Halaman Utama (Welcome) — Mudah Alih (Cerah)            | ../public/images/development/welcome-mobile-light.png         |
+| 3     | Log Masuk — Desktop (Cerah)                              | ../public/images/development/login-desktop-light.png          |
+| 4     | Pendaftaran Akaun — Desktop (Cerah)                      | ../public/images/development/register-desktop-light.png       |
+| 5     | Akses Pantas (Laman Utama)                               | ../public/images/development/quick-home.png                   |
+| 6     | Borang Tiket Helpdesk — Desktop (Cerah)                  | ../public/images/development/helpdesk-create-desktop-light.png|
+| 7     | Penghantaran Tiket Berjaya — Desktop (Cerah)            | ../public/images/development/helpdesk-submit-desktop-light.png|
+| 8     | Borang Pinjaman Aset — Desktop (Cerah)                   | ../public/images/development/loan-create-desktop-light.png    |
+| 9     | Wizard Helpdesk (Langkah 1–4) — Desktop (Cerah)         | ../public/images/development/helpdesk-wizard-step1-desktop-light.png, ...-step4-... |
+| 10    | Wizard Pinjaman (Langkah 1–4) — Desktop (Cerah)         | ../public/images/development/loan-wizard-step1-desktop-light.png, ...-step4-...     |
+| 11    | Chatbot/FAQ — Widget Terbuka                             | ../public/images/development/faq-bot-widget-open.png          |
+| 12    | Semak Status Tiket/Pinjaman — Desktop (Cerah)            | ../public/images/development/status-check-desktop-light.png   |
 
 ---
 
@@ -123,6 +137,7 @@ Seksyen ini adalah ruangan bagi pegawai-pegawai yang bertanggungjawab untuk mela
 | SLA     | Service Level Agreement (Perjanjian Tahap Perkhidmatan) |
 | AI      | Artificial Intelligence (Kecerdasan Buatan)     |
 | URL     | Uniform Resource Locator                        |
+| FAQ     | Frequently Asked Questions                       |
 
 ### b. Definisi
 
@@ -130,14 +145,15 @@ Seksyen ini adalah ruangan bagi pegawai-pegawai yang bertanggungjawab untuk mela
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | **Hybrid Access**       | Kebolehan menggunakan sistem sama ada sebagai tetamu (tanpa log masuk) atau pengguna berdaftar.                            |
 | **Dashboard**           | Halaman utama yang memaparkan ringkasan status tiket dan pinjaman.                                                         |
-| **Pegawai Pelulus**     | Pegawai Gred 41 ke atas yang bertanggungjawab meluluskan permohonan pinjaman aset.                                         |
+| **Pegawai Pelulus**     | Pegawai Gred 41+ yang meluluskan permohonan pinjaman aset melalui e-mel/token.                                             |
 | **Tiket**               | Rekod aduan kerosakan yang didaftarkan dalam sistem.                                                                       |
+| **Pembantu AI**         | Chatbot pintar yang menjawab soalan FAQ dan membantu menganalisis dokumen sokongan.                                        |
 
 ---
 
 ## viii. Sumber Rujukan
 
-1. D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md (v3.6.1)
+1. D03_SPESIFIKASI_KEPERLUAN_SISTEM_SRS_ICTSERVE.md (v3.7.0)
 2. D18_AI_CHATBOT_OLLAMA_BEDROCK.md (v1.0.0)
 3. USER_MANUAL_MS.md (v3.0.0)
 
@@ -147,15 +163,13 @@ Seksyen ini adalah ruangan bagi pegawai-pegawai yang bertanggungjawab untuk mela
 
 ### 1.1 Tujuan Manual
 
-Manual ini bertujuan untuk menyediakan panduan lengkap kepada pengguna dalam menggunakan sistem ICTServe. Ia merangkumi langkah-langkah penggunaan modul Helpdesk, Pinjaman Aset, dan fungsi-fungsi lain yang berkaitan.
+Memberi panduan kepada pengguna ICTServe v3.7.0 untuk mengakses, menghantar aduan, memohon pinjaman aset, berinteraksi dengan Pembantu AI, dan memahami proses kelulusan.
 
 ### 1.2 Skop Manual
 
-Manual ini merangkumi:
-
-- Panduan akses dan log masuk (termasuk akses tetamu).
+- Panduan akses dan log masuk (termasuk mod tetamu).
 - Arahan penggunaan modul Helpdesk dan Pinjaman Aset.
-- Panduan bagi Pegawai Pelulus.
+- Panduan untuk Pegawai Pelulus.
 - Penggunaan ciri bantuan AI.
 - Penyelesaian masalah lazim.
 
@@ -163,14 +177,14 @@ Manual ini merangkumi:
 
 | Kategori Pengguna | Keterangan |
 | ----------------- | ---------- |
-| **Staf MOTAC**    | Pengguna yang membuat aduan atau memohon pinjaman aset. |
-| **Tetamu**        | Pengguna yang mengakses sistem tanpa log masuk untuk aduan pantas. |
-| **Pegawai Pelulus**| Pegawai Gred 41+ yang meluluskan permohonan pinjaman. |
-| **Pentadbir**     | Pegawai BPM yang menguruskan sistem (rujuk Manual Pentadbir untuk fungsi lanjut). |
+| **Staf MOTAC**    | Membuat aduan atau memohon pinjaman aset melalui log masuk. |
+| **Tetamu**        | Menghantar aduan atau permohonan pantas tanpa log masuk. |
+| **Pegawai Pelulus**| Pegawai Gred 41+ yang meluluskan permohonan pinjaman melalui e-mel/token. |
+| **Pentadbir**     | Rujuk Manual Pentadbir untuk fungsi lanjut. |
 
 ### 1.4 Gambaran Keseluruhan Sistem
 
-ICTServe adalah sistem pengurusan perkhidmatan ICT dalaman untuk kakitangan MOTAC. Sistem ini membolehkan pengguna menghantar tiket bantuan teknikal, memohon pinjaman aset ICT, menjejak status permohonan secara masa nyata, dan berinteraksi dengan Chatbot AI untuk bantuan pantas.
+ICTServe ialah sistem pengurusan perkhidmatan ICT dalaman yang menyokong **True Hybrid Architecture** (Tetamu atau Log Masuk). Sistem menyediakan Helpdesk, Pinjaman Aset, kelulusan e-mel, dan Pembantu AI berasaskan Ollama (on-prem) serta AWS Bedrock untuk analisis kompleks.
 
 ---
 
@@ -178,18 +192,19 @@ ICTServe adalah sistem pengurusan perkhidmatan ICT dalaman untuk kakitangan MOTA
 
 ### 2.1 Keperluan Perkakasan
 
-Sistem ini boleh diakses menggunakan komputer peribadi, komputer riba, atau peranti mudah alih (telefon pintar/tablet) dengan sambungan internet.
+- Komputer/telefon pintar/tablet dengan sambungan internet.
+- Pengimbas QR (opsyenal) untuk semak status pinjaman.
 
 ### 2.2 Keperluan Perisian
 
 | Perisian | Keperluan |
 | -------- | --------- |
-| Pelayar Web | Google Chrome (Disyorkan), Mozilla Firefox, Microsoft Edge, Safari (Versi terkini) |
+| Pelayar Web | Google Chrome (disyorkan), Mozilla Firefox, Microsoft Edge, Safari (terkini) |
 | Pemaparan PDF | Adobe Acrobat Reader atau pelayar web dengan sokongan PDF |
 
 ### 2.3 Keperluan Rangkaian
 
-Sistem memerlukan sambungan internet atau intranet MOTAC yang stabil untuk beroperasi sepenuhnya.
+- Sambungan Internet atau Intranet MOTAC yang stabil.
 
 ---
 
@@ -197,29 +212,44 @@ Sistem memerlukan sambungan internet atau intranet MOTAC yang stabil untuk berop
 
 ### 3.1 Akses Sistem
 
-1. Buka pelayar web.
-2. Layari alamat URL: **<https://ictserve.motac.gov.my>**
-3. Anda akan dibawa ke halaman utama sistem.
+1. Buka pelayar web dan layari `https://ictserve.motac.gov.my`.
+2. Pilih **Log Masuk** atau gunakan akses **Tetamu** untuk tindakan pantas.
+
+Contoh paparan:
+
+![Akses Pantas — Laman Utama](../public/images/development/quick-home.png)
+
+![Akses Pantas — Log Masuk Pantas](../public/images/development/quick-login.png)
 
 ### 3.2 Pendaftaran dan Log Masuk
 
-Sistem menyokong **Akses Hibrid**:
+**Pendaftaran (Staf Berdaftar)**
+1. Klik **Daftar**.
+2. Masukkan Nama dan E-mel rasmi `@motac.gov.my`.
+3. Cipta kata laluan dan sahkan melalui e-mel pengesahan.
 
-- **Akses Tetamu**: Anda boleh terus menggunakan fungsi "Tiket Baru" atau "Pinjaman Baru" tanpa log masuk.
-- **Log Masuk Staf**:
-  1. Klik butang **Log Masuk** di bahagian atas kanan.
-  2. Masukkan **E-mel** dan **Kata Laluan**.
-  3. Klik **Log Masuk**.
-  4. Jika terlupa kata laluan, klik pautan "Lupa Kata Laluan".
+Contoh paparan:
 
-### 3.3 Konfigurasi Profil (Pengguna Berdaftar)
+![Pendaftaran — Desktop (Cerah)](../public/images/development/register-desktop-light.png)
 
-1. Klik nama anda di bahagian atas kanan dan pilih **Profil**.
-2. Anda boleh mengemaskini:
-   - Nombor telefon.
-   - Tetapan notifikasi.
-   - Pilihan bahasa (Bahasa Melayu adalah bahasa utama).
-3. Maklumat seperti Nama, Jawatan, dan Bahagian adalah baca-sahaja. Jika terdapat kesilapan, sila hubungi pentadbir atau klik "Minta Pembetulan".
+
+**Log Masuk**
+1. Klik **Log Masuk**.
+2. Masukkan e-mel atau nama pengguna pendek (contoh: `ali.abu`).
+3. Masukkan kata laluan, kemudian log masuk.
+4. *(Opsyenal)* Log masuk Google Workspace jika didayakan.
+
+Contoh paparan:
+
+![Log Masuk — Desktop (Cerah)](../public/images/development/login-desktop-light.png)
+
+![Log Masuk — Modal Terbuka](../public/images/development/login-modal-open.png)
+
+### 3.3 Konfigurasi Profil
+
+- Kemas kini maklumat profil (nama, telefon, bahagian).
+- Tukar kata laluan secara berkala.
+- Tetapkan bahasa paparan (Bahasa Melayu sebagai lalai).
 
 ---
 
@@ -227,33 +257,25 @@ Sistem menyokong **Akses Hibrid**:
 
 ### 4.1 Dashboard Utama
 
-Dashboard memaparkan ringkasan aktiviti anda:
+- Memaparkan ringkasan tiket, status pinjaman, dan notifikasi.
 
-| Kad Statistik | Penerangan |
-| ------------- | ---------- |
-| **Tiket Terbuka** | Bilangan tiket bantuan anda yang sedang diproses. |
-| **Pinjaman Menunggu** | Permohonan pinjaman yang belum diluluskan. |
-| **Kelulusan Saya** | (Untuk Pegawai Pelulus) Permohonan yang perlu tindakan anda. |
-| **Boleh Dituntut** | Tiket yang dibuat sebagai tetamu yang boleh dikaitkan ke akaun anda. |
+Contoh paparan:
+
+![Dashboard — Desktop (Cerah)](../public/images/development/welcome-desktop-light.png)
+
+![Dashboard — Mudah Alih (Cerah)](../public/images/development/welcome-mobile-light.png)
 
 ### 4.2 Menu Navigasi
 
-Menu utama terletak di bahagian atas atau sisi (bergantung pada peranti):
+- Menu sisi menyediakan pautan ke Helpdesk, Pinjaman, Kelulusan, dan AI Chatbot.
 
-- **Utama**: Kembali ke Dashboard.
-- **Tiket Baru**: Borang aduan kerosakan.
-- **Pinjaman Baru**: Borang permohonan aset.
-- **Sejarah**: Senarai permohonan terdahulu.
-- **Kelulusan**: (Jika berkenaan) Senarai permohonan untuk diluluskan.
+Contoh paparan:
+
+![Menu Navigasi — Paparan Laptop](../public/images/development/welcome-laptop-light.png)
 
 ### 4.3 Pintasan Papan Kekunci
 
-| Pintasan | Fungsi |
-| -------- | ------ |
-| `Alt+N`  | Tiket Baru |
-| `Alt+L`  | Pinjaman Baru |
-| `Alt+D`  | Kembali ke Dashboard |
-| `?`      | Papar senarai pintasan |
+- Gunakan carian pantas (Ctrl/Cmd + K) jika disediakan untuk melompat ke modul tertentu.
 
 ---
 
@@ -261,133 +283,87 @@ Menu utama terletak di bahagian atas atau sisi (bergantung pada peranti):
 
 ### 5.1 Modul Helpdesk (Aduan Kerosakan)
 
-#### 5.1.1 Menghantar Tiket Baru
+**Menghantar Tiket (Tetamu atau Log Masuk)**
+1. Pilih **Hantar Tiket**.
+2. Isi Nama, E-mel, Bahagian, Kategori, dan Keterangan masalah.
+3. Lampirkan fail jika perlu (had 10MB).
+4. Hantar dan terima Nombor Tiket serta pautan status.
 
-1. Klik **Tiket Baru** dari menu atau Dashboard.
-2. **Langkah 1: Maklumat Asas**
-   - Pilih **Kategori** (Perkakasan, Perisian, Rangkaian, dll).
-   - Masukkan **Tajuk** ringkas masalah.
-3. **Langkah 2: Butiran Masalah**
-   - Terangkan masalah di ruangan **Penerangan**.
-   - Sahkan **Bahagian** dan **Lokasi** anda.
-4. **Langkah 3: Lampiran** (Pilihan)
-   - Muat naik gambar atau dokumen berkaitan (Maks 5 fail, 10MB/fail).
-5. **Langkah 4: Pengesahan**
-   - Semak maklumat dan tandakan kotak perakuan.
-   - Klik **Hantar**.
-6. Anda akan menerima **Nombor Tiket** dan e-mel pengesahan.
+Contoh paparan:
 
-#### 5.1.2 Menjejak Status Tiket
+![Borang Tiket Helpdesk — Desktop (Cerah)](../public/images/development/helpdesk-create-desktop-light.png)
 
-1. Pergi ke menu **Sejarah**.
-2. Cari tiket menggunakan nombor tiket.
-3. Status tiket:
-   - **Baru**: Diterima sistem.
-   - **Dalam Proses**: Sedang disemak juruteknik.
-   - **Selesai**: Masalah telah diselesaikan.
+![Penghantaran Tiket Berjaya — Desktop (Cerah)](../public/images/development/helpdesk-submit-desktop-light.png)
 
-#### 5.1.3 Menuntut Tiket Tetamu
+Langkah-langkah Wizard (contoh):
 
-Jika anda menghantar tiket tanpa log masuk, anda boleh menuntutnya kemudian:
+![Wizard Helpdesk — Langkah 1](../public/images/development/helpdesk-wizard-step1-desktop-light.png)
 
-1. Di Dashboard, lihat kad **Boleh Dituntut**.
-2. Klik **Tuntut Penyerahan**.
-3. Masukkan OTP yang dihantar ke e-mel anda untuk pengesahan.
+![Wizard Helpdesk — Langkah 2](../public/images/development/helpdesk-wizard-step2-desktop-light.png)
+
+![Wizard Helpdesk — Langkah 3](../public/images/development/helpdesk-wizard-step3-desktop-light.png)
+
+![Wizard Helpdesk — Langkah 4](../public/images/development/helpdesk-wizard-step4-desktop-light.png)
 
 ### 5.2 Modul Pinjaman Aset ICT
 
-#### 5.2.1 Memohon Pinjaman
+1. Pilih **Mohon Pinjaman**.
+2. Pilih jenis aset dan tarikh mula/tamat.
+3. Masukkan tujuan dan nama **Pegawai Pelulus**.
+4. Hantar permohonan. Pegawai Pelulus menerima e-mel token untuk meluluskan.
 
-1. Klik **Pinjaman Baru**.
-2. **Langkah 1: Pilih Aset**
-   - Pilih jenis aset (Projektor, Laptop, dll).
-   - Sistem akan memaparkan ketersediaan aset.
-3. **Langkah 2: Tarikh**
-   - Pilih **Tarikh Pengambilan** dan **Pemulangan**.
-   - Tempoh maksimum adalah 14 hari.
-4. **Langkah 3: Tujuan**
-   - Nyatakan tujuan dan lokasi penggunaan.
-5. **Langkah 4: Hantar**
-   - Baca syarat pinjaman dan hantar permohonan.
+Contoh paparan:
 
-#### 5.2.2 Proses Pengambilan dan Pemulangan
+![Borang Pinjaman Aset — Desktop (Cerah)](../public/images/development/loan-create-desktop-light.png)
 
-- **Pengambilan**: Selepas lulus, anda terima OTP melalui e-mel. Hadir ke kaunter BPM dan berikan OTP untuk pengambilan aset.
-- **Pemulangan**: Pulangkan aset sebelum tarikh tamat. Kakitangan akan memeriksa aset dan mengesahkan pemulangan dalam sistem.
+Langkah-langkah Wizard (contoh):
+
+![Wizard Pinjaman — Langkah 1](../public/images/development/loan-wizard-step1-desktop-light.png)
+
+![Wizard Pinjaman — Langkah 2](../public/images/development/loan-wizard-step2-desktop-light.png)
+
+![Wizard Pinjaman — Langkah 3](../public/images/development/loan-wizard-step3-desktop-light.png)
+
+![Wizard Pinjaman — Langkah 4](../public/images/development/loan-wizard-step4-desktop-light.png)
 
 ### 5.3 Modul Kelulusan (Pegawai Gred 41+)
 
-Pegawai Pelulus akan menerima e-mel apabila terdapat permohonan yang memerlukan kelulusan.
-
-1. Klik pautan dalam e-mel notifikasi, ATAU log masuk ke sistem dan pergi ke menu **Kelulusan**.
-2. Semak butiran permohonan.
-3. Klik **Lulus** atau **Tolak**.
-4. Jika menolak, masukkan sebab penolakan.
+- E-mel kelulusan mengandungi pautan token untuk **Lulus** atau **Tolak**.
+- Status permohonan dikemas kini serta-merta selepas keputusan.
 
 ### 5.4 Bantuan AI (Chatbot & FAQ)
 
-Sistem dilengkapi dengan Chatbot AI (Ollama/Bedrock) untuk bantuan pantas.
+- Masukkan soalan di ruangan Chatbot.
+- Soalan fakta/sensitif diproses oleh **Ollama (On-Prem)**; soalan analisis kompleks menggunakan **AWS Bedrock**.
+- Semak jawapan dan ikut cadangan tindakan jika disediakan.
 
-1. Klik ikon **Chat** di sudut bawah kanan.
-2. Taip soalan anda (contoh: "Macam mana nak reset password?").
-3. AI akan memberikan jawapan serta-merta berdasarkan pangkalan pengetahuan sistem.
+Contoh paparan:
+
+![Chatbot/FAQ — Widget Terbuka](../public/images/development/faq-bot-widget-open.png)
 
 ---
 
 ## 6. PENYELENGGARAAN DAN SOKONGAN
 
-### 6.1 Hubungi Sokongan Teknikal
-
-Jika anda menghadapi masalah yang tidak dapat diselesaikan melalui panduan ini:
-
-**Bahagian Pengurusan Maklumat (BPM)**
-
-- **E-mel**: <ict@motac.gov.my>
-- **Telefon**: 03-8000 8000 ext. 1234
-- **Waktu Operasi**: Isnin - Jumaat, 8:30 pagi - 5:30 petang
+- Hubungi **Unit Helpdesk BPM MOTAC**
+- Emel: helpdesk@motac.gov.my
+- Telefon: Sambungan 1234
 
 ---
 
 ## 7. PENYELESAIAN MASALAH
 
-### 7.1 Soalan Lazim (FAQ)
+- **Tidak boleh log masuk**: Semak e-mel/pengaktifan akaun; cuba set semula kata laluan.
+- **Tiket tidak dihantar**: Pastikan saiz lampiran < 10MB dan sambungan rangkaian stabil.
+- **Jawapan AI tidak tepat**: Cuba perincikan soalan atau rujuk manual/FAQ.
 
-**S: Saya terlupa kata laluan. Apa perlu buat?**
-J: Klik pautan "Lupa Kata Laluan" di halaman log masuk dan ikut arahan yang dihantar ke e-mel anda.
+Contoh paparan:
 
-**S: Berapa lama tempoh kelulusan pinjaman?**
-J: Kelulusan bergantung kepada Pegawai Pelulus (biasanya 1-2 hari bekerja).
-
-**S: Bolehkah saya membatalkan tiket yang telah dihantar?**
-J: Anda boleh membatalkan tiket yang berstatus "Baru" melalui menu Sejarah. Jika status "Dalam Proses", sila hubungi BPM.
-
-**S: Mengapa saya tidak menerima e-mel notifikasi?**
-J: Semak folder Spam/Junk e-mel anda. Pastikan e-mel yang didaftarkan adalah betul.
+![Semak Status — Desktop (Cerah)](../public/images/development/status-check-desktop-light.png)
 
 ---
 
 ## 8. LAMPIRAN
 
-### Lampiran A: Senarai Pintasan Papan Kekunci
-
-| Pintasan | Fungsi |
-| -------- | ------ |
-| `Alt+N`  | Tiket Baru |
-| `Alt+L`  | Pinjaman Baru |
-| `Alt+D`  | Dashboard |
-| `Alt+H`  | Bantuan |
-| `Esc`    | Tutup Modal/Dialog |
-
----
-
-**NOTA PENTING:**
-
-1. Manual ini disediakan mengikut piawaian KRISA.
-2. Tangkapan skrin dan gambarajah mungkin berbeza sedikit mengikut kemaskini sistem semasa.
-3. Sila laporkan sebarang kesilapan dalam manual ini kepada BPM.
-
----
-
-**Tarikh Terakhir Dikemaskini:** 15 Disember 2025
-**Versi:** 3.6.1
-**Status:** Aktif
+- Jadual Peranan Pengguna (Staf, Tetamu, Pegawai Pelulus).
+- Contoh e-mel kelulusan dengan token.
