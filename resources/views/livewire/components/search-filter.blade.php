@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Search Filter Volt Component v3.6.0
  *
@@ -17,9 +17,13 @@
  * @see Requirements 6.2, 6.3, 7.4 - Real-time validation and accessibility
  */
 
-use function Livewire\Volt\{state, computed, on, mount};
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+
+use function Livewire\Volt\computed;
+use function Livewire\Volt\mount;
+use function Livewire\Volt\on;
+use function Livewire\Volt\state;
 
 // Component state
 state([
@@ -48,27 +52,28 @@ mount(function () {
 
 // Computed property for active filter count
 $activeFilterCount = computed(function () {
-    return count(array_filter($this->activeFilters, fn($value) => !empty($value)));
+    return count(array_filter($this->activeFilters, fn ($value) => ! empty($value)));
 });
 
 // Computed property for has active filters
 $hasActiveFilters = computed(function () {
-    return $this->activeFilterCount > 0 || !empty($this->search);
+    return $this->activeFilterCount > 0 || ! empty($this->search);
 });
 
 // Load saved filters from cache
 $loadSavedFilters = function (): array {
-    if (!Auth::check()) {
+    if (! Auth::check()) {
         return [];
     }
 
-    $cacheKey = 'user.' . Auth::id() . '.saved_filters.' . class_basename($this);
+    $cacheKey = 'user.'.Auth::id().'.saved_filters.'.class_basename($this);
+
     return Cache::get($cacheKey, []);
 };
 
 // Save current filters
 $saveCurrentFilters = function (string $name): void {
-    if (!Auth::check() || empty($name)) {
+    if (! Auth::check() || empty($name)) {
         return;
     }
 
@@ -81,7 +86,7 @@ $saveCurrentFilters = function (string $name): void {
 
     $this->savedFilters[] = $filterData;
 
-    $cacheKey = 'user.' . Auth::id() . '.saved_filters.' . class_basename($this);
+    $cacheKey = 'user.'.Auth::id().'.saved_filters.'.class_basename($this);
     Cache::put($cacheKey, $this->savedFilters, now()->addDays(30));
 
     $this->dispatch('notify', [
@@ -92,7 +97,7 @@ $saveCurrentFilters = function (string $name): void {
 
 // Apply saved filter
 $applySavedFilter = function (int $index): void {
-    if (!isset($this->savedFilters[$index])) {
+    if (! isset($this->savedFilters[$index])) {
         return;
     }
 
@@ -105,7 +110,7 @@ $applySavedFilter = function (int $index): void {
 
 // Delete saved filter
 $deleteSavedFilter = function (int $index): void {
-    if (!isset($this->savedFilters[$index])) {
+    if (! isset($this->savedFilters[$index])) {
         return;
     }
 
@@ -113,7 +118,7 @@ $deleteSavedFilter = function (int $index): void {
     $this->savedFilters = array_values($this->savedFilters);
 
     if (Auth::check()) {
-        $cacheKey = 'user.' . Auth::id() . '.saved_filters.' . class_basename($this);
+        $cacheKey = 'user.'.Auth::id().'.saved_filters.'.class_basename($this);
         Cache::put($cacheKey, $this->savedFilters, now()->addDays(30));
     }
 
@@ -132,7 +137,7 @@ $clearFilters = function (): void {
 
 // Toggle filter panel
 $toggleFilters = function (): void {
-    $this->showFilters = !$this->showFilters;
+    $this->showFilters = ! $this->showFilters;
 };
 
 // Update filter value

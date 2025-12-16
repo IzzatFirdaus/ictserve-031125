@@ -1,4 +1,4 @@
-﻿{{--
+{{--
     Optimistic Action Button Component (x-ui.optimistic-button)
 
     Button that provides immediate UI feedback while server processes request.
