@@ -74,35 +74,7 @@
     </a>
 
     <div class="min-h-screen flex flex-col">
-        {{-- Language Switcher (WCAG 2.2 AA menu pattern) --}}
-        <div class="fixed top-4 left-4 z-50">
-            <x-ui.dropdown align="left" width="40">
-                <x-slot name="trigger">
-                    <button type="button"
-                        class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/90 dark:bg-gray-800/90 text-gray-700 dark:text-gray-200 shadow-card border border-gray-200/70 dark:border-gray-700/70 hover:bg-white dark:hover:bg-gray-800 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 min-h-11"
-                        aria-label="Language switcher">
-                        <span class="sr-only">Language switcher</span>
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="m10.5 21 5.25-11.25L21 21m-9.75 0H3.75m7.5 0-3.75-7.5M3 5.621A48.474 48.474 0 0 1 12 3c2.71 0 5.384.222 8.001.643M12 3v3.75m0 0c-1.14 0-2.25.108-3.33.314M12 6.75c1.14 0 2.25.108 3.33.314M3 10.5c0 1.315.11 2.606.322 3.865M21 10.5c0 1.315-.11 2.606-.322 3.865M6.75 15.75c1.275.87 2.73 1.5 4.296 1.824M12.954 17.574A11.95 11.95 0 0 0 17.25 15.75" />
-                        </svg>
-                        <span class="hidden sm:inline">Bahasa</span>
-                    </button>
-                </x-slot>
-
-                <x-slot name="content">
-                    <a href="{{ route('change-locale', ['locale' => 'ms']) }}" role="menuitem" lang="ms"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 min-h-11">
-                        Bahasa Melayu
-                    </a>
-                    <a href="{{ route('change-locale', ['locale' => 'en']) }}" role="menuitem" lang="en"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 min-h-11">
-                        English
-                    </a>
-                </x-slot>
-            </x-ui.dropdown>
-        </div>
+        {{-- Language Switcher removed per D15 v3.6.0 - Bahasa Melayu sahaja --}}
         {{-- Theme Switcher (Top-right, v3.6.0) --}}
         <div class="fixed top-4 right-4 z-50">
             <livewire:components.theme-toggle />
