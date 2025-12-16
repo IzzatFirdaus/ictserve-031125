@@ -12,6 +12,15 @@ putenv('APP_ENV=local');
 putenv('APP_DEBUG=true');
 putenv('COMPOSER_VENDOR_DIR=/tmp/vendor');
 
+// Load the Composer autoloader BEFORE using Laravel classes
+if (file_exists('/tmp/vendor/autoload.php')) {
+    require '/tmp/vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
+} else {
+    require __DIR__ . '/../../../vendor/autoload.php';
+}
+
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
