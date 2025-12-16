@@ -1,8 +1,8 @@
 # Spesifikasi Migrasi Data (Data Migration Specification - DMS)
 
 **Sistem ICTServe**  
-**Versi:** 3.5.0 (SemVer)  
-**Tarikh Kemaskini:** 30 November 2025  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,10 +14,12 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.5.0                                     |
-| **Tarikh Kemaskini** | 30 November 2025                          |
+| **Versi**            | 3.6.1                                     |
+| **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
+| **Pematuhi**         | ISO 8000, ISO/IEC 38505-1                 |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)             |
 | **Pematuhi**         | ISO 8000, ISO/IEC 38505-1                 |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
 

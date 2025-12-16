@@ -1,8 +1,8 @@
 # Spesifikasi Keperluan Perniagaan (Business Requirements Specification - BRS)
 
 **Sistem ICTServe**  
-**Versi:** 3.5.0 (SemVer)  
-**Tarikh Kemaskini:** 30 November 2025  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------- |
-| **Versi**            | 3.5.0                                                                                       |
-| **Tarikh Kemaskini** | 30 November 2025                                                                            |
+| **Versi**            | 3.6.1                                                                                       |
+| **Tarikh Kemaskini** | 17 Disember 2025                                                                            |
 | **Status**           | Aktif                                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
 | **Pematuhi**         | ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                                   |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0+)                                                              |
 
 > Notis Penggunaan Dalaman: Sistem ini digunakan oleh staf dan pegawai gred MOTAC sahaja; tidak untuk kegunaan awam.
 

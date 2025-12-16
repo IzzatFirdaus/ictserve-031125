@@ -1,11 +1,11 @@
 # Pelan Integrasi Sistem (System Integration Plan - SIP)
 
-**Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 30 November 2025
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207
 
 ---
@@ -14,10 +14,12 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.5.0                                     |
-| **Tarikh Kemaskini** | 30 November 2025                          |
+| **Versi**            | 3.6.1                                     |
+| **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
+| **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207    |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)             |
 | **Pematuhi**         | ISO/IEC/IEEE 15288, 12207                 |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
 

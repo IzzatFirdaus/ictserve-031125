@@ -1,11 +1,11 @@
 # Dokumentasi Kod Sumber (Source Code Documentation)
 
-**Sistem ICTServe**
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207
 
 ---
@@ -14,10 +14,12 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.5.0                                     |
-| **Tarikh Kemaskini** | 1 Disember 2025                           |
+| **Versi**            | 3.6.1                                     |
+| **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
+| **Pematuhi**         | ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000, ISO/IEC/IEEE 12207 |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)             |
 | **Pematuhi**         | ISO/IEC/IEEE 5055, 25000 Series, 12207    |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
 
