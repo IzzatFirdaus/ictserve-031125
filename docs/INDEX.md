@@ -1,7 +1,8 @@
 # ICTServe Documentation Index
 
-**Last Updated**: 2025-11-29
-**Version**: 3.3.0
+**Last Updated**: 2025-12-16
+**Version**: 3.6.0
+**Bahasa**: Bahasa Melayu Sahaja (Antara Muka Pengguna)
 
 ---
 
@@ -16,6 +17,21 @@ Read these first to understand the ICTServe system:
 | [README.md](README.md) | Project overview and quick start |
 | [ICTServe_System_Documentation.md](ICTServe_System_Documentation.md) | Complete system overview |
 | [GLOSSARY.md](GLOSSARY.md) | Key terminology and definitions |
+
+### � DokumenDtasi Bahasa Melayu (v3.6.0)
+
+Dokumentasi pengguna dan pentadbir dalam Bahasa Melayu:
+
+| Dokumen | Tujuan |
+|:--------|:-------|
+| [MANUAL_PENGGUNA_v3.6.0.md](user-manual/MANUAL_PENGGUNA_v3.6.0.md) | Manual pengguna lengkap v3.6.0 |
+| [PANDUAN_MULA_PANTAS_v3.6.0.md](user-manual/PANDUAN_MULA_PANTAS_v3.6.0.md) | Panduan mula pantas untuk pengguna baru |
+| [PANDUAN_PENTADBIR_v3.6.0.md](admin-guide/PANDUAN_PENTADBIR_v3.6.0.md) | Panduan pentadbir sistem |
+| [PANDUAN_PENEMPATAN_v3.6.0.md](admin-guide/PANDUAN_PENEMPATAN_v3.6.0.md) | Panduan penempatan (deployment) |
+| [PANDUAN_PENYELENGGARAAN_v3.6.0.md](admin-guide/PANDUAN_PENYELENGGARAAN_v3.6.0.md) | Panduan penyelenggaraan sistem |
+| [SENARAI_SEMAK_PENEMPATAN_v3.6.0.md](admin-guide/SENARAI_SEMAK_PENEMPATAN_v3.6.0.md) | Senarai semak penempatan lengkap |
+| [PANDUAN_PEMANTAUAN_v3.6.0.md](admin-guide/PANDUAN_PEMANTAUAN_v3.6.0.md) | Panduan pemantauan dan amaran sistem |
+| [DOKUMENTASI_API_v3.6.0.md](reference/DOKUMENTASI_API_v3.6.0.md) | Dokumentasi API dalam Bahasa Melayu |
 
 ### 📚 System Design Documents (D00–D17)
 
@@ -150,6 +166,13 @@ Reference materials and traceability:
 
 ## 🎓 Reading Paths
 
+### 🇲🇾 Untuk Pengguna Bahasa Melayu
+
+1. [PANDUAN_MULA_PANTAS_v3.6.0.md](user-manual/PANDUAN_MULA_PANTAS_v3.6.0.md) - Mula di sini
+2. [MANUAL_PENGGUNA_v3.6.0.md](user-manual/MANUAL_PENGGUNA_v3.6.0.md) - Manual lengkap
+3. [PANDUAN_PENTADBIR_v3.6.0.md](admin-guide/PANDUAN_PENTADBIR_v3.6.0.md) - Untuk pentadbir
+4. [DOKUMENTASI_API_v3.6.0.md](reference/DOKUMENTASI_API_v3.6.0.md) - Untuk pembangun
+
 ### 👨‍💼 For Business Stakeholders
 
 1. [README.md](README.md) - Overview
@@ -269,6 +292,7 @@ All documentation in ICTServe follows:
 
 | Version | Date | Changes |
 |:--------|:-----|:--------|
+| 3.6.0 | 2025-12-16 | Added comprehensive Bahasa Melayu documentation: Manual Pengguna, Panduan Pentadbir, Panduan Penempatan, Panduan Penyelenggaraan, Dokumentasi API. Updated to True Hybrid Architecture with Bahasa Melayu exclusive interface. |
 | 3.3.0 | 2025-11-29 | Updated to reflect Guest-First architecture completion (v3.3.0). All core documents (D00-D17) aligned with guest forms and admin-only authentication. |
 | 2.3.0 | 2025-11-29 | Major cleanup: removed references to non-existent directories (guides/, features/, technical/, testing/, archive/). Updated to reflect actual directory structure (frontend/, security/, docker/, mcp/, reference/). |
 | 2.2.0 | 2025-11-29 | Added D16 and D17 to documentation index |
@@ -278,6 +302,7 @@ All documentation in ICTServe follows:
 
 ---
 
-**Last Updated**: 2025-11-29
+**Last Updated**: 2025-12-16
 **Status**: ✅ Active and maintained
 **Maintainer**: ICTServe Development Team
+**Bahasa Antara Muka**: Bahasa Melayu Sahaja (v3.6.0)
