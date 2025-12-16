@@ -14,7 +14,7 @@
 @extends('layouts.landing')
 
 @section('content')
-    <x-accessibility.skip-links />
+    {{-- NOTE: Skip links are provided by layouts.landing --}}
 
     {{-- Page Header with MOTAC Branding --}}
     <section class="bg-primary-600 dark:bg-primary-700 text-white py-12 md:py-16 theme-transition" role="banner" aria-labelledby="page-heading">
@@ -165,12 +165,15 @@
 
                     {{-- Map --}}
                     <article class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
-                        <div class="aspect-video md:aspect-21/9">
+                        <div class="relative w-full" style="padding-bottom: 56.25%; /* 16:9 aspect ratio */">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.663198758652!2d101.69362331475716!3d2.9125609997880954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdb70172605555%3A0x50c704177218670!2sKementerian%20Pelancongan%2C%20Seni%20dan%20Budaya%20Malaysia!5e0!3m2!1sen!2smy!4v1625631234567!5m2!1sen!2smy"
-                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade" title="{{ __('Peta Lokasi MOTAC') }}"
-                                class="w-full h-full"></iframe>
+                                src="https://www.google.com/maps?q=Kementerian+Pelancongan%2C+Seni+dan+Budaya+Malaysia%2C+No.+2%2C+Menara+1%2C+Jalan+P5%2F6%2C+Presint+5%2C+62200+Putrajaya&output=embed"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="{{ __('Peta Lokasi MOTAC') }}"
+                                allowfullscreen=""
+                                class="absolute top-0 left-0 w-full h-full border-0"
+                                aria-label="{{ __('Peta lokasi Kementerian Pelancongan, Seni dan Budaya Malaysia, No. 2, Menara 1, Jalan P5/6, Presint 5, 62200 Putrajaya') }}"></iframe>
                         </div>
                     </article>
 
