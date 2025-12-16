@@ -39,6 +39,17 @@
       0 => 'BladeUI\\Icons\\BladeIconsServiceProvider',
     ),
   ),
+  'cloudstudio/ollama-laravel' => 
+  array (
+    'aliases' => 
+    array (
+      'Ollama' => 'Cloudstudio\\Ollama\\Facades\\Ollama',
+    ),
+    'providers' => 
+    array (
+      0 => 'Cloudstudio\\Ollama\\OllamaServiceProvider',
+    ),
+  ),
   'filament/actions' => 
   array (
     'providers' => 
