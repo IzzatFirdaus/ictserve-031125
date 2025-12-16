@@ -1,11 +1,11 @@
 # Dokumentasi Rekabentuk Teknikal (Technical Design Documentation)
 
-**Sistem ICTServe**
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** IEEE 1016, ISO/IEC/IEEE 2651x series, ISO 9001, ISO/IEC/IEEE 12207
 
 ---
@@ -15,9 +15,11 @@
 | Atribut              | Nilai                                                       |
 | -------------------- | ----------------------------------------------------------- |
 | **Versi**            | 3.6.1                                                       |
-| **Tarikh Kemaskini** | 14 Disember 2025                                            |
+| **Tarikh Kemaskini** | 17 Disember 2025                                            |
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                      |
+| **Pematuhi**         | IEEE 1016, ISO/IEC/IEEE 2651x series, ISO 9001, ISO/IEC/IEEE 12207 |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                               |
 | **Pematuhi**         | IEEE 1016, ISO/IEC/IEEE 2651x, ISO 9001, ISO/IEC/IEEE 12207 |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                   |
 

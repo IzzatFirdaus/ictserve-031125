@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**  
 **Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
+**Tarikh Kemaskini:** 17 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.5.0                                     |
-| **Tarikh Kemaskini** | 1 Disember 2025                           |
+| **Versi**            | 3.6.0                                     |
+| **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO/IEC/IEEE 12207                        |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)             |
 
 > Notis Penggunaan Dalaman: Pelan ini dirangka untuk sistem dalaman MOTAC (bukan untuk kegunaan awam).
 
@@ -37,8 +37,7 @@
 | 3.2.1 | 29 November 2025 | Penjajaran kepada seni bina "Guest-First": Staf menggunakan borang tetamu (tanpa log masuk). Authentication terhad kepada admin/superuser sahaja. Penyelarasan dengan D00 v3.2.1 dan D04 v3.2.1.                                                                          | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Staf boleh log masuk (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu. Nullable user_id FK dalam tickets/loans. Penyelarasan dengan D00/D02/D03/D04 v3.4.0.                                                | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). Penambahan Laravel Pulse v1.3.0 (performance monitoring), Laravel Sanctum v4.0 (API authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen). Spec files: 38 requirements, 100 correctness properties, 19 implementation phases. | Pasukan BPM |
-| 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Penyelarasan dokumentasi D00-D17.                                                                                                                                                              | Pasukan BPM |
-| 3.6.1 | 14 Disember 2025 | **Cloud Hybrid AI Integration:** Tambah fasa pembangunan AI (§6.1-6.13) untuk integrasi D18 Cloud Hybrid Architecture. Kemaskini jadual pembangunan dengan 13 fasa AI implementation. Tambah keperluan infrastruktur untuk Ollama server dan AWS Bedrock. Kemaskini risiko dan mitigasi untuk AI services. Cross-reference D18 v1.0.0. | Pasukan BPM |
+| 3.6.0 | 17 Disember 2025 | **Penyeragaman Dokumentasi v3.6.0:** Bahasa Melayu sahaja untuk antara muka pengguna. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Penyeragaman versi semua dokumen D00-D18 kepada v3.6.0 dengan integrasi Cloud Hybrid AI (D18 v1.0.0). Penyelarasan dokumentasi lengkap. | Pasukan BPM |
 
 ---
 

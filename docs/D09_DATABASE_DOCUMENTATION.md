@@ -1,11 +1,11 @@
 # Dokumentasi Pangkalan Data (Database Documentation)
 
-**Sistem ICTServe**
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1
 
 ---
@@ -15,9 +15,11 @@
 | Atribut              | Nilai                                                       |
 | -------------------- | ----------------------------------------------------------- |
 | **Versi**            | 3.6.1                                                       |
-| **Tarikh Kemaskini** | 14 Disember 2025                                            |
+| **Tarikh Kemaskini** | 17 Disember 2025                                            |
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                  |
+| **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1 |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                               |
 | **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1 |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                   |
 
