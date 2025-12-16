@@ -8,7 +8,6 @@ use App\Filament\Traits\CacheableWidget;
 use App\Services\UnifiedAnalyticsService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * Unified Dashboard Overview Widget
