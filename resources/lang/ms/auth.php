@@ -39,6 +39,12 @@ return [
     'resend_verification' => 'Klik di sini untuk menghantar semula e-mel pengesahan.',
     'verification_link_sent' => 'Pautan pengesahan baharu telah dihantar ke alamat e-mel anda.',
 
+    // Password Reset (v3.6.0)
+    'forgot_password_description' => 'Lupa kata laluan anda? Tiada masalah. Beritahu kami alamat e-mel anda dan kami akan menghantar pautan reset kata laluan yang membolehkan anda memilih kata laluan baharu.',
+    'email_hint_reset' => 'Masukkan e-mel @motac.gov.my yang berdaftar',
+    'send_reset_link' => 'Hantar Pautan Reset',
+    'back_to_login' => 'Kembali ke Log Masuk',
+
     // Task 14.1: Flexible Login
     'email_or_username' => 'E-mel atau Nama Pengguna',
     'email_or_username_placeholder' => 'nama@motac.gov.my atau nama pengguna',

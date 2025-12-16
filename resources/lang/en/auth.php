@@ -39,6 +39,12 @@ return [
     'resend_verification' => 'Click here to re-send the verification email.',
     'verification_link_sent' => 'A new verification link has been sent to your email address.',
 
+    // Password Reset (v3.6.0)
+    'forgot_password_description' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',
+    'email_hint_reset' => 'Enter your registered @motac.gov.my email',
+    'send_reset_link' => 'Send Reset Link',
+    'back_to_login' => 'Back to Login',
+
     // Task 14.1: Flexible Login
     'email_or_username' => 'Email or Username',
     'email_or_username_placeholder' => 'name@motac.gov.my or username',
