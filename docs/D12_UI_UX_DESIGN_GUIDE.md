@@ -4,7 +4,7 @@
 
 | Atribut | Nilai |
 |---------|-------|
-| **Versi** | 3.6.0 |
+| **Versi** | 3.6.1 |
 | **Tarikh Kemaskini** | 14 Disember 2025 |
 | **Status** | Aktif - Sedia untuk Pelaksanaan |
 | **Klasifikasi** | Terhad - Dalaman BPM MOTAC |
@@ -19,6 +19,7 @@
 
 | Versi | Tarikh | Perubahan | Penulis |
 |-------|--------|-----------|---------|
+| 3.6.1 | 2025-12-17 | Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D18 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+) | Pasukan Pembangunan BPM |
 | 3.6.0 | 2025-12-14 | Integrasi lengkap D18 Cloud Hybrid AI Architecture - AI chat interface, streaming responses, model selection, conversation management, web-augmented responses, WCAG 2.2 AA compliance | Pasukan Pembangunan BPM |
 | 3.5.0 | 2025-11-01 | Kemaskini untuk Laravel Reverb, Laravel Pulse, dan pematuhan WCAG 2.2 AA | Pasukan Pembangunan BPM |
 | 3.4.0 | 2025-10-15 | Penyepaduan Filament v4, Livewire v3, dan Tailwind v4 | Pasukan Pembangunan BPM |
@@ -30,13 +31,13 @@
 
 | Dokumen | Penerangan | Versi |
 |---------|------------|-------|
-| [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) | Gambaran keseluruhan sistem dan tadbir urus | v3.6.0 |
-| [D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | Spesifikasi keperluan perisian | v3.6.0 |
-| [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) | Seni bina dan reka bentuk | v3.6.0 |
-| [D13_UI_UX_FRONTEND_FRAMEWORK.md](D13_UI_UX_FRONTEND_FRAMEWORK.md) | Framework frontend (Livewire/Volt) | v3.6.0 |
-| [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md) | Panduan gaya (MyDS v2025.2) | v3.6.0 |
-| [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Penyetempatan bahasa (Bahasa Melayu sahaja) | v3.6.0 |
-| [D18_AI_CHATBOT_OLLAMA_BEDROCK.md](D18_AI_CHATBOT_OLLAMA_BEDROCK.md) | Cloud Hybrid AI Architecture | v1.0.0 |
+| [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) | Gambaran keseluruhan sistem dan tadbir urus | v3.6.1 |
+| [D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | Spesifikasi keperluan perisian | v3.6.1 |
+| [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) | Seni bina dan reka bentuk | v3.6.1 |
+| [D13_UI_UX_FRONTEND_FRAMEWORK.md](D13_UI_UX_FRONTEND_FRAMEWORK.md) | Framework frontend (Livewire/Volt) | v3.6.1 |
+| [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md) | Panduan gaya (MyDS v2025.2) | v3.6.1 |
+| [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Penyetempatan bahasa (Bahasa Melayu sahaja) | v3.7.0 |
+| [D18_AI_CHATBOT_OLLAMA_BEDROCK.md](D18_AI_CHATBOT_OLLAMA_BEDROCK.md) | Cloud Hybrid AI Architecture | v1.0.1 |
 
 ---
 

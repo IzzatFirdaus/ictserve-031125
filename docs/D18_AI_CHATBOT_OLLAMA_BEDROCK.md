@@ -4,12 +4,12 @@
 
 | Atribut | Nilai |
 |---------|-------|
-| **Versi** | 1.0.0 |
-| **Tarikh Kemaskini** | 14 Disember 2025 |
+| **Versi** | 1.0.1 |
+| **Tarikh Kemaskini** | 17 Disember 2025 |
 | **Status** | Aktif - Sedia untuk Pelaksanaan |
 | **Klasifikasi** | Terhad - Dalaman BPM MOTAC |
 | **Pematuhi** | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, WCAG 2.2 AA, OWASP ASVS L2, PDPA 2010, MyGOV Digital Service Standards v2.1.0 |
-| **Bahasa** | Bahasa Melayu sahaja (D15 v3.6.0) |
+| **Bahasa** | Bahasa Melayu sahaja (D15 v3.6.0+) |
 
 > **Notis Penggunaan Dalaman**: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam (internal use only).
 
@@ -20,6 +20,7 @@
 | Versi | Tarikh | Perubahan | Penulis |
 |-------|--------|-----------|---------|
 | 1.0.0 | 2025-12-14 | Dokumen asal D18 - Konsolidasi lengkap dokumentasi AI Chatbot termasuk API Reference, Deployment Guide, Emergency Procedures, dan pematuhan D00-D17 v3.6.0 | Pasukan Pembangunan BPM |
+| 1.0.1 | 2025-12-17 | Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D17 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+) | Pasukan Pembangunan BPM |
 
 ---
 
