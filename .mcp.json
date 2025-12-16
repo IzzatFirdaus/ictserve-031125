@@ -97,8 +97,9 @@
             ]
         },
         "fetch": {
-            "command": "uvx",
+            "command": "npx",
             "args": [
+                "-y",
                 "mcp-server-fetch"
             ],
             "disabled": false,

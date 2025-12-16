@@ -2,6 +2,7 @@
 
 use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
+use Livewire\Attributes\Validate;
 
 new class extends Component
 {

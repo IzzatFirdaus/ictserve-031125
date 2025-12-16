@@ -298,13 +298,18 @@ return [
         | AI Operations Recorder (Custom for Ollama v3.6.0)
         |----------------------------------------------------------------------
         |
-        | Per Requirements 8.7: Monitor AI operations performance including
-        | response times, cache hit rates, and error rates for Ollama integration.
-        | Selaras dengan D11 Technical Design Documentation v3.6.0.
+        | Per Requirements 8.7, SRS-AI-019: Monitor AI operations performance
+        | including response times, token usage, model routing, and cost estimates
+        | for both AWS Bedrock and Ollama integration.
+        | Selaras dengan D11 Technical Design Documentation v3.6.0 dan D18 §6.1.
+        |
+        | trace: D03-SRS-AI-019, D18-§6.1, D11-§8.1
         |
         */
-        // Note: Custom AI recorder will be implemented in Phase 8
-        // This placeholder ensures Pulse is ready for AI monitoring
+        \App\Pulse\Recorders\AIServiceMetrics::class => [
+            'enabled' => env('PULSE_AI_METRICS_ENABLED', true),
+            'sample_rate' => env('PULSE_AI_METRICS_SAMPLE_RATE', 1),
+        ],
     ],
 
     /*

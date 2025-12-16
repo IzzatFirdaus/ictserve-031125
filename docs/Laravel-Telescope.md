@@ -116,6 +116,7 @@ TELESCOPE_ENABLED=false
 ### View Request Details
 
 Dashboard shows:
+
 - HTTP method and URI
 - Status code
 - Duration
@@ -173,6 +174,7 @@ Watchers\QueryWatcher::class => [
 ## Exception Tracking
 
 View detailed exception information:
+
 - Exception class
 - Message
 - File and line number
@@ -194,6 +196,7 @@ Watchers\ExceptionWatcher::class => [
 ## Job Monitoring
 
 Track queued jobs:
+
 - Job class
 - Queue name
 - Status (pending, processing, completed, failed)
@@ -215,6 +218,7 @@ Watchers\JobWatcher::class => [
 ## Mail Monitoring
 
 View sent emails:
+
 - Recipients
 - Subject
 - Content (HTML/Text)
@@ -226,6 +230,7 @@ Useful with Mailpit for local testing.
 ## Model Events
 
 Track Eloquent model events:
+
 - Created
 - Updated
 - Deleted
@@ -244,6 +249,7 @@ Watchers\ModelWatcher::class => [
 ## Cache Operations
 
 Monitor cache operations:
+
 - Hit/Miss
 - Key
 - Value
@@ -253,6 +259,7 @@ Monitor cache operations:
 ## Scheduled Tasks
 
 View scheduled task execution:
+
 - Command
 - Schedule
 - Duration
@@ -483,6 +490,7 @@ TELESCOPE_ENABLED=false
 ### Dashboard Not Accessible
 
 Check:
+
 1. Telescope is installed: `composer show laravel/telescope`
 2. Migrations are run: `php artisan migrate`
 3. Authorization gate allows access
@@ -490,6 +498,7 @@ Check:
 ### High Memory Usage
 
 Solutions:
+
 1. Disable unused watchers
 2. Reduce data retention period
 3. Use separate database
@@ -498,6 +507,7 @@ Solutions:
 ### Slow Performance
 
 Solutions:
+
 1. Prune old entries regularly
 2. Disable model hydration tracking
 3. Use queue for storage
@@ -514,6 +524,7 @@ Solutions:
 ## Alternatives
 
 For production monitoring, consider:
+
 - Laravel Pulse (lightweight metrics)
 - Sentry (error tracking)
 - New Relic (APM)
@@ -521,5 +532,5 @@ For production monitoring, consider:
 
 ## References
 
-- Official Documentation: https://laravel.com/docs/12.x/telescope
-- GitHub Repository: https://github.com/laravel/telescope
+- Official Documentation: <https://laravel.com/docs/12.x/telescope>
+- GitHub Repository: <https://github.com/laravel/telescope>
