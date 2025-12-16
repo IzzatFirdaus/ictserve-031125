@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use App\Services\SecurityMonitoringService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use PHPUnit\Framework\Attributes\Test;
@@ -298,5 +300,55 @@ class SecurityMonitoringTest extends TestCase
 
         // Should now be blocked
         $this->assertTrue($this->securityMonitoring->isEmailBlocked('test@example.com'));
+    }
+
+    #[Test]
+    public function acknowledge_alert_defaults_to_system_when_unauthenticated(): void
+    {
+        $alerts = [
+            [
+                'id' => 'alert-1',
+                'severity' => 'high',
+                'acknowledged' => false,
+                'created_at' => now()->toIso8601String(),
+            ],
+        ];
+
+        Cache::put('security_alerts', $alerts, 86400);
+
+        $this->securityMonitoring->acknowledgeAlert('alert-1');
+
+        $updatedAlerts = Cache::get('security_alerts', []);
+
+        $this->assertCount(1, $updatedAlerts);
+        $this->assertTrue($updatedAlerts[0]['acknowledged']);
+        $this->assertSame('System', $updatedAlerts[0]['acknowledged_by']);
+        $this->assertNotNull($updatedAlerts[0]['acknowledged_at']);
+    }
+
+    #[Test]
+    public function acknowledge_alert_records_authenticated_user_name(): void
+    {
+        $alerts = [
+            [
+                'id' => 'alert-2',
+                'severity' => 'high',
+                'acknowledged' => false,
+                'created_at' => now()->toIso8601String(),
+            ],
+        ];
+
+        Cache::put('security_alerts', $alerts, 86400);
+
+        $user = User::factory()->make(['name' => 'Ali User']);
+        Auth::shouldReceive('user')->andReturn($user);
+
+        $this->securityMonitoring->acknowledgeAlert('alert-2');
+
+        $updatedAlerts = Cache::get('security_alerts', []);
+
+        $this->assertCount(1, $updatedAlerts);
+        $this->assertTrue($updatedAlerts[0]['acknowledged']);
+        $this->assertSame('Ali User', $updatedAlerts[0]['acknowledged_by']);
     }
 }
