@@ -8,8 +8,8 @@
 | --------------------- | ------------------------------------------------------------------------ |
 | **NAMA AGENSI**       | : Bahagian Pengurusan Maklumat (BPM), MOTAC                              |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC)              |
-| **TARIKH DOKUMEN**    | : 15 Disember 2025                                                       |
-| **VERSI DOKUMEN**     | : 3.7.0 (Cloud Hybrid AI & True Hybrid Architecture)                     |
+| **TARIKH DOKUMEN**    | : 17 Disember 2025                                                       |
+| **VERSI DOKUMEN**     | : 3.6.1 (Bahasa Melayu Sahaja & Cloud Hybrid AI)                        |
 
 ---
 
