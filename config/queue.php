@@ -122,4 +122,23 @@ return [
         'table' => 'failed_jobs',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Job Monitoring Configuration (ICTServe v3.6.0)
+    |--------------------------------------------------------------------------
+    |
+    | Konfigurasi untuk pemantauan job dan pengendalian ralat.
+    | Selaras dengan D17 Queue Management dan keperluan 8.1, 8.3, 8.5.
+    |
+    */
+
+    'monitoring' => [
+        'enabled' => env('QUEUE_MONITORING_ENABLED', true),
+        'max_execution_time' => env('QUEUE_MAX_EXECUTION_TIME', 300), // saat
+        'max_memory_usage' => env('QUEUE_MAX_MEMORY_USAGE', 128 * 1024 * 1024), // bytes (128MB)
+        'max_failed_jobs' => env('QUEUE_MAX_FAILED_JOBS', 10), // ambang amaran
+        'alert_threshold' => env('QUEUE_ALERT_THRESHOLD', 5), // kegagalan berulang
+        'admin_email' => env('QUEUE_ADMIN_EMAIL', null),
+    ],
+
 ];

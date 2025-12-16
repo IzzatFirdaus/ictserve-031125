@@ -157,6 +157,11 @@ class AppServiceProvider extends ServiceProvider
         // Per Requirements 11.1, 11.2, 11.3: Real-time AI broadcasting
         // Selaras dengan D16 Broadcasting Setup v3.6.0
         $this->app->singleton(\App\Services\AIBroadcastingService::class);
+
+        // Register JobMonitoringService for v3.6.0 Queue Monitoring
+        // Per Requirements 8.1, 8.3, 8.5: Job status tracking, performance monitoring, error handling
+        // Selaras dengan D17 Queue Management v3.6.0
+        $this->app->singleton(\App\Services\Monitoring\JobMonitoringService::class);
     }
 
     public function boot(): void
