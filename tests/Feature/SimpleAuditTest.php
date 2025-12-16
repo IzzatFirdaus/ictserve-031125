@@ -9,6 +9,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Simple Audit System Tests
+ *
+ * Basic tests for the dual audit system functionality.
+ *
+ * @see D09 Database Documentation - Dual Audit System
+ * @see Requirements 6.1, 6.2 - Dual Audit System Validation
+ */
 class SimpleAuditTest extends TestCase
 {
     use RefreshDatabase;
