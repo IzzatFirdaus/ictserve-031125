@@ -14,7 +14,7 @@
 @extends('layouts.landing')
 
 @section('content')
-    <x-accessibility.skip-links />
+    {{-- NOTE: Skip links are provided by layouts.landing --}}
 
     {{-- Page Header with MOTAC Branding --}}
     <section class="bg-primary-600 dark:bg-primary-700 text-white py-12 md:py-16 theme-transition" role="banner" aria-labelledby="page-heading">
