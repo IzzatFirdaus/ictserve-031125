@@ -152,15 +152,18 @@ new #[Layout('layouts.guest')] class extends Component {
         </div>
 
         {{-- Submit Button (MyDS Button - D13 §2.7) --}}
+        {{-- Loading state uses hidden class as default to prevent FOUC before Livewire hydrates --}}
         <div class="pt-4">
             <button type="submit"
                 class="w-full min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-md shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
                 wire:loading.attr="disabled"
                 wire:target="login">
+                {{-- Default state: visible, hidden during loading --}}
                 <span wire:loading.remove wire:target="login" class="flex items-center justify-center">
                     {{ __('auth.login_button') }}
                 </span>
-                <span wire:loading wire:target="login" class="inline-flex items-center justify-center gap-2">
+                {{-- Loading state: hidden by default (prevents FOUC), shown during loading --}}
+                <span wire:loading.flex wire:target="login" class="hidden items-center justify-center gap-2">
                     <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
