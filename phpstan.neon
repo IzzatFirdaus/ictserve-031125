@@ -1,5 +1,5 @@
 includes:
-  - vendor/larastan/larastan/extension.neon
+  - /tmp/vendor/larastan/larastan/extension.neon
 
 parameters:
   level: 9
@@ -27,16 +27,16 @@ parameters:
     # Filament Framework - Dynamic SDUI (Server-Driven UI)
     # ==========================================================================
     - '#on an unknown class Filament#'
-    
+
     # Filament method parameters with __() translation helper
-    - '#Parameter #1 \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$title of method Filament\\.*::title\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$description of method Filament\\.*::description\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$helperText of method Filament\\.*::helperText\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$body of method Filament\\.*::body\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$heading of method Filament\\.*::modalHeading\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$description of method Filament\\.*::modalDescription\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$\w+ of method Filament\\.*::make\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$title of method Filament\\.*::title\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$description of method Filament\\.*::description\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$helperText of method Filament\\.*::helperText\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$body of method Filament\\.*::body\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$heading of method Filament\\.*::modalHeading\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$description of method Filament\\.*::modalDescription\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$\w+ of method Filament\\.*::make\(\) expects .*, array\|string\|null given#'
     - '#method Filament\\.*::(label|title|description|helperText|body|modalHeading|modalDescription)\(\) expects .*, array\|string\|null given#'
 
     # ==========================================================================
@@ -46,24 +46,24 @@ parameters:
     - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
     - '#Access to an undefined property App\\Models\\.*::\$#'
     - '#Access to an undefined property Laravel\\Sanctum\\PersonalAccessToken::\$#'
-    
+
     # Eloquent static methods not recognized by static analysis
     - '#Call to an undefined static method App\\Models\\.*::(where|find|findOrFail|create|firstOrCreate|firstOrNew|updateOrCreate|whereIn|whereNotNull|whereBetween|whereNull|whereHas|whereDoesntHave|withWhereHas|count|sum|avg|max|min|factory|expired|due|forUser|query)#'
-    
+
     # Eloquent instance methods not recognized by static analysis
     - '#Call to an undefined method App\\Models\\.*::(where|find|user|with|load|hasRole|hasAdminAccess|notify)#'
-    
+
     # Query Builder type covariance
     - '#Anonymous function should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder#'
-    - '#should return Illuminate\\Database\\Eloquent\\Builder<.*> but returns Illuminate\\Database\\Query\\Builder#'
-    
+    - '#should return Illuminate\\Database\\Eloquent\\Builder.* but returns Illuminate\\Database\\Query\\Builder#'
+
     # ==========================================================================
     # Laravel Translation Helper - Returns array|string|null
     # ==========================================================================
     - '#(M|m)ethod .* should return string but returns array\|string\|null#'
     - '#(M|m)ethod .* should return string\|null but returns array\|string\|null#'
     - '#Parameter .* expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$\w+ of (method|class) .* expects .*, array\|string\|null given#'
+    - '#Parameter \$\w+ of (method|class) .* expects .*, array\|string\|null given#'
     - '#Parameter \$subject of class Illuminate\\Mail\\Mailables\\Envelope constructor expects string\|null, array\|string\|null given#'
     - '#Anonymous function should return string but returns array\|string\|null#'
     - '#Binary operation "." between .* and array\|string\|null results in an error#'
@@ -75,56 +75,56 @@ parameters:
     - '#has no value type specified in iterable type array#'
     - '#return type with generic class .* does not specify its types#'
     - '#contains unresolvable type#'
-    
+
     # ==========================================================================
     # Mixed Type Handling - Common in Dynamic Laravel Code
     # ==========================================================================
     - '#Cannot cast mixed to (string|int|float|bool)#'
     - '#Cannot access property \$\w+ on mixed#'
     - '#Cannot access property \$\w+ on Illuminate\\Contracts\\Auth\\Authenticatable\|null#'
-    - '#Parameter #1 \$value of function count expects array\|Countable, mixed given#'
+    - '#Parameter \$value of function count expects array\|Countable, mixed given#'
     - '#Binary operation "." between .* and mixed results in an error#'
-    
+
     # Artisan command option/argument types
     - '#Parameter .* expects .*, array\|bool\|string\|null given#'
     - '#Parameter .* expects .*, array\|string\|true given#'
     - '#Part .* of encapsed string cannot be cast to string#'
     - '#Cannot cast array\|bool\|string\|null to string#'
-    
+
     # ==========================================================================
     # Livewire Components
     # ==========================================================================
     - '#Method App\\Livewire\\.*::render\(\) has no return type specified#'
     - '#Method App\\Livewire\\.*::render\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View#'
-    
+
     # ==========================================================================
     # View Return Type Covariance
     # ==========================================================================
     - '#should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View#'
-    
+
     # ==========================================================================
     # Nullsafe Operator Usage - Laravel/Blade Optimization Patterns
     # ==========================================================================
     - '#Using nullsafe (property access|method call) .* on non-nullable type .* Use -> instead#'
     - '#Using nullsafe property access "\?->.*" on left side of \?\? is unnecessary#'
-    
+
     # ==========================================================================
     # Resource & Stream Handling
     # ==========================================================================
-    - '#Parameter #1 \$stream of function fputcsv expects resource, resource\|false given#'
-    - '#Parameter #1 \$stream of function fwrite expects resource, resource\|false given#'
-    - '#Parameter #1 \$stream of function fclose expects resource, resource\|false given#'
-    
+    - '#Parameter \$stream of function fputcsv expects resource, resource\|false given#'
+    - '#Parameter \$stream of function fwrite expects resource, resource\|false given#'
+    - '#Parameter \$stream of function fclose expects resource, resource\|false given#'
+
     # ==========================================================================
     # Unused Code - May be Used for Configuration or Future Features
     # ==========================================================================
     - '#Constant .* is unused#'
-    
+
     # ==========================================================================
     # Collection & Array Map Type Inference
     # ==========================================================================
     - '#map\(\) contains unresolvable type#'
-    - '#Parameter #2 \$array of function array_map expects array, .* given#'
+    - '#Parameter \$array of function array_map expects array, .* given#'
 
     # ==========================================================================
     # NOTE: Following patterns temporarily unused (2025-11-01)

@@ -1618,15 +1618,11 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * Finds an entry of the container by its identifier and returns it.
+         * {@inheritdoc}
          *
          * @template TClass of object
          * @param string|class-string<TClass> $id
          * @return ($id is class-string<TClass> ? TClass : mixed)
-         * @param string $id Identifier of the entry to look for.
-         * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
-         * @throws ContainerExceptionInterface Error while retrieving the entry.
-         * @return mixed Entry.
          * @static
          */
         public static function get($id)
@@ -3568,6 +3564,15 @@ namespace Illuminate\Support\Facades {
      */
     class Broadcast {
         /**
+         * @static
+         */
+        public static function driver($name = null)
+        {
+            /** @var \App\Broadcasting\BroadcastManager $instance */
+            return $instance->driver($name);
+        }
+
+        /**
          * Register the routes for handling broadcast channel authentication and sockets.
          *
          * @param array|null $attributes
@@ -3576,7 +3581,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function routes($attributes = null)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             $instance->routes($attributes);
         }
 
@@ -3589,7 +3595,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function userRoutes($attributes = null)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             $instance->userRoutes($attributes);
         }
 
@@ -3604,7 +3611,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function channelRoutes($attributes = null)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             $instance->channelRoutes($attributes);
         }
 
@@ -3617,7 +3625,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function socket($request = null)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->socket($request);
         }
 
@@ -3628,7 +3637,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function on($channels)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->on($channels);
         }
 
@@ -3639,7 +3649,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function private($channel)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->private($channel);
         }
 
@@ -3650,7 +3661,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function presence($channel)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->presence($channel);
         }
 
@@ -3663,7 +3675,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function event($event = null)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->event($event);
         }
 
@@ -3676,7 +3689,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function queue($event)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             $instance->queue($event);
         }
 
@@ -3689,21 +3703,9 @@ namespace Illuminate\Support\Facades {
          */
         public static function connection($driver = null)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->connection($driver);
-        }
-
-        /**
-         * Get a driver instance.
-         *
-         * @param string|null $name
-         * @return mixed
-         * @static
-         */
-        public static function driver($name = null)
-        {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
-            return $instance->driver($name);
         }
 
         /**
@@ -3715,7 +3717,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function pusher($config)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->pusher($config);
         }
 
@@ -3728,7 +3731,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function ably($config)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->ably($config);
         }
 
@@ -3740,7 +3744,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function getDefaultDriver()
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->getDefaultDriver();
         }
 
@@ -3753,7 +3758,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function setDefaultDriver($name)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             $instance->setDefaultDriver($name);
         }
 
@@ -3766,7 +3772,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function purge($name = null)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             $instance->purge($name);
         }
 
@@ -3775,12 +3782,13 @@ namespace Illuminate\Support\Facades {
          *
          * @param string $driver
          * @param \Closure $callback
-         * @return \Illuminate\Broadcasting\BroadcastManager
+         * @return \App\Broadcasting\BroadcastManager
          * @static
          */
         public static function extend($driver, $callback)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->extend($driver, $callback);
         }
 
@@ -3792,7 +3800,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function getApplication()
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->getApplication();
         }
 
@@ -3800,24 +3809,26 @@ namespace Illuminate\Support\Facades {
          * Set the application instance used by the manager.
          *
          * @param \Illuminate\Contracts\Foundation\Application $app
-         * @return \Illuminate\Broadcasting\BroadcastManager
+         * @return \App\Broadcasting\BroadcastManager
          * @static
          */
         public static function setApplication($app)
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->setApplication($app);
         }
 
         /**
          * Forget all of the resolved driver instances.
          *
-         * @return \Illuminate\Broadcasting\BroadcastManager
+         * @return \App\Broadcasting\BroadcastManager
          * @static
          */
         public static function forgetDrivers()
         {
-            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            //Method inherited from \Illuminate\Broadcasting\BroadcastManager 
+            /** @var \App\Broadcasting\BroadcastManager $instance */
             return $instance->forgetDrivers();
         }
 
@@ -23360,6 +23371,190 @@ namespace Barryvdh\DomPDF\Facade {
         }
 
             }
+    /**
+     * @method static BasePDF setBaseHost(string $baseHost)
+     * @method static BasePDF setBasePath(string $basePath)
+     * @method static BasePDF setCanvas(\Dompdf\Canvas $canvas)
+     * @method static BasePDF setCallbacks(array<string, mixed> $callbacks)
+     * @method static BasePDF setCss(\Dompdf\Css\Stylesheet $css)
+     * @method static BasePDF setDefaultView(string $defaultView, array<string, mixed> $options)
+     * @method static BasePDF setDom(\DOMDocument $dom)
+     * @method static BasePDF setFontMetrics(\Dompdf\FontMetrics $fontMetrics)
+     * @method static BasePDF setHttpContext(resource|array<string, mixed> $httpContext)
+     * @method static BasePDF setPaper(string|float[] $paper, string $orientation = 'portrait')
+     * @method static BasePDF setProtocol(string $protocol)
+     * @method static BasePDF setTree(\Dompdf\Frame\FrameTree $tree)
+     */
+    class Pdf {
+        /**
+         * Get the DomPDF instance
+         *
+         * @static
+         */
+        public static function getDomPDF()
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->getDomPDF();
+        }
+
+        /**
+         * Show or hide warnings
+         *
+         * @static
+         */
+        public static function setWarnings($warnings)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->setWarnings($warnings);
+        }
+
+        /**
+         * Load a HTML string
+         *
+         * @param string|null $encoding Not used yet
+         * @static
+         */
+        public static function loadHTML($string, $encoding = null)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->loadHTML($string, $encoding);
+        }
+
+        /**
+         * Load a HTML file
+         *
+         * @static
+         */
+        public static function loadFile($file)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->loadFile($file);
+        }
+
+        /**
+         * Add metadata info
+         *
+         * @param array<string, string> $info
+         * @static
+         */
+        public static function addInfo($info)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->addInfo($info);
+        }
+
+        /**
+         * Load a View and convert to HTML
+         *
+         * @param array<string, mixed> $data
+         * @param array<string, mixed> $mergeData
+         * @param string|null $encoding Not used yet
+         * @static
+         */
+        public static function loadView($view, $data = [], $mergeData = [], $encoding = null)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->loadView($view, $data, $mergeData, $encoding);
+        }
+
+        /**
+         * Set/Change an option (or array of options) in Dompdf
+         *
+         * @param array<string, mixed>|string $attribute
+         * @param null|mixed $value
+         * @static
+         */
+        public static function setOption($attribute, $value = null)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->setOption($attribute, $value);
+        }
+
+        /**
+         * Replace all the Options from DomPDF
+         *
+         * @param array<string, mixed> $options
+         * @static
+         */
+        public static function setOptions($options, $mergeWithDefaults = false)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->setOptions($options, $mergeWithDefaults);
+        }
+
+        /**
+         * Output the PDF as a string.
+         * 
+         * The options parameter controls the output. Accepted options are:
+         * 
+         * 'compress' = > 1 or 0 - apply content stream compression, this is
+         *    on (1) by default
+         *
+         * @param array<string, int> $options
+         * @return string The rendered PDF as string
+         * @static
+         */
+        public static function output($options = [])
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->output($options);
+        }
+
+        /**
+         * Save the PDF to a file
+         *
+         * @static
+         */
+        public static function save($filename, $disk = null)
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->save($filename, $disk);
+        }
+
+        /**
+         * Make the PDF downloadable by the user
+         *
+         * @static
+         */
+        public static function download($filename = 'document.pdf')
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->download($filename);
+        }
+
+        /**
+         * Return a response with the PDF to show in the browser
+         *
+         * @static
+         */
+        public static function stream($filename = 'document.pdf')
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->stream($filename);
+        }
+
+        /**
+         * Render the PDF
+         *
+         * @static
+         */
+        public static function render()
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->render();
+        }
+
+        /**
+         * @param array<string> $pc
+         * @static
+         */
+        public static function setEncryption($password, $ownerpassword = '', $pc = [])
+        {
+            /** @var \Barryvdh\DomPDF\PDF $instance */
+            return $instance->setEncryption($password, $ownerpassword, $pc);
+        }
+
+            }
     }
 
 namespace Laravel\Pulse\Facades {
@@ -33754,6 +33949,7 @@ namespace  {
     class Vite extends \Illuminate\Support\Facades\Vite {}
     class EloquentSerialize extends \AnourValar\EloquentSerialize\Facades\EloquentSerializeFacade {}
     class PDF extends \Barryvdh\DomPDF\Facade\Pdf {}
+    class Pdf extends \Barryvdh\DomPDF\Facade\Pdf {}
     class Pulse extends \Laravel\Pulse\Facades\Pulse {}
     class Socialite extends \Laravel\Socialite\Facades\Socialite {}
     class Livewire extends \Livewire\Livewire {}
@@ -33762,11 +33958,6 @@ namespace  {
 }
 
 
-namespace Facades\Livewire\Features\SupportFileUploads {
-    /**
-     * @mixin \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl     */
-    class GenerateSignedUploadUrl extends \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl {}
-}
 
 
 

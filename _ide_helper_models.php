@@ -13,6 +13,144 @@
 
 namespace App\Models{
 /**
+ * Activity Model for Spatie Activity Log
+ * 
+ * Represents user activity logs for operational dashboards and reports.
+ * Part of the Dual Audit System complementing owen-it/laravel-auditing.
+ *
+ * @see D09 §4.7 Activity logging requirements
+ * @see Requirements 19.2, 19.4
+ * @property int $id
+ * @property string|null $log_name
+ * @property string $description
+ * @property string|null $subject_type
+ * @property int|null $subject_id
+ * @property string|null $event
+ * @property string|null $causer_type
+ * @property int|null $causer_id
+ * @property array<string, mixed>|null $properties
+ * @property string|null $batch_uuid
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Model|null $subject
+ * @property-read Model|null $causer
+ * @property-read string $causer_name
+ * @property-read string $subject_name
+ * @property-read \Illuminate\Database\Eloquent\Model $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity dateRange(\Illuminate\Support\Carbon $startDate, \Illuminate\Support\Carbon $endDate)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity forEvent(string $event)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity inLog(string ...$logNames)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity query()
+ */
+	class Activity extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * ApiTokenUsageLog Model - v3.5.0 True Hybrid Architecture
+ * 
+ * Tracks API token usage for security auditing and monitoring.
+ * Records all API requests made with Sanctum tokens.
+ *
+ * @see D03 Software Requirements Specification - Requirement 37.5
+ * @see D04 Software Design Document - API Token Service
+ * @see D09 Database Documentation - api_token_usage_logs table
+ * @property int $id
+ * @property int $personal_access_token_id
+ * @property int $user_id
+ * @property string $action
+ * @property string $endpoint
+ * @property string $ip_hash
+ * @property string|null $user_agent
+ * @property int|null $response_status
+ * @property \Carbon\Carbon $created_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \Laravel\Sanctum\PersonalAccessToken|null $personalAccessToken
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApiTokenUsageLog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApiTokenUsageLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApiTokenUsageLog query()
+ */
+	class ApiTokenUsageLog extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
+ * ApprovalDelegation Model
+ * 
+ * Manages temporary delegation of approval authority from one approver to another.
+ * Supports Grade 41+ approvers delegating their approval responsibilities during
+ * leave periods or temporary unavailability.
+ *
+ * @property int $id
+ * @property int $original_approver_id
+ * @property int $delegated_approver_id
+ * @property \Carbon\Carbon $start_date
+ * @property \Carbon\Carbon $end_date
+ * @property string $reason
+ * @property bool $is_active
+ * @property int $created_by
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Models\User|null $createdBy
+ * @property-read \App\Models\User|null $delegatedApprover
+ * @property-read \App\Models\User|null $originalApprover
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation expired()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation upcoming()
+ */
+	class ApprovalDelegation extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * Model ApprovalEmailToken untuk token kelulusan e-mel
+ * 
+ * Menyokong aliran kerja kelulusan auto-reply melalui e-mel
+ * Mengintegrasikan Dual Audit System (owen-it + spatie)
+ *
+ * @property int $id
+ * @property int $auto_reply_draft_id ID draf auto-reply
+ * @property string $token Token kelulusan selamat
+ * @property string $action Tindakan: approve atau reject
+ * @property \Carbon\Carbon $expires_at Masa tamat tempoh
+ * @property bool $used Status penggunaan token
+ * @property \Carbon\Carbon|null $used_at Masa token digunakan
+ * @property string|null $used_by_ip IP address pengguna
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\AutoReplyDraft|null $autoReplyDraft
+ * @property-read string $action_label
+ * @property-read bool $is_expired
+ * @property-read bool $is_valid
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken byAction(string $action)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken byToken(string $token)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken expired()
+ * @method static \Database\Factories\ApprovalEmailTokenFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken unused()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken used()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken valid()
+ */
+	class ApprovalEmailToken extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
  * Enhanced Asset Model with Cross-Module Integration
  * 
  * Comprehensive asset tracking with maintenance integration and cross-module
@@ -45,12 +183,9 @@ namespace App\Models{
  * @property array<string, mixed>|null $availability_calendar
  * @property array<string, mixed>|null $utilization_metrics
  * @property array<string, mixed>|null $specifications
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
- * @property-read \App\Models\AssetCategory $category
+ * @property-read \App\Models\AssetCategory|null $category
  * @property-read \App\Models\LoanApplication|null $currentLoan
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $helpdeskTickets
  * @property-read int|null $helpdesk_tickets_count
@@ -68,31 +203,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset requiringMaintenance()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereAccessories($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereAssetTag($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereAvailabilityCalendar($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereBrand($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereCondition($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereCurrentValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereLastMaintenanceDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereLoanHistorySummary($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereLocation($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereMaintenanceTicketsCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereModel($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereNextMaintenanceDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset wherePurchaseDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset wherePurchaseValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereSerialNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereSpecifications($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereUtilizationMetrics($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset whereWarrantyExpiry($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset withHelpdeskHistory()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asset withoutTrashed()
@@ -118,10 +228,6 @@ namespace App\Models{
  * @property bool $requires_approval
  * @property bool $is_active
  * @property int $sort_order
- * @property array<array-key, mixed>|null $default_accessories
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Asset> $assets
  * @property-read int|null $assets_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
@@ -131,20 +237,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereDefaultAccessories($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereDefaultLoanDurationDays($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereMaxLoanDurationDays($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereRequiresApproval($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereSortOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereSpecificationTemplate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetCategory withoutTrashed()
  */
@@ -153,23 +245,18 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property int $asset_id
- * @property int|null $loan_application_id
- * @property string $type
- * @property int|null $user_id
- * @property int|null $processed_by
- * @property string|null $condition_before
- * @property string|null $condition_after
- * @property array<array-key, mixed>|null $accessories
- * @property string|null $notes
- * @property string|null $damage_description
- * @property string|null $location_from
- * @property string|null $location_to
- * @property \Illuminate\Support\Carbon $transaction_date
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Asset $asset
+ * @property-read \App\Models\Asset|null $asset
+ * @property-read \App\Models\User|null $performedByUser
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetMaintenance newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetMaintenance newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetMaintenance query()
+ */
+	class AssetMaintenance extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \App\Models\Asset|null $asset
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @property-read \App\Models\LoanApplication|null $loanApplication
@@ -178,24 +265,22 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereAccessories($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereAssetId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereConditionAfter($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereConditionBefore($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereDamageDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereLoanApplicationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereLocationFrom($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereLocationTo($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereProcessedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereTransactionDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransaction whereUserId($value)
  */
 	class AssetTransaction extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \App\Models\User|null $approver
+ * @property-read \App\Models\Asset|null $asset
+ * @property-read \App\Models\User|null $fromUser
+ * @property-read \App\Models\User|null $initiator
+ * @property-read \App\Models\User|null $toUser
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransfer newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransfer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AssetTransfer query()
+ */
+	class AssetTransfer extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -227,7 +312,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Model $auditable
  * @property-read string $changes_summary
  * @property-read string $user_info
- * @property-read \Illuminate\Database\Eloquent\Model|null $user
+ * @property-read \Illuminate\Database\Eloquent\Model $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit byAuditableType(string $type)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit byEvent(string $event)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit byUser(int $userId)
@@ -238,22 +323,121 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit securityEvents()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereAuditableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereAuditableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereEvent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereIpAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereNewValues($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereOldValues($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereTags($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereUserAgent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Audit whereUserType($value)
  */
 	class Audit extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * Model AutoReplyDraft untuk sistem AI Ollama
+ * 
+ * Per Requirements 3.1, 3.2, 3.3, 3.4: Auto-reply draft management dengan approval workflow
+ * Selaras dengan D09 Database Documentation v3.6.0 (Dual Audit System)
+ *
+ * @property int $id
+ * @property string $replyable_type
+ * @property int $replyable_id
+ * @property string $draft_content
+ * @property int|null $template_id
+ * @property string $status
+ * @property int $generated_by
+ * @property int|null $approved_by
+ * @property \Carbon\Carbon|null $approved_at
+ * @property string|null $rejection_reason
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Model $replyable
+ * @property-read \App\Models\AutoReplyTemplate|null $template
+ * @property-read \App\Models\User $generator
+ * @property-read \App\Models\User|null $approver
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read string $preview
+ * @property-read string $status_color
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft approved()
+ * @method static \Database\Factories\AutoReplyDraftFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft pendingReview()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft rejected()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft withStatus(string $status)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft withoutTrashed()
+ */
+	class AutoReplyDraft extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
+ * Model AutoReplyTemplate untuk sistem AI Ollama
+ * 
+ * Per Requirements 3.1, 3.2, 3.3, 3.4: Auto-reply template management
+ * Selaras dengan D09 Database Documentation v3.6.0 (Dual Audit System)
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $template_content
+ * @property array|null $variables
+ * @property string $status
+ * @property int $created_by
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
+ * @property-read \App\Models\User $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\AutoReplyDraft> $drafts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read int|null $drafts_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate draft()
+ * @method static \Database\Factories\AutoReplyTemplateFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate withoutTrashed()
+ */
+	class AutoReplyTemplate extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation query()
+ */
+	class BedrockConversation extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\User|null $creator
+ * @method static \Database\Factories\BedrockModelConfigFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockModelConfig newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockModelConfig newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockModelConfig onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockModelConfig query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockModelConfig withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockModelConfig withoutTrashed()
+ */
+	class BedrockModelConfig extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\BedrockUsageLogFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockUsageLog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockUsageLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockUsageLog query()
+ */
+	class BedrockUsageLog extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -279,18 +463,19 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereBlockedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereBlockedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereIpAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereReason($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BlockedIp whereViolationCount($value)
  */
 	class BlockedIp extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\ConversationContextFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversationContext newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversationContext newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversationContext query()
+ */
+	class ConversationContext extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -305,9 +490,6 @@ namespace App\Models{
  * @property array $integration_data
  * @property \Illuminate\Support\Carbon|null $processed_at
  * @property int|null $processed_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\LoanApplication|null $assetLoan
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
@@ -323,17 +505,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration triggeredBy(string $event)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration unprocessed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereHelpdeskTicketId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereIntegrationData($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereIntegrationType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereLoanApplicationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereProcessedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereProcessedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereTriggerEvent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration withoutTrashed()
  */
@@ -342,17 +513,41 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * Model DataLineage untuk penjejakan lineage data AI
+ * 
+ * Merekod transformasi data untuk pematuhan PDPA 2010
+ * Mengintegrasikan Dual Audit System (owen-it + spatie)
+ *
  * @property int $id
- * @property string $code
- * @property string $name_ms
- * @property string $name_en
- * @property string|null $description_ms
- * @property string|null $description_en
- * @property int|null $parent_id
- * @property bool $is_active
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string $lineage_id ID unik untuk lineage tracking
+ * @property string $source_type Jenis sumber data
+ * @property int $source_id ID sumber
+ * @property string $transformation_type Jenis transformasi
+ * @property array $transformation_metadata Metadata transformasi
+ * @property string $destination_type Jenis destinasi
+ * @property int|null $destination_id ID destinasi
+ * @property \Carbon\Carbon $processed_at Masa pemprosesan
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read string $transformation_description
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage byDestination(string $destinationType, ?int $destinationId = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage bySource(string $sourceType, int $sourceId)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage bySourceType(string $sourceType)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage byTransformationType(string $transformationType)
+ * @method static \Database\Factories\DataLineageFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage query()
+ */
+	class DataLineage extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Asset> $assets
  * @property-read int|null $assets_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
@@ -373,21 +568,74 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Division newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Division onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Division query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereDescriptionEn($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereDescriptionMs($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereNameEn($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereNameMs($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereParentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Division whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Division withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Division withoutTrashed()
  */
 	class Division extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
+ * Model Document untuk sistem AI Ollama
+ * 
+ * Per Requirements 2.1, 2.2, 4.1: Document management dengan True Hybrid Architecture
+ * Selaras dengan D09 Database Documentation v3.6.0 (Dual Audit System)
+ *
+ * @property int $id
+ * @property string $filename
+ * @property array|null $metadata
+ * @property int|null $uploaded_by
+ * @property string $status
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
+ * @property-read \App\Models\User|null $uploader
+ * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\DocumentChunk> $chunks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read int|null $chunks_count
+ * @property-read string|null $file_size
+ * @property-read string|null $file_type
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document completed()
+ * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document failed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document withStatus(string $status)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document withoutTrashed()
+ */
+	class Document extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
+ * Model DocumentChunk untuk sistem AI Ollama
+ * 
+ * Per Requirements 2.1, 2.2: Document chunking untuk vector embeddings
+ * Selaras dengan D09 Database Documentation v3.6.0
+ *
+ * @property int $id
+ * @property int $document_id
+ * @property string $chunk_text
+ * @property array $embedding
+ * @property string|null $source
+ * @property int $chunk_index
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Models\Document $document
+ * @property-read string $preview
+ * @property-read int $text_length
+ * @method static \Database\Factories\DocumentChunkFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk withEmbedding()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk withIndex(int $index)
+ */
+	class DocumentChunk extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -416,14 +664,6 @@ namespace App\Models{
  * @property bool $preference_bypassed User preference override flag
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property string|null $recipient_name
- * @property string $mailable_class
- * @property string|null $message_id
- * @property string|null $status_message
- * @property array<array-key, mixed>|null $meta
- * @property \Illuminate\Support\Carbon $queued_at
- * @property \Illuminate\Support\Carbon|null $sent_at
- * @property \Illuminate\Support\Carbon|null $failed_at
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog delivered()
  * @method static \Database\Factories\EmailLogFactory factory($count = null, $state = [])
@@ -436,26 +676,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog preferenceBypassed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog retryable()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereChannels($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereFailedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereFinalStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereMailableClass($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereMessageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereMeta($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereNextRetryAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereNotificationType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog wherePreferenceBypassed($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog wherePriority($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereQueuedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereRecipientEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereRecipientName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereSentAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereStatusMessage($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereSubject($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailLog withPriority(string $priority)
  */
 	class EmailLog extends \Eloquent {}
@@ -463,17 +683,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property string $name
- * @property string $category
- * @property string $locale
- * @property string $subject
- * @property string $body_html
- * @property string|null $body_text
- * @property array<array-key, mixed>|null $variables
- * @property bool $is_active
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate active()
@@ -482,32 +691,53 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereBodyHtml($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereBodyText($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereCategory($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereSubject($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereVariables($value)
  */
 	class EmailTemplate extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
 }
 
 namespace App\Models{
 /**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FailedJob newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FailedJob newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FailedJob query()
+ */
+	class FailedJob extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * Model FAQ untuk sistem AI Ollama
+ * 
+ * Per Requirements 1.1, 1.5, 4.1: FAQ management dengan True Hybrid Architecture
+ * Selaras dengan D09 Database Documentation v3.6.0 (Dual Audit System)
+ *
  * @property int $id
- * @property string $code
- * @property string $name_ms
- * @property string $name_en
- * @property int $level
- * @property bool $can_approve_loans
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string $question
+ * @property string $answer
+ * @property array|null $tags
+ * @property float|null $match_score
+ * @property int|null $created_by
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
+ * @property-read \App\Models\User|null $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @method static \Database\Factories\FaqFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq search(string $searchQuery)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq withMinScore(float $minScore = 0.3)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq withoutTrashed()
+ */
+	class Faq extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @property-read string $name
@@ -520,15 +750,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereCanApproveLoans($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereLevel($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereNameEn($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereNameMs($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade withoutTrashed()
  */
@@ -537,38 +758,52 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * Model GuestConversation untuk sejarah perbualan tetamu
+ * 
+ * Menyokong Account Linking untuk True Hybrid Architecture
+ * Mengintegrasikan Dual Audit System (owen-it + spatie)
+ *
  * @property int $id
- * @property int $helpdesk_ticket_id
- * @property int|null $user_id
- * @property string $filename
- * @property string $original_filename
- * @property string $mime_type
- * @property int $file_size
- * @property string $file_path
- * @property string $disk
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string $session_id ID sesi tetamu
+ * @property string|null $email E-mel tetamu (opsyen)
+ * @property array $conversation_history Sejarah perbualan
+ * @property int|null $claimed_by_user_id Pengguna yang menuntut
+ * @property \Carbon\Carbon|null $claimed_at Masa dituntut
+ * @property \Carbon\Carbon $expires_at Masa tamat tempoh
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
- * @property-read \App\Models\HelpdeskTicket $helpdeskTicket
+ * @property-read \App\Models\User|null $claimedByUser
+ * @property-read bool $is_active
+ * @property-read bool $is_claimed
+ * @property-read int $message_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation byEmail(string $email)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation bySession(string $sessionId)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation claimed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation expired()
+ * @method static \Database\Factories\GuestConversationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation unclaimed()
+ */
+	class GuestConversation extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\HelpdeskTicket|null $helpdeskTicket
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereDisk($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereFilePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereFileSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereFilename($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereHelpdeskTicketId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereMimeType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereOriginalFilename($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskAttachment withoutTrashed()
  */
@@ -577,36 +812,14 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property int $helpdesk_ticket_id
- * @property int|null $user_id
- * @property string|null $commenter_name
- * @property string|null $commenter_email
- * @property string $comment
- * @property bool $is_internal
- * @property bool $is_resolution
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
- * @property-read \App\Models\HelpdeskTicket $helpdeskTicket
+ * @property-read \App\Models\HelpdeskTicket|null $helpdeskTicket
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereComment($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereCommenterEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereCommenterName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereHelpdeskTicketId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereIsInternal($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereIsResolution($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskComment withoutTrashed()
  */
@@ -624,52 +837,6 @@ namespace App\Models{
  * @see D04 Software Design Document - Hybrid Architecture
  * @see D09 Database Documentation - helpdesk_tickets table
  * @property string|null $guest_email
- * @property int $id
- * @property string $ticket_number
- * @property int|null $user_id
- * @property string|null $guest_name
- * @property string|null $guest_phone
- * @property string|null $guest_grade
- * @property string|null $guest_division
- * @property string|null $guest_staff_id
- * @property string|null $job_grade
- * @property string|null $staff_id
- * @property int|null $division_id
- * @property int $category_id
- * @property string $priority
- * @property string $subject
- * @property string $description
- * @property string|null $damage_type
- * @property bool $declaration_accepted
- * @property string|null $internal_notes
- * @property string $status
- * @property int|null $assigned_to_division
- * @property string|null $assigned_to_agency
- * @property int|null $assigned_to_user
- * @property int|null $asset_id
- * @property int|null $related_loan_application_id
- * @property \Illuminate\Support\Carbon|null $sla_response_due_at
- * @property \Illuminate\Support\Carbon|null $sla_resolution_due_at
- * @property \Illuminate\Support\Carbon|null $responded_at
- * @property \Illuminate\Support\Carbon|null $resolved_at
- * @property \Illuminate\Support\Carbon|null $first_response_at
- * @property int $escalation_level
- * @property \Illuminate\Support\Carbon|null $escalation_notified_at
- * @property \Illuminate\Support\Carbon|null $sla_breached_at
- * @property string|null $sla_breach_type
- * @property \Illuminate\Support\Carbon|null $sla_paused_at
- * @property string|null $sla_pause_reason
- * @property int $sla_total_paused_hours
- * @property string|null $closure_reason
- * @property \Illuminate\Support\Carbon|null $closed_at
- * @property \Illuminate\Support\Carbon|null $assigned_at
- * @property string|null $admin_notes
- * @property string|null $resolution_notes
- * @property string|null $anonymized_at
- * @property string|null $claimed_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PortalActivity> $activities
  * @property-read int|null $activities_count
  * @property-read \App\Models\Asset|null $asset
@@ -683,7 +850,7 @@ namespace App\Models{
  * @property-read int|null $audit_trail_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
- * @property-read \App\Models\TicketCategory $category
+ * @property-read \App\Models\TicketCategory|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskComment> $comments
  * @property-read int|null $comments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CrossModuleIntegration> $crossModuleIntegrations
@@ -693,61 +860,18 @@ namespace App\Models{
  * @property-read int|null $internal_comments_count
  * @property-read \App\Models\HelpdeskComment|null $latestComment
  * @property-read \App\Models\Asset|null $relatedAsset
+ * @property-write mixed $priority
  * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket bySLA(string $slaStatus)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket byStatusToken(string $tokenHash)
  * @method static \Database\Factories\HelpdeskTicketFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket optimizedCount()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket optimizedPagination(int $perPage = 25)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereAdminNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereAnonymizedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereAssetId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereAssignedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereAssignedToAgency($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereAssignedToDivision($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereAssignedToUser($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereClaimedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereClosedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereClosureReason($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereDamageType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereDeclarationAccepted($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereDivisionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereEscalationLevel($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereEscalationNotifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereFirstResponseAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereGuestDivision($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereGuestEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereGuestGrade($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereGuestName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereGuestPhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereGuestStaffId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereInternalNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereJobGrade($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket wherePriority($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereRelatedLoanApplicationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereResolutionNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereResolvedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereRespondedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereSlaBreachType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereSlaBreachedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereSlaPauseReason($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereSlaPausedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereSlaResolutionDueAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereSlaResponseDueAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereSlaTotalPausedHours($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereStaffId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereSubject($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereTicketNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket withCommonRelations()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HelpdeskTicket withoutTrashed()
@@ -757,35 +881,17 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property int $user_id
- * @property string $commentable_type
- * @property int $commentable_id
- * @property int|null $parent_id
- * @property string $comment Comment text (max 1000 characters enforced at application level)
- * @property array<array-key, mixed>|null $mentions Array of mentioned user IDs
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model $commentable
  * @property-read string $formatted_comment
  * @property-read InternalComment|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, InternalComment> $replies
  * @property-read int|null $replies_count
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\InternalCommentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment topLevel()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereComment($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereCommentableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereCommentableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereMentions($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereParentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment withMentionFor(int $userId)
  */
 	class InternalComment extends \Eloquent {}
@@ -830,43 +936,6 @@ namespace App\Models{
  * @property string|null $special_instructions
  * @property array<string, mixed>|null $related_helpdesk_tickets
  * @property bool $maintenance_required
- * @property string|null $tracking_token
- * @property string|null $tracking_token_expires_at
- * @property string $applicant_position
- * @property string $applicant_grade
- * @property \Illuminate\Support\Carbon $expected_return_date
- * @property string|null $pickup_otp_hash
- * @property \Illuminate\Support\Carbon|null $pickup_otp_expires_at
- * @property int $pickup_otp_attempts
- * @property \Illuminate\Support\Carbon|null $pickup_otp_generated_at
- * @property \Illuminate\Support\Carbon|null $pickup_otp_validated_at
- * @property bool $is_applicant_responsible
- * @property bool $is_delegate True if application submitted on behalf of another staff member
- * @property array<array-key, mixed>|null $responsible_officer_details JSON: {name, position, grade, email, phone, staff_id, division_id} for delegation workflow
- * @property string|null $responsible_officer_name
- * @property string|null $responsible_officer_position
- * @property string|null $responsible_officer_grade
- * @property string|null $responsible_officer_phone
- * @property string|null $responsible_officer_email
- * @property \Illuminate\Support\Carbon|null $responsible_officer_acknowledged_at
- * @property string|null $sponsorship_token
- * @property \Illuminate\Support\Carbon|null $sponsorship_token_expires_at
- * @property \Illuminate\Support\Carbon|null $applicant_declaration_date
- * @property string|null $applicant_digital_signature
- * @property bool $terms_acknowledged
- * @property \Illuminate\Support\Carbon|null $declared_at
- * @property int|null $approver_id
- * @property string $approval_status
- * @property \Illuminate\Support\Carbon|null $approval_date
- * @property string|null $approver_digital_signature
- * @property string|null $approval_notes
- * @property array<array-key, mixed>|null $accessories
- * @property string|null $anonymized_at
- * @property string|null $claimed_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property int|null $pickup_otp_validated_by
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PortalActivity> $activities
  * @property-read int|null $activities_count
  * @property-read \App\Models\User|null $approver
@@ -875,7 +944,7 @@ namespace App\Models{
  * @property-read int|null $assets_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
- * @property-read \App\Models\Division $division
+ * @property-read \App\Models\Division|null $division
  * @property-read \Illuminate\Database\Eloquent\Relations\HasMany<LoanItem, LoanApplication> $items
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $helpdeskTickets
  * @property-read int|null $helpdesk_tickets_count
@@ -886,76 +955,14 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanTransaction> $transactions
  * @property-read int|null $transactions_count
  * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication byApprovalToken(string $tokenHash)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication byStatusToken(string $tokenHash)
  * @method static \Database\Factories\LoanApplicationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereAccessories($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereAnonymizedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApplicantDeclarationDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApplicantDigitalSignature($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApplicantEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApplicantGrade($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApplicantName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApplicantPhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApplicantPosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApplicationNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApprovalDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApprovalMethod($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApprovalNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApprovalRemarks($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApprovalStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApprovalToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApprovalTokenExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApprovedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApprovedByName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApproverDigitalSignature($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApproverEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereApproverId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereClaimedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereDeclaredAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereDivisionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereExpectedReturnDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereGrade($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereIsApplicantResponsible($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereIsDelegate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereLoanEndDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereLoanStartDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereLocation($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereMaintenanceRequired($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication wherePickupOtpAttempts($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication wherePickupOtpExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication wherePickupOtpGeneratedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication wherePickupOtpHash($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication wherePickupOtpValidatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication wherePickupOtpValidatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication wherePriority($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication wherePurpose($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereRejectedReason($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereRelatedHelpdeskTickets($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereResponsibleOfficerAcknowledgedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereResponsibleOfficerDetails($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereResponsibleOfficerEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereResponsibleOfficerGrade($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereResponsibleOfficerName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereResponsibleOfficerPhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereResponsibleOfficerPosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereReturnLocation($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereSpecialInstructions($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereSponsorshipToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereSponsorshipTokenExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereStaffId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereTermsAcknowledged($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereTotalValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereTrackingToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereTrackingTokenExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApplication withoutTrashed()
  */
@@ -964,30 +971,46 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * LoanApproval Model - v3.5.0 True Hybrid Architecture
+ * 
+ * Records approval decisions for loan applications with audit trail.
+ * Supports email-based approval workflow with token validation.
+ *
+ * @see D03 Software Requirements Specification - Requirement 4.3
+ * @see D04 Software Design Document - Approval Service
+ * @see D09 Database Documentation - loan_approvals table
+ * @property int $id
+ * @property int $loan_application_id
+ * @property string $approver_email
+ * @property string $approver_grade
+ * @property string $decision (APPROVED, REJECTED)
+ * @property string|null $remarks
+ * @property \Carbon\Carbon $decision_at
+ * @property string $decision_ip_hash
+ * @property string $token_hash
+ * @property array|null $metadata
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\LoanApplication|null $loanApplication
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval query()
+ */
+	class LoanApproval extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
  * Loan Approval Token Model
  * 
  * Manages secure email-based approval tokens for Bahagian 5 workflow
  *
- * @property int $id
- * @property int $loan_application_id
- * @property string $token
- * @property \Illuminate\Support\Carbon $expires_at
- * @property bool $used
- * @property \Illuminate\Support\Carbon|null $used_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\LoanApplication $loanApplication
+ * @property-read \App\Models\LoanApplication|null $loanApplication
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereLoanApplicationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereUsed($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereUsedAt($value)
  */
 	class LoanApprovalToken extends \Eloquent {}
 }
@@ -1012,37 +1035,12 @@ namespace App\Models{
  * @property array|null $accessories_issued
  * @property array|null $accessories_returned
  * @property string|null $damage_report
- * @property string $equipment_type Type of equipment requested
- * @property string|null $notes Additional notes for equipment request
- * @property string|null $brand_model
- * @property string|null $serial_number
- * @property string|null $other_accessories
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Asset|null $asset
- * @property-read \App\Models\LoanApplication $loanApplication
+ * @property-read \App\Models\LoanApplication|null $loanApplication
  * @method static \Database\Factories\LoanItemFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereAccessoriesIssued($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereAccessoriesReturned($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereAssetId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereBrandModel($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereConditionAfter($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereConditionBefore($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereDamageReport($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereEquipmentType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereLoanApplicationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereOtherAccessories($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereSerialNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereTotalValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereUnitValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereUpdatedAt($value)
  */
 	class LoanItem extends \Eloquent {}
 }
@@ -1067,44 +1065,55 @@ namespace App\Models{
  * @property array|null $accessories
  * @property string|null $damage_report
  * @property string|null $notes
- * @property string $created_at Record creation timestamp
- * @property-read \App\Models\Asset $asset
- * @property-read \App\Models\LoanApplication $loanApplication
- * @property-read \App\Models\User $processedBy
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\User|null $admin
+ * @property-read \App\Models\Asset|null $asset
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\LoanApplication|null $loanApplication
+ * @property-read \App\Models\User|null $processedBy
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanTransactionAccessory> $transactionAccessories
+ * @property-read int|null $transaction_accessories_count
  * @method static \Database\Factories\LoanTransactionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereAccessories($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereAssetId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereConditionAfter($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereConditionBefore($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereDamageReport($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereLoanApplicationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereProcessedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereProcessedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereTransactionType($value)
  */
-	class LoanTransaction extends \Eloquent {}
+	class LoanTransaction extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
 }
 
 namespace App\Models{
 /**
- * @property string $id
- * @property string $provider
- * @property string $name
- * @property string|null $description
- * @property array<array-key, mixed>|null $config
- * @property string|null $capabilities
- * @property int $is_active
- * @property \Illuminate\Support\Carbon|null $last_synced_at
- * @property string|null $sync_cursor
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * LoanTransactionAccessory Model - v3.5.0 True Hybrid Architecture
+ * 
+ * Tracks accessories included with asset loans during check-out and check-in.
+ * Supports discrepancy detection for missing or damaged accessories.
+ *
+ * @see D03 Software Requirements Specification - Requirement 26.6
+ * @see D04 Software Design Document - Accessory Tracking Service
+ * @see D09 Database Documentation - loan_transaction_accessories table
+ * @property int $id
+ * @property int $loan_transaction_id
+ * @property string $accessory_type (POWER_ADAPTER, BAG, MOUSE, USB_CABLE, HDMI_VGA_CABLE, REMOTE, OTHERS)
+ * @property string|null $accessory_name (for OTHERS type)
+ * @property bool $present_at_checkout
+ * @property bool|null $present_at_checkin
+ * @property string|null $condition_notes
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\LoanTransaction|null $loanTransaction
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransactionAccessory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransactionAccessory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransactionAccessory query()
+ */
+	class LoanTransactionAccessory extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryEntity> $entities
  * @property-read int|null $entities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryAdapterSync> $syncs
@@ -1113,18 +1122,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereCapabilities($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereConfig($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereLastSyncedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereProvider($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereSyncCursor($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapter withoutTrashed()
  */
@@ -1133,37 +1130,11 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property string $id
- * @property string $memory_adapter_id
- * @property string $status
- * @property array<array-key, mixed>|null $payload
- * @property array<array-key, mixed>|null $error
- * @property int $synced_entities
- * @property int $synced_relations
- * @property int $synced_observations
- * @property \Illuminate\Support\Carbon|null $started_at
- * @property \Illuminate\Support\Carbon|null $finished_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\MemoryAdapter $adapter
+ * @property-read \App\Models\MemoryAdapter|null $adapter
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereError($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereFinishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereMemoryAdapterId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync wherePayload($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereStartedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereSyncedEntities($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereSyncedObservations($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereSyncedRelations($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryAdapterSync withoutTrashed()
  */
@@ -1172,47 +1143,31 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * Represents a node stored inside the cross-extension memory graph.
+ * Memory Entity Model
  *
- * @see D03-FR-020 Memory persistence requirements
  * @property string $id
  * @property string $name
  * @property string $entity_type
- * @property array<array-key, mixed>|null $labels
+ * @property array<int, string>|null $labels
  * @property string|null $summary
- * @property array<array-key, mixed>|null $metadata
+ * @property array<string, mixed>|null $metadata
  * @property string|null $source
  * @property string|null $source_identifier
  * @property float|null $confidence
- * @property \Illuminate\Support\Carbon|null $discovered_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryRelation> $incomingRelations
- * @property-read int|null $incoming_relations_count
+ * @property \Carbon\Carbon|null $discovered_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryObservation> $observations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryRelation> $relationsFrom
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryRelation> $relationsTo
  * @property-read int|null $observations_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryRelation> $outgoingRelations
- * @property-read int|null $outgoing_relations_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, MemoryEntity> $relatedEntities
- * @property-read int|null $related_entities_count
+ * @property-read int|null $relations_from_count
+ * @property-read int|null $relations_to_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereConfidence($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereDiscoveredAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereEntityType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereLabels($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereMetadata($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereSource($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereSourceIdentifier($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereSummary($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity withoutTrashed()
  */
@@ -1221,33 +1176,12 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property string $id
- * @property string $memory_entity_id
- * @property string|null $memory_adapter_id
- * @property string|null $content_hash
- * @property string $content
- * @property array<array-key, mixed>|null $metadata
- * @property float|null $confidence
- * @property \Illuminate\Support\Carbon|null $recorded_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\MemoryEntity $entity
+ * @property-read \App\Models\MemoryAdapter|null $adapter
+ * @property-read \App\Models\MemoryEntity|null $entity
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereConfidence($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereContentHash($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereMemoryAdapterId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereMemoryEntityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereMetadata($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereRecordedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryObservation withoutTrashed()
  */
@@ -1256,32 +1190,12 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property string $id
- * @property string $from_entity_id
- * @property string $to_entity_id
- * @property string $relation_type
- * @property array<array-key, mixed>|null $metadata
- * @property float|null $confidence
- * @property \Illuminate\Support\Carbon|null $discovered_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\MemoryEntity $fromEntity
- * @property-read \App\Models\MemoryEntity $toEntity
+ * @property-read \App\Models\MemoryEntity|null $from
+ * @property-read \App\Models\MemoryEntity|null $to
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereConfidence($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereDiscoveredAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereFromEntityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereMetadata($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereRelationType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereToEntityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryRelation withoutTrashed()
  */
@@ -1290,45 +1204,67 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * Model MessageLog untuk jejak audit operasi AI
+ * 
+ * Menyokong True Hybrid Architecture dengan nullable user_id FK
+ * Mengintegrasikan Dual Audit System (owen-it + spatie)
+ *
  * @property int $id
- * @property int $user_id
- * @property string $activity_type
- * @property string|null $subject_type
- * @property int|null $subject_id
- * @property array<array-key, mixed>|null $metadata
- * @property \Illuminate\Support\Carbon $created_at
+ * @property string $request_id X-Request-ID untuk kebolehkesanan
+ * @property string $operation_type Jenis operasi AI
+ * @property int|null $user_id Pengguna (nullable untuk tetamu)
+ * @property string $sanitized_input Input yang disanitasi
+ * @property string|null $response_summary Ringkasan respons
+ * @property array|null $metadata Model, token, masa pemprosesan
+ * @property string $hash SHA-256 hash untuk immutability
+ * @property string|null $previous_hash Chain of custody
+ * @property \Carbon\Carbon $processed_at Masa pemprosesan
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read string $user_display_name
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MessageLog byDateRange($startDate, $endDate)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MessageLog byOperationType(string $operationType)
+ * @method static \Database\Factories\MessageLogFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MessageLog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MessageLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MessageLog query()
+ */
+	class MessageLog extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
+}
+
+namespace App\Models{
+/**
+ * @method static \Database\Factories\ModelPerformanceMetricFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelPerformanceMetric newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelPerformanceMetric newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelPerformanceMetric query()
+ */
+	class ModelPerformanceMetric extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * @property-read string $color_class
  * @property-read string $formatted_description
  * @property-read string $icon
- * @property-read \Illuminate\Database\Eloquent\Model|null $subject
- * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Model $subject
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity forUser(int $userId)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity ofType(string $type)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereActivityType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereMetadata($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereSubjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereSubjectType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereUserId($value)
  */
 	class PortalActivity extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
- * @property int $id
- * @property string $code
- * @property string $name_ms
- * @property string $name_en
- * @property string|null $description_ms
- * @property string|null $description_en
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @property-read string $name
@@ -1338,15 +1274,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereDescriptionEn($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereDescriptionMs($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereNameEn($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereNameMs($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position withoutTrashed()
  */
@@ -1355,73 +1282,95 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property string $name
- * @property string|null $description
- * @property string $module
- * @property string $frequency
- * @property \Illuminate\Support\Carbon $schedule_time
- * @property int|null $schedule_day_of_week
- * @property int|null $schedule_day_of_month
- * @property array<array-key, mixed> $recipients
- * @property array<array-key, mixed>|null $filters
- * @property string $format
- * @property bool $is_active
- * @property \Illuminate\Support\Carbon|null $last_run_at
- * @property \Illuminate\Support\Carbon|null $next_run_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read string $frequency_description
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule active()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule due()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereFilters($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereFormat($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereFrequency($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereLastRunAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereModule($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereNextRunAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereRecipients($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereScheduleDayOfMonth($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereScheduleDayOfWeek($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereScheduleTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereUpdatedAt($value)
  */
 	class ReportSchedule extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
+ * SavedSearch Model
+ * 
+ * Stores user search history and saved searches for cross-module search.
+ * Uses existing table schema with search_type for categorization.
+ *
+ * @see D03-FR-011.2 (Cross-module search functionality)
+ * @see D04 §5.2 (Cross-Module Search System)
  * @property int $id
  * @property int $user_id
- * @property string $name
+ * @property string|null $name
  * @property string $search_type
- * @property array<array-key, mixed> $filters
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User $user
+ * @property array<string, mixed>|null $filters
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read User $user
+ * @property-read \Carbon\Carbon|null $last_used_at
+ * @property-read string|null $query
+ * @property-read int $result_count
  * @method static \Database\Factories\SavedSearchFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch forUser(int $userId)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch history()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch ofType(string $type)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereFilters($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereSearchType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch saved()
  */
 	class SavedSearch extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Session newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Session newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Session query()
+ */
+	class Session extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * SSO Audit Log Model
+ * 
+ * Tracks all Google SSO authentication attempts for security monitoring,
+ * compliance auditing, and administrative oversight.
+ * 
+ * Supports Requirements 4.1, 4.2 - Enhanced Security and Audit Logging
+ *
+ * @property int $id
+ * @property int|null $user_id
+ * @property string $email
+ * @property string|null $google_id
+ * @property string $ip_address
+ * @property string|null $user_agent
+ * @property bool $success
+ * @property string|null $error_type
+ * @property string|null $error_message
+ * @property \Carbon\Carbon $attempted_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog betweenDates(string $startDate, string $endDate)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog domainErrors()
+ * @method static \Database\Factories\SsoAuditLogFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog failed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog forEmail(string $email)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog forUser(int $userId)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog fromIp(string $ipAddress)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog networkErrors()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog oAuthErrors()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog recent()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog successful()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SsoAuditLog withErrorType(string $errorType)
+ */
+	class SsoAuditLog extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -1448,20 +1397,12 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SupportTicketAttachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read string $ticket_number
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket closed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket open()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket wherePriority($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereSubject($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereUserId($value)
  */
 	class SupportTicket extends \Eloquent {}
 }
@@ -1484,42 +1425,21 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @property-read string $human_readable_size
- * @property-read \App\Models\SupportTicket $supportTicket
+ * @property-read \App\Models\SupportTicket|null $supportTicket
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereFilename($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereMimeType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereSupportTicketId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereUpdatedAt($value)
  */
 	class SupportTicketAttachment extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
- * @property int $id
- * @property string $code
- * @property string $name
- * @property string $name_ms
- * @property string $name_en
- * @property string|null $description_ms
- * @property string|null $description_en
- * @property int|null $parent_id
- * @property int $sla_response_hours
- * @property int $sla_resolution_hours
- * @property bool $is_active
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, TicketCategory> $children
  * @property-read int|null $children_count
+ * @property string $name
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $helpdeskTickets
  * @property-read int|null $helpdesk_tickets_count
  * @property-read TicketCategory|null $parent
@@ -1528,20 +1448,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereDescriptionEn($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereDescriptionMs($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereNameEn($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereNameMs($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereParentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereSlaResolutionHours($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereSlaResponseHours($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TicketCategory withoutTrashed()
  */
@@ -1550,44 +1456,21 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property string $name
- * @property string $email
- * @property \Illuminate\Support\Carbon|null $email_verified_at
- * @property string $password
- * @property string|null $two_factor_secret
- * @property string|null $two_factor_backup_codes
- * @property int $two_factor_enabled
- * @property string|null $two_factor_enabled_at
- * @property string|null $remember_token
- * @property string $role
- * @property string|null $staff_id
- * @property int|null $division_id
- * @property int|null $grade_id
- * @property int|null $position_id
- * @property string|null $phone
- * @property string|null $mobile
- * @property string|null $bio
- * @property string|null $avatar
- * @property bool $is_active
- * @property \Illuminate\Support\Carbon|null $last_login_at
- * @property \Illuminate\Support\Carbon|null $password_changed_at
- * @property bool $require_password_change
- * @property int $has_completed_tour
- * @property array<array-key, mixed>|null $notification_preferences User notification preferences for email alerts
- * @property string|null $anonymized_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanApplication> $approvedLoanApplications
  * @property-read int|null $approved_loan_applications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $assignedHelpdeskTickets
  * @property-read int|null $assigned_helpdesk_tickets_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $assignedTickets
+ * @property-read int|null $assigned_tickets_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserConsent> $consents
  * @property-read int|null $consents_count
  * @property-read \App\Models\Division|null $division
+ * @property string $locale
+ * @property-read string $name
  * @property-read int $profile_completeness
  * @property \App\Models\Grade|null $grade
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskComment> $helpdeskComments
@@ -1611,6 +1494,10 @@ namespace App\Models{
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SavedSearch> $savedSearches
  * @property-read int|null $saved_searches_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SsoAuditLog> $ssoAuditLogs
+ * @property-read int|null $sso_audit_logs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User active()
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User grade41AndAbove()
@@ -1620,35 +1507,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User permission($permissions, $without = false)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User role($roles, $guard = null, $without = false)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAnonymizedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBio($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereDivisionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereGradeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereHasCompletedTour($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastLoginAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereMobile($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereNotificationPreferences($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePasswordChangedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePositionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRequirePasswordChange($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRole($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereStaffId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorBackupCodes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorEnabledAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorSecret($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutRole($roles, $guard = null)
@@ -1659,79 +1517,55 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property int $user_id
- * @property string $consent_type
- * @property string $consent_statement
- * @property string $version
- * @property bool $granted
- * @property string $ip_address
- * @property string|null $user_agent
- * @property \Illuminate\Support\Carbon|null $consented_at
- * @property \Illuminate\Support\Carbon|null $revoked_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read string $history_description
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent active()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent ofType(string $type)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereConsentStatement($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereConsentType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereConsentedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereGranted($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereIpAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereRevokedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereUserAgent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserConsent whereVersion($value)
  */
 	class UserConsent extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
+ * User Notification Preferences Model
+ *
  * @property int $id
  * @property int $user_id
- * @property string $preference_key
- * @property bool $preference_value
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property bool $email_digest_enabled
+ * @property string $email_digest_frequency
+ * @property \Carbon\Carbon $email_digest_time
+ * @property bool $quiet_hours_enabled
+ * @property \Carbon\Carbon|null $quiet_hours_start
+ * @property \Carbon\Carbon|null $quiet_hours_end
+ * @property bool $browser_notifications_enabled
+ * @property bool $sound_enabled
+ * @property bool $group_notifications
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference disabled()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference enabled()
- * @method static \Database\Factories\UserNotificationPreferenceFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference forUser(int $userId)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference wherePreferenceKey($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference wherePreferenceValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereUserId($value)
  */
 	class UserNotificationPreference extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
- * @property int $id
- * @property string $name
- * @property string $module
- * @property string|null $description
- * @property array<array-key, mixed> $conditions
- * @property array<array-key, mixed> $actions
- * @property bool $is_active
- * @property int $priority
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\WebSearchLogFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WebSearchLog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WebSearchLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WebSearchLog query()
+ */
+	class WebSearchLog extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule active()
@@ -1740,16 +1574,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule whereActions($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule whereConditions($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule whereModule($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule wherePriority($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkflowRule whereUpdatedAt($value)
  */
 	class WorkflowRule extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable {}
 }
