@@ -133,6 +133,7 @@ Route::post('/analytics/web-vitals', [WebVitalsController::class, 'store'])
     ->middleware('throttle:300,1'); // 300 requests per minute (high frequency metrics)
 
 // Health Check Endpoints (public - for load balancers and monitoring)
+// trace: D03-SRS-AI-009, D18-§6.1 (AI Health Monitoring)
 Route::prefix('health')->name('api.health.')->group(function () {
     Route::get('/', [\App\Http\Controllers\Api\HealthCheckController::class, 'basic'])
         ->name('basic');
@@ -142,6 +143,10 @@ Route::prefix('health')->name('api.health.')->group(function () {
 
     Route::get('/performance', [\App\Http\Controllers\Api\HealthCheckController::class, 'performance'])
         ->name('performance');
+
+    // AI Services Health Check (Ollama + Bedrock)
+    Route::get('/ai', [\App\Http\Controllers\Api\HealthCheckController::class, 'aiServices'])
+        ->name('ai');
 });
 
 /*

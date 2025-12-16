@@ -460,6 +460,7 @@ public function boot(): void
 ### 401 Unauthenticated
 
 Check:
+
 1. Token is included in Authorization header
 2. Token exists in database
 3. Token hasn't been revoked
@@ -481,5 +482,5 @@ axios.defaults.withCredentials = true;
 
 ## References
 
-- Official Documentation: https://laravel.com/docs/12.x/sanctum
-- GitHub Repository: https://github.com/laravel/sanctum
+- Official Documentation: <https://laravel.com/docs/12.x/sanctum>
+- GitHub Repository: <https://github.com/laravel/sanctum>

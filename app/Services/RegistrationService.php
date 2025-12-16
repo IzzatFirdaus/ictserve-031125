@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
+use function Spatie\Activitylog\activity;
+
 /**
  * Registration Service Implementation for ICTServe v3.5.0
  *

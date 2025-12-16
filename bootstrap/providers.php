@@ -11,4 +11,5 @@ return [
     App\Providers\ApiRateLimitingServiceProvider::class,
     App\Providers\RecaptchaServiceProvider::class,
     App\Providers\ClamavServiceProvider::class,
+    Laravel\Sanctum\SanctumServiceProvider::class,
 ];

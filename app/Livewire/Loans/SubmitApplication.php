@@ -10,6 +10,7 @@ use App\Services\AssetAvailabilityService;
 use App\Services\LoanApplicationService;
 use App\Traits\OptimizedFormPerformance;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -257,7 +258,7 @@ class SubmitApplication extends Component
 
             DB::commit();
 
-            \Log::info('Loan application submitted', [
+            Log::info('Loan application submitted', [
                 'application_number' => $application->application_number,
                 'applicant' => $this->applicant_name,
                 'assets_count' => count($this->selected_assets),
@@ -270,7 +271,7 @@ class SubmitApplication extends Component
         } catch (\Exception $e) {
             DB::rollBack();
 
-            \Log::error('Loan application submission failed', [
+            Log::error('Loan application submission failed', [
                 'error' => $e->getMessage(),
                 'applicant' => $this->applicant_name,
             ]);
@@ -294,9 +295,8 @@ class SubmitApplication extends Component
     /**
      * Render component
      */
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
-        return view('livewire.loans.submit-application')
-            ->layout('components.layout.guest');
+        return view('livewire.loans.submit-application');
     }
 }

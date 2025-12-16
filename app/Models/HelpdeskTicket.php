@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * HelpdeskTicket Model - Enhanced with Hybrid Architecture Support
@@ -39,10 +41,10 @@ class HelpdeskTicket extends Model implements Auditable
     /** @use HasFactory<\Database\Factories\HelpdeskTicketFactory> */
     use HasFactory;
 
+    use LogsActivity;
     use OptimizedQueries;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
-    use \Spatie\Activitylog\Traits\LogsActivity;
 
     protected $fillable = [
         'ticket_number',
@@ -113,9 +115,9 @@ class HelpdeskTicket extends Model implements Auditable
      *
      * @see D09 §4.7 - Activity Log Requirements
      */
-    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
-        return \Spatie\Activitylog\LogOptions::defaults()
+        return LogOptions::defaults()
             ->logOnly([
                 'ticket_number',
                 'status',
