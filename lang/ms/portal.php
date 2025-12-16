@@ -475,6 +475,12 @@ return [
         'note' => 'Pintasan tidak berfungsi semasa menaip dalam medan borang. Semua tindakan juga boleh diakses melalui navigasi biasa untuk pengguna pembaca skrin.',
     ],
     'close' => 'Tutup',
+    'filter_activity' => 'Tapis Aktiviti',
+
+    // Activity Filter Options (Dashboard v3.6.0)
+    'filter_all' => 'Semua',
+    'filter_tickets' => 'Tiket',
+    'filter_loans' => 'Pinjaman',
 
     // Email Frequency Configuration (Phase 8 - Task 8.1.3) per D12 §6.17
     'email_delivery_settings' => 'Tetapan Penghantaran E-mel',

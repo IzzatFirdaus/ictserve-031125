@@ -491,6 +491,12 @@ return [
         'note' => 'Shortcuts do not work when typing in form fields. All actions are also accessible via regular navigation for screen reader users.',
     ],
     'close' => 'Close',
+    'filter_activity' => 'Filter Activity',
+
+    // Activity Filter Options (Dashboard v3.6.0)
+    'filter_all' => 'All',
+    'filter_tickets' => 'Tickets',
+    'filter_loans' => 'Loans',
 
     // Email Frequency Configuration (Phase 8 - Task 8.1.3) per D12 §6.17
     'email_delivery_settings' => 'Email Delivery Settings',
