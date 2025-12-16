@@ -90,9 +90,9 @@
             ]
         },
         "laravel-boost": {
-            "command": "C:\\XAMPP\\php\\php.exe",
+            "command": "/usr/local/bin/php",
             "args": [
-                "C:\\XAMPP\\htdocs\\ictserve-031125\\artisan",
+                "/var/www/html/artisan",
                 "boost:mcp"
             ]
         },
