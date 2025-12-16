@@ -6,16 +6,8 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 define('LARAVEL_START', microtime(true));
 
-// Set vendor path for package discovery
-putenv('COMPOSER_VENDOR_DIR=/tmp/vendor');
-
-// Override system environment variables for local development
-// Codespace sets APP_ENV=production by default, but we need local for Boost
-putenv('APP_ENV=local');
-putenv('APP_DEBUG=true');
-
 // Register the Composer autoloader...
-require '/tmp/vendor/autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
 // Bootstrap Laravel and handle the command...
 /** @var Application $app */
