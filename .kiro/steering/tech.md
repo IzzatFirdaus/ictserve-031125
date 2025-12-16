@@ -1,319 +1,251 @@
 ---
 inclusion: always
-description: "ICTServe v3.6.0 technology stack, development tools, common commands, build system, and D00-D17 compliance"
-version: "3.6.0"
-last_updated: "2025-12-11"
 ---
 
-# Technology Stack
+# Technology Stack & Development Guidelines
 
-## Core Framework
+## Core Framework Stack
 
-- **PHP**: 8.2.12
-- **Laravel**: 12.40.1 (February 2025 release)
-- **Livewire**: 3.7.0 (server-driven UI)
-- **Livewire Volt**: 1.10.1 (single-file components)
-- **Filament**: 4.1.10 (admin panel framework)
+**CRITICAL**: Use exact versions for compatibility:
 
-## Frontend
+- **PHP**: 8.2.12 (strict typing required: `declare(strict_types=1);`)
+- **Laravel**: 12.40.1 (streamlined structure - no Kernel.php files)
+- **Livewire**: 3.7.0 (server-driven UI, single root element required)
+- **Livewire Volt**: 1.10.1 (single-file components, class-based or functional)
+- **Filament**: 4.1.10 (admin panel, v4 breaking changes applied)
 
-- **Alpine.js**: 3.x (included with Livewire)
-- **Tailwind CSS**: 4.1.17 (configured via `@theme`)
-- **Vite**: 7.0.7 (asset bundling)
-- **Laravel Echo**: 2.2.6 (WebSocket client)
-- **Pusher JS**: 8.x (WebSocket protocol)
+## Frontend Stack
+
+- **Alpine.js**: 3.x (included with Livewire - do not manually include)
+- **Tailwind CSS**: 4.1.17 (CSS-first config via `@theme`, no tailwind.config.js)
+- **Vite**: 7.0.7 (asset bundling, use `npm run dev` for watch mode)
+- **Laravel Echo**: 2.2.6 (WebSocket client for real-time features)
 
 ## Backend Services
 
-- **Laravel Reverb**: 1.6.2 (WebSocket server for real-time features)
-- **Laravel MCP**: 0.3.4 (Model Context Protocol server)
-- **Spatie Laravel Permission**: 6.23 (role-based access control)
-- **Laravel Breeze**: 2.3.8 (Authentication scaffolding & Self-Registration)
-- **Laravel Telescope**: 5.x (System debugging, Superuser only)
+- **Laravel Reverb**: 1.6.2 (WebSocket server - required for real-time features)
+- **Laravel MCP**: 0.3.4 (Model Context Protocol - register in routes/ai.php)
+- **Spatie Laravel Permission**: 6.23 (RBAC: staff/approver/admin/superuser)
+- **Laravel Breeze**: 2.3.8 (authentication - @motac.gov.my domain only)
+- **Laravel Telescope**: 5.x (debugging - superuser access only)
 
-## Observability & Audit (Dual System)
+## Mandatory Audit System
 
-- **Compliance Audit**: `owen-it/laravel-auditing` v14.x (Field-level tracking)
-- **Operational Log**: `spatie/laravel-activitylog` v4.x (User activity logging)
+**CRITICAL**: All models must implement dual audit system:
 
-## Database & Storage
+- **Compliance Audit**: `owen-it/laravel-auditing` v14.x (use `Auditable` trait)
+- **Operational Log**: `spatie/laravel-activitylog` v4.x (use `LogsActivity` trait)
+
+## Database Configuration
 
 - **MySQL**: 8.0 (production)
 - **SQLite**: Development/testing
-- **Redis**: 7.0 (Caching, Queue, and Reverb backend)
+- **Redis**: 7.0 (caching, queues, Reverb backend)
 
-## Development Tools
+## Development Tools & Quality Gates
 
-- **Laravel Pint**: 1.26.0 (PSR-12 code formatting)
-- **Larastan**: 3.8.0 (PHPStan for Laravel)
-- **PHPUnit**: 12.0.0 (testing framework with PHP 8 attributes)
-- **Laravel Prompts**: 0.3.8 (interactive CLI prompts)
-- **Playwright**: 1.56.1 (E2E browser testing)
-- **ESLint**: 9.x (JavaScript linting)
-- **Prettier**: 3.x (code formatting)
-- **Stylelint**: 16.x (CSS linting)
+- **Laravel Pint**: 1.26.0 (PSR-12 formatting - run before commits)
+- **Larastan**: 3.8.0 (PHPStan Level 9 - static analysis required)
+- **PHPUnit**: 12.0.0 (PHP 8 attributes - no PHPDoc annotations)
+- **Playwright**: 1.56.1 (E2E testing)
+- **ESLint/Prettier/Stylelint**: Frontend code quality
 
-## Common Commands
+## Development Commands
 
-### Development
+### Development Server
 
-#### Recommended: Use Laravel Artisan Server
+**REQUIRED**: Use `127.0.0.1` (not localhost) on Windows:
 
 ```bash
-# Start full development stack (server + queue + logs + vite)
+# Full development stack
 composer run dev
 
-# Or start individual services in separate terminals:
-php artisan serve              # Laravel server at http://127.0.0.1:8000
-php artisan reverb:start       # WebSocket server (Required for v3.5.0 Real-time)
-php artisan queue:work         # Queue worker (Redis driver recommended)
-npm run dev                    # Vite dev server (watch mode)
+# Individual services (separate terminals)
+php artisan serve              # App: http://127.0.0.1:8000
+php artisan reverb:start       # WebSocket: ws://127.0.0.1:6001
+php artisan queue:work         # Background jobs
+npm run dev                    # Vite watch mode
 ```
 
-**Default URLs:**
+**URLs**: App `http://127.0.0.1:8000`, Admin `/admin`, WebSocket `ws://127.0.0.1:6001`
 
-- Application: `http://127.0.0.1:8000`
-- Admin Panel: `http://127.0.0.1:8000/admin`
-- WebSocket: `ws://127.0.0.1:6001`
+### Quality Assurance (MANDATORY)
 
-**Note:** Use `127.0.0.1` instead of `localhost` for better reliability on Windows systems.`
-
-### Building
+**CRITICAL**: Run before every commit:
 
 ```bash
-# Build production assets (Tailwind v4)
-npm run build
-
-# Install dependencies
-composer install
-npm install
+vendor/bin/pint                # PSR-12 formatting (required)
+vendor/bin/phpstan analyse     # Static analysis Level 9 (required)
+php artisan test              # PHPUnit tests (required)
+npm run build                 # Frontend compilation
 ```
 
-### Testing
+### Testing Commands
 
 ```bash
 # Run all tests
 php artisan test
 
-# Run specific test file
+# Specific test file
 php artisan test tests/Feature/HelpdeskTicketTest.php
 
-# Run with filter
+# Filter by test name
 php artisan test --filter=test_guest_can_submit_ticket
 
-# E2E Browser tests
+# E2E browser tests
 npx playwright test
 ```
 
-### Code Quality
+### Database Operations
 
 ```bash
-# Format PHP code (PSR-12)
-vendor/bin/pint
-
-# Static analysis
-vendor/bin/phpstan analyse
-
-# Lint JavaScript
-npm run lint:js
-
-# Lint CSS
-npm run lint:css
-
-# Format all frontend code
-npm run format
-
-# Run all quality checks
-npm run quality
-composer run quality:check
-```
-
-### Database
-
-```bash
-# Run migrations
+# Standard migrations
 php artisan migrate
-
-# Run migrations with seeding
 php artisan migrate --seed
 
-# Rollback migrations
-php artisan migrate:rollback
-
-# Fresh migration (drop all tables)
+# Development reset
 php artisan migrate:fresh --seed
+
+# Rollback (always test rollback before deployment)
+php artisan migrate:rollback
 ```
 
-### v3.6.0 Specific Operations
+### ICTServe Specific Commands
 
 ```bash
-# Link historical guest submissions to new staff accounts
-php artisan ict:link-historical-submissions
-
-# Setup/Verify Dual Audit tables
+# Dual audit system setup
 php artisan ict:setup-dual-audit
 
-# Update guest submission counts
-php artisan ict:update-guest-counts
+# Guest submission linking
+php artisan ict:link-historical-submissions
 
-# Language operations (v3.6.0 - Bahasa Melayu sahaja)
+# Language enforcement (Bahasa Melayu only)
 php artisan ict:disable-language-switcher
-php artisan ict:cleanup-locale-cookies
 ```
 
-### Optimization
+### Laravel Boost Integration
+
+**CRITICAL**: Use Laravel Boost MCP server for development:
 
 ```bash
-# Clear all caches
-php artisan optimize:clear
-
-# Cache configuration
-php artisan config:cache
-
-# Cache routes
-php artisan route:cache
-
-# Cache views
-php artisan view:cache
+composer boost                 # Start MCP server
+composer boost:install         # Install assets
+composer boost:update          # Update guidelines
 ```
 
-### Laravel Boost (Development Helper)
+## Build System & Asset Pipeline
 
-```bash
-# Start Boost MCP server
-composer boost
+- **Vite**: Frontend asset compilation (use `npm run dev` for watch mode)
+- **Tailwind v4**: CSS-first config via `@theme` directive (no tailwind.config.js)
+- **Terser**: JavaScript minification for production
+- **Rollup**: Bundle analysis and optimization
 
-# Install Boost assets
-composer boost:install
+## Code Quality Pipeline
 
-# Update Boost guidelines
-composer boost:update
-```
+**MANDATORY**: All code must pass these gates:
 
-## Build System
+- **PSR-12**: Laravel Pint formatting (run `vendor/bin/pint`)
+- **PHPStan Level 9**: Static analysis via Larastan
+- **PHPUnit 12**: Tests with PHP 8 attributes (no PHPDoc annotations)
+- **Frontend Linting**: ESLint, Prettier, Stylelint
 
-- **Vite** handles all frontend asset compilation
-- **Tailwind JIT** compiles CSS on-demand (v4 CSS-first config)
-- **Terser** minifies JavaScript for production
-- **Brotli compression** for optimized asset delivery
-- **Rollup** for bundle analysis and optimization
+## Laravel 12 Specific Patterns
 
-## CI/CD
+**CRITICAL**: Follow Laravel 12 streamlined structure:
 
-- **GitHub Actions** for automated testing
-- **PHPUnit** runs on every push
-- **Pint** enforces code style
-- **PHPStan** performs static analysis
-- **npm run lint** validates frontend code
+- **No Kernel files**: Middleware in `bootstrap/app.php`
+- **Auto-registration**: Commands in `app/Console/Commands/` auto-register
+- **Service providers**: Listed in `bootstrap/providers.php`
+- **Strict typing**: Always use `declare(strict_types=1);`
 
-## Kiro IDE Integration
+## PHPUnit 12 Testing Requirements
 
-### Kiro Build Commands
+**MANDATORY**: Use PHP 8 attributes, not PHPDoc:
 
-```bash
-# Compile Kiro agent extension
-npm run compile
+```php
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-# Package extension for distribution
-npm run package
-
-# Release new version
-npm run release
-
-# Analyze external dependencies
-npm run analyze-externals
-```
-
-### Hook System Configuration
-
-Kiro IDE supports automated workflows via hook-based actions. Example hook configurations:
-
-```json
+class ExampleTest extends TestCase
 {
-  "hooks": [
+    #[Test]
+    public function it_performs_operation(): void
     {
-      "name": "FileEditedHook",
-      "pattern": "**/*.php",
-      "actions": [
-        {
-          "type": "AskAgentHook",
-          "prompt": "Run Laravel Pint to format this PHP file: {{filePath}}"
-        }
-      ]
-    },
-    {
-      "name": "FileCreatedHook",
-      "pattern": "app/Models/*.php",
-      "actions": [
-        {
-          "type": "AskAgentHook",
-          "prompt": "Generate factory, migration, and ensure Auditable/LogsActivity traits for model: {{fileName}}"
-        }
-      ]
-    },
-    {
-      "name": "UserTriggeredHook",
-      "trigger": "test-coverage",
-      "actions": [
-        {
-          "type": "AlertHook",
-          "message": "Running PHPUnit with coverage analysis..."
-        },
-        {
-          "type": "AskAgentHook",
-          "prompt": "Run: php artisan test --coverage --min=80"
-        }
-      ]
+        // Test implementation
     }
-  ]
+
+    #[Test]
+    #[DataProvider('dataProvider')]
+    public function it_validates_data(string $input): void
+    {
+        // Test with data provider
+    }
 }
 ```
 
-**Hook Types Available:**
+## Livewire 3 Patterns
 
-- `FileEditedHook`: Triggered when files are modified
-- `FileCreatedHook`: Triggered when new files are added
-- `FileDeletedHook`: Triggered when files are removed
-- `UserTriggeredHook`: Manually triggered by user actions
-- `AlertHook`: Display notifications to user
-- `AskAgentHook`: Request AI agent to perform actions
+**CRITICAL**: Follow Livewire 3 conventions:
 
-**Integration with Laravel Development:**
+- Single root element required
+- Use `wire:model.live` for real-time updates
+- Add `wire:key` in loops
+- Components in `App\Livewire` namespace
+- Use `$this->dispatch()` for events
 
-- Auto-format PHP files on save using Pint
-- Generate boilerplate (factories, migrations, tests) for new models
-- Run quality checks before commits
-- Trigger Laravel Boost documentation searches for errors
-- Execute Artisan commands via agent automation
+## Filament v4 Breaking Changes
 
-## Standards Compliance (D00-D17)
+**IMPORTANT**: Filament v4 changes from v3:
 
-### Documentation Standards
+- File visibility `private` by default
+- `deferFilters` is default behavior
+- All actions extend `Filament\Actions\Action`
+- Schema components moved to `Filament\Schemas\Components`
 
-- **ISO/IEC/IEEE 15288**: Systems and software engineering life cycle processes
-- **ISO/IEC/IEEE 12207**: Software life cycle processes
-- **ISO/IEC/IEEE 29148**: Requirements engineering standards
-- **WCAG 2.2 AA**: Web Content Accessibility Guidelines Level AA
-- **MyGOV Digital Service Standards v2.1.0**: Malaysian government digital service standards
+## Compliance Standards (D00-D18)
 
-### Technology Alignment with D00-D17
+**MANDATORY**: All code must comply with:
 
-| Document | Technology Focus | Implementation |
-|----------|------------------|----------------|
-| **D00** | System Overview | Laravel 12.40.1 True Hybrid Architecture |
-| **D03** | Software Requirements | 38+ SRS requirements mapped to features |
-| **D04** | Software Design | Component architecture (Livewire/Volt/Filament) |
-| **D09** | Database Documentation | Dual audit system (owen-it + spatie) |
-| **D11** | Technical Design | Infrastructure, deployment, security |
-| **D12-D14** | UI/UX Standards | WCAG 2.2 AA, MyDS v2025.2, Tailwind v4 |
-| **D15** | Language Standards | Bahasa Melayu sahaja (v3.6.0) |
-| **D16** | Broadcasting Setup | Laravel Reverb 1.6.2 WebSocket server |
-| **D17** | Queue Management | Laravel Horizon for background jobs |
+- **WCAG 2.2 AA**: 4.5:1 text contrast, 3:1 UI contrast, keyboard navigation
+- **PDPA 2010**: Malaysian privacy law - encrypt personal data, audit access
+- **PSR-12**: PHP coding standards via Laravel Pint
+- **MyGOV Digital Service Standards v2.1.0**: Malaysian government requirements
 
-### Quality Gates
+### Documentation Traceability
 
-- **Code Quality**: PSR-12 (Pint), PHPStan Level 9 (Larastan)
-- **Testing**: PHPUnit 12.0.0 (PHP 8 attributes), Playwright 1.56.1 E2E
-- **Accessibility**: WCAG 2.2 AA compliance via CI gates
-- **Performance**: Core Web Vitals monitoring via Laravel Pulse
-- **Security**: OWASP ASVS Level 2 compliance
+**CRITICAL**: Reference D-sections in commits and code:
+
+| Document | Technology Implementation |
+|----------|--------------------------|
+| **D00** | Laravel 12 True Hybrid Architecture |
+| **D03** | 38+ SRS requirements → features |
+| **D04** | Livewire/Volt/Filament component design |
+| **D09** | Dual audit system (Auditable + LogsActivity traits) |
+| **D11** | Infrastructure, deployment, security patterns |
+| **D12-D14** | WCAG 2.2 AA, Tailwind v4 UI standards |
+| **D15** | Bahasa Melayu only (language switcher disabled) |
+| **D16** | Laravel Reverb WebSocket broadcasting |
+| **D17** | Laravel Horizon queue management |
+| **D18** | AI Chatbot Ollama-Bedrock integration |
+
+### Quality Gates (ENFORCED)
+
+**MANDATORY** before any commit:
+
+1. **Code Quality**: PSR-12 (Pint) + PHPStan Level 9
+2. **Testing**: PHPUnit 12 with PHP 8 attributes (80%+ coverage)
+3. **Accessibility**: WCAG 2.2 AA compliance checks
+4. **Security**: OWASP ASVS Level 2 patterns
+5. **Performance**: Core Web Vitals monitoring
+
+### AI Assistant Guidelines
+
+**CRITICAL**: When working with this codebase:
+
+1. **Always** use Laravel Boost MCP server for documentation
+2. **Always** run quality gates before suggesting code
+3. **Always** reference D-section documentation for requirements
+4. **Always** implement dual audit system (Auditable + LogsActivity)
+5. **Always** use PHP 8 attributes in PHPUnit tests
+6. **Always** ensure WCAG 2.2 AA compliance
+7. **Always** use Bahasa Melayu for user-facing text
