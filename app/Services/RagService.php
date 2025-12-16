@@ -25,13 +25,18 @@ use function count;
  * Melaksanakan pipeline RAG untuk respons AI yang kontekstual dengan
  * sokongan True Hybrid Architecture dan pengurusan konteks perbualan.
  *
+ * trace: D03-SRS-AI-001 (FAQ Bot), D03-SRS-AI-005 (Conversation Management)
+ * trace: D03-SRS-AI-014 (Web-Augmented), D03-SRS-AI-015 (Vector Embeddings)
+ * trace: D18-§5.3 (RAG Pipeline), D10-§4.7 (Service Architecture)
+ *
  * @version 3.6.0
  *
  * @author Pasukan Pembangunan BPM MOTAC
  *
  * @compliance D10 Source Code Documentation v3.6.0
  *
- * @requirements 1.1, 1.2, 1.3, 1.7, 2.2
+ * @see docs/D18_AI_CHATBOT_OLLAMA_BEDROCK.md
+ * @see docs/ollama/README.md
  */
 class RagService
 {

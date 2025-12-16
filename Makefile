@@ -1,4 +1,4 @@
-.PHONY: help setup build up stop restart composer npm artisan migrate seed test logs shell legacy
+.PHONY: help setup build up stop restart composer npm artisan migrate seed test test-sequential logs shell legacy
 
 help:
 	@echo "ICTServe Docker Commands (using compose.yaml):"
@@ -12,7 +12,8 @@ help:
 	@echo "  make artisan cmd=X  - Run artisan command (e.g., make artisan cmd=migrate)"
 	@echo "  make migrate        - Run database migrations"
 	@echo "  make seed           - Run database seeders"
-	@echo "  make test           - Run PHPUnit tests"
+	@echo "  make test           - Run PHPUnit tests (parallel)"
+	@echo "  make test-sequential - Run PHPUnit tests sequentially (stops on failure)"
 	@echo "  make logs           - Show container logs"
 	@echo "  make shell          - Open shell in app container"
 	@echo "  make legacy         - Use legacy docker-compose.yml"
@@ -54,6 +55,9 @@ seed:
 
 test:
 	docker compose -f compose.yaml exec app php artisan test
+
+test-sequential:
+	docker compose -f compose.yaml exec app ./scripts/testing/run-tests-sequential.sh
 
 logs:
 	docker compose -f compose.yaml logs -f app

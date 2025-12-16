@@ -1,0 +1,104 @@
+name: CI (Sequential Tests)
+
+# This workflow runs tests sequentially with fail-fast behavior
+# Useful for debugging and quick failure detection in PRs
+
+on:
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  test-sequential:
+    name: Sequential Tests (Fail-Fast)
+    runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, bcmath, pdo_mysql, redis
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          mkdir -p storage/framework/{sessions,views,cache}
+          mkdir -p bootstrap/cache
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Static Analysis (PHPStan)
+        run: vendor/bin/phpstan analyse --no-progress
+        continue-on-error: true
+
+      - name: Code Style Check (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Run Unit Tests Sequentially
+        run: ./scripts/testing/run-tests-sequential.sh tests/Unit
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: testing
+          DB_USERNAME: root
+          DB_PASSWORD: root
+
+      - name: Run Feature Tests Sequentially
+        run: ./scripts/testing/run-tests-sequential.sh tests/Feature
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: testing
+          DB_USERNAME: root
+          DB_PASSWORD: root
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Upload test results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            storage/logs/
+            tests/results/
+          retention-days: 7

@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 use function random_int;
 
@@ -65,9 +67,9 @@ class LoanApplication extends Model implements Auditable
     /** @use HasFactory<\Database\Factories\LoanApplicationFactory> */
     use HasFactory;
 
+    use LogsActivity;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
-    use \Spatie\Activitylog\Traits\LogsActivity;
 
     /**
      * Flag used by factories to skip automatic loan item creation without persisting to the database.
@@ -156,9 +158,9 @@ class LoanApplication extends Model implements Auditable
      *
      * @see D09 §4.7 - Activity Log Requirements
      */
-    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
-        return \Spatie\Activitylog\LogOptions::defaults()
+        return LogOptions::defaults()
             ->logOnly([
                 'application_number',
                 'status',
