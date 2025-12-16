@@ -14,13 +14,12 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Loan Transaction Model
- *
+ * 
  * Complete audit trail for all asset loan transactions.
  *
  * @see D03-FR-010.2 Comprehensive audit logging
  * @see D03-FR-018.3 Asset lifecycle tracking
  * @see D04 §2.2 Model relationships
- *
  * @property int $id
  * @property int $loan_application_id
  * @property int $asset_id
@@ -32,6 +31,42 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property array|null $accessories
  * @property string|null $damage_report
  * @property string|null $notes
+ * @property string|null $transaction_at Explicit timestamp of the transaction event
+ * @property int|null $admin_id
+ * @property bool $damage_reported Flag indicating if damage was reported during transaction
+ * @property array<array-key, mixed>|null $damage_photos JSON array of damage photo file paths
+ * @property string $created_at Record creation timestamp
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\User|null $admin
+ * @property-read \App\Models\Asset $asset
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\LoanApplication $loanApplication
+ * @property-read \App\Models\User $processedBy
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanTransactionAccessory> $transactionAccessories
+ * @property-read int|null $transaction_accessories_count
+ * @method static \Database\Factories\LoanTransactionFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereAccessories($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereAssetId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereConditionAfter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereConditionBefore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereDamagePhotos($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereDamageReport($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereDamageReported($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereLoanApplicationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereProcessedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereProcessedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereTransactionAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanTransaction whereTransactionType($value)
+ * @mixin \Eloquent
  */
 class LoanTransaction extends Model implements Auditable
 {
@@ -168,6 +203,6 @@ class LoanTransaction extends Model implements Auditable
     public function hasDamage(): bool
     {
         return $this->condition_after !== null
-            && in_array($this->condition_after, [AssetCondition::DAMAGED, AssetCondition::POOR]);
+            && \in_array($this->condition_after, [AssetCondition::DAMAGED, AssetCondition::POOR], true);
     }
 }

@@ -18,7 +18,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Enhanced Asset Model with Cross-Module Integration
- *
+ * 
  * Comprehensive asset tracking with maintenance integration and cross-module
  * connectivity with the helpdesk system.
  *
@@ -26,7 +26,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @see D03-FR-016.2 Cross-module integration
  * @see D03-FR-018.1 Asset lifecycle management
  * @see D04 §2.2 Model relationships
- *
  * @property int $id
  * @property string $asset_tag
  * @property string $name
@@ -50,6 +49,68 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property array<string, mixed>|null $availability_calendar
  * @property array<string, mixed>|null $utilization_metrics
  * @property array<string, mixed>|null $specifications
+ * @property numeric|null $purchase_price
+ * @property int $useful_life_years
+ * @property string|null $last_depreciation_calculation
+ * @property numeric $accumulated_depreciation
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\AssetCategory $category
+ * @property-read \App\Models\LoanApplication|null $currentLoan
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $helpdeskTickets
+ * @property-read int|null $helpdesk_tickets_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanItem> $loanItems
+ * @property-read int|null $loan_items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanTransaction> $loanTransactions
+ * @property-read int|null $loan_transactions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $maintenanceRecords
+ * @property-read int|null $maintenance_records_count
+ * @method static Builder<static>|Asset available()
+ * @method static Builder<static>|Asset availableForLoan(string $startDate, string $endDate)
+ * @method static \Database\Factories\AssetFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Asset newModelQuery()
+ * @method static Builder<static>|Asset newQuery()
+ * @method static Builder<static>|Asset onlyTrashed()
+ * @method static Builder<static>|Asset query()
+ * @method static Builder<static>|Asset requiringMaintenance()
+ * @method static Builder<static>|Asset whereAccessories($value)
+ * @method static Builder<static>|Asset whereAccumulatedDepreciation($value)
+ * @method static Builder<static>|Asset whereAssetTag($value)
+ * @method static Builder<static>|Asset whereAvailabilityCalendar($value)
+ * @method static Builder<static>|Asset whereBrand($value)
+ * @method static Builder<static>|Asset whereCategoryId($value)
+ * @method static Builder<static>|Asset whereCondition($value)
+ * @method static Builder<static>|Asset whereCreatedAt($value)
+ * @method static Builder<static>|Asset whereCurrentValue($value)
+ * @method static Builder<static>|Asset whereDeletedAt($value)
+ * @method static Builder<static>|Asset whereId($value)
+ * @method static Builder<static>|Asset whereLastDepreciationCalculation($value)
+ * @method static Builder<static>|Asset whereLastMaintenanceDate($value)
+ * @method static Builder<static>|Asset whereLoanHistorySummary($value)
+ * @method static Builder<static>|Asset whereLocation($value)
+ * @method static Builder<static>|Asset whereMaintenanceTicketsCount($value)
+ * @method static Builder<static>|Asset whereModel($value)
+ * @method static Builder<static>|Asset whereName($value)
+ * @method static Builder<static>|Asset whereNextMaintenanceDate($value)
+ * @method static Builder<static>|Asset wherePurchaseDate($value)
+ * @method static Builder<static>|Asset wherePurchasePrice($value)
+ * @method static Builder<static>|Asset wherePurchaseValue($value)
+ * @method static Builder<static>|Asset whereSerialNumber($value)
+ * @method static Builder<static>|Asset whereSpecifications($value)
+ * @method static Builder<static>|Asset whereStatus($value)
+ * @method static Builder<static>|Asset whereUpdatedAt($value)
+ * @method static Builder<static>|Asset whereUsefulLifeYears($value)
+ * @method static Builder<static>|Asset whereUtilizationMetrics($value)
+ * @method static Builder<static>|Asset whereWarrantyExpiry($value)
+ * @method static Builder<static>|Asset withHelpdeskHistory()
+ * @method static Builder<static>|Asset withTrashed(bool $withTrashed = true)
+ * @method static Builder<static>|Asset withoutTrashed()
+ * @mixin \Eloquent
  */
 class Asset extends Model implements Auditable
 {

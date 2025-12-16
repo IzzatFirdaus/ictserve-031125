@@ -23,15 +23,153 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * HelpdeskTicket Model - Enhanced with Hybrid Architecture Support
- *
+ * 
  * Supports both guest submissions (no user_id) and authenticated submissions (with user_id).
  * Integrates with asset loan system for cross-module functionality.
  *
  * @see D03 Software Requirements Specification - Requirement 1, 2
  * @see D04 Software Design Document - Hybrid Architecture
  * @see D09 Database Documentation - helpdesk_tickets table
- *
  * @property string|null $guest_email
+ * @property int $id
+ * @property string $ticket_number
+ * @property string|null $status_token_hash SHA-512 hash of status token for guest status checking
+ * @property string $form_reference_code Official MOTAC form reference code
+ * @property int|null $user_id
+ * @property string|null $guest_name
+ * @property string|null $guest_phone
+ * @property string|null $guest_grade
+ * @property string|null $guest_division
+ * @property string|null $guest_staff_id
+ * @property string|null $job_grade
+ * @property string|null $staff_id
+ * @property int|null $division_id
+ * @property int $category_id
+ * @property string $priority
+ * @property string $subject
+ * @property string $description
+ * @property string|null $damage_type
+ * @property bool $declaration_accepted
+ * @property string|null $source
+ * @property string|null $internal_notes
+ * @property string $status
+ * @property int|null $assigned_to_division
+ * @property string|null $assigned_to_agency
+ * @property int|null $assigned_to_user
+ * @property int|null $asset_id
+ * @property int|null $related_loan_application_id
+ * @property \Illuminate\Support\Carbon|null $sla_response_due_at
+ * @property \Illuminate\Support\Carbon|null $sla_resolution_due_at
+ * @property \Illuminate\Support\Carbon|null $responded_at
+ * @property \Illuminate\Support\Carbon|null $resolved_at
+ * @property \Illuminate\Support\Carbon|null $first_response_at
+ * @property int $escalation_level
+ * @property \Illuminate\Support\Carbon|null $escalation_notified_at
+ * @property \Illuminate\Support\Carbon|null $sla_breached_at
+ * @property string|null $sla_breach_type
+ * @property \Illuminate\Support\Carbon|null $sla_paused_at
+ * @property string|null $sla_pause_reason
+ * @property int $sla_total_paused_hours
+ * @property string|null $closure_reason
+ * @property \Illuminate\Support\Carbon|null $closed_at
+ * @property \Illuminate\Support\Carbon|null $assigned_at
+ * @property string|null $admin_notes
+ * @property string|null $resolution_notes
+ * @property string|null $anonymized_at
+ * @property string|null $claimed_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $sla_due_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PortalActivity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\Asset|null $asset
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanApplication> $assetLoanApplications
+ * @property-read int|null $asset_loan_applications_count
+ * @property-read \App\Models\Division|null $assignedDivision
+ * @property-read \App\Models\User|null $assignedUser
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskAttachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $auditTrail
+ * @property-read int|null $audit_trail_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\TicketCategory $category
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskComment> $comments
+ * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CrossModuleIntegration> $crossModuleIntegrations
+ * @property-read int|null $cross_module_integrations_count
+ * @property-read \App\Models\Division|null $division
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\InternalComment> $internalComments
+ * @property-read int|null $internal_comments_count
+ * @property-read \App\Models\HelpdeskComment|null $latestComment
+ * @property-read \App\Models\Asset|null $relatedAsset
+ * @property-read \App\Models\User|null $user
+ * @method static Builder<static>|HelpdeskTicket bySLA(string $slaStatus)
+ * @method static Builder<static>|HelpdeskTicket byStatusToken(string $tokenHash)
+ * @method static \Database\Factories\HelpdeskTicketFactory factory($count = null, $state = [])
+ * @method static Builder<static>|HelpdeskTicket forUser(\App\Models\User $user)
+ * @method static Builder<static>|HelpdeskTicket newModelQuery()
+ * @method static Builder<static>|HelpdeskTicket newQuery()
+ * @method static Builder<static>|HelpdeskTicket onlyTrashed()
+ * @method static Builder<static>|HelpdeskTicket optimizedCount()
+ * @method static Builder<static>|HelpdeskTicket optimizedPagination(int $perPage = 25)
+ * @method static Builder<static>|HelpdeskTicket query()
+ * @method static Builder<static>|HelpdeskTicket whereAdminNotes($value)
+ * @method static Builder<static>|HelpdeskTicket whereAnonymizedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereAssetId($value)
+ * @method static Builder<static>|HelpdeskTicket whereAssignedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereAssignedToAgency($value)
+ * @method static Builder<static>|HelpdeskTicket whereAssignedToDivision($value)
+ * @method static Builder<static>|HelpdeskTicket whereAssignedToUser($value)
+ * @method static Builder<static>|HelpdeskTicket whereCategoryId($value)
+ * @method static Builder<static>|HelpdeskTicket whereClaimedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereClosedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereClosureReason($value)
+ * @method static Builder<static>|HelpdeskTicket whereCreatedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereDamageType($value)
+ * @method static Builder<static>|HelpdeskTicket whereDeclarationAccepted($value)
+ * @method static Builder<static>|HelpdeskTicket whereDeletedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereDescription($value)
+ * @method static Builder<static>|HelpdeskTicket whereDivisionId($value)
+ * @method static Builder<static>|HelpdeskTicket whereEscalationLevel($value)
+ * @method static Builder<static>|HelpdeskTicket whereEscalationNotifiedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereFirstResponseAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereFormReferenceCode($value)
+ * @method static Builder<static>|HelpdeskTicket whereGuestDivision($value)
+ * @method static Builder<static>|HelpdeskTicket whereGuestEmail($value)
+ * @method static Builder<static>|HelpdeskTicket whereGuestGrade($value)
+ * @method static Builder<static>|HelpdeskTicket whereGuestName($value)
+ * @method static Builder<static>|HelpdeskTicket whereGuestPhone($value)
+ * @method static Builder<static>|HelpdeskTicket whereGuestStaffId($value)
+ * @method static Builder<static>|HelpdeskTicket whereId($value)
+ * @method static Builder<static>|HelpdeskTicket whereInternalNotes($value)
+ * @method static Builder<static>|HelpdeskTicket whereJobGrade($value)
+ * @method static Builder<static>|HelpdeskTicket wherePriority($value)
+ * @method static Builder<static>|HelpdeskTicket whereRelatedLoanApplicationId($value)
+ * @method static Builder<static>|HelpdeskTicket whereResolutionNotes($value)
+ * @method static Builder<static>|HelpdeskTicket whereResolvedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereRespondedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereSlaBreachType($value)
+ * @method static Builder<static>|HelpdeskTicket whereSlaBreachedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereSlaDueAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereSlaPauseReason($value)
+ * @method static Builder<static>|HelpdeskTicket whereSlaPausedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereSlaResolutionDueAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereSlaResponseDueAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereSlaTotalPausedHours($value)
+ * @method static Builder<static>|HelpdeskTicket whereSource($value)
+ * @method static Builder<static>|HelpdeskTicket whereStaffId($value)
+ * @method static Builder<static>|HelpdeskTicket whereStatus($value)
+ * @method static Builder<static>|HelpdeskTicket whereStatusTokenHash($value)
+ * @method static Builder<static>|HelpdeskTicket whereSubject($value)
+ * @method static Builder<static>|HelpdeskTicket whereTicketNumber($value)
+ * @method static Builder<static>|HelpdeskTicket whereUpdatedAt($value)
+ * @method static Builder<static>|HelpdeskTicket whereUserId($value)
+ * @method static Builder<static>|HelpdeskTicket withCommonRelations()
+ * @method static Builder<static>|HelpdeskTicket withTrashed(bool $withTrashed = true)
+ * @method static Builder<static>|HelpdeskTicket withoutTrashed()
+ * @mixin \Eloquent
  */
 #[ObservedBy([HelpdeskTicketObserver::class])]
 class HelpdeskTicket extends Model implements Auditable

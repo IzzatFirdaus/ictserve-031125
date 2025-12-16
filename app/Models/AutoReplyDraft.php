@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Model AutoReplyDraft untuk sistem AI Ollama
- *
+ * 
  * Per Requirements 3.1, 3.2, 3.3, 3.4: Auto-reply draft management dengan approval workflow
  * Selaras dengan D09 Database Documentation v3.6.0 (Dual Audit System)
  *
@@ -35,10 +37,48 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  * @property-read \App\Models\AutoReplyTemplate|null $template
  * @property-read \App\Models\User $generator
  * @property-read \App\Models\User|null $approver
+ * @property string|null $model_used
+ * @property numeric|null $generation_cost
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read string $preview
+ * @property-read string $status_color
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft approved()
+ * @method static \Database\Factories\AutoReplyDraftFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft pendingReview()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft rejected()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereApprovedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereApprovedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereDraftContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereGeneratedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereGenerationCost($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereModelUsed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereRejectionReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereReplyableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereReplyableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereTemplateId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft withStatus(string $status)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyDraft withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @mixin \Eloquent
  */
 class AutoReplyDraft extends Model implements AuditableContract
 {
-    use Auditable, HasFactory, SoftDeletes;
+    use Auditable;
+    use HasFactory;
+    use LogsActivity;
+    use SoftDeletes;
 
     /**
      * Draft statuses
@@ -83,6 +123,27 @@ class AutoReplyDraft extends Model implements AuditableContract
             'approved_at' => 'datetime',
             'generation_cost' => 'decimal:6',
         ];
+    }
+
+    /**
+     * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'replyable_type',
+                'replyable_id',
+                'status',
+                'generated_by',
+                'approved_by',
+                'approved_at',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('auto_reply_draft')
+            ->setDescriptionForEvent(fn (string $eventName) => "Auto reply draft {$eventName}");
     }
 
     /**

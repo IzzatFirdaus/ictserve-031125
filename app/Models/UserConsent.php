@@ -15,6 +15,40 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property string $consent_type
+ * @property string $consent_statement
+ * @property string $version
+ * @property bool $granted
+ * @property string $ip_address
+ * @property string|null $user_agent
+ * @property \Illuminate\Support\Carbon|null $consented_at
+ * @property \Illuminate\Support\Carbon|null $revoked_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $history_description
+ * @property-read \App\Models\User $user
+ * @method static Builder<static>|UserConsent active()
+ * @method static Builder<static>|UserConsent newModelQuery()
+ * @method static Builder<static>|UserConsent newQuery()
+ * @method static Builder<static>|UserConsent ofType(string $type)
+ * @method static Builder<static>|UserConsent query()
+ * @method static Builder<static>|UserConsent whereConsentStatement($value)
+ * @method static Builder<static>|UserConsent whereConsentType($value)
+ * @method static Builder<static>|UserConsent whereConsentedAt($value)
+ * @method static Builder<static>|UserConsent whereCreatedAt($value)
+ * @method static Builder<static>|UserConsent whereGranted($value)
+ * @method static Builder<static>|UserConsent whereId($value)
+ * @method static Builder<static>|UserConsent whereIpAddress($value)
+ * @method static Builder<static>|UserConsent whereRevokedAt($value)
+ * @method static Builder<static>|UserConsent whereUpdatedAt($value)
+ * @method static Builder<static>|UserConsent whereUserAgent($value)
+ * @method static Builder<static>|UserConsent whereUserId($value)
+ * @method static Builder<static>|UserConsent whereVersion($value)
+ * @mixin \Eloquent
+ */
 class UserConsent extends Model
 {
     /** @use HasFactory<\Database\Factories\UserConsentFactory> */

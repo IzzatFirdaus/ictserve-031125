@@ -24,6 +24,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \App\Models\User $user
+ * @property string $preference_key
+ * @property int $preference_value
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference wherePreferenceKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference wherePreferenceValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereUserId($value)
+ * @mixin \Eloquent
  */
 class UserNotificationPreference extends Model
 {
