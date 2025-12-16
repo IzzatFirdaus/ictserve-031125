@@ -25,7 +25,11 @@ class PulseServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Bind the ResolvesUsers contract to resolve the Pulse instantiation issue
+        $this->app->bind(
+            \Laravel\Pulse\Contracts\ResolvesUsers::class,
+            \Laravel\Pulse\Users::class
+        );
     }
 
     /**
