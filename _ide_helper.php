@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 12.40.2.
+ * Generated for Laravel 12.42.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1217,8 +1217,6 @@ namespace Illuminate\Support\Facades {
         /**
          * Define a contextual binding based on an attribute.
          *
-         * @param string $attribute
-         * @param \Closure $handler
          * @return void
          * @static
          */
@@ -1237,7 +1235,6 @@ namespace Illuminate\Support\Facades {
          * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
          * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
          *
-         * @return bool
          * @param string $id Identifier of the entry to look for.
          * @return bool
          * @static
@@ -1449,7 +1446,6 @@ namespace Illuminate\Support\Facades {
          * "Extend" an abstract type in the container.
          *
          * @param string $abstract
-         * @param \Closure $closure
          * @return void
          * @throws \InvalidArgumentException
          * @static
@@ -1526,7 +1522,6 @@ namespace Illuminate\Support\Facades {
          * Bind a new callback to an abstract's rebind event.
          *
          * @param string $abstract
-         * @param \Closure $callback
          * @return mixed
          * @static
          */
@@ -1556,8 +1551,6 @@ namespace Illuminate\Support\Facades {
         /**
          * Wrap the given closure such that its dependencies will be injected when executed.
          *
-         * @param \Closure $callback
-         * @param array $parameters
          * @return \Closure
          * @static
          */
@@ -1605,7 +1598,6 @@ namespace Illuminate\Support\Facades {
          *
          * @template TClass of object
          * @param string|class-string<TClass>|callable $abstract
-         * @param array $parameters
          * @return ($abstract is class-string<TClass> ? TClass : mixed)
          * @throws \Illuminate\Contracts\Container\BindingResolutionException
          * @static
@@ -1618,11 +1610,15 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * {@inheritdoc}
+         * Finds an entry of the container by its identifier and returns it.
          *
          * @template TClass of object
          * @param string|class-string<TClass> $id
          * @return ($id is class-string<TClass> ? TClass : mixed)
+         * @param string $id Identifier of the entry to look for.
+         * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
+         * @throws ContainerExceptionInterface Error while retrieving the entry.
+         * @return mixed Entry.
          * @static
          */
         public static function get($id)
@@ -1652,7 +1648,6 @@ namespace Illuminate\Support\Facades {
         /**
          * Resolve a dependency based on an attribute.
          *
-         * @param \ReflectionAttribute $attribute
          * @return mixed
          * @static
          */
@@ -1667,7 +1662,6 @@ namespace Illuminate\Support\Facades {
          * Register a new before resolving callback for all types.
          *
          * @param \Closure|string $abstract
-         * @param \Closure|null $callback
          * @return void
          * @static
          */
@@ -1682,7 +1676,6 @@ namespace Illuminate\Support\Facades {
          * Register a new resolving callback.
          *
          * @param \Closure|string $abstract
-         * @param \Closure|null $callback
          * @return void
          * @static
          */
@@ -1697,7 +1690,6 @@ namespace Illuminate\Support\Facades {
          * Register a new after resolving callback for all types.
          *
          * @param \Closure|string $abstract
-         * @param \Closure|null $callback
          * @return void
          * @static
          */
@@ -1711,8 +1703,6 @@ namespace Illuminate\Support\Facades {
         /**
          * Register a new after resolving attribute callback for all types.
          *
-         * @param string $attribute
-         * @param \Closure $callback
          * @return void
          * @static
          */
@@ -1875,7 +1865,6 @@ namespace Illuminate\Support\Facades {
         /**
          * Set the shared instance of the container.
          *
-         * @param \Illuminate\Contracts\Container\Container|null $container
          * @return \Illuminate\Contracts\Container\Container|static
          * @static
          */
@@ -1889,7 +1878,6 @@ namespace Illuminate\Support\Facades {
          * Determine if a given offset exists.
          *
          * @param string $key
-         * @return bool
          * @static
          */
         public static function offsetExists($key)
@@ -1903,7 +1891,6 @@ namespace Illuminate\Support\Facades {
          * Get the value at a given offset.
          *
          * @param string $key
-         * @return mixed
          * @static
          */
         public static function offsetGet($key)
@@ -1918,28 +1905,26 @@ namespace Illuminate\Support\Facades {
          *
          * @param string $key
          * @param mixed $value
-         * @return void
          * @static
          */
         public static function offsetSet($key, $value)
         {
             //Method inherited from \Illuminate\Container\Container 
             /** @var \Illuminate\Foundation\Application $instance */
-            $instance->offsetSet($key, $value);
+            return $instance->offsetSet($key, $value);
         }
 
         /**
          * Unset the value at a given offset.
          *
          * @param string $key
-         * @return void
          * @static
          */
         public static function offsetUnset($key)
         {
             //Method inherited from \Illuminate\Container\Container 
             /** @var \Illuminate\Foundation\Application $instance */
-            $instance->offsetUnset($key);
+            return $instance->offsetUnset($key);
         }
 
         /**
@@ -5189,7 +5174,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function lock($name, $seconds = 0, $owner = null)
         {
-            /** @var \Illuminate\Cache\RedisStore $instance */
+            /** @var \Illuminate\Cache\FileStore $instance */
             return $instance->lock($name, $seconds, $owner);
         }
 
@@ -5203,7 +5188,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function restoreLock($name, $owner)
         {
-            /** @var \Illuminate\Cache\RedisStore $instance */
+            /** @var \Illuminate\Cache\FileStore $instance */
             return $instance->restoreLock($name, $owner);
         }
 
@@ -5215,82 +5200,71 @@ namespace Illuminate\Support\Facades {
          */
         public static function flush()
         {
-            /** @var \Illuminate\Cache\RedisStore $instance */
+            /** @var \Illuminate\Cache\FileStore $instance */
             return $instance->flush();
         }
 
         /**
-         * Remove all expired tag set entries.
+         * Get the full path for the given cache key.
          *
-         * @return void
+         * @param string $key
+         * @return string
          * @static
          */
-        public static function flushStaleTags()
+        public static function path($key)
         {
-            /** @var \Illuminate\Cache\RedisStore $instance */
-            $instance->flushStaleTags();
+            /** @var \Illuminate\Cache\FileStore $instance */
+            return $instance->path($key);
         }
 
         /**
-         * Get the Redis connection instance.
+         * Get the Filesystem instance.
          *
-         * @return \Illuminate\Redis\Connections\Connection
+         * @return \Illuminate\Filesystem\Filesystem
          * @static
          */
-        public static function connection()
+        public static function getFilesystem()
         {
-            /** @var \Illuminate\Cache\RedisStore $instance */
-            return $instance->connection();
+            /** @var \Illuminate\Cache\FileStore $instance */
+            return $instance->getFilesystem();
         }
 
         /**
-         * Get the Redis connection instance that should be used to manage locks.
+         * Get the working directory of the cache.
          *
-         * @return \Illuminate\Redis\Connections\Connection
+         * @return string
          * @static
          */
-        public static function lockConnection()
+        public static function getDirectory()
         {
-            /** @var \Illuminate\Cache\RedisStore $instance */
-            return $instance->lockConnection();
+            /** @var \Illuminate\Cache\FileStore $instance */
+            return $instance->getDirectory();
         }
 
         /**
-         * Specify the name of the connection that should be used to store data.
+         * Set the working directory of the cache.
          *
-         * @param string $connection
-         * @return void
+         * @param string $directory
+         * @return \Illuminate\Cache\FileStore
          * @static
          */
-        public static function setConnection($connection)
+        public static function setDirectory($directory)
         {
-            /** @var \Illuminate\Cache\RedisStore $instance */
-            $instance->setConnection($connection);
+            /** @var \Illuminate\Cache\FileStore $instance */
+            return $instance->setDirectory($directory);
         }
 
         /**
-         * Specify the name of the connection that should be used to manage locks.
+         * Set the cache directory where locks should be stored.
          *
-         * @param string $connection
-         * @return \Illuminate\Cache\RedisStore
+         * @param string|null $lockDirectory
+         * @return \Illuminate\Cache\FileStore
          * @static
          */
-        public static function setLockConnection($connection)
+        public static function setLockDirectory($lockDirectory)
         {
-            /** @var \Illuminate\Cache\RedisStore $instance */
-            return $instance->setLockConnection($connection);
-        }
-
-        /**
-         * Get the Redis database instance.
-         *
-         * @return \Illuminate\Contracts\Redis\Factory
-         * @static
-         */
-        public static function getRedis()
-        {
-            /** @var \Illuminate\Cache\RedisStore $instance */
-            return $instance->getRedis();
+            /** @var \Illuminate\Cache\FileStore $instance */
+            return $instance->setLockDirectory($lockDirectory);
         }
 
         /**
@@ -5301,21 +5275,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function getPrefix()
         {
-            /** @var \Illuminate\Cache\RedisStore $instance */
+            /** @var \Illuminate\Cache\FileStore $instance */
             return $instance->getPrefix();
-        }
-
-        /**
-         * Set the cache key prefix.
-         *
-         * @param string $prefix
-         * @return void
-         * @static
-         */
-        public static function setPrefix($prefix)
-        {
-            /** @var \Illuminate\Cache\RedisStore $instance */
-            $instance->setPrefix($prefix);
         }
 
             }
@@ -6198,12 +6159,13 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * @template TReturn of mixed
+         * 
          * Run the callback function with the given context values and restore the original context state when complete.
-         *
-         * @param callable $callback
+         * @param (callable(): TReturn) $callback
          * @param array<string, mixed> $data
          * @param array<string, mixed> $hidden
-         * @return mixed
+         * @return TReturn
          * @throws \Throwable
          * @static
          */
@@ -6623,144 +6585,6 @@ namespace Illuminate\Support\Facades {
         public static function flushMacros()
         {
             \Illuminate\Cookie\CookieJar::flushMacros();
-        }
-
-            }
-    /**
-     * @see \Illuminate\Encryption\Encrypter
-     */
-    class Crypt {
-        /**
-         * Determine if the given key and cipher combination is valid.
-         *
-         * @param string $key
-         * @param string $cipher
-         * @return bool
-         * @static
-         */
-        public static function supported($key, $cipher)
-        {
-            return \Illuminate\Encryption\Encrypter::supported($key, $cipher);
-        }
-
-        /**
-         * Create a new encryption key for the given cipher.
-         *
-         * @param string $cipher
-         * @return string
-         * @static
-         */
-        public static function generateKey($cipher)
-        {
-            return \Illuminate\Encryption\Encrypter::generateKey($cipher);
-        }
-
-        /**
-         * Encrypt the given value.
-         *
-         * @param mixed $value
-         * @param bool $serialize
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static
-         */
-        public static function encrypt($value, $serialize = true)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->encrypt($value, $serialize);
-        }
-
-        /**
-         * Encrypt a string without serialization.
-         *
-         * @param string $value
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static
-         */
-        public static function encryptString($value)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->encryptString($value);
-        }
-
-        /**
-         * Decrypt the given value.
-         *
-         * @param string $payload
-         * @param bool $unserialize
-         * @return mixed
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static
-         */
-        public static function decrypt($payload, $unserialize = true)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->decrypt($payload, $unserialize);
-        }
-
-        /**
-         * Decrypt the given string without unserialization.
-         *
-         * @param string $payload
-         * @return string
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static
-         */
-        public static function decryptString($payload)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->decryptString($payload);
-        }
-
-        /**
-         * Get the encryption key that the encrypter is currently using.
-         *
-         * @return string
-         * @static
-         */
-        public static function getKey()
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->getKey();
-        }
-
-        /**
-         * Get the current encryption key and all previous encryption keys.
-         *
-         * @return array
-         * @static
-         */
-        public static function getAllKeys()
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->getAllKeys();
-        }
-
-        /**
-         * Get the previous encryption keys.
-         *
-         * @return array
-         * @static
-         */
-        public static function getPreviousKeys()
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->getPreviousKeys();
-        }
-
-        /**
-         * Set the previous / legacy encryption keys that should be utilized if decryption fails.
-         *
-         * @param array $keys
-         * @return \Illuminate\Encryption\Encrypter
-         * @throws \RuntimeException
-         * @static
-         */
-        public static function previousKeys($keys)
-        {
-            /** @var \Illuminate\Encryption\Encrypter $instance */
-            return $instance->previousKeys($keys);
         }
 
             }
@@ -8505,7 +8329,7 @@ namespace Illuminate\Support\Facades {
          *
          * @param string|object $event
          * @param mixed $payload
-         * @return mixed
+         * @return array|null
          * @static
          */
         public static function until($event, $payload = [])
@@ -8545,7 +8369,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Register an event listener with the dispatcher.
          *
-         * @param \Closure|string|array $listener
+         * @param \Closure|string|array{class-string, string} $listener
          * @param bool $wildcard
          * @return \Closure
          * @static
@@ -8598,7 +8422,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Set the queue resolver implementation.
          *
-         * @param callable $resolver
+         * @param callable():  \Illuminate\Contracts\Queue\Queue  $resolver
          * @return \Illuminate\Events\Dispatcher
          * @static
          */
@@ -8611,7 +8435,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Set the database transaction manager resolver implementation.
          *
-         * @param callable $resolver
+         * @param (callable(): \Illuminate\Database\DatabaseTransactionsManager|null) $resolver
          * @return \Illuminate\Events\Dispatcher
          * @static
          */
@@ -8624,9 +8448,10 @@ namespace Illuminate\Support\Facades {
         /**
          * Execute the given callback while deferring events, then dispatch all deferred events.
          *
-         * @param callable $callback
-         * @param array|null $events
-         * @return mixed
+         * @template TResult
+         * @param callable():  TResult  $callback
+         * @param string[]|null $events
+         * @return TResult
          * @static
          */
         public static function defer($callback, $events = null)
@@ -10196,21 +10021,22 @@ namespace Illuminate\Support\Facades {
      * @method static \Illuminate\Http\Client\PendingRequest withMiddleware(callable $middleware)
      * @method static \Illuminate\Http\Client\PendingRequest withRequestMiddleware(callable $middleware)
      * @method static \Illuminate\Http\Client\PendingRequest withResponseMiddleware(callable $middleware)
+     * @method static \Illuminate\Http\Client\PendingRequest withAttributes(array $attributes)
      * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
      * @method static \Illuminate\Http\Client\PendingRequest throw(callable|null $callback = null)
      * @method static \Illuminate\Http\Client\PendingRequest throwIf(callable|bool $condition)
      * @method static \Illuminate\Http\Client\PendingRequest throwUnless(callable|bool $condition)
      * @method static \Illuminate\Http\Client\PendingRequest dump()
      * @method static \Illuminate\Http\Client\PendingRequest dd()
-     * @method static \Illuminate\Http\Client\Response get(string $url, array|string|null $query = null)
-     * @method static \Illuminate\Http\Client\Response head(string $url, array|string|null $query = null)
-     * @method static \Illuminate\Http\Client\Response post(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
-     * @method static \Illuminate\Http\Client\Response patch(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
-     * @method static \Illuminate\Http\Client\Response put(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
-     * @method static \Illuminate\Http\Client\Response delete(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface get(string $url, array|string|null $query = null)
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface head(string $url, array|string|null $query = null)
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface post(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface patch(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface put(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface delete(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
      * @method static array pool(callable $callback, int|null $concurrency = null)
      * @method static \Illuminate\Http\Client\Batch batch(callable $callback)
-     * @method static \Illuminate\Http\Client\Response send(string $method, string $url, array $options = [])
+     * @method static \Illuminate\Http\Client\Response|\Illuminate\Http\Client\Promises\LazyPromise send(string $method, string $url, array $options = [])
      * @method static \GuzzleHttp\Client buildClient()
      * @method static \GuzzleHttp\Client createClient(\GuzzleHttp\HandlerStack $handlerStack)
      * @method static \GuzzleHttp\HandlerStack buildHandlerStack()
@@ -12810,6 +12636,20 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Indicate that queue workers should not poll for restart or pause signals.
+         * 
+         * This prevents the workers from hitting the application cache to determine if they need to pause or restart.
+         *
+         * @return void
+         * @static
+         */
+        public static function withoutInterruptionPolling()
+        {
+            /** @var \Illuminate\Queue\QueueManager $instance */
+            $instance->withoutInterruptionPolling();
+        }
+
+        /**
          * Add a queue connection resolver.
          *
          * @param string $driver
@@ -13336,99 +13176,6 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * Migrate the delayed jobs that are ready to the regular queue.
-         *
-         * @param string $from
-         * @param string $to
-         * @return array
-         * @static
-         */
-        public static function migrateExpiredJobs($from, $to)
-        {
-            /** @var \Illuminate\Queue\RedisQueue $instance */
-            return $instance->migrateExpiredJobs($from, $to);
-        }
-
-        /**
-         * Delete a reserved job from the queue.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\RedisJob $job
-         * @return void
-         * @static
-         */
-        public static function deleteReserved($queue, $job)
-        {
-            /** @var \Illuminate\Queue\RedisQueue $instance */
-            $instance->deleteReserved($queue, $job);
-        }
-
-        /**
-         * Delete a reserved job from the reserved queue and release it.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\RedisJob $job
-         * @param int $delay
-         * @return void
-         * @static
-         */
-        public static function deleteAndRelease($queue, $job, $delay)
-        {
-            /** @var \Illuminate\Queue\RedisQueue $instance */
-            $instance->deleteAndRelease($queue, $job, $delay);
-        }
-
-        /**
-         * Delete all of the jobs from the queue.
-         *
-         * @param string $queue
-         * @return int
-         * @static
-         */
-        public static function clear($queue)
-        {
-            /** @var \Illuminate\Queue\RedisQueue $instance */
-            return $instance->clear($queue);
-        }
-
-        /**
-         * Get the queue or return the default.
-         *
-         * @param string|null $queue
-         * @return string
-         * @static
-         */
-        public static function getQueue($queue)
-        {
-            /** @var \Illuminate\Queue\RedisQueue $instance */
-            return $instance->getQueue($queue);
-        }
-
-        /**
-         * Get the connection for the queue.
-         *
-         * @return \Illuminate\Redis\Connections\Connection
-         * @static
-         */
-        public static function getConnection()
-        {
-            /** @var \Illuminate\Queue\RedisQueue $instance */
-            return $instance->getConnection();
-        }
-
-        /**
-         * Get the underlying Redis instance.
-         *
-         * @return \Illuminate\Contracts\Redis\Factory
-         * @static
-         */
-        public static function getRedis()
-        {
-            /** @var \Illuminate\Queue\RedisQueue $instance */
-            return $instance->getRedis();
-        }
-
-        /**
          * Get the maximum number of attempts for an object-based queue handler.
          *
          * @param mixed $job
@@ -13438,7 +13185,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobTries($job)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\RedisQueue $instance */
+            /** @var \Illuminate\Queue\SyncQueue $instance */
             return $instance->getJobTries($job);
         }
 
@@ -13452,7 +13199,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobBackoff($job)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\RedisQueue $instance */
+            /** @var \Illuminate\Queue\SyncQueue $instance */
             return $instance->getJobBackoff($job);
         }
 
@@ -13466,7 +13213,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobExpiration($job)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\RedisQueue $instance */
+            /** @var \Illuminate\Queue\SyncQueue $instance */
             return $instance->getJobExpiration($job);
         }
 
@@ -13480,7 +13227,7 @@ namespace Illuminate\Support\Facades {
         public static function createPayloadUsing($callback)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            \Illuminate\Queue\RedisQueue::createPayloadUsing($callback);
+            \Illuminate\Queue\SyncQueue::createPayloadUsing($callback);
         }
 
         /**
@@ -13492,7 +13239,7 @@ namespace Illuminate\Support\Facades {
         public static function getConfig()
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\RedisQueue $instance */
+            /** @var \Illuminate\Queue\SyncQueue $instance */
             return $instance->getConfig();
         }
 
@@ -13500,13 +13247,13 @@ namespace Illuminate\Support\Facades {
          * Set the queue configuration array.
          *
          * @param array $config
-         * @return \Illuminate\Queue\RedisQueue
+         * @return \Illuminate\Queue\SyncQueue
          * @static
          */
         public static function setConfig($config)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\RedisQueue $instance */
+            /** @var \Illuminate\Queue\SyncQueue $instance */
             return $instance->setConfig($config);
         }
 
@@ -13519,7 +13266,7 @@ namespace Illuminate\Support\Facades {
         public static function getContainer()
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\RedisQueue $instance */
+            /** @var \Illuminate\Queue\SyncQueue $instance */
             return $instance->getContainer();
         }
 
@@ -13533,7 +13280,7 @@ namespace Illuminate\Support\Facades {
         public static function setContainer($container)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\RedisQueue $instance */
+            /** @var \Illuminate\Queue\SyncQueue $instance */
             $instance->setContainer($container);
         }
 
@@ -15028,7 +14775,7 @@ namespace Illuminate\Support\Facades {
          * 
          * Suppose this request is instantiated from /mysite on localhost:
          * 
-         *  * http://localhost/mysite              returns an empty string
+         *  * http://localhost/mysite              returns '/'
          *  * http://localhost/mysite/about        returns '/about'
          *  * http://localhost/mysite/enco%20ded   returns '/enco%20ded'
          *  * http://localhost/mysite/about?var=1  returns '/about'
@@ -18588,6 +18335,40 @@ namespace Illuminate\Support\Facades {
             //Method inherited from \Illuminate\Database\Schema\Builder 
             /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
             $instance->whenTableDoesntHaveColumn($table, $column, $callback);
+        }
+
+        /**
+         * Execute a table builder callback if the given table has a given index.
+         *
+         * @param string $table
+         * @param string|array $index
+         * @param \Closure $callback
+         * @param string|null $type
+         * @return void
+         * @static
+         */
+        public static function whenTableHasIndex($table, $index, $callback, $type = null)
+        {
+            //Method inherited from \Illuminate\Database\Schema\Builder 
+            /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+            $instance->whenTableHasIndex($table, $index, $callback, $type);
+        }
+
+        /**
+         * Execute a table builder callback if the given table doesn't have a given index.
+         *
+         * @param string $table
+         * @param string|array $index
+         * @param \Closure $callback
+         * @param string|null $type
+         * @return void
+         * @static
+         */
+        public static function whenTableDoesntHaveIndex($table, $index, $callback, $type = null)
+        {
+            //Method inherited from \Illuminate\Database\Schema\Builder 
+            /** @var \Illuminate\Database\Schema\MySqlBuilder $instance */
+            $instance->whenTableDoesntHaveIndex($table, $index, $callback, $type);
         }
 
         /**
@@ -23371,187 +23152,276 @@ namespace Barryvdh\DomPDF\Facade {
         }
 
             }
+    }
+
+namespace Cloudstudio\Ollama\Facades {
     /**
-     * @method static BasePDF setBaseHost(string $baseHost)
-     * @method static BasePDF setBasePath(string $basePath)
-     * @method static BasePDF setCanvas(\Dompdf\Canvas $canvas)
-     * @method static BasePDF setCallbacks(array<string, mixed> $callbacks)
-     * @method static BasePDF setCss(\Dompdf\Css\Stylesheet $css)
-     * @method static BasePDF setDefaultView(string $defaultView, array<string, mixed> $options)
-     * @method static BasePDF setDom(\DOMDocument $dom)
-     * @method static BasePDF setFontMetrics(\Dompdf\FontMetrics $fontMetrics)
-     * @method static BasePDF setHttpContext(resource|array<string, mixed> $httpContext)
-     * @method static BasePDF setPaper(string|float[] $paper, string $orientation = 'portrait')
-     * @method static BasePDF setProtocol(string $protocol)
-     * @method static BasePDF setTree(\Dompdf\Frame\FrameTree $tree)
+     * @see \Cloudstudio\Ollama\Ollama
      */
-    class Pdf {
+    class Ollama {
         /**
-         * Get the DomPDF instance
+         * Sets the agent for generation.
          *
+         * @param string $agent
+         * @return \Cloudstudio\Ollama\Ollama
          * @static
          */
-        public static function getDomPDF()
+        public static function agent($agent)
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->getDomPDF();
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->agent($agent);
         }
 
         /**
-         * Show or hide warnings
+         * Sets the prompt for generation.
          *
+         * @param string $prompt
+         * @return \Cloudstudio\Ollama\Ollama
          * @static
          */
-        public static function setWarnings($warnings)
+        public static function prompt($prompt)
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->setWarnings($warnings);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->prompt($prompt);
         }
 
         /**
-         * Load a HTML string
+         * Sets the model for subsequent operations.
          *
-         * @param string|null $encoding Not used yet
+         * @param string $model
+         * @return \Cloudstudio\Ollama\Ollama
          * @static
          */
-        public static function loadHTML($string, $encoding = null)
+        public static function model($model)
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->loadHTML($string, $encoding);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->model($model);
         }
 
         /**
-         * Load a HTML file
+         * Sets the format for generation.
          *
+         * @param string|array $format
+         * @return \Cloudstudio\Ollama\Ollama
          * @static
          */
-        public static function loadFile($file)
+        public static function format($format)
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->loadFile($file);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->format($format);
         }
 
         /**
-         * Add metadata info
+         * Sets additional options for generation.
          *
-         * @param array<string, string> $info
+         * @param array $options
+         * @return \Cloudstudio\Ollama\Ollama
          * @static
          */
-        public static function addInfo($info)
+        public static function options($options = [])
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->addInfo($info);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->options($options);
         }
 
         /**
-         * Load a View and convert to HTML
+         * Sets whether to use streaming in the response.
          *
-         * @param array<string, mixed> $data
-         * @param array<string, mixed> $mergeData
-         * @param string|null $encoding Not used yet
+         * @param bool $stream
+         * @return \Cloudstudio\Ollama\Ollama
          * @static
          */
-        public static function loadView($view, $data = [], $mergeData = [], $encoding = null)
+        public static function stream($stream = false)
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->loadView($view, $data, $mergeData, $encoding);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->stream($stream);
         }
 
         /**
-         * Set/Change an option (or array of options) in Dompdf
+         * Sets tools for generation if supported in chat.
          *
-         * @param array<string, mixed>|string $attribute
-         * @param null|mixed $value
+         * @param array $tools
+         * @return \Cloudstudio\Ollama\Ollama
          * @static
          */
-        public static function setOption($attribute, $value = null)
+        public static function tools($tools = [])
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->setOption($attribute, $value);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->tools($tools);
         }
 
         /**
-         * Replace all the Options from DomPDF
+         * Sets whether to return the response in raw format.
          *
-         * @param array<string, mixed> $options
+         * @param bool $raw
+         * @return \Cloudstudio\Ollama\Ollama
          * @static
          */
-        public static function setOptions($options, $mergeWithDefaults = false)
+        public static function raw($raw)
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->setOptions($options, $mergeWithDefaults);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->raw($raw);
         }
 
         /**
-         * Output the PDF as a string.
+         * Controls how long the model will stay loaded into memory following the request.
          * 
-         * The options parameter controls the output. Accepted options are:
-         * 
-         * 'compress' = > 1 or 0 - apply content stream compression, this is
-         *    on (1) by default
+         * Examples:
+         * - keepAlive('5m') - Keep model loaded for 5 minutes
+         * - keepAlive('1h') - Keep model loaded for 1 hour
+         * - keepAlive(null) - Use server default configuration (respects OLLAMA_KEEP_ALIVE env var)
          *
-         * @param array<string, int> $options
-         * @return string The rendered PDF as string
+         * @param string|null $keepAlive Duration string (e.g., "5m", "1h") or null to use server default
+         * @return \Cloudstudio\Ollama\Ollama
          * @static
          */
-        public static function output($options = [])
+        public static function keepAlive($keepAlive)
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->output($options);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->keepAlive($keepAlive);
         }
 
         /**
-         * Save the PDF to a file
+         * Lists available local models.
          *
+         * @return array
          * @static
          */
-        public static function save($filename, $disk = null)
+        public static function models()
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->save($filename, $disk);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->models();
         }
 
         /**
-         * Make the PDF downloadable by the user
+         * Shows information about the selected model.
          *
+         * @return array
          * @static
          */
-        public static function download($filename = 'document.pdf')
+        public static function show()
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->download($filename);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->show();
         }
 
         /**
-         * Return a response with the PDF to show in the browser
+         * Copies a model.
          *
+         * @param string $destination
+         * @return \Cloudstudio\Ollama\Ollama
+         * @throws \Exception
          * @static
          */
-        public static function stream($filename = 'document.pdf')
+        public static function copy($destination)
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->stream($filename);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->copy($destination);
         }
 
         /**
-         * Render the PDF
+         * Deletes a model.
          *
+         * @return \Cloudstudio\Ollama\Ollama
+         * @throws \Exception
          * @static
          */
-        public static function render()
+        public static function delete()
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->render();
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->delete();
         }
 
         /**
-         * @param array<string> $pc
+         * Pulls a model.
+         *
+         * @return \Cloudstudio\Ollama\Ollama
+         * @throws \Exception
          * @static
          */
-        public static function setEncryption($password, $ownerpassword = '', $pc = [])
+        public static function pull()
         {
-            /** @var \Barryvdh\DomPDF\PDF $instance */
-            return $instance->setEncryption($password, $ownerpassword, $pc);
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->pull();
+        }
+
+        /**
+         * Sets an image for generation.
+         *
+         * @param string $imagePath
+         * @return \Cloudstudio\Ollama\Ollama
+         * @throws \Exception
+         * @static
+         */
+        public static function image($imagePath)
+        {
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->image($imagePath);
+        }
+
+        /**
+         * Sets images for generation.
+         *
+         * @param array $imagePaths
+         * @return \Cloudstudio\Ollama\Ollama
+         * @throws \Exception
+         * @static
+         */
+        public static function images($imagePaths)
+        {
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->images($imagePaths);
+        }
+
+        /**
+         * Generates embeddings from the selected model.
+         *
+         * @param string $prompt
+         * @return array
+         * @throws \Exception
+         * @static
+         */
+        public static function embeddings($prompt)
+        {
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->embeddings($prompt);
+        }
+
+        /**
+         * Generates content using the specified model.
+         *
+         * @return array|\Response
+         * @static
+         */
+        public static function ask()
+        {
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->ask();
+        }
+
+        /**
+         * Generates a chat completion using the specified model and conversation.
+         *
+         * @param array $conversation
+         * @return array
+         * @static
+         */
+        public static function chat($conversation)
+        {
+            /** @var \Cloudstudio\Ollama\Ollama $instance */
+            return $instance->chat($conversation);
+        }
+
+        /**
+         * @param \Psr\Http\Message\StreamInterface $body
+         * @param \Closure $handleJsonObject
+         * @return array
+         * @throws \Exception
+         * @static
+         */
+        public static function processStream($body, $handleJsonObject)
+        {
+            return \Cloudstudio\Ollama\Ollama::processStream($body, $handleJsonObject);
         }
 
             }
@@ -25807,6 +25677,16 @@ namespace Illuminate\Routing {
         public static function permission($permissions = [])
         {
             return \Illuminate\Routing\Route::permission($permissions);
+        }
+
+        /**
+         * @see \Spatie\Permission\PermissionServiceProvider::registerMacroHelpers()
+         * @param mixed $rolesOrPermissions
+         * @static
+         */
+        public static function roleOrPermission($rolesOrPermissions = [])
+        {
+            return \Illuminate\Routing\Route::roleOrPermission($rolesOrPermissions);
         }
 
             }
@@ -28615,7 +28495,6 @@ namespace  {
     class Config extends \Illuminate\Support\Facades\Config {}
     class Context extends \Illuminate\Support\Facades\Context {}
     class Cookie extends \Illuminate\Support\Facades\Cookie {}
-    class Crypt extends \Illuminate\Support\Facades\Crypt {}
     class Date extends \Illuminate\Support\Facades\Date {}
     class DB extends \Illuminate\Support\Facades\DB {}
 
@@ -33948,8 +33827,8 @@ namespace  {
     class View extends \Illuminate\Support\Facades\View {}
     class Vite extends \Illuminate\Support\Facades\Vite {}
     class EloquentSerialize extends \AnourValar\EloquentSerialize\Facades\EloquentSerializeFacade {}
-    class PDF extends \Barryvdh\DomPDF\Facade\Pdf {}
     class Pdf extends \Barryvdh\DomPDF\Facade\Pdf {}
+    class Ollama extends \Cloudstudio\Ollama\Facades\Ollama {}
     class Pulse extends \Laravel\Pulse\Facades\Pulse {}
     class Socialite extends \Laravel\Socialite\Facades\Socialite {}
     class Livewire extends \Livewire\Livewire {}
