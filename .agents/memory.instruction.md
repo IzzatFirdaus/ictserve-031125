@@ -28,6 +28,7 @@ applyTo: '**'
 - Memory verification via read_graph and search_nodes tools
 - No external database dependencies for memory storage
 - `BilingualSupportService::getSupportedLocales()` returns an associative array keyed by locale code; Volt language switcher loops must destructure `code => meta` rather than treating entries as scalars to avoid htmlspecialchars array TypeErrors.
+- **FAQ Bot Greeting Detection (2025-12-16)**: RagService now detects greetings (hello, hi, salam, etc.) and returns friendly responses instead of fallback error message. Greeting patterns and responses configured in `config/ollama.php` under `rag.greeting_patterns` and `rag.greeting_responses`. Enabled by default with `rag.greeting_enabled`. Tests in `tests/Unit/Services/RagServiceTest.php` verify detection for Bahasa Melayu and English greetings.
 - When testing Google SSO, bind `SsoHealthCheckInterface` to a Mockery mock and stub `getServiceStatus()` per test to avoid network calls and cached statuses; avoid default stubs that mask per-test expectations.
 - PHPStan/Larastan at Level 9; phpstan.neon has comprehensive ignoreErrors for Laravel type covariance issues (View vs Contracts\View, User vs Authenticatable, etc.). Use phpstan-simple.neon for standalone analysis without vendor dependencies.
 - Larastan may not infer Spatie Permission methods (e.g., `hasRole`) on `Auth::user()`; fix by assigning to a typed `/** @var \App\Models\User|null $user */ $user = Auth::user();` before calling role/permission methods.

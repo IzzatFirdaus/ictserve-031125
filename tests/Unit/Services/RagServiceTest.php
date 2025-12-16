@@ -50,8 +50,7 @@ class RagServiceTest extends TestCase
     private function createRagService(
         OllamaClientContract&MockInterface $ollamaClientMock,
         EmbeddingService&MockInterface $embeddingServiceMock
-    ): RagService
-    {
+    ): RagService {
         config([
             'ollama.rag' => [
                 'similarity_threshold' => 0.3,
@@ -425,5 +424,94 @@ class RagServiceTest extends TestCase
         $result = $ragService->processQuery('Test query', 'guest-session-456', null, 'guest@motac.gov.my');
 
         $this->assertTrue($result['success']);
+    }
+
+    #[Test]
+    public function it_detects_greeting_in_bahasa_melayu(): void
+    {
+        [$ollamaClientMock, $embeddingServiceMock] = $this->createMocks();
+
+        config([
+            'ollama.rag.greeting_enabled' => true,
+            'ollama.rag.greeting_responses' => [
+                'Selamat datang ke FAQ Bot ICTServe!',
+            ],
+        ]);
+
+        $ragService = $this->createRagService($ollamaClientMock, $embeddingServiceMock);
+        $result = $ragService->processQuery('hai', 'test-session-123');
+
+        $this->assertTrue($result['success']);
+        $this->assertArrayHasKey('is_greeting', $result);
+        $this->assertTrue($result['is_greeting']);
+        $this->assertStringContainsString('FAQ Bot', $result['answer']);
+    }
+
+    #[Test]
+    public function it_detects_greeting_in_english(): void
+    {
+        [$ollamaClientMock, $embeddingServiceMock] = $this->createMocks();
+
+        config([
+            'ollama.rag.greeting_enabled' => true,
+        ]);
+
+        $ragService = $this->createRagService($ollamaClientMock, $embeddingServiceMock);
+        $result = $ragService->processQuery('hello', 'test-session-123');
+
+        $this->assertTrue($result['success']);
+        $this->assertArrayHasKey('is_greeting', $result);
+        $this->assertTrue($result['is_greeting']);
+    }
+
+    #[Test]
+    public function it_detects_multiple_greeting_patterns(): void
+    {
+        [$ollamaClientMock, $embeddingServiceMock] = $this->createMocks();
+
+        config([
+            'ollama.rag.greeting_enabled' => true,
+        ]);
+
+        $ragService = $this->createRagService($ollamaClientMock, $embeddingServiceMock);
+
+        $greetings = ['hi', 'hello', 'salam', 'assalamualaikum', 'selamat pagi', 'good morning'];
+
+        foreach ($greetings as $greeting) {
+            $result = $ragService->processQuery($greeting, 'test-session-'.md5($greeting));
+            $this->assertTrue($result['success'], "Failed for greeting: {$greeting}");
+            $this->assertTrue($result['is_greeting'] ?? false, "Not detected as greeting: {$greeting}");
+        }
+    }
+
+    #[Test]
+    public function it_does_not_detect_regular_query_as_greeting(): void
+    {
+        [$ollamaClientMock, $embeddingServiceMock] = $this->createMocks();
+
+        $embeddingServiceMock
+            ->shouldReceive('generateEmbedding')
+            ->andReturnUsing(static fn (): array => array_fill(0, 384, 0.1));
+
+        $ollamaClientMock
+            ->shouldReceive('generate')
+            ->andReturnUsing(static fn (): array => [
+                'response' => 'Jawapan soalan biasa',
+                'model' => 'llama3.1',
+                'done' => true,
+            ]);
+
+        Cache::shouldReceive('get')->andReturn(null);
+        Cache::shouldReceive('put')->andReturn(true);
+
+        config([
+            'ollama.rag.greeting_enabled' => true,
+        ]);
+
+        $ragService = $this->createRagService($ollamaClientMock, $embeddingServiceMock);
+        $result = $ragService->processQuery('Bagaimana cara membuat tiket helpdesk?', 'test-session-123');
+
+        $this->assertTrue($result['success']);
+        $this->assertFalse($result['is_greeting'] ?? false);
     }
 }
