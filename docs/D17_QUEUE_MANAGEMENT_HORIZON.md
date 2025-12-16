@@ -1,11 +1,11 @@
 # Panduan Pengurusan Baris Gilir (Queue Management Guide)
 
-**Sistem ICTServe**
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** Laravel Queue System, Redis, Supervisor Process Management
 
 ---
@@ -14,10 +14,12 @@
 
 | Atribut              | Nilai                                            |
 | -------------------- | ------------------------------------------------ |
-| **Versi**            | 3.5.0                                            |
-| **Tarikh Kemaskini** | 1 Disember 2025                                  |
+| **Versi**            | 3.6.1                                            |
+| **Tarikh Kemaskini** | 17 Disember 2025                                 |
 | **Status**           | Aktif                                            |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                       |
+| **Pematuhi**         | Laravel Queue System, Redis, Supervisor          |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                    |
 | **Pematuhi**         | Laravel Queue Architecture, Redis Best Practices |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal)        |
 

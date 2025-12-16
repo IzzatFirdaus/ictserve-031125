@@ -1,11 +1,11 @@
 # Dokumentasi Rangka Kerja Frontend UI/UX (Frontend Framework Documentation)
 
-**Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 1 Disember 2025
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0
 
 ---
@@ -14,10 +14,12 @@
 
 | Atribut              | Nilai                                                                       |
 | -------------------- | --------------------------------------------------------------------------- |
-| **Versi**            | 3.6.0                                                                       |
-| **Tarikh Kemaskini** | 8 Disember 2025                                                             |
+| **Versi**            | 3.6.1                                                                       |
+| **Tarikh Kemaskini** | 17 Disember 2025                                                            |
 | **Status**           | Aktif                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                                      |
+| **Pematuhi**         | ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, MyGOV v2.1.0        |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                                               |
 | **Pematuhi**         | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA, MyGOV Digital Standards |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                   |
 
