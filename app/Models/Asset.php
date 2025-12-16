@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Enhanced Asset Model with Cross-Module Integration
@@ -54,8 +56,30 @@ class Asset extends Model implements Auditable
     /** @use HasFactory<\Database\Factories\AssetFactory> */
     use HasFactory;
 
+    use LogsActivity;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
+
+    /**
+     * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'asset_tag',
+                'name',
+                'status',
+                'condition',
+                'location',
+                'current_value',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('asset')
+            ->setDescriptionForEvent(fn (string $eventName) => "Asset {$eventName}");
+    }
 
     protected $fillable = [
         'asset_tag',
