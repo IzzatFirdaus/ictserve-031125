@@ -6,6 +6,7 @@ namespace App\Filament\Pages;
 
 use App\Filament\Widgets\AssetUtilizationWidget;
 use App\Filament\Widgets\CriticalAlertsWidget;
+use App\Filament\Widgets\EnhancedRealTimeDashboardWidget;
 use App\Filament\Widgets\HelpdeskStatsOverview;
 use App\Filament\Widgets\LoanApprovalQueueWidget;
 use App\Filament\Widgets\QuickActionsWidget;
@@ -60,6 +61,9 @@ class AdminDashboard extends BaseDashboard
     protected function getHeaderWidgets(): array
     {
         return [
+            // Enhanced real-time dashboard with 60s polling and Laravel Pulse integration
+            EnhancedRealTimeDashboardWidget::class,
+
             // Unified overview with 300s polling - full width
             UnifiedDashboardOverview::class,
 
