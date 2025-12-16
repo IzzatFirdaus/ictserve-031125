@@ -1,440 +1,527 @@
 # ICTServe Quick Start Guide
 
-**Last Updated**: 2025-12-09  
-**Version**: 3.6.0
+**Version**: 3.6.0 | **Laravel**: 12.42.0 | **PHP**: 8.2.12+ | **Node.js**: 22.12+
+
+---
+
+## 🚀 Essential Commands (Start Here!)
+
+### First Time Setup
+
+```bash
+# 1. Install dependencies
+composer install && npm install
+
+# 2. Setup environment
+cp .env.example .env && php artisan key:generate
+
+# 3. Setup database
+php artisan migrate --seed
+
+# 4. Start development environment
+.\scripts\dev\start-dev.ps1
+```
+
+### Daily Development
+
+```bash
+# Start all services (recommended)
+.\scripts\dev\start-dev.ps1
+
+# Or use npm script
+npm run dev:win
+
+# Quick helpers
+.\scripts\dev\dev-helpers.ps1 test      # Run tests
+.\scripts\dev\dev-helpers.ps1 format    # Format code (PSR-12)
+.\scripts\dev\dev-helpers.ps1 status    # Check services
+```
+
+### Service Profiles
+
+```bash
+# Full development (default)
+.\scripts\dev\start-dev.ps1
+
+# Minimal (Laravel + Vite only)
+.\scripts\dev\start-dev.ps1 -Profile minimal
+
+# Backend development
+.\scripts\dev\start-dev.ps1 -Profile backend
+
+# AI development (includes MCP)
+.\scripts\dev\start-dev.ps1 -Profile ai
+```
+
+### Quick Access URLs
+
+- **Application**: <http://127.0.0.1:8000>
+- **Admin Panel**: <http://127.0.0.1:8000/admin>
+- **Helpdesk**: <http://127.0.0.1:8000/helpdesk/create>
+- **Asset Loan**: <http://127.0.0.1:8000/loan/create>
 
 ---
 
 ## Table of Contents
 
-1. [First Time Setup](#first-time-setup)
-2. [Development Environment Options](#development-environment-options)
-3. [Starting Development Services](#starting-development-services)
-4. [Common Commands](#common-commands)
+1. [Essential Commands](#-essential-commands-start-here)
+2. [Development Environment Setup](#development-environment-setup)
+3. [Service Management](#service-management)
+4. [Development Workflow](#development-workflow)
 5. [Troubleshooting](#troubleshooting)
-6. [Next Steps](#next-steps)
+6. [Advanced Configuration](#advanced-configuration)
 
 ---
 
-## First Time Setup
+## Development Environment Setup
 
-### 1. Install Dependencies
+### Prerequisites
+
+- **PHP**: 8.2.12+ with extensions (mbstring, xml, curl, zip, gd, mysql)
+- **Node.js**: 22.12+ (for Vite 7.0.7 compatibility)
+- **Composer**: Latest version
+- **MySQL**: 8.0+ or SQLite for development
+- **Redis**: Optional but recommended (WSL, Laragon, or Docker)
+
+### One-Command Setup
+
+```bash
+# Complete setup (first time only)
+.\scripts\dev\dev-helpers.ps1 setup
+```
+
+### Manual Setup Steps
+
+#### 1. Install Dependencies
 
 ```bash
 composer install
 npm install
 ```
 
-### 2. Configure Environment
+#### 2. Environment Configuration
 
 ```bash
-# Copy environment file
+# Copy and configure environment
 cp .env.example .env
-
-# Generate application key
 php artisan key:generate
+
+# Edit .env file with your database settings
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_DATABASE=ictserve
 ```
 
-### 3. Setup Database
+#### 3. Database Setup
 
 ```bash
+# Create database (if using MySQL)
+mysql -u root -p -e "CREATE DATABASE ictserve;"
+
 # Run migrations and seeders
 php artisan migrate --seed
 ```
 
-### 4. Setup Redis (Windows WSL)
+#### 4. Redis Setup (Optional but Recommended)
 
 ```bash
-# Start WSL
+# WSL Redis (recommended)
 wsl.exe
-
-# Install Redis
-sudo apt update
-sudo apt install redis-server
-
-# Enable and start Redis
-sudo systemctl enable redis-server
-sudo systemctl start redis-server
-
-# Test connection
+sudo apt update && sudo apt install redis-server
+sudo systemctl enable redis-server && sudo systemctl start redis-server
 redis-cli ping  # Should return PONG
+
+# Or use Laragon/XAMPP Redis
+# Or skip Redis (will use file-based cache/sessions)
 ```
 
 ---
 
-## Development Environment Options
+## Service Management
 
-Choose the setup that best fits your workflow:
+### Start Development Environment
 
-### Option 1: Automated Development Scripts (Recommended)
+#### Recommended: Enhanced Development Script
 
-**Best for:** Quick setup, all services running, hot reload
-
-**Start all services:**
-
-```powershell
-# PowerShell (Recommended)
+```bash
+# Start all services with health checks
 .\scripts\dev\start-dev.ps1
 
-# Command Prompt
-scripts\dev\start-dev.bat
+# Available profiles:
+.\scripts\dev\start-dev.ps1 -Profile minimal    # Laravel + Vite only
+.\scripts\dev\start-dev.ps1 -Profile backend    # Backend services only
+.\scripts\dev\start-dev.ps1 -Profile frontend   # Frontend development
+.\scripts\dev\start-dev.ps1 -Profile ai         # AI development with MCP
+.\scripts\dev\start-dev.ps1 -Profile testing    # Testing environment
 
-# Git Bash
-./scripts/dev/start-dev.sh
+# Options:
+.\scripts\dev\start-dev.ps1 -SkipChecks        # Skip environment checks
+.\scripts\dev\start-dev.ps1 -NoMCP             # Disable MCP server
+.\scripts\dev\start-dev.ps1 -NoBrowser         # Don't open browser
 ```
 
-This launches 5 terminal windows:
+**Services Started:**
 
-- ✅ Redis Server (WSL)
-- ✅ Laravel Server (<http://127.0.0.1:8000>)
-- ✅ Laravel Reverb (ws://127.0.0.1:6001)
-- ✅ Queue Worker
-- ✅ Vite Dev Server (HMR)
+- 🔴 Redis Server (Cache, Sessions, Queues)
+- 🔵 Laravel Server (<http://127.0.0.1:8000>)
+- 🟣 Laravel Reverb (WebSocket - ws://127.0.0.1:6001)
+- 🔷 Queue Worker (Background Jobs)
+- 🟢 Vite Dev Server (HMR - 127.0.0.1:5173)
+- 🤖 Laravel MCP Server (AI Integration)
+- 📊 Laravel Pulse (Performance Monitoring)
 
-**Stop all services:**
-
-```powershell
-.\scripts\dev\stop-dev.ps1
-```
-
-**Setup Time:** 2 minutes  
-**Configuration:** Zero  
-**Team Consistency:** High
-
----
-
-### Option 2: Laravel Artisan Server (Minimal)
-
-**Best for:** Quick testing, solo development, minimal services
+#### Alternative: Individual Services
 
 ```bash
-# Start Laravel server only
-php artisan serve
-```
-
-**Access:** <http://127.0.0.1:8000>
-
-**Additional services (optional):**
-
-```bash
-# WebSocket server (separate terminal)
-php artisan reverb:start
-
-# Queue worker (separate terminal)
-php artisan queue:work
-
-# Vite dev server (separate terminal)
-npm run dev
-```
-
-**Or use combined command:**
-
-```bash
-composer run dev
-```
-
-**Setup Time:** 1 minute  
-**Configuration:** Zero  
-**Production-like:** No
-
----
-
-### Option 3: Apache Virtual Host (Production-like)
-
-**Best for:** Team development, custom domain, production parity
-
-**Automated Setup:**
-
-```powershell
-# Run as Administrator
-.\setup-vhost.ps1
-```
-
-**Access:** <http://ictserve.test>
-
-**Manual Setup:**
-
-See `VHOST_SETUP_GUIDE.md` for step-by-step instructions.
-
-**Setup Time:** 5 minutes  
-**Configuration:** Medium  
-**Custom Domain:** Yes  
-**Requires Admin:** Yes
-
----
-
-### Option 4: Docker (Containerized)
-
-**Best for:** Consistent environments, CI/CD, production parity
-
-```bash
-# Copy Docker environment
-cp .env.docker .env
-
-# Start containers
-docker-compose up -d
-
-# Run migrations
-docker-compose exec app php artisan migrate --seed
-```
-
-**Access:** <http://localhost>
-
-**Setup Time:** 10 minutes  
-**Configuration:** High  
-**Team Consistency:** Highest
-
----
-
-## Starting Development Services
-
-### Quick Start (All Services)
-
-```powershell
-# PowerShell
-.\scripts\dev\start-dev.ps1
-```
-
-### Individual Services
-
-```bash
-# Laravel server
+# Laravel server only
 php artisan serve
 
-# WebSocket server (real-time features)
-php artisan reverb:start
+# All services with Composer
+composer run dev
 
-# Queue worker (background jobs)
-php artisan queue:work
-
-# Vite dev server (hot reload)
-npm run dev
-
-# Redis server (WSL)
-wsl.exe redis-server
+# Individual services (separate terminals)
+php artisan reverb:start     # WebSocket server
+php artisan queue:work       # Background jobs
+npm run dev                  # Vite dev server
 ```
 
-### Combined Command
+#### NPM Scripts (Package.json)
 
 ```bash
-# Start Laravel + Reverb + Queue + Vite
-composer run dev
+npm run dev:win              # Full development environment
+npm run dev:win:minimal      # Minimal profile
+npm run dev:win:backend      # Backend profile
+npm run dev:win:ai           # AI development profile
+npm run dev:helpers          # Development helper commands
+```
+
+### Service Status & Management
+
+```bash
+# Check service status
+.\scripts\dev\dev-helpers.ps1 status
+
+# View logs
+.\scripts\dev\dev-helpers.ps1 logs
+
+# Stop all services (press any key in main script window)
+# Or manually kill processes if needed
 ```
 
 ---
 
-## Common Commands
+## Development Workflow
 
-### Development
+### Daily Development Commands
+
+#### Development Helper Script (Recommended)
 
 ```bash
-composer run dev          # Start all services
-php artisan serve         # Laravel server only
-npm run dev              # Vite dev server only
-php artisan reverb:start # WebSocket server only
-php artisan queue:work   # Queue worker only
+# All-in-one development helper
+.\scripts\dev\dev-helpers.ps1 <command>
+
+# Available commands:
+.\scripts\dev\dev-helpers.ps1 test              # Run PHPUnit tests
+.\scripts\dev\dev-helpers.ps1 test -Coverage    # Run tests with coverage
+.\scripts\dev\dev-helpers.ps1 test -Filter HelpdeskTest  # Run specific tests
+.\scripts\dev\dev-helpers.ps1 format            # Format code (PSR-12)
+.\scripts\dev\dev-helpers.ps1 analyse           # Static analysis (PHPStan Level 9)
+.\scripts\dev\dev-helpers.ps1 build             # Build production assets
+.\scripts\dev\dev-helpers.ps1 clean             # Clear caches and cleanup
+.\scripts\dev\dev-helpers.ps1 setup             # Initial project setup
+.\scripts\dev\dev-helpers.ps1 status            # Check service status
+.\scripts\dev\dev-helpers.ps1 logs              # View application logs
+.\scripts\dev\dev-helpers.ps1 help              # Show all commands
 ```
 
-### Database
+#### Core Laravel Commands
 
 ```bash
+# Database
 php artisan migrate              # Run migrations
-php artisan migrate:fresh --seed # Reset database
+php artisan migrate:fresh --seed # Reset database with seeders
 php artisan db:seed              # Run seeders only
 php artisan migrate:rollback     # Rollback last migration
-```
 
-### Testing
-
-```bash
-php artisan test                           # Run all tests
-php artisan test --filter=HelpdeskTest    # Run specific test
+# Testing
+php artisan test                           # Run all PHPUnit tests
+php artisan test --filter=HelpdeskTest    # Run specific test class
+php artisan test --coverage               # Run with coverage report
 npx playwright test                        # E2E tests
-npm run test                               # Frontend tests
+npm run test:e2e:helpdesk                 # Test helpdesk module
+npm run test:accessibility                # WCAG 2.2 AA compliance tests
+
+# Code Quality (Mandatory before commits)
+vendor/bin/pint                    # Format PHP code (PSR-12)
+vendor/bin/phpstan analyse         # Static analysis (Level 9)
+npm run build                      # Build production assets
+
+# Cache Management
+php artisan optimize:clear         # Clear all caches
+php artisan config:cache          # Cache configuration
+php artisan route:cache           # Cache routes
+php artisan view:cache            # Cache views
+
+# Laravel Boost (MCP Integration)
+composer boost                    # Start MCP server
+php artisan boost:install         # Install Boost assets
+php artisan boost:update          # Update guidelines
 ```
 
-### Code Quality
+#### NPM Scripts
 
 ```bash
-vendor/bin/pint              # Format PHP code (PSR-12)
-vendor/bin/phpstan analyse   # Static analysis
-npm run lint                 # Lint frontend code
-npm run format               # Format frontend code
-npm run quality              # Run all quality checks
+# Development
+npm run dev                       # Vite dev server
+npm run build                     # Production build
+npm run check-node               # Verify Node.js version
+
+# Testing
+npm run test:e2e                 # All E2E tests
+npm run test:e2e:ui              # E2E tests with UI
+npm run test:e2e:helpdesk        # Helpdesk module tests
+npm run test:e2e:loan            # Asset loan module tests
+npm run test:accessibility       # Accessibility tests
+npm run playwright:install       # Install Playwright browsers
+
+# Development Environment
+npm run dev:win                  # Full development (Windows)
+npm run dev:win:minimal          # Minimal development
+npm run dev:win:backend          # Backend development
+npm run dev:win:ai               # AI development
+npm run dev:helpers              # Development helpers
 ```
 
-### Cache Management
+### Recommended Development Flow
 
 ```bash
-php artisan optimize:clear   # Clear all caches
-php artisan config:cache     # Cache configuration
-php artisan route:cache      # Cache routes
-php artisan view:cache       # Cache views
-```
+# 1. Start development environment
+.\scripts\dev\start-dev.ps1
 
-### Build
+# 2. Make code changes
 
-```bash
-npm run build                # Build production assets
-npm run build:analyze        # Build with bundle analysis
+# 3. Run tests frequently
+.\scripts\dev\dev-helpers.ps1 test
+
+# 4. Format code before commits
+.\scripts\dev\dev-helpers.ps1 format
+
+# 5. Check for issues
+.\scripts\dev\dev-helpers.ps1 analyse
+
+# 6. Build assets for production
+.\scripts\dev\dev-helpers.ps1 build
+
+# 7. Commit changes
+git add . && git commit -m "feat: your feature description"
 ```
 
 ---
 
-## Access Points
+### Quick Access & Testing
 
-### Key URLs
+#### Application URLs
 
-- **Homepage:** <http://127.0.0.1:8000/>
-- **Helpdesk Form:** <http://127.0.0.1:8000/helpdesk/create>
-- **Loan Application:** <http://127.0.0.1:8000/loan/create>
-- **Admin Panel:** <http://127.0.0.1:8000/admin>
-- **Dashboard:** <http://127.0.0.1:8000/dashboard> (requires login)
-- **Status Checker:** <http://127.0.0.1:8000/status>
+- **Homepage**: <http://127.0.0.1:8000>
+- **Helpdesk Form**: <http://127.0.0.1:8000/helpdesk/create>
+- **Asset Loan Form**: <http://127.0.0.1:8000/loan/create>
+- **Admin Panel**: <http://127.0.0.1:8000/admin>
+- **User Dashboard**: <http://127.0.0.1:8000/dashboard>
+- **Laravel Telescope**: <http://127.0.0.1:8000/telescope>
+- **Laravel Pulse**: <http://127.0.0.1:8000/pulse>
 
-### Default Credentials
+#### Default Test Credentials
 
-**Admin Account:**
+```
+Admin Account:
+Email: admin@motac.gov.my
+Password: password
 
-- Email: `admin@motac.gov.my`
-- Password: `password` (change in production)
+Staff Account:
+Email: staff@motac.gov.my
+Password: password
 
-**Test Staff Account:**
+Approver Account:
+Email: approver@motac.gov.my
+Password: password
+```
 
-- Email: `staff@motac.gov.my`
-- Password: `password`
+#### Service Endpoints
+
+- **Laravel Server**: <http://127.0.0.1:8000>
+- **Vite Dev Server**: <http://127.0.0.1:5173>
+- **WebSocket (Reverb)**: ws://127.0.0.1:6001
+- **Redis**: 127.0.0.1:6379
 
 ---
 
 ## Troubleshooting
 
-### Port Already in Use
+### Quick Fixes for Common Issues
 
-```powershell
-# Find process on port 8000
+#### Service Status Check
+
+```bash
+# Check all services at once
+.\scripts\dev\dev-helpers.ps1 status
+
+# Check individual ports
+netstat -ano | findstr :8000    # Laravel
+netstat -ano | findstr :5173    # Vite
+netstat -ano | findstr :6001    # Reverb
+netstat -ano | findstr :6379    # Redis
+```
+
+#### Port Already in Use
+
+```bash
+# Find and kill process on port 8000
 netstat -ano | findstr :8000
-
-# Kill process
 taskkill /PID <PID> /F
+
+# Or use development helper
+.\scripts\dev\dev-helpers.ps1 clean
 ```
 
-### Routes Return 404
+#### Laravel Issues
 
 ```bash
-php artisan route:clear
-php artisan config:clear
+# Clear all caches (most common fix)
 php artisan optimize:clear
+
+# Specific cache clearing
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan cache:clear
+
+# Regenerate autoload
+composer dump-autoload
 ```
 
-### Assets Not Loading
+#### Asset/Frontend Issues
 
 ```bash
-# Development
-npm run dev
+# Vite manifest error
+npm run build                    # Build assets first
+# OR
+npm run dev                      # Start dev server
 
-# Production
-npm run build
+# Node.js version issues
+npm run check-node               # Check Node version
+# Ensure Node.js 22.12+ is installed
+
+# Clear node_modules
+rm -rf node_modules package-lock.json
+npm install
 ```
 
-### Vite Manifest Error
+#### Database Issues
 
 ```bash
-# Build assets first
-npm run build
+# Connection failed
+# 1. Start MySQL in Laragon/XAMPP
+# 2. Verify .env settings:
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ictserve
+DB_USERNAME=root
+DB_PASSWORD=
 
-# OR start dev server
-npm run dev
+# 3. Create database if missing
+mysql -u root -p -e "CREATE DATABASE ictserve;"
+
+# Migration issues
+php artisan migrate:fresh --seed  # Reset database
+php artisan migrate:rollback      # Rollback if needed
 ```
 
-### Database Connection Failed
-
-1. Start MySQL in Laragon/XAMPP
-2. Verify credentials in `.env`:
-
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=ictserve
-   DB_USERNAME=root
-   DB_PASSWORD=
-   ```
-
-3. Check database exists: `ictserve`
-
-### Redis Connection Failed
+#### Redis Issues
 
 ```bash
 # Test Redis connection
-wsl.exe redis-cli ping  # Should return PONG
+wsl.exe redis-cli ping           # Should return PONG
 
-# Start Redis if not running
+# Start Redis (WSL)
 wsl.exe --user root systemctl start redis-server
 
 # Check Redis status
 wsl.exe --user root systemctl status redis-server
+
+# Alternative: Use file-based cache (edit .env)
+CACHE_STORE=file
+QUEUE_CONNECTION=database
+SESSION_DRIVER=file
 ```
 
-```text
-http://localhost/redis/phpRedisAdmin
-```
-
-### Permission Errors
+#### Permission Issues (Windows)
 
 ```bash
 # Create storage link
 php artisan storage:link
 
-# Fix permissions (Windows)
+# Fix directory permissions
 icacls storage /grant:r "$env:USERNAME:(OI)(CI)F" /T
 icacls bootstrap\cache /grant:r "$env:USERNAME:(OI)(CI)F" /T
+
+# Or use development helper
+.\scripts\dev\dev-helpers.ps1 clean
 ```
 
-### WebSocket Connection Failed
+#### WebSocket/Real-time Issues
 
-1. Ensure Reverb is running: `php artisan reverb:start`
-2. Check `.env` settings:
+```bash
+# 1. Ensure Reverb is running
+php artisan reverb:start
 
-   ```env
-   BROADCAST_CONNECTION=reverb
-   REVERB_APP_ID=your-app-id
-   REVERB_APP_KEY=your-app-key
-   REVERB_APP_SECRET=your-app-secret
-   ```
+# 2. Check .env settings
+BROADCAST_CONNECTION=reverb
+REVERB_APP_ID=your-app-id
+REVERB_APP_KEY=your-app-key
+REVERB_APP_SECRET=your-app-secret
+REVERB_HOST=127.0.0.1
+REVERB_PORT=6001
 
-3. Verify WebSocket URL: `ws://127.0.0.1:6001`
+# 3. Test WebSocket connection
+# Visit: http://127.0.0.1:8000 and check browser console
+```
+
+#### Environment Issues
+
+```bash
+# PHP version check (requires 8.2.12+)
+php --version
+
+# Node.js version check (requires 22.12+)
+node --version
+
+# Composer check
+composer --version
+
+# Laravel check
+php artisan --version
+
+# Complete environment check
+.\scripts\dev\start-dev.ps1 -SkipChecks  # Skip if issues
+```
 
 ---
 
-## Environment Comparison
+## Advanced Configuration
 
-| Feature | Automated Scripts | Artisan Serve | Virtual Host | Docker |
-|---------|------------------|---------------|--------------|--------|
-| Setup Time | 2 minutes | 1 minute | 5 minutes | 10 minutes |
-| Configuration | Zero | Zero | Medium | High |
-| All Services | Yes | No | Yes | Yes |
-| Custom Domain | No | No | Yes | Yes |
-| Hot Reload | Yes | Yes | Yes | Yes |
-| Team Consistency | High | Medium | High | Highest |
-| Production-like | Medium | No | Yes | Yes |
-| Requires Admin | No | No | Yes | No |
+### Environment Setup Options
 
----
+| Method | Setup Time | Configuration | All Services | Team Consistency | Best For |
+|--------|------------|---------------|--------------|------------------|----------|
+| **Enhanced Scripts** | 2 min | Zero | ✅ | High | **Recommended** |
+| Artisan Serve | 1 min | Zero | ❌ | Medium | Quick testing |
+| Virtual Host | 5 min | Medium | ✅ | High | Production-like |
+| Docker | 10 min | High | ✅ | Highest | CI/CD |
 
-## Next Steps
+### Service Configuration
 
-### 1. Read Documentation
-
-- **System Overview:** `docs/D00_SYSTEM_OVERVIEW.md`
-- **Development Plan:** `docs/D01_SYSTEM_DEVELOPMENT_PLAN.md`
-- **Requirements:** `docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md`
-- **Design:** `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md`
-- **Technology Stack:** `.kiro/steering/tech.md`
-- **Project Structure:** `.kiro/steering/structure.md`
-
-### 2. Configure Services
-
-**Email (SMTP):**
+#### Email (SMTP)
 
 ```env
 MAIL_MAILER=smtp
@@ -442,18 +529,21 @@ MAIL_HOST=smtp.mailtrap.io
 MAIL_PORT=2525
 MAIL_USERNAME=your-username
 MAIL_PASSWORD=your-password
+MAIL_ENCRYPTION=tls
 ```
 
-**Redis (Caching & Queues):**
+#### Redis (Caching & Queues)
 
 ```env
 CACHE_STORE=redis
 QUEUE_CONNECTION=redis
+SESSION_DRIVER=redis
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
+REDIS_PASSWORD=null
 ```
 
-**Reverb (WebSocket):**
+#### WebSocket (Reverb)
 
 ```env
 BROADCAST_CONNECTION=reverb
@@ -462,79 +552,161 @@ REVERB_APP_KEY=your-app-key
 REVERB_APP_SECRET=your-app-secret
 REVERB_HOST=127.0.0.1
 REVERB_PORT=6001
+REVERB_SCHEME=http
 ```
 
-### 3. Development Workflow
+#### AI Integration (MCP)
+
+```env
+# Laravel MCP Server
+MCP_ENABLED=true
+MCP_SERVER_PORT=3000
+
+# AI Chatbot (if using)
+OLLAMA_HOST=http://127.0.0.1:11434
+AWS_BEDROCK_REGION=us-east-1
+```
+
+### Development Profiles Explained
+
+#### Minimal Profile
 
 ```bash
-# 1. Start development services
-.\scripts\start-dev.ps1
-
-# 2. Make changes to code
-
-# 3. Run tests
-php artisan test
-
-# 4. Format code
-vendor/bin/pint
-
-# 5. Check for issues
-vendor/bin/phpstan analyse
-
-# 6. Commit changes
-git add .
-git commit -m "feat: your feature description"
+.\scripts\dev\start-dev.ps1 -Profile minimal
+# Services: Laravel + Vite only
+# Use for: Quick testing, minimal resource usage
 ```
 
-### 4. Learn the Stack
+#### Backend Profile
 
-- **Laravel 12:** <https://laravel.com/docs/12.x>
-- **Livewire 3:** <https://livewire.laravel.com/docs/3.x>
-- **Filament 4:** <https://filamentphp.com/docs/4.x>
-- **Tailwind CSS 4:** <https://tailwindcss.com/docs>
-- **Alpine.js 3:** <https://alpinejs.dev/start-here>
+```bash
+.\scripts\dev\start-dev.ps1 -Profile backend
+# Services: Redis + Laravel + Reverb + Queue
+# Use for: API development, backend testing
+```
 
----
+#### AI Profile
 
-## Additional Resources
+```bash
+.\scripts\dev\start-dev.ps1 -Profile ai
+# Services: Full + MCP + Ollama integration
+# Use for: AI chatbot development, MCP testing
+```
 
-### Documentation
+### Learning Resources
 
-- **Complete Startup Guide:** `scripts/DEV-STARTUP-GUIDE.md`
-- **Scripts Documentation:** `scripts/README.md`
-- **Virtual Host Setup:** `VHOST_SETUP_GUIDE.md`
-- **Laragon Setup:** `LARAGON_SETUP.md`
-- **Redis Setup:** `docs/redis/redis-setup.md`
-- **MCP Configuration:** `docs/mcp/MCP_CONFIGURATION.md`
+#### Core Technologies
 
-### Development Guidelines
+- **Laravel 12**: <https://laravel.com/docs/12.x>
+- **Livewire 3**: <https://livewire.laravel.com/docs/3.x>
+- **Filament 4**: <https://filamentphp.com/docs/4.x>
+- **Tailwind CSS 4**: <https://tailwindcss.com/docs>
+- **Alpine.js 3**: <https://alpinejs.dev/start-here>
 
-- **Behavior Guidelines:** `.kiro/steering/behavior.md`
-- **Laravel Boost:** `.kiro/steering/laravel-boost.md`
-- **Design System:** `.kiro/steering/design-system.md`
-- **Product Overview:** `.kiro/steering/product.md`
+#### ICTServe Documentation
 
-### Troubleshooting
-
-- **Apache Alias Test Results:** `APACHE_ALIAS_TEST_RESULTS.md`
-- **Migration Guide:** `docs/reference/MIGRATION_v3.6.0.md`
-- **Logs:** `storage/logs/laravel.log`
-- **Apache Logs:** `storage/logs/apache-error.log`
-
----
-
-## Support
-
-For issues or questions:
-
-1. **Check Documentation:** Start with relevant guide above
-2. **Run Diagnostics:** `php artisan about`
-3. **Check Logs:** `storage/logs/laravel.log`
-4. **Review Guidelines:** `.kiro/steering/behavior.md`
-5. **Contact Support:** <devops@motac.gov.my>
+- **System Overview**: `docs/D00_SYSTEM_OVERVIEW.md`
+- **Requirements**: `docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md`
+- **Design**: `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md`
+- **Technology Stack**: `.kiro/steering/tech.md`
+- **Project Structure**: `.kiro/steering/structure.md`
+- **Development Guidelines**: `.kiro/steering/behavior.md`
 
 ---
 
-**Status:** ✅ Production Ready  
-**Environment:** Local Development (XAMPP/Laragon)  
-**Last Verified:** 2025-12-09
+## Additional Resources & Support
+
+### Script Documentation
+
+- **Enhanced Development Scripts**: `scripts/dev/README.md`
+- **Development Helpers**: `scripts/dev/dev-helpers.ps1 help`
+- **Service Profiles**: See script documentation for detailed profiles
+
+### ICTServe Documentation
+
+- **Complete System Guide**: `docs/D00_SYSTEM_OVERVIEW.md`
+- **Development Guidelines**: `.kiro/steering/behavior.md`
+- **Laravel Boost Integration**: `.kiro/steering/laravel-boost.md`
+- **Technology Stack**: `.kiro/steering/tech.md`
+- **Project Structure**: `.kiro/steering/structure.md`
+
+### Compliance & Standards
+
+- **PDPA 2010**: Malaysian privacy law compliance
+- **WCAG 2.2 AA**: Accessibility standards (4.5:1 text, 3:1 UI contrast)
+- **PSR-12**: PHP coding standards (enforced via Laravel Pint)
+- **MyGOV Standards**: Malaysian government digital service requirements
+
+### Getting Help
+
+#### Self-Service Diagnostics
+
+```bash
+# System information
+php artisan about
+
+# Service status
+.\scripts\dev\dev-helpers.ps1 status
+
+# View logs
+.\scripts\dev\dev-helpers.ps1 logs
+
+# Environment check
+.\scripts\dev\start-dev.ps1 -SkipChecks
+```
+
+#### Common Log Locations
+
+- **Laravel Logs**: `storage/logs/laravel.log`
+- **Web Server Logs**: Check Laragon/XAMPP logs
+- **Browser Console**: F12 → Console tab
+- **Queue Logs**: Laravel Horizon or queue worker terminal
+
+#### Support Escalation
+
+1. **Documentation**: Check relevant guides above
+2. **Diagnostics**: Run `php artisan about` and `.\scripts\dev\dev-helpers.ps1 status`
+3. **Logs**: Check `storage/logs/laravel.log` for errors
+4. **Guidelines**: Review `.kiro/steering/behavior.md`
+5. **Contact**: Development team or system administrator
+
+---
+
+## Quick Reference Card
+
+### Essential Commands
+
+```bash
+# Setup (first time)
+composer install && npm install
+cp .env.example .env && php artisan key:generate
+php artisan migrate --seed
+
+# Daily development
+.\scripts\dev\start-dev.ps1                    # Start all services
+.\scripts\dev\dev-helpers.ps1 test             # Run tests
+.\scripts\dev\dev-helpers.ps1 format           # Format code
+.\scripts\dev\dev-helpers.ps1 status           # Check services
+
+# Quality checks (before commits)
+vendor/bin/pint                                # PSR-12 formatting
+vendor/bin/phpstan analyse                     # Static analysis
+npm run build                                  # Build assets
+```
+
+### Service URLs
+
+- **App**: <http://127.0.0.1:8000>
+- **Admin**: <http://127.0.0.1:8000/admin>
+- **Telescope**: <http://127.0.0.1:8000/telescope>
+- **Pulse**: <http://127.0.0.1:8000/pulse>
+
+### Default Credentials
+
+- **Admin**: <admin@motac.gov.my> / password
+- **Staff**: <staff@motac.gov.my> / password
+
+---
+
+**ICTServe v3.6.0** | **Laravel 12.42.0** | **Production Ready** ✅  
+**Last Updated**: December 16, 2025
