@@ -29,6 +29,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryObservation> $observations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryRelation> $relationsFrom
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryRelation> $relationsTo
+ * @property-read int|null $observations_count
+ * @property-read int|null $relations_from_count
+ * @property-read int|null $relations_to_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereConfidence($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereDiscoveredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereEntityType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereLabels($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereMetadata($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereSourceIdentifier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereSummary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MemoryEntity withoutTrashed()
+ * @mixin \Eloquent
  */
 class MemoryEntity extends Model
 {

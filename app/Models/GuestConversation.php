@@ -13,7 +13,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Model GuestConversation untuk sejarah perbualan tetamu
- *
+ * 
  * Menyokong Account Linking untuk True Hybrid Architecture
  * Mengintegrasikan Dual Audit System (owen-it + spatie)
  *
@@ -26,11 +26,39 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property \Carbon\Carbon $expires_at Masa tamat tempoh
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\User|null $claimedByUser
+ * @property-read bool $is_active
+ * @property-read bool $is_claimed
+ * @property-read int $message_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation byEmail(string $email)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation bySession(string $sessionId)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation claimed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation expired()
+ * @method static \Database\Factories\GuestConversationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation unclaimed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation whereClaimedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation whereClaimedByUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation whereConversationHistory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation whereSessionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GuestConversation whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class GuestConversation extends Model implements AuditableContract
 {
-    use HasFactory;
-    use Auditable; // owen-it untuk compliance audit
+    use Auditable;
+    use HasFactory; // owen-it untuk compliance audit
     use LogsActivity; // spatie untuk operational logging
 
     /**
@@ -143,7 +171,7 @@ class GuestConversation extends Model implements AuditableContract
      */
     public function getIsClaimedAttribute(): bool
     {
-        return !is_null($this->claimed_by_user_id);
+        return ! is_null($this->claimed_by_user_id);
     }
 
     /**
@@ -203,13 +231,21 @@ class GuestConversation extends Model implements AuditableContract
     }
 
     /**
-     * Konfigurasi activity log untuk spatie
+     * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
      */
     public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
     {
         return \Spatie\Activitylog\LogOptions::defaults()
-            ->logOnly(static::$logAttributes)
+            ->logOnly([
+                'session_id',
+                'email',
+                'claimed_by_user_id',
+                'claimed_at',
+            ])
             ->logOnlyDirty()
-            ->useLogName(static::$logName);
+            ->useLogName('guest_conversation')
+            ->setDescriptionForEvent(fn (string $eventName) => "Guest conversation {$eventName}");
     }
 }

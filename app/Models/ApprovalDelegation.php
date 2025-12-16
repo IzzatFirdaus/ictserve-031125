@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * ApprovalDelegation Model
- *
+ * 
  * Manages temporary delegation of approval authority from one approver to another.
  * Supports Grade 41+ approvers delegating their approval responsibilities during
  * leave periods or temporary unavailability.
@@ -26,6 +26,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $created_by
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Models\User $createdBy
+ * @property-read \App\Models\User $delegatedApprover
+ * @property-read \App\Models\User $originalApprover
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation expired()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation upcoming()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereDelegatedApproverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereOriginalApproverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalDelegation whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class ApprovalDelegation extends Model
 {

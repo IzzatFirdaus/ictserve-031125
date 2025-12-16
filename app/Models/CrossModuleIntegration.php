@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Cross Module Integration Model
@@ -22,11 +24,49 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  * @property array $integration_data
  * @property \Illuminate\Support\Carbon|null $processed_at
  * @property int|null $processed_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\LoanApplication|null $assetLoan
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\HelpdeskTicket|null $helpdeskTicket
+ * @property-read \App\Models\LoanApplication|null $loanApplication
+ * @property-read \App\Models\User|null $processedBy
+ * @method static \Database\Factories\CrossModuleIntegrationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration ofType(string $type)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration processed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration triggeredBy(string $event)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration unprocessed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereHelpdeskTicketId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereIntegrationData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereIntegrationType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereLoanApplicationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereProcessedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereProcessedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereTriggerEvent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CrossModuleIntegration withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @mixin \Eloquent
  */
 class CrossModuleIntegration extends Model implements AuditableContract
 {
     /** @use HasFactory<\Database\Factories\CrossModuleIntegrationFactory> */
-    use Auditable, HasFactory, SoftDeletes;
+    use Auditable;
+
+    use HasFactory;
+    use LogsActivity;
+    use SoftDeletes;
 
     // Integration type constants
     public const TYPE_ASSET_DAMAGE_REPORT = 'asset_damage_report';
@@ -66,6 +106,27 @@ class CrossModuleIntegration extends Model implements AuditableContract
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'helpdesk_ticket_id',
+                'loan_application_id',
+                'integration_type',
+                'trigger_event',
+                'processed_at',
+                'processed_by',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('cross_module_integration')
+            ->setDescriptionForEvent(fn (string $eventName) => "Cross module integration {$eventName}");
     }
 
     /**
