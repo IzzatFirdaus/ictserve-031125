@@ -310,6 +310,57 @@ return [
             'enabled' => env('PULSE_AI_METRICS_ENABLED', true),
             'sample_rate' => env('PULSE_AI_METRICS_SAMPLE_RATE', 1),
         ],
+
+        /*
+        |----------------------------------------------------------------------
+        | Ticket Processing Recorder (ICTServe v3.6.0)
+        |----------------------------------------------------------------------
+        |
+        | Per Requirements 16.4: Monitor helpdesk ticket operations including
+        | creation time, resolution time, SLA compliance, and status transitions.
+        | Selaras dengan D03-SRS-HELP-001 dan Requirements 4.1, 4.2, 14.1, 14.2.
+        |
+        | trace: D03-SRS-HELP-001, Requirements 16.4
+        |
+        */
+        \App\Pulse\Recorders\TicketProcessingRecorder::class => [
+            'enabled' => env('PULSE_TICKET_PROCESSING_ENABLED', true),
+            'sample_rate' => env('PULSE_TICKET_PROCESSING_SAMPLE_RATE', 1),
+        ],
+
+        /*
+        |----------------------------------------------------------------------
+        | Loan Approval Recorder (ICTServe v3.6.0)
+        |----------------------------------------------------------------------
+        |
+        | Per Requirements 16.4: Monitor asset loan approval workflows including
+        | application processing time, approval duration, and email vs portal rates.
+        | Selaras dengan D03-SRS-LOAN-001 dan Requirements 4.1, 4.2, 14.1, 14.2.
+        |
+        | trace: D03-SRS-LOAN-001, Requirements 16.4
+        |
+        */
+        \App\Pulse\Recorders\LoanApprovalRecorder::class => [
+            'enabled' => env('PULSE_LOAN_APPROVAL_ENABLED', true),
+            'sample_rate' => env('PULSE_LOAN_APPROVAL_SAMPLE_RATE', 1),
+        ],
+
+        /*
+        |----------------------------------------------------------------------
+        | Asset Availability Recorder (ICTServe v3.6.0)
+        |----------------------------------------------------------------------
+        |
+        | Per Requirements 16.4: Monitor asset availability operations including
+        | check latency, check-out/check-in times, and utilization rates.
+        | Selaras dengan D03-SRS-ASSET-001 dan Requirements 4.1, 4.2, 14.1, 14.2.
+        |
+        | trace: D03-SRS-ASSET-001, Requirements 16.4
+        |
+        */
+        \App\Pulse\Recorders\AssetAvailabilityRecorder::class => [
+            'enabled' => env('PULSE_ASSET_AVAILABILITY_ENABLED', true),
+            'sample_rate' => env('PULSE_ASSET_AVAILABILITY_SAMPLE_RATE', 1),
+        ],
     ],
 
     /*
