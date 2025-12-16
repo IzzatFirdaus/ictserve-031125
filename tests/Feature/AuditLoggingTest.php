@@ -5,23 +5,32 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\Audit;
+use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
 
 /**
  * Audit Logging System Tests
  *
- * Tests comprehensive audit logging with 7-year retention,
- * immutable storage, and search capabilities.
+ * Tests comprehensive dual audit logging system:
+ * - Owen-it/laravel-auditing: Field-level compliance tracking with old/new values
+ * - Spatie/laravel-activitylog: User activity operational logging
+ *
+ * Both systems maintain 7-year retention per PDPA/Arkib Negara requirements.
  *
  * @see D03-FR-010.2 Audit logging system
- * @see D09 Database Documentation - Audit requirements
+ * @see D09 Database Documentation - Dual Audit System (§4.6-4.7)
+ * @see Requirements 6.1, 6.2, 6.3 - Dual Audit System Validation
  */
 class AuditLoggingTest extends TestCase
 {
+    use RefreshDatabase;
     protected function setUp(): void
     {
         parent::setUp();
@@ -288,5 +297,203 @@ class AuditLoggingTest extends TestCase
 
         $oldAudits = Audit::dateRange($oldStartDate, $oldEndDate)->get();
         $this->assertEquals(0, $oldAudits->count());
+    }
+
+    // =========================================================================
+    // Dual Audit System Tests (v3.6.0)
+    // =========================================================================
+
+    /**
+     * Test that model changes are recorded in BOTH audit systems.
+     *
+     * @see Requirements 6.1, 6.2 - Dual Audit System
+     */
+    #[Test]
+    public function model_changes_are_recorded_in_both_audit_systems(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $ticket = HelpdeskTicket::factory()->create([
+            'subject' => 'Ujian Sistem Audit Dwi', // BM: Dual Audit System Test
+            'status' => 'open',
+        ]);
+
+        // Verify Owen-it audit record (compliance - field-level tracking)
+        $this->assertDatabaseHas('audits', [
+            'auditable_type' => HelpdeskTicket::class,
+            'auditable_id' => $ticket->id,
+            'event' => 'created',
+        ]);
+
+        // Verify Spatie activity log record (operational logging)
+        $this->assertDatabaseHas('activity_log', [
+            'subject_type' => HelpdeskTicket::class,
+            'subject_id' => $ticket->id,
+            'event' => 'created',
+            'log_name' => 'helpdesk',
+        ]);
+    }
+
+    /**
+     * Test that updates are tracked in both audit systems with old/new values.
+     *
+     * @see Requirements 6.1, 6.2 - Field-level tracking
+     */
+    #[Test]
+    public function updates_are_tracked_in_both_audit_systems(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $ticket = HelpdeskTicket::factory()->create([
+            'subject' => 'Ujian Asal', // BM: Original Test
+        ]);
+
+        // Update the ticket subject (a field that's definitely tracked)
+        $ticket->update(['subject' => 'Ujian Dikemaskini']); // BM: Updated Test
+
+        // Verify Owen-it audit tracks the update event
+        $owenItAudit = \OwenIt\Auditing\Models\Audit::where('auditable_type', HelpdeskTicket::class)
+            ->where('auditable_id', $ticket->id)
+            ->where('event', 'updated')
+            ->first();
+
+        $this->assertNotNull($owenItAudit, 'Owen-it audit record should exist for update');
+        // Verify that either old_values or new_values contains the subject change
+        $hasSubjectInOld = is_array($owenItAudit->old_values) && array_key_exists('subject', $owenItAudit->old_values);
+        $hasSubjectInNew = is_array($owenItAudit->new_values) && array_key_exists('subject', $owenItAudit->new_values);
+        $this->assertTrue(
+            $hasSubjectInOld || $hasSubjectInNew,
+            'Subject field change should be tracked in audit record'
+        );
+
+        // Verify Spatie activity log tracks the update
+        $spatieActivity = Activity::where('subject_type', HelpdeskTicket::class)
+            ->where('subject_id', $ticket->id)
+            ->where('event', 'updated')
+            ->first();
+
+        $this->assertNotNull($spatieActivity, 'Spatie activity log should exist for update');
+        $this->assertEquals($user->id, $spatieActivity->causer_id);
+    }
+
+    /**
+     * Test that both audit systems track the causer (user who performed action).
+     *
+     * @see Requirements 6.3 - Audit trail access
+     */
+    #[Test]
+    public function both_audit_systems_track_causer(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $this->actingAs($admin);
+
+        $loan = LoanApplication::factory()->create([
+            'purpose' => 'Ujian Penjejakan Pengguna', // BM: User Tracking Test
+        ]);
+
+        // Verify Owen-it tracks user
+        $owenItAudit = \OwenIt\Auditing\Models\Audit::where('auditable_type', LoanApplication::class)
+            ->where('auditable_id', $loan->id)
+            ->first();
+
+        $this->assertNotNull($owenItAudit);
+        $this->assertEquals($admin->id, $owenItAudit->user_id);
+
+        // Verify Spatie tracks causer
+        $spatieActivity = Activity::where('subject_type', LoanApplication::class)
+            ->where('subject_id', $loan->id)
+            ->first();
+
+        $this->assertNotNull($spatieActivity);
+        $this->assertEquals(User::class, $spatieActivity->causer_type);
+        $this->assertEquals($admin->id, $spatieActivity->causer_id);
+    }
+
+    /**
+     * Test that different log names are used for different modules.
+     *
+     * @see Requirements 6.2 - Categorized activity logs
+     */
+    #[Test]
+    #[DataProvider('moduleLogNameProvider')]
+    public function activity_log_uses_correct_log_names(string $modelClass, string $expectedLogName): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        if ($modelClass === HelpdeskTicket::class) {
+            $model = HelpdeskTicket::factory()->create();
+        } elseif ($modelClass === LoanApplication::class) {
+            $model = LoanApplication::factory()->create();
+        } else {
+            $this->fail("Unknown model class: {$modelClass}");
+        }
+
+        $activity = Activity::where('subject_type', $modelClass)
+            ->where('subject_id', $model->id)
+            ->first();
+
+        $this->assertNotNull($activity);
+        $this->assertEquals($expectedLogName, $activity->log_name);
+    }
+
+    /**
+     * Data provider for module log names.
+     *
+     * @return array<string, array{string, string}>
+     */
+    public static function moduleLogNameProvider(): array
+    {
+        return [
+            'helpdesk module uses helpdesk log' => [HelpdeskTicket::class, 'helpdesk'],
+            'loan module uses loan log' => [LoanApplication::class, 'loan'],
+        ];
+    }
+
+    /**
+     * Test that 7-year retention is configured for both audit systems.
+     *
+     * @see Requirements 6.3 - 7-year retention per PDPA/Arkib Negara
+     */
+    #[Test]
+    public function seven_year_retention_is_configured_for_both_systems(): void
+    {
+        // Owen-it retention configuration
+        $owenItRetention = config('audit.retention');
+        $this->assertTrue($owenItRetention['enabled'], 'Owen-it retention should be enabled');
+        $this->assertEquals(7, $owenItRetention['years'], 'Owen-it retention should be 7 years');
+
+        // Spatie retention configuration (2555 days = 7 years)
+        $spatieRetentionDays = config('activitylog.delete_records_older_than_days');
+        $this->assertEquals(2555, $spatieRetentionDays, 'Spatie retention should be 2555 days (7 years)');
+    }
+
+    /**
+     * Test that audit records include BM content when applicable.
+     *
+     * @see Requirements 3.1 - Bahasa Melayu UI
+     */
+    #[Test]
+    public function audit_records_preserve_bahasa_melayu_content(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $ticket = HelpdeskTicket::factory()->create([
+            'subject' => 'Masalah Pencetak Tidak Berfungsi', // BM: Printer Not Working Issue
+            'description' => 'Pencetak di tingkat 3 tidak dapat mencetak dokumen.', // BM: Printer on floor 3 cannot print documents
+        ]);
+
+        // Verify Owen-it audit preserves BM content
+        $owenItAudit = \OwenIt\Auditing\Models\Audit::where('auditable_type', HelpdeskTicket::class)
+            ->where('auditable_id', $ticket->id)
+            ->where('event', 'created')
+            ->first();
+
+        $this->assertNotNull($owenItAudit);
+        $this->assertStringContainsString('Masalah Pencetak', $owenItAudit->new_values['subject']);
+        $this->assertStringContainsString('tingkat 3', $owenItAudit->new_values['description']);
     }
 }
