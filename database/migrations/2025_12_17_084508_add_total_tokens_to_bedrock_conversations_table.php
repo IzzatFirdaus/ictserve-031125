@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,13 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bedrock_conversations', function (Blueprint $table) {
-            $table->foreignId('user_id')
-                ->nullable()
-                ->after('id')
-                ->constrained('users')
-                ->nullOnDelete();
-
-            $table->index('user_id');
+            $table->integer('total_tokens')->default(0)->after('model');
         });
     }
 
@@ -30,9 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('bedrock_conversations', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropIndex(['user_id']);
-            $table->dropColumn('user_id');
+            $table->dropColumn('total_tokens');
         });
     }
 };
