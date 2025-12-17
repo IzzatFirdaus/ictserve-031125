@@ -1,20 +1,21 @@
 # Implementation Plan
 
-## Phase 1: Foundation & Enhanced Infrastructure (v3.6.0)
+## Phase 1: Foundation & Enhanced Infrastructure (v3.6.1)
 
 - [x] 1. Enhanced Project Setup and Core Infrastructure
 
-  - Upgrade Laravel 12.40.1 project with enhanced dependencies (Livewire 3.7.0, Volt 1.10.1, Filament 4.1.10, Tailwind CSS 4.1.17, Vite 7.0.7)
+  - Upgrade Laravel 12.42.0 project with enhanced dependencies (Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10, Tailwind CSS 4.1.17, Vite 7.0.7)
   - Configure enhanced database connections (MySQL 8.0+ primary, Redis 7.0+ cache/sessions/queues)
   - Set up enhanced Vite build configuration with Gzip/Brotli compression, code splitting, Terser minification
   - Configure environment files for development, staging, and production with enhanced security settings
   - Set up TailwindCSS v4.1.17 with Bahasa Melayu exclusive interface and comprehensive content paths for purging
-  - Install and configure Laravel Pulse v1.3.0 for performance monitoring
-  - Install and configure Laravel Telescope v5.x for system debugging (superuser only)
-  - Install and configure Laravel Sanctum v4.0 for API authentication
-  - Install and configure Laravel Socialite v5.x for Google Workspace SSO
-  - Install and configure Laravel Reverb v1.6.2 and Laravel Echo v2.2.6 for real-time communication
-  - _Requirements: 1.1, 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2, 6.1, 6.2_
+  - Install and configure Laravel Pulse v1.4.6 for performance monitoring
+  - Install and configure Laravel Telescope v5.16.0 for system debugging (superuser only)
+  - Install and configure Laravel Sanctum v4.2.1 for API authentication
+  - Install and configure Laravel Socialite v5.24.0 for Google Workspace SSO
+  - Install and configure Laravel Reverb v1.6.3 and Laravel Echo v2.2.6 for real-time communication
+  - Install and configure Laravel MCP v0.3.4 for AI assistant integrations
+  - _Requirements: 1.1, 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2, 6.1, 6.2, 19.1_
 
 - [x] 2. Enhanced Database Schema and Dual Audit System
 
@@ -436,27 +437,141 @@
 
 ---
 
+## Phase 8: Cloud Hybrid AI Integration (v3.6.1)
+
+- [x] 12. Cloud Hybrid AI Chatbot Implementation
+
+  - [x] 12.1 Set up Ollama local LLM infrastructure
+  - Install and configure Ollama server (localhost:11434)
+  - Configure llama3.1 model for FAQ responses
+  - Set up nomic-embed-text model for vector embeddings
+  - Create OllamaClient service with health checks
+  - _Requirements: 19.1, 19.2, 19.5_
+
+  - [x] 12.2 Implement AWS Bedrock integration
+  - Configure AWS Bedrock Runtime client (us-east-1)
+  - Set up Claude model access (Opus 4.5, Sonnet 4.5, Haiku 4.5)
+  - Configure Nova and Titan model access
+  - Create BedrockClient service with model routing
+  - Implement inference profile configuration for on-demand throughput
+  - _Requirements: 19.1, 19.4_
+
+  - [x] 12.3 Build smart model routing system
+  - Create ModelRouter service for query analysis
+  - Implement FAQ keyword detection for Ollama routing
+  - Implement complex reasoning detection for Bedrock routing
+  - Create hybrid response aggregation for combined queries
+  - _Requirements: 19.2, 19.4_
+
+  - [x] 12.4 Implement RAG service for FAQ
+  - Create RagService with vector embeddings
+  - Implement semantic search for FAQ knowledge base
+  - Configure context retrieval with relevance scoring
+  - Set up FAQ management in Filament admin
+  - _Requirements: 19.2, 19.3_
+
+  - [x] 12.5 Build AI chatbot Livewire components
+  - Create BedrockChat Livewire component
+  - Implement conversation history management
+  - Add model selection UI (Opus/Sonnet/Haiku)
+  - Implement internet search toggle (DuckDuckGo)
+  - Create FAQ suggestions with context awareness
+  - _Requirements: 19.3, 19.6, 19.7, 19.8_
+
+  - [x] 12.6 Implement conversation management
+  - Create BedrockConversation model with save/load/delete
+  - Implement long-term memory for authenticated users
+  - Add conversation export functionality
+  - _Requirements: 19.6_
+
+  - [x] 12.7 Implement data residency compliance
+  - Create PIIDetectionService for automatic PII detection
+  - Implement data classification for local vs cloud routing
+  - Configure PDPA 2010 compliance rules
+  - Add audit logging for AI interactions
+  - _Requirements: 19.5_
+
+- [x] 13. AI Auto-Reply and Document Analysis
+
+  - [x] 13.1 Implement auto-reply generation
+  - Create AutoReplyGenerationJob for background processing
+  - Implement AI-powered response drafts for tickets
+  - Build admin approval workflow for auto-replies
+  - Add learning from historical resolutions
+  - _Requirements: 20.1_
+
+  - [x] 13.2 Build document analysis service
+  - Create DocumentService for PDF/DOCX/image analysis
+  - Implement semantic search with vector embeddings
+  - Add automated categorization with confidence scoring
+  - Integrate PII detection for document processing
+  - _Requirements: 20.2, 20.3_
+
+  - [x] 13.3 Implement MCP Server integration
+  - Configure Laravel MCP v0.3.4 for AI assistants
+  - Create 3 tools for Amazon Q and Kiro IDE integration
+  - Set up standardized AI tool access interface
+  - _Requirements: 20.4_
+
+  - [x] 13.4 Build AI management interfaces
+  - Create AI Dashboard widget in Filament
+  - Implement model configuration interface
+  - Add FAQ management with bulk operations
+  - Create conversation analytics dashboard
+  - Implement health monitoring for Ollama and Bedrock
+  - _Requirements: 20.5_
+
+- [x] 14. Asset Management Lifecycle Enhancement
+
+  - [x] 14.1 Implement preventive maintenance scheduling
+  - Create maintenance schedule configuration (monthly/quarterly/annually)
+  - Implement automated reminder notifications
+  - Build maintenance history tracking
+  - _Requirements: 21.1_
+
+  - [x] 14.2 Build corrective maintenance tracking
+  - Create troubleshooting log functionality
+  - Implement parts tracking and repair history
+  - Link maintenance tickets to asset records
+  - _Requirements: 21.2_
+
+  - [x] 14.3 Implement asset transfer workflows
+  - Create transfer order documentation
+  - Implement approval workflow with signatures
+  - Add handover certificate generation
+  - Track custodian assignments
+  - _Requirements: 21.3, 21.4_
+
+  - [x] 14.4 Build asset utilization analytics
+  - Create predictive maintenance insights
+  - Implement replacement planning recommendations
+  - Add utilization reporting dashboard
+  - _Requirements: 21.5_
+
+---
+
 ## Implementation Complete Summary
 
-**ICTServe v3.6.0 - All Phases Complete** ✅
+**ICTServe v3.6.1 - All Phases Complete** ✅
 
 | Phase | Status | Key Deliverables |
 |-------|--------|------------------|
-| Phase 1: Foundation | ✅ Complete | Laravel 12.40.1, Dual Audit System, Self-Registration |
+| Phase 1: Foundation | ✅ Complete | Laravel 12.42.0, Dual Audit System, Self-Registration |
 | Phase 2: Core Modules | ✅ Complete | Helpdesk Ticketing, Asset Loan Management |
 | Phase 3: Integration | ✅ Complete | Cross-Module Services, Unified Analytics |
 | Phase 4: Frontend | ✅ Complete | WCAG 2.2 AA, Bahasa Melayu Exclusive |
-| Phase 5: Monitoring | ✅ Complete | Laravel Pulse, Telescope, Reverb |
-| Phase 6: Testing | ✅ Complete | 252 test files, PHPUnit 12 with PHP 8 attributes |
-| Phase 7: Documentation | ✅ Complete | D00-D17 updated, API documentation |
+| Phase 5: Monitoring | ✅ Complete | Laravel Pulse 1.4.6, Telescope 5.16.0, Reverb 1.6.3 |
+| Phase 6: Testing | ✅ Complete | 252+ test files, PHPUnit 11.5.46 with PHP 8 attributes |
+| Phase 7: Documentation | ✅ Complete | D00-D18 updated, API documentation |
+| Phase 8: Cloud Hybrid AI | ✅ Complete | Ollama + AWS Bedrock, Model Routing, FAQ Bot |
 | Final Checkpoint | ✅ Complete | System validated, production-ready |
 
 **Test Coverage Summary**:
 
-- Unit Tests: SecurityComplianceServiceTest (16), PerformanceAlertServiceTest (11)
-- Integration Tests: DualAuditSystemIntegrationTest (10), NotificationWorkflowIntegrationTest (12), CrossModuleIntegrationTest (12)
-- Feature Tests: Comprehensive coverage for Helpdesk, Asset Loan, Auth, Filament
-- Total Test Files: 252
+- Unit Tests: SecurityComplianceServiceTest (16), PerformanceAlertServiceTest (11), AIServiceTests (new)
+- Integration Tests: DualAuditSystemIntegrationTest (10), NotificationWorkflowIntegrationTest (12), CrossModuleIntegrationTest (12), AIIntegrationTest (new)
+- Feature Tests: Comprehensive coverage for Helpdesk, Asset Loan, Auth, Filament, AI Chatbot
+- Total Test Files: 260+
 
 **Key Services Implemented**:
 
@@ -465,10 +580,28 @@
 - `CrossModuleIntegrationService` - Helpdesk-Asset Loan integration
 - `UnifiedAnalyticsService` - Dashboard metrics and reporting
 - `AutomatedReportService` - Scheduled report generation
+- `OllamaClient` - Local LLM integration for FAQ (D18)
+- `BedrockClient` - AWS Bedrock Claude model integration (D18)
+- `RagService` - RAG-based FAQ retrieval (D18)
+- `ModelRouter` - Smart AI model selection (D18)
+- `PIIDetectionService` - PDPA 2010 compliance for AI (D18)
+- `DocumentService` - AI-powered document analysis (D18)
 
 **Compliance Verified**:
 
 - WCAG 2.2 AA accessibility
-- PDPA 2010 data protection
+- PDPA 2010 data protection (including AI data residency)
 - PSR-12 code standards
 - MyGOV Digital Service Standards v2.1.0
+- OWASP ASVS L2 security standards
+
+**Technology Stack v3.6.1**:
+
+- Laravel 12.42.0, PHP 8.2.12
+- Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10
+- Laravel Pulse 1.4.6, Telescope 5.16.0
+- Laravel Reverb 1.6.3, Echo 2.2.6
+- Laravel Sanctum 4.2.1, Socialite 5.24.0
+- Laravel MCP 0.3.4 (AI assistant integration)
+- PHPUnit 11.5.46, Larastan 3.8.1, Pint 1.26.0
+- Ollama (local LLM), AWS Bedrock (Claude 4.5 models)
