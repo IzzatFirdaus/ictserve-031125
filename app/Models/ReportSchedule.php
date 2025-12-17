@@ -8,6 +8,47 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string|null $description
+ * @property string $module
+ * @property string $frequency
+ * @property \Illuminate\Support\Carbon $schedule_time
+ * @property int|null $schedule_day_of_week
+ * @property int|null $schedule_day_of_month
+ * @property array<array-key, mixed> $recipients
+ * @property array<array-key, mixed>|null $filters
+ * @property string $format
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $last_run_at
+ * @property \Illuminate\Support\Carbon|null $next_run_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $frequency_description
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule due()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereFilters($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereFrequency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereLastRunAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereModule($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereNextRunAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereRecipients($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereScheduleDayOfMonth($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereScheduleDayOfWeek($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereScheduleTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportSchedule whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class ReportSchedule extends Model
 {
     /** @use HasFactory<\Database\Factories\ReportScheduleFactory> */
@@ -100,6 +141,9 @@ class ReportSchedule extends Model
 
     /**
      * Scope for active schedules
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<ReportSchedule>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<ReportSchedule>
      */
     public function scopeActive($query)
     {
@@ -108,6 +152,9 @@ class ReportSchedule extends Model
 
     /**
      * Scope for due schedules
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<ReportSchedule>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<ReportSchedule>
      */
     public function scopeDue($query)
     {

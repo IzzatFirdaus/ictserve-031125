@@ -15,6 +15,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property string $activity_type
+ * @property string|null $subject_type
+ * @property int|null $subject_id
+ * @property array<array-key, mixed>|null $metadata
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property-read string $color_class
+ * @property-read string $formatted_description
+ * @property-read string $icon
+ * @property-read \Illuminate\Database\Eloquent\Model|null $subject
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity forUser(int $userId)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity ofType(string $type)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereActivityType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereMetadata($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereSubjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereSubjectType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PortalActivity whereUserId($value)
+ * @mixin \Eloquent
+ */
 class PortalActivity extends Model
 {
     /** @use HasFactory<\Database\Factories\PortalActivityFactory> */

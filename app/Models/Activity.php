@@ -12,13 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * Activity Model for Spatie Activity Log
- *
+ * 
  * Represents user activity logs for operational dashboards and reports.
  * Part of the Dual Audit System complementing owen-it/laravel-auditing.
  *
  * @see D09 §4.7 Activity logging requirements
  * @see Requirements 19.2, 19.4
- *
  * @property int $id
  * @property string|null $log_name
  * @property string $description
@@ -33,6 +32,30 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon|null $updated_at
  * @property-read Model|null $subject
  * @property-read Model|null $causer
+ * @property-read string $causer_name
+ * @property-read string $subject_name
+ * @property-read \Illuminate\Database\Eloquent\Model|null $user
+ * @method static Builder<static>|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static Builder<static>|Activity dateRange(\Illuminate\Support\Carbon $startDate, \Illuminate\Support\Carbon $endDate)
+ * @method static Builder<static>|Activity forEvent(string $event)
+ * @method static Builder<static>|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static Builder<static>|Activity inLog(string ...$logNames)
+ * @method static Builder<static>|Activity newModelQuery()
+ * @method static Builder<static>|Activity newQuery()
+ * @method static Builder<static>|Activity query()
+ * @method static Builder<static>|Activity whereBatchUuid($value)
+ * @method static Builder<static>|Activity whereCauserId($value)
+ * @method static Builder<static>|Activity whereCauserType($value)
+ * @method static Builder<static>|Activity whereCreatedAt($value)
+ * @method static Builder<static>|Activity whereDescription($value)
+ * @method static Builder<static>|Activity whereEvent($value)
+ * @method static Builder<static>|Activity whereId($value)
+ * @method static Builder<static>|Activity whereLogName($value)
+ * @method static Builder<static>|Activity whereProperties($value)
+ * @method static Builder<static>|Activity whereSubjectId($value)
+ * @method static Builder<static>|Activity whereSubjectType($value)
+ * @method static Builder<static>|Activity whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Activity extends Model
 {

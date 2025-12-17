@@ -17,12 +17,14 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 use function random_int;
 
 /**
  * Enhanced Loan Application Model with ICTServe Integration
- *
+ * 
  * Supports hybrid architecture (guest + authenticated), email-based approval workflows,
  * and cross-module integration with helpdesk system.
  *
@@ -30,7 +32,6 @@ use function random_int;
  * @see D03-FR-002.1 Email approval workflow
  * @see D03-FR-016.1 Cross-module integration
  * @see D04 §2.2 Model relationships
- *
  * @property int $id
  * @property string $application_number
  * @property int|null $user_id
@@ -59,15 +60,163 @@ use function random_int;
  * @property string|null $special_instructions
  * @property array<string, mixed>|null $related_helpdesk_tickets
  * @property bool $maintenance_required
+ * @property string $form_reference_code Official MOTAC form reference code
+ * @property string|null $tracking_token
+ * @property string|null $status_token_hash SHA-512 hash of status token for guest status checking
+ * @property string|null $tracking_token_expires_at
+ * @property string $applicant_position
+ * @property string $applicant_grade
+ * @property bool $is_applicant_responsible
+ * @property bool $is_delegate True if application submitted on behalf of another staff member
+ * @property array<array-key, mixed>|null $responsible_officer_details JSON: {name, position, grade, email, phone, staff_id, division_id} for delegation workflow
+ * @property \Illuminate\Support\Carbon $expected_return_date
+ * @property string|null $approval_token_hash SHA-512 hash of approval token for secure validation
+ * @property string|null $pickup_otp_hash
+ * @property \Illuminate\Support\Carbon|null $pickup_otp_expires_at
+ * @property int $pickup_otp_attempts
+ * @property \Illuminate\Support\Carbon|null $pickup_otp_generated_at
+ * @property \Illuminate\Support\Carbon|null $pickup_otp_validated_at
+ * @property int|null $pickup_otp_validated_by
+ * @property string|null $responsible_officer_name
+ * @property string|null $responsible_officer_position
+ * @property string|null $responsible_officer_grade
+ * @property string|null $responsible_officer_phone
+ * @property string|null $responsible_officer_email
+ * @property int $responsible_officer_acknowledgement Responsible officer has acknowledged responsibility
+ * @property \Illuminate\Support\Carbon|null $responsible_officer_acknowledged_at
+ * @property string|null $sponsorship_token
+ * @property \Illuminate\Support\Carbon|null $sponsorship_token_expires_at
+ * @property \Illuminate\Support\Carbon|null $applicant_declaration_date
+ * @property string|null $applicant_digital_signature
+ * @property bool $terms_acknowledged
+ * @property \Illuminate\Support\Carbon|null $declared_at
+ * @property int|null $approver_id
+ * @property int|null $approved_by
+ * @property string $approval_status
+ * @property \Illuminate\Support\Carbon|null $approval_date
+ * @property string|null $rejected_at
+ * @property int|null $rejected_by
+ * @property string|null $rejection_reason
+ * @property string|null $approver_digital_signature
+ * @property string|null $approval_notes
+ * @property array<array-key, mixed>|null $accessories
+ * @property string|null $anonymized_at
+ * @property string|null $claimed_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PortalActivity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\User|null $approver
+ * @property-read \App\Models\Asset|null $asset
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Asset> $assets
+ * @property-read int|null $assets_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\Division $division
+ * @property-read \Illuminate\Database\Eloquent\Relations\HasMany<LoanItem, LoanApplication> $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $helpdeskTickets
+ * @property-read int|null $helpdesk_tickets_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\InternalComment> $internalComments
+ * @property-read int|null $internal_comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanItem> $loanItems
+ * @property-read int|null $loan_items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanTransaction> $transactions
+ * @property-read int|null $transactions_count
+ * @property-read \App\Models\User|null $user
+ * @method static Builder<static>|LoanApplication byApprovalToken(string $tokenHash)
+ * @method static Builder<static>|LoanApplication byStatusToken(string $tokenHash)
+ * @method static \Database\Factories\LoanApplicationFactory factory($count = null, $state = [])
+ * @method static Builder<static>|LoanApplication forUser(\App\Models\User $user)
+ * @method static Builder<static>|LoanApplication newModelQuery()
+ * @method static Builder<static>|LoanApplication newQuery()
+ * @method static Builder<static>|LoanApplication onlyTrashed()
+ * @method static Builder<static>|LoanApplication query()
+ * @method static Builder<static>|LoanApplication whereAccessories($value)
+ * @method static Builder<static>|LoanApplication whereAnonymizedAt($value)
+ * @method static Builder<static>|LoanApplication whereApplicantDeclarationDate($value)
+ * @method static Builder<static>|LoanApplication whereApplicantDigitalSignature($value)
+ * @method static Builder<static>|LoanApplication whereApplicantEmail($value)
+ * @method static Builder<static>|LoanApplication whereApplicantGrade($value)
+ * @method static Builder<static>|LoanApplication whereApplicantName($value)
+ * @method static Builder<static>|LoanApplication whereApplicantPhone($value)
+ * @method static Builder<static>|LoanApplication whereApplicantPosition($value)
+ * @method static Builder<static>|LoanApplication whereApplicationNumber($value)
+ * @method static Builder<static>|LoanApplication whereApprovalDate($value)
+ * @method static Builder<static>|LoanApplication whereApprovalMethod($value)
+ * @method static Builder<static>|LoanApplication whereApprovalNotes($value)
+ * @method static Builder<static>|LoanApplication whereApprovalRemarks($value)
+ * @method static Builder<static>|LoanApplication whereApprovalStatus($value)
+ * @method static Builder<static>|LoanApplication whereApprovalToken($value)
+ * @method static Builder<static>|LoanApplication whereApprovalTokenExpiresAt($value)
+ * @method static Builder<static>|LoanApplication whereApprovalTokenHash($value)
+ * @method static Builder<static>|LoanApplication whereApprovedAt($value)
+ * @method static Builder<static>|LoanApplication whereApprovedBy($value)
+ * @method static Builder<static>|LoanApplication whereApprovedByName($value)
+ * @method static Builder<static>|LoanApplication whereApproverDigitalSignature($value)
+ * @method static Builder<static>|LoanApplication whereApproverEmail($value)
+ * @method static Builder<static>|LoanApplication whereApproverId($value)
+ * @method static Builder<static>|LoanApplication whereClaimedAt($value)
+ * @method static Builder<static>|LoanApplication whereCreatedAt($value)
+ * @method static Builder<static>|LoanApplication whereDeclaredAt($value)
+ * @method static Builder<static>|LoanApplication whereDeletedAt($value)
+ * @method static Builder<static>|LoanApplication whereDivisionId($value)
+ * @method static Builder<static>|LoanApplication whereExpectedReturnDate($value)
+ * @method static Builder<static>|LoanApplication whereFormReferenceCode($value)
+ * @method static Builder<static>|LoanApplication whereGrade($value)
+ * @method static Builder<static>|LoanApplication whereId($value)
+ * @method static Builder<static>|LoanApplication whereIsApplicantResponsible($value)
+ * @method static Builder<static>|LoanApplication whereIsDelegate($value)
+ * @method static Builder<static>|LoanApplication whereLoanEndDate($value)
+ * @method static Builder<static>|LoanApplication whereLoanStartDate($value)
+ * @method static Builder<static>|LoanApplication whereLocation($value)
+ * @method static Builder<static>|LoanApplication whereMaintenanceRequired($value)
+ * @method static Builder<static>|LoanApplication wherePickupOtpAttempts($value)
+ * @method static Builder<static>|LoanApplication wherePickupOtpExpiresAt($value)
+ * @method static Builder<static>|LoanApplication wherePickupOtpGeneratedAt($value)
+ * @method static Builder<static>|LoanApplication wherePickupOtpHash($value)
+ * @method static Builder<static>|LoanApplication wherePickupOtpValidatedAt($value)
+ * @method static Builder<static>|LoanApplication wherePickupOtpValidatedBy($value)
+ * @method static Builder<static>|LoanApplication wherePriority($value)
+ * @method static Builder<static>|LoanApplication wherePurpose($value)
+ * @method static Builder<static>|LoanApplication whereRejectedAt($value)
+ * @method static Builder<static>|LoanApplication whereRejectedBy($value)
+ * @method static Builder<static>|LoanApplication whereRejectedReason($value)
+ * @method static Builder<static>|LoanApplication whereRejectionReason($value)
+ * @method static Builder<static>|LoanApplication whereRelatedHelpdeskTickets($value)
+ * @method static Builder<static>|LoanApplication whereResponsibleOfficerAcknowledgedAt($value)
+ * @method static Builder<static>|LoanApplication whereResponsibleOfficerAcknowledgement($value)
+ * @method static Builder<static>|LoanApplication whereResponsibleOfficerDetails($value)
+ * @method static Builder<static>|LoanApplication whereResponsibleOfficerEmail($value)
+ * @method static Builder<static>|LoanApplication whereResponsibleOfficerGrade($value)
+ * @method static Builder<static>|LoanApplication whereResponsibleOfficerName($value)
+ * @method static Builder<static>|LoanApplication whereResponsibleOfficerPhone($value)
+ * @method static Builder<static>|LoanApplication whereResponsibleOfficerPosition($value)
+ * @method static Builder<static>|LoanApplication whereReturnLocation($value)
+ * @method static Builder<static>|LoanApplication whereSpecialInstructions($value)
+ * @method static Builder<static>|LoanApplication whereSponsorshipToken($value)
+ * @method static Builder<static>|LoanApplication whereSponsorshipTokenExpiresAt($value)
+ * @method static Builder<static>|LoanApplication whereStaffId($value)
+ * @method static Builder<static>|LoanApplication whereStatus($value)
+ * @method static Builder<static>|LoanApplication whereStatusTokenHash($value)
+ * @method static Builder<static>|LoanApplication whereTermsAcknowledged($value)
+ * @method static Builder<static>|LoanApplication whereTotalValue($value)
+ * @method static Builder<static>|LoanApplication whereTrackingToken($value)
+ * @method static Builder<static>|LoanApplication whereTrackingTokenExpiresAt($value)
+ * @method static Builder<static>|LoanApplication whereUpdatedAt($value)
+ * @method static Builder<static>|LoanApplication whereUserId($value)
+ * @method static Builder<static>|LoanApplication withTrashed(bool $withTrashed = true)
+ * @method static Builder<static>|LoanApplication withoutTrashed()
+ * @mixin \Eloquent
  */
 class LoanApplication extends Model implements Auditable
 {
     /** @use HasFactory<\Database\Factories\LoanApplicationFactory> */
     use HasFactory;
 
+    use LogsActivity;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
-    use \Spatie\Activitylog\Traits\LogsActivity;
 
     /**
      * Flag used by factories to skip automatic loan item creation without persisting to the database.
@@ -156,9 +305,9 @@ class LoanApplication extends Model implements Auditable
      *
      * @see D09 §4.7 - Activity Log Requirements
      */
-    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
-        return \Spatie\Activitylog\LogOptions::defaults()
+        return LogOptions::defaults()
             ->logOnly([
                 'application_number',
                 'status',
@@ -199,6 +348,30 @@ class LoanApplication extends Model implements Auditable
         'pickup_otp_validated_at' => 'datetime',
         'declared_at' => 'datetime',
     ];
+
+    public function setStatusAttribute(null|string|LoanStatus $value): void
+    {
+        if ($value === null) {
+            $this->attributes['status'] = null;
+
+            return;
+        }
+
+        if ($value instanceof LoanStatus) {
+            $this->attributes['status'] = $value->value;
+
+            return;
+        }
+
+        $normalized = strtolower(trim($value));
+        $normalized = str_replace(['-', ' '], '_', $normalized);
+
+        if ($normalized === 'on_loan') {
+            $normalized = LoanStatus::IN_USE->value;
+        }
+
+        $this->attributes['status'] = $normalized;
+    }
 
     /** @var array<string, string> */
     protected $auditInclude = [

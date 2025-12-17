@@ -20,11 +20,13 @@ enum ApprovalStatus: string
      */
     public function label(): string
     {
-        return (string) match ($this) {
-            self::PENDING => __('loan.approval_status.pending'),
-            self::APPROVED => __('loan.approval_status.approved'),
-            self::REJECTED => __('loan.approval_status.rejected'),
+        $key = match ($this) {
+            self::PENDING => 'loan.approval_status.pending',
+            self::APPROVED => 'loan.approval_status.approved',
+            self::REJECTED => 'loan.approval_status.rejected',
         };
+        
+        return trans($key);
     }
 
     /**

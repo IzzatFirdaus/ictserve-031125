@@ -1,7 +1,7 @@
 {{--
     Accessible Notification Component for Ollama AI
     WCAG 2.2 AA Compliant (Req 5.7)
-    
+
     Usage:
     <x-ollama.notification type="success" message="Operasi berjaya" />
     <x-ollama.notification type="error" message="Ralat berlaku" dismissible />
@@ -56,7 +56,7 @@
     };
 @endphp
 
-<div {{ $attributes->merge(['class' => "p-4 rounded-l border {$config['bg']} {$config['border']}"]) }}
+<div {{ $attributes->merge(['class' => "p-4 rounded-lg border {$config['bg']} {$config['border']}"]) }}
     role="{{ $config['role'] }}" aria-live="{{ $config['aria_live'] }}" aria-atomic="true"
     @if ($autoDismiss) x-data="{ show: true }"
     x-show="show"
@@ -88,7 +88,7 @@
                 @if ($autoDismiss) @click="show = false"
                 @else
                 wire:click="$dispatch('dismiss-notification')" @endif
-                class="min-h-11 min-w-11 p-2 rounded-m {{ $config['icon_color'] }} hover:bg-black/5 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+                class="min-h-11 min-w-11 p-2 rounded-md {{ $config['icon_color'] }} hover:bg-black/5 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
                 aria-label="Tutup notifikasi">
                 <x-heroicon-o-x-mark class="w-5 h-5" aria-hidden="true" />
             </button>

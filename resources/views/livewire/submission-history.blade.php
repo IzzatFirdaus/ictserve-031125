@@ -41,24 +41,15 @@ last-updated: 2025-11-06
 				{{-- Helpdesk Tab --}}
 				<button id="helpdesk-tab" wire:click="switchTab('helpdesk')" type="button" role="tab"
 					aria-selected="{{ $activeTab === 'helpdesk' ? 'true' : 'false' }}" aria-controls="helpdesk-panel"
-					class="group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900
-                        @if($activeTab === 'helpdesk')
-							border-amber-500 text-amber-600 dark:text-amber-400
-						@else
-							border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300
-						@endif">
+				class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'helpdesk' ? 'border-amber-500 text-amber-600 dark:text-amber-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300' }}">
 					<x-heroicon-s-bell class="-ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
 					{{ __('portal.history_helpdesk_tab') }}
 				</button>
 
 				{{-- Loans Tab --}}
 				<button id="loans-tab" wire:click="switchTab('loans')" type="button" role="tab"
-					aria-selected="{{ $activeTab === 'loans' ? 'true' : 'false' }}" aria-controls="loans-panel" class="group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900
-                        @if($activeTab === 'loans')
-							border-amber-500 text-amber-600 dark:text-amber-400
-						@else
-							border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300
-						@endif">
+				aria-selected="{{ $activeTab === 'loans' ? 'true' : 'false' }}" aria-controls="loans-panel"
+				class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'loans' ? 'border-amber-500 text-amber-600 dark:text-amber-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300' }}">
 					<x-heroicon-s-document class="-ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
 					{{ __('portal.history_loans_tab') }}
 				</button>
@@ -199,7 +190,7 @@ last-updated: 2025-11-06
 									{{ $search['name'] }}
 								</button>
 								<button wire:click="deleteSavedSearch({{ $search['id'] }})" type="button"
-									class="ml-2 p-1 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 rounded min-w-[32px] min-h-[32px]"
+								class="ml-2 p-1 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 rounded min-w-8 min-h-8"
 								aria-label="{{ __('portal.delete_search') }}" title="{{ __('portal.delete') }}">
 								<x-heroicon-o-trash class="h-5 w-5" aria-hidden="true" />
 							</button>
@@ -380,23 +371,29 @@ last-updated: 2025-11-06
 							{{ __('helpdesk.categories.' . $submission->category) }}
 						</td>
 						<td class="px-6 py-4 whitespace-nowrap text-sm">
-							<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-														@if($submission->priority === 'urgent') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
-														@elseif($submission->priority === 'high') bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200
-														@elseif($submission->priority === 'medium') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
-														@else bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-														@endif">
+							@php
+								$priorityClasses = match($submission->priority) {
+									'urgent' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+									'high' => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+									'medium' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+									default => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+								};
+							@endphp
+							<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $priorityClasses }}">
 								{{ __('helpdesk.priorities.' . $submission->priority) }}
 							</span>
 						</td>
 						<td class="px-6 py-4 whitespace-nowrap text-sm">
-							<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-														@if($submission->status === 'closed') bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
-														@elseif($submission->status === 'resolved') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-														@elseif($submission->status === 'in_progress') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-														@elseif($submission->status === 'assigned') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
-														@else bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200
-														@endif">
+							@php
+								$statusClasses = match($submission->status) {
+									'closed' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+									'resolved' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+									'in_progress' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+									'assigned' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+									default => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
+								};
+							@endphp
+							<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusClasses }}">
 								{{ __('helpdesk.statuses.' . $submission->status) }}
 							</span>
 						</td>
@@ -420,14 +417,16 @@ last-updated: 2025-11-06
 							{{ $submission->end_date->format('d/m/Y') }}
 						</td>
 						<td class="px-6 py-4 whitespace-nowrap text-sm">
-							<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-														@if($submission->status === 'returned') bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
-														@elseif($submission->status === 'approved') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-														@elseif($submission->status === 'active') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-														@elseif($submission->status === 'overdue') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
-														@elseif($submission->status === 'rejected') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
-														@else bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
-														@endif">
+							@php
+								$loanStatusClasses = match($submission->status) {
+									'returned' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+									'approved' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+									'active' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+									'overdue', 'rejected' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+									default => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+								};
+							@endphp
+							<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $loanStatusClasses }}">
 								{{ __('loans.statuses.' . $submission->status) }}
 							</span>
 						</td>

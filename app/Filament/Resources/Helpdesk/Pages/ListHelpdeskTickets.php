@@ -19,7 +19,7 @@ class ListHelpdeskTickets extends ListRecords
         return [
             ExportAction::make()
                 ->exporter(HelpdeskTicketExporter::class)
-                ->label('Export Tickets')
+                ->label('Eksport Tiket')
                 ->icon('heroicon-o-arrow-down-tray'),
             CreateAction::make(),
         ];

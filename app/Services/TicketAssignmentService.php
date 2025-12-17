@@ -8,6 +8,7 @@ use App\Models\Division;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
 use App\Notifications\TicketAssignedNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -156,9 +157,9 @@ class TicketAssignmentService
         if ($result && $reason) {
             // Add internal comment about reassignment
             $ticket->comments()->create([
-                'user_id' => auth()->check() ? auth()->id() : null,
-                'commenter_name' => auth()->check() ? auth()->user()?->name : 'System',
-                'commenter_email' => auth()->check() ? auth()->user()?->email : 'system@ictserve.local',
+                'user_id' => Auth::check() ? Auth::id() : null,
+                'commenter_name' => Auth::check() ? Auth::user()?->name : 'System',
+                'commenter_email' => Auth::check() ? Auth::user()?->email : 'system@ictserve.local',
                 'comment' => "Ticket reassigned: {$reason}",
                 'is_internal' => true,
             ]);

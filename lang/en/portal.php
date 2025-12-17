@@ -1,5 +1,8 @@
 <?php
 
+// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)
+// See lang/en/README.md for details
+
 declare(strict_types=1);
 
 /**
@@ -10,6 +13,7 @@ declare(strict_types=1);
 
 return [
     'actions' => 'Actions',
+    'action_required' => 'Action Required',
     'active_filters' => 'Active filters',
     'active_filters_count' => '{0} No active filters|{1} :count active filter|[2,*] :count active filters',
     'active_sessions' => 'Active sessions',
@@ -35,6 +39,7 @@ return [
     'asset_type' => 'Asset type',
     'assigned_to' => 'Assigned to',
     'attachments' => 'Attachments',
+    'attention_required' => 'Attention required',
     'avatar_removal_failed' => 'Failed to remove profile photo.',
     'avatar_removed_successfully' => 'Profile photo removed successfully.',
     'back' => 'Back',
@@ -48,6 +53,20 @@ return [
     'cannot_cancel_submission' => 'This submission cannot be cancelled.',
     'cannot_claim_submission' => 'This submission cannot be claimed.',
     'category' => 'Category',
+
+    // Dashboard Statistics v3.6.0
+    'dashboard_statistics' => 'Dashboard Statistics',
+    'my_open_tickets' => 'My Open Tickets',
+    'my_pending_loans' => 'My Pending Loans',
+    'overdue_items' => 'Overdue Items',
+    'pending_approvals' => 'Pending Approvals',
+    'view_all' => 'View All',
+    'view_all_tickets' => 'View all your open tickets',
+    'view_all_loans' => 'View all your loans',
+    'view_overdue' => 'View Overdue',
+    'view_overdue_items' => 'View overdue items',
+    'view_pending' => 'View Pending',
+    'view_pending_approvals' => 'View pending approval requests',
     'change_password' => 'Change password',
     'characters' => 'characters',
     'claim_submission' => 'Claim submission',
@@ -475,6 +494,12 @@ return [
         'note' => 'Shortcuts do not work when typing in form fields. All actions are also accessible via regular navigation for screen reader users.',
     ],
     'close' => 'Close',
+    'filter_activity' => 'Filter Activity',
+
+    // Activity Filter Options (Dashboard v3.6.0)
+    'filter_all' => 'All',
+    'filter_tickets' => 'Tickets',
+    'filter_loans' => 'Loans',
 
     // Email Frequency Configuration (Phase 8 - Task 8.1.3) per D12 §6.17
     'email_delivery_settings' => 'Email Delivery Settings',

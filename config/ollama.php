@@ -146,6 +146,19 @@ return [
         'fallback_enabled' => true,
         'chunk_size' => 1000, // characters
         'chunk_overlap' => 100, // characters
+        'greeting_enabled' => true, // Enable friendly greeting detection
+        'greeting_responses' => [
+            'Selamat datang ke FAQ Bot ICTServe! 👋 Saya boleh membantu anda dengan soalan-soalan berkaitan sistem helpdesk dan pinjaman aset ICT. Apa yang boleh saya bantu hari ini?',
+            'Hai! Saya FAQ Bot ICTServe. Saya di sini untuk menjawab soalan anda tentang perkhidmatan ICT. Ada apa yang saya boleh bantu?',
+            'Hello! 😊 Saya adalah pembantu AI ICTServe. Sila tanya saya tentang sistem helpdesk, pinjaman aset ICT, atau sebarang soalan berkaitan perkhidmatan ICT.',
+        ],
+        'greeting_patterns' => [
+            'hai', 'helo', 'hello', 'hi', 'hey',
+            'salam', 'assalamualaikum', 'selamat pagi', 'selamat petang', 'selamat malam',
+            'apa khabar', 'terima kasih', 'thanks', 'ok', 'okay',
+            'good morning', 'good afternoon', 'good evening', 'good night',
+            'thank you', 'thx', 'ty',
+        ],
     ],
 
     /*

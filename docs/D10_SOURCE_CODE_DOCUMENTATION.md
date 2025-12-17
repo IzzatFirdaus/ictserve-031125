@@ -1,11 +1,11 @@
 # Dokumentasi Kod Sumber (Source Code Documentation)
 
-**Sistem ICTServe**
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207
 
 ---
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.5.0                                     |
-| **Tarikh Kemaskini** | 1 Disember 2025                           |
+| **Versi**            | 3.6.1                                     |
+| **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
-| **Pematuhi**         | ISO/IEC/IEEE 5055, 25000 Series, 12207    |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
+| **Pematuhi**         | ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000, ISO/IEC/IEEE 12207 |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 ---
 
@@ -27,11 +27,14 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                  | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi kod sumber                                                                                                                                                                                                                                                          | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                     | Pasukan BPM |
 | 3.0.0 | 29 November 2025 | Kemaskini struktur kod, Laravel 12, Filament 4, Livewire 3, Tailwind CSS                                                                                                                                                                                                                   | Pasukan BPM |
 | 3.1.0 | 29 November 2025 | Selaraskan dengan Guest-First: hapus Staff/Portal, tambah Guest/Status                                                                                                                                                                                                                     | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse, Sanctum API, Google SSO, Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding. New services: GoogleSsoService, ApiTokenService, PerformanceMonitoringService, AccessoryTrackingService, ResponsibleOfficerService. Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
+| 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja (v3.6.0): Language switcher dilumpuhkan. | Pasukan BPM |
+| 3.7.0 | 14 Disember 2025 | Cloud Hybrid AI Architecture v3.7.0: OllamaClient, BedrockService, RagService, ModelRouter, EmbeddingService, PIIDetectionService, StreamingResponseService, WebSearchService. AI Livewire components: BedrockChat, FaqBot, FaqBotWidget. AI Models: Faq, Document, DocumentChunk, Embedding, BedrockConversation, MessageLog, AutoReplyTemplate, AutoReplyDraft. AI Jobs: DocumentIngestJob, EmbeddingJob, AutoReplyGenerationJob. Penyelarasan dengan D18 v1.0.0. | Pasukan BPM |
 
 ---
 
@@ -41,6 +44,7 @@
 - **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** - Pelan Pembangunan Sistem
 - **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Rekabentuk Perisian
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Dokumentasi AI Chatbot Ollama-Bedrock (v3.7.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
@@ -64,13 +68,13 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 | Komponen              | Versi   | Fungsi                                |
 | --------------------- | ------- | ------------------------------------- |
 | **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama           |
-| **Laravel**           | 12.40.1 | Framework aplikasi web                |
+| **Laravel**           | 12.42.0 | Framework aplikasi web                |
 | **Filament**          | 4.1.10  | Admin panel framework                 |
-| **Livewire**          | 3.7.0   | Server-driven UI components           |
+| **Livewire**          | 3.7.1   | Server-driven UI components           |
 | **Livewire Volt**     | 1.10.1  | Single-file Livewire components       |
 | **Tailwind CSS**      | 4.1.17  | Utility-first CSS framework           |
 | **Alpine.js**         | 3.x     | Lightweight JavaScript framework      |
-| **Laravel Reverb**    | 1.6.2   | WebSocket server untuk real-time      |
+| **Laravel Reverb**    | 1.6.3   | WebSocket server untuk real-time      |
 | **Laravel Echo**      | 2.2.6   | WebSocket client                      |
 | **PHPUnit**           | 11.5.44 | Testing framework                     |
 | **Larastan**          | 3.8.0   | Static analysis (PHPStan for Laravel) |
@@ -470,7 +474,7 @@ class LoanApplication extends Model implements Auditable
  * @property string $name
  * @property string $email Must be @motac.gov.my for staff
  * @property string|null $google_id Google OAuth ID (v3.5.0)
- * @property int|null $department_id FK to departments
+ * @property int|null $division_id FK to divisions
  * @property string|null $grade Gred pegawai
  * @property string|null $staff_number Nombor staf
  * @property string $role staff|admin|superuser
@@ -693,6 +697,342 @@ interface AccountLinkingServiceInterface
     public function findUnlinkedSubmissions(string $email): Collection;
     public function linkSubmissions(User $user, array $submissionIds): int;
     public function getLinkedSubmissionCount(User $user): int;
+}
+```
+
+### 7.10. AI Services (Cloud Hybrid AI Architecture v3.7.0)
+
+> **Rujukan:** D18_AI_CHATBOT_OLLAMA_BEDROCK.md v1.0.0
+
+#### 7.10.1. OllamaClient Service
+
+```php
+/**
+ * HTTP wrapper for Ollama local LLM server.
+ *
+ * @see D18 §6.1 Keperluan API Ollama Kritikal
+ */
+interface OllamaClientContract
+{
+    public function generate(array $payload): array;
+    public function embeddings(string $text): array;
+    public function chat(array $messages): array;
+    public function models(): array;
+    public function healthCheck(): bool;
+    public function getCachedResponse(string $cacheKey): ?array;
+    public function cacheResponse(string $cacheKey, array $response, int $ttl): void;
+}
+```
+
+#### 7.10.2. BedrockService
+
+```php
+/**
+ * AWS Bedrock API wrapper for Claude models.
+ * Supports Opus 4.5, Sonnet 4.5, Haiku 4.5.
+ *
+ * @see D18 §6.2 Keperluan Inference Profile AWS Bedrock
+ */
+interface BedrockClientContract
+{
+    public function invokeModel(string $modelId, array $payload): array;
+    public function invokeModelWithStreaming(string $modelId, array $payload): Generator;
+    public function listFoundationModels(): array;
+    public function getModelInfo(string $modelId): array;
+    public function healthCheck(): bool;
+    public function estimateCost(string $modelId, int $inputTokens, int $outputTokens): float;
+}
+```
+
+#### 7.10.3. RagService
+
+```php
+/**
+ * Retrieval-Augmented Generation service for FAQ knowledge base.
+ *
+ * @see D18 §3.2 Tanggungjawab Komponen
+ */
+interface RagServiceContract
+{
+    public function query(string $question, ?array $context = null): array;
+    public function retrieveContext(string $query, int $limit = 5): Collection;
+    public function generateResponse(string $query, Collection $context): string;
+    public function getConversationHistory(string $conversationId): array;
+    public function saveConversation(string $conversationId, array $messages): void;
+}
+```
+
+#### 7.10.4. ModelRouter Service
+
+```php
+/**
+ * Smart model selection based on task complexity.
+ *
+ * @see D18 §5.3 Logik Penghalaan Model
+ */
+class ModelRouter
+{
+    public function selectModel(string $taskType, array $context): string;
+    public function analyzeQuery(string $query): string; // Returns: faq_specific|complex_reasoning|hybrid
+    public function getModelConfig(string $modelName): array;
+}
+```
+
+#### 7.10.5. EmbeddingService
+
+```php
+/**
+ * Vector embeddings operations for semantic search.
+ *
+ * @see D18 §3.2 Tanggungjawab Komponen
+ */
+interface EmbeddingServiceContract
+{
+    public function generateEmbedding(string $text): array;
+    public function batchGenerateEmbeddings(array $texts): array;
+    public function searchSimilar(array $queryEmbedding, int $limit = 5): Collection;
+    public function storeEmbedding(int $documentChunkId, array $embedding): void;
+}
+```
+
+#### 7.10.6. PIIDetectionService
+
+```php
+/**
+ * PII detection and sanitization for PDPA 2010 compliance.
+ *
+ * @see D18 §3.2 Tanggungjawab Komponen
+ */
+interface PIIDetectionServiceContract
+{
+    public function detectPII(string $text): array;
+    public function sanitize(string $text): string;
+    public function classifyDataResidency(string $text): string; // Returns: local|cloud
+    public function getDetectedPatterns(): array;
+}
+```
+
+#### 7.10.7. DocumentService
+
+```php
+/**
+ * Document ingestion and analysis service.
+ *
+ * @see D18 §10.3 Document Analysis API
+ */
+interface DocumentServiceContract
+{
+    public function ingest(UploadedFile $file, array $metadata = []): Document;
+    public function analyze(Document $document): array;
+    public function chunk(Document $document, int $chunkSize = 500): Collection;
+    public function search(Document $document, string $query, int $limit = 5): Collection;
+    public function getSummary(Document $document): string;
+}
+```
+
+#### 7.10.8. StreamingResponseService (Future)
+
+```php
+/**
+ * Server-Sent Events handler for streaming AI responses.
+ *
+ * @see D18 §2.3 Ciri Utama v3.6.1 - Streaming Responses (Future)
+ */
+interface StreamingResponseServiceContract
+{
+    public function stream(string $modelId, array $payload): Generator;
+    public function handleSSE(Generator $stream): StreamedResponse;
+    public function formatChunk(string $content, string $type = 'content'): string;
+}
+```
+
+#### 7.10.9. WebSearchService
+
+```php
+/**
+ * DuckDuckGo integration for web-augmented responses.
+ *
+ * @see D18 §2.3 Ciri Utama v3.6.1 - Web-Augmented Responses
+ */
+interface WebSearchServiceContract
+{
+    public function search(string $query, int $limit = 5): array;
+    public function augmentContext(string $query, array $existingContext): array;
+    public function isEnabled(): bool;
+}
+```
+
+### 7.11. AI Models (v3.7.0)
+
+#### 7.11.1. Faq Model
+
+```php
+/**
+ * FAQ knowledge base entry.
+ *
+ * @property int $id
+ * @property string $question
+ * @property string $answer
+ * @property string $category
+ * @property int|null $user_id Nullable for guest-accessible FAQs
+ * @property bool $is_published
+ */
+class Faq extends Model implements Auditable
+{
+    use HasAuditTrail, HasFactory, SoftDeletes;
+
+    public function chunks(): HasMany;
+    public function embeddings(): HasManyThrough;
+}
+```
+
+#### 7.11.2. Document Model
+
+```php
+/**
+ * Document for AI analysis and RAG.
+ *
+ * @property int $id
+ * @property string $filename
+ * @property string $original_filename
+ * @property string $mime_type
+ * @property int $size
+ * @property string $status processing|completed|failed
+ * @property string|null $summary
+ * @property array|null $key_topics
+ */
+class Document extends Model implements Auditable
+{
+    use HasAuditTrail, HasFactory, SoftDeletes;
+
+    public function chunks(): HasMany;
+    public function user(): BelongsTo;
+}
+```
+
+#### 7.11.3. BedrockConversation Model
+
+```php
+/**
+ * Enhanced conversation management with memory.
+ *
+ * @property int $id
+ * @property string $conversation_id UUID
+ * @property int|null $user_id
+ * @property array $messages
+ * @property string $model_used
+ * @property Carbon $expires_at
+ */
+class BedrockConversation extends Model
+{
+    use HasFactory;
+
+    public function user(): BelongsTo;
+    public function addMessage(string $role, string $content): void;
+    public function getMessages(): array;
+}
+```
+
+### 7.12. AI Jobs (v3.7.0)
+
+#### 7.12.1. DocumentIngestJob
+
+```php
+/**
+ * Background job for document processing.
+ *
+ * @see D18 §6.5 Fasa Pelaksanaan - Fasa 4
+ */
+class DocumentIngestJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct(public Document $document) {}
+    public function handle(DocumentService $service): void;
+    public function failed(Throwable $exception): void;
+}
+```
+
+#### 7.12.2. EmbeddingJob
+
+```php
+/**
+ * Background job for vector embedding generation.
+ */
+class EmbeddingJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct(public DocumentChunk $chunk) {}
+    public function handle(EmbeddingService $service): void;
+}
+```
+
+#### 7.12.3. AutoReplyGenerationJob
+
+```php
+/**
+ * Background job for AI-generated auto-reply drafts.
+ *
+ * @see D18 §10.4 Auto-Reply API
+ */
+class AutoReplyGenerationJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct(
+        public string $replyableType,
+        public int $replyableId,
+        public ?int $templateId = null
+    ) {}
+    public function handle(BedrockService $bedrock, RagService $rag): void;
+}
+```
+
+### 7.13. AI Livewire Components (v3.7.0)
+
+#### 7.13.1. BedrockChat Component
+
+```php
+/**
+ * Main hybrid AI chat interface.
+ *
+ * @see D18 §3.1 Rajah Seni Bina Sistem
+ */
+class BedrockChat extends Component
+{
+    public string $message = '';
+    public string $selectedModel = 'sonnet';
+    public bool $enableInternetSearch = false;
+    public array $conversationHistory = [];
+    public ?string $conversationId = null;
+
+    public function sendMessage(): void;
+    public function selectModel(string $model): void;
+    public function toggleInternetSearch(): void;
+    public function clearConversation(): void;
+    public function loadConversation(string $id): void;
+    public function saveConversation(): void;
+}
+```
+
+#### 7.13.2. FaqBot Component
+
+```php
+/**
+ * FAQ Bot widget for guest and authenticated users.
+ *
+ * @see D18 §2.4 Konteks Integrasi Kritikal
+ */
+class FaqBot extends Component
+{
+    public string $query = '';
+    public array $suggestions = [];
+    public ?array $response = null;
+
+    public function askQuestion(): void;
+    public function selectSuggestion(string $suggestion): void;
+    public function clearResponse(): void;
 }
 ```
 

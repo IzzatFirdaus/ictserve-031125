@@ -8,7 +8,6 @@ use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Services\LoanApplicationService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -44,7 +43,7 @@ class LoanExtension extends Component
 
         $service->requestExtension($this->application, $this->newEndDate, $this->justification);
 
-        session()->flash('message', __('Permohonan lanjutan telah dihantar untuk kelulusan.'));
+        session()->flash('message', __('loan.messages.extension_request_submitted'));
 
         return redirect()->route('loan.authenticated.show', $this->application);
     }

@@ -446,14 +446,14 @@
                                             <tr>
                                                 <td style="padding-right: 12px;">
                                                     <img src="{{ asset('images/jata-negara.svg') }}"
-                                                        alt="{{ __('Jata Negara Malaysia') }}" class="email-header-logo"
-                                                        width="48" height="48"
+                                                        alt="{{ __('common.jata_negara_malaysia') }}"
+                                                        class="email-header-logo" width="48" height="48"
                                                         style="height: 48px; width: auto;">
                                                 </td>
                                                 <td style="padding-left: 12px;">
                                                     <img src="{{ asset('images/motac-logo.png') }}"
-                                                        alt="{{ __('MOTAC Logo') }}" class="email-header-logo"
-                                                        width="48" height="48"
+                                                        alt="{{ __('common.motac_logo_alt') }}"
+                                                        class="email-header-logo" width="48" height="48"
                                                         style="height: 48px; width: auto;">
                                                 </td>
                                             </tr>
@@ -463,10 +463,10 @@
                             </table>
                             <h1>{{ __('ICTServe') }}</h1>
                             <p class="email-header-subtitle">
-                                {{ __('Kementerian Pelancongan, Seni dan Budaya Malaysia') }}
+                                {{ __('common.kementerian_pelancongan_seni_budaya') }}
                             </p>
                             <p class="email-header-subtitle" style="font-size: 12px; opacity: 0.8;">
-                                {{ __('Ministry of Tourism, Arts & Culture Malaysia') }}
+                                {{ __('common.ministry_tourism_arts_culture') }}
                             </p>
                         </div>
 
@@ -480,27 +480,27 @@
                             <img src="{{ asset('images/motac-logo.png') }}" alt="" class="email-footer-logo"
                                 width="32" height="32" aria-hidden="true">
 
-                            <p>{{ __('Ini adalah mesej automatik daripada ICTServe. Sila jangan balas e-mel ini.') }}
+                            <p>{{ __('common.automated_message_ms') }}
                             </p>
                             <p style="font-size: 12px; color: #9CA3AF;">
-                                {{ __('This is an automated message from ICTServe. Please do not reply to this email.') }}
+                                {{ __('common.automated_message_en') }}
                             </p>
 
                             <hr class="email-divider" style="margin: 16px 0;">
 
                             <p>
-                                {{ __('Untuk bantuan, sila hubungi') }} /
-                                {{ __('For assistance, please contact') }}:<br>
+                                {{ __('common.for_assistance_contact_ms') }} /
+                                {{ __('common.for_assistance_contact_en') }}:<br>
                                 <a href="mailto:support@motac.gov.my">support@motac.gov.my</a>
                             </p>
 
                             <div class="email-footer-legal">
                                 <p style="margin: 0;">
                                     &copy; {{ date('Y') }}
-                                    {{ __('Kementerian Pelancongan, Seni dan Budaya Malaysia') }}
+                                    {{ __('common.kementerian_pelancongan_seni_budaya') }}
                                 </p>
                                 <p style="margin: 4px 0 0 0;">
-                                    {{ __('Ministry of Tourism, Arts & Culture Malaysia') }}
+                                    {{ __('common.ministry_tourism_arts_culture') }}
                                 </p>
                                 @if (isset($isoReference))
                                     <p class="iso-reference">{{ $isoReference }}</p>

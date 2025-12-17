@@ -11,13 +11,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Loan Item Model
- *
+ * 
  * Junction table linking loan applications to specific assets with condition tracking.
  *
  * @see D03-FR-003.2 Asset issuance tracking
  * @see D03-FR-003.3 Asset return processing
  * @see D04 §2.2 Model relationships
- *
  * @property int $id
  * @property int $loan_application_id
  * @property int $asset_id
@@ -29,6 +28,38 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property array|null $accessories_issued
  * @property array|null $accessories_returned
  * @property string|null $damage_report
+ * @property string $equipment_type Type of equipment requested
+ * @property string|null $notes Additional notes for equipment request
+ * @property string|null $brand_model
+ * @property string|null $serial_number
+ * @property string|null $other_accessories
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Asset|null $asset
+ * @property-read \App\Models\LoanApplication $loanApplication
+ * @method static \Database\Factories\LoanItemFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereAccessoriesIssued($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereAccessoriesReturned($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereAssetId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereBrandModel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereConditionAfter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereConditionBefore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereDamageReport($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereEquipmentType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereLoanApplicationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereOtherAccessories($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereSerialNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereTotalValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereUnitValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanItem whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class LoanItem extends Model
 {

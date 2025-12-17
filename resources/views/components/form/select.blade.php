@@ -51,7 +51,7 @@ null;
             @if ($describedBy) aria-describedby="{{ $describedBy }}" @endif
             {{ $attributes->except(['class'])->merge([
                 'class' =>
-                    'block w-full min-h-11 rounded-m border-gray-300 shadow-sm pr-10 ' .
+                    'block w-full min-h-11 rounded-md border-gray-300 shadow-sm pr-10 ' .
                     'focus:border-primary-500 focus:outline-none ' .
                     'transition-colors duration-200 ' .
                     'dark:bg-gray-800 dark:border-gray-600 dark:text-white ' .
@@ -59,7 +59,7 @@ null;
                     ($disabled ? ' opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-700' : ''),
             ]) }}>
             @if ($placeholder)
-            <option value="" disabled selected>{{ $placeholder }}</option>
+            <option value="" disabled>{{ $placeholder }}</option>
             @endif
 
             @foreach ($options as $value => $text)

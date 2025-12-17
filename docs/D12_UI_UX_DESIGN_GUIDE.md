@@ -1,1372 +1,967 @@
-# Panduan Rekabentuk UI/UX (UI/UX Design Guide)
+# D12: Panduan Reka Bentuk UI/UX (UI/UX Design Guide)
 
-**Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 1 Disember 2025
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
-**Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0
+## ICTServe v3.6.1 - True Hybrid Architecture dengan AI Integration
 
----
+| Atribut | Nilai |
+|---------|-------|
+| **Versi** | 3.6.1 |
+| **Tarikh Kemaskini** | 14 Disember 2025 |
+| **Status** | Aktif - Sedia untuk Pelaksanaan |
+| **Klasifikasi** | Terhad - Dalaman BPM MOTAC |
+| **Pematuhi** | WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 42010 |
+| **Bahasa** | Bahasa Melayu sahaja (D15 v3.6.0) |
 
-## Maklumat Dokumen (Document Information)
-
-| Atribut              | Nilai                                                                        |
-| -------------------- | ---------------------------------------------------------------------------- |
-| **Versi**            | 3.6.0                                                                        |
-| **Tarikh Kemaskini** | 1 Disember 2025                                                              |
-| **Status**           | Aktif                                                                        |
-| **Klasifikasi**      | Terhad - Dalaman MOTAC                                                       |
-| **Pematuhi**         | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA, MyGOV Digital Standards  |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                    |
-
-> Notis Penggunaan Dalaman: Panduan UI/UX ini digunakan untuk aplikasi dalaman MOTAC dan bukan untuk kegunaan awam.
+> **Notis Penggunaan Dalaman**: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam (internal use only).
 
 ---
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                          | Penulis     |
-| ----- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 1.0.0 | September 2025   | Versi awal panduan rekabentuk UI/UX                                                                                                                                                                                                                | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                             | Pasukan BPM |
-| 2.1.0 | 19 Oktober 2025  | Tambah §7.4 Language Switcher component                                                                                                                                                                                                            | Pasukan BPM |
-| 3.0.0 | 29 November 2025 | Kemaskini Livewire 3, Filament 4, Tailwind 4, komponen terkini                                                                                                                                                                                     | Pasukan BPM |
-| 3.1.0 | 29 November 2025 | Penyesuaian Guest-First: hapus portal.blade.php, tambah status-tracking.blade.php                                                                                                                                                                  | Pasukan BPM |
-| 3.2.0 | 29 November 2025 | Dual layout system: app.blade.php vs guest.blade.php, auth-optional components                                                                                                                                                                     | Pasukan BPM |
-| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Submission History table, Navbar dual state                                                                                                                           | Pasukan BPM |
-| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration form UI (@motac.gov.my), flexible login UI, email verification page, account linking prompt, notification preferences panel, Laravel Pulse dashboard, Google SSO button. Penyelarasan dengan D00-D11 v3.5.0. | Pasukan BPM |
-| 3.6.0 | 9 Disember 2025  | Bahasa Melayu sahaja (language switcher dikeluarkan), Theme Switcher (mod terang/gelap) dengan mod terang sebagai lalai, localStorage persistence, FOUT prevention. | Pasukan BPM |
+| Versi | Tarikh | Perubahan | Penulis |
+|-------|--------|-----------|---------|
+| 3.6.1 | 2025-12-17 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D18 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+). | Pasukan Pembangunan BPM |
+| 3.6.0 | 2025-12-14 | Integrasi lengkap D18 Cloud Hybrid AI Architecture - AI chat interface, streaming responses, model selection, conversation management, web-augmented responses, WCAG 2.2 AA compliance | Pasukan Pembangunan BPM |
+| 3.5.0 | 2025-11-01 | Kemaskini untuk Laravel Reverb, Laravel Pulse, dan pematuhan WCAG 2.2 AA | Pasukan Pembangunan BPM |
+| 3.4.0 | 2025-10-15 | Penyepaduan Filament v4, Livewire v3, dan Tailwind v4 | Pasukan Pembangunan BPM |
+| 3.3.0 | 2025-09-01 | Kemaskini untuk True Hybrid Architecture dan Self-Registration | Pasukan Pembangunan BPM |
 
 ---
 
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
-- **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem (v3.5.0)
-- **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** - Pelan Pembangunan Sistem
-- **[D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md]** - Spesifikasi Keperluan Perniagaan
-- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Spesifikasi Keperluan Perisian
-- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Dokumen Rekabentuk Perisian (v3.5.0)
-- **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (Dual Audit)
-- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
-- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Framework Frontend UI/UX (implementasi teknikal)
-- **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX (visual style)
-- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa (Bahasa Melayu sahaja, v3.6.0)
-- **[GLOSSARY.md]** - Glosari Istilah Sistem
+| Dokumen | Penerangan | Versi |
+|---------|------------|-------|
+| [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) | Gambaran keseluruhan sistem dan tadbir urus | v3.6.1 |
+| [D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | Spesifikasi keperluan perisian | v3.6.1 |
+| [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) | Seni bina dan reka bentuk | v3.6.1 |
+| [D13_UI_UX_FRONTEND_FRAMEWORK.md](D13_UI_UX_FRONTEND_FRAMEWORK.md) | Framework frontend (Livewire/Volt) | v3.6.1 |
+| [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md) | Panduan gaya (MyDS v2025.2) | v3.6.1 |
+| [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Penyetempatan bahasa (Bahasa Melayu sahaja) | v3.7.0 |
+| [D18_AI_CHATBOT_OLLAMA_BEDROCK.md](D18_AI_CHATBOT_OLLAMA_BEDROCK.md) | Cloud Hybrid AI Architecture | v1.0.1 |
 
 ---
 
-## Nota Bahasa (Language Convention)
+## Kandungan (Table of Contents)
 
-- Dokumen ini menggunakan Bahasa Melayu sebagai bahasa utama.
-- **Bahasa Melayu sahaja (v3.6.0)**: Antara muka pengguna menggunakan Bahasa Melayu eksklusif. Istilah teknikal Bahasa Inggeris mungkin digunakan untuk kejelasan.
-- Pengecam kod (class, method, file path) kekal dalam Bahasa Inggeris demi ketekalan dengan kod sumber.
-
----
-
-## 1. Tujuan Dokumen (Purpose)
-
-Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - User Interface) dan pengalaman pengguna (UX - User Experience) bagi sistem **Helpdesk & ICT Asset Loan BPM MOTAC**, berpandukan piawaian **ISO 9241-210** (human-centred design), **ISO 9241-110** (dialogue principles), **ISO 9241-11** (usability), dan **WCAG 2.2 Level AA** (Web Content Accessibility Guidelines) untuk aksesibiliti.
-
----
-
-## 2. Teknologi Frontend (Frontend Technology Stack)
-
-| Komponen          | Versi  | Fungsi                              |
-| ----------------- | ------ | ----------------------------------- |
-| **Tailwind CSS**  | 4.1.17 | Utility-first CSS framework         |
-| **Livewire**      | 3.7.0  | Server-driven UI components         |
-| **Livewire Volt** | 1.10.1 | Single-file Livewire components     |
-| **Alpine.js**     | 3.x    | Lightweight JavaScript framework    |
-| **Filament**      | 4.1.10 | Admin panel framework               |
-| **Laravel Echo**  | 2.2.6  | WebSocket client                    |
-| **Laravel Reverb**| 1.6.2  | WebSocket server (real-time)        |
-| **Laravel Pulse** | 1.3.0  | Performance monitoring dashboard    |
+1. [Glosari (Glossary)](#1-glosari-glossary)
+2. [Ringkasan Eksekutif (Executive Summary)](#2-ringkasan-eksekutif-executive-summary)
+3. [Prinsip Reka Bentuk (Design Principles)](#3-prinsip-reka-bentuk-design-principles)
+4. [Sistem Warna (Color System)](#4-sistem-warna-color-system)
+5. [Tipografi (Typography)](#5-tipografi-typography)
+6. [Struktur Halaman (Page Structure)](#6-struktur-halaman-page-structure)
+7. [Antara Muka AI (AI Interface Design)](#7-antara-muka-ai-ai-interface-design)
+8. [Integrasi dengan D18 Cloud Hybrid AI Architecture](#8-integrasi-dengan-d18-cloud-hybrid-ai-architecture)
+9. [Rujukan Silang dengan D00-D17](#9-rujukan-silang-dengan-d00-d17)
+10. [Kesimpulan](#10-kesimpulan)
 
 ---
 
-## 3. Prinsip Rekabentuk UI/UX (Design Principles)
+## 1. Glosari (Glossary)
 
-### 3.1. ISO 9241-210: Human-centred Design
-
-- **Fokus kepada pengguna**: Rekabentuk sentiasa mengambil kira keperluan, matlamat, dan batasan pengguna sebenar (staf MOTAC, BPM, admin).
-- **Penglibatan pengguna**: Ujian bersama pengguna sebenar (UAT), feedback berkala.
-- **Iterasi**: Penambahbaikan berterusan berdasarkan maklum balas dan data penggunaan.
-
-### 3.2. ISO 9241-110: Dialogue Principles
-
-- **Kebolehfahaman (Suitability for the task)**: Setiap fungsi, menu, dan borang jelas dan mudah diakses.
-- **Kebolehcapaian (Self-descriptiveness)**: Label, arahan, dan status sistem sentiasa jelas.
-- **Kawalan pengguna (User control)**: Pengguna boleh membatalkan, menyemak, dan mengesahkan tindakan.
-- **Konsisten**: Layout, ikon, dan warna digunakan secara konsisten di semua modul.
-- **Maklum balas (Feedback)**: Sistem memberi maklum balas visual/teks selepas setiap tindakan.
-
-### 3.3. ISO 9241-11: Usability
-
-- **Keberkesanan (Effectiveness)**: Pengguna boleh mencapai matlamat mereka dengan mudah.
-- **Kecekapan (Efficiency)**: Proses adalah pantas, tanpa langkah yang tidak perlu.
-- **Kepuasan pengguna (Satisfaction)**: Pengguna selesa dan yakin menggunakan sistem.
+| Istilah | Definisi |
+|---------|----------|
+| **WCAG 2.2 AA** | Web Content Accessibility Guidelines Level AA - standard kebolehcapaian web |
+| **MyGOV Digital Service Standards** | Standard perkhidmatan digital kerajaan Malaysia v2.1.0 |
+| **True Hybrid Architecture** | Seni bina hibrid sebenar ICTServe dengan self-registration dan akses fleksibel |
+| **AI Chat Interface** | Antara muka perbualan AI yang terintegrasi dengan D18 Cloud Hybrid AI Architecture |
+| **Streaming Responses** | Respons AI yang dihantar secara berperingkat untuk pengalaman pengguna yang responsif |
+| **Model Selection** | Pemilihan model AI (Auto, Claude Opus, Sonnet, Haiku) berdasarkan jenis tugas |
+| **Web-Augmented Responses** | Respons AI yang diperkaya dengan maklumat terkini dari carian web |
+| **Conversation Management** | Pengurusan konteks perbualan AI dengan memori jangka panjang |
+| **Core Web Vitals** | Metrik prestasi web utama (LCP, FID, CLS) |
+| **Progressive Enhancement** | Pendekatan pembangunan web yang bermula dengan fungsi asas |
 
 ---
 
-## 4. Aksesibiliti (Accessibility) – WCAG 2.2 Level AA
+## 2. Ringkasan Eksekutif (Executive Summary)
 
-### 4.1. Keperluan Wajib
+### 2.1 Tujuan (Purpose)
 
-| Kriteria                   | Keperluan                                | Standard    |
-| -------------------------- | ---------------------------------------- | ----------- |
-| **Kontras Warna (Teks)**   | Minimum 4.5:1 dengan latar belakang      | WCAG 1.4.3  |
-| **Kontras Warna (UI)**     | Minimum 3:1 untuk komponen UI            | WCAG 1.4.11 |
-| **Navigasi Papan Kekunci** | Semua fungsi boleh diakses tanpa tetikus | WCAG 2.1.1  |
-| **Focus Indicator**        | 3px outline visible pada fokus           | WCAG 2.4.7  |
-| **Teks Alternatif**        | Semua imej mesti ada alt text bermakna   | WCAG 1.1.1  |
-| **Label Borang**           | Setiap input mesti ada label jelas       | WCAG 1.3.1  |
-| **Saiz Teks**              | Minimum 16px, boleh diperbesar 200%      | WCAG 1.4.4  |
-| **Touch Target**           | Minimum 44×44px untuk mobile             | WCAG 2.5.5  |
+Dokumen D12 ini menyediakan panduan komprehensif untuk reka bentuk antara muka pengguna (UI) dan pengalaman pengguna (UX) bagi sistem ICTServe v3.6.0. Panduan ini merangkumi:
 
-### 4.2. Testing Tools
+- **Integrasi AI Interface**: Reka bentuk antara muka AI chat yang mematuhi D18 Cloud Hybrid AI Architecture
+- **WCAG 2.2 AA Compliance**: Kebolehcapaian penuh untuk semua pengguna termasuk OKU
+- **True Hybrid Architecture Support**: UI yang menyokong akses tetamu dan authenticated seamlessly
+- **MyGOV Standards Alignment**: Pematuhan dengan standard perkhidmatan digital kerajaan Malaysia
 
-| Alatan            | Tujuan                         | Sasaran      |
-| ----------------- | ------------------------------ | ------------ |
-| **Lighthouse**    | Accessibility audit            | Score ≥90    |
-| **axe DevTools**  | WCAG 2.2 AA violations         | Zero errors  |
-| **WAVE (WebAIM)** | Contrast, structure validation | Zero errors  |
-| **NVDA/JAWS**     | Screen reader testing          | All readable |
-| **Playwright**    | E2E accessibility testing      | All pass     |
+### 2.2 Skop (Scope)
+
+Panduan ini meliputi:
+
+1. **Sistem Reka Bentuk**: Warna, tipografi, spacing, dan komponen
+2. **Antara Muka AI**: Chat interface, streaming responses, model selection
+3. **Kebolehcapaian**: WCAG 2.2 AA compliance dan sokongan teknologi bantuan
+4. **Prestasi**: Core Web Vitals dan pengoptimuman
+5. **Responsif**: Mobile-first design dan adaptive layouts
 
 ---
 
-## 5. Struktur Layout (Layout Structure)
+## 3. Prinsip Reka Bentuk (Design Principles)
 
-### 5.1. Layout Types (Dual Layout System v3.5.0)
+### 3.1 Kebolehcapaian Dahulu (Accessibility First)
 
-| Layout              | Lokasi                     | Penggunaan                               | Ciri Utama                                                         |
-| ------------------- | -------------------------- | ---------------------------------------- | ------------------------------------------------------------------ |
-| **app.blade.php**   | `resources/views/layouts/` | Authenticated staff (sidebar, user menu) | Sidebar navigation, User dropdown, Dashboard, Submission History   |
-| **guest.blade.php** | `resources/views/layouts/` | Public forms (helpdesk, loan)            | Simple header, Language toggle, Check Status, Token-based tracking |
+- **WCAG 2.2 AA Compliance**: Semua komponen mematuhi standard kebolehcapaian
+- **Kontras Warna**: Minimum 4.5:1 untuk teks, 3:1 untuk elemen UI
+- **Navigasi Papan Kekunci**: Sokongan penuh untuk pengguna papan kekunci
+- **Teknologi Bantuan**: Kompatibel dengan pembaca skrin dan alat bantuan lain
 
-**Dual Layout System:**
+### 3.2 Mobile-First Design
 
-**app.blade.php (Authenticated):**
+- **Responsive Layout**: Reka bentuk yang menyesuaikan dengan semua saiz skrin
+- **Touch-Friendly**: Saiz sasaran sentuh minimum 44×44px
+- **Progressive Enhancement**: Fungsi asas berfungsi tanpa JavaScript
 
-- **Sidebar**: Dashboard, My Submissions, Profile, Settings
-- **User Menu**: User name, Profile link, Logout button
-- **Navigation**: Full access to authenticated routes
-- **Features**: Notification bell, search, quick actions
+### 3.3 Prestasi Optimum
 
-**guest.blade.php (Public):**
+- **Core Web Vitals**: LCP < 2.5s, FID < 100ms, CLS < 0.1
+- **Lazy Loading**: Pemuatan komponen secara berperingkat
+- **Caching Strategy**: Strategi caching yang cekap
 
-- **Simple Header**: Logo MOTAC, Language toggle, Check Status link, Login/Register buttons
-- **Navigation**: Submit Ticket, Apply Loan, Check Status, Daftar (Register)
-- **Features**: Minimal UI, focus on submission forms
+### 3.4 Konsistensi
 
-**Navigation Logic:**
+- **Design System**: Komponen yang konsisten di seluruh aplikasi
+- **Bahasa Melayu**: Antara muka dalam Bahasa Melayu sahaja (D15 v3.6.0)
+- **Branding**: Pematuhan dengan identiti visual kerajaan
 
-```blade
-@auth
-    {{-- Authenticated: Full navigation --}}
-    <a href="{{ route('dashboard') }}">Dashboard</a>
-    <a href="{{ route('submissions.index') }}">My Submissions</a>
-    <a href="{{ route('profile.edit') }}">Profile</a>
-@else
-    {{-- Guest: Public forms + Auth options --}}
-    <a href="{{ route('helpdesk.create') }}">Submit Ticket</a>
-    <a href="{{ route('loan.create') }}">Apply Loan</a>
-    <a href="{{ route('status.check') }}">Check Status</a>
-    <a href="{{ route('login') }}">Log Masuk</a>
-    <a href="{{ route('register') }}">Daftar</a>
-@endauth
+---
+
+## 4. Sistem Warna (Color System)
+
+### 4.1 Palet Warna Utama
+
+#### Primary Colors (Warna Utama)
+
+| Warna | Hex | RGB | Kontras | Penggunaan |
+|-------|-----|-----|---------|------------|
+| Primary 50 | #eff6ff | rgb(239, 246, 255) | - | Background light |
+| Primary 500 | #0056B3 | rgb(0, 86, 179) | 7.2:1 | Main actions, links |
+| Primary 600 | #004494 | rgb(0, 68, 148) | 8.1:1 | Hover states |
+| Primary 700 | #003875 | rgb(0, 56, 117) | 9.8:1 | Active states |
+
+#### Secondary Colors (Warna Sekunder)
+
+| Warna | Hex | RGB | Kontras | Penggunaan |
+|-------|-----|-----|---------|------------|
+| Secondary 500 | #0B4D8F | rgb(11, 77, 143) | 8.1:1 | Secondary actions |
+| Secondary 600 | #094070 | rgb(9, 64, 112) | 9.5:1 | Secondary hover |
+
+#### Semantic Colors (Warna Semantik)
+
+| Warna | Hex | RGB | Kontras | Penggunaan |
+|-------|-----|-----|---------|------------|
+| Success 500 | #1B7C54 | rgb(27, 124, 84) | 4.6:1 | Success states |
+| Warning 500 | #CC7700 | rgb(204, 119, 0) | 4.5:1 | Warning states |
+| Danger 500 | #B3002D | rgb(179, 0, 45) | 7.8:1 | Error states |
+| Info 500 | #0369A1 | rgb(3, 105, 161) | 6.2:1 | Information |
+
+### 4.2 Neutral Colors (Warna Neutral)
+
+| Warna | Hex | RGB | Kontras | Penggunaan |
+|-------|-----|-----|---------|------------|
+| Gray 50 | #f9fafb | rgb(249, 250, 251) | - | Background |
+| Gray 100 | #f3f4f6 | rgb(243, 244, 246) | - | Light background |
+| Gray 200 | #e5e7eb | rgb(229, 231, 235) | 3:1 | Borders |
+| Gray 300 | #d1d5db | rgb(209, 213, 219) | 3.8:1 | Disabled states |
+| Gray 500 | #6b7280 | rgb(107, 114, 128) | 4.6:1 | Secondary text |
+| Gray 700 | #374151 | rgb(55, 65, 81) | 8.9:1 | Body text |
+| Gray 900 | #111827 | rgb(17, 24, 39) | 12.6:1 | Headings |
+
+### 4.3 AI Interface Colors
+
+| Warna | Hex | RGB | Kontras | Penggunaan |
+|-------|-----|-----|---------|------------|
+| AI User Message | #0056B3 | rgb(0, 86, 179) | 7.2:1 | User message background |
+| AI Assistant Message | #ffffff | rgb(255, 255, 255) | - | AI response background |
+| AI Streaming Indicator | #f3f4f6 | rgb(243, 244, 246) | - | Streaming response |
+| Model Auto | #0056B3 | rgb(0, 86, 179) | 7.2:1 | Auto routing |
+| Model Opus | #7c3aed | rgb(124, 58, 237) | 5.8:1 | Claude Opus |
+| Model Sonnet | #2563eb | rgb(37, 99, 235) | 6.1:1 | Claude Sonnet |
+| Model Haiku | #059669 | rgb(5, 150, 105) | 4.8:1 | Claude Haiku |
+
+---
+
+## 5. Tipografi (Typography)
+
+### 5.1 Font Families
+
+#### Primary Font: Poppins (Headings)
+
+```css
+font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ```
 
-### 5.2. Auth-Optional Components
+#### Secondary Font: Inter (Body Text)
 
-**`<x-auth-optional-form>`**: Pre-fills if Auth::check(), manual entry if Guest
-**`<x-submission-history>`**: Queries by user_id OR token
-
-```blade
-{{-- Pre-fill for authenticated users --}}
-<x-auth-optional-form>
-    <input name="email" value="{{ Auth::check() ? Auth::user()->email : '' }}">
-</x-auth-optional-form>
-
-{{-- History by user_id or token --}}
-<x-submission-history :user="Auth::user()" :token="$token" />
+```css
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 ```
 
-### 5.3. Layout Structure
+#### Monospace Font: JetBrains Mono (Code)
+
+```css
+font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+```
+
+### 5.2 Type Scale
+
+#### Headings
+
+| Level | Size | Line Height | Font Weight | Tailwind Class |
+|-------|------|-------------|-------------|----------------|
+| H1 | 36px (2.25rem) | 44px (2.75rem) | 600 (Semibold) | `text-4xl font-semibold` |
+| H2 | 30px (1.875rem) | 38px (2.375rem) | 600 (Semibold) | `text-3xl font-semibold` |
+| H3 | 24px (1.5rem) | 32px (2rem) | 600 (Semibold) | `text-2xl font-semibold` |
+| H4 | 20px (1.25rem) | 28px (1.75rem) | 600 (Semibold) | `text-xl font-semibold` |
+| H5 | 16px (1rem) | 24px (1.5rem) | 600 (Semibold) | `text-base font-semibold` |
+| H6 | 14px (0.875rem) | 20px (1.25rem) | 600 (Semibold) | `text-sm font-semibold` |
+
+#### Body Text
+
+| Type | Size | Line Height | Font Weight | Tailwind Class |
+|------|------|-------------|-------------|----------------|
+| Large | 18px (1.125rem) | 28px (1.75rem) | 400 (Regular) | `text-lg` |
+| Base | 16px (1rem) | 24px (1.5rem) | 400 (Regular) | `text-base` |
+| Small | 14px (0.875rem) | 20px (1.25rem) | 400 (Regular) | `text-sm` |
+| Extra Small | 12px (0.75rem) | 16px (1rem) | 400 (Regular) | `text-xs` |
+
+### 5.3 Font Weights
+
+| Weight | Value | Tailwind Class | Usage |
+|--------|-------|----------------|-------|
+| Regular | 400 | `font-normal` | Body text |
+| Medium | 500 | `font-medium` | Labels, captions |
+| Semibold | 600 | `font-semibold` | Headings, buttons |
+| Bold | 700 | `font-bold` | Emphasis |
+
+---
+
+## 6. Struktur Halaman (Page Structure)
+
+### 6.1 Layout Hierarchy
+
+#### Guest Layout (`resources/views/layouts/guest.blade.php`)
 
 ```text
-+---------------------------------------------------------+
-|                    HEADER/NAVBAR                         |
-|  Logo | Navigation | User Menu (BM sahaja, v3.6.0)        |
-+---------------------------------------------------------+
-| SIDEBAR |              MAIN CONTENT                      |
-| (Admin) |  +-----------------------------------------+   |
-|         |  | Breadcrumbs                             |   |
-| - Dashboard +-----------------------------------------+   |
-| - Tickets | | Page Title                             |   |
-| - Assets  | +-----------------------------------------+   |
-| - Loans   | | Content Area                           |   |
-| - Reports | |                                         |   |
-| - Users   | |                                         |   |
-|         |  +-----------------------------------------+   |
-+---------------------------------------------------------+
-|                       FOOTER                             |
-|  Logo | Copyright | Social Links | Accessibility        |
-+---------------------------------------------------------+
+┌─────────────────────────────────────┐
+│ Header (Navigation + Language)      │
+├─────────────────────────────────────┤
+│                                     │
+│ Main Content Area                   │
+│ - Hero Section                      │
+│ - Form/Content                      │
+│ - AI Chat Widget (if enabled)       │
+│                                     │
+├─────────────────────────────────────┤
+│ Footer (Links + Copyright)          │
+└─────────────────────────────────────┘
+```
+
+#### Authenticated Layout (`resources/views/layouts/app.blade.php`)
+
+```text
+┌─────────────────────────────────────┐
+│ Header (Nav + Notifications + User) │
+├─────────────────────────────────────┤
+│ Sidebar │ Main Content Area         │
+│ - Menu  │ - Breadcrumbs            │
+│ - Stats │ - Page Content           │
+│         │ - AI Assistant           │
+│         │                          │
+├─────────────────────────────────────┤
+│ Footer (System Info + Links)        │
+└─────────────────────────────────────┘
+```
+
+#### Admin Layout (Filament)
+
+```text
+┌─────────────────────────────────────┐
+│ Admin Header (Filament Navigation)  │
+├─────────────────────────────────────┤
+│ Sidebar │ Admin Content            │
+│ - Admin │ - Dashboard/Resources    │
+│   Menu  │ - AI Analytics           │
+│ - Stats │ - System Monitoring      │
+│         │                          │
+└─────────────────────────────────────┘
+```
+
+### 6.2 Grid System
+
+#### Container Sizes
+
+| Breakpoint | Container Width | Padding |
+|------------|----------------|---------|
+| Mobile (< 640px) | 100% | 16px |
+| Tablet (640px+) | 640px | 24px |
+| Desktop (768px+) | 768px | 32px |
+| Large (1024px+) | 1024px | 40px |
+| XL (1280px+) | 1280px | 48px |
+
+#### Grid Columns
+
+```css
+/* 12-column grid system */
+.grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+/* Common layouts */
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }  /* Mobile */
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }  /* Tablet */
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }  /* Desktop */
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }  /* Large */
 ```
 
 ---
 
-## 6. Elemen Rekabentuk Utama (Key Design Elements)
+## 7. Antara Muka AI (AI Interface Design)
 
-### 6.1. Navigasi
+### 7.1 Chat Interface Components
 
-- **Header bar**: Navigasi utama di atas, konsisten di semua halaman
-- **Breadcrumbs**: Papar lokasi semasa pengguna dengan `aria-label="Breadcrumb"`
-- **Sidebar**: Untuk admin/BPM, akses pantas ke modul (Filament navigation)
+#### 7.1.1. Main Chat Container
 
-### 6.2. Bentuk & Borang (Forms)
-
-- **Field wajib**: Tanda `*` dengan `<abbr title="required">` untuk accessibility
-- **Input validation**: Real-time validation dengan Livewire `wire:model.live`
-- **Error messages**: Linked via `aria-describedby` ke input field
-- **Loading states**: `wire:loading` directive untuk feedback visual
-
-### 6.3. Visual Hierarchy
-
-- **Tajuk dan section**: Gunakan heading hierarchy (h1 → h2 → h3)
-- **Card/panel**: Untuk memisahkan maklumat penting
-- **Icon**: Heroicons (included with Filament) dengan `aria-hidden="true"`
-
-### 6.4. Feedback & Status
-
-- **Loading spinner**: Dengan `aria-busy="true"` dan hidden text
-- **Toast notifications**: Livewire dispatch events
-- **Status badges**: Warna + ikon + teks (tidak bergantung warna sahaja)
-
-### 6.5. Color Palette (WCAG 2.2 AA Compliant)
-
-| Warna       | Hex Code  | Penggunaan                    | Kontras Ratio |
-| ----------- | --------- | ----------------------------- | ------------- |
-| **Primary** | `#0056B3` | Butang utama, pautan          | 7.2:1         |
-| **Secondary** | `#0B4D8F` | Focus ring, secondary actions | 8.1:1         |
-| **Success** | `#1B7C54` | Status berjaya, pengesahan    | 4.6:1         |
-| **Warning** | `#CC7700` | Amaran, perhatian             | 4.5:1         |
-| **Danger**  | `#B3002D` | Ralat, tindakan berbahaya     | 7.8:1         |
-| **Text**    | `#1F2937` | Teks utama                    | 12.6:1        |
-| **Muted**   | `#6B7280` | Teks sekunder                 | 4.6:1         |
-
-### 6.6. Typography
-
-| Element     | Font Size | Font Weight | Line Height |
-| ----------- | --------- | ----------- | ----------- |
-| **H1**      | 2rem      | 700         | 1.2         |
-| **H2**      | 1.5rem    | 600         | 1.3         |
-| **H3**      | 1.25rem   | 600         | 1.4         |
-| **Body**    | 1rem      | 400         | 1.5         |
-| **Small**   | 0.875rem  | 400         | 1.5         |
-| **Caption** | 0.75rem   | 400         | 1.4         |
-
-### 6.7. Spacing System
-
-| Token  | Value  | Penggunaan                |
-| ------ | ------ | ------------------------- |
-| **xs** | 4px    | Inline spacing            |
-| **sm** | 8px    | Compact elements          |
-| **md** | 16px   | Standard spacing          |
-| **lg** | 24px   | Section spacing           |
-| **xl** | 32px   | Large section gaps        |
-| **2xl**| 48px   | Page section separators   |
-
-### 6.8. 12-8-4 Responsive Grid System (MyDS Aligned)
-
-ICTServe menggunakan sistem grid responsif 12-8-4 yang selaras dengan garis panduan MyDS untuk memastikan layout yang konsisten merentasi semua saiz skrin.
-
-**Grid Breakpoints:**
-
-| Device  | Width Range    | Grid Columns | Column Gap | Edge Padding | Max Width |
-| ------- | -------------- | ------------ | ---------- | ------------ | --------- |
-| Desktop | ≥1024px        | 12           | 24px       | 24px         | 1280px    |
-| Tablet  | 768px - 1023px | 8            | 24px       | 24px         | —         |
-| Mobile  | ≤767px         | 4            | 18px       | 18px         | —         |
-
-**Implementation (Tailwind CSS v4):**
+**Layout Structure**:
 
 ```blade
-{{-- Desktop: 12-column grid --}}
-<div class="grid grid-cols-12 gap-6 px-6 max-w-7xl mx-auto">
-    <div class="col-span-8">Main Content</div>
-    <div class="col-span-4">Sidebar</div>
-</div>
-
-{{-- Tablet: 8-column grid --}}
-<div class="grid grid-cols-8 gap-6 px-6 lg:grid-cols-12">
-    <div class="col-span-5 lg:col-span-8">Main Content</div>
-    <div class="col-span-3 lg:col-span-4">Sidebar</div>
-</div>
-
-{{-- Mobile: 4-column grid (stacked) --}}
-<div class="grid grid-cols-4 gap-[18px] px-[18px] md:grid-cols-8 lg:grid-cols-12">
-    <div class="col-span-4 md:col-span-5 lg:col-span-8">Main Content</div>
-    <div class="col-span-4 md:col-span-3 lg:col-span-4">Sidebar</div>
-</div>
-```
-
-**Container Types:**
-
-| Container | Max Width | Penggunaan                              |
-| --------- | --------- | --------------------------------------- |
-| Content   | 1280px    | Main content area                       |
-| Article   | 640px     | Long-form content (optimal readability) |
-| Media     | 740px     | Images, charts (visual impact)          |
-
-### 6.9. Shadow System (MyDS Aligned)
-
-Shadow menambah kedalaman dan dimensi kepada komponen UI, memberikan rasa lapisan dan hierarki dalam antaramuka digital.
-
-**Shadow Specifications:**
-
-| Name         | CSS                                                                                     | Penggunaan        |
-| ------------ | --------------------------------------------------------------------------------------- | ----------------- |
-| **None**     | `box-shadow: none;`                                                                     | Flat elements     |
-| **Button**   | `box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.07);`                                      | Buttons, CTAs     |
-| **Card**     | `box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05);`| Cards, panels     |
-| **Dropdown**| `box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 12px 50px 0px rgba(0, 0, 0, 0.10);`| Dropdowns, modals |
-
-**Tailwind CSS Implementation:**
-
-```css
-/* resources/css/app.css */
-@theme {
-    --shadow-button: 0px 1px 3px 0px rgba(0, 0, 0, 0.07);
-    --shadow-card: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05);
-    --shadow-dropdown: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 12px 50px 0px rgba(0, 0, 0, 0.10);
-}
-```
-
-```blade
-{{-- Usage in Blade --}}
-<button class="shadow-button hover:shadow-card">Submit</button>
-<div class="shadow-card rounded-lg p-4">Card Content</div>
-<div class="shadow-dropdown rounded-lg">Dropdown Menu</div>
-```
-
-### 6.10. Motion & Animation System (MyDS Aligned)
-
-Motion memberikan kehidupan kepada antaramuka, mengubah elemen statik melalui pergerakan dan interaksi yang bermakna.
-
-**Motion Principles:**
-
-- **Simple**: Motion harus membimbing, bukan mengganggu
-- **Harmony**: Gerakan produktif dan ekspresif harus selaras
-- **Functional**: Setiap gerakan mesti mempunyai tujuan yang jelas
-
-**Motion Types & Tokens:**
-
-| Token Name      | CSS Timing Function              | Duration | Penggunaan                          |
-| --------------- | -------------------------------- | -------- | ----------------------------------- |
-| `instant`       | —                                | 0ms      | No transition (default)             |
-| `linear`        | `cubic-bezier(0, 0, 1, 1)`       | varies   | Progress bars, timers               |
-| `easeout.short` | `cubic-bezier(0, 0, 0.58, 1)`    | 200ms    | Buttons, dropdowns, micro-interactions |
-| `easeout.medium`| `cubic-bezier(0, 0, 0.58, 1)`    | 400ms    | Callouts, alert dialogs, toasts     |
-| `easeout.long`  | `cubic-bezier(0, 0, 0.58, 1)`    | 600ms    | Page/section transitions            |
-| `easeoutback.short` | `cubic-bezier(0.4, 1.4, 0.2, 1)` | 200ms | Playful button interactions       |
-| `easeoutback.medium`| `cubic-bezier(0.4, 1.4, 0.2, 1)` | 400ms | Success animations, toast enter/exit |
-
-**Transition Duration Guidelines:**
-
-| Token    | Duration | Penggunaan                                      |
-| -------- | -------- | ----------------------------------------------- |
-| `short`  | 200ms    | Small UI (buttons, dropdowns, micro-interactions) |
-| `medium` | 400ms    | Medium UI (callouts, alert dialogs, toasts)     |
-| `long`   | 600ms    | Large UI (page, section transitions)            |
-
-**CSS Implementation:**
-
-```css
-/* resources/css/app.css */
-:root {
-    --motion-easeout: cubic-bezier(0, 0, 0.58, 1);
-    --motion-easeoutback: cubic-bezier(0.4, 1.4, 0.2, 1);
-    --duration-short: 200ms;
-    --duration-medium: 400ms;
-    --duration-long: 600ms;
-}
-
-/* Button hover transition */
-.btn-primary {
-    transition: var(--duration-short) var(--motion-easeoutback);
-}
-
-/* Toast enter/exit animation */
-.toast-enter {
-    animation: slideInUp var(--duration-medium) var(--motion-easeoutback);
-}
-
-.toast-exit {
-    animation: slideOutDown var(--duration-medium) var(--motion-easeoutback);
-}
-
-@keyframes slideInUp {
-    from { transform: translateY(100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes slideOutDown {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(100%); opacity: 0; }
-}
-```
-
-**Livewire/Alpine.js Implementation:**
-
-```blade
-{{-- Toast with motion --}}
-<div
-    x-data="{ show: false }"
-    x-show="show"
-    x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0 transform translate-y-4"
-    x-transition:enter-end="opacity-100 transform translate-y-0"
-    x-transition:leave="transition ease-in duration-200"
-    x-transition:leave-start="opacity-100 transform translate-y-0"
-    x-transition:leave-end="opacity-0 transform translate-y-4"
-    class="fixed bottom-4 right-4 bg-white shadow-dropdown rounded-lg p-4"
-    role="alert"
-    aria-live="polite"
->
-    {{ $message }}
-</div>
-```
-
-### 6.11. Skip Links & Keyboard Navigation (MyDS Aligned)
-
-Skip links membolehkan pengguna papan kekunci melangkau blok kandungan berulang dan terus ke kandungan utama.
-
-**Skip Link Implementation:**
-
-```blade
-{{-- resources/views/layouts/app.blade.php --}}
-<body>
-    {{-- Skip Links (visually hidden until focused) --}}
-    <a href="#main-content" class="skip-link">
-        {{ __('Skip to main content') }}
-    </a>
-    <a href="#main-navigation" class="skip-link">
-        {{ __('Skip to navigation') }}
-    </a>
-
-    <header id="main-navigation">
-        {{-- Navigation content --}}
-    </header>
-
-    <main id="main-content" tabindex="-1">
-        {{-- Main content --}}
-    </main>
-</body>
-```
-
-**Skip Link CSS:**
-
-```css
-/* Skip link - hidden until focused */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--color-primary-600, #0056B3);
-    color: white;
-    padding: 8px 16px;
-    z-index: 9999;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 0 0 4px 0;
-    transition: top 0.2s ease-out;
-}
-
-.skip-link:focus {
-    top: 0;
-    outline: 3px solid var(--color-secondary-600, #0B4D8F);
-    outline-offset: 2px;
-}
-
-/* Ensure main content can receive focus */
-#main-content:focus {
-    outline: none;
-}
-```
-
-**Keyboard Navigation Requirements:**
-
-| Key           | Action                                    | Context              |
-| ------------- | ----------------------------------------- | -------------------- |
-| `Tab`         | Move to next focusable element            | Global               |
-| `Shift+Tab`   | Move to previous focusable element        | Global               |
-| `Enter/Space` | Activate button/link                      | Buttons, Links       |
-| `Escape`      | Close modal/dropdown                      | Modals, Dropdowns    |
-| `Arrow Keys`  | Navigate within menus/lists               | Dropdowns, Menus     |
-| `Home/End`    | Jump to first/last item                   | Lists, Tables        |
-
-**Focus Management for Modals:**
-
-```blade
-{{-- Modal with focus trap --}}
-<div
-    x-data="{ open: false }"
-    x-show="open"
-    x-trap.noscroll="open"
-    @keydown.escape.window="open = false"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="modal-title"
->
-    <h2 id="modal-title">{{ $title }}</h2>
-    {{-- Modal content --}}
-    <button @click="open = false" aria-label="{{ __('Close') }}">
-        <x-heroicon-o-x-mark class="w-5 h-5" aria-hidden="true" />
-    </button>
-</div>
-```
-
-### 6.12. Button Styles
-
-```blade
-{{-- Primary Button --}}
-<x-primary-button class="min-h-44 px-4 py-2 shadow-button">
-    {{ __('Submit') }}
-</x-primary-button>
-
-{{-- Secondary Button --}}
-<x-secondary-button class="min-h-44 px-4 py-2">
-    {{ __('Cancel') }}
-</x-secondary-button>
-
-{{-- Danger Button --}}
-<x-danger-button class="min-h-44 px-4 py-2">
-    {{ __('Delete') }}
-</x-danger-button>
-```
-
-### 6.13. Focus States
-
-```css
-/* Focus ring untuk semua interactive elements */
-:focus-visible {
-    outline: 3px solid #0B4D8F;
-    outline-offset: 2px;
-}
-
-/* Skip link untuk keyboard navigation */
-.skip-link:focus {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    padding: 1rem;
-    background: #0056B3;
-    color: white;
-}
-```
-
-### 6.14. Submission History Table (Hybrid)
-
-**Component**: `<x-submission-history>` queries by `user_id` (Auth) OR `token` (Guest)
-
-**Columns**:
-
-| Column        | Content                      | Sortable | Filterable |
-| ------------- | ---------------------------- | -------- | ---------- |
-| Tarikh (Date) | Created date (d/m/Y format)  | Yes      | Yes        |
-| Jenis (Type)  | Helpdesk / Loan              | No       | Yes        |
-| Subjek/Aset   | Ticket subject OR Asset name | No       | No         |
-| Status        | Badge with icon+color+text   | No       | Yes        |
-| Tindakan      | View Details button          | No       | No         |
-
-**Query Logic**:
-
-```php
-if (Auth::check()) {
-    // Authenticated: Query by user_id
-    $submissions = DB::table('helpdesk_tickets')
-        ->where('user_id', Auth::id())
-        ->union(DB::table('loan_applications')->where('user_id', Auth::id()))
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-} else {
-    // Guest: Query by token
-    $submissions = DB::table('helpdesk_tickets')
-        ->where('uuid', $token)
-        ->union(DB::table('loan_applications')->where('uuid', $token))
-        ->orderBy('created_at', 'desc')
-        ->get();
-}
-```
-
-**Responsive Design**:
-
-- **Desktop (≥1024px)**: Full table with sortable columns, pagination
-- **Tablet (768-1023px)**: Condensed table, horizontal scroll if needed
-- **Mobile (<768px)**: Card view with stacked information
-
-**Accessibility (WCAG 2.2 AA)**:
-
-- `<th scope="col">` for table headers
-- `aria-label` on action buttons ("View helpdesk ticket details")
-- Keyboard navigation (Tab, Enter, Arrow keys)
-- Status badges with icon+text (not color alone)
-- Focus indicators (3px outline, 2px offset)
-- Screen reader announcements for status changes
-
----
-
-### 6.15. Self-Registration Form (True Hybrid v3.5.0)
-
-**Page**: `/register`
-**Layout**: `guest.blade.php`
-
-**Form Fields**:
-
-| Field              | Type     | Validation                                | Notes                 |
-| ------------------ | -------- | ----------------------------------------- | --------------------- |
-| Nama Penuh         | text     | required, max:255                         | Full name             |
-| E-mel              | email    | required, unique, ends_with:@motac.gov.my | Government email only |
-| Telefon            | tel      | required, regex:phone                     | Malaysian format      |
-| Bahagian           | select   | required                                  | FK → departments      |
-| Gred               | select   | optional                                  | Grade selection       |
-| Kata Laluan        | password | required, min:8, confirmed                | Password rules        |
-| Sahkan Kata Laluan | password | required                                  | Confirmation          |
-
-**Accessibility (WCAG 2.2 AA)**:
-
-- Email domain validation error: "Sila gunakan e-mel rasmi @motac.gov.my"
-- Password strength indicator with text description
-- Focus management on form errors
-- Submit button disabled until valid
-
-**Post-Registration Flow**:
-
-1. Form submitted → User created (email_verified_at = NULL)
-2. Verification email sent
-3. Redirect to `/verify-email` page
-4. User clicks link → email_verified_at = NOW()
-5. Redirect to Dashboard with optional linking prompt
-
-### 6.16. Flexible Login Form (True Hybrid v3.5.0)
-
-**Page**: `/login`
-**Layout**: `guest.blade.php`
-
-**Form Fields**:
-
-| Field                | Type     | Validation       | Notes                                    |
-| -------------------- | -------- | ---------------- | ---------------------------------------- |
-| E-mel atau Username  | text     | required         | Accepts full email OR short username     |
-| Kata Laluan          | password | required         | Password field                           |
-| Ingat Saya           | checkbox | optional         | Remember me functionality                |
-
-**Username Logic**:
-
-- Input `ahmad.ibrahim` → System appends `@motac.gov.my`
-- Input `ahmad.ibrahim@motac.gov.my` → Used as-is
-- Generic error message (no user enumeration)
-
-**Google SSO Button (Optional)**:
-
-```blade
-<div class="mt-4">
-    <a href="{{ route('auth.google') }}" 
-       class="flex items-center justify-center gap-2 w-full px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-        <svg class="w-5 h-5" aria-hidden="true"><!-- Google icon --></svg>
-        {{ __('Log masuk dengan Google') }}
-    </a>
-</div>
-```
-
-### 6.17. Email Verification Page
-
-**Page**: `/verify-email`
-**Layout**: `guest.blade.php`
-
-**Content**:
-
-- Heading: "Sahkan E-mel Anda"
-- Message: "Kami telah menghantar pautan pengesahan ke {email}"
-- Resend button (rate limited: 60 seconds)
-- Check email instructions
-- Link to login if already verified
-
-**Accessibility**:
-
-- Clear heading hierarchy
-- Countdown timer for resend button (aria-live)
-- Success/error messages with role="alert"
-
-### 6.18. Account Linking Prompt
-
-**Trigger**: First login after registration, if matching submissions exist
-**Display**: Modal or banner on Dashboard
-
-**Content**:
-
-- Heading: "Submissions Sedia Ada Ditemui"
-- Message: "Kami menemui {count} submissions dengan e-mel anda. Adakah anda mahu menghubungkannya dengan akaun ini?"
-- List of submissions (date, type, subject)
-- Buttons: "Ya, Hubungkan" | "Tidak, Terima Kasih"
-
-**Accessibility**:
-
-- Modal focus trap
-- Escape to dismiss
-- Clear button labels
-- Screen reader announcements
-
-### 6.19. Notification Preferences Panel
-
-**Page**: `/profile` (section within profile page)
-**Component**: `<livewire:account.notification-preferences />`
-
-**Fields**:
-
-| Field             | Type   | Options                       | Default     |
-| ----------------- | ------ | ----------------------------- | ----------- |
-| Kekerapan E-mel   | select | Serta-merta, Harian, Mingguan | Serta-merta |
-| Notifikasi In-App | toggle | On/Off                        | On          |
-
-**Accessibility**:
-
-- Clear labels for each preference
-- Immediate save feedback
-- Keyboard accessible toggle
-
-### 6.20. Laravel Pulse Dashboard (Admin/Superuser v3.5.0)
-
-**Page**: `/pulse`
-**Access**: `admin` and `superuser` roles only
-**Layout**: Filament admin panel
-
-**Dashboard Widgets**:
-
-| Widget                | Metrics                                    | Refresh Rate |
-| --------------------- | ------------------------------------------ | ------------ |
-| **Request Throughput**| Requests/second, response time p50/p95/p99 | 5 seconds    |
-| **Slow Queries**      | Queries >500ms, table, duration            | 10 seconds   |
-| **Queue Jobs**        | Pending, processing, failed jobs           | 5 seconds    |
-| **Server Health**     | CPU, memory, disk usage                    | 30 seconds   |
-| **Cache Stats**       | Hit/miss ratio, memory usage               | 10 seconds   |
-
-**Accessibility**:
-
-- All charts have text alternatives
-- Color-blind friendly palette
-- Keyboard navigable widgets
-- Screen reader compatible data tables
-
-### 6.21. API Token Management (Admin/Superuser v3.5.0)
-
-**Page**: `/profile/api-tokens` (within profile)
-**Component**: `<livewire:account.api-tokens />`
-
-**Features**:
-
-- Create new API token with abilities selection
-- View existing tokens (masked)
-- Revoke tokens
-- Copy token to clipboard (one-time display)
-
-**Token Abilities**:
-
-| Ability         | Description                    |
-| --------------- | ------------------------------ |
-| `read:tickets`  | Read helpdesk tickets          |
-| `write:tickets` | Create/update tickets          |
-| `read:loans`    | Read loan applications         |
-| `write:loans`   | Create/update loan applications|
-| `admin:all`     | Full administrative access     |
-
----
-
-## 7. Perpustakaan Komponen (Component Library)
-
-### 7.1. Blade Components (`resources/views/components/`)
-
-| Komponen                    | Lokasi        | Fungsi                 |
-| --------------------------- | ------------- | ---------------------- |
-| `alert.blade.php`           | `components/` | Alert messages         |
-| `modal.blade.php`           | `components/` | Modal dialogs          |
-| `dropdown.blade.php`        | `components/` | Dropdown menus         |
-| `text-input.blade.php`      | `components/` | Form text inputs       |
-| `primary-button.blade.php`  | `components/` | Primary action buttons |
-| `secondary-button.blade.php`| `components/` | Secondary buttons      |
-| `danger-button.blade.php`   | `components/` | Danger/delete buttons  |
-| `statistics-card.blade.php` | `components/` | Dashboard stat cards   |
-| `status-badge.blade.php`    | `components/` | Status indicators      |
-| `auth-optional-form.blade.php` | `components/` | Hybrid form wrapper |
-
-### 7.2. Livewire Components (`app/Livewire/`)
-
-| Komponen                     | Lokasi          | Fungsi                       |
-| ---------------------------- | --------------- | ---------------------------- |
-| `LanguageSwitcher`           | `app/Livewire/` | **DILUMPUHKAN v3.6.0** (BM sahaja) |
-| `NotificationBell`           | `app/Livewire/` | Real-time notifications      |
-| `NotificationCenter`         | `app/Livewire/` | Notification management      |
-| `GlobalSearch`               | `app/Livewire/` | Cross-module search          |
-| `SessionTimeoutWarning`      | `app/Livewire/` | Session expiry warning       |
-| `ActivityTimeline`           | `app/Livewire/` | Activity feed                |
-| `Account\NotificationPreferences` | `app/Livewire/` | Notification settings   |
-| `Account\ApiTokens`          | `app/Livewire/` | API token management         |
-| `Dashboard\AccountLinking`   | `app/Livewire/` | Guest submission linking     |
-
-### 7.3. Form Components
-
-**Text Input dengan Validation:**
-
-```blade
-<div class="mb-4">
-    <x-input-label for="email" :value="__('Email')" />
-    <x-text-input
-        id="email"
-        type="email"
-        name="email"
-        class="mt-1 block w-full"
-        :value="old('email')"
-        required
-        autocomplete="email"
-        aria-describedby="email-error"
-    />
-    <x-input-error :messages="$errors->get('email')" class="mt-2" id="email-error" />
-</div>
-```
-
-**Livewire Form dengan Loading State:**
-
-```blade
-<form wire:submit="save">
-    <div class="mb-4">
-        <label for="subject" class="block text-sm font-medium">
-            {{ __('Subject') }} <span class="text-red-500" aria-hidden="true">*</span>
-            <span class="sr-only">{{ __('required') }}</span>
-        </label>
-        <input
-            type="text"
-            id="subject"
-            wire:model="subject"
-            class="mt-1 block w-full rounded-md border-gray-300 focus:ring-2 focus:ring-primary-500"
-            required
-            aria-describedby="subject-error"
-        >
-        @error('subject')
-            <p class="mt-1 text-sm text-red-600" role="alert" id="subject-error">{{ $message }}</p>
-        @enderror
-    </div>
-
-    <button type="submit" class="btn-primary min-h-44" wire:loading.attr="disabled">
-        <span wire:loading.remove>{{ __('Submit') }}</span>
-        <span wire:loading class="flex items-center">
-            <svg class="animate-spin -ml-1 mr-2 h-4 w-4" aria-hidden="true" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-            </svg>
-            {{ __('Submitting...') }}
-        </span>
-    </button>
-</form>
-```
-
-### 7.4. Language Switcher Component (DILUMPUHKAN v3.6.0)
-
-**Implementation**: Livewire 3.x dengan WCAG 2.2 AA compliance
-**Location**: `app/Livewire/LanguageSwitcher.php`
-
-**Accessibility Features:**
-
-- `role="navigation"` dengan `aria-label="Language Switcher"` - **DILUMPUHKAN v3.6.0**
-- `aria-expanded` tracks dropdown state
-- `aria-current="true"` marks selected language
-- Keyboard navigation: Tab, Enter/Space, Arrow keys
-- Focus indicator: 3px outline
-- Touch target: 44×44px minimum
-
-**Blade Template:**
-
-```blade
-<div class="dropdown" role="navigation" aria-label="{{ __('Language Switcher') }}">
-    <button
-        class="btn btn-outline-secondary dropdown-toggle min-h-44 min-w-44"
-        type="button"
-        aria-expanded="false"
-        aria-haspopup="listbox"
-    >
-        <x-heroicon-o-globe-alt class="w-5 h-5" aria-hidden="true" />
-        <span>{{ $this->getLocaleLabel($locale) }}</span>
-    </button>
-    <ul class="dropdown-menu" role="listbox">
-        @foreach($availableLocales as $loc)
-            <li role="option">
-                <button
-                    wire:click="setLocale('{{ $loc }}')"
-                    class="dropdown-item {{ $loc === $locale ? 'active' : '' }}"
-                    @if($loc === $locale) aria-selected="true" @endif
-                    type="button"
-                >
-          {{ $this->getLocaleLabel($loc) }}
-                </button>
-            </li>
-        @endforeach
-    </ul>
-</div>
-```
-
-### 7.5. Status Badges
-
-**Tidak bergantung warna sahaja - gunakan ikon + teks:**
-
-```blade
-<!-- Ticket Status Badges -->
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-    <x-heroicon-s-check-circle class="w-4 h-4 mr-1" aria-hidden="true" />
-    {{ __('Open') }}
-</span>
-
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-    <x-heroicon-s-clock class="w-4 h-4 mr-1" aria-hidden="true" />
-    {{ __('In Progress') }}
-</span>
-
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-    <x-heroicon-s-check class="w-4 h-4 mr-1" aria-hidden="true" />
-    {{ __('Resolved') }}
-</span>
-
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-    <x-heroicon-s-x-circle class="w-4 h-4 mr-1" aria-hidden="true" />
-    {{ __('Closed') }}
-</span>
-```
-
-### 7.6. Modal Dialogs
-
-**Accessible Modal dengan Focus Trap:**
-
-```blade
-<x-modal name="confirm-delete" :show="$showDeleteModal" focusable>
-    <div class="p-6">
-        <h2 class="text-lg font-medium text-gray-900" id="modal-title">
-            {{ __('Confirm Deletion') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600" id="modal-description">
-            {{ __('Are you sure you want to delete this item? This action cannot be undone.') }}
-        </p>
-
-        <div class="mt-6 flex justify-end gap-3">
-            <x-secondary-button x-on:click="$dispatch('close')">
-                {{ __('Cancel') }}
-            </x-secondary-button>
-
-            <x-danger-button wire:click="delete" wire:loading.attr="disabled">
-                <span wire:loading.remove>{{ __('Delete') }}</span>
-                <span wire:loading>{{ __('Deleting...') }}</span>
-            </x-danger-button>
+<div class="ai-chat-container flex flex-col h-full max-h-screen bg-white rounded-lg shadow-card">
+    {{-- Chat Header --}}
+    <div class="chat-header flex items-center justify-between p-4 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
+                <x-heroicon-s-chat-bubble-left-right class="w-5 h-5 text-white" />
+            </div>
+            <div>
+                <h3 class="font-semibold text-gray-900">{{ __('AI Assistant') }}</h3>
+                <p class="text-xs text-gray-500">{{ __('Powered by Claude & Ollama') }}</p>
+            </div>
+        </div>
+        
+        {{-- Model Selection --}}
+        <div class="model-selector">
+            @include('components.ai.model-selector')
         </div>
     </div>
-</x-modal>
-```
 
-### 7.7. Data Tables
+    {{-- Chat Messages --}}
+    <div class="chat-messages flex-1 overflow-y-auto p-4 space-y-4" 
+         role="log" 
+         aria-live="polite" 
+         aria-label="{{ __('Sejarah perbualan AI') }}">
+        @foreach($messages as $message)
+            @include('components.ai.message', ['message' => $message])
+        @endforeach
+        
+        {{-- Streaming indicator --}}
+        @if($isStreaming)
+            <div class="streaming-message bg-gray-50 border-l-4 border-primary-500 p-3 rounded-r-lg">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm text-gray-600">{{ __('AI sedang menaip...') }}</span>
+                </div>
+                <div class="streaming-content prose prose-sm max-w-none"></div>
+            </div>
+        @endif
+    </div>
 
-**Responsive Table dengan Accessibility:**
+    {{-- Chat Input --}}
+    <div class="chat-input border-t border-gray-200 p-4">
+        @include('components.ai.chat-input')
+    </div>
 
-```blade
-<div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200" aria-label="{{ __('Ticket List') }}">
-        <thead class="bg-gray-50">
-            <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {{ __('Ticket No') }}
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {{ __('Subject') }}
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {{ __('Status') }}
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    <span class="sr-only">{{ __('Actions') }}</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-            @foreach($tickets as $ticket)
-                <tr wire:key="ticket-{{ $ticket->id }}">
-                    <td class="px-6 py-4 whitespace-nowrap font-mono text-sm">
-                        {{ $ticket->ticket_number }}
-                    </td>
-                    <td class="px-6 py-4">{{ $ticket->subject }}</td>
-                    <td class="px-6 py-4">
-                        <x-status-badge :status="$ticket->status" />
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="{{ route('tickets.show', $ticket) }}"
-                           class="text-primary-600 hover:text-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
-                           aria-label="{{ __('View ticket') }} {{ $ticket->ticket_number }}">
-                            {{ __('View') }}
-                        </a>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    {{-- FAQ Suggestions (if available) --}}
+    @if(!empty($faqSuggestions))
+        <div class="faq-suggestions border-t border-gray-200 p-4">
+            <p class="text-sm font-medium text-gray-700 mb-2">{{ __('Cadangan FAQ:') }}</p>
+            <div class="flex flex-wrap gap-2">
+                @foreach($faqSuggestions as $suggestion)
+                    <button wire:click="selectFaqSuggestion('{{ $suggestion }}')"
+                            class="text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors">
+                        {{ $suggestion }}
+                    </button>
+                @endforeach
+            </div>
+        </div>
+    @endif
 </div>
 ```
 
-### 7.8. Loading States
+#### 7.1.2. Streaming Response UI Patterns
 
-**Livewire Loading Indicators:**
+**WebSocket (Laravel Reverb + Echo) untuk status AI (admin/superuser)**:
+
+```javascript
+// resources/js/bootstrap.js
+// Ringkasan: subscribe ke channel AI untuk notifikasi status dan amaran prestasi.
+window.initAIBroadcasting = function (userRole) {
+    if (!window.Echo) return;
+    if (!['admin', 'superuser'].includes(userRole)) return;
+
+    window.Echo.private('ai-status')
+        .listen('.AIProcessingStarted', (data) => {
+            window.dispatchEvent(new CustomEvent('ai:processing:started', { detail: data }));
+        })
+        .listen('.AIProcessingCompleted', (data) => {
+            window.dispatchEvent(new CustomEvent('ai:processing:completed', { detail: data }));
+        });
+};
+```
+
+#### 7.1.3. Model Selection Interface
+
+**Visual Model Indicators**:
+
+| Model | Icon | Color | Usage Indicator |
+|-------|------|-------|-----------------|
+| Auto (Pintar) | 🤖 | `text-primary-600` | Routing automatik berdasarkan jenis pertanyaan |
+| Claude Opus | 💎 | `text-purple-600` | Tugas kompleks, analisis mendalam |
+| Claude Sonnet | ⚡ | `text-blue-600` | Keseimbangan prestasi dan kualiti |
+| Claude Haiku | 🚀 | `text-green-600` | Respons pantas, soalan mudah |
+
+**Model Selection Component**:
 
 ```blade
-<!-- Button Loading State -->
-<button type="submit" wire:loading.attr="disabled" wire:target="save" class="btn-primary min-h-44">
-    <span wire:loading.remove wire:target="save">{{ __('Save') }}</span>
-    <span wire:loading wire:target="save" class="flex items-center" aria-live="polite">
-        <svg class="animate-spin -ml-1 mr-2 h-4 w-4" aria-hidden="true" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-        </svg>
-        {{ __('Saving...') }}
-    </span>
-</button>
-
-<!-- Full Page Loading Overlay -->
-<div wire:loading.flex wire:target="submit" 
-     class="fixed inset-0 bg-gray-500 bg-opacity-75 items-center justify-center z-50"
-     role="status" aria-live="polite">
-    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-        <svg class="animate-spin h-10 w-10 text-primary-600 mx-auto" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-        </svg>
-        <p class="mt-4 text-gray-700">{{ __('Processing your request...') }}</p>
+<div class="model-selector flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
+    <span class="text-sm font-medium text-gray-700">{{ __('Model AI:') }}</span>
+    <div class="flex gap-1">
+        @foreach(['auto', 'opus', 'sonnet', 'haiku'] as $model)
+            <button wire:click="selectModel('{{ $model }}')"
+                    class="px-3 py-1 text-xs rounded-md transition-colors
+                           {{ $selectedModel === $model 
+                              ? 'bg-primary-600 text-white' 
+                              : 'bg-white text-gray-600 hover:bg-gray-100' }}">
+                {{ $this->getModelLabel($model) }}
+            </button>
+        @endforeach
     </div>
 </div>
 ```
 
----
+#### 7.1.4. Conversation Management UI
 
-## 8. Filament Admin Panel
-
-### 8.1. Filament v4 Components
-
-**Location**: `app/Filament/Resources/`
-
-| Resource                  | Fungsi                      | Access Level        |
-| ------------------------- | --------------------------- | ------------------- |
-| `HelpdeskTicketResource`  | Ticket management CRUD      | admin, superuser    |
-| `LoanApplicationResource` | Loan application management | admin, superuser    |
-| `AssetResource`           | Asset inventory management  | admin, superuser    |
-| `UserResource`            | User management             | superuser only      |
-| `AuditResource`           | Audit trail viewer          | superuser only      |
-
-### 8.2. Filament Widgets
-
-**Location**: `app/Filament/Widgets/`
-
-| Widget                    | Fungsi                          | Refresh Rate |
-| ------------------------- | ------------------------------- | ------------ |
-| `HelpdeskStatsWidget`     | Ticket metrics (open, resolved) | Real-time    |
-| `LoanStatsWidget`         | Loan metrics (pending, active)  | Real-time    |
-| `AssetUtilizationWidget`  | Asset usage statistics          | 5 minutes    |
-| `SLAComplianceWidget`     | SLA breach tracking             | Real-time    |
-| `RecentActivityWidget`    | Latest tickets and loans        | Real-time    |
-| `PulseOverviewWidget`     | Performance metrics summary     | 30 seconds   |
-
-### 8.3. Filament Customization
-
-**Custom Theme**: `resources/css/filament/admin/theme.css`
-
-```css
-@import "tailwindcss";
-
-@theme {
-    --color-primary-50: oklch(0.97 0.02 250);
-    --color-primary-100: oklch(0.94 0.04 250);
-    --color-primary-200: oklch(0.88 0.08 250);
-    --color-primary-300: oklch(0.78 0.12 250);
-    --color-primary-400: oklch(0.68 0.14 250);
-    --color-primary-500: oklch(0.55 0.15 250);
-    --color-primary-600: oklch(0.48 0.15 250);
-    --color-primary-700: oklch(0.40 0.14 250);
-    --color-primary-800: oklch(0.33 0.12 250);
-    --color-primary-900: oklch(0.27 0.10 250);
-}
-```
-
-### 8.4. Filament Accessibility
-
-- All Filament tables support keyboard navigation
-- Form fields have proper labels and error associations
-- Color contrast meets WCAG 2.2 AA standards
-- Focus indicators visible on all interactive elements
-- Screen reader compatible notifications
-
----
-
-## 9. Rekabentuk Responsif (Responsive Design)
-
-### 9.1. Breakpoints (Tailwind CSS v4)
-
-| Breakpoint | Width    | Penggunaan          |
-| ---------- | -------- | ------------------- |
-| **sm**     | ≥640px   | Mobile landscape    |
-| **md**     | ≥768px   | Tablet              |
-| **lg**     | ≥1024px  | Desktop             |
-| **xl**     | ≥1280px  | Large desktop       |
-| **2xl**    | ≥1536px  | Extra large screens |
-
-### 9.2. Mobile-First Approach
+**Conversation History Sidebar**:
 
 ```blade
-<!-- Mobile-first responsive grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    @foreach($items as $item)
-        <div class="bg-white rounded-lg shadow p-4">
-            <!-- Card content -->
+<div class="conversation-sidebar w-64 bg-white shadow-card rounded-lg p-4">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-gray-900">{{ __('Sejarah Perbualan') }}</h3>
+        <button wire:click="startNewConversation" 
+                class="text-sm text-primary-600 hover:text-primary-700">
+            {{ __('Baru') }}
+        </button>
+    </div>
+    
+    <div class="space-y-2 max-h-64 overflow-y-auto">
+        @foreach($savedConversations as $conversation)
+            <div class="conversation-item p-2 rounded-md cursor-pointer hover:bg-gray-50
+                        {{ $currentConversationId === $conversation->id ? 'bg-primary-50 border-l-2 border-primary-500' : '' }}"
+                 wire:click="loadConversation({{ $conversation->id }})">
+                <div class="flex items-center justify-between">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate">
+                            {{ $conversation->title ?? __('Perbualan Tanpa Tajuk') }}
+                        </p>
+                        <p class="text-xs text-gray-500">
+                            {{ $conversation->updated_at->diffForHumans() }}
+                        </p>
+                    </div>
+                    <button wire:click.stop="deleteConversation({{ $conversation->id }})"
+                            class="text-gray-400 hover:text-red-500">
+                        <x-heroicon-o-trash class="w-4 h-4" />
+                    </button>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+```
+
+### 7.2. Web-Augmented Response Display
+
+**Enhanced Response with Sources**:
+
+```blade
+<div class="ai-response bg-white shadow-sm rounded-lg p-4">
+    {{-- Response Header --}}
+    <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-success-500 rounded-full"></div>
+            <span class="text-sm font-medium text-gray-700">
+                {{ __('Respons AI') }}
+                @if($response['web_augmented'])
+                    <span class="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
+                        {{ __('Diperkaya Web') }}
+                    </span>
+                @endif
+            </span>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-500">{{ $response['model_used'] }}</span>
+            <span class="text-xs text-gray-400">{{ $response['response_time'] }}ms</span>
+        </div>
+    </div>
+
+    {{-- Main Response Content --}}
+    <div class="prose prose-sm max-w-none">
+        {!! Str::markdown($response['content']) !!}
+    </div>
+
+    {{-- Web Sources (if applicable) --}}
+    @if(!empty($response['web_sources']))
+        <div class="mt-4 pt-3 border-t border-gray-200">
+            <p class="text-sm font-medium text-gray-700 mb-2">{{ __('Sumber Web:') }}</p>
+            <div class="space-y-2">
+                @foreach($response['web_sources'] as $source)
+                    <div class="flex items-center gap-2 text-sm">
+                        <x-heroicon-o-link class="w-4 h-4 text-gray-400" />
+                        <a href="{{ $source['url'] }}" target="_blank" 
+                           class="text-primary-600 hover:text-primary-700 truncate">
+                            {{ $source['title'] }}
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    {{-- FAQ Sources (if applicable) --}}
+    @if(!empty($response['faq_sources']))
+        <div class="mt-4 pt-3 border-t border-gray-200">
+            <p class="text-sm font-medium text-gray-700 mb-2">{{ __('Sumber FAQ:') }}</p>
+            <div class="space-y-1">
+                @foreach($response['faq_sources'] as $faq)
+                    <div class="text-sm text-gray-600">
+                        • {{ $faq['question'] }}
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+</div>
+```
+
+### 7.3. AI Interface Accessibility (WCAG 2.2 AA)
+
+#### 7.3.1. Keyboard Navigation
+
+**Chat Interface Keyboard Support**:
+
+| Key Combination | Action | Implementation |
+|----------------|--------|----------------|
+| `Tab` | Navigate between chat input, model selector, suggestions | Standard focus management |
+| `Ctrl + Enter` | Send message from textarea | `@keydown.ctrl.enter` directive |
+| `Escape` | Clear current input or close suggestions | Alpine.js event handler |
+| `Arrow Up/Down` | Navigate through message history | Custom keyboard handler |
+| `Alt + M` | Open model selection dropdown | Keyboard shortcut |
+
+**Implementation**:
+
+```blade
+<div class="ai-chat-interface" 
+     x-data="aiChatKeyboard()" 
+     @keydown.window="handleKeydown($event)">
+    
+    {{-- Chat input with keyboard shortcuts --}}
+    <textarea wire:model="userMessage"
+              @keydown.ctrl.enter="$wire.sendMessage()"
+              @keydown.escape="clearInput()"
+              @keydown.arrow-up="navigateHistory('up')"
+              @keydown.arrow-down="navigateHistory('down')"
+              aria-label="{{ __('Masukkan pertanyaan anda') }}"
+              aria-describedby="chat-help-text">
+    </textarea>
+    
+    <div id="chat-help-text" class="sr-only">
+        {{ __('Gunakan Ctrl+Enter untuk menghantar, Escape untuk membersihkan, Arrow keys untuk sejarah') }}
+    </div>
+</div>
+```
+
+#### 7.3.2. Screen Reader Support
+
+**ARIA Labels and Live Regions**:
+
+```blade
+{{-- Chat messages with proper ARIA --}}
+<div class="chat-messages" 
+     role="log" 
+     aria-live="polite" 
+     aria-label="{{ __('Sejarah perbualan AI') }}">
+    
+    @foreach($conversations as $message)
+        <div class="message" 
+             role="article"
+             aria-label="{{ $message['role'] === 'user' ? __('Mesej anda') : __('Respons AI') }}">
+            
+            {{-- Message content with proper markup --}}
+            <div class="message-content">
+                @if($message['role'] === 'assistant')
+                    <div class="ai-indicator" aria-label="{{ __('Respons dari AI Assistant') }}">
+                        <span class="sr-only">{{ __('AI berkata:') }}</span>
+                    </div>
+                @endif
+                
+                <div class="prose" aria-label="{{ __('Kandungan mesej') }}">
+                    {!! Str::markdown($message['content']) !!}
+                </div>
+            </div>
         </div>
     @endforeach
 </div>
 
-<!-- Responsive navigation -->
-<nav class="flex flex-col md:flex-row md:items-center gap-4">
-    <a href="#" class="block py-2 md:py-0">{{ __('Home') }}</a>
-    <a href="#" class="block py-2 md:py-0">{{ __('Tickets') }}</a>
-    <a href="#" class="block py-2 md:py-0">{{ __('Loans') }}</a>
-</nav>
+{{-- Model selection with proper labeling --}}
+<fieldset class="model-selection">
+    <legend class="sr-only">{{ __('Pilih model AI') }}</legend>
+    <div class="flex gap-2" role="radiogroup" aria-label="{{ __('Model AI yang tersedia') }}">
+        @foreach($models as $model)
+            <label class="model-option">
+                <input type="radio" 
+                       name="ai_model" 
+                       value="{{ $model }}"
+                       wire:model.live="selectedModel"
+                       aria-describedby="model-{{ $model }}-desc">
+                <span>{{ $this->getModelLabel($model) }}</span>
+                <div id="model-{{ $model }}-desc" class="sr-only">
+                    {{ $this->getModelDescription($model) }}
+                </div>
+            </label>
+        @endforeach
+    </div>
+</fieldset>
 ```
 
-### 9.3. Touch-Friendly Design
+#### 7.3.3. Color Contrast and Visual Indicators
 
-- Minimum touch target: 44×44px
-- Adequate spacing between interactive elements (minimum 8px)
-- Swipe gestures for mobile navigation (optional)
-- No hover-only interactions
+**High Contrast AI Interface Elements**:
+
+```css
+/* AI Chat Interface - WCAG 2.2 AA Compliant */
+.ai-chat-container {
+    /* Ensure 4.5:1 contrast ratio for text */
+    --ai-text-primary: #1f2937; /* 12.6:1 contrast on white */
+    --ai-text-secondary: #6b7280; /* 4.6:1 contrast on white */
+    --ai-bg-user: #0056b3; /* 7.2:1 contrast with white text */
+    --ai-bg-assistant: #ffffff; /* White background */
+    --ai-border-focus: #0b4d8f; /* 8.1:1 contrast for focus rings */
+}
+
+.user-message {
+    background-color: var(--ai-bg-user);
+    color: white; /* 7.2:1 contrast ratio */
+}
+
+.ai-message {
+    background-color: var(--ai-bg-assistant);
+    color: var(--ai-text-primary);
+    border: 1px solid #e5e7eb; /* 3:1 contrast for UI elements */
+}
+
+/* Streaming indicator with sufficient contrast */
+.streaming-indicator {
+    background-color: #f3f4f6;
+    border-left: 3px solid #0056b3; /* Visual indicator */
+}
+
+/* Model selection with clear visual states */
+.model-selector button {
+    transition: all 0.2s ease;
+}
+
+.model-selector button:focus {
+    outline: 3px solid var(--ai-border-focus);
+    outline-offset: 2px;
+}
+
+.model-selector button[aria-pressed="true"] {
+    background-color: var(--ai-bg-user);
+    color: white;
+}
+```
+
+### 7.4. Performance Optimization for AI Interface
+
+#### 7.4.1. Lazy Loading and Progressive Enhancement
+
+**Conversation History Virtualization**:
+
+```blade
+{{-- Virtual scrolling for large conversation histories --}}
+<div class="conversation-history" 
+     x-data="virtualScroll({ itemHeight: 60, totalItems: {{ $totalMessages }} })"
+     x-init="initVirtualScroll()"
+     @scroll="handleScroll($event)">
+    
+    {{-- Render only visible messages --}}
+    <template x-for="(message, index) in visibleMessages" :key="message.id">
+        <div class="message-item" 
+             :style="`transform: translateY(${index * itemHeight}px)`">
+            <!-- Message content -->
+        </div>
+    </template>
+</div>
+```
+
+#### 7.4.2. Streaming Response Optimization
+
+**Efficient DOM Updates**:
+
+```javascript
+// Optimized streaming response handler
+class StreamingResponseHandler {
+    constructor(container) {
+        this.container = container;
+        this.buffer = '';
+        this.updateThrottle = 16; // 60fps
+        this.lastUpdate = 0;
+    }
+
+    appendContent(chunk) {
+        this.buffer += chunk;
+        
+        const now = performance.now();
+        if (now - this.lastUpdate > this.updateThrottle) {
+            this.flushBuffer();
+            this.lastUpdate = now;
+        }
+    }
+
+    flushBuffer() {
+        if (this.buffer) {
+            const messageElement = this.container.querySelector('.streaming-message');
+            messageElement.innerHTML = this.renderMarkdown(this.buffer);
+            this.buffer = '';
+            this.scrollToBottom();
+        }
+    }
+}
+```
+
+### 7.5. AI Interface Testing Guidelines
+
+#### 7.5.1. Automated Accessibility Testing
+
+**Playwright E2E Tests for AI Interface**:
+
+```typescript
+// tests/e2e/ollama-accessibility.spec.ts
+import { test, expect } from '@playwright/test';
+
+test.describe('AI Chat Interface Accessibility', () => {
+    test('should have proper ARIA labels and roles', async ({ page }) => {
+        await page.goto('/bedrock-chat');
+        
+        // Check chat container has proper role
+        const chatContainer = page.locator('[role="log"]');
+        await expect(chatContainer).toBeVisible();
+        
+        // Check message input has proper labeling
+        const messageInput = page.locator('textarea[aria-label*="pertanyaan"]');
+        await expect(messageInput).toBeVisible();
+        
+        // Check model selection has proper fieldset
+        const modelFieldset = page.locator('fieldset legend:has-text("model")');
+        await expect(modelFieldset).toBeVisible();
+    });
+
+    test('should support keyboard navigation', async ({ page }) => {
+        await page.goto('/bedrock-chat');
+        
+        // Tab through interface elements
+        await page.keyboard.press('Tab');
+        await expect(page.locator('textarea')).toBeFocused();
+        
+        await page.keyboard.press('Tab');
+        await expect(page.locator('.model-selector button:first-child')).toBeFocused();
+        
+        // Test Ctrl+Enter shortcut
+        await page.locator('textarea').fill('Test message');
+        await page.keyboard.press('Control+Enter');
+        
+        // Verify message was sent
+        await expect(page.locator('.user-message')).toContainText('Test message');
+    });
+
+    test('should meet color contrast requirements', async ({ page }) => {
+        await page.goto('/ai-chat');
+        
+        // Check contrast ratios using axe-core
+        const results = await page.evaluate(() => {
+            return new Promise((resolve) => {
+                axe.run(document, {
+                    tags: ['wcag2a', 'wcag2aa', 'wcag21aa']
+                }, (err, results) => {
+                    resolve(results);
+                });
+            });
+        });
+        
+        expect(results.violations).toHaveLength(0);
+    });
+});
+```
+
+#### 7.5.2. Performance Testing
+
+**Core Web Vitals for AI Interface**:
+
+```javascript
+// Performance monitoring for AI chat
+class AIChatPerformanceMonitor {
+    constructor() {
+        this.metrics = {
+            firstContentfulPaint: 0,
+            largestContentfulPaint: 0,
+            firstInputDelay: 0,
+            cumulativeLayoutShift: 0,
+            streamingLatency: 0
+        };
+    }
+
+    measureStreamingLatency() {
+        const startTime = performance.now();
+        
+        return {
+            markStart: () => {
+                this.streamingStartTime = performance.now();
+            },
+            markFirstChunk: () => {
+                this.metrics.streamingLatency = performance.now() - this.streamingStartTime;
+                console.log(`Streaming first chunk: ${this.metrics.streamingLatency}ms`);
+            }
+        };
+    }
+
+    reportMetrics() {
+        // Send to Laravel Pulse for monitoring
+        fetch('/pulse/ai-metrics', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.metrics)
+        });
+    }
+}
+```
 
 ---
 
-## 10. Real-Time Features (Laravel Reverb)
+## 8. Integrasi dengan D18 Cloud Hybrid AI Architecture
 
-### 10.1. WebSocket Integration
+### 8.1. Pemetaan Komponen UI ke Backend Services
 
-**Server**: Laravel Reverb 1.6.2
-**Client**: Laravel Echo 2.2.6
+| UI Component | Backend Service | D18 Reference |
+|--------------|----------------|---------------|
+| Chat Interface | BedrockChat.php | §6.1 Implementation |
+| Model Selection | BedrockService | §5 Query Routing |
+| Streaming Responses | SSE Controller | §7 Response Handling |
+| Conversation Management | BedrockConversation Model | §6.4 Conversation Persistence |
+| FAQ Suggestions | RagService | §6.2 Ollama Integration |
+| Web-Augmented Display | DuckDuckGoService | §6.3 Web Search Integration |
 
-**Channels**:
+### 8.2. Responsive Design untuk AI Interface
 
-| Channel Type | Pattern                  | Penggunaan                    |
-| ------------ | ------------------------ | ----------------------------- |
-| **Private**  | `user.{userId}`          | User-specific notifications   |
-| **Private**  | `ticket.{ticketId}`      | Ticket status updates         |
-| **Private**  | `loan.{loanId}`          | Loan application updates      |
-| **Presence** | `admin.dashboard`        | Admin online presence         |
-
-### 10.2. Notification Bell Component
+**Mobile-First AI Chat**:
 
 ```blade
-<div x-data="{ open: false, count: @entangle('unreadCount') }" class="relative">
-    <button 
-        @click="open = !open"
-        class="relative p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
-        aria-label="{{ __('Notifications') }} ({{ $unreadCount }} {{ __('unread') }})"
-        aria-expanded="false"
-        :aria-expanded="open.toString()"
-    >
-        <x-heroicon-o-bell class="w-6 h-6" aria-hidden="true" />
-        <span 
-            x-show="count > 0" 
-            class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full"
-            aria-hidden="true"
-        >
-            <span x-text="count > 99 ? '99+' : count"></span>
-        </span>
-    </button>
-    
-    <div 
-        x-show="open" 
-        @click.away="open = false"
-        class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50"
-        role="menu"
-    >
-        <!-- Notification list -->
+{{-- Responsive AI chat layout --}}
+<div class="ai-chat-responsive">
+    {{-- Mobile: Full-screen chat --}}
+    <div class="md:hidden fixed inset-0 bg-white z-50" x-show="mobileChat">
+        <div class="flex flex-col h-full">
+            <div class="chat-header p-4 border-b">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-semibold">{{ __('AI Assistant') }}</h2>
+                    <button @click="mobileChat = false" class="p-2">
+                        <x-heroicon-o-x-mark class="w-6 h-6" />
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 overflow-hidden">
+                <!-- Chat messages -->
+            </div>
+            <div class="chat-input p-4 border-t">
+                <!-- Input area -->
+            </div>
+        </div>
+    </div>
+
+    {{-- Desktop: Sidebar or modal --}}
+    <div class="hidden md:block">
+        <!-- Desktop chat interface -->
     </div>
 </div>
 ```
 
----
+### 8.3. Pematuhan MyGOV Digital Service Standards
 
-## 11. Ujian Kebolehgunaan (Usability Testing)
+**AI Interface Compliance Checklist**:
 
-### 11.1. Manual Testing Checklist
-
-- [ ] Keyboard navigation: Tab, Shift+Tab, Arrow keys, Enter/Space
-- [ ] Focus visible: All interactive elements show clear focus indicator (3px outline)
-- [ ] Screen reader: NVDA/JAWS reads labels, status, error messages correctly
-- [ ] Color contrast: 4.5:1 for text, 3:1 for UI components (tested with WebAIM)
-- [ ] Responsive: Component works at 320px, 768px, 1024px, 1920px widths
-- [ ] Mobile touch: Buttons ≥44px target, spacing adequate
-- [ ] Error handling: Field validation clears and re-validates on user input
-- [ ] Loading state: Spinner visible with text, button disabled
-- [ ] Multilingual: Text translates correctly without breaking layout
-- [ ] Real-time: WebSocket notifications display correctly
-
-### 11.2. Automated Testing
-
-```bash
-# Lighthouse accessibility audit
-npx lighthouse http://localhost:8000 --only-categories=accessibility --output=json
-
-# Playwright accessibility tests
-npx playwright test tests/e2e/accessibility.comprehensive.spec.ts
-
-# axe-core integration test
-npx playwright test tests/e2e/axe-accessibility.spec.ts
-```
-
-### 11.3. Testing Matrix
-
-| Test Type           | Tool              | Frequency    | Target Score |
-| ------------------- | ----------------- | ------------ | ------------ |
-| Accessibility Audit | Lighthouse        | Per PR       | ≥90          |
-| WCAG Violations     | axe DevTools      | Per PR       | 0 errors     |
-| Screen Reader       | NVDA/JAWS         | Monthly      | All pass     |
-| Keyboard Navigation | Manual            | Per feature  | All pass     |
-| Color Contrast      | WebAIM Checker    | Per PR       | All pass     |
-| E2E Accessibility   | Playwright + axe  | Per PR       | All pass     |
+- ✅ Bahasa Melayu sahaja (D15 v3.6.0)
+- ✅ WCAG 2.2 AA accessibility
+- ✅ Mobile-responsive design
+- ✅ Government branding compliance
+- ✅ Data privacy protection (PDPA 2010)
+- ✅ Performance optimization (Core Web Vitals)
+- ✅ Progressive enhancement
+- ✅ Keyboard navigation support
 
 ---
 
-## 12. Penutup (Conclusion)
+## 9. Rujukan Silang dengan D00-D17
 
-Panduan ini memastikan rekabentuk UI/UX sistem Helpdesk & ICT Asset Loan BPM MOTAC adalah mesra pengguna, konsisten, responsif, dan patuh piawaian antarabangsa:
+### 9.1. Pemetaan Keperluan AI Interface
 
-- **ISO 9241-210** (human-centred design)
-- **ISO 9241-110** (dialogue principles)
-- **ISO 9241-11** (usability)
-- **WCAG 2.2 Level AA** (accessibility)
-- **MyGOV Digital Service Standards v2.1.0** (government digital services)
+| D-Doc | Section | AI Interface Requirement | Implementation |
+|-------|---------|-------------------------|----------------|
+| **D00** | §4.2 | True Hybrid Architecture support | AI chat available for guest and authenticated users |
+| **D03** | SRS-AI-001 | Multi-model AI integration | Model selection interface with routing |
+| **D04** | §6.3 | Streaming response architecture | SSE implementation with buffering |
+| **D09** | §8.1 | AI conversation audit logging | Dual audit system for AI interactions |
+| **D11** | §7.2 | Performance monitoring | Laravel Pulse integration for AI metrics |
+| **D12** | §7.0 | AI interface design standards | This section (comprehensive UI/UX) |
+| **D15** | §3.1 | Bahasa Melayu interface | All AI interface text in Malay |
+| **D16** | §5.3 | Real-time AI notifications | WebSocket integration for streaming |
+| **D17** | §6.2 | AI job queue management | Background processing for AI tasks |
 
-Sistem True Hybrid Architecture v3.5.0 menyediakan pengalaman pengguna yang fleksibel di mana staf MOTAC boleh memilih untuk mendaftar akaun (@motac.gov.my) dan log masuk untuk akses penuh ke Dashboard, atau menggunakan borang tetamu untuk akses pantas tanpa akaun.
+### 9.2. Kebolehcapaian dan Pematuhan
 
----
+**WCAG 2.2 AA Compliance Matrix**:
 
-## Glosari & Rujukan (Glossary & References)
+| Guideline | Level | AI Interface Implementation |
+|-----------|-------|----------------------------|
+| 1.1.1 Non-text Content | A | Alt text for AI status indicators, model icons |
+| 1.3.1 Info and Relationships | A | Proper heading hierarchy, form labels |
+| 1.4.3 Contrast (Minimum) | AA | 4.5:1 text contrast, 3:1 UI contrast |
+| 1.4.11 Non-text Contrast | AA | Focus indicators, button states |
+| 2.1.1 Keyboard | A | Full keyboard navigation support |
+| 2.4.3 Focus Order | A | Logical tab order through interface |
+| 3.2.2 On Input | A | No unexpected context changes |
+| 4.1.2 Name, Role, Value | A | Proper ARIA labels and roles |
 
-### Istilah Utama
+### 9.3. Prestasi dan Pengoptimuman
 
-| Istilah                  | Takrif                                                                      |
-| ------------------------ | --------------------------------------------------------------------------- |
-| **UI (User Interface)**  | Antaramuka pengguna visual sistem                                           |
-| **UX (User Experience)** | Pengalaman keseluruhan pengguna berinteraksi dengan sistem                  |
-| **Aksesibiliti**         | Kebolehan sistem digunakan oleh semua pengguna termasuk OKU                 |
-| **WCAG**                 | Web Content Accessibility Guidelines                                        |
-| **Livewire**             | Server-driven UI framework untuk Laravel                                    |
-| **Volt**                 | Single-file Livewire components                                             |
-| **Filament**             | Admin panel framework untuk Laravel                                         |
-| **Reverb**               | Laravel WebSocket server untuk real-time communication                      |
-| **Pulse**                | Laravel performance monitoring dashboard                                    |
-| **True Hybrid**          | Seni bina yang menyokong kedua-dua akses tetamu dan authenticated           |
-| **Focus Trap**           | Teknik mengekalkan fokus keyboard dalam modal/dialog                        |
-| **Touch Target**         | Kawasan minimum untuk interaksi sentuh (44×44px)                            |
+**Core Web Vitals Targets**:
 
-### Dokumen Rujukan
+- **Largest Contentful Paint (LCP)**: < 2.5s
+- **First Input Delay (FID)**: < 100ms  
+- **Cumulative Layout Shift (CLS)**: < 0.1
+- **AI Streaming Latency**: < 200ms first chunk
 
-- **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem (v3.5.0)
-- **D04_SOFTWARE_DESIGN_DOCUMENT.md** - Rekabentuk perisian (v3.5.0)
-- **D09_DATABASE_DOCUMENTATION.md** - Dokumentasi pangkalan data (Dual Audit)
-- **D11_TECHNICAL_DESIGN_DOCUMENTATION.md** - Rekabentuk teknikal
-- **D13_UI_UX_FRONTEND_FRAMEWORK.md** - Framework frontend dan implementasi teknikal
-- **D14_UI_UX_STYLE_GUIDE.md** - Panduan gaya visual terperinci
-- **D15_LANGUAGE_MS_EN.md** - Panduan bahasa (Bahasa Melayu sahaja, v3.6.0)
+**Implementation Strategies**:
 
-### Rujukan Luaran
-
-- [WCAG 2.2 Guidelines](https://www.w3.org/TR/WCAG22/)
-- [ISO 9241-210:2019](https://www.iso.org/standard/77520.html)
-- [MyGOV Digital Service Standards](https://www.malaysia.gov.my/portal/content/30739)
-- [Tailwind CSS v4 Documentation](https://tailwindcss.com/docs)
-- [Livewire v3 Documentation](https://livewire.laravel.com/docs)
-- [Filament v4 Documentation](https://filamentphp.com/docs)
+- Virtual scrolling for conversation history
+- Debounced input handling
+- Progressive enhancement
+- Efficient DOM updates during streaming
+- Lazy loading of conversation data
 
 ---
 
-## Lampiran (Appendices)
+## 10. Kesimpulan
 
-### A. WCAG 2.2 Level AA Compliance Checklist
+Bahagian 7 ini menyediakan panduan komprehensif untuk reka bentuk antara muka AI yang mematuhi WCAG 2.2 AA dan terintegrasi dengan D18 Cloud Hybrid AI Architecture. Implementasi ini memastikan:
 
-| Kriteria | Deskripsi | Status |
-| -------- | --------- | ------ |
-| 1.1.1 Non-text Content | Semua imej mempunyai alt text | ✓ |
-| 1.3.1 Info and Relationships | Struktur semantik yang betul | ✓ |
-| 1.3.2 Meaningful Sequence | Urutan bacaan yang logik | ✓ |
-| 1.4.1 Use of Color | Warna bukan satu-satunya cara menyampaikan maklumat | ✓ |
-| 1.4.3 Contrast (Minimum) | Kontras teks 4.5:1 | ✓ |
-| 1.4.4 Resize Text | Teks boleh diperbesar 200% | ✓ |
-| 1.4.11 Non-text Contrast | Kontras UI 3:1 | ✓ |
-| 2.1.1 Keyboard | Semua fungsi boleh diakses via keyboard | ✓ |
-| 2.1.2 No Keyboard Trap | Tiada perangkap keyboard | ✓ |
-| 2.4.1 Bypass Blocks | Skip links tersedia | ✓ |
-| 2.4.3 Focus Order | Urutan fokus yang logik | ✓ |
-| 2.4.4 Link Purpose | Tujuan pautan jelas | ✓ |
-| 2.4.7 Focus Visible | Fokus indicator visible | ✓ |
-| 2.5.5 Target Size | Touch target minimum 44×44px | ✓ |
-| 3.1.1 Language of Page | Bahasa halaman dinyatakan | ✓ |
-| 3.2.1 On Focus | Tiada perubahan konteks pada fokus | ✓ |
-| 3.3.1 Error Identification | Ralat dikenal pasti dengan jelas | ✓ |
-| 3.3.2 Labels or Instructions | Label dan arahan yang jelas | ✓ |
-| 4.1.1 Parsing | HTML yang valid | ✓ |
-| 4.1.2 Name, Role, Value | ARIA attributes yang betul | ✓ |
+1. **Kebolehcapaian Penuh**: Sokongan pembaca skrin, navigasi papan kekunci, dan kontras warna yang mencukupi
+2. **Prestasi Optimum**: Streaming responses, virtual scrolling, dan pengoptimuman DOM
+3. **Pengalaman Pengguna Terbaik**: Antara muka responsif, visual feedback, dan pengurusan perbualan
+4. **Pematuhan Standard**: MyGOV Digital Service Standards, PDPA 2010, dan ISO/IEC standards
+5. **Integrasi Seamless**: Pemetaan langsung dengan backend services dari D18
 
-### B. Color Contrast Reference
-
-| Kombinasi | Foreground | Background | Ratio | Status |
-| --------- | ---------- | ---------- | ----- | ------ |
-| Primary Text | #1F2937 | #FFFFFF | 12.6:1 | ✓ Pass |
-| Primary Button | #FFFFFF | #0056B3 | 7.2:1 | ✓ Pass |
-| Secondary Text | #6B7280 | #FFFFFF | 4.6:1 | ✓ Pass |
-| Success Badge | #1B7C54 | #D1FAE5 | 4.6:1 | ✓ Pass |
-| Warning Badge | #CC7700 | #FEF3C7 | 4.5:1 | ✓ Pass |
-| Danger Badge | #B3002D | #FEE2E2 | 7.8:1 | ✓ Pass |
-| Link Text | #0056B3 | #FFFFFF | 7.2:1 | ✓ Pass |
-| Focus Ring | #0B4D8F | #FFFFFF | 8.1:1 | ✓ Pass |
-
-### C. Keyboard Shortcuts Reference
-
-| Shortcut | Action | Context |
-| -------- | ------ | ------- |
-| `Tab` | Move to next focusable element | Global |
-| `Shift+Tab` | Move to previous focusable element | Global |
-| `Enter` / `Space` | Activate button/link | Buttons, Links |
-| `Escape` | Close modal/dropdown | Modals, Dropdowns |
-| `Arrow Up/Down` | Navigate menu items | Dropdowns, Menus |
-| `Home` / `End` | Jump to first/last item | Lists, Tables |
-| `Alt+1` | Skip to main content | Global |
-
-### D. Component Accessibility Checklist
-
-| Component | Keyboard | Screen Reader | Focus | Touch |
-| --------- | -------- | ------------- | ----- | ----- |
-| Button | ✓ | ✓ | ✓ | ✓ |
-| Link | ✓ | ✓ | ✓ | ✓ |
-| Text Input | ✓ | ✓ | ✓ | ✓ |
-| Select | ✓ | ✓ | ✓ | ✓ |
-| Checkbox | ✓ | ✓ | ✓ | ✓ |
-| Radio | ✓ | ✓ | ✓ | ✓ |
-| Modal | ✓ | ✓ | ✓ | ✓ |
-| Dropdown | ✓ | ✓ | ✓ | ✓ |
-| Table | ✓ | ✓ | ✓ | ✓ |
-| Tab Panel | ✓ | ✓ | ✓ | ✓ |
-| Toast | ✓ | ✓ | N/A | N/A |
-| Loading | N/A | ✓ | N/A | N/A |
-
----
-
-<!-- Akhir Dokumen / End of Document -->
+Semua komponen AI interface mesti mengikuti panduan ini untuk memastikan konsistensi dan kualiti di seluruh sistem ICTServe v3.6.0.

@@ -71,8 +71,9 @@ class ComponentInventoryCommand extends Command
         $this->displayIssues($inventory);
 
         // Generate report if output specified
-        if ($output = $this->option('output')) {
-            $this->generateReport($service, $output);
+        $outputOption = $this->option('output');
+        if ($outputOption && is_string($outputOption)) {
+            $this->generateReport($service, $outputOption);
         }
 
         $this->newLine();

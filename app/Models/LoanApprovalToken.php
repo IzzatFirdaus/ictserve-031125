@@ -11,8 +11,30 @@ use Illuminate\Support\Str;
 
 /**
  * Loan Approval Token Model
- *
+ * 
  * Manages secure email-based approval tokens for Bahagian 5 workflow
+ *
+ * @property int $id
+ * @property int $loan_application_id
+ * @property string $token
+ * @property \Illuminate\Support\Carbon $expires_at
+ * @property bool $used
+ * @property \Illuminate\Support\Carbon|null $used_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\LoanApplication $loanApplication
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereLoanApplicationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereUsed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApprovalToken whereUsedAt($value)
+ * @mixin \Eloquent
  */
 class LoanApprovalToken extends Model
 {

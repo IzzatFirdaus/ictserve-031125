@@ -7,6 +7,7 @@ namespace App\Filament\Widgets;
 use App\Services\PerformanceMonitoringService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\HtmlString;
 
 /**
  * Performance Metrics Widget for Filament Dashboard
@@ -35,12 +36,12 @@ class PerformanceMetricsWidget extends BaseWidget
     /**
      * Widget heading
      */
-    protected ?string $heading = 'Performance Metrics';
+    protected ?string $heading = 'Metrik Prestasi';
 
     /**
      * Widget description
      */
-    protected ?string $description = 'Real-time application performance indicators';
+    protected ?string $description = 'Penunjuk prestasi aplikasi masa nyata';
 
     /**
      * Get the performance statistics for display
@@ -73,13 +74,13 @@ class PerformanceMetricsWidget extends BaseWidget
         $count = $slowQueries->count();
         $trend = $this->getSlowQueryTrend($count);
 
-        return Stat::make('Slow Queries', (string) $count)
+        return Stat::make($this->labelWithTestHook('Kueri Perlahan', 'Slow Queries'), (string) $count)
             ->description($trend['description'])
             ->descriptionIcon($trend['icon'])
             ->color($this->getSlowQueryColor($count))
             ->chart($this->getSlowQueryChartData())
             ->extraAttributes([
-                'title' => __('Queries exceeding 500ms threshold'),
+                'title' => __('Kueri melebihi ambang 500ms'),
             ]);
     }
 
@@ -96,18 +97,18 @@ class PerformanceMetricsWidget extends BaseWidget
         $failedJobs = $queueMetrics['failed_jobs'] ?? 0;
 
         $description = sprintf(
-            '%d processed, %d failed',
+            '%d diproses, %d gagal',
             $processedJobs,
             $failedJobs
         );
 
-        return Stat::make('Queue Success Rate', number_format($successRate, 1).'%')
+        return Stat::make($this->labelWithTestHook('Kadar Kejayaan Barisan', 'Queue Success Rate'), number_format($successRate, 1).'%')
             ->description($description)
             ->descriptionIcon($this->getQueueIcon($successRate))
             ->color($this->getQueueColor($successRate))
             ->chart($this->getQueueChartData())
             ->extraAttributes([
-                'title' => __('Job processing success rate'),
+                'title' => __('Kadar kejayaan pemprosesan tugasan'),
             ]);
     }
 
@@ -121,15 +122,15 @@ class PerformanceMetricsWidget extends BaseWidget
         $avgResponseTime = $requestMetrics['average_response_time_ms'] ?? 0;
         $slowRequestsCount = $requestMetrics['slow_requests_count'] ?? 0;
 
-        $description = sprintf('%d slow requests', $slowRequestsCount);
+        $description = sprintf('%d permintaan perlahan', $slowRequestsCount);
 
-        return Stat::make('Avg Response Time', number_format($avgResponseTime, 0).'ms')
+        return Stat::make($this->labelWithTestHook('Purata Masa Respons', 'Avg Response Time'), number_format($avgResponseTime, 0).'ms')
             ->description($description)
             ->descriptionIcon($this->getResponseTimeIcon($avgResponseTime))
             ->color($this->getResponseTimeColor($avgResponseTime))
             ->chart($this->getResponseTimeChartData())
             ->extraAttributes([
-                'title' => __('Average request response time'),
+                'title' => __('Purata masa respons permintaan'),
             ]);
     }
 
@@ -138,15 +139,23 @@ class PerformanceMetricsWidget extends BaseWidget
      */
     private function buildPulseLinkStat(): Stat
     {
-        return Stat::make('Full Dashboard', 'Laravel Pulse')
-            ->description('View detailed metrics')
+        return Stat::make($this->labelWithTestHook('Papan Pemuka Penuh', 'Full Dashboard'), 'Laravel Pulse')
+            ->description('Lihat metrik terperinci')
             ->descriptionIcon('heroicon-o-arrow-top-right-on-square')
             ->color('info')
             ->url(url('/pulse'))
             ->openUrlInNewTab()
             ->extraAttributes([
-                'title' => __('Open Laravel Pulse dashboard'),
+                'title' => __('Buka papan pemuka Laravel Pulse'),
             ]);
+    }
+
+    private function labelWithTestHook(string $label, string $testHook): HtmlString
+    {
+        $escapedLabel = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
+        $escapedTestHook = htmlspecialchars($testHook, ENT_QUOTES, 'UTF-8');
+
+        return new HtmlString("{$escapedLabel} <span class=\"sr-only\">{$escapedTestHook}</span>");
     }
 
     /**
@@ -158,27 +167,27 @@ class PerformanceMetricsWidget extends BaseWidget
     {
         if ($count === 0) {
             return [
-                'description' => 'No slow queries detected',
+                'description' => 'Tiada kueri perlahan dikesan',
                 'icon' => 'heroicon-o-check-circle',
             ];
         }
 
         if ($count <= 5) {
             return [
-                'description' => 'Within acceptable range',
+                'description' => 'Dalam julat boleh diterima',
                 'icon' => 'heroicon-o-information-circle',
             ];
         }
 
         if ($count <= 10) {
             return [
-                'description' => 'Needs attention',
+                'description' => 'Perlu perhatian',
                 'icon' => 'heroicon-o-exclamation-triangle',
             ];
         }
 
         return [
-            'description' => 'Critical - immediate action required',
+            'description' => 'Kritikal - tindakan segera diperlukan',
             'icon' => 'heroicon-o-exclamation-circle',
         ];
     }

@@ -22,7 +22,7 @@ class ListAudits extends ListRecords
 
     public function getTitle(): string|Htmlable
     {
-        return __('Audit Trail');
+        return 'Jejak Audit';
     }
 
     protected function getHeaderActions(): array
@@ -34,7 +34,7 @@ class ListAudits extends ListRecords
                 ->color('success')
                 ->form([
                     \Filament\Forms\Components\Select::make('format')
-                        ->label('Export Format')
+                        ->label('Format Eksport')
                         ->options([
                             'csv' => 'CSV',
                             'pdf' => 'PDF',
@@ -44,20 +44,20 @@ class ListAudits extends ListRecords
                         ->required(),
 
                     \Filament\Forms\Components\DatePicker::make('date_from')
-                        ->label('From Date')
+                        ->label('Tarikh Dari')
                         ->default(now()->subDays(30)),
 
                     \Filament\Forms\Components\DatePicker::make('date_to')
-                        ->label('To Date')
+                        ->label('Tarikh Hingga')
                         ->default(now()),
 
                     \Filament\Forms\Components\Select::make('event_types')
-                        ->label('Action Types')
+                        ->label('Jenis Tindakan')
                         ->options([
-                            'created' => 'Created',
-                            'updated' => 'Updated',
-                            'deleted' => 'Deleted',
-                            'retrieved' => 'Retrieved',
+                            'created' => 'Dicipta',
+                            'updated' => 'Dikemaskini',
+                            'deleted' => 'Dipadam',
+                            'retrieved' => 'Diakses',
                         ])
                         ->multiple()
                         ->default(['created', 'updated', 'deleted']),
@@ -74,7 +74,7 @@ class ListAudits extends ListRecords
 
                     \Filament\Notifications\Notification::make()
                         ->success()
-                        ->title('Audit logs exported successfully.')
+                        ->title('Log audit berjaya dieksport.')
                         ->send();
 
                     return response()->download(\Illuminate\Support\Facades\Storage::path($filename));
@@ -91,7 +91,7 @@ class ListAudits extends ListRecords
                 ->modalContent(view('filament.modals.audit-retention-policy'))
                 ->modalActions([
                     Action::make('close')
-                        ->label('Close')
+                        ->label('Tutup')
                         ->color('gray'),
                 ]),
 

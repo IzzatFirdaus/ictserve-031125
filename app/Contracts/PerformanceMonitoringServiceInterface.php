@@ -45,7 +45,7 @@ interface PerformanceMonitoringServiceInterface
      *     average_processing_time_ms: float,
      *     failure_rate_percent: float,
      *     jobs_by_queue: array<string, int>,
-     *     slow_jobs: array
+     *     slow_jobs: array<int, mixed>
      * }
      */
     public function getQueueJobMetrics(): array;
@@ -61,7 +61,7 @@ interface PerformanceMonitoringServiceInterface
      *     total_requests: int,
      *     average_response_time_ms: float,
      *     slow_requests_count: int,
-     *     requests_by_user: array,
+     *     requests_by_user: array<int, mixed>,
      *     cache_hit_rate_percent: float,
      *     memory_usage_mb: float
      * }

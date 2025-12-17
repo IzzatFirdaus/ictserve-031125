@@ -13,7 +13,6 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use UnitEnum;
 
@@ -36,12 +35,12 @@ class BilingualManagement extends Page implements HasForms
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        return false;
     }
 
     public function mount(): void
     {
-        $this->data = [];
+        abort(404);
     }
 
     public static function getNavigationLabel(): string
@@ -73,23 +72,10 @@ class BilingualManagement extends Page implements HasForms
                                     $stats['completion_percentage'] ?? 0
                                 );
                             }),
-                        \Filament\Forms\Components\Placeholder::make('en_stats')
-                            ->label('English')
-                            ->content(function () {
-                                $stats = $this->translationStats()['en'] ?? [];
-
-                                return sprintf(
-                                    'Total: %d | Translated: %d | Missing: %d | Complete: %.1f%%',
-                                    $stats['total_keys'] ?? 0,
-                                    $stats['translated_keys'] ?? 0,
-                                    ($stats['total_keys'] ?? 0) - ($stats['translated_keys'] ?? 0),
-                                    $stats['completion_percentage'] ?? 0
-                                );
-                            }),
                     ])
-                    ->columns(2),
+                    ->columns(1),
 
-                \Filament\Schemas\Components\Section::make('Import/Export')
+                \Filament\Schemas\Components\Section::make('Import/Eksport')
                     ->schema([
                         Select::make('export_format')
                             ->label(__('admin_pages.bilingual_management.fields.export_format'))
@@ -144,25 +130,6 @@ class BilingualManagement extends Page implements HasForms
     }
 
     /**
-     * @return array<string, array{name: string, code: string, flag: string}>
-     */
-    #[Computed]
-    public function supportedLocales(): array
-    {
-        $service = app(BilingualSupportService::class);
-
-        return $service->getSupportedLocales();
-    }
-
-    #[Computed]
-    public function currentLocale(): string
-    {
-        $service = app(BilingualSupportService::class);
-
-        return $service->getCurrentLocale();
-    }
-
-    /**
      * @return array<string, array{total_keys: int, translated_keys: int, completion_percentage: float}>
      */
     #[Computed]
@@ -182,17 +149,6 @@ class BilingualManagement extends Page implements HasForms
         $service = app(BilingualSupportService::class);
 
         return $service->validateTranslations();
-    }
-
-    /**
-     * @return array<string, array{name: string, locale: string}>
-     */
-    #[Computed]
-    public function languageSwitcherData(): array
-    {
-        $service = app(BilingualSupportService::class);
-
-        return $service->getLanguageSwitcherData();
     }
 
     public function validateTranslations(): void
@@ -267,24 +223,6 @@ class BilingualManagement extends Page implements HasForms
                 ->danger()
                 ->send();
         }
-    }
-
-    public function switchLanguage(string $locale): void
-    {
-        $service = app(BilingualSupportService::class);
-        $service->setLocale($locale);
-
-        $switcherData = $this->languageSwitcherData();
-        $languageName = $switcherData[$locale]['name'] ?? $locale;
-
-        Notification::make()
-            ->title(__('admin_pages.bilingual_management.notifications.language_changed_title'))
-            ->body(__('admin_pages.bilingual_management.notifications.language_changed_body', ['language' => $languageName]))
-            ->success()
-            ->send();
-
-        // Refresh the page to apply new language
-        $this->redirect(request()->url());
     }
 
     public function getCompletionColor(float $percentage): string

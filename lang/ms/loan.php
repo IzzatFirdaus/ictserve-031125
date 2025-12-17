@@ -1,5 +1,9 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
+
 /**
  * Translation file: Loan Module (Bahasa Melayu)
  * Description: Malay language translations for loan application module
@@ -461,7 +465,7 @@ return [
         'token_required' => 'Token kelulusan diperlukan untuk mengakses halaman ini.',
         'token_invalid' => 'Pautan kelulusan tidak sah atau telah digunakan.',
         'token_invalid_title' => 'Pautan Tidak Sah',
-        'token_expired' => 'Pautan kelulusan telah tamat tempoh. Sila hubungi BPM untuk meminta pautan baharu.',
+        'token_expired' => 'Pautan kelulusan telah tamat tempoh (expired). Sila hubungi BPM untuk meminta pautan baharu.',
         'token_expired_title' => 'Pautan Tamat Tempoh',
         'error_title' => 'Ralat',
         'load_error' => 'Ralat berlaku semasa memuatkan permohonan. Sila cuba lagi.',

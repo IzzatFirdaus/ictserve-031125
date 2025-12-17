@@ -48,6 +48,14 @@ return [
     'token_scopes_help' => 'Kebenaran yang diberikan kepada token ini',
     'token_expires_at' => 'Tarikh Luput',
     'token_expires_help' => 'Kosongkan untuk token kekal (tidak disyorkan)',
+
+    // Additional navigation labels (v3.6.0)
+    'audit_trail' => 'Jejak Audit',
+    'pulse_dashboard' => 'Papan Pemuka Pulse',
+    'sso_users' => 'Pengguna SSO',
+    'sso_user' => 'Pengguna SSO',
+    'sso_audit_logs' => 'Log Audit SSO',
+    'sso_audit_log' => 'Log Audit SSO',
     'last_used' => 'Kali Terakhir Digunakan',
     'never_used' => 'Belum Pernah Digunakan',
     'expires' => 'Luput',
@@ -68,7 +76,6 @@ return [
     'created_at' => 'Dicipta Pada',
 
     // Laravel Pulse Dashboard (v3.5.0)
-    'pulse_dashboard' => 'Pemantauan Prestasi',
     'pulse_dashboard_title' => 'Papan Pemuka Pulse',
     'pulse_monitoring' => 'Pemantauan Sistem (Laravel Pulse)',
     'pulse_dashboard_description' => 'Metrik prestasi masa nyata untuk ICTServe. Hanya boleh diakses oleh Superuser.',
@@ -95,11 +102,7 @@ return [
     'open_pulse' => 'Buka Pulse',
 
     // SSO Management (v3.6.0)
-    'sso_users' => 'Pengguna SSO',
-    'sso_user' => 'Pengguna SSO',
     'sso_user_details' => 'Butiran Pengguna SSO',
-    'sso_audit_logs' => 'Log Audit SSO',
-    'sso_audit_log' => 'Log Audit SSO',
     'sso_audit_details' => 'Butiran Log Audit SSO',
     'google_id' => 'ID Google',
     'verified' => 'Disahkan',

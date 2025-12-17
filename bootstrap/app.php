@@ -1,5 +1,26 @@
 <?php
 
+// Override system environment variables for local development in Codespaces
+// The container sets APP_ENV=production, but we need local for Boost and debugging
+$_ENV['APP_ENV'] = 'local';
+$_ENV['APP_DEBUG'] = 'true';
+$_ENV['COMPOSER_VENDOR_DIR'] = '/tmp/vendor';
+$_SERVER['APP_ENV'] = 'local';
+$_SERVER['APP_DEBUG'] = 'true';
+$_SERVER['COMPOSER_VENDOR_DIR'] = '/tmp/vendor';
+putenv('APP_ENV=local');
+putenv('APP_DEBUG=true');
+putenv('COMPOSER_VENDOR_DIR=/tmp/vendor');
+
+// Load the Composer autoloader BEFORE using Laravel classes
+if (file_exists('/tmp/vendor/autoload.php')) {
+    require '/tmp/vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
+} else {
+    require __DIR__ . '/../../../vendor/autoload.php';
+}
+
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

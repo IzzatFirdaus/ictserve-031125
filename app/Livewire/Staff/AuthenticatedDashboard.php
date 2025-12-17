@@ -417,7 +417,7 @@ class AuthenticatedDashboard extends Component
     /**
      * Render the component
      */
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.staff.authenticated-dashboard');
     }

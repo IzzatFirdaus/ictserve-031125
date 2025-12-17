@@ -1,0 +1,566 @@
+{{-- 
+    FAQ Bot AI Component - Enhanced UI/UX (D00-D18 Compliant)
+    ICTServe v3.6.0 - Bahasa Melayu sahaja (D15 v3.6.0)
+    MyDS Design System v2025.2 - WCAG 2.2 AA Compliant
+    Requirements: D12 (UI/UX Design), D13 (Frontend Framework), D14 (Style Guide), D18 (AI Chatbot)
+--}}
+<div class="grid grid-cols-4 gap-[18px] px-[18px] md:grid-cols-8 md:gap-6 md:px-6 lg:grid-cols-12 lg:gap-6 lg:px-6 lg:max-w-7xl lg:mx-auto h-full"
+    x-data="{
+        announcement: '',
+        showSidebar: false,
+        showModelComparison: false,
+        conversationStats: {
+            messages: {{ count($messages) }},
+            tokens: 0,
+            estimatedCost: 0
+        },
+        init() {
+            Livewire.on('announce', ({ message }) => {
+                this.announcement = message;
+            });
+            // Auto-save conversation state
+            this.$watch('conversationStats', () => {
+                localStorage.setItem('faq_bot_stats', JSON.stringify(this.conversationStats));
+            });
+        }
+    }" lang="ms">
+
+    {{-- Sidebar Panel (Conversation Management) --}}
+    <div class="col-span-4 md:col-span-2 lg:col-span-4 flex flex-col h-full"
+        :class="showSidebar ? 'block' : 'hidden md:block'">
+        <div class="bg-white dark:bg-gray-900 rounded-l shadow-card border border-gray-200 dark:border-gray-700 h-full">
+            {{-- Sidebar Header --}}
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white font-heading">
+                        Pengurusan Perbualan
+                    </h2>
+                    <button type="button" @click="showSidebar = false"
+                        class="md:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-m hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+                        aria-label="Tutup panel sisi">
+                        <x-heroicon-o-x-mark class="w-5 h-5" aria-hidden="true" />
+                    </button>
+                </div>
+            </div>
+
+            {{-- Conversation Statistics --}}
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600 dark:text-gray-400">Mesej Hari Ini</span>
+                        <span class="font-medium text-gray-900 dark:text-white"
+                            x-text="conversationStats.messages"></span>
+                    </div>
+                    @if ($aiProvider === 'bedrock')
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">Anggaran Kos</span>
+                            <span class="font-medium text-gray-900 dark:text-white">
+                                $<span x-text="conversationStats.estimatedCost.toFixed(4)"></span>
+                            </span>
+                        </div>
+                    @endif
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600 dark:text-gray-400">Penyedia AI</span>
+                        <span
+                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full {{ $aiProvider === 'bedrock' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' : 'bg-primary-100 text-primary-800 dark:bg-primary-900/30 dark:text-primary-300' }}">
+                            @if ($aiProvider === 'bedrock')
+                                <x-heroicon-o-cpu-chip class="w-3 h-3" aria-hidden="true" />
+                                Bedrock
+                            @else
+                                <x-heroicon-o-chat-bubble-left-right class="w-3 h-3" aria-hidden="true" />
+                                Ollama
+                            @endif
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Quick Actions --}}
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-3">Tindakan Pantas</h3>
+                <div class="space-y-2">
+                    <button type="button" wire:click="clearConversation"
+                        class="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-m transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        <x-heroicon-o-trash class="w-4 h-4" aria-hidden="true" />
+                        Padam Perbualan
+                    </button>
+                    @auth
+                        <button type="button" wire:click="createTicket"
+                            class="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-m transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                            <x-heroicon-o-ticket class="w-4 h-4" aria-hidden="true" />
+                            Cipta Tiket Helpdesk
+                        </button>
+                    @endauth
+                </div>
+            </div>
+
+            {{-- Model Performance Indicators (Bedrock only) --}}
+            @if ($aiProvider === 'bedrock')
+                <div class="p-4">
+                    <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-3">Prestasi Model</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-gray-600 dark:text-gray-400">Kelajuan</span>
+                            <div class="flex items-center gap-1">
+                                @switch($bedrockModel)
+                                    @case('haiku')
+                                        <div class="w-2 h-2 bg-success rounded-full"></div>
+                                        <span class="text-success">Pantas</span>
+                                    @break
+
+                                    @case('sonnet')
+                                        <div class="w-2 h-2 bg-warning rounded-full"></div>
+                                        <span class="text-warning">Sederhana</span>
+                                    @break
+
+                                    @case('opus')
+                                        <div class="w-2 h-2 bg-danger rounded-full"></div>
+                                        <span class="text-danger">Perlahan</span>
+                                    @break
+
+                                    @default
+                                        <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                        <span class="text-primary">Baharu</span>
+                                @endswitch
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-gray-600 dark:text-gray-400">Kualiti</span>
+                            <div class="flex items-center gap-1">
+                                @switch($bedrockModel)
+                                    @case('opus')
+                                        <div class="w-2 h-2 bg-success rounded-full"></div>
+                                        <span class="text-success">Tinggi</span>
+                                    @break
+
+                                    @case('sonnet')
+                                        <div class="w-2 h-2 bg-warning rounded-full"></div>
+                                        <span class="text-warning">Sederhana</span>
+                                    @break
+
+                                    @default
+                                        <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                        <span class="text-primary">Baik</span>
+                                @endswitch
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    {{-- Main Chat Interface --}}
+    <div class="col-span-4 md:col-span-6 lg:col-span-8 flex flex-col h-full bg-white dark:bg-gray-900 rounded-l shadow-card border border-gray-200 dark:border-gray-700"
+        :class="showSidebar ? 'hidden md:flex' : 'flex'">
+        {{-- Skip Links for Keyboard Navigation (WCAG 2.2 AA) --}}
+        <nav class="sr-only focus-within:not-sr-only focus-within:absolute focus-within:z-50 focus-within:bg-white focus-within:p-4 focus-within:shadow-dropdown focus-within:rounded-l"
+            aria-label="Pautan navigasi pantas">
+            <a href="#faq-chat-input"
+                class="text-primary-600 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-m">
+                Langkau ke ruangan sembang
+            </a>
+            <a href="#faq-sidebar-toggle"
+                class="ml-4 text-primary-600 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-m">
+                Langkau ke panel sisi
+            </a>
+        </nav>
+
+        {{-- Screen Reader Live Region (WCAG 2.2 AA) --}}
+        <div class="sr-only" role="status" aria-live="polite" aria-atomic="true" x-text="announcement"></div>
+
+        {{-- Enhanced Chat Header with Metrics Dashboard --}}
+        <header class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+            {{-- Main Header Row --}}
+            <div class="flex items-center justify-between p-6">
+                <div class="flex items-center gap-4">
+                    {{-- AI Provider Status Indicator --}}
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div class="flex items-center justify-center w-12 h-12 {{ $aiProvider === 'bedrock' ? 'bg-orange-100 dark:bg-orange-900/30' : 'bg-primary-100 dark:bg-primary-900/30' }} rounded-l shadow-button"
+                                aria-hidden="true">
+                                @if ($aiProvider === 'bedrock')
+                                    <x-heroicon-o-cpu-chip class="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                                @else
+                                    <x-heroicon-o-chat-bubble-left-right
+                                        class="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                                @endif
+                            </div>
+                            {{-- Connection Status Indicator --}}
+                            <div class="absolute -top-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-white dark:border-gray-800"
+                                title="Sambungan aktif" aria-label="Status sambungan: aktif"></div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <h1 class="text-xl font-semibold text-gray-900 dark:text-white font-heading">
+                                @if ($aiProvider === 'bedrock')
+                                    {{ __('ollama.bedrock.title', [], 'ms') }}
+                                @else
+                                    FAQ Bot AI
+                                @endif
+                            </h1>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                @if ($aiProvider === 'bedrock')
+                                    {{ __('ollama.bedrock.description', [], 'ms') }}
+                                @else
+                                    Pembantu AI untuk soalan ICT
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Header Actions --}}
+                <div class="flex items-center gap-2">
+                    {{-- Sidebar Toggle --}}
+                    <button type="button" id="faq-sidebar-toggle" @click="showSidebar = !showSidebar"
+                        class="inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-m hover:bg-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors shadow-button"
+                        :aria-expanded="showSidebar" aria-label="Togol panel sisi" title="Panel sisi">
+                        <x-heroicon-o-bars-3 class="w-5 h-5" aria-hidden="true" />
+                    </button>
+
+                    {{-- Model Comparison Toggle --}}
+                    <button type="button" @click="showModelComparison = !showModelComparison"
+                        class="inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-m hover:bg-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors shadow-button"
+                        :aria-expanded="showModelComparison" aria-label="Perbandingan model"
+                        title="Bandingkan model AI">
+                        <x-heroicon-o-chart-bar class="w-5 h-5" aria-hidden="true" />
+                    </button>
+
+                    {{-- Clear Conversation --}}
+                    <button type="button" wire:click="clearConversation"
+                        class="inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-gray-500 hover:text-danger dark:text-gray-400 dark:hover:text-danger rounded-m hover:bg-danger-50 dark:hover:bg-danger-900/20 focus:outline-none focus:ring-2 focus:ring-danger focus:ring-offset-2 transition-colors shadow-button"
+                        aria-label="Padam perbualan" title="Padam perbualan">
+                        <x-heroicon-o-trash class="w-5 h-5" aria-hidden="true" />
+                    </button>
+                </div>
+            </div>
+
+            {{-- Conversation Statistics Bar --}}
+            <div class="px-6 pb-4">
+                <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                            <x-heroicon-o-chat-bubble-bottom-center class="w-4 h-4" aria-hidden="true" />
+                            <span x-text="conversationStats.messages"></span>
+                            <span>mesej</span>
+                        </div>
+                        @if ($aiProvider === 'bedrock')
+                            <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                                <x-heroicon-o-currency-dollar class="w-4 h-4" aria-hidden="true" />
+                                <span>~$</span><span x-text="conversationStats.estimatedCost.toFixed(4)"></span>
+                            </div>
+                        @endif
+                        <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                            <x-heroicon-o-clock class="w-4 h-4" aria-hidden="true" />
+                            <span>{{ now()->format('H:i') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-success rounded-full animate-pulse" aria-hidden="true"></div>
+                        <span class="text-success text-xs font-medium">Siap sedia</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        {{-- Enhanced AI Provider Selection --}}
+        <div
+            class="p-6 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
+            <div class="space-y-6">
+                {{-- Provider Toggle with Enhanced Design --}}
+                <div class="flex flex-col items-center gap-3">
+                    <h3 class="text-sm font-medium text-gray-900 dark:text-white">Pilih Penyedia AI</h3>
+                    <div
+                        class="flex bg-white dark:bg-gray-700 rounded-xl p-1.5 shadow-button border border-gray-200 dark:border-gray-600">
+                        <button type="button" wire:click="switchProvider('ollama')"
+                            class="flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-lg transition-all duration-200 min-h-11 {{ $aiProvider === 'ollama' ? 'bg-primary-600 text-white shadow-sm' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600' }}"
+                            aria-pressed="{{ $aiProvider === 'ollama' ? 'true' : 'false' }}">
+                            <x-heroicon-o-chat-bubble-left-right class="w-4 h-4" />
+                            Ollama AI
+                        </button>
+                        <button type="button" wire:click="switchProvider('bedrock')"
+                            class="flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-lg transition-all duration-200 min-h-11 {{ $aiProvider === 'bedrock' ? 'bg-orange-600 text-white shadow-button transform scale-105' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 hover:scale-102' }}"
+                            aria-pressed="{{ $aiProvider === 'bedrock' ? 'true' : 'false' }}"
+                            title="AWS Bedrock - Pemprosesan awan">
+                            <x-heroicon-o-cpu-chip class="w-4 h-4" aria-hidden="true" />
+                            <span>Bedrock AI</span>
+                            <span class="text-xs opacity-75">(Awan)</span>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Enhanced Bedrock Model Selection --}}
+                @if ($aiProvider === 'bedrock')
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-600">
+                        <label for="bedrock-model-select"
+                            class="block text-sm font-medium text-gray-900 dark:text-white mb-3">
+                            {{ __('ollama.bedrock.model_selection', [], 'ms') }}
+                        </label>
+                        <select id="bedrock-model-select" wire:model="bedrockModel"
+                            class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm min-h-11 transition-colors">
+                            <optgroup label="🤖 Claude 4.5 (Anthropic)">
+                                <option value="opus">{{ __('ollama.bedrock.claude_opus', [], 'ms') }} - Kualiti
+                                    Tertinggi</option>
+                                <option value="sonnet">{{ __('ollama.bedrock.claude_sonnet', [], 'ms') }} - Seimbang
+                                </option>
+                                <option value="haiku">{{ __('ollama.bedrock.claude_haiku', [], 'ms') }} - Terpantas
+                                </option>
+                            </optgroup>
+                            <optgroup label="⚡ Amazon Nova (Baharu)">
+                                <option value="nova_micro">{{ __('ollama.bedrock.nova_micro', [], 'ms') }} - Mikro
+                                </option>
+                            </optgroup>
+                            <option value="nova_lite">{{ __('ollama.bedrock.nova_lite', [], 'ms') }} - Ringan</option>
+                            <option value="nova_pro">{{ __('ollama.bedrock.nova_pro', [], 'ms') }} - Profesional
+                            </option>
+                            </optgroup>
+                            <optgroup label="🏗️ Amazon Titan">
+                                <option value="titan_text_lite">{{ __('ollama.bedrock.titan_lite', [], 'ms') }} -
+                                    Ringan</option>
+                                <option value="titan_text_express">{{ __('ollama.bedrock.titan_express', [], 'ms') }}
+                                    - Ekspres</option>
+                            </optgroup>
+                        </select>
+
+                        {{-- Model Information Card --}}
+                        <div
+                            class="mt-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
+                            <div class="flex items-start gap-2">
+                                <x-heroicon-o-information-circle
+                                    class="w-4 h-4 text-orange-600 dark:text-orange-400 mt-0.5 shrink-0"
+                                    aria-hidden="true" />
+                                <div class="text-xs text-orange-800 dark:text-orange-200">
+                                    @switch($bedrockModel)
+                                        @case('opus')
+                                            <strong>Claude Opus:</strong> Model terbaik untuk tugas kompleks. Kos tinggi,
+                                            kualiti maksimum.
+                                        @break
+
+                                        @case('sonnet')
+                                            <strong>Claude Sonnet:</strong> Keseimbangan antara prestasi dan kos. Pilihan
+                                            popular.
+                                        @break
+
+                                        @case('haiku')
+                                            <strong>Claude Haiku:</strong> Respons pantas, kos rendah. Sesuai untuk soalan
+                                            mudah.
+                                        @break
+
+                                        @case('nova_micro')
+                                            <strong>Nova Micro:</strong> Model baharu Amazon, saiz kecil dan pantas.
+                                        @break
+
+                                        @case('nova_lite')
+                                            <strong>Nova Lite:</strong> Model baharu Amazon, ringan dan cekap.
+                                        @break
+
+                                        @case('nova_pro')
+                                            <strong>Nova Pro:</strong> Model baharu Amazon, prestasi profesional.
+                                        @break
+
+                                        @case('titan_text_lite')
+                                            <strong>Titan Lite:</strong> Model asas Amazon, sesuai untuk tugas am.
+                                        @break
+
+                                        @case('titan_text_express')
+                                            <strong>Titan Express:</strong> Model Amazon yang dioptimumkan untuk kelajuan.
+                                        @break
+
+                                        @default
+                                            Pilih model untuk melihat maklumat lanjut.
+                                    @endswitch
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Provider Comparison Toggle --}}
+                <div class="flex justify-center">
+                    <button type="button" @click="showModelComparison = !showModelComparison"
+                        class="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-white dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                        :aria-expanded="showModelComparison">
+                        <x-heroicon-o-chart-bar class="w-4 h-4" aria-hidden="true" />
+                        <span
+                            x-text="showModelComparison ? 'Sembunyikan Perbandingan' : 'Tunjuk Perbandingan Model'"></span>
+                        <x-heroicon-o-chevron-down class="w-4 h-4 transition-transform" :class="showModelComparison ? 'rotate-180' : ''"
+                            aria-hidden="true" />
+                    </button>
+                </div>
+
+                {{-- Model Comparison Table --}}
+                <div x-show="showModelComparison" x-collapse
+                    class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-600">
+                    <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3">Perbandingan Model AI</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="border-b border-gray-200 dark:border-gray-700">
+                                    <th class="text-left py-2 text-gray-600 dark:text-gray-400">Model</th>
+                                    <th class="text-center py-2 text-gray-600 dark:text-gray-400">Kelajuan</th>
+                                    <th class="text-center py-2 text-gray-600 dark:text-gray-400">Kualiti</th>
+                                    <th class="text-center py-2 text-gray-600 dark:text-gray-400">Kos</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-900 dark:text-gray-100">
+                                <tr class="border-b border-gray-100 dark:border-gray-700">
+                                    <td class="py-2">Ollama (Tempatan)</td>
+                                    <td class="text-center">⚡⚡⚡</td>
+                                    <td class="text-center">⭐⭐</td>
+                                    <td class="text-center">🆓</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 dark:border-gray-700">
+                                    <td class="py-2">Claude Haiku</td>
+                                    <td class="text-center">⚡⚡⚡</td>
+                                    <td class="text-center">⭐⭐⭐</td>
+                                    <td class="text-center">💰</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 dark:border-gray-700">
+                                    <td class="py-2">Claude Sonnet</td>
+                                    <td class="text-center">⚡⚡</td>
+                                    <td class="text-center">⭐⭐⭐⭐</td>
+                                    <td class="text-center">💰💰</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">Claude Opus</td>
+                                    <td class="text-center">⚡</td>
+                                    <td class="text-center">⭐⭐⭐⭐⭐</td>
+                                    <td class="text-center">💰💰💰</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {{-- Chat Messages Area (Req 5.3 - ARIA live regions) --}}
+        <div id="faq-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4" role="log" aria-live="polite"
+            aria-atomic="false" aria-relevant="additions" aria-label="Kawasan mesej sembang"
+            @if ($isLoading) aria-busy="true" @endif>
+            @forelse ($messages as $index => $message)
+                <div wire:key="message-{{ $index }}"
+                    class="flex {{ $message['role'] === 'user' ? 'justify-end' : 'justify-start' }}">
+                    <div class="max-w-[80%] rounded-l p-4 {{ $message['role'] === 'user'
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white' }}"
+                        role="article" aria-label="{{ $message['role'] === 'user' ? 'Mesej anda' : 'Respons AI' }}">
+                        <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ $message['content'] }}</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <time
+                                class="text-xs {{ $message['role'] === 'user' ? 'text-primary-200' : 'text-gray-500 dark:text-gray-400' }}"
+                                datetime="{{ $message['timestamp'] }}">
+                                {{ \Carbon\Carbon::parse($message['timestamp'])->format('H:i') }}
+                            </time>
+                            @if ($message['role'] === 'assistant')
+                                <span
+                                    class="text-xs {{ $message['role'] === 'user' ? 'text-primary-200' : 'text-gray-500 dark:text-gray-400' }}">
+                                    @if (isset($message['provider']) && $message['provider'] === 'bedrock')
+                                        <x-heroicon-o-cpu-chip class="w-3 h-3 inline mr-1" />
+                                        Bedrock AI
+                                    @else
+                                        <x-heroicon-o-chat-bubble-left-right class="w-3 h-3 inline mr-1" />
+                                        Ollama AI
+                                    @endif
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="flex flex-col items-center justify-center h-full text-center py-12">
+                    <div class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4"
+                        aria-hidden="true">
+                        <x-heroicon-o-chat-bubble-bottom-center-text class="w-8 h-8 text-gray-400" />
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                        Selamat datang ke FAQ Bot
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm">
+                        Tanya sebarang soalan berkaitan perkhidmatan ICT. Saya akan cuba membantu anda.
+                    </p>
+                </div>
+            @endforelse
+
+            {{-- Loading Indicator (Req 5.7 - Accessible loading states) --}}
+            @if ($isLoading)
+                <div class="flex justify-start" role="status" aria-live="polite" aria-busy="true"
+                    aria-label="Sedang memproses respons">
+                    <div class="bg-gray-100 dark:bg-gray-800 rounded-l p-4 flex items-center gap-3">
+                        <div class="flex space-x-1" aria-hidden="true">
+                            <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                                style="animation-delay: 0ms;"></span>
+                            <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                                style="animation-delay: 150ms;"></span>
+                            <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                                style="animation-delay: 300ms;"></span>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Sedang memproses...</span>
+                        <span class="sr-only">Sedang memproses respons anda</span>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+
+        {{-- Error Message (Req 5.7 - Accessible error states) --}}
+        @if ($errorMessage)
+            <div class="mx-4 mb-4 p-4 bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-l"
+                role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="flex items-start gap-3">
+                    <x-heroicon-o-exclamation-circle
+                        class="w-5 h-5 text-danger-600 dark:text-danger-400 shrink-0 mt-0.5" aria-hidden="true" />
+                    <div>
+                        <p class="text-sm font-medium text-danger-800 dark:text-danger-200">
+                            {{ $errorMessage }}
+                        </p>
+                        <button type="button" wire:click="$set('errorMessage', null)"
+                            class="mt-2 text-sm text-danger-600 dark:text-danger-400 underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-danger-500 focus:ring-offset-2 rounded">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        {{-- Chat Input Form (Req 5.1, 5.2, 5.6) --}}
+        <form wire:submit="submitQuery" class="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex gap-3">
+                <div class="flex-1">
+                    <label for="faq-chat-input" class="sr-only">
+                        Masukkan soalan anda
+                    </label>
+                    <input type="text" id="faq-chat-input" wire:model="query"
+                        placeholder="Taip soalan anda di sini..." maxlength="500" autocomplete="off"
+                        aria-describedby="query-help" @disabled($isLoading)
+                        class="w-full min-h-11 px-4 py-3 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" />
+                    <p id="query-help" class="sr-only">
+                        Tekan Enter untuk menghantar soalan. Maksimum 500 aksara.
+                    </p>
+                </div>
+
+                {{-- Submit Button (Req 5.6 - 44x44px touch target) --}}
+                <button type="submit" @disabled($isLoading || empty($query))
+                    class="inline-flex items-center justify-center min-h-11 min-w-11 px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-l focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Hantar soalan">
+                    @if ($isLoading)
+                        <x-heroicon-o-arrow-path class="w-5 h-5 animate-spin" aria-hidden="true" />
+                        <span class="sr-only">Sedang menghantar...</span>
+                    @else
+                        <x-heroicon-o-paper-airplane class="w-5 h-5" aria-hidden="true" />
+                        <span class="sr-only">Hantar</span>
+                    @endif
+                </button>
+            </div>
+
+            {{-- Character Count (Req 5.5) --}}
+            <div class="flex justify-between mt-2 text-xs text-gray-500 dark:text-gray-400">
+                <span>{{ strlen($query ?? '') }}/500</span>
+                <span class="sr-only">{{ strlen($query ?? '') }} daripada 500 aksara digunakan</span>
+            </div>
+        </form>
+    </div>

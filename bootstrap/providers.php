@@ -11,4 +11,8 @@ return [
     App\Providers\ApiRateLimitingServiceProvider::class,
     App\Providers\RecaptchaServiceProvider::class,
     App\Providers\ClamavServiceProvider::class,
+    Laravel\Sanctum\SanctumServiceProvider::class,
+
+    // Laravel Boost - Manually registered due to vendor path in /tmp/vendor
+    Laravel\Boost\BoostServiceProvider::class,
 ];

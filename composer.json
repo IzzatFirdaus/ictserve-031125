@@ -88,7 +88,6 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade",
             "@php -r \"if(class_exists('Laravel\\\\Boost\\\\BoostServiceProvider')){passthru('php artisan boost:update --ansi');}\""
         ],
         "post-update-cmd": [
@@ -123,7 +122,8 @@
         },
         "audit": {
             "ignore": ["PKSA-yb9k-ykqx-p2zw"]
-        }
+        },
+        "vendor-dir": "/tmp/vendor"
     },
     "minimum-stability": "stable",
     "prefer-stable": true

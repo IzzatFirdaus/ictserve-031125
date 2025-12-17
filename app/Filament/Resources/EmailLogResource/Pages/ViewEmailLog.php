@@ -21,12 +21,12 @@ class ViewEmailLog extends ViewRecord
     {
         return [
             Action::make('retry')
-                ->label('Retry Email')
+                ->label('Cuba Semula E-mel')
                 ->icon('heroicon-o-arrow-path')
                 ->color('warning')
                 ->requiresConfirmation()
-                ->modalHeading('Retry Email Delivery')
-                ->modalDescription('Are you sure you want to retry sending this email?')
+                ->modalHeading('Cuba Semula Penghantaran E-mel')
+                ->modalDescription('Adakah anda pasti mahu cuba semula menghantar e-mel ini?')
                 ->action(function (): void {
                     $service = app(EmailNotificationService::class);
 
@@ -38,12 +38,12 @@ class ViewEmailLog extends ViewRecord
 
                     if ($service->retryEmailDelivery($recordId)) {
                         Notification::make()
-                            ->title('Email queued for retry')
+                            ->title('E-mel ditambah ke barisan cuba semula')
                             ->success()
                             ->send();
                     } else {
                         Notification::make()
-                            ->title('Failed to retry email')
+                            ->title('Gagal cuba semula e-mel')
                             ->danger()
                             ->send();
                     }

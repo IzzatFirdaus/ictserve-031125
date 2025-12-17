@@ -24,6 +24,11 @@ class GenerateLoanReportCommand extends Command
     {
         $period = $this->argument('period');
 
+        if (! is_string($period)) {
+            $this->error('Invalid period argument');
+            return Command::FAILURE;
+        }
+
         $this->info("Generating {$period} loan report...");
 
         $loanStats = $service->generateLoanStatisticsReport($period);

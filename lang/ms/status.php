@@ -1,5 +1,9 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
+
 declare(strict_types=1);
 
 /**
@@ -16,11 +20,13 @@ declare(strict_types=1);
 return [
     // Tajuk halaman
     'page_title' => 'Semak Status',
+    'page_tagline' => 'Status Semasa',
     'title' => 'Semak Status Permohonan Anda',
     'subtitle' => 'Masukkan token status anda untuk melihat status terkini tiket helpdesk atau permohonan pinjaman anda.',
 
     // Label borang
     'form_label' => 'Borang semakan status',
+    'form_helper' => 'Masukkan token untuk menyemak status permohonan anda.',
     'token_label' => 'Token Status',
     'token_placeholder' => 'Masukkan token status anda (cth., abc123def456...)',
     'token_help' => 'Token status telah dihantar ke emel anda semasa anda menghantar permohonan.',
@@ -78,4 +84,11 @@ return [
     // Bahagian bantuan
     'help_text' => 'Perlukan bantuan? Tidak dapat mencari permohonan anda?',
     'contact_support' => 'Hubungi Sokongan BPM',
+
+    // Bahagian bantuan pantas (Quick Help sidebar)
+    'quick_help_title' => 'Bantuan Pantas',
+    'quick_help_email' => 'Emel sokongan BPM',
+    'quick_help_phone' => 'Talian bantuan helpdesk',
+    'quick_help_ticket' => 'Hantar tiket baharu',
+    'quick_help_ticket_cta' => 'Pergi ke borang helpdesk',
 ];

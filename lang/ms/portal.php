@@ -1,5 +1,9 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
+
 declare(strict_types=1);
 
 /**
@@ -10,6 +14,7 @@ declare(strict_types=1);
 
 return [
     'actions' => 'Tindakan',
+    'action_required' => 'Perlu Tindakan',
     'active_filters' => 'Penapis aktif',
     'active_filters_count' => '{0} Tiada penapis aktif|{1} :count penapis aktif|[2,*] :count penapis aktif',
     'active_sessions' => 'Sesi aktif',
@@ -35,6 +40,7 @@ return [
     'asset_type' => 'Jenis aset',
     'assigned_to' => 'Ditugaskan kepada',
     'attachments' => 'Lampiran',
+    'attention_required' => 'Perlu perhatian',
     'avatar_removal_failed' => 'Foto profil gagal dibuang.',
     'avatar_removed_successfully' => 'Foto profil berjaya dibuang.',
     'back' => 'Kembali',
@@ -48,6 +54,20 @@ return [
     'cannot_cancel_submission' => 'Permohonan ini tidak boleh dibatalkan.',
     'cannot_claim_submission' => 'Permohonan ini tidak boleh dituntut.',
     'category' => 'Kategori',
+
+    // Dashboard Statistics v3.6.0
+    'dashboard_statistics' => 'Statistik Dashboard',
+    'my_open_tickets' => 'Tiket Terbuka Saya',
+    'my_pending_loans' => 'Pinjaman Menunggu Saya',
+    'overdue_items' => 'Item Tertunggak',
+    'pending_approvals' => 'Kelulusan Menunggu',
+    'view_all' => 'Lihat Semua',
+    'view_all_tickets' => 'Lihat semua tiket terbuka anda',
+    'view_all_loans' => 'Lihat semua pinjaman anda',
+    'view_overdue' => 'Lihat Tertunggak',
+    'view_overdue_items' => 'Lihat item yang tertunggak',
+    'view_pending' => 'Lihat Menunggu',
+    'view_pending_approvals' => 'Lihat permohonan yang menunggu kelulusan',
     'change_password' => 'Tukar kata laluan',
     'characters' => 'aksara',
     'claim_submission' => 'Tuntut permohonan',
@@ -459,6 +479,12 @@ return [
         'note' => 'Pintasan tidak berfungsi semasa menaip dalam medan borang. Semua tindakan juga boleh diakses melalui navigasi biasa untuk pengguna pembaca skrin.',
     ],
     'close' => 'Tutup',
+    'filter_activity' => 'Tapis Aktiviti',
+
+    // Activity Filter Options (Dashboard v3.6.0)
+    'filter_all' => 'Semua',
+    'filter_tickets' => 'Tiket',
+    'filter_loans' => 'Pinjaman',
 
     // Email Frequency Configuration (Phase 8 - Task 8.1.3) per D12 §6.17
     'email_delivery_settings' => 'Tetapan Penghantaran E-mel',

@@ -72,33 +72,33 @@ class AssetUtilizationWidget extends BaseWidget
         $maintenanceTickets = $asset->helpdeskTickets()->count();
 
         return [
-            Stat::make(__('Total Loans'), $totalLoans)
-                ->description(__('All time loan count'))
+            Stat::make('Jumlah Pinjaman', $totalLoans)
+                ->description('Jumlah pinjaman sepanjang masa')
                 ->descriptionIcon('heroicon-o-clipboard-document-list')
                 ->color('primary'),
 
-            Stat::make(__('Active Loans'), $activeLoans)
-                ->description(__('Currently on loan'))
+            Stat::make('Pinjaman Aktif', $activeLoans)
+                ->description('Sedang dipinjam')
                 ->descriptionIcon('heroicon-o-arrow-trending-up')
                 ->color($activeLoans > 0 ? 'warning' : 'success'),
 
-            Stat::make(__('Utilization Rate'), $utilizationRate.'%')
-                ->description(__('Last 90 days'))
+            Stat::make('Kadar Penggunaan', $utilizationRate.'%')
+                ->description('90 hari terakhir')
                 ->descriptionIcon('heroicon-o-chart-bar')
                 ->color($utilizationRate > 70 ? 'success' : ($utilizationRate > 40 ? 'warning' : 'danger')),
 
-            Stat::make(__('Avg Loan Duration'), $avgDuration.' '.__('days'))
-                ->description(__('Average loan period'))
+            Stat::make('Purata Tempoh Pinjaman', $avgDuration.' hari')
+                ->description('Purata tempoh pinjaman')
                 ->descriptionIcon('heroicon-o-clock')
                 ->color('info'),
 
-            Stat::make(__('Maintenance Tickets'), $maintenanceTickets)
-                ->description(__('Related helpdesk tickets'))
+            Stat::make('Tiket Penyelenggaraan', $maintenanceTickets)
+                ->description('Tiket helpdesk berkaitan')
                 ->descriptionIcon('heroicon-o-wrench-screwdriver')
                 ->color($maintenanceTickets > 5 ? 'danger' : ($maintenanceTickets > 2 ? 'warning' : 'success')),
 
-            Stat::make(__('Current Value'), 'RM '.number_format($asset->current_value, 2))
-                ->description(__('Depreciated value'))
+            Stat::make('Nilai Semasa', 'RM '.number_format($asset->current_value, 2))
+                ->description('Nilai selepas susut nilai')
                 ->descriptionIcon('heroicon-o-currency-dollar')
                 ->color('secondary'),
         ];

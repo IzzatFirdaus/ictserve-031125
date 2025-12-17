@@ -97,7 +97,7 @@ class AuthenticationTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('Dashboard'); // Check for navigation elements without full Volt assertion
+            ->assertSee('ICTServe'); // Check for system name
     }
 
     #[Test]
@@ -313,5 +313,48 @@ class AuthenticationTest extends TestCase
 
         $this->assertAuthenticated();
         $this->assertAuthenticatedAs($user);
+    }
+
+    #[Test]
+    public function login_page_displays_bahasa_melayu_content(): void
+    {
+        // Ensure locale is set to Bahasa Melayu
+        app()->setLocale('ms');
+
+        $response = $this->get('/login');
+
+        $response->assertStatus(200);
+
+        // Check for Bahasa Melayu content (actual text displayed)
+        $response->assertSee('Log Masuk'); // Login title
+        $response->assertSee('E-mel atau Nama Pengguna'); // Email field label
+        $response->assertSee('Log Masuk dengan Google'); // Google login button
+        $response->assertSee('Ingat saya'); // Remember me checkbox
+        $response->assertSee('Lupa kata laluan?'); // Forgot password link
+
+        // Verify we're using Bahasa Melayu locale
+        $this->assertEquals('ms', app()->getLocale());
+    }
+
+    #[Test]
+    public function dashboard_displays_bahasa_melayu_content(): void
+    {
+        $user = User::factory()->create();
+
+        // Ensure locale is set to Bahasa Melayu
+        app()->setLocale('ms');
+
+        $response = $this->actingAs($user)->get('/dashboard');
+
+        $response->assertStatus(200);
+
+        // Check for Bahasa Melayu content on dashboard
+        $response->assertSee('Tiket Terbuka Saya'); // My Open Tickets
+        $response->assertSee('Pinjaman Menunggu Saya'); // My Pending Loans
+        $response->assertSee('Tindakan Pantas'); // Quick Actions
+        $response->assertSee('Aktiviti Terkini'); // Recent Activity
+
+        // Verify we're using Bahasa Melayu locale
+        $this->assertEquals('ms', app()->getLocale());
     }
 }

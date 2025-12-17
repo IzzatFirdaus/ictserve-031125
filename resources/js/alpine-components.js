@@ -17,8 +17,8 @@ document.addEventListener("alpine:init", () => {
 	Alpine.data("searchableSelect", (config) => ({
 		// Configuration
 		options: config.options || [],
-		placeholder: config.placeholder || "Select an option",
-		searchPlaceholder: config.searchPlaceholder || "Search...",
+		placeholder: config.placeholder || "Pilih pilihan",
+		searchPlaceholder: config.searchPlaceholder || "Cari...",
 		name: config.name || "",
 		wireModel: config.wireModel || "",
 
@@ -198,7 +198,7 @@ document.addEventListener("alpine:init", () => {
 			});
 
 			// Announce to screen readers
-			this.announceToScreenReader("Processing your ticket submission...");
+			this.announceToScreenReader("Sedang memproses penghantaran tiket anda...");
 		},
 
 		/**
@@ -211,8 +211,7 @@ document.addEventListener("alpine:init", () => {
 
 			// Announce success to screen readers
 			this.announceToScreenReader(
-				"Ticket submitted successfully. Your ticket number is " +
-					detail.ticketNumber
+				"Tiket berjaya dihantar. Nombor tiket anda ialah " + detail.ticketNumber
 			);
 		},
 
@@ -231,7 +230,7 @@ document.addEventListener("alpine:init", () => {
 			});
 
 			// Announce error to screen readers
-			this.announceToScreenReader("Submission failed. " + detail.message);
+			this.announceToScreenReader("Penghantaran gagal. " + detail.message);
 		},
 
 		/**

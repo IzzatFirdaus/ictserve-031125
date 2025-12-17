@@ -50,57 +50,64 @@ return [
             'reset_failed_body' => 'Gagal menetapkan semula konfigurasi. Sila cuba lagi.',
         ],
     ],
-    'email_templates' => [
-        'title' => 'Pengurusan Template Email',
-        'label' => 'Template Email',
-        'group' => 'Pengurusan Email',
-    ],
 
-    'notification_center' => [
-        'title' => 'Pusat Notifikasi',
-        'label' => 'Notifikasi',
-        'group' => 'Sistem',
+    // Additional admin pages (v3.6.0)
+    'data_visualization' => [
+        'label' => 'Visualisasi Data',
     ],
-
-    'notification_preferences' => [
-        'title' => 'Keutamaan Notifikasi',
-        'label' => 'Keutamaan Notifikasi',
-        'group' => 'Tetapan Pengguna',
+    'unified_analytics' => [
+        'label' => 'Analitik Terpadu',
     ],
-
-    'pdpa_dashboard' => [
-        'title' => 'Papan Pemuka PDPA',
-        'label' => 'Papan Pemuka PDPA',
-        'group' => 'Pematuhan',
-    ],
-
-    'performance_monitoring' => [
-        'title' => 'Pemantauan Prestasi',
-        'label' => 'Pemantauan Prestasi',
-        'group' => 'Sistem',
-    ],
-
-    'report_builder' => [
-        'title' => 'Pembina Laporan',
-        'label' => 'Pembina Laporan',
-        'group' => 'Laporan',
-    ],
-
     'security_monitoring' => [
-        'title' => 'Pemantauan Keselamatan',
         'label' => 'Pemantauan Keselamatan',
+    ],
+    'unified_audit_log' => [
+        'label' => 'Log Audit Terpadu',
+    ],
+    'helpdesk_reports' => [
+        'label' => 'Laporan & Analitik',
+    ],
+    'email_templates' => [
+        'label' => 'Templat E-mel',
+    ],
+    'filter_presets' => [
+        'label' => 'Pratetap Penapis',
+    ],
+    'notification_center' => [
+        'label' => 'Pusat Pemberitahuan',
+    ],
+    'performance_monitoring' => [
+        'label' => 'Pemantauan Prestasi',
+    ],
+    'unified_search' => [
+        'title' => 'Carian Global',
+        'label' => 'Carian Terpadu',
+        'group' => 'Sistem',
+    ],
+    'workflow_automation' => [
+        'title' => 'Konfigurasi Automasi Aliran Kerja',
+        'label' => 'Automasi Aliran Kerja',
+        'group' => 'Konfigurasi Sistem',
+    ],
+    'two_factor_auth' => [
+        'title' => 'Pengurusan 2FA',
+        'label' => 'Pengesahan Dua Faktor',
         'group' => 'Keselamatan',
     ],
-
-    'filter_presets' => [
-        'title' => 'Preset Penapis',
-        'label' => 'Preset Penapis',
-        'group' => 'Tetapan Pengguna',
+    'report_builder' => [
+        'label' => 'Pembina Laporan',
+        'title' => 'Pembina Laporan',
+        'group' => 'Laporan',
     ],
-
+    'pdpa_dashboard' => [
+        'label' => 'Papan Pemuka PDPA',
+    ],
+    'notification_preferences' => [
+        'label' => 'Keutamaan Pemberitahuan',
+    ],
     'email_queue' => [
+        'label' => 'Baris Gilir E-mel',
         'title' => 'Pemantauan Baris Gilir Email',
-        'label' => 'Pemantauan Baris Gilir Email',
         'group' => 'Pengurusan Email',
     ],
 
@@ -145,24 +152,6 @@ return [
         'title' => 'Pematuhan Kebolehcapaian',
         'label' => 'Pematuhan Kebolehcapaian',
         'group' => 'Pematuhan',
-    ],
-
-    'unified_search' => [
-        'title' => 'Carian Global',
-        'label' => 'Carian Global',
-        'group' => 'Sistem',
-    ],
-
-    'workflow_automation' => [
-        'title' => 'Konfigurasi Automasi Aliran Kerja',
-        'label' => 'Automasi Aliran Kerja',
-        'group' => 'Konfigurasi Sistem',
-    ],
-
-    'two_factor_auth' => [
-        'title' => 'Pengurusan 2FA',
-        'label' => 'Pengurusan 2FA',
-        'group' => 'Keselamatan',
     ],
 
     'alert_configuration' => [
@@ -236,4 +225,7 @@ return [
             'reset_failed_body' => 'Ralat semasa mereset konfigurasi: :error',
         ],
     ],
+
+    // System audit and logging
+    'audit_trail' => 'Jejak Audit',
 ];

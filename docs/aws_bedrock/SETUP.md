@@ -34,8 +34,8 @@ Add to `.env`:
 
 ```env
 # AWS Bedrock Configuration
-AWS_ACCESS_KEY_ID=AKIAR5RCBVDCQX45JBVE
-AWS_SECRET_ACCESS_KEY=your_secret_key_here
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_BEDROCK_REGION=us-east-1
 AWS_BEDROCK_MODEL_ID=global.anthropic.claude-opus-4-5-20251101-v1:0
 ```

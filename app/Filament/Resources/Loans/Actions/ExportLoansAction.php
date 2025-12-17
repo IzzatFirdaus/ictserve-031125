@@ -29,7 +29,7 @@ class ExportLoansAction extends Action
     {
         parent::setUp();
 
-        $this->label('Eksport Data')
+        $this->label(__('filament.actions.export_data'))
             ->icon('heroicon-o-arrow-down-tray')
             ->color('gray')
             ->action(function () {
@@ -72,7 +72,7 @@ class ExportLoansAction extends Action
         // Add UTF-8 BOM for Excel compatibility
         fwrite($output, "\xEF\xBB\xBF");
 
-        // CSV Headers (Bilingual - Malay primary)
+        // CSV Headers (Bahasa Melayu - ICTServe v3.6.0)
         fputcsv($output, [
             'No. Permohonan',
             'Nama Pemohon',

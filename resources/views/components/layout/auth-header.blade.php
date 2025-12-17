@@ -105,9 +105,6 @@
                 {{-- Theme Switcher (v3.6.0) --}}
                 <livewire:components.theme-toggle />
 
-                {{-- Language Switcher (D15 §2.1 Bilingual Support) - DISABLED: Bahasa Melayu only (v3.6) --}}
-                {{-- <livewire:language-switcher /> --}}
-
                 {{-- Notification Bell with Badge (wire:poll.30s for real-time updates) --}}
                 <div class="relative" x-data="{ open: false }">
                     <button type="button" @click="open = !open"

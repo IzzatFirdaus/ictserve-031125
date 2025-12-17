@@ -357,8 +357,9 @@ class NotificationFunctionalityTest extends TestCase
     #[Test]
     public function empty_state_displayed_when_no_notifications(): void
     {
+        // v3.6.0: BM-exclusive interface - "Tiada pemberitahuan" instead of "No notifications"
         Livewire::actingAs($this->user)
             ->test(NotificationCenter::class)
-            ->assertSee('No notifications');
+            ->assertSee('Tiada pemberitahuan');
     }
 }

@@ -13,7 +13,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Model ApprovalEmailToken untuk token kelulusan e-mel
- *
+ * 
  * Menyokong aliran kerja kelulusan auto-reply melalui e-mel
  * Mengintegrasikan Dual Audit System (owen-it + spatie)
  *
@@ -27,11 +27,40 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string|null $used_by_ip IP address pengguna
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\AutoReplyDraft $autoReplyDraft
+ * @property-read string $action_label
+ * @property-read bool $is_expired
+ * @property-read bool $is_valid
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken byAction(string $action)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken byToken(string $token)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken expired()
+ * @method static \Database\Factories\ApprovalEmailTokenFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken unused()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken used()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken valid()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereAction($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereAutoReplyDraftId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereUsed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereUsedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ApprovalEmailToken whereUsedByIp($value)
+ * @mixin \Eloquent
  */
 class ApprovalEmailToken extends Model implements AuditableContract
 {
-    use HasFactory;
-    use Auditable; // owen-it untuk compliance audit
+    use Auditable;
+    use HasFactory; // owen-it untuk compliance audit
     use LogsActivity; // spatie untuk operational logging
 
     /**
@@ -116,7 +145,7 @@ class ApprovalEmailToken extends Model implements AuditableContract
     public function scopeValid($query)
     {
         return $query->where('expires_at', '>', now())
-                    ->where('used', false);
+            ->where('used', false);
     }
 
     /**
@@ -148,7 +177,7 @@ class ApprovalEmailToken extends Model implements AuditableContract
      */
     public function getIsValidAttribute(): bool
     {
-        return !$this->used && $this->expires_at->isFuture();
+        return ! $this->used && $this->expires_at->isFuture();
     }
 
     /**
@@ -174,9 +203,9 @@ class ApprovalEmailToken extends Model implements AuditableContract
     /**
      * Kaedah untuk menggunakan token
      */
-    public function use(string $ipAddress = null): bool
+    public function use(?string $ipAddress = null): bool
     {
-        if (!$this->is_valid) {
+        if (! $this->is_valid) {
             return false;
         }
 
@@ -194,7 +223,7 @@ class ApprovalEmailToken extends Model implements AuditableContract
      */
     public static function generateSecureToken(): string
     {
-        return hash('sha256', uniqid('approval_', true) . microtime() . random_bytes(32));
+        return hash('sha256', uniqid('approval_', true).microtime().random_bytes(32));
     }
 
     /**
@@ -214,13 +243,23 @@ class ApprovalEmailToken extends Model implements AuditableContract
     }
 
     /**
-     * Konfigurasi activity log untuk spatie
+     * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
      */
     public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
     {
         return \Spatie\Activitylog\LogOptions::defaults()
-            ->logOnly(static::$logAttributes)
+            ->logOnly([
+                'auto_reply_draft_id',
+                'token',
+                'action',
+                'used',
+                'used_at',
+                'used_by_ip',
+            ])
             ->logOnlyDirty()
-            ->useLogName(static::$logName);
+            ->useLogName('approval_email_token')
+            ->setDescriptionForEvent(fn (string $eventName) => "Approval email token {$eventName}");
     }
 }

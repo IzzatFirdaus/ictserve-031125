@@ -7,6 +7,36 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * User Notification Preferences Model
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property bool $email_digest_enabled
+ * @property string $email_digest_frequency
+ * @property \Carbon\Carbon $email_digest_time
+ * @property bool $quiet_hours_enabled
+ * @property \Carbon\Carbon|null $quiet_hours_start
+ * @property \Carbon\Carbon|null $quiet_hours_end
+ * @property bool $browser_notifications_enabled
+ * @property bool $sound_enabled
+ * @property bool $group_notifications
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Models\User $user
+ * @property string $preference_key
+ * @property int $preference_value
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference wherePreferenceKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference wherePreferenceValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereUserId($value)
+ * @mixin \Eloquent
+ */
 class UserNotificationPreference extends Model
 {
     protected $fillable = [

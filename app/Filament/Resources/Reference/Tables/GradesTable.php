@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Reference\Tables;
 
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\RestoreBulkAction;
@@ -19,20 +18,17 @@ class GradesTable
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
-                    ->label('Kod')
+                    ->label(__('filament.reference.code'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name_ms')
-                    ->label('Nama (BM)')
+                    ->label(__('filament.reference.name_ms'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name_en')
-                    ->label('Name (EN)')
-                    ->toggleable(),
                 Tables\Columns\TextColumn::make('level')
-                    ->label('Tahap')
+                    ->label(__('filament.reference.level'))
                     ->sortable(),
                 Tables\Columns\IconColumn::make('can_approve_loans')
-                    ->label('Boleh Lulus')
+                    ->label(__('filament.reference.can_approve'))
                     ->boolean(),
             ])
             ->filters([])
@@ -40,11 +36,9 @@ class GradesTable
                 ViewAction::make(),
                 EditAction::make(),
             ])
-            ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+            ->groupedBulkActions([
+                DeleteBulkAction::make(),
+                RestoreBulkAction::make(),
             ]);
     }
 }

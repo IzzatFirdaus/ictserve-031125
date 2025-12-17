@@ -1,5 +1,8 @@
 <?php
 
+// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)
+// See lang/en/README.md for details
+
 declare(strict_types=1);
 
 /**
@@ -35,5 +38,15 @@ return [
         'account_registration_answer' => 'Click on Register and use your @motac.gov.my email address. You will receive a verification email to activate your account.',
         'forgot_password' => 'What if I forgot my password?',
         'forgot_password_answer' => 'Click on "Forgot Password" on the login page and follow the instructions sent to your email.',
+    ],
+
+    // AI Chat Integration
+    'ai_chat' => [
+        'title' => 'Ask AI Bedrock',
+        'description' => 'Can\'t find the answer you\'re looking for? Chat with AI Bedrock for personalized assistance and more detailed answers.',
+        'chat_button' => 'Chat with AI',
+        'powered_by' => 'Powered by AWS Bedrock',
+        'suggestions_title' => 'Frequently Asked Questions',
+        'ask_question' => 'Ask questions about ICT services...',
     ],
 ];

@@ -68,13 +68,13 @@ class UsersTable
                     ->label(__('widgets.staff_id'))
                     ->toggleable(),
 
-                TextColumn::make('division.name')
+                TextColumn::make('division.name_ms')
                     ->searchable()
                     ->sortable()
                     ->label(__('widgets.division'))
                     ->toggleable(),
 
-                TextColumn::make('grade.name')
+                TextColumn::make('grade.name_ms')
                     ->searchable()
                     ->sortable()
                     ->label(__('widgets.grade'))
@@ -114,13 +114,13 @@ class UsersTable
                     ->label(__('users.role')),
 
                 SelectFilter::make('division_id')
-                    ->relationship('division', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
+                    ->relationship('division', 'name_ms')
                     ->label(__('users.division'))
                     ->searchable()
                     ->preload(),
 
                 SelectFilter::make('grade_id')
-                    ->relationship('grade', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
+                    ->relationship('grade', 'name_ms')
                     ->label(__('users.grade'))
                     ->searchable()
                     ->preload(),
@@ -136,11 +136,16 @@ class UsersTable
             ])
             ->recordActions([
                 Action::make('impersonate')
-                    ->label('Impersonate')
+                    ->label('Lakon Sebagai')
                     ->icon('heroicon-o-user-plus')
                     ->url(fn (User $record) => route('impersonate.start', $record))
                     ->openUrlInNewTab(false)
-                    ->visible(fn (User $record) => Auth::user()?->hasRole('Super Admin') && $record->id !== Auth::id()),
+                    ->visible(function (User $record): bool {
+                        /** @var User|null $user */
+                        $user = Auth::user();
+
+                        return $user?->hasRole('Super Admin') && $record->id !== Auth::id();
+                    }),
                 ViewAction::make(),
                 EditAction::make(),
             ])

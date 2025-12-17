@@ -61,6 +61,29 @@ npx -y @modelcontextprotocol/server-memory
 
 **VS Code** (`.vscode/mcp.json`):
 
+**⚠️ IMPORTANT**: `${workspaceFolder}` does NOT work in VS Code's mcp.json (variable is not expanded).
+
+**CORRECT Configuration** (using environment variable):
+
+```json
+{
+  "servers": {
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {
+        "MEMORY_FILE_PATH": "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+      }
+    }
+  }
+}
+```
+
+**Alternative** (passing absolute path as argument):
+
 ```json
 {
   "servers": {
@@ -69,7 +92,7 @@ npx -y @modelcontextprotocol/server-memory
       "args": [
         "-y",
         "@modelcontextprotocol/server-memory",
-        "${workspaceFolder}/storage/mcp/memory.jsonl"
+        "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       ]
     }
   }

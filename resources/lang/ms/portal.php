@@ -48,6 +48,13 @@ return [
     'cancellation_reason_placeholder' => 'Nyatakan sebab pembatalan (minimum 10 aksara).',
     'cannot_cancel_submission' => 'Permohonan ini tidak boleh dibatalkan.',
     'cannot_claim_submission' => 'Permohonan ini tidak boleh dituntut.',
+
+    // Additional portal messages (v3.6.0)
+    'search_saved_successfully' => 'Carian berjaya disimpan',
+    'search_applied_successfully' => 'Carian berjaya digunakan',
+    'search_deleted_successfully' => 'Carian berjaya dipadam',
+    'security_settings' => 'Tetapan Keselamatan',
+    'notification_preferences' => 'Keutamaan Pemberitahuan',
     'category' => 'Kategori',
     'change_password' => 'Tukar kata laluan',
     'characters' => 'aksara',
@@ -244,7 +251,6 @@ return [
     'notification_loan_approval_description' => 'Terima pemberitahuan untuk kelulusan atau penolakan permohonan pinjaman.',
     'notification_overdue_reminders' => 'Peringatan tertunggak',
     'notification_overdue_reminders_description' => 'Terima peringatan apabila pinjaman tertunggak untuk dipulangkan.',
-    'notification_preferences' => 'Tetapan pemberitahuan',
     'notification_preferences_description' => 'Pilih pemberitahuan yang anda ingin terima melalui e-mel.',
     'notification_summary' => 'Ringkasan pemberitahuan',
     'notification_summary_description' => ':count daripada 6 jenis pemberitahuan diaktifkan.',
@@ -318,7 +324,6 @@ return [
     'quantity' => 'Kuantiti',
     'of' => 'daripada',
     'optional' => 'Pilihan',
-    'security_settings' => 'Tetapan keselamatan',
     'security_settings_description' => 'Urus kata laluan dan keselamatan akaun anda.',
     'show_password' => 'Tunjuk kata laluan',
     'profile' => [
@@ -426,6 +431,11 @@ return [
     'close' => 'Tutup',
     'profile_title' => 'Profil Saya',
     'filter_activity' => 'Tapis Aktiviti',
+
+    // Activity Filter Options (Dashboard v3.6.0)
+    'filter_all' => 'Semua',
+    'filter_tickets' => 'Tiket',
+    'filter_loans' => 'Pinjaman',
 
     // Email Frequency Configuration (Phase 8 - Task 8.1.3) per D12 §6.17
     'email_delivery_settings' => 'Tetapan Penghantaran E-mel',

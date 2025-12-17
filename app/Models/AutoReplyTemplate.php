@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Model AutoReplyTemplate untuk sistem AI Ollama
- *
+ * 
  * Per Requirements 3.1, 3.2, 3.3, 3.4: Auto-reply template management
  * Selaras dengan D09 Database Documentation v3.6.0 (Dual Audit System)
  *
@@ -29,16 +31,45 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  * @property \Carbon\Carbon|null $deleted_at
  * @property-read \App\Models\User $creator
  * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\AutoReplyDraft> $drafts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read int|null $drafts_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate draft()
+ * @method static \Database\Factories\AutoReplyTemplateFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate whereTemplateContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate whereVariables($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AutoReplyTemplate withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @mixin \Eloquent
  */
 class AutoReplyTemplate extends Model implements AuditableContract
 {
-    use HasFactory, SoftDeletes, Auditable;
+    use Auditable;
+    use HasFactory;
+    use LogsActivity;
+    use SoftDeletes;
 
     /**
      * Template statuses
      */
     public const STATUS_DRAFT = 'draft';
+
     public const STATUS_ACTIVE = 'active';
+
     public const STATUS_ARCHIVED = 'archived';
 
     /**
@@ -67,9 +98,26 @@ class AutoReplyTemplate extends Model implements AuditableContract
     }
 
     /**
-     * Hubungan dengan User yang mencipta template
+     * Spatie Activity Log configuration
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @see D09 §4.7 - Activity Log Requirements
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'name',
+                'template_content',
+                'status',
+                'created_by',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('auto_reply_template')
+            ->setDescriptionForEvent(fn (string $eventName) => "Auto reply template {$eventName}");
+    }
+
+    /**
+     * Hubungan dengan User yang mencipta template
      */
     public function creator(): BelongsTo
     {
@@ -78,8 +126,6 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
     /**
      * Hubungan dengan AutoReplyDraft
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function drafts(): HasMany
     {
@@ -89,7 +135,7 @@ class AutoReplyTemplate extends Model implements AuditableContract
     /**
      * Scope untuk template aktif
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
@@ -100,7 +146,7 @@ class AutoReplyTemplate extends Model implements AuditableContract
     /**
      * Scope untuk template draft
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeDraft($query)
@@ -110,8 +156,6 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
     /**
      * Semak sama ada template aktif
-     *
-     * @return bool
      */
     public function isActive(): bool
     {
@@ -120,8 +164,6 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
     /**
      * Semak sama ada template dalam draft
-     *
-     * @return bool
      */
     public function isDraft(): bool
     {
@@ -130,8 +172,6 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
     /**
      * Semak sama ada template diarkibkan
-     *
-     * @return bool
      */
     public function isArchived(): bool
     {
@@ -140,9 +180,6 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
     /**
      * Proses template dengan pembolehubah
-     *
-     * @param array $variables
-     * @return string
      */
     public function processTemplate(array $variables = []): string
     {
@@ -150,7 +187,7 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
         // Replace template variables dengan format {{variable_name}}
         foreach ($variables as $key => $value) {
-            $content = str_replace('{{' . $key . '}}', (string) $value, $content);
+            $content = str_replace('{{'.$key.'}}', (string) $value, $content);
         }
 
         return $content;
@@ -158,8 +195,6 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
     /**
      * Dapatkan senarai pembolehubah yang diperlukan dalam template
-     *
-     * @return array
      */
     public function getRequiredVariables(): array
     {
@@ -170,16 +205,13 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
     /**
      * Sahkan sama ada semua pembolehubah yang diperlukan disediakan
-     *
-     * @param array $variables
-     * @return bool
      */
     public function validateVariables(array $variables): bool
     {
         $required = $this->getRequiredVariables();
 
         foreach ($required as $variable) {
-            if (!array_key_exists($variable, $variables)) {
+            if (! array_key_exists($variable, $variables)) {
                 return false;
             }
         }
@@ -189,8 +221,6 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
     /**
      * Aktifkan template
-     *
-     * @return bool
      */
     public function activate(): bool
     {
@@ -199,8 +229,6 @@ class AutoReplyTemplate extends Model implements AuditableContract
 
     /**
      * Arkibkan template
-     *
-     * @return bool
      */
     public function archive(): bool
     {

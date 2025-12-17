@@ -16,6 +16,39 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property string $commentable_type
+ * @property int $commentable_id
+ * @property int|null $parent_id
+ * @property string $comment Comment text (max 1000 characters enforced at application level)
+ * @property array<array-key, mixed>|null $mentions Array of mentioned user IDs
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model $commentable
+ * @property-read string $formatted_comment
+ * @property-read InternalComment|null $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, InternalComment> $replies
+ * @property-read int|null $replies_count
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\InternalCommentFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment topLevel()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereComment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereCommentableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereCommentableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereMentions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereParentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InternalComment withMentionFor(int $userId)
+ * @mixin \Eloquent
+ */
 class InternalComment extends Model
 {
     /** @use HasFactory<\Database\Factories\InternalCommentFactory> */

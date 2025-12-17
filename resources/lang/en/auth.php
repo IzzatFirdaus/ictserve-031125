@@ -12,7 +12,7 @@ return [
     'login_title' => 'Login',
     'login_subtitle' => 'Access ICTServe staff portal',
     'email' => 'Email',
-    'email_placeholder' => 'name@bpm.gov.my',
+    'email_placeholder' => 'name@motac.gov.my',
     'password_placeholder' => 'Enter your password',
     'remember_me' => 'Remember me',
     'forgot_password' => 'Forgot password?',
@@ -28,7 +28,7 @@ return [
     'logged_out' => 'You have been logged out successfully.',
     'logout' => 'Logout',
     'must_login_portal' => 'You must be logged in to access the staff portal.',
-    'password' => 'The provided password is incorrect.',
+    'password' => 'Password',
     'session_expired' => 'Your session has expired. Please login again.',
     'session_expiring_message' => 'Your session will expire due to inactivity. Would you like to extend your session?',
     'session_expiring_title' => 'Session Expiring Soon',
@@ -38,6 +38,12 @@ return [
     'email_unverified' => 'Your email address is unverified.',
     'resend_verification' => 'Click here to re-send the verification email.',
     'verification_link_sent' => 'A new verification link has been sent to your email address.',
+
+    // Password Reset (v3.6.0)
+    'forgot_password_description' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',
+    'email_hint_reset' => 'Enter your registered @motac.gov.my email',
+    'send_reset_link' => 'Send Reset Link',
+    'back_to_login' => 'Back to Login',
 
     // Task 14.1: Flexible Login
     'email_or_username' => 'Email or Username',

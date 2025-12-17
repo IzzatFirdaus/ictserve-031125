@@ -1,11 +1,11 @@
 # Dokumentasi Rekabentuk Teknikal (Technical Design Documentation)
 
-**Sistem ICTServe**
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** IEEE 1016, ISO/IEC/IEEE 2651x series, ISO 9001, ISO/IEC/IEEE 12207
 
 ---
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                                       |
 | -------------------- | ----------------------------------------------------------- |
-| **Versi**            | 3.5.0                                                       |
-| **Tarikh Kemaskini** | 1 Disember 2025                                             |
+| **Versi**            | 3.6.1                                                       |
+| **Tarikh Kemaskini** | 17 Disember 2025                                            |
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                      |
-| **Pematuhi**         | IEEE 1016, ISO/IEC/IEEE 2651x, ISO 9001, ISO/IEC/IEEE 12207 |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                   |
+| **Pematuhi**         | IEEE 1016, ISO/IEC/IEEE 2651x series, ISO 9001, ISO/IEC/IEEE 12207 |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu  |
 
 > Notis Penggunaan Dalaman: Reka bentuk teknikal ini adalah khusus untuk sistem dalaman MOTAC; bukan untuk aplikasi awam.
 
@@ -29,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                          | Penulis     |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi rekabentuk teknikal                                                                                                                                                                                                                                         | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                             | Pasukan BPM |
 | 2.1.0 | 19 Oktober 2025  | Tambah §7a Internationalization & Language Support                                                                                                                                                                                                                                 | Pasukan BPM |
@@ -72,18 +73,20 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 | Komponen              | Versi   | Fungsi                            |
 | --------------------- | ------- | --------------------------------- |
 | **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama       |
-| **Laravel**           | 12.40.1 | Framework aplikasi web            |
+| **Laravel**           | 12.42.0 | Framework aplikasi web            |
 | **Filament**          | 4.1.10  | Admin panel framework             |
-| **Livewire**          | 3.7.0   | Server-driven UI components       |
+| **Livewire**          | 3.7.1   | Server-driven UI components       |
 | **Livewire Volt**     | 1.10.1  | Single-file Livewire components   |
-| **Laravel Reverb**    | 1.6.2   | WebSocket server untuk real-time  |
+| **Laravel Reverb**    | 1.6.3   | WebSocket server untuk real-time  |
 | **Spatie Permission** | 6.23    | Role-based access control         |
 | **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it) |
 | **Activity Log**      | 4.x     | User activity logging (spatie)    |
-| **Laravel Pulse**     | 1.3.0   | Performance monitoring (v3.5.0)   |
-| **Laravel Sanctum**   | 4.0     | API token authentication (v3.5.0) |
-| **Laravel Socialite** | 5.x     | Google OAuth SSO (v3.5.0)         |
-| **Laravel Telescope** | 5.x     | System debugging (superuser only) |
+| **Laravel Pulse**     | 1.4.6   | Performance monitoring (admin/superuser) |
+| **Laravel Sanctum**   | 4.2.1   | API token authentication           |
+| **Laravel Socialite** | 5.24.0  | Google OAuth SSO (opsyen)          |
+| **Laravel Telescope** | 5.16.0  | System debugging (superuser only)  |
+| **Ollama**            | Latest  | Local LLM server (FAQ, RAG)       |
+| **AWS Bedrock**       | Latest  | Cloud AI (Claude models)          |
 
 ### 3.2. Frontend Stack
 
@@ -107,10 +110,10 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 
 | Komponen         | Versi   | Fungsi                   |
 | ---------------- | ------- | ------------------------ |
-| **PHPUnit**      | 11.5.44 | Testing framework        |
-| **Larastan**     | 3.8.0   | Static analysis          |
+| **PHPUnit**      | 11.5.46 | Testing framework        |
+| **Larastan**     | 3.8.1   | Static analysis          |
 | **Laravel Pint** | 1.26.0  | Code formatting (PSR-12) |
-| **Playwright**   | 1.56+   | E2E testing              |
+| **Playwright**   | 1.57.0  | E2E testing              |
 
 ---
 
@@ -120,8 +123,8 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 
 Laravel 12 menggunakan struktur fail yang dipermudahkan:
 
-- **Tiada `app/Http/Kernel.php`** - Middleware didaftarkan dalam `bootstrap/app.php`
-- **Tiada `app/Console/Kernel.php`** - Commands auto-register dari `app/Console/Commands/`
+- **Tiada Kernel HTTP dalam `app/` (Laravel 12)** - Middleware didaftarkan dalam `bootstrap/app.php`
+- **Tiada Kernel Console dalam `app/` (Laravel 12)** - Commands auto-register dari `app/Console/Commands/`
 - **Service Providers** - Didaftarkan dalam `bootstrap/providers.php`
 
 ### 4.2. Application Bootstrap (`bootstrap/app.php`)
@@ -274,7 +277,7 @@ return Application::configure(basePath: dirname(__DIR__))
 - **Email Verification**: WAJIB sebelum akses Dashboard/Profile
 - **Flexible Login**: Email penuh (`user@motac.gov.my`) ATAU username pendek (`user`)
 - **Optional Account Linking**: Selepas login pertama, papar prompt untuk link submissions sedia ada
-- **Tiada LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
+- **Tiada LDAP**: SSO Google Workspace adalah opsyen (Laravel Socialite) selain login biasa
 
 Admin dan superuser memerlukan authentication untuk pengurusan sistem. Approvers (Grade 41+) meluluskan permohonan melalui signed email tokens, bukan login sistem.
 
@@ -283,10 +286,10 @@ Admin dan superuser memerlukan authentication untuk pengurusan sistem. Approvers
 | Capability                | Description                                                                        | Implementation                                         |
 | ------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
 | `view-own-history`        | Lihat tiket/permohonan sendiri sahaja                                              | Policy: `WHERE user_id = Auth::id()`                   |
-| `edit-profile`            | Kemaskini maklumat peribadi (name, phone, department*id, grade, locale, notify*\*) | Route: `/profile`, Policy: `update(Auth::user())`      |
+| `edit-profile`            | Kemaskini maklumat peribadi (name, phone, division_id, grade_id, locale, notify*\*) | Route: `/profile`, Policy: `update(Auth::user())`      |
 | `access-dashboard`        | Akses Dashboard Staf dengan statistik peribadi                                     | Route: `/dashboard`, Middleware: `auth,verified,staff` |
 | `submit-as-authenticated` | Hantar tiket/permohonan dengan user_id linkage (auto-fill forms dari profile)      | Form: Pre-populate dari Auth::user() attributes        |
-| `link-guest-submissions`  | Link submissions tetamu sedia ada kepada akaun                                     | Route: `/account/link-submissions`                     |
+| `link-guest-submissions`  | Link submissions tetamu sedia ada kepada akaun                                     | Route: `/dashboard/link-submissions`                   |
 
 **Query Pattern untuk Staff**:
 
@@ -433,7 +436,7 @@ Gate::define('viewTelescope', function ($user) {
 
 ### 7.1. Laravel Reverb Configuration
 
-**Server**: Laravel Reverb 1.6.2 (native Laravel WebSocket server)
+**Server**: Laravel Reverb 1.6.3 (native Laravel WebSocket server)
 
 ```php
 // config/broadcasting.php
@@ -522,7 +525,7 @@ class TicketStatusChanged implements ShouldBroadcast
 ### 8.3. Language Switcher Component (DILUMPUHKAN v3.6.0)
 
 **Framework**: Livewire 3.x
-**Location**: `app/Livewire/LanguageSwitcher.php`
+**Location**: `app/Http/Controllers/LanguageController.php` (route: `routes/web.php` → `/change-locale/{locale}`)
 
 **Features**:
 
@@ -667,13 +670,333 @@ class SLAManagementService
 
 ---
 
-## 12. Pemantauan & Pemberitahuan (Monitoring & Alerting)
+## 12. AI Infrastructure (Cloud Hybrid Architecture)
+
+> **Trace:** D18 v1.0.0 (Cloud Hybrid AI Architecture), D03 §5.9 (AI Requirements), D04 §12 (AI Integration Layer)
+
+### 12.1. AI Infrastructure Overview
+
+ICTServe mengintegrasikan **True Hybrid AI Architecture** yang menggabungkan Ollama (local LLM) dengan AWS Bedrock (cloud AI) untuk memberikan pengalaman AI yang optimum dengan penghalaan pintar berdasarkan jenis pertanyaan.
+
+**Infrastructure Components:**
+
+| Komponen | Lokasi | Fungsi | Status |
+|----------|--------|--------|--------|
+| **Ollama Server** | localhost:11434 | Local LLM untuk FAQ dan data sovereignty | ✅ Active |
+| **AWS Bedrock** | us-east-1 | Cloud AI untuk complex reasoning | ✅ Active |
+| **Model Router** | `app/Services/ModelRouter.php` | Smart query routing | ✅ Active |
+| **Vector Database** | MySQL + JSON columns | Embeddings storage | ✅ Active |
+| **MCP Server** | Port 3000 | AI tool integration | ✅ Active |
+
+### 12.2. Ollama Infrastructure
+
+**Server Configuration:**
+
+```bash
+# Ollama Service Configuration
+OLLAMA_HOST=http://127.0.0.1:11434
+OLLAMA_MODEL=llama3.1:8b-instruct-q4_K_M
+OLLAMA_EMBEDDING_MODEL=nomic-embed-text
+OLLAMA_KEEP_ALIVE=5m
+OLLAMA_MAX_LOADED_MODELS=1
+```
+
+**System Requirements:**
+
+| Resource | Minimum | Recommended | Purpose |
+|----------|---------|-------------|---------|
+| **CPU** | 4 cores | 8 cores | Model inference |
+| **RAM** | 16GB | 32GB | Model loading (8-16GB per model) |
+| **Storage** | 100GB SSD | 500GB NVMe | Model storage |
+| **Network** | 100 Mbps | 1 Gbps | API communication |
+
+**Health Monitoring:**
+
+```php
+// Ollama Health Check Service
+class OllamaHealthService
+{
+    public function checkHealth(): array
+    {
+        try {
+            $response = Http::timeout(5)->get($this->config['url'] . '/api/tags');
+            return [
+                'status' => 'up',
+                'models' => $response->json()['models'] ?? [],
+                'response_time' => $response->transferStats->getTransferTime(),
+                'last_check' => now()
+            ];
+        } catch (\Throwable $e) {
+            return ['status' => 'down', 'error' => $e->getMessage()];
+        }
+    }
+}
+```
+
+### 12.3. AWS Bedrock Infrastructure
+
+**Model Configuration:**
+
+| Model | Use Case | Speed | Cost | Rate Limit |
+|-------|----------|-------|------|------------|
+| **Claude Opus 4.5** | Complex reasoning | Slow | High | 10 RPM, 20K TPM |
+| **Claude Sonnet 4.5** | Balanced tasks | Medium | Medium | 20 RPM, 40K TPM |
+| **Claude Haiku 4.5** | Quick responses | Fast | Low | 50 RPM, 100K TPM |
+| **Nova Pro** | Multimodal | Medium | Medium | 40 RPM, 60K TPM |
+| **Nova Lite** | Fast text | Fast | Low | 80 RPM, 120K TPM |
+| **Nova Micro** | Ultra-fast | Very Fast | Very Low | 100 RPM, 150K TPM |
+
+**Authentication & Security:**
+
+```php
+// AWS Bedrock Configuration
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_BEDROCK_REGION=us-east-1
+AWS_BEDROCK_MODEL_ID=us.anthropic.claude-sonnet-4-5-20250929-v1:0
+
+// Data Residency Compliance
+BEDROCK_ENFORCE_MALAYSIA_RESIDENCY=true
+BEDROCK_ALLOWED_REGIONS=ap-southeast-1
+```
+
+### 12.4. Model Routing Infrastructure
+
+**Query Analysis Pipeline:**
+
+```php
+class ModelRouter
+{
+    private array $faqKeywords = [
+        'tiket', 'helpdesk', 'pinjaman', 'aset', 'status',
+        'permohonan', 'sistem', 'ictserve', 'motac', 'bpm'
+    ];
+    
+    private array $complexKeywords = [
+        'analisis', 'bandingkan', 'jelaskan', 'mengapa',
+        'bagaimana jika', 'strategi', 'cadangan'
+    ];
+    
+    public function routeRequest(string $query, array $context = []): array
+    {
+        $queryType = $this->analyzeQuery($query);
+        
+        return match($queryType) {
+            'faq_specific' => $this->routeToOllama($query, $context),
+            'complex_reasoning' => $this->routeToBedrock($query, $context),
+            'hybrid' => $this->routeToHybrid($query, $context),
+            default => $this->routeToFallback($query, $context)
+        };
+    }
+}
+```
+
+**Fallback Strategy:**
+
+```text
+┌─────────────────────────────────────────────────────────┐
+│                   Fallback Chain                         │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│  FAQ Query:                                              │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐          │
+│  │  Ollama  │───▶│ Bedrock  │───▶│  Static  │          │
+│  │   RAG    │    │ Fallback │    │   FAQ    │          │
+│  └──────────┘    └──────────┘    └──────────┘          │
+│                                                          │
+│  Complex Query:                                          │
+│  ┌──────────┐    ┌──────────┐                           │
+│  │ Bedrock  │───▶│  Error   │                           │
+│  │  Direct  │    │ Message  │                           │
+│  └──────────┘    └──────────┘                           │
+│                                                          │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 12.5. Data Infrastructure
+
+**Enhanced Database Schema:**
+
+```sql
+-- AI-specific tables
+CREATE TABLE bedrock_conversations (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NULL,
+    title VARCHAR(255) NOT NULL,
+    messages JSON NOT NULL,
+    model_used VARCHAR(100) NOT NULL,
+    total_tokens INT UNSIGNED DEFAULT 0,
+    cost_estimate DECIMAL(10,4) DEFAULT 0.0000,
+    metadata JSON NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    INDEX idx_user_id (user_id),
+    INDEX idx_model_used (model_used),
+    INDEX idx_created_at (created_at)
+);
+
+CREATE TABLE message_logs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    conversation_id BIGINT UNSIGNED NULL,
+    user_id BIGINT UNSIGNED NULL,
+    query TEXT NOT NULL,
+    response TEXT NOT NULL,
+    model_used VARCHAR(100) NOT NULL,
+    confidence_score DECIMAL(3,2) NULL,
+    processing_time DECIMAL(8,3) NOT NULL,
+    tokens_used INT UNSIGNED DEFAULT 0,
+    cost DECIMAL(10,4) DEFAULT 0.0000,
+    source ENUM('ollama', 'bedrock', 'hybrid') NOT NULL,
+    metadata JSON NULL,
+    created_at TIMESTAMP NULL,
+    INDEX idx_conversation_id (conversation_id),
+    INDEX idx_user_id (user_id),
+    INDEX idx_source (source),
+    INDEX idx_created_at (created_at)
+);
+
+CREATE TABLE document_chunks (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    document_id BIGINT UNSIGNED NOT NULL,
+    chunk_text TEXT NOT NULL,
+    chunk_index INT UNSIGNED NOT NULL,
+    embedding JSON NULL,
+    metadata JSON NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    INDEX idx_document_id (document_id),
+    INDEX idx_chunk_index (chunk_index)
+);
+```
+
+### 12.6. Performance & Monitoring
+
+**AI Service Metrics:**
+
+| Metric | Target | Monitoring Tool | Alert Threshold |
+|--------|--------|-----------------|-----------------|
+| **Response Time** | <5s | Laravel Pulse | >10s |
+| **Ollama Uptime** | >99% | Health Check | <95% |
+| **Bedrock Success Rate** | >95% | CloudWatch | <90% |
+| **Cost per Query** | <$0.01 | Custom Dashboard | >$0.05 |
+| **Cache Hit Rate** | >80% | Redis Metrics | <70% |
+
+**Health Check Endpoints:**
+
+```php
+// routes/api.php
+Route::get('/health/ai', function () {
+    $ollama = app(OllamaHealthService::class)->check();
+    $bedrock = app(BedrockHealthService::class)->check();
+    
+    return response()->json([
+        'status' => ($ollama['status'] === 'up' && $bedrock['status'] === 'up') ? 'healthy' : 'degraded',
+        'services' => compact('ollama', 'bedrock'),
+        'timestamp' => now()->toISOString()
+    ]);
+});
+```
+
+### 12.7. Security & Compliance
+
+**Data Classification:**
+
+```php
+class DataClassificationService
+{
+    public function classifyForProcessing(string $content): string
+    {
+        // PII Detection
+        $piiResult = app(PIIDetectionService::class)->detectAndSanitize($content);
+        if ($piiResult['has_pii']) {
+            return 'local_only'; // Ollama only
+        }
+        
+        // Sensitive keyword detection
+        $sensitiveKeywords = ['confidential', 'rahsia', 'sulit', 'internal'];
+        foreach ($sensitiveKeywords as $keyword) {
+            if (stripos($content, $keyword) !== false) {
+                return 'local_only';
+            }
+        }
+        
+        return 'allow_cloud'; // Can use Bedrock
+    }
+}
+```
+
+**Audit Trail Integration:**
+
+```php
+// AI operations audit
+class AIAuditService
+{
+    public function logAIInteraction(array $data): void
+    {
+        // Owen-it audit (compliance)
+        MessageLog::create($data);
+        
+        // Spatie activity log (operations)
+        activity()
+            ->causedBy(auth()->user())
+            ->withProperties($data)
+            ->log('AI interaction');
+    }
+}
+```
+
+### 12.8. Deployment & Infrastructure
+
+**Docker Configuration:**
+
+```yaml
+# docker-compose.yml
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=5m
+      - OLLAMA_MAX_LOADED_MODELS=1
+    restart: unless-stopped
+    
+  app:
+    build: .
+    depends_on:
+      - ollama
+      - mysql
+      - redis
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - AWS_BEDROCK_REGION=us-east-1
+```
+
+**Production Deployment:**
+
+```bash
+# Ollama setup
+curl -fsSL https://ollama.ai/install.sh | sh
+ollama pull llama3.1:8b-instruct-q4_K_M
+ollama pull nomic-embed-text
+
+# Laravel setup
+php artisan migrate
+php artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --tries=3 --timeout=1200
+php artisan reverb:serve --host=127.0.0.1 --port=8080 --scheme=http
+```
+
+---
+
+## 13. Pemantauan & Pemberitahuan (Monitoring & Alerting)
 
 ### 12.1. Performance Metrics
 
 | KPI                     | Target     | Alatan                    |
 | ----------------------- | ---------- | ------------------------- |
-| **Uptime**              | 99.5%      | Laravel Horizon           |
+| **Uptime**              | 99.5%      | Health checks (`/up`, `/api/health/*`) + Laravel Pulse |
 | **Response Time (p95)** | <2 seconds | Laravel Pulse (v3.5.0)    |
 | **Error Rate (5xx)**    | <0.5%      | Sentry                    |
 | **Database Query Time** | <500ms avg | Laravel Pulse (v3.5.0)    |

@@ -23,7 +23,7 @@ class DataVisualization extends Page
 
     public static function getNavigationLabel(): string
     {
-        return 'Visualisasi Data';
+        return __('admin_pages.data_visualization.label');
     }
 
     public static function getNavigationGroup(): ?string

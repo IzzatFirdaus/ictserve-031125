@@ -10,15 +10,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Support Ticket Attachment Model
- *
+ * 
  * Represents file attachments for support tickets.
  *
  * @version 1.0.0
- *
  * @since 2025-11-06
- *
  * @author ICTServe Development Team
- *
  * @property int $id
  * @property int $support_ticket_id
  * @property string $filename
@@ -27,6 +24,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $size
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
+ * @property-read string $human_readable_size
+ * @property-read \App\Models\SupportTicket $supportTicket
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereMimeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereSupportTicketId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicketAttachment whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class SupportTicketAttachment extends Model
 {

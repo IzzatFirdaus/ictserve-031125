@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 
 abstract class TestCase extends BaseTestCase
 {
+    use CreatesApplication;
     use RefreshDatabase; // Run migrations for in-memory SQLite database
 
     /** @var bool Prevent automatic database seeding for all tests */
@@ -54,7 +55,7 @@ abstract class TestCase extends BaseTestCase
         ];
 
         foreach ($filamentViews as $view) {
-            $backup = $view . '.backup';
+            $backup = $view.'.backup';
             if (file_exists($view) && ! file_exists($backup)) {
                 // Use @ to suppress file system errors (file may be locked on Windows)
                 @rename($view, $backup);
@@ -108,7 +109,7 @@ abstract class TestCase extends BaseTestCase
         ];
 
         foreach ($filamentViews as $view) {
-            $backup = $view . '.backup';
+            $backup = $view.'.backup';
             if (file_exists($backup)) {
                 // Use @ to suppress file system errors (file may be locked on Windows)
                 @rename($backup, $view);

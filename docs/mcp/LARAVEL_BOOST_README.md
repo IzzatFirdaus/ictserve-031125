@@ -192,6 +192,36 @@ $result = PackageName::featureTwo($param1, $param2);
 
 Sometimes you may need to manually register the Laravel Boost MCP server with your editor of choice. You should register the MCP server using the following details:
 
+### Recommended: Laravel MCP Framework Integration
+
+For better stability and protocol negotiation, use the Laravel MCP framework approach:
+
+<table>
+<tr><td><strong>Command</strong></td><td><code>php</code></td></tr>
+<tr><td><strong>Args</strong></td><td><code>artisan mcp:start laravel-boost</code></td></tr>
+</table>
+
+JSON Example:
+
+```json
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "php",
+            "args": ["artisan", "mcp:start", "laravel-boost"],
+            "cwd": "/path/to/your/laravel/project",
+            "env": {
+                "APP_ENV": "local"
+            }
+        }
+    }
+}
+```
+
+### Legacy: Direct Laravel Boost Command
+
+For direct integration (may experience connection timeouts):
+
 <table>
 <tr><td><strong>Command</strong></td><td><code>php</code></td></tr>
 <tr><td><strong>Args</strong></td><td><code>artisan boost:mcp</code></td></tr>
@@ -209,6 +239,8 @@ JSON Example:
     }
 }
 ```
+
+> **Note**: For detailed configuration troubleshooting and Laravel MCP integration, see [LARAVEL_BOOST_MCP_INTEGRATION.md](LARAVEL_BOOST_MCP_INTEGRATION.md).
 
 ## Adding Support for Other IDEs / AI Agents
 

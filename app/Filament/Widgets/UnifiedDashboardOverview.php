@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\CacheableWidget;
 use App\Services\UnifiedAnalyticsService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -12,20 +13,47 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
  * Unified Dashboard Overview Widget
  *
  * Displays key metrics combining helpdesk and asset loan data.
- * Provides real-time system health and performance indicators.
+ * Provides real-time system health and performance indicators
+ * with 300-second polling interval for real-time updates.
  *
- * Requirements: 13.1, 4.1, 4.2, 13.3
+ * Features:
+ * - System health score with trend visualization
+ * - Active items requiring attention
+ * - Helpdesk resolution rate with pending count
+ * - Loan approval rate with pending approvals
+ * - Asset utilization metrics
+ * - Cached data with 5-minute TTL for performance
+ *
+ * @trace Requirements: 8.4, 10.2, 10.3, 13.1, 13.3
+ *
+ * @see D04 §3.2 Dashboard widgets
+ * @see D12 §9 Performance optimization patterns
  */
 class UnifiedDashboardOverview extends BaseWidget
 {
+    use CacheableWidget;
+
+    /**
+     * Polling interval for real-time updates (300 seconds = 5 minutes)
+     * Matches the cache TTL for optimal performance
+     */
     protected ?string $pollingInterval = '300s';
 
     protected int|string|array $columnSpan = 'full';
 
+    /**
+     * Sort order - display at top of dashboard
+     */
+    protected static ?int $sort = -10;
+
     protected function getStats(): array
     {
-        $service = app(UnifiedAnalyticsService::class);
-        $metrics = $service->getDashboardMetrics();
+        // Use cached data with 5-minute TTL for performance optimization
+        $metrics = $this->cached(function () {
+            $service = app(UnifiedAnalyticsService::class);
+
+            return $service->getDashboardMetrics();
+        }, 'dashboard-metrics');
 
         $helpdesk = $metrics['helpdesk'];
         $loans = $metrics['loans'];

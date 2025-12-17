@@ -1,5 +1,9 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
+
 declare(strict_types=1);
 
 /**
@@ -35,5 +39,15 @@ return [
         'account_registration_answer' => 'Klik pada Daftar dan gunakan alamat emel @motac.gov.my anda. Anda akan menerima emel pengesahan untuk mengaktifkan akaun anda.',
         'forgot_password' => 'Bagaimana jika saya terlupa kata laluan?',
         'forgot_password_answer' => 'Klik pada "Lupa Kata Laluan" di halaman log masuk dan ikuti arahan yang dihantar ke emel anda.',
+    ],
+
+    // AI Chat Integration
+    'ai_chat' => [
+        'title' => 'Tanya AI Bedrock',
+        'description' => 'Tidak jumpa jawapan yang anda cari? Berbual dengan AI Bedrock untuk mendapat bantuan peribadi dan jawapan yang lebih terperinci.',
+        'chat_button' => 'Sembang dengan AI',
+        'powered_by' => 'Dikuasakan oleh AWS Bedrock',
+        'suggestions_title' => 'Soalan Lazim',
+        'ask_question' => 'Tanya soalan berkaitan perkhidmatan ICT...',
     ],
 ];

@@ -72,31 +72,31 @@ class FaqPolicy
     /**
      * Tentukan sama ada pengguna boleh memadam FAQ
      *
-     * Akses: superuser sahaja
+     * Akses: admin, superuser sahaja
      */
     public function delete(User $user, Faq $faq): bool
     {
-        return $user->hasRole('superuser');
+        return $user->hasAnyRole(['admin', 'superuser']);
     }
 
     /**
      * Tentukan sama ada pengguna boleh memulihkan FAQ yang dipadam
      *
-     * Akses: superuser sahaja
+     * Akses: admin, superuser sahaja
      */
     public function restore(User $user, Faq $faq): bool
     {
-        return $user->hasRole('superuser');
+        return $user->hasAnyRole(['admin', 'superuser']);
     }
 
     /**
      * Tentukan sama ada pengguna boleh memadam FAQ secara kekal
      *
-     * Akses: superuser sahaja
+     * Akses: admin, superuser sahaja
      */
     public function forceDelete(User $user, Faq $faq): bool
     {
-        return $user->hasRole('superuser');
+        return $user->hasAnyRole(['admin', 'superuser']);
     }
 
     /**

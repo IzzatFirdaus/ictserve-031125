@@ -11,14 +11,13 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * LoanApproval Model - v3.5.0 True Hybrid Architecture
- *
+ * 
  * Records approval decisions for loan applications with audit trail.
  * Supports email-based approval workflow with token validation.
  *
  * @see D03 Software Requirements Specification - Requirement 4.3
  * @see D04 Software Design Document - Approval Service
  * @see D09 Database Documentation - loan_approvals table
- *
  * @property int $id
  * @property int $loan_application_id
  * @property string $approver_email
@@ -29,6 +28,29 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string $decision_ip_hash
  * @property string $token_hash
  * @property array|null $metadata
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\LoanApplication $loanApplication
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereApproverEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereApproverGrade($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereDecision($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereDecisionAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereDecisionIpHash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereLoanApplicationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereMetadata($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereRemarks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereTokenHash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoanApproval whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class LoanApproval extends Model implements Auditable
 {

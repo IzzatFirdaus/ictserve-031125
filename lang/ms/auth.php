@@ -1,5 +1,8 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
 declare(strict_types=1);
 
 /**
@@ -8,6 +11,7 @@ declare(strict_types=1);
  * Auto-generated on 2025-11-11 13:02:55
  * Dikemaskini: 2025-12-02 - Tambah terjemahan pendaftaran untuk Tugasan 13.1
  * Dikemaskini: 2025-12-02 - Tambah terjemahan log masuk fleksibel untuk Tugasan 14.1
+ * Dikemaskini: 2025-12-17 - Tambah header versi (v3.6.1)
  */
 
 return [
@@ -18,8 +22,8 @@ return [
 
     // Terjemahan Log Masuk Fleksibel (Tugasan 14.1 - Keperluan 16.2, 16.3, 16.5)
     'email_or_username' => 'E-mel atau Nama Pengguna',
-    'email_or_username_placeholder' => 'nama@motac.gov.my atau nama',
-    'flexible_login_hint' => 'Masukkan e-mel penuh atau nama pengguna sahaja (tanpa @motac.gov.my)',
+    'email_or_username_placeholder' => 'nama@motac.gov.my atau nama pengguna',
+    'flexible_login_hint' => 'Masukkan e-mel penuh atau nama pengguna sahaja',
     'logging_in' => 'Sedang log masuk...',
     'password_placeholder' => 'Masukkan kata laluan anda',
     'remember_me' => 'Ingat saya',
@@ -34,7 +38,7 @@ return [
     'logged_out' => 'Anda telah log keluar dengan jayanya.',
     'logout' => 'Log Keluar',
     'must_login_portal' => 'Anda mesti log masuk untuk mengakses portal kakitangan.',
-    'password' => 'Kata laluan yang diberikan tidak betul.',
+    'password' => 'Kata Laluan',
     'session_expired' => 'Sesi anda telah tamat. Sila log masuk semula.',
     'session_expiring_message' => 'Sesi anda akan tamat disebabkan tidak aktif. Adakah anda mahu melanjutkan sesi anda?',
     'session_expiring_title' => 'Sesi Akan Tamat',

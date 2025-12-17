@@ -1,5 +1,8 @@
 <?php
 
+// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)
+// See lang/en/README.md for details
+
 declare(strict_types=1);
 
 /**
@@ -16,11 +19,13 @@ declare(strict_types=1);
 return [
     // Page titles
     'page_title' => 'Check Status',
+    'page_tagline' => 'Current Status',
     'title' => 'Check Your Submission Status',
     'subtitle' => 'Enter your status token to view the current status of your helpdesk ticket or loan application.',
 
     // Form labels
     'form_label' => 'Status check form',
+    'form_helper' => 'Enter your token to check your submission status.',
     'token_label' => 'Status Token',
     'token_placeholder' => 'Enter your status token (e.g., abc123def456...)',
     'token_help' => 'The status token was sent to your email when you submitted your request.',
@@ -78,4 +83,11 @@ return [
     // Help section
     'help_text' => 'Need help? Can\'t find your submission?',
     'contact_support' => 'Contact BPM Support',
+
+    // Quick Help sidebar
+    'quick_help_title' => 'Quick Help',
+    'quick_help_email' => 'BPM support email',
+    'quick_help_phone' => 'Helpdesk hotline',
+    'quick_help_ticket' => 'Submit a new ticket',
+    'quick_help_ticket_cta' => 'Go to helpdesk form',
 ];

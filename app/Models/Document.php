@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Model Document untuk sistem AI Ollama
- *
+ * 
  * Per Requirements 2.1, 2.2, 4.1: Document management dengan True Hybrid Architecture
  * Selaras dengan D09 Database Documentation v3.6.0 (Dual Audit System)
  *
@@ -28,10 +30,43 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  * @property \Carbon\Carbon|null $deleted_at
  * @property-read \App\Models\User|null $uploader
  * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\DocumentChunk> $chunks
+ * @property string|null $processing_model
+ * @property array<array-key, mixed>|null $bedrock_analysis
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read int|null $chunks_count
+ * @property-read string|null $file_size
+ * @property-read string|null $file_type
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document completed()
+ * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document failed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereBedrockAnalysis($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereMetadata($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereProcessingModel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereUploadedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document withStatus(string $status)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @mixin \Eloquent
  */
 class Document extends Model implements AuditableContract
 {
-    use Auditable, HasFactory, SoftDeletes;
+    use Auditable;
+    use HasFactory;
+    use LogsActivity;
+    use SoftDeletes;
 
     /**
      * Document processing statuses
@@ -69,6 +104,25 @@ class Document extends Model implements AuditableContract
             'metadata' => 'array',
             'bedrock_analysis' => 'array',
         ];
+    }
+
+    /**
+     * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'filename',
+                'status',
+                'uploaded_by',
+                'processing_model',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('document')
+            ->setDescriptionForEvent(fn (string $eventName) => "Document {$eventName}");
     }
 
     /**

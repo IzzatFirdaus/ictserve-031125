@@ -114,7 +114,7 @@ default => is_numeric($width) ? "w-{$width}" : $width,
         this.menuItems[this.activeIndex]?.focus();
     }
 }" @keydown.escape.prevent="close()"
-    @click.outside="open = false" {{ $attributes }}>
+    @click.outside="open = false" @click.away="open = false" {{ $attributes }}>
 
     {{-- Trigger Button --}}
     <div x-ref="trigger" @click="toggle()" @keydown.enter.prevent="toggle()" @keydown.space.prevent="toggle()"

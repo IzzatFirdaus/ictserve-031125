@@ -19,6 +19,150 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string|null $profile_picture
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $password
+ * @property string|null $remember_token
+ * @property string|null $two_factor_secret
+ * @property array<array-key, mixed>|null $two_factor_recovery_codes
+ * @property \Illuminate\Support\Carbon|null $two_factor_confirmed_at
+ * @property string|null $two_factor_backup_codes
+ * @property int $two_factor_enabled
+ * @property string|null $two_factor_enabled_at
+ * @property string $role
+ * @property string|null $google_id Google OAuth user ID for SSO
+ * @property string|null $google_token Encrypted Google OAuth access token
+ * @property string|null $google_refresh_token Encrypted Google OAuth refresh token
+ * @property string $locale DEPRECATED v3.6.0: Always ms. Retained for potential future use.
+ * @property string|null $staff_id
+ * @property string|null $staff_number MOTAC staff number for identification
+ * @property string|null $division_code Division code for organizational structure
+ * @property int|null $division_id
+ * @property int|null $grade_id
+ * @property int|null $position_id
+ * @property string|null $phone
+ * @property string|null $mobile
+ * @property string|null $bio
+ * @property string|null $avatar
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $last_login_at
+ * @property string|null $last_login_ip IP address of last login for audit
+ * @property int $guest_submissions_linked Count of guest submissions linked to this account
+ * @property \Illuminate\Support\Carbon|null $password_changed_at
+ * @property bool $require_password_change
+ * @property int $has_completed_tour
+ * @property array<array-key, mixed>|null $notification_preferences User notification preferences for email alerts
+ * @property string $theme_preference User theme preference: light|dark|system
+ * @property array<array-key, mixed>|null $saved_filters Saved filter combinations for tables
+ * @property array<array-key, mixed>|null $dashboard_layout Dashboard widget arrangement preferences
+ * @property bool $onboarding_completed Whether user has completed onboarding tour
+ * @property string|null $anonymized_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanApplication> $approvedLoanApplications
+ * @property-read int|null $approved_loan_applications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $assignedHelpdeskTickets
+ * @property-read int|null $assigned_helpdesk_tickets_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $assignedTickets
+ * @property-read int|null $assigned_tickets_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserConsent> $consents
+ * @property-read int|null $consents_count
+ * @property-read \App\Models\Division|null $division
+ * @property-read int $profile_completeness
+ * @property \App\Models\Grade|null $grade
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskComment> $helpdeskComments
+ * @property-read int|null $helpdesk_comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HelpdeskTicket> $helpdeskTickets
+ * @property-read int|null $helpdesk_tickets_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\InternalComment> $internalComments
+ * @property-read int|null $internal_comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanApplication> $loanApplications
+ * @property-read int|null $loan_applications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserNotificationPreference> $notificationPreferences
+ * @property-read int|null $notification_preferences_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PortalActivity> $portalActivities
+ * @property-read int|null $portal_activities_count
+ * @property-read \App\Models\Position|null $position
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SavedSearch> $savedSearches
+ * @property-read int|null $saved_searches_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SsoAuditLog> $ssoAuditLogs
+ * @property-read int|null $sso_audit_logs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read int|null $tokens_count
+ * @method static Builder<static>|User active()
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static Builder<static>|User grade41AndAbove()
+ * @method static Builder<static>|User newModelQuery()
+ * @method static Builder<static>|User newQuery()
+ * @method static Builder<static>|User onlyTrashed()
+ * @method static Builder<static>|User permission($permissions, $without = false)
+ * @method static Builder<static>|User query()
+ * @method static Builder<static>|User role($roles, $guard = null, $without = false)
+ * @method static Builder<static>|User whereAnonymizedAt($value)
+ * @method static Builder<static>|User whereAvatar($value)
+ * @method static Builder<static>|User whereBio($value)
+ * @method static Builder<static>|User whereCreatedAt($value)
+ * @method static Builder<static>|User whereDashboardLayout($value)
+ * @method static Builder<static>|User whereDeletedAt($value)
+ * @method static Builder<static>|User whereDivisionCode($value)
+ * @method static Builder<static>|User whereDivisionId($value)
+ * @method static Builder<static>|User whereEmail($value)
+ * @method static Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static Builder<static>|User whereGoogleId($value)
+ * @method static Builder<static>|User whereGoogleRefreshToken($value)
+ * @method static Builder<static>|User whereGoogleToken($value)
+ * @method static Builder<static>|User whereGradeId($value)
+ * @method static Builder<static>|User whereGuestSubmissionsLinked($value)
+ * @method static Builder<static>|User whereHasCompletedTour($value)
+ * @method static Builder<static>|User whereId($value)
+ * @method static Builder<static>|User whereIsActive($value)
+ * @method static Builder<static>|User whereLastLoginAt($value)
+ * @method static Builder<static>|User whereLastLoginIp($value)
+ * @method static Builder<static>|User whereLocale($value)
+ * @method static Builder<static>|User whereMobile($value)
+ * @method static Builder<static>|User whereName($value)
+ * @method static Builder<static>|User whereNotificationPreferences($value)
+ * @method static Builder<static>|User whereOnboardingCompleted($value)
+ * @method static Builder<static>|User wherePassword($value)
+ * @method static Builder<static>|User wherePasswordChangedAt($value)
+ * @method static Builder<static>|User wherePhone($value)
+ * @method static Builder<static>|User wherePositionId($value)
+ * @method static Builder<static>|User whereProfilePicture($value)
+ * @method static Builder<static>|User whereRememberToken($value)
+ * @method static Builder<static>|User whereRequirePasswordChange($value)
+ * @method static Builder<static>|User whereRole($value)
+ * @method static Builder<static>|User whereSavedFilters($value)
+ * @method static Builder<static>|User whereStaffId($value)
+ * @method static Builder<static>|User whereStaffNumber($value)
+ * @method static Builder<static>|User whereThemePreference($value)
+ * @method static Builder<static>|User whereTwoFactorBackupCodes($value)
+ * @method static Builder<static>|User whereTwoFactorConfirmedAt($value)
+ * @method static Builder<static>|User whereTwoFactorEnabled($value)
+ * @method static Builder<static>|User whereTwoFactorEnabledAt($value)
+ * @method static Builder<static>|User whereTwoFactorRecoveryCodes($value)
+ * @method static Builder<static>|User whereTwoFactorSecret($value)
+ * @method static Builder<static>|User whereUpdatedAt($value)
+ * @method static Builder<static>|User withTrashed(bool $withTrashed = true)
+ * @method static Builder<static>|User withoutPermission($permissions)
+ * @method static Builder<static>|User withoutRole($roles, $guard = null)
+ * @method static Builder<static>|User withoutTrashed()
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable implements Auditable, FilamentUser, MustVerifyEmail
 {
     use HasApiTokens;
@@ -141,22 +285,22 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     // Four-role RBAC methods
     public function isStaff(): bool
     {
-        return $this->role === 'staff';
+        return $this->role === 'staff' || $this->hasRole('staff');
     }
 
     public function isApprover(): bool
     {
-        return $this->role === 'approver';
+        return $this->role === 'approver' || $this->hasRole('approver');
     }
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === 'admin' || $this->hasRole('admin');
     }
 
     public function isSuperuser(): bool
     {
-        return $this->role === 'superuser';
+        return $this->role === 'superuser' || $this->hasRole('superuser');
     }
 
     public function canApprove(): bool

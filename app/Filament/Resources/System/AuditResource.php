@@ -6,6 +6,7 @@ namespace App\Filament\Resources\System;
 
 use App\Filament\Clusters\System as SystemCluster;
 use App\Filament\Resources\System\AuditResource\Pages;
+use App\Models\User;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\ViewAction;
 use Filament\Forms;
@@ -46,17 +47,23 @@ class AuditResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'Audit Trail';
+        return __('admin.audit_trail');
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('superuser') ?? false;
     }
 
     public static function canViewAny(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('superuser') ?? false;
     }
 
     public static function canCreate(): bool
@@ -68,47 +75,47 @@ class AuditResource extends Resource
     {
         return $schema
             ->components([
-                Section::make('Audit Information')
+                Section::make('Maklumat Audit')
                     ->components([
                         Forms\Components\TextInput::make('auditable_type')
-                            ->label('Entity Type')
+                            ->label('Jenis Entiti')
                             ->disabled(),
 
                         Forms\Components\TextInput::make('auditable_id')
-                            ->label('Entity ID')
+                            ->label('ID Entiti')
                             ->disabled(),
 
                         Forms\Components\TextInput::make('event')
-                            ->label('Action')
+                            ->label('Tindakan')
                             ->disabled(),
 
                         Forms\Components\TextInput::make('user_id')
-                            ->label('User ID')
+                            ->label('ID Pengguna')
                             ->disabled(),
 
                         Forms\Components\DateTimePicker::make('created_at')
-                            ->label('Timestamp')
+                            ->label('Masa')
                             ->disabled(),
 
                         Forms\Components\TextInput::make('ip_address')
-                            ->label('IP Address')
+                            ->label('Alamat IP')
                             ->disabled(),
 
                         Forms\Components\Textarea::make('user_agent')
-                            ->label('User Agent')
+                            ->label('Ejen Pengguna')
                             ->disabled()
                             ->rows(2),
                     ])
                     ->columns(2),
 
-                Section::make('Change Details')
+                Section::make('Butiran Perubahan')
                     ->components([
                         Forms\Components\KeyValue::make('old_values')
-                            ->label('Previous Values')
+                            ->label('Nilai Sebelum')
                             ->disabled(),
 
                         Forms\Components\KeyValue::make('new_values')
-                            ->label('New Values')
+                            ->label('Nilai Baharu')
                             ->disabled(),
                     ])
                     ->columns(1),
@@ -120,19 +127,19 @@ class AuditResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Timestamp')
+                    ->label('Masa')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('User')
+                    ->label('Pengguna')
                     ->searchable()
                     ->sortable()
-                    ->default('System'),
+                    ->default('Sistem'),
 
                 Tables\Columns\TextColumn::make('event')
-                    ->label('Action')
+                    ->label('Tindakan')
                     ->badge()
                     ->color(
                         fn (string $state): string => match ($state) {
@@ -146,23 +153,23 @@ class AuditResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('auditable_type')
-                    ->label('Entity Type')
+                    ->label('Jenis Entiti')
                     ->formatStateUsing(fn (string $state): string => class_basename($state))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('auditable_id')
-                    ->label('Entity ID')
+                    ->label('ID Entiti')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('ip_address')
-                    ->label('IP Address')
+                    ->label('Alamat IP')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('user_agent')
-                    ->label('User Agent')
+                    ->label('Ejen Pengguna')
                     ->limit(50)
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
                         $state = $column->getState();
@@ -176,40 +183,40 @@ class AuditResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('event')
-                    ->label('Action Type')
+                    ->label('Jenis Tindakan')
                     ->options([
-                        'created' => 'Created',
-                        'updated' => 'Updated',
-                        'deleted' => 'Deleted',
-                        'retrieved' => 'Retrieved',
+                        'created' => 'Dicipta',
+                        'updated' => 'Dikemas kini',
+                        'deleted' => 'Dipadam',
+                        'retrieved' => 'Diakses',
                     ])
                     ->multiple(),
 
                 Tables\Filters\SelectFilter::make('auditable_type')
-                    ->label('Entity Type')
+                    ->label('Jenis Entiti')
                     ->options([
-                        'App\\Models\\User' => 'User',
-                        'App\\Models\\HelpdeskTicket' => 'Helpdesk Ticket',
-                        'App\\Models\\LoanApplication' => 'Loan Application',
-                        'App\\Models\\Asset' => 'Asset',
-                        'App\\Models\\Division' => 'Division',
-                        'App\\Models\\Grade' => 'Grade',
+                        'App\\Models\\User' => 'Pengguna',
+                        'App\\Models\\HelpdeskTicket' => 'Tiket Helpdesk',
+                        'App\\Models\\LoanApplication' => 'Permohonan Pinjaman',
+                        'App\\Models\\Asset' => 'Aset',
+                        'App\\Models\\Division' => 'Bahagian',
+                        'App\\Models\\Grade' => 'Gred',
                     ])
                     ->multiple(),
 
                 Tables\Filters\SelectFilter::make('user_id')
-                    ->label('User')
-                    ->options(fn () => \App\Models\User::pluck('name', 'id')->toArray())
+                    ->label('Pengguna')
+                    ->options(fn () => User::pluck('name', 'id')->toArray())
                     ->searchable()
                     ->preload(),
 
                 Tables\Filters\Filter::make('created_at')
-                    ->label('Date Range')
+                    ->label('Julat Tarikh')
                     ->schema([
                         Forms\Components\DatePicker::make('created_from')
-                            ->label('From Date'),
+                            ->label('Tarikh Dari'),
                         Forms\Components\DatePicker::make('created_until')
-                            ->label('Until Date'),
+                            ->label('Tarikh Hingga'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -225,20 +232,20 @@ class AuditResource extends Resource
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if ($data['created_from'] ?? null) {
-                            $indicators['created_from'] = 'From: '.$data['created_from'];
+                            $indicators['created_from'] = 'Dari: '.$data['created_from'];
                         }
                         if ($data['created_until'] ?? null) {
-                            $indicators['created_until'] = 'Until: '.$data['created_until'];
+                            $indicators['created_until'] = 'Hingga: '.$data['created_until'];
                         }
 
                         return $indicators;
                     }),
 
                 Tables\Filters\Filter::make('ip_address')
-                    ->label('IP Address')
+                    ->label('Alamat IP')
                     ->schema([
                         Forms\Components\TextInput::make('ip_address')
-                            ->label('IP Address')
+                            ->label('Alamat IP')
                             ->placeholder('192.168.1.1'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -250,12 +257,12 @@ class AuditResource extends Resource
             ])
             ->recordActions([
                 ViewAction::make()
-                    ->label('View Details'),
+                    ->label('Lihat Butiran'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     \Filament\Actions\ExportBulkAction::make()
-                        ->label('Export Selected')
+                        ->label('Eksport Dipilih')
                         ->icon('heroicon-o-arrow-down-tray'),
                 ]),
             ])

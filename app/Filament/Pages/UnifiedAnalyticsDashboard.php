@@ -6,7 +6,9 @@ namespace App\Filament\Pages;
 
 use App\Filament\Widgets\EnhancedUnifiedAnalyticsChart;
 use App\Filament\Widgets\UnifiedDashboardOverview;
+use App\Models\User;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Unified Analytics Dashboard Page
@@ -30,7 +32,7 @@ class UnifiedAnalyticsDashboard extends Page
 
     public static function getNavigationLabel(): string
     {
-        return 'Analitik Terpadu';
+        return __('admin_pages.unified_analytics.label');
     }
 
     public function getTitle(): string
@@ -72,6 +74,8 @@ class UnifiedAnalyticsDashboard extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        $user = Auth::user();
+
+        return $user instanceof User && $user->hasAdminAccess();
     }
 }

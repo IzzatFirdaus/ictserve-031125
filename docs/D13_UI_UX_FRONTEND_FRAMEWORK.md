@@ -1,11 +1,11 @@
 # Dokumentasi Rangka Kerja Frontend UI/UX (Frontend Framework Documentation)
 
-**Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 1 Disember 2025
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0
 
 ---
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                                                       |
 | -------------------- | --------------------------------------------------------------------------- |
-| **Versi**            | 3.6.0                                                                       |
-| **Tarikh Kemaskini** | 8 Disember 2025                                                             |
+| **Versi**            | 3.6.1                                                                       |
+| **Tarikh Kemaskini** | 17 Disember 2025                                                            |
 | **Status**           | Aktif                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                                      |
-| **Pematuhi**         | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA, MyGOV Digital Standards |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                   |
+| **Pematuhi**         | ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, MyGOV v2.1.0        |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu                  |
 
 > **Notis Penggunaan Dalaman:** Framework ini ditujukan untuk aplikasi dalaman MOTAC; bukan untuk laman awam.
 
@@ -29,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                      | Penulis     |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi rangka kerja frontend                                                                                                                                                                                                                                                   | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                         | Pasukan BPM |
 | 2.1.0 | 19 Oktober 2025  | Tambah §5.6 Language Switcher component                                                                                                                                                                                                                                                        | Pasukan BPM |
@@ -36,6 +37,8 @@
 | 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts, Submission History component                                                                                                                                                                                                                         | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login, account linking, Laravel Pulse dashboard, API token management, notification preferences, Google SSO button. MyDS grid/shadow/motion alignment. Penyelarasan dengan D00-D12 v3.5.0. | Pasukan BPM |
 | 3.5.1 | 1 Disember 2025  | MyDS/MyGovEA Compliance Update: Typography system (Poppins/Inter), color token mapping, radius system, spacing system, IDN authentication reference, cognitive load principles, error prevention patterns. Full alignment with MyDS Design System v2025.2 and MyGovEA Prinsip Reka Bentuk. | Pasukan BPM |
+| 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja (v3.6.0): Language switcher dilumpuhkan, BilingualSupportService sentiasa return 'ms'. | Pasukan BPM |
+| 3.7.0 | 14 Disember 2025 | Cloud Hybrid AI Architecture v3.7.0: BedrockChat Livewire component, FaqBot widget, AI chat bubble components, streaming response UI patterns, source attribution styling, model selection dropdown, conversation management UI. Penyelarasan dengan D18 v1.0.0. | Pasukan BPM |
 
 ---
 
@@ -47,6 +50,7 @@
 - **[D12_UI_UX_DESIGN_GUIDE.md]** - Panduan Rekabentuk UI/UX (v3.5.0)
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX
 - **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa (Bahasa Melayu sahaja, v3.6.0)
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Dokumentasi AI Chatbot Ollama-Bedrock (v3.7.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ### Rujukan Luaran (External References)
@@ -532,312 +536,58 @@ resources/views/
 
 ---
 
-## 5. Komponen True Hybrid v3.5.0 (New Components)
+## 5. Komponen True Hybrid v3.6.1 (New Components)
 
-### 5.1. Self-Registration Form
+### 5.1. Self-Registration (Volt)
 
 **Page**: `/register`
-**Layout**: `guest.blade.php`
-**Component**: `resources/views/auth/register.blade.php`
+**Layout**: `layouts.guest`
+**Component (Volt)**: `resources/views/livewire/pages/auth/register.blade.php`
+**Service**: `app/Services/RegistrationService.php`
 
-```blade
-<form method="POST" action="{{ route('register') }}" class="space-y-6">
-    @csrf
-    
-    {{-- Nama Penuh --}}
-    <div>
-        <x-input-label for="name" :value="__('Nama Penuh')" />
-        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" 
-                      :value="old('name')" required autofocus autocomplete="name" />
-        <x-input-error :messages="$errors->get('name')" class="mt-2" />
-    </div>
-
-    {{-- E-mel (@motac.gov.my only) --}}
-    <div>
-        <x-input-label for="email" :value="__('E-mel Rasmi')" />
-        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
-                      :value="old('email')" required autocomplete="email"
-                      pattern=".*@motac\.gov\.my$"
-                      title="Sila gunakan e-mel rasmi @motac.gov.my" />
-        <p class="mt-1 text-sm text-gray-500">{{ __('Hanya e-mel @motac.gov.my dibenarkan') }}</p>
-        <x-input-error :messages="$errors->get('email')" class="mt-2" />
-    </div>
-
-    {{-- Bahagian --}}
-    <div>
-        <x-input-label for="department_id" :value="__('Bahagian')" />
-        <select id="department_id" name="department_id" class="mt-1 block w-full rounded-md border-gray-300" required>
-            <option value="">{{ __('Pilih Bahagian') }}</option>
-            @foreach($departments as $dept)
-                <option value="{{ $dept->id }}">{{ $dept->name }}</option>
-            @endforeach
-        </select>
-        <x-input-error :messages="$errors->get('department_id')" class="mt-2" />
-    </div>
-
-    {{-- Kata Laluan --}}
-    <div>
-        <x-input-label for="password" :value="__('Kata Laluan')" />
-        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full"
-                      required autocomplete="new-password" minlength="8" />
-        <x-input-error :messages="$errors->get('password')" class="mt-2" />
-    </div>
-
-    {{-- Sahkan Kata Laluan --}}
-    <div>
-        <x-input-label for="password_confirmation" :value="__('Sahkan Kata Laluan')" />
-        <x-text-input id="password_confirmation" name="password_confirmation" type="password"
-                      class="mt-1 block w-full" required autocomplete="new-password" />
-    </div>
-
-    <x-primary-button class="w-full justify-center">
-        {{ __('Daftar') }}
-    </x-primary-button>
-</form>
-```
+Ringkasan implementasi (source of truth):
+- Validasi domain e-mel menggunakan `ends_with:@motac.gov.my`
+- Password strength indicator dan `confirmed`
+- Logik pendaftaran dipusatkan melalui `RegistrationServiceInterface`
 
 ### 5.2. Flexible Login Form
 
 **Page**: `/login`
-**Component**: `resources/views/auth/login.blade.php`
+**Component (Volt)**: `resources/views/livewire/pages/auth/login.blade.php`
+**Google SSO**: `app/Http/Controllers/Auth/GoogleAuthController.php` + konfigurasi `config/services.php`
 
-```blade
-<form method="POST" action="{{ route('login') }}" class="space-y-6">
-    @csrf
-    
-    {{-- E-mel atau Username --}}
-    <div>
-        <x-input-label for="email" :value="__('E-mel atau Username')" />
-        <x-text-input id="email" name="email" type="text" class="mt-1 block w-full"
-                      :value="old('email')" required autofocus autocomplete="username"
-                      placeholder="ahmad.ibrahim atau ahmad.ibrahim@motac.gov.my" />
-        <p class="mt-1 text-sm text-gray-500">
-            {{ __('Masukkan e-mel penuh atau nama pengguna sahaja') }}
-        </p>
-        <x-input-error :messages="$errors->get('email')" class="mt-2" />
-    </div>
-
-    {{-- Kata Laluan --}}
-    <div>
-        <x-input-label for="password" :value="__('Kata Laluan')" />
-        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full"
-                      required autocomplete="current-password" />
-        <x-input-error :messages="$errors->get('password')" class="mt-2" />
-    </div>
-
-    {{-- Ingat Saya --}}
-    <div class="flex items-center justify-between">
-        <label class="flex items-center">
-            <input type="checkbox" name="remember" class="rounded border-gray-300">
-            <span class="ml-2 text-sm text-gray-600">{{ __('Ingat Saya') }}</span>
-        </label>
-        <a href="{{ route('password.request') }}" class="text-sm text-primary-600 hover:underline">
-            {{ __('Lupa Kata Laluan?') }}
-        </a>
-    </div>
-
-    <x-primary-button class="w-full justify-center">
-        {{ __('Log Masuk') }}
-    </x-primary-button>
-
-    {{-- Google SSO (Optional) --}}
-    @if(config('services.google.client_id'))
-        <div class="relative my-4">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-300"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-                <span class="bg-white px-2 text-gray-500">{{ __('atau') }}</span>
-            </div>
-        </div>
-        <a href="{{ route('auth.google') }}" 
-           class="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 px-4 py-2 hover:bg-gray-50">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true"><!-- Google icon --></svg>
-            {{ __('Log masuk dengan Google') }}
-        </a>
-    @endif
-</form>
-```
+Ringkasan implementasi:
+- UI login berasaskan Livewire Volt (bukan Blade form statik)
+- Laluan SSO Google melalui route `auth.google.redirect` / `auth.google.callback` (rujuk `routes/auth.php`)
 
 ### 5.3. Email Verification Page
 
 **Page**: `/verify-email`
-**Component**: `resources/views/auth/verify-email.blade.php`
+**Component (Volt)**: `resources/views/livewire/pages/auth/verify-email.blade.php`
+**Controller**: `app/Http/Controllers/Auth/VerifyEmailController.php` (signed URL)
 
-```blade
-<x-layouts.guest>
-    <div class="text-center">
-        <x-heroicon-o-envelope class="mx-auto h-16 w-16 text-primary-500" />
-        <h1 class="mt-4 text-2xl font-bold">{{ __('Sahkan E-mel Anda') }}</h1>
-        <p class="mt-2 text-gray-600">
-            {{ __('Kami telah menghantar pautan pengesahan ke') }}
-            <strong>{{ Auth::user()->email }}</strong>
-        </p>
-    </div>
+### 5.4. Account Linking (Pautan Submission Tetamu → Akaun)
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mt-4 rounded-md bg-success/10 p-4 text-success" role="alert">
-            {{ __('Pautan pengesahan baharu telah dihantar ke e-mel anda.') }}
-        </div>
-    @endif
+**Page**: `/dashboard/link-submissions`
+**Component**: `app/Livewire/Staff/AccountLinking.php`
+**View**: `resources/views/livewire/staff/account-linking.blade.php`
+**Service**: `app/Services/AccountLinkingService.php`
 
-    <div class="mt-6 flex flex-col gap-4">
-        <form method="POST" action="{{ route('verification.send') }}">
-            @csrf
-            <x-primary-button class="w-full justify-center">
-                {{ __('Hantar Semula Pautan') }}
-            </x-primary-button>
-        </form>
-
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="w-full text-center text-sm text-gray-600 hover:underline">
-                {{ __('Log Keluar') }}
-            </button>
-        </form>
-    </div>
-</x-layouts.guest>
-```
-
-### 5.4. Account Linking Prompt
-
-**Page**: `/dashboard` (modal/banner on first login)
-**Component**: `app/Livewire/Dashboard/AccountLinking.php`
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Livewire\Dashboard;
-
-use App\Models\HelpdeskTicket;
-use App\Models\LoanApplication;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-
-class AccountLinking extends Component
-{
-    public bool $showPrompt = false;
-    public int $ticketCount = 0;
-    public int $loanCount = 0;
-
-    public function mount(): void
-    {
-        $email = Auth::user()->email;
-        
-        $this->ticketCount = HelpdeskTicket::where('submitter_email', $email)
-            ->whereNull('user_id')
-            ->count();
-            
-        $this->loanCount = LoanApplication::where('applicant_email', $email)
-            ->whereNull('user_id')
-            ->count();
-            
-        $this->showPrompt = ($this->ticketCount + $this->loanCount) > 0;
-    }
-
-    public function linkSubmissions(): void
-    {
-        $email = Auth::user()->email;
-        $userId = Auth::id();
-
-        HelpdeskTicket::where('submitter_email', $email)
-            ->whereNull('user_id')
-            ->update(['user_id' => $userId]);
-
-        LoanApplication::where('applicant_email', $email)
-            ->whereNull('user_id')
-            ->update(['user_id' => $userId]);
-
-        $this->showPrompt = false;
-        $this->dispatch('submissions-linked');
-    }
-
-    public function dismiss(): void
-    {
-        $this->showPrompt = false;
-        session(['account_linking_dismissed' => true]);
-    }
-
-    public function render()
-    {
-        return view('livewire.dashboard.account-linking');
-    }
-}
-```
-
-**Blade Template:**
-
-```blade
-{{-- resources/views/livewire/dashboard/account-linking.blade.php --}}
-@if($showPrompt && !session('account_linking_dismissed'))
-<div class="rounded-lg border border-primary-200 bg-primary-50 p-4" role="alert">
-    <div class="flex items-start gap-4">
-        <x-heroicon-o-link class="h-6 w-6 text-primary-600 shrink-0" />
-        <div class="flex-1">
-            <h3 class="font-semibold text-primary-900">
-                {{ __('Submissions Sedia Ada Ditemui') }}
-            </h3>
-            <p class="mt-1 text-sm text-primary-700">
-                {{ __('Kami menemui :count submissions dengan e-mel anda.', ['count' => $ticketCount + $loanCount]) }}
-            </p>
-            <div class="mt-3 flex gap-3">
-                <button wire:click="linkSubmissions" class="rounded-md bg-primary-600 px-3 py-1.5 text-sm text-white hover:bg-primary-700">
-                    {{ __('Ya, Hubungkan') }}
-                </button>
-                <button wire:click="dismiss" class="rounded-md px-3 py-1.5 text-sm text-primary-700 hover:bg-primary-100">
-                    {{ __('Tidak, Terima Kasih') }}
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-@endif
-```
+Ringkasan implementasi:
+- Pengguna authenticated (staff) boleh mencari rekod tetamu yang belum dipautkan menggunakan e-mel.
+- Pautan dibuat dengan mengemaskini `user_id` pada rekod yang dipilih.
+- Carian rekod tetamu menyasar `helpdesk_tickets.guest_email` dan `loan_applications.applicant_email` (rekod `user_id` = NULL).
 
 ### 5.5. Notification Preferences Panel
 
 **Page**: `/profile` (section)
-**Component**: `app/Livewire/Account/NotificationPreferences.php`
+**Component**: `app/Livewire/NotificationPreferences.php`
+**View**: `resources/views/livewire/notification-preferences.blade.php`
 
-```blade
-{{-- resources/views/livewire/account/notification-preferences.blade.php --}}
-<div class="rounded-lg border bg-white p-6 shadow-card">
-    <h3 class="text-lg font-semibold">{{ __('Keutamaan Notifikasi') }}</h3>
-    
-    <div class="mt-4 space-y-4">
-        {{-- Email Frequency --}}
-        <div>
-            <label for="email_frequency" class="block text-sm font-medium">
-                {{ __('Kekerapan E-mel') }}
-            </label>
-            <select wire:model.live="emailFrequency" id="email_frequency"
-                    class="mt-1 block w-full rounded-md border-gray-300">
-                <option value="immediate">{{ __('Serta-merta') }}</option>
-                <option value="daily">{{ __('Harian') }}</option>
-                <option value="weekly">{{ __('Mingguan') }}</option>
-            </select>
-        </div>
-
-        {{-- In-App Notifications --}}
-        <div class="flex items-center justify-between">
-            <span class="text-sm font-medium">{{ __('Notifikasi In-App') }}</span>
-            <button wire:click="toggleInApp" type="button"
-                    class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-                    :class="$inAppEnabled ? 'bg-primary-600' : 'bg-gray-200'"
-                    role="switch" :aria-checked="$inAppEnabled">
-                <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                      :class="$inAppEnabled ? 'translate-x-5' : 'translate-x-0'"></span>
-            </button>
-        </div>
-    </div>
-
-    @if(session('preferences_saved'))
-        <p class="mt-4 text-sm text-success" role="status">{{ __('Keutamaan disimpan.') }}</p>
-    @endif
-</div>
-```
+Ringkasan implementasi:
+- Toggle granular untuk jenis notifikasi (contoh: `ticketStatusUpdates`, `loanApprovalNotifications`, dsb.)
+- Konfigurasi kekerapan e-mel menggunakan nilai: `immediate`, `daily_digest`, `weekly_digest`, `disabled`
+- Penyimpanan ke `user_notification_preferences` (rujuk Model `App/Models/UserNotificationPreference.php`)
 
 ### 5.6. Laravel Pulse Dashboard Widget
 
@@ -876,91 +626,229 @@ class AccountLinking extends Component
 
 ### 5.7. API Token Management
 
-**Page**: `/profile/api-tokens`
-**Component**: `app/Livewire/Account/ApiTokens.php`
+**Pengurusan**: Token API (Sanctum) diurus melalui Filament Resource `app/Filament/Resources/ApiTokenResource.php` dan servis `app/Services/ApiTokenService.php` mengikut kebenaran peranan (RBAC).
+
+---
+
+## 6. Komponen AI Chat Interface (Cloud Hybrid AI v3.7.0)
+
+> **Rujukan:** D18_AI_CHATBOT_OLLAMA_BEDROCK.md v1.0.0
+
+### 6.1. BedrockChat Component
+
+**Component**: `app/Livewire/BedrockChat.php`
+**View**: `resources/views/livewire/bedrock-chat.blade.php`
+**Access**: Authenticated users (staff, admin, superuser)
 
 ```blade
-{{-- resources/views/livewire/account/api-tokens.blade.php --}}
-<div class="rounded-lg border bg-white p-6 shadow-card">
-    <h3 class="text-lg font-semibold">{{ __('API Tokens') }}</h3>
-    <p class="mt-1 text-sm text-gray-500">{{ __('Urus token API untuk integrasi luaran.') }}</p>
-
-    {{-- Create Token Form --}}
-    <form wire:submit="createToken" class="mt-4">
-        <div class="flex gap-4">
-            <input wire:model="tokenName" type="text" placeholder="{{ __('Nama Token') }}"
-                   class="flex-1 rounded-md border-gray-300" required>
-            <x-primary-button type="submit">{{ __('Cipta Token') }}</x-primary-button>
+{{-- Main AI Chat Interface --}}
+<div class="flex flex-col h-[600px] bg-white rounded-lg shadow-card">
+    {{-- Header with Model Selection --}}
+    <div class="flex items-center justify-between p-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">
+            {{ __('Pembantu AI ICTServe') }}
+        </h2>
+        <div class="flex items-center gap-3">
+            {{-- Model Selection Dropdown --}}
+            <select wire:model.live="selectedModel" 
+                    class="rounded-md border-gray-300 text-sm"
+                    aria-label="{{ __('Pilih Model AI') }}">
+                <option value="haiku">Claude Haiku (Pantas)</option>
+                <option value="sonnet">Claude Sonnet (Seimbang)</option>
+                <option value="opus">Claude Opus (Kompleks)</option>
+            </select>
+            
+            {{-- Internet Search Toggle --}}
+            <label class="flex items-center gap-2 text-sm">
+                <input type="checkbox" wire:model.live="enableInternetSearch"
+                       class="rounded border-gray-300 text-primary-600">
+                <span>{{ __('Carian Web') }}</span>
+            </label>
         </div>
+    </div>
+    
+    {{-- Chat Messages Area --}}
+    <div class="flex-1 overflow-y-auto p-4 space-y-4" 
+         x-ref="chatContainer"
+         x-init="$watch('$wire.conversationHistory', () => $el.scrollTop = $el.scrollHeight)">
+        @foreach($conversationHistory as $message)
+            <x-ai.chat-bubble 
+                :type="$message['role']"
+                :content="$message['content']"
+                :source="$message['source'] ?? null"
+                :timestamp="$message['timestamp'] ?? null" />
+        @endforeach
         
-        {{-- Abilities Selection --}}
-        <div class="mt-3 flex flex-wrap gap-2">
-            @foreach(['read:tickets', 'write:tickets', 'read:loans', 'write:loans'] as $ability)
-                <label class="flex items-center gap-1 text-sm">
-                    <input type="checkbox" wire:model="selectedAbilities" value="{{ $ability }}"
-                           class="rounded border-gray-300">
-                    {{ $ability }}
-                </label>
+        {{-- Loading Indicator --}}
+        <div wire:loading wire:target="sendMessage" class="flex items-center gap-2 text-gray-500">
+            <x-heroicon-o-sparkles class="w-5 h-5 animate-pulse" />
+            <span>{{ __('AI sedang menaip...') }}</span>
+        </div>
+    </div>
+    
+    {{-- Input Area --}}
+    <div class="p-4 border-t border-gray-200">
+        <form wire:submit="sendMessage" class="flex gap-2">
+            <input type="text" wire:model="message"
+                   class="flex-1 rounded-md border-gray-300"
+                   placeholder="{{ __('Taip soalan anda...') }}"
+                   aria-label="{{ __('Mesej kepada AI') }}"
+                   autocomplete="off">
+            <button type="submit" 
+                    class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+                    wire:loading.attr="disabled">
+                <x-heroicon-o-paper-airplane class="w-5 h-5" />
+            </button>
+        </form>
+    </div>
+</div>
+```
+
+### 6.2. AI Chat Bubble Component
+
+UI “bubble” chat diimplementasi terus dalam view Livewire:
+- `resources/views/livewire/bedrock-chat.blade.php` (chat staff + token usage)
+- `resources/views/livewire/ollama/faq-bot.blade.php` (FAQ bot)
+
+### 6.3. FaqBot Widget Component
+
+**Component**: `app/Livewire/Ollama/FaqBotWidget.php`
+**View**: `resources/views/livewire/ollama/faq-bot-widget.blade.php`
+**Access**: Guest and Authenticated users (True Hybrid Architecture)
+
+```blade
+{{-- FAQ Bot Widget for Guest Forms --}}
+<div class="bg-white rounded-lg shadow-card p-4">
+    <div class="flex items-center gap-2 mb-4">
+        <x-heroicon-o-question-mark-circle class="w-6 h-6 text-primary-600" />
+        <h3 class="font-semibold text-gray-900">{{ __('Soalan Lazim') }}</h3>
+    </div>
+    
+    {{-- Quick Suggestions --}}
+    @if(empty($response))
+        <div class="space-y-2 mb-4">
+            <p class="text-sm text-gray-600">{{ __('Soalan popular:') }}</p>
+            @foreach($suggestions as $suggestion)
+                <button wire:click="selectSuggestion('{{ $suggestion }}')"
+                        class="block w-full text-left px-3 py-2 text-sm bg-gray-50 rounded-md hover:bg-gray-100 transition">
+                    {{ $suggestion }}
+                </button>
             @endforeach
         </div>
+    @endif
+    
+    {{-- Search Input --}}
+    <form wire:submit="askQuestion" class="flex gap-2">
+        <input type="text" wire:model="query"
+               class="flex-1 rounded-md border-gray-300 text-sm"
+               placeholder="{{ __('Tanya soalan...') }}"
+               aria-label="{{ __('Cari FAQ') }}">
+        <button type="submit" 
+                class="px-3 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 text-sm"
+                wire:loading.attr="disabled">
+            <span wire:loading.remove>{{ __('Cari') }}</span>
+            <span wire:loading>...</span>
+        </button>
     </form>
-
-    {{-- Display New Token (one-time) --}}
-    @if($newToken)
-        <div class="mt-4 rounded-md bg-success/10 p-4" role="alert">
-            <p class="font-medium text-success">{{ __('Token dicipta. Salin sekarang:') }}</p>
-            <code class="mt-2 block break-all rounded bg-gray-100 p-2 text-sm">{{ $newToken }}</code>
+    
+    {{-- Response Display --}}
+    @if($response)
+        <div class="mt-4 p-3 bg-primary-50 rounded-md">
+            <div class="prose prose-sm max-w-none">
+                {!! Str::markdown($response['content']) !!}
+            </div>
+            @if(!empty($response['sources']))
+                <div class="mt-2 pt-2 border-t border-primary-100">
+                    <p class="text-xs text-primary-700 font-medium">{{ __('Sumber:') }}</p>
+                    <ul class="text-xs text-primary-600">
+                        @foreach($response['sources'] as $source)
+                            <li>{{ $source['title'] }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <button wire:click="clearResponse" class="mt-2 text-xs text-primary-600 hover:underline">
+                {{ __('Tanya soalan lain') }}
+            </button>
         </div>
     @endif
+</div>
+```
 
-    {{-- Existing Tokens --}}
-    <div class="mt-6 space-y-2">
-        @foreach($tokens as $token)
-            <div class="flex items-center justify-between rounded-md border p-3">
-                <div>
-                    <p class="font-medium">{{ $token->name }}</p>
-                    <p class="text-xs text-gray-500">{{ __('Dicipta') }}: {{ $token->created_at->format('d/m/Y') }}</p>
-                </div>
-                <button wire:click="revokeToken({{ $token->id }})" 
-                        class="text-sm text-danger hover:underline">
-                    {{ __('Batalkan') }}
-                </button>
-            </div>
+### 6.4. AI Loading States
+
+```blade
+{{-- Streaming Response Placeholder (Future) --}}
+<div class="flex items-center gap-2 text-gray-500" wire:loading wire:target="sendMessage">
+    <div class="flex gap-1">
+        <span class="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style="animation-delay: 0ms"></span>
+        <span class="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style="animation-delay: 150ms"></span>
+        <span class="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style="animation-delay: 300ms"></span>
+    </div>
+    <span class="text-sm">{{ __('AI sedang menaip...') }}</span>
+</div>
+
+{{-- Model Processing Indicator --}}
+<div class="flex items-center gap-2 p-2 bg-gray-50 rounded-md text-sm text-gray-600">
+    <x-heroicon-o-cog-6-tooth class="w-4 h-4 animate-spin" />
+    <span>{{ __('Memproses dengan :model', ['model' => $selectedModel]) }}</span>
+</div>
+```
+
+### 6.5. Conversation Management UI
+
+```blade
+{{-- Conversation History Sidebar --}}
+<div class="w-64 bg-gray-50 border-r border-gray-200 p-4">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-gray-900">{{ __('Perbualan') }}</h3>
+        <button wire:click="newConversation" 
+                class="p-1 text-primary-600 hover:bg-primary-50 rounded"
+                aria-label="{{ __('Perbualan Baru') }}">
+            <x-heroicon-o-plus class="w-5 h-5" />
+        </button>
+    </div>
+    
+    <div class="space-y-2">
+        @foreach($savedConversations as $conv)
+            <button wire:click="loadConversation('{{ $conv['id'] }}')"
+                    @class([
+                        'w-full text-left px-3 py-2 rounded-md text-sm transition',
+                        'bg-primary-100 text-primary-700' => $conversationId === $conv['id'],
+                        'hover:bg-gray-100' => $conversationId !== $conv['id'],
+                    ])>
+                <div class="font-medium truncate">{{ $conv['title'] ?? __('Perbualan Tanpa Tajuk') }}</div>
+                <div class="text-xs text-gray-500">{{ $conv['updated_at']->diffForHumans() }}</div>
+            </button>
         @endforeach
     </div>
 </div>
 ```
 
+### 6.6. AI Accessibility Requirements (WCAG 2.2 AA)
+
+| Component | Requirement | Implementation |
+|-----------|-------------|----------------|
+| Chat Input | Label & placeholder | `aria-label`, visible placeholder |
+| Model Selector | Accessible dropdown | Native `<select>` with label |
+| Chat Messages | Screen reader support | `role="log"`, `aria-live="polite"` |
+| Loading States | Announced to AT | `aria-busy="true"`, status text |
+| Source Attribution | Non-color indicators | Icon + text combination |
+| Keyboard Navigation | Full support | Tab order, Enter to send |
+| Focus Management | Visible indicators | 3px outline, 2px offset |
+
 ---
 
-## 6. Komponen Sedia Ada (Existing Components)
+## 7. Komponen Sedia Ada (Existing Components)
 
-### 6.1. Language Switcher (DILUMPUHKAN v3.6.0)
+### 7.1. Language Switcher (DILUMPUHKAN v3.6.0)
 
-**Component**: `app/Livewire/LanguageSwitcher.php`
+**Controller**: `app/Http/Controllers/LanguageController.php`  
+**Route**: `routes/web.php` (`/change-locale/{locale}`)
 
-```blade
-<div x-data="{ open: false }" class="relative" role="navigation" aria-label="{{ __('Language Switcher') }}">
-    <button @click="open = !open"
-            class="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-gray-100"
-            :aria-expanded="open" aria-haspopup="listbox">
-        <x-heroicon-o-globe-alt class="h-5 w-5" aria-hidden="true" />
-        <span>{{ $this->getLocaleLabel($locale) }}</span>
-    </button>
-    <ul x-show="open" @click.outside="open = false" role="listbox"
-        class="absolute right-0 mt-2 w-40 rounded-lg bg-white py-1 shadow-dropdown">
-        @foreach(['ms', 'en'] as $loc)
-            <li role="option">
-                <button wire:click="setLocale('{{ $loc }}')" @click="open = false"
-                        class="flex w-full items-center px-4 py-2 hover:bg-gray-100"
-                        @if($loc === $locale) aria-selected="true" @endif>
-                    {{ $this->getLocaleLabel($loc) }}
-                </button>
-            </li>
-        @endforeach
-    </ul>
-</div>
-```
+Nota:
+- UI switcher berasaskan Livewire/Volt tidak digunakan dalam versi semasa (antara muka utama Bahasa Melayu).
+- Laluan tukar locale kekal untuk keperluan dalaman/ujian, tertakluk kepada polisi aplikasi.
 
 ### 6.2. Submission History Table
 
@@ -1013,38 +901,10 @@ class AccountLinking extends Component
 
 ### 6.3. Status Badges
 
+**Komponen**: `resources/views/components/data/status-badge.blade.php`
+
 ```blade
-{{-- resources/views/components/status-badge.blade.php --}}
-@props(['status' => null, 'variant' => null])
-
-@php
-$statusConfig = [
-    'open' => ['variant' => 'info', 'icon' => 'heroicon-s-clock', 'label' => __('Open')],
-    'in_progress' => ['variant' => 'warning', 'icon' => 'heroicon-s-arrow-path', 'label' => __('In Progress')],
-    'resolved' => ['variant' => 'success', 'icon' => 'heroicon-s-check-circle', 'label' => __('Resolved')],
-    'closed' => ['variant' => 'default', 'icon' => 'heroicon-s-x-circle', 'label' => __('Closed')],
-    'pending' => ['variant' => 'warning', 'icon' => 'heroicon-s-clock', 'label' => __('Pending')],
-    'approved' => ['variant' => 'success', 'icon' => 'heroicon-s-check', 'label' => __('Approved')],
-    'rejected' => ['variant' => 'danger', 'icon' => 'heroicon-s-x-mark', 'label' => __('Rejected')],
-];
-
-$config = $status ? ($statusConfig[$status] ?? ['variant' => 'default', 'icon' => null, 'label' => ucfirst($status)]) : ['variant' => $variant ?? 'default', 'icon' => null, 'label' => ''];
-
-$classes = match($config['variant']) {
-    'success' => 'bg-success/10 text-success',
-    'warning' => 'bg-warning/10 text-warning',
-    'danger' => 'bg-danger/10 text-danger',
-    'info' => 'bg-primary/10 text-primary',
-    default => 'bg-gray-100 text-gray-700',
-};
-@endphp
-
-<span {{ $attributes->merge(['class' => "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium $classes"]) }}>
-    @if($config['icon'])
-        <x-dynamic-component :component="$config['icon']" class="h-3.5 w-3.5" aria-hidden="true" />
-    @endif
-    {{ $config['label'] }}{{ $slot }}
-</span>
+<x-data.status-badge :status="$ticket->status" type="helpdesk" />
 ```
 
 ### 6.4. Form Components
@@ -1226,7 +1086,7 @@ $classes = match($config['variant']) {
 
 ### 10.1. WebSocket Configuration
 
-**Server**: Laravel Reverb 1.6.2
+**Server**: Laravel Reverb 1.6.3
 **Client**: Laravel Echo 2.2.6
 
 ```javascript
@@ -1356,55 +1216,9 @@ class TicketForm extends Component
 
 ### 11.2. Volt Single-File Component
 
-```php
-<?php
-// resources/views/livewire/asset-search.blade.php
-
-use App\Models\Asset;
-use function Livewire\Volt\{state, computed};
-
-state(['search' => '', 'category' => 'all', 'status' => 'available']);
-
-$assets = computed(fn () => Asset::query()
-    ->when($this->search, fn ($q) => $q->where('name', 'like', "%{$this->search}%"))
-    ->when($this->category !== 'all', fn ($q) => $q->where('category_id', $this->category))
-    ->when($this->status !== 'all', fn ($q) => $q->where('status', $this->status))
-    ->paginate(12)
-);
-
-$resetFilters = fn () => $this->reset(['search', 'category', 'status']);
-?>
-
-<div class="space-y-4">
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <input wire:model.live.debounce.300ms="search" type="text"
-               placeholder="{{ __('Search assets...') }}" class="rounded-md border-gray-300">
-        <select wire:model.live="category" class="rounded-md border-gray-300">
-            <option value="all">{{ __('All Categories') }}</option>
-            @foreach(\App\Models\AssetCategory::all() as $cat)
-                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-            @endforeach
-        </select>
-        <select wire:model.live="status" class="rounded-md border-gray-300">
-            <option value="all">{{ __('All Status') }}</option>
-            <option value="available">{{ __('Available') }}</option>
-            <option value="on_loan">{{ __('On Loan') }}</option>
-        </select>
-    </div>
-
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        @foreach($this->assets as $asset)
-            <div wire:key="asset-{{ $asset->id }}" class="rounded-lg border p-4 shadow-card">
-                <h3 class="font-semibold">{{ $asset->name }}</h3>
-                <p class="text-sm text-gray-500">{{ $asset->category->name }}</p>
-                <x-status-badge :status="$asset->status" class="mt-2" />
-            </div>
-        @endforeach
-    </div>
-
-    {{ $this->assets->links() }}
-</div>
-```
+Contoh Volt sedia ada (source of truth):
+- `resources/views/livewire/loan/track-application.blade.php` (token tracking + `state/mount/computed`)
+- `resources/views/livewire/components/theme-switcher.blade.php` (theme toggle + persist)
 
 ---
 
@@ -1447,7 +1261,7 @@ test('authenticated user has pre-filled fields', function () {
 ### 12.3. E2E Testing (Playwright)
 
 ```typescript
-// tests/e2e/helpdesk-form.spec.ts
+// tests/e2e/helpdesk.spec.ts
 import { test, expect } from '@playwright/test';
 
 test('guest can submit helpdesk ticket', async ({ page }) => {

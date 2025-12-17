@@ -28,19 +28,19 @@ class SensitiveAccessLogWidget extends TableWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Masa')
+                    ->label(__('filament.widget.time'))
                     ->dateTime('d/m/Y H:i:s'),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Pengguna')
+                    ->label(__('filament.widget.user'))
                     ->default('Sistem'),
                 Tables\Columns\TextColumn::make('event')
-                    ->label('Tindakan')
+                    ->label(__('filament.widget.action'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('auditable_type')
-                    ->label('Jenis Data')
+                    ->label(__('filament.widget.data_type'))
                     ->formatStateUsing(fn (string $state): string => class_basename($state)),
                 Tables\Columns\TextColumn::make('ip_address')
-                    ->label('IP Address'),
+                    ->label(__('filament.widget.ip_address')),
             ]);
     }
 }

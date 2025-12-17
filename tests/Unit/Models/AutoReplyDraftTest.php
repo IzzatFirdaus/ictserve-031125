@@ -32,6 +32,8 @@ class AutoReplyDraftTest extends TestCase
             'replyable_type',
             'replyable_id',
             'draft_content',
+            'model_used',
+            'generation_cost',
             'template_id',
             'status',
             'generated_by',

@@ -9,7 +9,6 @@ use App\Models\LoanApplication;
 use App\Models\LoanTransaction;
 use App\Services\LoanApplicationService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -51,7 +50,7 @@ class LoanDetails extends Component
         try {
             $service->claimGuestApplication($this->application, Auth::user());
             $this->refreshApplication();
-            session()->flash('message', __('Permohonan berjaya dipautkan ke akaun anda.'));
+            session()->flash('message', __('loan.messages.application_linked_successfully'));
         } catch (\Throwable $exception) {
             session()->flash('error', $exception->getMessage());
         }
@@ -83,6 +82,7 @@ class LoanDetails extends Component
      */
     protected function buildTimeline(): array
     {
+        /** @var \Illuminate\Database\Eloquent\Collection<int, LoanTransaction> $transactions */
         $transactions = $this->application->transactions;
         $issueTransaction = $transactions->first(fn (LoanTransaction $t) => $t->isIssueTransaction());
         $returnTransaction = $transactions->first(fn (LoanTransaction $t) => $t->isReturnTransaction());

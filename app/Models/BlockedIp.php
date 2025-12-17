@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Blocked IP Model
- *
+ * 
  * Stores IP addresses blocked for abuse prevention.
  * Supports both manual (admin) and automatic (rate limit violation) blocking.
  *
@@ -24,6 +24,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $blocked_by
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Models\User|null $blockedByUser
+ * @method static Builder<static>|BlockedIp active()
+ * @method static Builder<static>|BlockedIp expired()
+ * @method static Builder<static>|BlockedIp newModelQuery()
+ * @method static Builder<static>|BlockedIp newQuery()
+ * @method static Builder<static>|BlockedIp query()
+ * @method static Builder<static>|BlockedIp whereBlockedAt($value)
+ * @method static Builder<static>|BlockedIp whereBlockedBy($value)
+ * @method static Builder<static>|BlockedIp whereCreatedAt($value)
+ * @method static Builder<static>|BlockedIp whereExpiresAt($value)
+ * @method static Builder<static>|BlockedIp whereId($value)
+ * @method static Builder<static>|BlockedIp whereIpAddress($value)
+ * @method static Builder<static>|BlockedIp whereReason($value)
+ * @method static Builder<static>|BlockedIp whereType($value)
+ * @method static Builder<static>|BlockedIp whereUpdatedAt($value)
+ * @method static Builder<static>|BlockedIp whereViolationCount($value)
+ * @mixin \Eloquent
  */
 class BlockedIp extends Model
 {

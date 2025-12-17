@@ -16,7 +16,7 @@
     <meta name="theme-color" content="#0056B3">
     <meta name="description" content="{{ __('meta.landing_description', ['app' => config('app.name', 'ICTServe')]) }}">
     <title>{{ config('app.name', 'ICTServe') }} - {{ __('meta.tagline') }}</title>
-    <link rel="preconnect" hrhttps://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
@@ -53,7 +53,7 @@
                             <span class="text-xs text-white uppercase tracking-wider font-medium">iServe</span>
                         </div>
                     </a>
-                    <nav class="hidden md:flex gap-2" aria-label="{{ __('navigation.main') }}">
+                    <nav class="hidden md:flex gap-2" role="navigation" aria-label="{{ __('navigation.main') }}">
                         <a href="{{ route('helpdesk.create') }}"
                             class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -83,11 +83,13 @@
                         </a>
                     </nav>
                     <div class="hidden md:flex items-center gap-3">
+                        {{-- Theme Toggle (v3.6.0) --}}
                         <livewire:components.theme-toggle />
+                        {{-- Language Switcher removed per D15 v3.6.0 - Bahasa Melayu sahaja --}}
                         <a href="{{ route('register') }}"
-                            class="px-4 py-2 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">{{ __('Daftar') }}</a>
-                        @auth
-                            <a href="{{ route('dashboard') }}"
+	                            class="px-4 py-2 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">{{ __('Daftar') }}</a>
+	                        @auth
+	                            <a href="{{ route('dashboard') }}"
                                 class="px-4 py-2 border border-white rounded-lg text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">{{ __('Dashboard') }}</a>
                         @else
                             <a href="{{ route('login') }}"

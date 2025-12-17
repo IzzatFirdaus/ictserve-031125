@@ -13,8 +13,17 @@ use Filament\Widgets\Widget;
  * Quick Actions Widget
  *
  * Provides one-click access to common tasks with modal forms.
+ * Displays role-based quick actions for common workflows.
  *
- * @trace Requirements 6.4
+ * Features:
+ * - Create ticket shortcut
+ * - Manage loans shortcut
+ * - Manage assets shortcut
+ * - Permission-based visibility
+ *
+ * @trace Requirements: 8.4, 10.2
+ *
+ * @see D04 §3.2 Dashboard widgets
  */
 class QuickActionsWidget extends Widget
 {
@@ -22,33 +31,38 @@ class QuickActionsWidget extends Widget
 
     protected int|string|array $columnSpan = 'full';
 
+    /**
+     * Sort order - display after critical alerts
+     */
+    protected static ?int $sort = 0;
+
     protected function getViewData(): array
     {
         return [
             'actions' => [
                 [
-                    'label' => 'Create Ticket',
+                    'label' => 'Cipta Tiket',
                     'icon' => 'heroicon-o-ticket',
                     'color' => 'primary',
                     'url' => HelpdeskTicketResource::getUrl('create'),
                     'permission' => 'create_helpdesk_ticket',
-                    'description' => 'Log a new incident or service request for the ICTServe helpdesk team.',
+                    'description' => 'Daftarkan insiden atau permohonan perkhidmatan baharu untuk pasukan helpdesk ICTServe.',
                 ],
                 [
-                    'label' => 'Process Loan',
+                    'label' => 'Urus Pinjaman',
                     'icon' => 'heroicon-o-cube',
                     'color' => 'warning',
                     'url' => LoanApplicationResource::getUrl('index'),
                     'permission' => 'view_loan_application',
-                    'description' => 'Review, approve, or reject pending loan applications from staff.',
+                    'description' => 'Semak, luluskan atau tolak permohonan pinjaman aset daripada staf.',
                 ],
                 [
-                    'label' => 'Manage Assets',
+                    'label' => 'Urus Aset',
                     'icon' => 'heroicon-o-computer-desktop',
                     'color' => 'success',
                     'url' => AssetResource::getUrl('index'),
                     'permission' => 'view_asset',
-                    'description' => 'Access the asset inventory to update lifecycle status or assignments.',
+                    'description' => 'Akses inventori aset untuk mengemas kini status kitar hayat atau tugasan.',
                 ],
             ],
         ];

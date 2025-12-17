@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Email Log Model
- *
+ * 
  * Tracks email delivery status, retry attempts, performance metrics, and
  * unified notification system integration (multi-channel tracking).
  *
@@ -34,6 +34,48 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool $preference_bypassed User preference override flag
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property string|null $recipient_name
+ * @property string $mailable_class
+ * @property string|null $message_id
+ * @property string|null $status_message
+ * @property array<array-key, mixed>|null $meta
+ * @property \Illuminate\Support\Carbon $queued_at
+ * @property \Illuminate\Support\Carbon|null $sent_at
+ * @property \Illuminate\Support\Carbon|null $failed_at
+ * @property-read \App\Models\User|null $user
+ * @method static Builder<static>|EmailLog delivered()
+ * @method static \Database\Factories\EmailLogFactory factory($count = null, $state = [])
+ * @method static Builder<static>|EmailLog failed()
+ * @method static Builder<static>|EmailLog newModelQuery()
+ * @method static Builder<static>|EmailLog newQuery()
+ * @method static Builder<static>|EmailLog ofType(string $notificationType)
+ * @method static Builder<static>|EmailLog pending()
+ * @method static Builder<static>|EmailLog permanentlyFailed()
+ * @method static Builder<static>|EmailLog preferenceBypassed()
+ * @method static Builder<static>|EmailLog query()
+ * @method static Builder<static>|EmailLog retryable()
+ * @method static Builder<static>|EmailLog whereChannels($value)
+ * @method static Builder<static>|EmailLog whereCreatedAt($value)
+ * @method static Builder<static>|EmailLog whereFailedAt($value)
+ * @method static Builder<static>|EmailLog whereFinalStatus($value)
+ * @method static Builder<static>|EmailLog whereId($value)
+ * @method static Builder<static>|EmailLog whereMailableClass($value)
+ * @method static Builder<static>|EmailLog whereMessageId($value)
+ * @method static Builder<static>|EmailLog whereMeta($value)
+ * @method static Builder<static>|EmailLog whereNextRetryAt($value)
+ * @method static Builder<static>|EmailLog whereNotificationType($value)
+ * @method static Builder<static>|EmailLog wherePreferenceBypassed($value)
+ * @method static Builder<static>|EmailLog wherePriority($value)
+ * @method static Builder<static>|EmailLog whereQueuedAt($value)
+ * @method static Builder<static>|EmailLog whereRecipientEmail($value)
+ * @method static Builder<static>|EmailLog whereRecipientName($value)
+ * @method static Builder<static>|EmailLog whereSentAt($value)
+ * @method static Builder<static>|EmailLog whereStatus($value)
+ * @method static Builder<static>|EmailLog whereStatusMessage($value)
+ * @method static Builder<static>|EmailLog whereSubject($value)
+ * @method static Builder<static>|EmailLog whereUpdatedAt($value)
+ * @method static Builder<static>|EmailLog withPriority(string $priority)
+ * @mixin \Eloquent
  */
 class EmailLog extends Model
 {

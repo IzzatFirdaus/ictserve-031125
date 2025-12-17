@@ -447,6 +447,31 @@ Configure these in your user-level config or system environment:
 
 ## Troubleshooting
 
+### Laravel Boost Connection Timeouts
+
+**Symptoms**:
+
+- `MCP error -32001: Request timed out`
+- `MCP error -32000: Connection closed`
+- `MCP server connection and syncing tools and resources timed out after 5 minutes`
+
+**Solution**: Use Laravel MCP framework instead of direct command:
+
+```json
+{
+  "laravel-boost": {
+    "command": "php",
+    "args": ["artisan", "mcp:start", "laravel-boost"],
+    "cwd": "/path/to/laravel/project",
+    "env": {
+      "APP_ENV": "local"
+    }
+  }
+}
+```
+
+**Details**: See [LARAVEL_BOOST_MCP_INTEGRATION.md](LARAVEL_BOOST_MCP_INTEGRATION.md)
+
 ### Server Won't Start
 
 **Issue**: "Command not found" or "Cannot find module"

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Broadcasting\BroadcastManager as AppBroadcastManager;
+use App\Broadcasting\ChannelRegistrar;
 use App\Contracts\AccessoryTrackingServiceInterface;
 use App\Contracts\AccountLinkingServiceInterface;
 use App\Contracts\ApiTokenServiceInterface;
@@ -57,6 +59,7 @@ use App\Services\SsoHealthCheck;
 use App\Services\TokenService;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Illuminate\Auth\Events\Failed;
+use Illuminate\Broadcasting\BroadcastManager as FrameworkBroadcastManager;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Event;
@@ -67,12 +70,38 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->singleton(ChannelRegistrar::class);
+
+        $this->app->extend(FrameworkBroadcastManager::class, function ($manager, $app) {
+            return new AppBroadcastManager(
+                $app,
+                $app->make(ChannelRegistrar::class),
+            );
+        });
+
         $this->app->singleton(BedrockRuntimeClient::class, function () {
-            return new BedrockRuntimeClient([
+            $credentials = config('bedrock.credentials');
+
+            $config = [
                 'region' => config('bedrock.region'),
                 'version' => config('bedrock.version'),
-                'credentials' => config('bedrock.credentials'),
-            ]);
+            ];
+
+            if (
+                is_array($credentials)
+                && is_string($credentials['key'] ?? null)
+                && is_string($credentials['secret'] ?? null)
+                && $credentials['key'] !== ''
+                && $credentials['secret'] !== ''
+            ) {
+                $config['credentials'] = [
+                    'key' => $credentials['key'],
+                    'secret' => $credentials['secret'],
+                    'token' => $credentials['token'] ?? null,
+                ];
+            }
+
+            return new BedrockRuntimeClient($config);
         });
 
         $this->app->singleton(BedrockService::class);
@@ -128,6 +157,11 @@ class AppServiceProvider extends ServiceProvider
         // Per Requirements 11.1, 11.2, 11.3: Real-time AI broadcasting
         // Selaras dengan D16 Broadcasting Setup v3.6.0
         $this->app->singleton(\App\Services\AIBroadcastingService::class);
+
+        // Register JobMonitoringService for v3.6.0 Queue Monitoring
+        // Per Requirements 8.1, 8.3, 8.5: Job status tracking, performance monitoring, error handling
+        // Selaras dengan D17 Queue Management v3.6.0
+        $this->app->singleton(\App\Services\Monitoring\JobMonitoringService::class);
     }
 
     public function boot(): void

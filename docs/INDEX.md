@@ -1,59 +1,76 @@
-# ICTServe Documentation Index
+# Indeks Dokumentasi ICTServe
 
-**Last Updated**: 2025-11-29
-**Version**: 3.3.0
+**Last Updated**: 2025-12-17
+**Version**: 3.6.1
+**Bahasa**: Bahasa Melayu Sahaja (Antara Muka Pengguna)
 
 ---
 
-## 📋 Quick Navigation
+## 📋 Navigasi Pantas
 
-### 🔴 Core System Documentation (Root Directory)
+### 🔴 Dokumentasi Teras Sistem (Direktori Root)
 
-Read these first to understand the ICTServe system:
+Baca dahulu untuk memahami sistem ICTServe:
 
-| Document | Purpose |
+| Dokumen | Tujuan |
 |:---------|:--------|
-| [README.md](README.md) | Project overview and quick start |
-| [ICTServe_System_Documentation.md](ICTServe_System_Documentation.md) | Complete system overview |
-| [GLOSSARY.md](GLOSSARY.md) | Key terminology and definitions |
+| [README.md](README.md) | Ringkasan projek & mula pantas |
+| [ICTServe_System_Documentation.md](ICTServe_System_Documentation.md) | Dokumentasi induk sistem |
+| [GLOSSARY.md](GLOSSARY.md) | Istilah & definisi utama |
 
-### 📚 System Design Documents (D00–D17)
+### 📘 Dokumentasi Bahasa Melayu (v3.6.0)
 
-Canonical requirements, design, and standards documentation:
+Dokumentasi pengguna dan pentadbir dalam Bahasa Melayu:
 
-| Document | Purpose |
+| Dokumen | Tujuan |
+|:--------|:-------|
+| [MANUAL_PENGGUNA_v3.6.0.md](user-manual/MANUAL_PENGGUNA_v3.6.0.md) | Manual pengguna lengkap v3.6.0 |
+| [PANDUAN_MULA_PANTAS_v3.6.0.md](user-manual/PANDUAN_MULA_PANTAS_v3.6.0.md) | Panduan mula pantas untuk pengguna baru |
+| [PANDUAN_PENTADBIR_v3.6.0.md](admin-guide/PANDUAN_PENTADBIR_v3.6.0.md) | Panduan pentadbir sistem |
+| [PANDUAN_PENEMPATAN_v3.6.0.md](admin-guide/PANDUAN_PENEMPATAN_v3.6.0.md) | Panduan penempatan (deployment) |
+| [PANDUAN_PENYELENGGARAAN_v3.6.0.md](admin-guide/PANDUAN_PENYELENGGARAAN_v3.6.0.md) | Panduan penyelenggaraan sistem |
+| [SENARAI_SEMAK_PENEMPATAN_v3.6.0.md](admin-guide/SENARAI_SEMAK_PENEMPATAN_v3.6.0.md) | Senarai semak penempatan lengkap |
+| [PANDUAN_PEMANTAUAN_v3.6.0.md](admin-guide/PANDUAN_PEMANTAUAN_v3.6.0.md) | Panduan pemantauan dan amaran sistem |
+| [DOKUMENTASI_API_v3.6.0.md](reference/DOKUMENTASI_API_v3.6.0.md) | Dokumentasi API dalam Bahasa Melayu |
+
+### 📚 Dokumen Reka Bentuk Sistem (D00–D18)
+
+Dokumentasi kanonik keperluan, reka bentuk, dan piawaian:
+
+| Dokumen | Tujuan |
 |:---------|:--------|
-| [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) | System vision, governance, stakeholders |
-| [D01_SYSTEM_DEVELOPMENT_PLAN.md](D01_SYSTEM_DEVELOPMENT_PLAN.md) | Development methodology and change management |
-| [D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md](D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md) | Business requirements and scope |
-| [D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | Functional and non-functional requirements |
-| [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) | Architecture, system design, workflows |
-| [D05_DATA_MIGRATION_PLAN.md](D05_DATA_MIGRATION_PLAN.md) | Data migration strategy and planning |
-| [D06_DATA_MIGRATION_SPECIFICATION.md](D06_DATA_MIGRATION_SPECIFICATION.md) | Technical data migration procedures |
-| [D07_SYSTEM_INTEGRATION_PLAN.md](D07_SYSTEM_INTEGRATION_PLAN.md) | Integration strategy with external systems |
-| [D08_SYSTEM_INTEGRATION_SPECIFICATION.md](D08_SYSTEM_INTEGRATION_SPECIFICATION.md) | Technical integration specifications |
-| [D09_DATABASE_DOCUMENTATION.md](D09_DATABASE_DOCUMENTATION.md) | Database schema, audit trails, security |
-| [D10_SOURCE_CODE_DOCUMENTATION.md](D10_SOURCE_CODE_DOCUMENTATION.md) | Source code organization and standards |
-| [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) | Infrastructure, deployment, compliance |
-| [D12_UI_UX_DESIGN_GUIDE.md](D12_UI_UX_DESIGN_GUIDE.md) | User interface design standards |
-| [D13_UI_UX_FRONTEND_FRAMEWORK.md](D13_UI_UX_FRONTEND_FRAMEWORK.md) | Frontend framework and component system |
-| [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md) | Visual design, typography, colors |
-| [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Bilingual language standards (BM/EN) |
-| [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md) | Broadcasting & WebSocket configuration |
-| [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) | Queue management & Laravel Horizon |
+| [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) | Visi sistem, tadbir urus, pihak berkepentingan |
+| [D01_SYSTEM_DEVELOPMENT_PLAN.md](D01_SYSTEM_DEVELOPMENT_PLAN.md) | Metodologi pembangunan & pengurusan perubahan |
+| [D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md](D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md) | Keperluan perniagaan & skop |
+| [D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | Keperluan fungsional & bukan fungsional |
+| [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) | Seni bina, reka bentuk sistem, aliran kerja |
+| [D05_DATA_MIGRATION_PLAN.md](D05_DATA_MIGRATION_PLAN.md) | Strategi & perancangan migrasi data |
+| [D06_DATA_MIGRATION_SPECIFICATION.md](D06_DATA_MIGRATION_SPECIFICATION.md) | Prosedur migrasi data teknikal |
+| [D07_SYSTEM_INTEGRATION_PLAN.md](D07_SYSTEM_INTEGRATION_PLAN.md) | Strategi integrasi dengan sistem luar/dalaman |
+| [D08_SYSTEM_INTEGRATION_SPECIFICATION.md](D08_SYSTEM_INTEGRATION_SPECIFICATION.md) | Spesifikasi integrasi teknikal |
+| [D09_DATABASE_DOCUMENTATION.md](D09_DATABASE_DOCUMENTATION.md) | Skema DB, audit trail, keselamatan |
+| [D10_SOURCE_CODE_DOCUMENTATION.md](D10_SOURCE_CODE_DOCUMENTATION.md) | Organisasi kod sumber & standard |
+| [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) | Infrastruktur, deployment, pematuhan |
+| [D12_UI_UX_DESIGN_GUIDE.md](D12_UI_UX_DESIGN_GUIDE.md) | Piawaian reka bentuk UI/UX |
+| [D13_UI_UX_FRONTEND_FRAMEWORK.md](D13_UI_UX_FRONTEND_FRAMEWORK.md) | Rangka kerja frontend & sistem komponen |
+| [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md) | Reka bentuk visual, tipografi, warna |
+| [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Piawaian bahasa (Bahasa Melayu sahaja v3.6.0+) |
+| [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md) | Konfigurasi broadcasting & WebSocket |
+| [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) | Pengurusan queue (Redis; Horizon tidak dipasang) |
+| [D18_AI_CHATBOT_OLLAMA_BEDROCK.md](D18_AI_CHATBOT_OLLAMA_BEDROCK.md) | Seni bina AI Chatbot Cloud Hybrid (Ollama-Bedrock) |
 
-### � Laravel Package Documentation
+### 📦 Dokumentasi Pakej Laravel
 
-| Document | Purpose |
+| Dokumen | Tujuan |
 |:---------|:--------|
-| [Laravel-Folio.md](Laravel-Folio.md) | Page-based routing documentation |
-| [Laravel-Fortify.md](Laravel-Fortify.md) | Authentication backend documentation |
-| [Laravel-Pint.md](Laravel-Pint.md) | Code style fixer documentation |
-| [Laravel-Pulse.md](Laravel-Pulse.md) | Application monitoring documentation |
-| [Laravel-Sail.md](Laravel-Sail.md) | Docker development environment |
-| [Laravel-Sanctum.md](Laravel-Sanctum.md) | API authentication documentation |
-| [Laravel-Socialite-Google.md](Laravel-Socialite-Google.md) | Google OAuth integration |
-| [Laravel-Telescope.md](Laravel-Telescope.md) | Debug assistant documentation |
+| [Laravel-Folio.md](Laravel-Folio.md) | Dokumentasi routing berasaskan halaman |
+| [Laravel-Fortify.md](Laravel-Fortify.md) | Dokumentasi backend authentication |
+| [Laravel-Pint.md](Laravel-Pint.md) | Dokumentasi pemformat kod (Pint) |
+| [Laravel-Pulse.md](Laravel-Pulse.md) | Dokumentasi pemantauan aplikasi (Pulse) |
+| [Laravel-Sail.md](Laravel-Sail.md) | Persekitaran pembangunan Docker (Sail) |
+| [Laravel-Sanctum.md](Laravel-Sanctum.md) | Dokumentasi pengesahan API (Sanctum) |
+| [Laravel-Socialite-Google.md](Laravel-Socialite-Google.md) | Integrasi Google OAuth |
+| [Laravel-Telescope.md](Laravel-Telescope.md) | Dokumentasi debugging (Telescope) |
 
 ---
 
@@ -150,6 +167,13 @@ Reference materials and traceability:
 
 ## 🎓 Reading Paths
 
+### 🇲🇾 Untuk Pengguna Bahasa Melayu
+
+1. [PANDUAN_MULA_PANTAS_v3.6.0.md](user-manual/PANDUAN_MULA_PANTAS_v3.6.0.md) - Mula di sini
+2. [MANUAL_PENGGUNA_v3.6.0.md](user-manual/MANUAL_PENGGUNA_v3.6.0.md) - Manual lengkap
+3. [PANDUAN_PENTADBIR_v3.6.0.md](admin-guide/PANDUAN_PENTADBIR_v3.6.0.md) - Untuk pentadbir
+4. [DOKUMENTASI_API_v3.6.0.md](reference/DOKUMENTASI_API_v3.6.0.md) - Untuk pembangun
+
 ### 👨‍💼 For Business Stakeholders
 
 1. [README.md](README.md) - Overview
@@ -185,14 +209,14 @@ Reference materials and traceability:
 
 | Category | Files | Purpose |
 |:---------|:------|:--------|
-| Core (D00–D17) | 18 | System overview, design, standards |
+| Core (D00–D18) | 19 | System overview, design, standards, AI chatbot |
 | Root docs | 12 | Core documentation and Laravel packages |
 | Frontend | 14 | Livewire components, services, patterns |
 | Security | 3 | IP blocking, rate limiting |
 | Docker | 13 | Container setup and troubleshooting |
 | MCP | 9 | Model Context Protocol integration |
 | Reference | 12+ | Traceability, deployment, optimization |
-| **Total** | **80+** | Complete system documentation |
+| **Total** | **82+** | Complete system documentation |
 
 ---
 
@@ -244,7 +268,7 @@ When adding new documentation:
 
 1. **Type**: Determine which category it belongs to
 2. **Location**: Place in appropriate subdirectory
-3. **Naming**: Use descriptive, kebab-case names (e.g., `feature-name.md`)
+3. **Naming**: Guna nama deskriptif, kebab-case (contoh: `feature-name`)
 4. **Format**: Follow existing documentation style
 5. **Index**: Update this INDEX.md file if adding a new major section
 6. **Links**: Add cross-references to related documents
@@ -261,7 +285,7 @@ All documentation in ICTServe follows:
   - WCAG 2.2 Level AA for accessibility
   - PSR-12 for code examples
   - ISO/IEC/IEEE standards (referenced in D documents)
-- **Traceability**: References to D00–D17 where applicable
+- **Traceability**: References to D00–D18 where applicable
 
 ---
 
@@ -269,6 +293,8 @@ All documentation in ICTServe follows:
 
 | Version | Date | Changes |
 |:--------|:-----|:--------|
+| 3.6.1 | 2025-12-17 | Added D18 AI Chatbot Cloud Hybrid Architecture (Ollama-Bedrock) documentation. Updated all D00-D18 documents to v3.6.1. Penyelarasan penuh dengan sistem semasa. |
+| 3.6.0 | 2025-12-16 | Added comprehensive Bahasa Melayu documentation: Manual Pengguna, Panduan Pentadbir, Panduan Penempatan, Panduan Penyelenggaraan, Dokumentasi API. Updated to True Hybrid Architecture with Bahasa Melayu exclusive interface. |
 | 3.3.0 | 2025-11-29 | Updated to reflect Guest-First architecture completion (v3.3.0). All core documents (D00-D17) aligned with guest forms and admin-only authentication. |
 | 2.3.0 | 2025-11-29 | Major cleanup: removed references to non-existent directories (guides/, features/, technical/, testing/, archive/). Updated to reflect actual directory structure (frontend/, security/, docker/, mcp/, reference/). |
 | 2.2.0 | 2025-11-29 | Added D16 and D17 to documentation index |
@@ -278,6 +304,7 @@ All documentation in ICTServe follows:
 
 ---
 
-**Last Updated**: 2025-11-29
+**Last Updated**: 2025-12-17
 **Status**: ✅ Active and maintained
 **Maintainer**: ICTServe Development Team
+**Bahasa Antara Muka**: Bahasa Melayu Sahaja (v3.6.0+)

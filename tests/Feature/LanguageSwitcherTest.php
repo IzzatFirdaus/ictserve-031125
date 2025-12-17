@@ -101,12 +101,14 @@ class LanguageSwitcherTest extends TestCase
         $this->assertEquals('ms', app()->getLocale());
         $this->assertEquals('ms', config('app.locale'));
 
-        // Even if session had different locale, should default to 'ms'
+        // Even if session had different locale, config should remain 'ms'
         Session::put('locale', 'en');
-        app()->setLocale(session('locale', config('app.locale')));
 
-        // Should fall back to config default which is 'ms'
+        // Config should remain 'ms' regardless of session
         $this->assertEquals('ms', config('app.locale'));
+
+        // And supported locales should only contain 'ms'
+        $this->assertEquals(['ms'], config('app.supported_locales'));
     }
 
     /**

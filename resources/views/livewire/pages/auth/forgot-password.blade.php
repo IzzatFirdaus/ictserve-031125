@@ -57,24 +57,44 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+    {{-- Page Title (MyDS Typography - D13 §2.4) --}}
+    <h1 class="text-3xl font-bold font-heading text-center text-gray-900 dark:text-white mb-6 theme-transition">
+        {{ __('auth.forgot_password') }}
+    </h1>
 
-    <!-- Session Status -->
+    <p class="text-center text-gray-600 dark:text-gray-300 mb-8 font-body leading-relaxed max-w-md mx-auto theme-transition">
+        {{ __('auth.forgot_password_description') }}
+    </p>
+
+    {{-- Session Status --}}
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="sendPasswordResetLink">
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <form wire:submit="sendPasswordResetLink" class="space-y-6">
+        {{-- Email Address (MyDS Form Components - D13 §2.7) --}}
+        <div class="space-y-2">
+            <x-input-label for="email" :value="__('auth.email')" class="text-gray-900 dark:text-white font-medium font-body theme-transition" />
+            <x-text-input wire:model="email" id="email"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body theme-transition"
+                type="email" name="email" required autofocus autocomplete="email"
+                placeholder="{{ __('auth.email_placeholder') }}"
+                aria-describedby="email-hint" />
+            <p id="email-hint" class="text-sm text-gray-600 dark:text-gray-400 font-body theme-transition">
+                {{ __('auth.email_hint_reset') }}
+            </p>
+            @error('email')
+                <x-input-error :messages="$message" class="mt-1" />
+            @enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
+        {{-- Submit Button (MyDS Touch Targets - D13 §2.7) --}}
+        <div class="flex items-center justify-between pt-2">
+            <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 rounded-md min-h-11 inline-flex items-center px-2 font-body theme-transition"
+                href="{{ route('login') }}" wire:navigate>
+                {{ __('auth.back_to_login') }}
+            </a>
+
+            <x-primary-button class="min-h-11 px-6 py-3 rounded-md shadow-button hover:shadow-button-hover focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 font-medium font-body theme-transition">
+                {{ __('auth.send_reset_link') }}
             </x-primary-button>
         </div>
     </form>

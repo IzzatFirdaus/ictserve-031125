@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * SSO Audit Log Model
- *
+ * 
  * Tracks all Google SSO authentication attempts for security monitoring,
  * compliance auditing, and administrative oversight.
- *
+ * 
  * Supports Requirements 4.1, 4.2 - Enhanced Security and Audit Logging
  *
  * @property int $id
@@ -30,6 +30,34 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read User|null $user
+ * @method static Builder<static>|SsoAuditLog betweenDates(string $startDate, string $endDate)
+ * @method static Builder<static>|SsoAuditLog domainErrors()
+ * @method static \Database\Factories\SsoAuditLogFactory factory($count = null, $state = [])
+ * @method static Builder<static>|SsoAuditLog failed()
+ * @method static Builder<static>|SsoAuditLog forEmail(string $email)
+ * @method static Builder<static>|SsoAuditLog forUser(int $userId)
+ * @method static Builder<static>|SsoAuditLog fromIp(string $ipAddress)
+ * @method static Builder<static>|SsoAuditLog networkErrors()
+ * @method static Builder<static>|SsoAuditLog newModelQuery()
+ * @method static Builder<static>|SsoAuditLog newQuery()
+ * @method static Builder<static>|SsoAuditLog oAuthErrors()
+ * @method static Builder<static>|SsoAuditLog query()
+ * @method static Builder<static>|SsoAuditLog recent()
+ * @method static Builder<static>|SsoAuditLog successful()
+ * @method static Builder<static>|SsoAuditLog whereAttemptedAt($value)
+ * @method static Builder<static>|SsoAuditLog whereCreatedAt($value)
+ * @method static Builder<static>|SsoAuditLog whereEmail($value)
+ * @method static Builder<static>|SsoAuditLog whereErrorMessage($value)
+ * @method static Builder<static>|SsoAuditLog whereErrorType($value)
+ * @method static Builder<static>|SsoAuditLog whereGoogleId($value)
+ * @method static Builder<static>|SsoAuditLog whereId($value)
+ * @method static Builder<static>|SsoAuditLog whereIpAddress($value)
+ * @method static Builder<static>|SsoAuditLog whereSuccess($value)
+ * @method static Builder<static>|SsoAuditLog whereUpdatedAt($value)
+ * @method static Builder<static>|SsoAuditLog whereUserAgent($value)
+ * @method static Builder<static>|SsoAuditLog whereUserId($value)
+ * @method static Builder<static>|SsoAuditLog withErrorType(string $errorType)
+ * @mixin \Eloquent
  */
 class SsoAuditLog extends Model
 {

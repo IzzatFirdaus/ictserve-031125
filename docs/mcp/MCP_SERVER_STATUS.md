@@ -1,6 +1,6 @@
 # MCP Server Status & Configuration
 
-**Last Updated* 2025-12-09  
+**Last Updated**: 2025-12-16  
 **Memory System**: MCP Memory Server with JSONL storage
 
 ## Active MCP Servers (16 Total)
@@ -44,9 +44,12 @@
    - Auto-approve: resolve-library-id, get-library-docs
 
 7. **laravel-boost** - Laravel-specific tools
-   - Command: `php artisan boost:mcp`
-   - Status: ✅ Operational
+   - Command: `php artisan mcp:start laravel-boost` (Laravel MCP Framework)
+   - Legacy: `php artisan boost:mcp` (Direct command - may timeout)
+   - Status: ✅ Operational (Updated 2025-12-16)
+   - Integration: Uses LaravelBoostCompatServer for better protocol negotiation
    - Auto-approve: application-info, browser-logs, database-connections, database-query, database-schema, get-absolute-url, get-config, last-error, list-artisan-commands, list-available-config-keys, list-available-env-vars, list-routes, read-log-entries, report-feedback, search-docs, tinker
+   - Documentation: See [LARAVEL_BOOST_MCP_INTEGRATION.md](LARAVEL_BOOST_MCP_INTEGRATION.md)
 
 ### 🌐 Web & Data Servers
 
