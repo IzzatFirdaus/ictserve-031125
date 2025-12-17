@@ -40,7 +40,7 @@ null;
             @if ($describedBy) aria-describedby="{{ $describedBy }}" @endif
             {{ $attributes->except(['class'])->merge([
                 'class' =>
-                    'h-5 w-5 rounded-xs border-gray-300 text-primary-500 ' .
+                    'h-5 w-5 rounded-sm border-gray-300 text-primary-500 ' .
                     'focus:outline-none ' .
                     'transition-colors duration-200 ' .
                     'dark:border-gray-600 dark:bg-gray-800 dark:ring-offset-gray-900 ' .

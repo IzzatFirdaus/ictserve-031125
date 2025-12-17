@@ -30,7 +30,8 @@
     $user = auth()->user();
 @endphp
 
-<header class="bg-slate-900 text-slate-100 border-b border-slate-800" role="banner" aria-label="{{ __('common.site_header') }}">
+<header class="bg-slate-900 text-slate-100 border-b border-slate-800" role="banner"
+    aria-label="{{ __('common.site_header') }}">
     {{-- Desktop/Tablet Navigation --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {{-- Logo and Primary Navigation --}}
@@ -38,33 +39,30 @@
             {{-- Logo/Branding --}}
             <a href="{{ route('staff.dashboard') }}"
                 class="flex items-center gap-3 py-3 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-md transition-colors duration-150"
-                wire:navigate
-                aria-label="{{ __('common.site_home') }}">
+                wire:navigate aria-label="{{ __('common.site_home') }}">
                 <x-application-logo class="h-8 w-auto text-slate-100" />
                 <span class="text-lg font-semibold hidden sm:block">{{ config('app.name', 'ICTServe') }}</span>
             </a>
 
             {{-- Main Navigation Links (Desktop Only) --}}
-            <nav id="sidebar-navigation"
-                class="hidden md:flex items-center gap-6 text-sm font-medium"
-                role="navigation"
-                aria-label="{{ __('common.main_navigation') }}"
-                tabindex="-1">
+            <nav id="sidebar-navigation" class="hidden md:flex items-center gap-6 text-sm font-medium" role="navigation"
+                aria-label="{{ __('common.main_navigation') }}" tabindex="-1">
                 @foreach ($this->navigationLinks as $link)
                     <a wire:key="nav-{{ $link['route'] }}" href="{{ route($link['route']) }}"
-                        @if(isset($link['external']) && $link['external'])
-                            target="_blank"
+                        @if (isset($link['external']) && $link['external']) target="_blank"
                             rel="noopener noreferrer"
                         @else
-                            wire:navigate
-                        @endif
-                        class="px-4 py-3 border-b-2 min-h-44 flex items-center transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-sm {{ $this->isCurrentRoute($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
+                            wire:navigate @endif
+                        class="px-4 py-3 border-b-2 min-h-11 flex items-center transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-sm {{ $this->isCurrentRoute($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
                         @if ($this->isCurrentRoute($link['route'])) aria-current="page" @endif>
                         {{ $link['label'] }}
-                        @if(isset($link['external']) && $link['external'])
-                            <svg class="inline-block w-3 h-3 ml-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                        @if (isset($link['external']) && $link['external'])
+                            <svg class="inline-block w-3 h-3 ml-1" fill="currentColor" viewBox="0 0 20 20"
+                                aria-hidden="true">
+                                <path
+                                    d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                                <path
+                                    d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
                             </svg>
                         @endif
                     </a>
@@ -74,21 +72,22 @@
 
         {{-- Right-side Actions (User Menu & Language Switcher) --}}
         <div class="flex items-center gap-4" id="user-menu">
-            {{-- Language Switcher Component (Blade) - DISABLED: Bahasa Melayu only interface (v3.6) --}}
-            {{-- <livewire:language-switcher /> --}}
-
-                {{-- Theme Switcher (v3.6.0) --}}
-                <livewire:components.theme-toggle />
+            {{-- Theme Switcher (v3.6.0) --}}
+            <livewire:components.theme-toggle />
 
             {{-- User Dropdown Menu --}}
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
-                    <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-slate-800 text-slate-200 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-colors duration-150 min-h-44"
+                    <button
+                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-slate-800 text-slate-200 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-colors duration-150 min-h-11"
                         aria-haspopup="menu"
                         aria-label="{{ __('staff.nav.user_menu') }}: ' . ($user?->name ?? __('common.user')) }}">
                         <span>{{ $user?->name ?? __('staff.nav.user_menu') }}</span>
-                        <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0l-4.24-4.24a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                        <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0l-4.24-4.24a.75.75 0 01.02-1.06z"
+                                clip-rule="evenodd" />
                         </svg>
                     </button>
                 </x-slot>
@@ -100,7 +99,8 @@
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <x-dropdown-link href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                        <x-dropdown-link href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); this.closest('form').submit();">
                             {{ __('staff.nav.logout') }}
                         </x-dropdown-link>
                     </form>
@@ -110,70 +110,55 @@
     </div>
 
     {{-- Mobile Navigation Menu --}}
-    <nav x-data="{ mobileMenuOpen: false }"
-        class="md:hidden border-t border-slate-800"
-        role="navigation"
+    <nav x-data="{ mobileMenuOpen: false }" class="md:hidden border-t border-slate-800" role="navigation"
         aria-label="{{ __('common.mobile_navigation') }}">
 
         {{-- Mobile Menu Toggle Button --}}
         <button type="button"
-            class="w-full px-4 py-3 flex items-center justify-between text-sm font-medium text-slate-200 bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors duration-150 min-h-44"
-            @click="mobileMenuOpen = !mobileMenuOpen"
-            :aria-expanded="mobileMenuOpen.toString()"
-            aria-controls="mobile-menu"
-            aria-label="{{ __('staff.nav.toggle_menu') }}">
+            class="w-full px-4 py-3 flex items-center justify-between text-sm font-medium text-slate-200 bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors duration-150 min-h-11"
+            @click="mobileMenuOpen = !mobileMenuOpen" :aria-expanded="mobileMenuOpen.toString()"
+            aria-controls="mobile-menu" aria-label="{{ __('staff.nav.toggle_menu') }}">
             <span>{{ __('staff.nav.menu') }}</span>
-            <svg class="h-5 w-5 transition-transform duration-150"
-                :class="{ '-rotate-180': mobileMenuOpen }"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                aria-hidden="true">
+            <svg class="h-5 w-5 transition-transform duration-150" :class="{ '-rotate-180': mobileMenuOpen }"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
         </button>
 
         {{-- Mobile Menu Items --}}
-        <div id="mobile-menu"
-            x-show="mobileMenuOpen"
-            x-transition:enter="transition ease-out duration-100"
-            x-transition:enter-start="opacity-0 -translate-y-2"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-75"
-            x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 -translate-y-2"
-            class="bg-slate-900 border-t border-slate-800"
+        <div id="mobile-menu" x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-2" class="bg-slate-900 border-t border-slate-800"
             style="display: none;">
 
             {{-- Primary Portal Links --}}
             @foreach ($this->navigationLinks as $link)
                 <a wire:key="mobile-nav-{{ $link['route'] }}" href="{{ route($link['route']) }}"
-                    @if(isset($link['external']) && $link['external'])
-                        target="_blank"
+                    @if (isset($link['external']) && $link['external']) target="_blank"
                         rel="noopener noreferrer"
                     @else
-                        wire:navigate
-                    @endif
+                        wire:navigate @endif
                     @click="mobileMenuOpen = false"
-                    class="flex px-4 py-4 text-sm min-h-44 items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150 {{ $this->isCurrentRoute($link['route']) ? 'text-white bg-slate-800 font-semibold' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+                    class="flex px-4 py-4 text-sm min-h-11 items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150 {{ $this->isCurrentRoute($link['route']) ? 'text-white bg-slate-800 font-semibold' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
                     @if ($this->isCurrentRoute($link['route'])) aria-current="page" @endif>
                     {{ $link['label'] }}
-                    @if(isset($link['external']) && $link['external'])
-                        <svg class="inline-block w-3 h-3 ml-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                    @if (isset($link['external']) && $link['external'])
+                        <svg class="inline-block w-3 h-3 ml-1" fill="currentColor" viewBox="0 0 20 20"
+                            aria-hidden="true">
+                            <path
+                                d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                            <path
+                                d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
                         </svg>
                     @endif
                 </a>
             @endforeach
 
             {{-- Profile Link --}}
-            <a href="{{ route('staff.profile') }}"
-                wire:navigate
-                @click="mobileMenuOpen = false"
-                class="flex px-4 py-4 text-sm min-h-44 items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
+            <a href="{{ route('staff.profile') }}" wire:navigate @click="mobileMenuOpen = false"
+                class="flex px-4 py-4 text-sm min-h-11 items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
                 {{ __('staff.nav.profile') }}
             </a>
 
@@ -181,7 +166,7 @@
             <form method="POST" action="{{ route('logout') }}" class="border-t border-slate-800">
                 @csrf
                 <button type="submit"
-                    class="w-full text-left px-4 py-4 text-sm min-h-44 flex items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
+                    class="w-full text-left px-4 py-4 text-sm min-h-11 flex items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
                     {{ __('staff.nav.logout') }}
                 </button>
             </form>

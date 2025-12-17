@@ -9,334 +9,326 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Performance Optimization Service
+ * Performance Optimization Service v3.6.0
  *
- * Provides centralized performance optimization utilities for ICTServe:
- * - Query optimization and monitoring
- * - Cache management strategies
- * - Image lazy loading helpers
- * - JavaScript bundle optimization
+ * Centralized service for Core Web Vitals optimization:
+ * - LCP (Largest Contentful Paint): <2.5s
+ * - FID (First Input Delay): <100ms
+ * - CLS (Cumulative Layout Shift): <0.1
+ * - TTFB (Time to First Byte): <600ms
  *
- * @trace D07 System Integration Plan - Performance Optimization
- * @trace D11 Technical Design - Performance Standards
+ * @see D12 §9 Performance optimization patterns
+ * @see D13 §6 Performance monitoring
+ * @see Requirements 13.1, 13.2, 13.3, 13.4
  *
- * @requirements 7.1, 7.2, 15.4
+ * @version 3.6.0
  */
 class PerformanceOptimizationService
 {
     /**
-     * Cache duration constants (in minutes)
+     * Cache TTL constants (in seconds)
      */
-    private const CACHE_DASHBOARD_STATS = 5;
+    public const CACHE_TTL_DASHBOARD = 300;    // 5 minutes
 
-    private const CACHE_ASSET_AVAILABILITY = 5;
+    public const CACHE_TTL_USER_DATA = 600;    // 10 minutes
 
-    private const CACHE_USER_PREFERENCES = 60;
+    public const CACHE_TTL_STATISTICS = 60;    // 1 minute
 
-    private const CACHE_SYSTEM_CONFIG = 1440; // 24 hours
+    public const CACHE_TTL_WIDGETS = 300;      // 5 minutes
 
     /**
-     * Query performance threshold (in milliseconds)
+     * Core Web Vitals targets
      */
-    private const SLOW_QUERY_THRESHOLD = 1000;
+    public const TARGET_LCP = 2500;   // 2.5 seconds
+
+    public const TARGET_FID = 100;    // 100ms
+
+    public const TARGET_CLS = 0.1;    // 0.1 ratio
+
+    public const TARGET_TTFB = 600;   // 600ms
 
     /**
-     * Cache data with automatic key generation and TTL
-     *
-     * @param  string  $key  Cache key
-     * @param  callable  $callback  Data retrieval callback
-     * @param  int  $minutes  Cache duration in minutes
-     * @return mixed Cached or fresh data
-     */
-    public function cacheData(string $key, callable $callback, int $minutes = self::CACHE_DASHBOARD_STATS): mixed
-    {
-        return Cache::remember($key, now()->addMinutes($minutes), $callback);
-    }
-
-    /**
-     * Cache dashboard statistics with user-specific key
-     *
-     * @param  int  $userId  User ID
-     * @param  callable  $callback  Statistics retrieval callback
-     * @return mixed Dashboard statistics
-     */
-    public function cacheDashboardStats(int $userId, callable $callback): mixed
-    {
-        $key = "dashboard_stats_user_{$userId}";
-
-        return $this->cacheData($key, $callback, self::CACHE_DASHBOARD_STATS);
-    }
-
-    /**
-     * Cache asset availability data
-     *
-     * @param  int  $assetId  Asset ID
-     * @param  callable  $callback  Availability retrieval callback
-     * @return mixed Asset availability data
-     */
-    public function cacheAssetAvailability(int $assetId, callable $callback): mixed
-    {
-        $key = "asset_availability_{$assetId}";
-
-        return $this->cacheData($key, $callback, self::CACHE_ASSET_AVAILABILITY);
-    }
-
-    /**
-     * Invalidate cache for specific patterns
-     *
-     * @param  string  $pattern  Cache key pattern (e.g., 'dashboard_stats_*')
-     */
-    public function invalidateCache(string $pattern): void
-    {
-        // For Redis cache driver
-        if (Cache::getStore() instanceof \Illuminate\Cache\RedisStore) {
-            $redis = Cache::getStore()->connection();
-            $keys = $redis->keys($pattern);
-
-            if (! empty($keys)) {
-                $redis->del($keys);
-                Log::info("Invalidated cache keys matching pattern: {$pattern}", ['count' => count($keys)]);
-            }
-        } else {
-            // For other cache drivers, use tags if supported
-            try {
-                Cache::tags([$pattern])->flush();
-            } catch (\Exception $e) {
-                Log::warning("Cache invalidation failed for pattern: {$pattern}", ['error' => $e->getMessage()]);
-            }
-        }
-    }
-
-    /**
-     * Optimize query with eager loading and select optimization
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query  Query builder instance
-     * @param  array  $selectColumns  Columns to select
-     * @param  array  $eagerLoadRelations  Relations to eager load
-     * @return \Illuminate\Database\Eloquent\Builder Optimized query
-     */
-    public function optimizeQuery($query, array $selectColumns = ['*'], array $eagerLoadRelations = [])
-    {
-        // Apply select optimization
-        if ($selectColumns !== ['*']) {
-            $query->select($selectColumns);
-        }
-
-        // Apply eager loading
-        if (! empty($eagerLoadRelations)) {
-            $query->with($eagerLoadRelations);
-        }
-
-        return $query;
-    }
-
-    /**
-     * Monitor query performance and log slow queries
-     *
-     * @param  callable  $callback  Query execution callback
-     * @param  string  $queryName  Query identifier for logging
-     * @return mixed Query result
-     */
-    public function monitorQueryPerformance(callable $callback, string $queryName): mixed
-    {
-        $startTime = microtime(true);
-
-        $result = $callback();
-
-        $duration = (microtime(true) - $startTime) * 1000; // Convert to milliseconds
-
-        if ($duration > self::SLOW_QUERY_THRESHOLD) {
-            Log::warning("Slow query detected: {$queryName}", [
-                'duration_ms' => round($duration, 2),
-                'threshold_ms' => self::SLOW_QUERY_THRESHOLD,
-            ]);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get image lazy loading attributes for Blade components
+     * Get optimized image attributes for lazy loading
      *
      * @param  string  $src  Image source URL
-     * @param  string  $alt  Alt text
-     * @param  bool  $priority  Whether image is above the fold (no lazy loading)
-     * @return array Image attributes
+     * @param  string  $alt  Alt text for accessibility
+     * @param  int|null  $width  Image width
+     * @param  int|null  $height  Image height
+     * @param  bool  $critical  Whether image is above the fold
+     * @return array<string, string|int|null>
      */
-    public function getImageAttributes(string $src, string $alt, bool $priority = false): array
-    {
+    public function getImageAttributes(
+        string $src,
+        string $alt,
+        ?int $width = null,
+        ?int $height = null,
+        bool $critical = false
+    ): array {
         $attributes = [
             'src' => $src,
             'alt' => $alt,
+            'decoding' => 'async',
         ];
 
-        if (! $priority) {
-            $attributes['loading'] = 'lazy';
-            $attributes['decoding'] = 'async';
-        } else {
+        // Add dimensions to prevent CLS
+        if ($width !== null) {
+            $attributes['width'] = $width;
+        }
+        if ($height !== null) {
+            $attributes['height'] = $height;
+        }
+
+        // Critical images load immediately, others lazy load
+        if ($critical) {
             $attributes['fetchpriority'] = 'high';
+            $attributes['loading'] = 'eager';
+        } else {
+            $attributes['loading'] = 'lazy';
+            $attributes['fetchpriority'] = 'low';
         }
 
         return $attributes;
     }
 
     /**
-     * Generate responsive image srcset
+     * Get WebP image source with JPEG fallback
      *
-     * @param  string  $baseUrl  Base image URL
-     * @param  array  $sizes  Array of sizes [width => suffix]
-     * @return string Srcset attribute value
+     * @param  string  $imagePath  Original image path
+     * @return array{webp: string, fallback: string}
      */
-    public function generateResponsiveImageSrcset(string $baseUrl, array $sizes): string
+    public function getOptimizedImageSources(string $imagePath): array
     {
-        $srcset = [];
+        $pathInfo = pathinfo($imagePath);
+        $webpPath = $pathInfo['dirname'].'/'.$pathInfo['filename'].'.webp';
 
-        foreach ($sizes as $width => $suffix) {
-            $url = str_replace('.', $suffix.'.', $baseUrl);
-            $srcset[] = "{$url} {$width}w";
-        }
-
-        return implode(', ', $srcset);
+        return [
+            'webp' => $webpPath,
+            'fallback' => $imagePath,
+        ];
     }
 
     /**
-     * Get Livewire optimization attributes
+     * Cache dashboard statistics with Redis
      *
-     * @param  bool  $lazy  Whether to use lazy loading
-     * @param  int  $debounce  Debounce delay in milliseconds
-     * @return array Livewire wire: attributes
+     * @param  string  $userId  User ID for cache key
+     * @param  callable  $callback  Data generation callback
+     * @return mixed Cached or fresh data
      */
-    public function getLivewireOptimizationAttributes(bool $lazy = false, int $debounce = 300): array
+    public function cacheDashboardStats(string $userId, callable $callback): mixed
     {
-        $attributes = [];
+        $cacheKey = "dashboard.stats.{$userId}";
 
-        if ($lazy) {
-            $attributes['wire:init'] = 'loadData';
-        }
-
-        if ($debounce > 0) {
-            $attributes['wire:model.live.debounce.'.$debounce.'ms'] = 'search';
-        }
-
-        return $attributes;
+        return Cache::remember($cacheKey, self::CACHE_TTL_DASHBOARD, $callback);
     }
 
     /**
-     * Preload critical assets
+     * Cache user data with longer TTL
      *
-     * @param  array  $assets  Array of assets to preload ['url' => 'type']
-     * @return string HTML link preload tags
+     * @param  string  $userId  User ID for cache key
+     * @param  callable  $callback  Data generation callback
+     * @return mixed Cached or fresh data
      */
-    public function generatePreloadTags(array $assets): string
+    public function cacheUserData(string $userId, callable $callback): mixed
     {
-        $tags = [];
+        $cacheKey = "user.data.{$userId}";
 
-        foreach ($assets as $url => $type) {
-            $as = match ($type) {
-                'css' => 'style',
-                'js' => 'script',
-                'font' => 'font',
-                'image' => 'image',
-                default => 'fetch',
-            };
+        return Cache::remember($cacheKey, self::CACHE_TTL_USER_DATA, $callback);
+    }
 
-            $crossorigin = $type === 'font' ? ' crossorigin' : '';
-            $tags[] = "<link rel=\"preload\" href=\"{$url}\" as=\"{$as}\"{$crossorigin}>";
-        }
+    /**
+     * Invalidate user-related caches
+     *
+     * @param  string  $userId  User ID
+     */
+    public function invalidateUserCache(string $userId): void
+    {
+        Cache::forget("dashboard.stats.{$userId}");
+        Cache::forget("user.data.{$userId}");
+        Cache::forget("user.notifications.{$userId}");
+    }
 
-        return implode("\n", $tags);
+    /**
+     * Get preload link tags for critical resources
+     *
+     * @return string HTML preload link tags
+     */
+    public function getCriticalResourcePreloads(): string
+    {
+        $preloads = [];
+
+        // Preload critical fonts
+        $preloads[] = '<link rel="preload" href="https://fonts.bunny.net/css?family=inter:400,500,600|poppins:400,500,600" as="style" crossorigin>';
+
+        // DNS prefetch for external resources
+        $preloads[] = '<link rel="dns-prefetch" href="https://fonts.bunny.net">';
+        $preloads[] = '<link rel="preconnect" href="https://fonts.bunny.net" crossorigin>';
+
+        return implode("\n", $preloads);
+    }
+
+    /**
+     * Get inline critical CSS for above-the-fold content
+     *
+     * @return string Critical CSS
+     */
+    public function getCriticalCSS(): string
+    {
+        return <<<'CSS'
+        /* Critical CSS for LCP optimization */
+        body{font-family:Inter,system-ui,sans-serif;margin:0;padding:0}
+        .skeleton-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+        [x-cloak]{display:none!important}
+        .min-h-screen{min-height:100vh}
+        .bg-white{background-color:#fff}
+        .dark .bg-white{background-color:#1e293b}
+        CSS;
+    }
+
+    /**
+     * Monitor and log slow queries
+     *
+     * @param  float  $threshold  Threshold in milliseconds
+     */
+    public function enableSlowQueryLogging(float $threshold = 500): void
+    {
+        DB::listen(function ($query) use ($threshold): void {
+            if ($query->time > $threshold) {
+                Log::warning('Slow query detected', [
+                    'sql' => $query->sql,
+                    'time_ms' => $query->time,
+                    'bindings' => $query->bindings,
+                ]);
+            }
+        });
     }
 
     /**
      * Get performance metrics for monitoring
      *
-     * @return array Performance metrics
+     * @return array{memory_mb: float, peak_memory_mb: float, query_count: int}
      */
     public function getPerformanceMetrics(): array
     {
         return [
-            'cache_hit_rate' => $this->getCacheHitRate(),
-            'average_query_time' => $this->getAverageQueryTime(),
-            'slow_queries_count' => $this->getSlowQueriesCount(),
-            'memory_usage' => memory_get_usage(true),
-            'peak_memory_usage' => memory_get_peak_usage(true),
+            'memory_mb' => round(memory_get_usage(true) / 1024 / 1024, 2),
+            'peak_memory_mb' => round(memory_get_peak_usage(true) / 1024 / 1024, 2),
+            'query_count' => count(DB::getQueryLog()),
         ];
     }
 
     /**
-     * Get cache hit rate (placeholder - implement with actual cache metrics)
+     * Generate skeleton loader HTML
      *
-     * @return float Cache hit rate percentage
+     * @param  string  $type  Type: 'card', 'list', 'table', 'stats'
+     * @param  int  $count  Number of skeleton items
+     * @return string HTML skeleton loader
      */
-    private function getCacheHitRate(): float
+    public function getSkeletonLoader(string $type = 'card', int $count = 3): string
     {
-        // This would require cache driver-specific implementation
-        // For now, return a placeholder value
-        return 85.0;
-    }
+        $items = '';
 
-    /**
-     * Get average query execution time
-     *
-     * @return float Average query time in milliseconds
-     */
-    private function getAverageQueryTime(): float
-    {
-        // Get query log from last request
-        $queries = DB::getQueryLog();
-
-        if (empty($queries)) {
-            return 0.0;
+        for ($i = 0; $i < $count; $i++) {
+            $items .= match ($type) {
+                'card' => $this->getCardSkeleton(),
+                'list' => $this->getListSkeleton(),
+                'table' => $this->getTableRowSkeleton(),
+                'stats' => $this->getStatsSkeleton(),
+                default => $this->getCardSkeleton(),
+            };
         }
 
-        $totalTime = array_sum(array_column($queries, 'time'));
+        return sprintf(
+            '<div class="space-y-4" role="status" aria-label="Memuatkan...">%s<span class="sr-only">Memuatkan...</span></div>',
+            $items
+        );
+    }
 
-        return $totalTime / count($queries);
+    private function getCardSkeleton(): string
+    {
+        return <<<'HTML'
+        <div class="animate-pulse bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
+            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-3"></div>
+            <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2"></div>
+            <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+        </div>
+        HTML;
+    }
+
+    private function getListSkeleton(): string
+    {
+        return <<<'HTML'
+        <div class="animate-pulse flex items-center space-x-4 p-3">
+            <div class="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+            <div class="flex-1">
+                <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
+                <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+            </div>
+        </div>
+        HTML;
+    }
+
+    private function getTableRowSkeleton(): string
+    {
+        return <<<'HTML'
+        <tr class="animate-pulse">
+            <td class="p-3"><div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-20"></div></td>
+            <td class="p-3"><div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-32"></div></td>
+            <td class="p-3"><div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-24"></div></td>
+            <td class="p-3"><div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-16"></div></td>
+        </tr>
+        HTML;
+    }
+
+    private function getStatsSkeleton(): string
+    {
+        return <<<'HTML'
+        <div class="animate-pulse bg-white dark:bg-gray-800 rounded-lg p-6 shadow-card min-h-[140px]">
+            <div class="flex items-center justify-between mb-4">
+                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+                <div class="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+            </div>
+            <div class="h-8 bg-gray-200 dark:bg-gray-700 rounded w-16 mb-2"></div>
+            <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
+        </div>
+        HTML;
     }
 
     /**
-     * Get count of slow queries
+     * Check if Core Web Vitals targets are met
      *
-     * @return int Number of slow queries
+     * @param  array{lcp?: float, fid?: float, cls?: float, ttfb?: float}  $metrics
+     * @return array{passed: bool, details: array<string, array{value: float, target: float, passed: bool}>}
      */
-    private function getSlowQueriesCount(): int
+    public function checkCoreWebVitals(array $metrics): array
     {
-        $queries = DB::getQueryLog();
+        $details = [];
+        $allPassed = true;
 
-        return count(array_filter($queries, function ($query) {
-            return $query['time'] > self::SLOW_QUERY_THRESHOLD;
-        }));
-    }
-
-    /**
-     * Clear all performance-related caches
-     */
-    public function clearAllCaches(): void
-    {
-        $patterns = [
-            'dashboard_stats_*',
-            'asset_availability_*',
-            'user_preferences_*',
-            'system_config_*',
-        ];
-
-        foreach ($patterns as $pattern) {
-            $this->invalidateCache($pattern);
+        if (isset($metrics['lcp'])) {
+            $passed = $metrics['lcp'] <= self::TARGET_LCP;
+            $details['lcp'] = ['value' => $metrics['lcp'], 'target' => self::TARGET_LCP, 'passed' => $passed];
+            $allPassed = $allPassed && $passed;
         }
 
-        Log::info('All performance caches cleared');
-    }
+        if (isset($metrics['fid'])) {
+            $passed = $metrics['fid'] <= self::TARGET_FID;
+            $details['fid'] = ['value' => $metrics['fid'], 'target' => self::TARGET_FID, 'passed' => $passed];
+            $allPassed = $allPassed && $passed;
+        }
 
-    /**
-     * Warm up critical caches
-     */
-    public function warmUpCaches(): void
-    {
-        // Warm up system configuration cache
-        $this->cacheData('system_config', function () {
-            return config('app');
-        }, self::CACHE_SYSTEM_CONFIG);
+        if (isset($metrics['cls'])) {
+            $passed = $metrics['cls'] <= self::TARGET_CLS;
+            $details['cls'] = ['value' => $metrics['cls'], 'target' => self::TARGET_CLS, 'passed' => $passed];
+            $allPassed = $allPassed && $passed;
+        }
 
-        Log::info('Critical caches warmed up');
+        if (isset($metrics['ttfb'])) {
+            $passed = $metrics['ttfb'] <= self::TARGET_TTFB;
+            $details['ttfb'] = ['value' => $metrics['ttfb'], 'target' => self::TARGET_TTFB, 'passed' => $passed];
+            $allPassed = $allPassed && $passed;
+        }
+
+        return ['passed' => $allPassed, 'details' => $details];
     }
 }

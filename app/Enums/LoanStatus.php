@@ -18,6 +18,7 @@ enum LoanStatus: string
     case DRAFT = 'draft';
     case SUBMITTED = 'submitted';
     case UNDER_REVIEW = 'under_review';
+    case PENDING_APPROVAL = 'pending_approval';
     case PENDING_INFO = 'pending_info';
     case APPROVED = 'approved';
     case REJECTED = 'rejected';
@@ -36,23 +37,26 @@ enum LoanStatus: string
      */
     public function label(): string
     {
-        return (string) match ($this) {
-            self::DRAFT => __('loan.status.draft'),
-            self::SUBMITTED => __('loan.status.submitted'),
-            self::UNDER_REVIEW => __('loan.status.under_review'),
-            self::PENDING_INFO => __('loan.status.pending_info'),
-            self::APPROVED => __('loan.status.approved'),
-            self::REJECTED => __('loan.status.rejected'),
-            self::READY_ISSUANCE => __('loan.status.ready_issuance'),
-            self::ISSUED => __('loan.status.issued'),
-            self::IN_USE => __('loan.status.in_use'),
-            self::RETURN_DUE => __('loan.status.return_due'),
-            self::RETURNING => __('loan.status.returning'),
-            self::RETURNED => __('loan.status.returned'),
-            self::COMPLETED => __('loan.status.completed'),
-            self::OVERDUE => __('loan.status.overdue'),
-            self::MAINTENANCE_REQUIRED => __('loan.status.maintenance_required'),
+        $key = match ($this) {
+            self::DRAFT => 'loan.status.draft',
+            self::SUBMITTED => 'loan.status.submitted',
+            self::UNDER_REVIEW => 'loan.status.under_review',
+            self::PENDING_APPROVAL => 'loan.status.pending_approval',
+            self::PENDING_INFO => 'loan.status.pending_info',
+            self::APPROVED => 'loan.status.approved',
+            self::REJECTED => 'loan.status.rejected',
+            self::READY_ISSUANCE => 'loan.status.ready_issuance',
+            self::ISSUED => 'loan.status.issued',
+            self::IN_USE => 'loan.status.in_use',
+            self::RETURN_DUE => 'loan.status.return_due',
+            self::RETURNING => 'loan.status.returning',
+            self::RETURNED => 'loan.status.returned',
+            self::COMPLETED => 'loan.status.completed',
+            self::OVERDUE => 'loan.status.overdue',
+            self::MAINTENANCE_REQUIRED => 'loan.status.maintenance_required',
         };
+
+        return trans($key);
     }
 
     /**
@@ -66,6 +70,7 @@ enum LoanStatus: string
             self::DRAFT => 'gray',
             self::SUBMITTED => 'blue',
             self::UNDER_REVIEW => 'yellow',
+            self::PENDING_APPROVAL => 'yellow',
             self::PENDING_INFO => 'orange',
             self::APPROVED => 'green',
             self::REJECTED => 'red',
@@ -128,6 +133,7 @@ enum LoanStatus: string
     {
         return [
             self::APPROVED,
+            self::PENDING_APPROVAL,
             self::READY_ISSUANCE,
             self::RETURNING,
             self::MAINTENANCE_REQUIRED,

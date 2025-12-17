@@ -1,11 +1,11 @@
 # Pelan Integrasi Sistem (System Integration Plan - SIP)
 
-**Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 30 November 2025
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207
 
 ---
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.5.0                                     |
-| **Tarikh Kemaskini** | 30 November 2025                          |
+| **Versi**            | 3.6.1                                     |
+| **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
-| **Pematuhi**         | ISO/IEC/IEEE 15288, 12207                 |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
+| **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207    |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 > Notis Penggunaan Dalaman: Integrasi melibatkan sistem dalaman MOTAC (bukan
 > integrasi awam). Gunakan kredensial ujian untuk environment pembangunan/pementasan.
@@ -30,7 +30,9 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                               | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding, Enhanced UX. Penyelarasan dengan D00-D06 v3.5.0. | Pasukan BPM |
+| 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah pelan integrasi AI (Ollama server, AWS Bedrock, model routing, RAG pipeline). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture.                                                                                                                                                                            | Pasukan BPM |
 | 3.4.0 | 30 November 2025   | Hybrid Architecture v3.4.0: Restore LDAP/SSO integration sebagai optional authentication untuk staff. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                                               | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan penuh Guest-First: hapus semua rujukan LDAP/SSO/User Sync. Hanya admin/superuser authenticate.                                                                                                                                                                                                                                             | Pasukan BPM |
 | 3.2.0 | 29 November 2025 | Hapus LDAP/SSO; klarifikasi Guest-First (staf guna guest forms tanpa authentication)                                                                                                                                                                                                                                                                    | Pasukan BPM |
@@ -52,6 +54,7 @@
 - [D09_DATABASE_DOCUMENTATION.md](D09_DATABASE_DOCUMENTATION.md) - Dokumentasi Pangkalan Data (dual audit)
 - [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) - Dokumentasi Rekabentuk Teknikal
 - [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) - Panduan Lokalisasi (Bahasa Melayu sahaja, v3.6.0)
+- [D18_AI_CHATBOT_OLLAMA_BEDROCK.md](D18_AI_CHATBOT_OLLAMA_BEDROCK.md) - AI Chatbot Integration (Cloud Hybrid AI, v1.0.0)
 - [GLOSSARY.md](GLOSSARY.md) - Glosari Istilah Sistem
 
 ---
@@ -132,7 +135,7 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 - Field utama seperti `asset_id`, `user_id`, `status`, dan `timestamp` mesti selaras
   di semua modul.
 - Foreign key constraint dan policy validation pada peringkat database dan aplikasi.
-- Livewire 3.7.0 memastikan konsistensi data real-time antara frontend dan backend.
+- Livewire 3.7.1 memastikan konsistensi data real-time antara frontend dan backend.
 
 ### 5.3. Interface & API Integration
 
@@ -144,7 +147,7 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
   - **Account Linking**: Optional service untuk link guest submissions kepada akaun baharu
   - **Tiada LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
 - Integrasi email menggunakan Laravel Notification (mail channel) dan queue.
-- Laravel Reverb 1.6.2 untuk komunikasi WebSocket real-time.
+- Laravel Reverb 1.6.3 untuk komunikasi WebSocket real-time.
 
 ### 5.4. Pengurusan Error & Fallback
 
@@ -159,7 +162,7 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 
 | Komponen             | Teknologi         | Versi   | Fungsi                                    |
 | -------------------- | ----------------- | ------- | ----------------------------------------- |
-| Framework            | Laravel           | 12.40.1 | Backend application framework             |
+| Framework            | Laravel           | 12.42.0 | Backend application framework             |
 | Admin Panel          | Filament          | 4.1.10  | CRUD interfaces, dashboard                |
 | Reactive UI          | Livewire          | 3.7.0   | Server-driven UI components               |
 | Single-file Livewire | Volt              | 1.10.1  | Single-file Livewire components           |

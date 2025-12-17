@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**  
 **Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 11 Disember 2025  
+**Tarikh Kemaskini:** 14 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, ISO 9241-210/110/11, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, MyDS Design System v2025.2
@@ -13,12 +13,14 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Version** | 3.6.0 |
-| **Last Updated** | 11 December 2025 |
-| **Status** | Active - Consolidated from filament-admin-access and staff-dashboard-profile specs |
+| **Version** | 3.6.0-r6 |
+| **Last Updated** | 14 December 2025 |
+| **Status** | Active - Updated with FRONTPAGE_DESIGN_ANALYSIS_v3.6.0 and FRONTEND-DEVELOPMENT-v3-6-0 findings |
 | **Classification** | Restricted - Internal BPM MOTAC |
 | **Compliance** | ISO/IEC/IEEE 15288, 12207, ISO 9241-210/110/11, WCAG 2.2 AA, MyGOV Digital Standards v2.1.0 |
 | **Language** | Bahasa Melayu (primary), English (technical) |
+| **Source Documents** | FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md |
+| **ISO Document Reference** | PK.(S).MOTAC.07.(L1) - ICTServe Portal |
 
 > **Notis Penggunaan Dalaman**: Ini adalah untuk kegunaan warga kerja MOTAC sahaja dan tidak dibuka kepada orang awam (internal use only).
 
@@ -565,3 +567,184 @@ The comprehensive frontend redesign will be considered successful when:
 **Status**: Ready for Design Phase  
 **Technology Stack**: Laravel 12 | Livewire 3.7 | Volt 1.10 | Tailwind CSS 4.1 | Alpine.js 3.x | Filament 4.1  
 **Consolidates**: figma-ui-redesign, frontend-modernization, frontend-pages-redesign, navigation-redesign-v3.6, theme-switcher-fix, updated-frontend
+
+5. THE ICTServe_System SHALL implement visual regression testing with Playwright screenshots for all critical pages across light/dark themes and responsive breakpoints
+
+---
+
+## New Requirements (Based on FRONTPAGE_DESIGN_ANALYSIS v3.6.0-r5)
+
+### Requirement 21: Landing Page (Frontpage) Design Compliance
+
+**User Story:** As a MOTAC staff member visiting the ICTServe landing page, I want a professional, accessible interface that clearly presents available services, so that I can quickly access helpdesk or loan application features.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement landing page with hybrid color scheme: dark hero section (Primary-600/700) transitioning to light services section (Gray-50/White)
+2. THE ICTServe_System SHALL display MOTAC branding with Jata Negara logo, "ICTServe" title, and "Sistem Perkhidmatan ICT" subtitle in hero section
+3. THE ICTServe_System SHALL provide two primary CTA buttons ("Buat Aduan", "Mohon Pinjaman") with minimum 44×44px touch targets and
+
+officer accesses the approval interface, THE ICTServe_System SHALL display pending loan applications with filtering, sorting, and bulk approval/rejection capabilities
+5. WHEN an authenticated user claims guest submissions, THE ICTServe_System SHALL match submissions by email address and link them to the user account with audit logging
+
+### Requirement 13: Filament Admin Panel with Four-Role RBAC
+
+**User Story:** As an ICT administrator, I want a comprehensive admin panel with role-based access control, so that I can manage the system efficiently with appropriate permissions for each role.
+
+#### Acceptance Criteria
+
+1. THE Filament_Panel SHALL implement four-role RBAC (Staff, Approver, Admin, Superuser) with 27 granular permissions
+2. THE Filament_Panel SHALL provide comprehensive resource management including HelpdeskTicketResource, LoanApplicationResource, AssetResource, and UserResource
+3. THE Filament_Panel SHALL implement unified dashboard with real-time widgets refreshing every 300 seconds
+4. THE Filament_Panel SHALL provide advanced filtering with deferred filters (Filament 4 default behavior)
+5. THE Filament_Panel SHALL support bulk operations with success/failure reporting and audit logging
+
+### Requirement 14: Security and Audit Compliance
+
+**User Story:** As a security administrator, I want comprehensive security controls and audit logging, so that the system maintains data integrity and compliance with government regulations.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement secure authentication with Laravel Breeze and session management with 30-minute timeout
+2. THE ICTServe_System SHALL enforce role-based access control with Laravel policies and middleware
+3. THE ICTServe_System SHALL maintain comprehensive audit trails with 7-year retention using dual audit system (owen-it + spatie)
+4. THE ICTServe_System SHALL implement PDPA 2010 compliance for data handling including consent management and data subject rights
+5. THE ICTServe_System SHALL provide security monitoring with real-time alerts for suspicious activities
+
+### Requirement 15: Mobile Optimization and Responsive Design
+
+**User Story:** As a mobile user, I want optimized interfaces for mobile devices, so that I can access system features on any device with touch-friendly interactions.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement responsive design supporting mobile (320px-767px), tablet (768px-1024px), and desktop (1280px+) viewports
+2. THE ICTServe_System SHALL provide mobile-optimized navigation with hamburger menu and bottom navigation bar
+3. THE ICTServe_System SHALL implement touch-friendly interactions with swipe gestures and pull-to-refresh
+4. THE ICTServe_System SHALL optimize mobile performance with reduced data transfer and offline capability
+5. THE ICTServe_System SHALL provide floating action button (FAB) for primary actions on mobile with 44×44px minimum touch targets
+
+---
+
+## Requirements from FRONTPAGE_DESIGN_ANALYSIS_v3.6.0
+
+### Requirement 16: Landing Page (Frontpage) Design Compliance
+
+**User Story:** As a MOTAC staff member visiting the ICTServe landing page, I want a professional, accessible interface that clearly presents available services, so that I can quickly access helpdesk and loan application features.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_Landing_Page SHALL display MOTAC branding with Jata Negara logo and consistent visual identity per D00 §11
+2. THE ICTServe_Landing_Page SHALL implement hybrid color scheme with dark hero section and light services section maintaining WCAG 2.2 AA contrast ratios
+3. THE ICTServe_Landing_Page SHALL provide clear CTA buttons ("Buat Aduan", "Mohon Pinjaman") with minimum 44×44px touch targets
+4. THE ICTServe_Landing_Page SHALL include reference number search functionality with proper form labels and ARIA attributes
+5. THE ICTServe_Landing_Page SHALL display ISO document reference PK.(S).MOTAC.07.(L1) per government compliance requirements
+
+### Requirement 17: FAQ Bot ICTServe (Floating Chatbox)
+
+**User Story:** As a user seeking help, I want an AI-powered FAQ chatbot that provides instant assistance in Bahasa Melayu, so that I can get answers to common questions without waiting for support staff.
+
+#### Acceptance Criteria
+
+1. THE FAQ_Bot_Widget SHALL implement floating chatbox with toggle button at bottom-right corner using Primary-600 (#0056B3) background
+2. THE FAQ_Bot_Widget SHALL provide AI-powered responses using Ollama (local LLM) or Amazon Bedrock (cloud AI) backend
+3. THE FAQ_Bot_Widget SHALL implement WCAG 2.2 AA compliance with `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, and `aria-live="polite"` for screen reader announcements
+4. THE FAQ_Bot_Widget SHALL provide header action buttons (minimize, close) with minimum 44×44px touch targets (`min-h-11 min-w-11`)
+5. THE FAQ_Bot_Widget SHALL support keyboard navigation with ESC to close and Tab navigation within the dialog
+
+### Requirement 18: Modal Dialog for Service Selection (True Hybrid Architecture)
+
+**User Story:** As a user clicking service buttons, I want a clear modal dialog explaining guest vs authenticated options, so that I can choose the appropriate submission method.
+
+#### Acceptance Criteria
+
+1. THE Service_Modal SHALL display "Adakah anda sudah log masuk?" prompt with clear explanation of guest vs authenticated options
+2. THE Service_Modal SHALL provide "Tidak (Tetamu)" and "Ya (Log Masuk)" buttons with proper focus management
+3. THE Service_Modal SHALL include "Maklumat Penting" info box explaining benefits of each option in Bahasa Melayu
+4. THE Service_Modal SHALL implement `role="dialog"`, `aria-modal="true"`, and focus trap for accessibility compliance
+5. THE Service_Modal SHALL support dismissal via ESC key, close button, and backdrop click
+
+### Requirement 19: Status Check Page Compliance
+
+**User Story:** As a user checking submission status, I want a fully translated status check page with proper form validation, so that I can track my helpdesk tickets and loan applications.
+
+#### Acceptance Criteria
+
+1. THE Status_Check_Page SHALL display all UI elements in Bahasa Melayu with no missing translation keys
+2. THE Status_Check_Page SHALL provide token input with `wire:model.live.debounce.300ms` for real-time validation
+3. THE Status_Check_Page SHALL implement dropdown for submission type selection (auto-detect, helpdesk ticket, loan application)
+4. THE Status_Check_Page SHALL display Quick Help sidebar with properly translated contact information and help links
+5. THE Status_Check_Page SHALL support both light and dark themes with WCAG 2.2 AA compliant contrast ratios
+
+### Requirement 20: Guest Helpdesk Form (Multi-Step Wizard)
+
+**User Story:** As a guest user submitting a helpdesk ticket, I want a multi-step wizard form with clear progress indication, so that I can complete the submission process efficiently.
+
+#### Acceptance Criteria
+
+1. THE Guest_Helpdesk_Form SHALL implement 3-step wizard (Personal Info, Issue Details, Declaration) with visual progress indicator
+2. THE Guest_Helpdesk_Form SHALL provide searchable division select dropdown for Malaysian government organizational structure
+3. THE Guest_Helpdesk_Form SHALL implement Malaysian government grade system (Gred 1-56, JUSA, Turus) in job grade selection
+4. THE Guest_Helpdesk_Form SHALL require mandatory declaration (Perakuan) with bilingual legal text (BM + EN) and checkbox acceptance
+5. THE Guest_Helpdesk_Form SHALL implement Optimistic UI pattern with immediate feedback and rollback mechanism on error
+6. THE Guest_Helpdesk_Form SHALL display ISO document reference PK.(S).MOTAC.07.(L1) per government compliance requirements
+
+### Requirement 21: Translation Key Completeness
+
+**User Story:** As a system administrator, I want all translation keys properly defined in language files, so that no raw translation keys are displayed to users.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL define all translation keys in `lang/ms/status.php` including `page_tagline`, `quick_help_title`, `quick_help_email`, `quick_help_phone`, `quick_help_ticket`, `quick_help_ticket_cta`
+2. THE ICTServe_System SHALL validate translation key existence during build process to prevent missing translations in production
+3. THE ICTServe_System SHALL provide fallback text for any missing translation keys to prevent raw key display
+4. THE ICTServe_System SHALL maintain translation key consistency between `lang/ms/` and `lang/en/` directories for technical reference
+5. THE ICTServe_System SHALL use `__()` helper function consistently for all user-facing text
+
+---
+
+## Implementation Status Summary
+
+### Completed Requirements (v3.6.0-r6)
+
+| Requirement | Status | Notes |
+|-------------|--------|-------|
+| Req 1: BM Exclusive Interface | ✅ Complete | Language switcher removed, BM-only enforced |
+| Req 2: Theme Switcher | ✅ Complete | Light/dark mode with localStorage persistence |
+| Req 4: MyDS Design System | ✅ Complete | Full token mapping implemented |
+| Req 5: Unified Component Library | ✅ Complete | All component categories created |
+| Req 6: Livewire 3.7/Volt 1.10 | ✅ Complete | OptimizedLivewireComponent trait implemented |
+| Req 7: WCAG 2.2 AA | ✅ Complete | 100% Lighthouse accessibility score |
+| Req 8: Filament Admin Panel | ✅ Complete | Four-role RBAC implemented |
+| Req 9: Authenticated Portal | ✅ Complete | Dashboard, history, profile, approvals |
+| Req 10: Real-Time Features | ✅ Complete | Laravel Reverb WebSocket integration |
+| Req 11: Cross-Module Integration | ✅ Complete | Auto-maintenance tickets, unified search |
+| Req 12: Export/Reporting | ✅ Complete | CSV, Excel, PDF with scheduling |
+| Req 13: Performance | ✅ Complete | Core Web Vitals targets met |
+| Req 14: Security/Audit | ✅ Complete | PDPA compliance, 7-year retention |
+| Req 15: Mobile Optimization | ✅ Complete | Responsive design, touch targets |
+| Req 16: Landing Page | ✅ Complete | Hybrid color scheme, MOTAC branding |
+| Req 17: FAQ Bot | ✅ Complete | Touch targets fixed (44×44px) |
+| Req 18: Service Modal | ✅ Complete | True Hybrid Architecture support |
+| Req 19: Status Check Page | 🟡 Partial | Missing translation keys identified |
+| Req 20: Guest Helpdesk Form | ✅ Complete | Multi-step wizard, Optimistic UI |
+| Req 21: Translation Keys | 🟡 Partial | 6 keys missing in status.php |
+
+### Pending Items
+
+1. **Translation Keys (Req 21)**: Add missing keys to `lang/ms/status.php`:
+   - `page_tagline`
+   - `quick_help_title`
+   - `quick_help_email`
+   - `quick_help_phone`
+   - `quick_help_ticket`
+   - `quick_help_ticket_cta`
+
+2. **Figma MCP Integration (Req 3)**: Optional design-to-code workflow setup
+
+---
+
+**Document Version**: 3.6.0-r6  
+**Last Updated**: 14 December 2025  
+**Author**: BPM MOTAC Development Team  
+**Status**: Active - Ready for Implementation Phase  
+**Compliance**: D00-D17 v3.6.0, MyDS Design System v2025.2, WCAG 2.2 AA

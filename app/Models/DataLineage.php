@@ -12,7 +12,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Model DataLineage untuk penjejakan lineage data AI
- *
+ * 
  * Merekod transformasi data untuk pematuhan PDPA 2010
  * Mengintegrasikan Dual Audit System (owen-it + spatie)
  *
@@ -27,11 +27,36 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property \Carbon\Carbon $processed_at Masa pemprosesan
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read string $transformation_description
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage byDestination(string $destinationType, ?int $destinationId = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage bySource(string $sourceType, int $sourceId)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage bySourceType(string $sourceType)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage byTransformationType(string $transformationType)
+ * @method static \Database\Factories\DataLineageFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereDestinationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereDestinationType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereLineageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereProcessedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereSourceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereSourceType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereTransformationMetadata($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereTransformationType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DataLineage whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class DataLineage extends Model implements AuditableContract
 {
-    use HasFactory;
-    use Auditable; // owen-it untuk compliance audit
+    use Auditable;
+    use HasFactory; // owen-it untuk compliance audit
     use LogsActivity; // spatie untuk operational logging
 
     /**
@@ -108,7 +133,7 @@ class DataLineage extends Model implements AuditableContract
     public function scopeBySource($query, string $sourceType, int $sourceId)
     {
         return $query->where('source_type', $sourceType)
-                    ->where('source_id', $sourceId);
+            ->where('source_id', $sourceId);
     }
 
     /**
@@ -141,13 +166,23 @@ class DataLineage extends Model implements AuditableContract
     }
 
     /**
-     * Konfigurasi activity log untuk spatie
+     * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
      */
     public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
     {
         return \Spatie\Activitylog\LogOptions::defaults()
-            ->logOnly(static::$logAttributes)
+            ->logOnly([
+                'lineage_id',
+                'source_type',
+                'source_id',
+                'transformation_type',
+                'destination_type',
+                'destination_id',
+            ])
             ->logOnlyDirty()
-            ->useLogName(static::$logName);
+            ->useLogName('ai_data_lineage')
+            ->setDescriptionForEvent(fn (string $eventName) => "AI data lineage {$eventName}");
     }
 }

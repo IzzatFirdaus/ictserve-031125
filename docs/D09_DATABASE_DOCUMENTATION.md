@@ -1,11 +1,11 @@
 # Dokumentasi Pangkalan Data (Database Documentation)
 
-**Sistem ICTServe**
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1
 
 ---
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                                       |
 | -------------------- | ----------------------------------------------------------- |
-| **Versi**            | 3.5.0                                                       |
-| **Tarikh Kemaskini** | 1 Disember 2025                                             |
+| **Versi**            | 3.6.1                                                       |
+| **Tarikh Kemaskini** | 17 Disember 2025                                            |
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                  |
 | **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1 |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                   |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu  |
 
 > Notis Penggunaan Dalaman: Semua skema dan jadual adalah untuk sistem dalaman
 > MOTAC; tiada data awam.
@@ -30,6 +30,7 @@
 
 | Versi | Tarikh           | Perubahan | Penulis |
 | ----- | ---------------- | --------- | ------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot Ollama-Bedrock v1.0.0. Tambah jadual AI: `faqs`, `documents`, `document_chunks`, `embeddings`, `message_logs`, `bedrock_conversations`, `auto_reply_templates`, `auto_reply_drafts`. Multi-model intelligence, streaming responses, web-augmented responses, conversation management. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D08 v3.5.0. Tambah jadual `loan_transaction_accessories`, `personal_access_tokens`, `pulse_*`. Tambah medan `google_id`, `form_reference_code`, `responsible_officer_*`. Laravel Pulse, Sanctum API, Google SSO. | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Restored nullable user_id FK. Added staff role to users. | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Hybrid data model: users table extended for Staff profiles | Pasukan BPM |
@@ -42,7 +43,8 @@
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
 - [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) - [D08_SYSTEM_INTEGRATION_SPECIFICATION.md](D08_SYSTEM_INTEGRATION_SPECIFICATION.md)
-- [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) - [GLOSSARY.md](GLOSSARY.md)
+- [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) - [D18_AI_CHATBOT_OLLAMA_BEDROCK.md](D18_AI_CHATBOT_OLLAMA_BEDROCK.md)
+- [GLOSSARY.md](GLOSSARY.md)
 
 ---
 
@@ -57,6 +59,7 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 
 - Semua jadual utama yang menyokong borang dalaman Helpdesk & Asset Loan
 - Panel Filament, kelulusan berperingkat, audit, notifikasi, dan pemantauan status
+- **Cloud Hybrid AI Architecture (D18 v1.0.0)**: FAQ Bot, Document Analysis, Auto-Reply, Conversation Management
 - Piawaian data, kawalan kualiti, dan persediaan migrasi
 
 ---
@@ -67,15 +70,19 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 | -------------------- | ----------------- | ------- | ----------------------------------------- |
 | RDBMS                | MySQL             | 8.x     | Production database                       |
 | Development DB       | SQLite            | 3.x     | Development/testing database              |
-| ORM                  | Eloquent          | 12.40.1 | Laravel ORM                               |
-| Migrations           | Laravel           | 12.40.1 | Schema version control                    |
+| ORM                  | Eloquent          | 12.42.0 | Laravel ORM                               |
+| Migrations           | Laravel           | 12.42.0 | Schema version control                    |
 | Caching              | Redis             | 7.x     | Query caching                             |
 | Audit (Compliance)   | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)         |
 | Audit (Operations)   | Activity Log      | 4.x     | User activity logging (spatie)            |
-| Performance Monitor  | Laravel Pulse     | 1.3.0   | Performance metrics & server health       |
-| API Authentication   | Laravel Sanctum   | 4.0     | Token-based API authentication            |
+| Performance Monitor  | Laravel Pulse     | 1.4.6   | Performance metrics & server health       |
+| API Authentication   | Laravel Sanctum   | 4.2.1   | Token-based API authentication            |
 | Permissions          | Spatie Permission | 6.23    | Role-based access control                 |
 | Debugging            | Laravel Telescope | 5.x     | System monitoring (superuser only)        |
+| **AI Local (Ollama)**| Ollama Server     | Latest  | Local LLM untuk FAQ Bot (D18 v1.0.0)     |
+| **AI Cloud (Bedrock)**| AWS Bedrock      | Latest  | Claude models untuk complex reasoning     |
+| **Vector Search**    | MySQL JSON        | 8.x     | Embedding storage dan semantic search     |
+| **AI Queue**         | Laravel Queue     | Redis   | Background AI jobs (document ingestion, embeddings, auto-reply) |
 
 ---
 
@@ -86,7 +93,7 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 | Jadual                       | Fungsi                                                    |
 | ---------------------------- | --------------------------------------------------------- |
 | users                        | Akaun pengguna staf & pentadbir (portal & panel Filament) |
-| departments                  | Rujukan bahagian/unit MOTAC                               |
+| divisions                    | Rujukan bahagian/unit MOTAC                               |
 | audits                       | Jejak audit field-level (owen-it/laravel-auditing)        |
 | activity_log                 | Log aktiviti sistem (spatie/laravel-activitylog)          |
 | helpdesk_tickets             | Rekod tiket helpdesk pengguna dalaman                     |
@@ -104,6 +111,14 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 | pulse_aggregates             | Performance metrics aggregates (Laravel Pulse v3.5.0)     |
 | pulse_entries                | Performance metrics entries (Laravel Pulse v3.5.0)        |
 | pulse_values                 | Performance metrics values (Laravel Pulse v3.5.0)         |
+| **faqs**                     | **FAQ knowledge base untuk AI Bot (D18 v1.0.0)**          |
+| **documents**                | **Dokumen untuk analisis AI (D18 v1.0.0)**                |
+| **document_chunks**          | **Chunks dokumen untuk RAG (D18 v1.0.0)**                 |
+| **embeddings**               | **Vector embeddings untuk semantic search (D18 v1.0.0)**  |
+| **message_logs**             | **Log interaksi AI dengan pengguna (D18 v1.0.0)**         |
+| **bedrock_conversations**    | **Conversation management untuk AI (D18 v1.0.0)**         |
+| **auto_reply_templates**     | **Template auto-reply AI (D18 v1.0.0)**                   |
+| **auto_reply_drafts**        | **Draf auto-reply yang dijana AI (D18 v1.0.0)**           |
 
 ---
 
@@ -111,33 +126,30 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 
 ### 5.1. Jadual: users
 
-| Field                    | Tipe Data                      | Keterangan                               |
-| ------------------------ | ------------------------------ | ---------------------------------------- |
-| id                       | bigint, PK                     | ID pengguna                              |
-| name                     | string(255)                    | Nama pegawai                             |
-| email                    | string(255)                    | E-mel kerajaan @motac.gov.my (unik)      |
-| email_verified_at        | timestamp (nullable)           | Tarikh pengesahan e-mel                  |
-| phone                    | string(30)                     | Telefon pegawai                          |
-| department_id            | bigint, FK nullable            | FK → departments.id                      |
-| grade                    | string(50) nullable            | Gred pegawai (e.g. 41, 44)               |
-| staff_number             | string(50) nullable            | Nombor staf (optional)                   |
-| role                     | enum(staff, admin, superuser)  | Peranan sistem (DEFAULT 'staff')         |
-| password                 | string(255)                    | Hash kata laluan                         |
-| google_id                | string(255) nullable           | Google OAuth ID (v3.5.0)                 |
-| two_factor_secret        | text (nullable)                | Rahsia TOTP (untuk superuser)            |
-| two_factor_confirmed_at  | timestamp (nullable)           | Tarikh pengesahan 2FA                    |
-| locale                   | enum(ms, en)                   | Bahasa pilihan (DEFAULT 'ms')            |
-| notify_email_frequency   | enum(immediate, daily, weekly) | Kekerapan e-mel (DEFAULT 'immediate')    |
-| notify_in_app            | boolean                        | Notifikasi dalam aplikasi (DEFAULT TRUE) |
-| guest_submissions_linked | integer                        | Bilangan submissions dilink (DEFAULT 0)  |
-| remember_token           | string(100) nullable           | Token remember me                        |
-| last_login_at            | timestamp (nullable)           | Tarikh login terakhir                    |
-| last_login_ip            | string(45) nullable            | IP login terakhir                        |
-| created_at               | timestamp                      | Tarikh cipta                             |
-| updated_at               | timestamp                      | Tarikh kemaskini                         |
-| deleted_at               | timestamp (nullable)           | Soft delete timestamp                    |
+> **Source of truth (skema sebenar)**: `database/migrations/2025_11_03_043900_create_users_table.php`
 
-**Indeks:** `(email)`, `(google_id)`, `(role)`, `(department_id)`, `(staff_number)`
+Ringkasan medan penting (bukan senarai penuh):
+
+| Field         | Tipe Data | Keterangan |
+|--------------|----------|-----------|
+| id           | bigint, PK | ID pengguna |
+| name         | string(255) | Nama pegawai |
+| email        | string(255) | E-mel kerajaan (unik) |
+| email_verified_at | timestamp (nullable) | Tarikh pengesahan e-mel |
+| role         | enum | `staff` / `approver` / `admin` / `superuser` |
+| staff_number | string(50) nullable | Nombor staf (opsyen) |
+| division_code| string(20) nullable | Kod bahagian/unit (string) |
+| division_id  | bigint, FK nullable | FK → `divisions.id` (ON DELETE SET NULL) |
+| grade_id     | bigint, FK nullable | FK → `grades.id` (ON DELETE SET NULL) |
+| position_id  | bigint, FK nullable | FK → `positions.id` (ON DELETE SET NULL) |
+| phone/mobile | string(20) nullable | Nombor telefon |
+| locale       | string(10) | **DEPRECATED v3.6.0**: sentiasa `ms` |
+| google_id    | string(255) nullable | Google OAuth ID (opsyen SSO) |
+| is_active    | boolean | Status akaun |
+| last_login_at| timestamp (nullable) | Tarikh login terakhir |
+| created_at/updated_at/deleted_at | timestamp | Timestamps + soft delete |
+
+**Indeks (ringkasan)**: `(email)`, `(role)`, `(division_id, grade_id)`, `(division_code)`, `(staff_number)`, `(google_id)`
 
 > **Nota True Hybrid Architecture v3.5.0:**
 >
@@ -146,44 +158,43 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 > - **Guest**: Tidak disimpan dalam jadual users; submissions dengan user_id=NULL
 > - **Google SSO**: Optional OAuth 2.0 login via `google_id` field
 
-### 5.2. Jadual: departments
+### 5.2. Jadual: divisions
 
-| Field      | Tipe Data           | Keterangan                     |
-| ---------- | ------------------- | ------------------------------ |
-| id         | bigint, PK          | ID bahagian                    |
-| code       | string(20)          | Kod bahagian (unik)            |
-| name       | string(255)         | Nama bahagian                  |
-| parent_id  | bigint, FK nullable | FK → departments.id (hierarki) |
-| created_at | timestamp           | Tarikh cipta                   |
-| updated_at | timestamp           | Tarikh kemaskini               |
+> **Source of truth (skema sebenar)**: `database/migrations/2025_11_03_043832_create_divisions_table.php`
+
+| Field      | Tipe Data | Keterangan |
+|-----------|----------|-----------|
+| id        | bigint, PK | ID bahagian/unit |
+| code      | string(50) | Kod bahagian/unit (unik) |
+| name_ms   | string     | Nama (BM) |
+| name_en   | string     | Nama (EN) |
+| parent_id | bigint, FK nullable | FK → `divisions.id` (hierarki) |
+| is_active | boolean | Status aktif |
+| created_at/updated_at/deleted_at | timestamp | Timestamps + soft delete |
 
 ### 5.3. Jadual: helpdesk_tickets
 
-| Field                   | Tipe Data                                                | Keterangan                              |
-| ----------------------- | -------------------------------------------------------- | --------------------------------------- |
-| id                      | bigint, PK                                               | ID tiket                                |
-| ticket_number           | string(20)                                               | Nombor tiket unik (HD-YYYYMM-XXXX)      |
-| form_reference_code     | string(50)                                               | Kod rujukan borang PK.(S).MOTAC.07.(L1) |
-| user_id                 | bigint, FK nullable                                      | FK → users.id (NULL jika Guest)         |
-| submitter_name          | string(255)                                              | Nama penghantar                         |
-| submitter_email         | string(255)                                              | E-mel penghantar                        |
-| submitter_phone         | string(50)                                               | Telefon penghantar                      |
-| submitter_division_code | string(20)                                               | Kod bahagian                            |
-| submitter_grade         | string(50)                                               | Gred (optional)                         |
-| category                | string(100)                                              | Kategori kerosakan                      |
-| priority                | enum(LOW, MEDIUM, HIGH, CRITICAL)                        | Keutamaan SLA                           |
-| description             | text                                                     | Maklumat kerosakan                      |
-| asset_tag               | string(100)                                              | Tag aset (optional)                     |
-| declaration             | boolean                                                  | Perakuan PDPA (mesti TRUE)              |
-| status                  | enum(OPEN, IN_PROGRESS, AWAITING_INFO, RESOLVED, CLOSED) | Status tiket                            |
-| assigned_admin_id       | bigint, FK nullable                                      | FK → users.id                           |
-| sla_due_at              | timestamp                                                | Tarikh sasaran SLA                      |
-| closed_at               | timestamp                                                | Tarikh tiket ditutup                    |
-| status_token_hash       | string(128)                                              | Hash token semakan status               |
-| created_at              | timestamp                                                | Tarikh cipta                            |
-| updated_at              | timestamp                                                | Tarikh kemaskini                        |
+> **Source of truth (skema sebenar)**: `database/migrations/2025_11_03_043924_create_helpdesk_tickets_table.php`
 
-**Indeks:** `(user_id, status)`, `(submitter_email, status)`, `(ticket_number)`, `(status_token_hash)`
+| Field | Tipe Data | Keterangan |
+|------|----------|-----------|
+| id | bigint, PK | ID tiket |
+| ticket_number | string(50) | Nombor tiket unik |
+| form_reference_code | string(50) | Kod rujukan borang PK.(S).MOTAC.07.(L1) |
+| status_token_hash | string(128) nullable | Hash token semakan status (untuk guest) |
+| user_id | bigint, FK nullable | FK → `users.id` (NULL jika guest) |
+| guest_name/guest_email/guest_phone | string nullable | Maklumat penghantar (untuk guest) |
+| guest_grade/guest_division/guest_staff_id | string nullable | Metadata guest (opsyen) |
+| division_id | bigint, FK nullable | FK → `divisions.id` (konteks organisasi) |
+| assigned_to_division | bigint, FK nullable | FK → `divisions.id` (agihan tiket) |
+| category_id | bigint, FK | FK → `ticket_categories.id` |
+| priority | enum | low/normal/high/urgent |
+| subject/description | string/text | Tajuk & keterangan aduan |
+| status | enum | open/assigned/in_progress/pending_user/resolved/closed |
+| asset_id | bigint, FK nullable | FK → `assets.id` (jika berkaitan perkakasan) |
+| created_at/updated_at/deleted_at | timestamp | Timestamps + soft delete |
+
+**Indeks (ringkasan)**: `(ticket_number)`, `(user_id)`, `(guest_email)`, `(status)`, `(priority)`, `(category_id)`, `(assigned_to_division)`, `(asset_id)`, `(status_token_hash)`
 
 > **Nota Hybrid:** `user_id` NULL = Guest submission; NOT NULL = Authenticated Staff submission
 > **Nota v3.5.0:** `form_reference_code` menyimpan kod rujukan borang rasmi
@@ -214,40 +225,33 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 
 ### 5.6. Jadual: loan_applications
 
-| Field                                | Tipe Data           | Keterangan                                    |
-| ------------------------------------ | ------------------- | --------------------------------------------- |
-| id                                   | bigint, PK          | ID permohonan                                 |
-| reference                            | string(20)          | Kod rujukan (LA-YYYYMM-XXXX)                  |
-| form_reference_code                  | string(50)          | Kod rujukan borang PK.(S).MOTAC.07.(L3)       |
-| user_id                              | bigint, FK nullable | FK → users.id (NULL jika Guest)               |
-| applicant_name                       | string(255)         | Nama pemohon                                  |
-| applicant_email                      | string(255)         | E-mel pemohon                                 |
-| applicant_phone                      | string(50)          | Telefon pemohon                               |
-| applicant_division_code              | string(20)          | Kod bahagian                                  |
-| applicant_grade                      | string(50)          | Gred pemohon                                  |
-| is_applicant_responsible             | boolean             | Pemohon = Pegawai Bertanggungjawab (v3.5.0)   |
-| responsible_officer_name             | string(255) null    | Nama Pegawai Bertanggungjawab (v3.5.0)        |
-| responsible_officer_grade            | string(50) null     | Gred Pegawai Bertanggungjawab (v3.5.0)        |
-| responsible_officer_phone            | string(50) null     | Telefon Pegawai Bertanggungjawab (v3.5.0)     |
-| responsible_officer_acknowledgement  | boolean             | Perakuan Pegawai Bertanggungjawab (v3.5.0)    |
-| purpose                              | text                | Tujuan pinjaman                               |
-| location                             | string(255)         | Lokasi penggunaan                             |
-| loan_start_date                      | date                | Tarikh mula                                   |
-| loan_end_date                        | date                | Tarikh akhir                                  |
-| acknowledgement                      | boolean             | Perakuan PDPA                                 |
-| status                               | enum                | Status permohonan                             |
-| approval_token_hash                  | string(128)         | Hash token kelulusan (SHA512)                 |
-| approval_token_expires_at            | timestamp           | Tarikh luput token                            |
-| status_token_hash                    | string(128)         | Hash token semakan status tetamu              |
-| created_at                           | timestamp           | Tarikh cipta                                  |
-| updated_at                           | timestamp           | Tarikh kemaskini                              |
+> **Source of truth (skema sebenar)**: `database/migrations/2025_11_03_043935_create_loan_applications_table.php`
 
-**Indeks:** `(user_id, status)`, `(applicant_email, status)`, `(reference)`, `(status_token_hash)`
+Ringkasan medan penting (bukan senarai penuh):
 
-> **Nota Hybrid:** `user_id` NULL = Guest submission; NOT NULL = Authenticated Staff submission
-> **Nota v3.5.0:** Responsible Officer fields untuk PK.(S).MOTAC.07.(L3) Part 2 & 4
+| Field | Tipe Data | Keterangan |
+|------|----------|-----------|
+| id | bigint, PK | ID permohonan |
+| application_number | string(20) | Nombor permohonan unik (format: LA[YYYY][MM][0001-9999]) |
+| form_reference_code | string(50) | Kod rujukan borang PK.(S).MOTAC.07.(L3) |
+| user_id | bigint, FK nullable | FK → `users.id` (NULL untuk permohonan guest) |
+| applicant_name/email/phone | string | Maklumat pemohon (sentiasa dipopulasi) |
+| staff_id | string(20) | ID staf MOTAC |
+| applicant_position/applicant_grade | string | Jawatan & gred (teks) |
+| grade | string(10) | Gred ringkas (contoh: 41/44/48/52/54) |
+| division_id | bigint, FK | FK → `divisions.id` |
+| purpose/location/return_location | text/string | Butiran permohonan |
+| loan_start_date/loan_end_date | date | Tarikh pinjaman dimohon |
+| status | enum | Status proses (contoh: `draft`, `submitted`, `under_review`, `approved`, `issued`, `returned`, `overdue`, dll.) |
+| priority | enum | low/normal/high/urgent |
+| approval_token_hash/status_token_hash | string(128) nullable | Hash token untuk kelulusan e-mel & semakan status |
+| pickup_otp_hash | string nullable | OTP pengambilan aset (hashed) |
+| responsible_officer_* | string/boolean/timestamp | Medan Pegawai Bertanggungjawab (jika berkaitan) |
+| created_at/updated_at/deleted_at | timestamp | Timestamps + soft delete |
 
-**Status enum values:** PENDING_SUPERVISOR_APPROVAL, APPROVED, REJECTED, AWAITING_COLLECTION, ON_LOAN, RETURNED, DAMAGED
+**Indeks (ringkasan)**: `(application_number)`, `(user_id)`, `(applicant_email)`, `(division_id)`, `(status)`, `(status_token_hash)`
+
+> **Nota Hybrid**: `user_id` NULL = permohonan guest; NOT NULL = permohonan staf berdaftar
 
 ### 5.7. Jadual: loan_items
 
@@ -379,9 +383,186 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk Seksyen 9).
 
 > **Nota v3.5.0:** Jadual Laravel Pulse untuk performance monitoring (admin/superuser access)
 
+### 5.17. Jadual: faqs (Cloud Hybrid AI v3.6.1)
+
+| Field      | Tipe Data           | Keterangan                                    |
+| ---------- | ------------------- | --------------------------------------------- |
+| id         | bigint, PK          | ID FAQ                                        |
+| user_id    | bigint, FK nullable | FK → users.id (NULL jika system-generated)    |
+| question   | text                | Soalan FAQ dalam Bahasa Melayu                |
+| answer     | text                | Jawapan FAQ dalam Bahasa Melayu               |
+| category   | string(100)         | Kategori (helpdesk, asset_loan, system)       |
+| tags       | json nullable       | Tags untuk kategorisasi                       |
+| is_active  | boolean             | Status aktif (DEFAULT TRUE)                   |
+| priority   | integer             | Keutamaan paparan (DEFAULT 0)                 |
+| view_count | integer             | Bilangan paparan (DEFAULT 0)                  |
+| created_at | timestamp           | Tarikh cipta                                  |
+| updated_at | timestamp           | Tarikh kemaskini                              |
+
+**Indeks:** `(category, is_active)`, `(user_id)`, `(priority DESC, created_at DESC)`
+
+> **Nota D18 v1.0.0:** Jadual FAQ untuk AI Bot dengan True Hybrid Architecture (nullable user_id FK)
+
+### 5.18. Jadual: documents (Cloud Hybrid AI v3.6.1)
+
+| Field           | Tipe Data           | Keterangan                                    |
+| --------------- | ------------------- | --------------------------------------------- |
+| id              | bigint, PK          | ID dokumen                                    |
+| user_id         | bigint, FK nullable | FK → users.id (NULL jika system document)     |
+| title           | string(255)         | Tajuk dokumen                                 |
+| filename        | string(255)         | Nama fail asal                                |
+| path            | string(500)         | Laluan fail dalam storage                     |
+| mime_type       | string(100)         | Jenis MIME (pdf, docx, txt)                   |
+| size_bytes      | bigint              | Saiz fail dalam bytes                         |
+| checksum        | string(64)          | SHA256 checksum                               |
+| status          | enum                | Status pemprosesan                            |
+| processing_started_at | timestamp nullable | Tarikh mula pemprosesan                    |
+| processing_completed_at | timestamp nullable | Tarikh selesai pemprosesan               |
+| summary         | text nullable       | Ringkasan dokumen (AI-generated)              |
+| key_topics      | json nullable       | Topik utama (AI-extracted)                    |
+| metadata        | json nullable       | Metadata tambahan                             |
+| created_at      | timestamp           | Tarikh cipta                                  |
+| updated_at      | timestamp           | Tarikh kemaskini                              |
+
+**Status enum values:** PENDING, PROCESSING, COMPLETED, FAILED
+
+**Indeks:** `(user_id, status)`, `(status, created_at)`, `(checksum)`
+
+> **Nota D18 v1.0.0:** Dokumen untuk analisis AI dengan True Hybrid Architecture
+
+### 5.19. Jadual: document_chunks (Cloud Hybrid AI v3.6.1)
+
+| Field       | Tipe Data     | Keterangan                                    |
+| ----------- | ------------- | --------------------------------------------- |
+| id          | bigint, PK    | ID chunk                                      |
+| document_id | bigint, FK    | FK → documents.id                             |
+| chunk_index | integer       | Indeks chunk dalam dokumen                    |
+| content     | text          | Kandungan chunk                               |
+| page_number | integer null  | Nombor halaman (jika berkenaan)               |
+| start_char  | integer null  | Posisi karakter mula                          |
+| end_char    | integer null  | Posisi karakter akhir                         |
+| token_count | integer       | Bilangan token dalam chunk                    |
+| metadata    | json nullable | Metadata chunk (headers, context)             |
+| created_at  | timestamp     | Tarikh cipta                                  |
+
+**Indeks:** `(document_id, chunk_index)`, `(document_id, page_number)`
+
+> **Nota D18 v1.0.0:** Chunks dokumen untuk Retrieval-Augmented Generation (RAG)
+
+### 5.20. Jadual: embeddings (Cloud Hybrid AI v3.6.1)
+
+| Field          | Tipe Data           | Keterangan                                    |
+| -------------- | ------------------- | --------------------------------------------- |
+| id             | bigint, PK          | ID embedding                                  |
+| embeddable_type| string(255)         | Model type (faqs, document_chunks)           |
+| embeddable_id  | bigint              | ID model berkaitan                            |
+| model_name     | string(100)         | Model embedding (nomic-embed-text)            |
+| vector         | json                | Vector embedding (array of floats)            |
+| dimensions     | integer             | Dimensi vector (e.g., 768, 1536)             |
+| created_at     | timestamp           | Tarikh cipta                                  |
+
+**Indeks:** `(embeddable_type, embeddable_id)`, `(model_name)`
+
+> **Nota D18 v1.0.0:** Vector embeddings untuk semantic search menggunakan MySQL JSON
+
+### 5.21. Jadual: message_logs (Cloud Hybrid AI v3.6.1)
+
+| Field          | Tipe Data           | Keterangan                                    |
+| -------------- | ------------------- | --------------------------------------------- |
+| id             | bigint, PK          | ID log mesej                                  |
+| user_id        | bigint, FK nullable | FK → users.id (NULL jika guest)               |
+| conversation_id| string(36) nullable | UUID conversation (jika berkenaan)            |
+| message_type   | enum                | Jenis mesej                                   |
+| content        | text                | Kandungan mesej                               |
+| ai_model       | string(100) null    | Model AI yang digunakan                       |
+| response_time  | decimal(8,3) null   | Masa respons dalam saat                       |
+| token_usage    | json nullable       | Penggunaan token (input/output)               |
+| metadata       | json nullable       | Metadata tambahan                             |
+| ip_address     | string(45) nullable | Alamat IP pengguna                            |
+| user_agent     | text nullable       | User agent browser                            |
+| created_at     | timestamp           | Tarikh cipta                                  |
+
+**Message_type enum values:** USER_QUERY, AI_RESPONSE, SYSTEM_MESSAGE, ERROR
+
+**Indeks:** `(user_id, created_at)`, `(conversation_id)`, `(message_type, created_at)`
+
+> **Nota D18 v1.0.0:** Log interaksi AI dengan Dual Audit System (owen-it + spatie)
+
+### 5.22. Jadual: bedrock_conversations (Cloud Hybrid AI v3.6.1)
+
+| Field          | Tipe Data           | Keterangan                                    |
+| -------------- | ------------------- | --------------------------------------------- |
+| id             | bigint, PK          | ID conversation                               |
+| user_id        | bigint, FK nullable | FK → users.id (NULL jika guest)               |
+| conversation_id| string(36)          | UUID conversation                             |
+| title          | string(255) null    | Tajuk conversation (AI-generated)             |
+| context        | string(100) null    | Konteks (faq, document_analysis, auto_reply)  |
+| messages       | json                | Array mesej dalam conversation                |
+| model_used     | string(100)         | Model AI yang digunakan                       |
+| total_tokens   | integer             | Jumlah token yang digunakan                   |
+| last_activity  | timestamp           | Aktiviti terakhir                             |
+| expires_at     | timestamp nullable  | Tarikh luput (30 minit untuk guest)          |
+| metadata       | json nullable       | Metadata tambahan                             |
+| created_at     | timestamp           | Tarikh cipta                                  |
+| updated_at     | timestamp           | Tarikh kemaskini                              |
+
+**Indeks:** `(user_id, last_activity)`, `(conversation_id)`, `(expires_at)`
+
+> **Nota D18 v1.0.0:** Enhanced conversation management dengan memori jangka panjang
+
+### 5.23. Jadual: auto_reply_templates (Cloud Hybrid AI v3.6.1)
+
+| Field          | Tipe Data           | Keterangan                                    |
+| -------------- | ------------------- | --------------------------------------------- |
+| id             | bigint, PK          | ID template                                   |
+| user_id        | bigint, FK          | FK → users.id (admin/superuser)               |
+| name           | string(255)         | Nama template                                 |
+| description    | text nullable       | Penerangan template                           |
+| template_type  | enum                | Jenis template                                |
+| prompt_template| text                | Template prompt untuk AI                      |
+| variables      | json nullable       | Pembolehubah yang tersedia                    |
+| is_active      | boolean             | Status aktif (DEFAULT TRUE)                   |
+| usage_count    | integer             | Bilangan penggunaan (DEFAULT 0)               |
+| created_at     | timestamp           | Tarikh cipta                                  |
+| updated_at     | timestamp           | Tarikh kemaskini                              |
+
+**Template_type enum values:** HELPDESK_RESPONSE, LOAN_APPROVAL, LOAN_REJECTION, GENERAL_INQUIRY
+
+**Indeks:** `(template_type, is_active)`, `(user_id)`
+
+> **Nota D18 v1.0.0:** Template untuk auto-reply AI dengan approval workflow
+
+### 5.24. Jadual: auto_reply_drafts (Cloud Hybrid AI v3.6.1)
+
+| Field          | Tipe Data           | Keterangan                                    |
+| -------------- | ------------------- | --------------------------------------------- |
+| id             | bigint, PK          | ID draf                                       |
+| user_id        | bigint, FK          | FK → users.id (admin yang menjana)            |
+| replyable_type | string(255)         | Model type (helpdesk_tickets, loan_applications) |
+| replyable_id   | bigint              | ID model berkaitan                            |
+| template_id    | bigint, FK nullable | FK → auto_reply_templates.id                  |
+| generated_content | text             | Kandungan yang dijana AI                      |
+| ai_model       | string(100)         | Model AI yang digunakan                       |
+| generation_time| decimal(8,3)        | Masa penjanaan dalam saat                     |
+| status         | enum                | Status draf                                   |
+| approved_by    | bigint, FK nullable | FK → users.id (approver)                      |
+| approved_at    | timestamp nullable  | Tarikh kelulusan                              |
+| sent_at        | timestamp nullable  | Tarikh hantar kepada pengguna                 |
+| metadata       | json nullable       | Metadata penjanaan                            |
+| created_at     | timestamp           | Tarikh cipta                                  |
+| updated_at     | timestamp           | Tarikh kemaskini                              |
+
+**Status enum values:** DRAFT, PENDING_APPROVAL, APPROVED, REJECTED, SENT
+
+**Indeks:** `(replyable_type, replyable_id)`, `(status, created_at)`, `(user_id)`
+
+> **Nota D18 v1.0.0:** Draf auto-reply dengan approval workflow dan email tokens
+
 ---
 
 ## 6. Hubungan Antara Jadual (Relationships)
+
+### 6.1. Hubungan Sistem Utama (Core System Relationships)
 
 - `users` → `helpdesk_tickets.assigned_admin_id`, `loan_transactions.performed_by_admin_id`
 - `users` → `personal_access_tokens` (polymorphic via tokenable)
@@ -389,13 +570,25 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk Seksyen 9).
 - `loan_applications` ↔ `loan_items`, `loan_transactions`, `loan_approvals`, `loan_audits`, `status_tokens`
 - `loan_transactions` ↔ `loan_transaction_accessories` (v3.5.0)
 - `assets` ↔ `loan_items`, `loan_transactions`
-- `departments` → `users.department_id`
+- `divisions` → `users.division_id`
 - `audits` polymorphic ke semua model dengan `Auditable` trait
 - `activity_log` polymorphic ke semua model untuk user activity tracking
+
+### 6.2. Hubungan Cloud Hybrid AI (D18 v1.0.0)
+
+- `users` → `faqs.user_id`, `documents.user_id`, `message_logs.user_id` (nullable FK - True Hybrid)
+- `users` → `bedrock_conversations.user_id`, `auto_reply_templates.user_id`, `auto_reply_drafts.user_id`
+- `documents` ↔ `document_chunks` (one-to-many)
+- `embeddings` polymorphic ke `faqs`, `document_chunks` (via embeddable_type/embeddable_id)
+- `auto_reply_templates` → `auto_reply_drafts.template_id`
+- `auto_reply_drafts` polymorphic ke `helpdesk_tickets`, `loan_applications` (via replyable_type/replyable_id)
+- `bedrock_conversations` → `message_logs.conversation_id` (UUID relationship)
 
 ---
 
 ## 7. Piawaian Kualiti Data (Data Quality Standards)
+
+### 7.1. Piawaian Sistem Utama (Core System Standards)
 
 - **Unik:** `ticket_number`, `reference`, `approval_token_hash`, `status_token_hash`, `google_id`
 - **Validasi:** Format e-mel, telefon, tarikh, enumerasi (kategori, status)
@@ -404,14 +597,37 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk Seksyen 9).
 - **Audit:** Semua perubahan penting dicatat dalam `audits` dan `activity_log`
 - **Privasi:** E-mel, telefon, IP disimpan hashed/encrypted di mana sesuai
 
+### 7.2. Piawaian Cloud Hybrid AI (D18 v1.0.0)
+
+- **Unik AI:** `conversation_id` (UUID), `checksum` (dokumen), `embeddable_type+embeddable_id` (embeddings)
+- **Validasi AI:** Vector dimensions, JSON format untuk embeddings, enum values untuk AI status
+- **Kelengkapan AI:** FAQ question/answer wajib, document content validation, embedding vector completeness
+- **Integriti Rujukan AI:** Polymorphic relationships untuk embeddings dan auto_reply_drafts
+- **Audit AI:** Semua interaksi AI dicatat dalam `message_logs` dengan dual audit system
+- **Privasi AI:** PII detection dan sanitization sebelum pemprosesan AI (PDPA 2010 compliance)
+- **Prestasi AI:** Vector search optimization, conversation expiry (30 minit untuk guest)
+- **Data Residency:** Klasifikasi data automatik untuk pemprosesan tempatan vs cloud (Malaysia)
+
 ---
 
 ## 8. Backup & Pemulihan (Backup & Recovery)
+
+### 8.1. Backup Sistem Utama (Core System Backup)
 
 - Backup MySQL harian (pengepil), retention 30 hari
 - Snapshot storan objek (lampiran) mingguan
 - Ujian pemulihan dua kali setahun
 - Laravel Pulse data retention: 7 hari (auto-pruned)
+
+### 8.2. Backup Cloud Hybrid AI (D18 v1.0.0)
+
+- **FAQ Knowledge Base**: Backup harian dengan retention 90 hari (critical for AI operations)
+- **Document Storage**: Backup dokumen dan chunks dengan retention 1 tahun
+- **Vector Embeddings**: Backup mingguan (boleh dijana semula tetapi memakan masa)
+- **Conversation Logs**: Backup `message_logs` dan `bedrock_conversations` dengan retention 7 tahun (compliance)
+- **AI Templates**: Backup `auto_reply_templates` dengan retention 2 tahun
+- **Model Configurations**: Backup konfigurasi AI (Ollama models, Bedrock settings) harian
+- **Performance Metrics**: AI-specific metrics dalam Laravel Pulse (7 hari retention)
 
 ---
 
@@ -423,18 +639,20 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk Seksyen 9).
 
 - **Table**: `audits`
 - **Purpose**: Field-level change tracking untuk PDPA compliance
-- **Models**: `Auditable` trait pada `HelpdeskTicket`, `LoanApplication`, `Asset`, `User`
-- **Events logged**: Created, Updated, Deleted, Status Changed
-- **Data stored**: old_values, new_values, user_id, IP address, timestamp
+- **Models**: `Auditable` trait pada `HelpdeskTicket`, `LoanApplication`, `Asset`, `User`, **AI Models (D18 v1.0.0)**
+- **AI Models**: `Faq`, `Document`, `MessageLog`, `BedrockConversation`, `AutoReplyTemplate`, `AutoReplyDraft`
+- **Events logged**: Created, Updated, Deleted, Status Changed, **AI Interactions, Model Routing**
+- **Data stored**: old_values, new_values, user_id, IP address, timestamp, **AI model used, token usage**
 - **Retention**: 7 years (compliance requirement)
 
 #### Package 2: spatie/laravel-activitylog v4.x (OPERATIONS)
 
 - **Table**: `activity_log`
 - **Purpose**: User activity tracking untuk dashboard dan reports
-- **Events logged**: Login, logout, form submissions, status views, approvals
-- **Data stored**: description, subject, causer, properties, batch_uuid
-- **Use cases**: User "Recent Activity", Filament widgets, admin reports
+- **Events logged**: Login, logout, form submissions, status views, approvals, **AI queries, document analysis**
+- **AI Events**: FAQ Bot queries, document uploads, auto-reply generation, conversation management
+- **Data stored**: description, subject, causer, properties, batch_uuid, **AI response time, model selection**
+- **Use cases**: User "Recent Activity", Filament widgets, admin reports, **AI usage analytics**
 
 #### Package 3: Laravel Telescope v5.x (DEBUGGING)
 
@@ -522,10 +740,9 @@ Migrasi ke v3.5.0 melibatkan:
 
 Migrasi ke v3.0.0 melibatkan:
 
-- Menambah medan `submitter_*` pada `helpdesk_tickets`
+- Menambah medan `guest_*` pada `helpdesk_tickets` untuk menyokong permohonan tetamu (True Hybrid)
 - Menghapus kebergantungan `user_id` bagi tetamu
 - Menyemak `loan_approvals` supaya menyimpan e-mel pegawai secara eksplisit
-- Table rename: `divisions` → `departments`
 
 Skrip migrasi diselaras melalui `database/migrations` (rujuk D05 & D06).
 
@@ -556,11 +773,11 @@ Rujuk [GLOSSARY.md](GLOSSARY.md) untuk istilah tambahan.
 
 ### A. ERD
 
-ERD dikemas kini boleh didapati dalam repositori `/design/erd/ictserve_v3.5.0.png`.
+ERD statik tidak disimpan sebagai fail imej dalam repo v3.6.1. Rujukan struktur jadual adalah melalui migrasi dalam `database/migrations/` dan ringkasan skema dalam dokumen ini.
 
 ### B. Definisi Lengkap
 
-Fail CSV terdapat di `/docs/rtm/*` untuk pemetaan keperluan ↔ jadual.
+Fail CSV RTM untuk pemetaan keperluan ↔ jadual berada di `docs/reference/rtm/`.
 
 ### C. Piawaian Penamaan
 
@@ -577,7 +794,18 @@ Indeks utama:
 - `users_google_id_index` (v3.5.0)
 - `loan_transaction_accessories_transaction_id_index` (v3.5.0)
 
-Analisis prestasi disimpan dalam `performance-optimization-report.md`.
+**Indeks Cloud Hybrid AI (D18 v1.0.0):**
+
+- `faqs_category_active_index` - Optimasi FAQ Bot queries
+- `documents_status_created_index` - Tracking document processing
+- `document_chunks_document_page_index` - Efficient chunk retrieval
+- `embeddings_embeddable_type_id_index` - Vector search optimization
+- `message_logs_user_created_index` - User activity tracking
+- `bedrock_conversations_user_activity_index` - Conversation management
+- `bedrock_conversations_expires_at_index` - Cleanup expired conversations
+- `auto_reply_drafts_replyable_type_id_index` - Auto-reply tracking
+
+Analisis prestasi dirujuk dalam `docs/reference/performance-optimization-guide.md`.
 
 ---
 
@@ -589,7 +817,7 @@ dikendalikan melalui token bertanda tangan, dan dual audit menyeluruh mengekalka
 integriti data. Semua perubahan tambahan hendaklah mematuhi proses pengurusan
 perubahan D01 §9.3.
 
-**True Hybrid Architecture v3.5.0 Database Features:**
+**True Hybrid Architecture v3.6.1 Database Features:**
 
 - Google SSO support via `google_id` field
 - Responsible Officer tracking untuk loan applications
@@ -597,8 +825,16 @@ perubahan D01 §9.3.
 - Form reference codes untuk compliance
 - Laravel Pulse tables untuk performance monitoring
 - Laravel Sanctum `personal_access_tokens` untuk API authentication
+- **Cloud Hybrid AI Architecture (D18 v1.0.0):**
+  - FAQ Bot dengan RAG menggunakan `faqs`, `embeddings` tables
+  - Document Analysis dengan `documents`, `document_chunks` tables
+  - Multi-model intelligence dengan `bedrock_conversations` table
+  - Auto-reply generation dengan `auto_reply_templates`, `auto_reply_drafts` tables
+  - Comprehensive AI logging dengan `message_logs` table
+  - Vector search menggunakan MySQL JSON untuk embeddings
+  - True Hybrid support dengan nullable `user_id` FK pada semua AI tables
 
 ---
 
-**Dokumen ini mematuhi piawaian ISO 8000:2022 (Data Quality), ISO/IEC/IEEE 1016:2009,
+**Dokumen ini mematuhi piawaian ISO 8000:2022 (Data Quality), ISO/IEC/IEEE 1016:2009, dan D18 AI Chatbot Ollama-Bedrock v1.0.0 untuk Cloud Hybrid AI Architecture. Semua jadual AI mengikut True Hybrid Architecture dengan nullable user_id FK dan Dual Audit System untuk pematuhan PDPA 2010.**
 ISO/IEC 27701:2019, dan ISO/IEC 38505-1:2017.**

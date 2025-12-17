@@ -1,4 +1,4 @@
-{{--
+﻿{{--
 /**
  * Skeleton Loader Component
  *
@@ -73,16 +73,16 @@ default => 'h-10 w-24',
     @case('table-row')
     {{-- Table row skeleton --}}
     <div class="flex items-center gap-4 py-3">
-        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-xs w-1/6 skeleton-pulse"></div>
-        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-xs w-1/4 skeleton-pulse"></div>
-        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-xs w-1/3 skeleton-pulse"></div>
-        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-xs w-1/6 skeleton-pulse"></div>
+        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-sm w-1/6 skeleton-pulse"></div>
+        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-sm w-1/4 skeleton-pulse"></div>
+        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-sm w-1/3 skeleton-pulse"></div>
+        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-sm w-1/6 skeleton-pulse"></div>
     </div>
     @break
 
     @case('button')
     {{-- Button skeleton --}}
-    <div class="{{ $buttonSize }} bg-gray-200 dark:bg-gray-700 rounded-m skeleton-pulse"></div>
+    <div class="{{ $buttonSize }} bg-gray-200 dark:bg-gray-700 rounded-md skeleton-pulse"></div>
     @break
 
     @case('image')
@@ -113,7 +113,7 @@ default => 'h-10 w-24',
             default => 'w-5/6',
             };
             @endphp
-            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-xs {{ $lineWidth }} skeleton-pulse"></div>
+            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-sm {{ $lineWidth }} skeleton-pulse"></div>
             @endfor
     </div>
     @break

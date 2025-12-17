@@ -4,14 +4,28 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use Aws\BedrockRuntime\BedrockRuntimeClient;
 use App\Models\BedrockModelConfig;
 use App\Models\BedrockUsageLog;
+use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Pulse\Facades\Pulse;
 
+/**
+ * AWS Bedrock Service for Claude AI integration.
+ *
+ * Provides access to Claude Opus 4.5, Sonnet 4.5, and Haiku 4.5 models
+ * via AWS Bedrock with inference profile support, cost tracking, and
+ * comprehensive error handling.
+ *
+ * trace: D03-SRS-AI-002 (Auto-Reply), D03-SRS-AI-003 (Document Analysis)
+ * trace: D03-SRS-AI-012 (Multi-Model), D03-SRS-AI-017 (Cost Optimization)
+ * trace: D18-§4.1 (AWS Bedrock Integration), D11-§8.1 (Performance Monitoring)
+ *
+ * @see docs/aws_bedrock/IMPLEMENTATION.md
+ * @see docs/aws_bedrock/API_REFERENCE.md
+ */
 class BedrockService
 {
     public function __construct(
@@ -153,6 +167,17 @@ class BedrockService
                 if ($costEstimate !== null) {
                     Pulse::record(type: 'ai_bedrock_cost_usd', key: $effectiveModelId, value: $costEstimate)->sum();
                 }
+
+                // Dispatch event for AIServiceMetrics Pulse recorder
+                // trace: D03-SRS-AI-019, D18-§6.1
+                event(new \App\Events\AIRequestCompleted(
+                    service: 'bedrock',
+                    responseTimeMs: $responseTimeMs,
+                    modelId: $effectiveModelId,
+                    inputTokens: $inputTokens,
+                    outputTokens: $outputTokens,
+                    queryType: $context['query_type'] ?? null,
+                ));
             } catch (\Throwable $e) {
                 // Jangan gagalkan permintaan jika Pulse bermasalah.
             }
@@ -191,17 +216,33 @@ class BedrockService
                 'error_code' => $errorCode,
             ]);
 
+            $responseTimeMs = $this->durationMs($startedAt);
+
             $this->logUsage(
                 requestId: $requestId,
                 modelId: $effectiveModelId,
                 inputTokens: 0,
                 outputTokens: 0,
                 costEstimate: null,
-                responseTimeMs: $this->durationMs($startedAt),
+                responseTimeMs: $responseTimeMs,
                 success: false,
                 errorMessage: $rawMessage,
                 context: $context,
             );
+
+            // Dispatch failure event for AIServiceMetrics Pulse recorder
+            // trace: D03-SRS-AI-019, D18-§6.1
+            try {
+                event(new \App\Events\AIRequestFailed(
+                    service: 'bedrock',
+                    responseTimeMs: $responseTimeMs,
+                    errorMessage: $rawMessage,
+                    modelId: $effectiveModelId,
+                    queryType: $context['query_type'] ?? null,
+                ));
+            } catch (\Throwable $dispatchError) {
+                // Jangan gagalkan permintaan jika event dispatch bermasalah.
+            }
 
             return [
                 'success' => false,

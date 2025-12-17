@@ -40,7 +40,7 @@ class ProcessIssuanceAction
     public static function make(): Action
     {
         return Action::make('processIssuance')
-            ->label('Proses Pengeluaran')
+            ->label(__('filament.actions.process_issuance'))
             ->icon(Heroicon::OutlinedCheckCircle)
             ->color('success')
             ->visible(fn (LoanApplication $record) => $record->status === LoanStatus::APPROVED)
@@ -52,7 +52,7 @@ class ProcessIssuanceAction
                     ->description('Sila minta pemohon memberikan kod OTP 4-digit untuk pengesahan')
                     ->schema([
                         TextInput::make('otp_code')
-                            ->label('Kod OTP')
+                            ->label(__('filament.issuance.otp_code'))
                             ->required()
                             ->length(4)
                             ->numeric()
@@ -66,17 +66,17 @@ class ProcessIssuanceAction
                     ->description('Sahkan butiran pengeluaran aset')
                     ->schema([
                         TextInput::make('applicant_info')
-                            ->label('Pemohon')
+                            ->label(__('filament.issuance.applicant'))
                             ->default(fn (LoanApplication $record) => $record->applicant_name.' ('.$record->applicant_email.')')
                             ->disabled(),
 
                         TextInput::make('application_number')
-                            ->label('No. Permohonan')
+                            ->label(__('filament.issuance.application_number'))
                             ->default(fn (LoanApplication $record) => $record->application_number)
                             ->disabled(),
 
                         DateTimePicker::make('issued_at')
-                            ->label('Tarikh & Masa Pengeluaran')
+                            ->label(__('filament.issuance.issuance_datetime'))
                             ->default(now())
                             ->required()
                             ->native(false)
@@ -84,7 +84,7 @@ class ProcessIssuanceAction
                             ->seconds(false),
 
                         TextInput::make('issued_by_name')
-                            ->label('Dikeluarkan Oleh')
+                            ->label(__('filament.issuance.issued_by'))
                             ->default(function (): string {
                                 $user = Auth::user();
 
@@ -98,10 +98,10 @@ class ProcessIssuanceAction
                     ->description('Rekod keadaan aset sebelum pengeluaran')
                     ->schema([
                         Repeater::make('asset_conditions')
-                            ->label('Keadaan Aset')
+                            ->label(__('filament.issuance.asset_condition'))
                             ->schema([
                                 TextInput::make('asset_name')
-                                    ->label('Aset')
+                                    ->label(__('filament.issuance.asset'))
                                     ->default(function ($state, $get) {
                                         $loanItemId = $get('../../loan_item_id');
                                         if (! $loanItemId) {
@@ -120,7 +120,7 @@ class ProcessIssuanceAction
                                     ->disabled(),
 
                                 Select::make('condition')
-                                    ->label('Keadaan')
+                                    ->label(__('filament.issuance.condition'))
                                     ->options([
                                         'excellent' => '⭐ Cemerlang - Seperti baru',
                                         'good' => '✅ Baik - Berfungsi dengan sempurna',
@@ -131,7 +131,7 @@ class ProcessIssuanceAction
                                     ->native(false),
 
                                 Textarea::make('condition_notes')
-                                    ->label('Catatan Keadaan')
+                                    ->label(__('filament.issuance.condition_notes'))
                                     ->placeholder('Contoh: Skrin bersih, tiada calar, semua port berfungsi')
                                     ->rows(2)
                                     ->maxLength(500),
@@ -162,10 +162,10 @@ class ProcessIssuanceAction
                     ->icon('heroicon-o-clipboard-document-list')
                     ->schema([
                         Repeater::make('accessory_checklist')
-                            ->label('Aksesori Standard / Standard Accessories')
+                            ->label(__('filament.issuance.standard_accessories'))
                             ->schema([
                                 Select::make('accessory_type')
-                                    ->label('Jenis Aksesori')
+                                    ->label(__('filament.issuance.accessory_type'))
                                     ->options([
                                         'POWER_ADAPTER' => '🔌 Penyesuai Kuasa / Power Adapter',
                                         'BAG' => '💼 Beg / Bag',
@@ -180,19 +180,19 @@ class ProcessIssuanceAction
                                     ->live(),
 
                                 TextInput::make('accessory_name')
-                                    ->label('Nama Aksesori (untuk Lain-lain)')
+                                    ->label(__('filament.issuance.accessory_name'))
                                     ->placeholder('Nyatakan nama aksesori')
                                     ->maxLength(100)
                                     ->visible(fn ($get) => $get('accessory_type') === 'OTHERS')
                                     ->required(fn ($get) => $get('accessory_type') === 'OTHERS'),
 
                                 Toggle::make('present')
-                                    ->label('Disertakan / Included')
+                                    ->label(__('filament.issuance.included'))
                                     ->default(true)
                                     ->inline(false),
 
                                 Textarea::make('condition_notes')
-                                    ->label('Catatan Keadaan / Condition Notes')
+                                    ->label(__('filament.issuance.accessory_condition_notes'))
                                     ->placeholder('Contoh: Berfungsi dengan baik, tiada kerosakan')
                                     ->rows(2)
                                     ->maxLength(500),
@@ -213,13 +213,13 @@ class ProcessIssuanceAction
                 Section::make('Arahan Khas')
                     ->schema([
                         Textarea::make('special_instructions')
-                            ->label('Arahan Khas')
+                            ->label(__('filament.issuance.special_instructions'))
                             ->placeholder('Contoh: Aset mesti dikembalikan dalam keadaan bersih')
                             ->rows(3)
                             ->maxLength(1000),
 
                         Checkbox::make('confirm_issuance')
-                            ->label('Saya mengesahkan bahawa semua butiran adalah tepat dan aset telah diserahkan kepada pemohon')
+                            ->label(__('filament.issuance.confirmation'))
                             ->required()
                             ->accepted(),
                     ]),

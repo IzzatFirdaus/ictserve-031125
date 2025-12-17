@@ -1,9 +1,9 @@
 # Spesifikasi Keperluan Integrasi AI Ollama (Ollama AI Integration Requirements Specification)
 
 **Sistem ICTServe**  
-**Versi:** 3.6.1 (SemVer)  
-**Tarikh Kemaskini:** 12 Disember 2025  
-**Status:** Aktif - Selaras dengan ICTServe System Spec v3.6.0  
+**Versi:** 3.6.6 (SemVer)  
+**Tarikh Kemaskini:** 14 Disember 2025  
+**Status:** Aktif - Cloud Hybrid AI Architecture Implemented  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, PDPA 2010, MyGOV Digital Service Standards v2.1.0
@@ -14,9 +14,9 @@
 
 | Atribut              | Nilai                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------- |
-| **Versi**            | 3.6.0                                                                                       |
-| **Tarikh Kemaskini** | 11 Disember 2025                                                                            |
-| **Status**           | Aktif                                                                                       |
+| **Versi**            | 3.6.6                                                                                       |
+| **Tarikh Kemaskini** | 14 Disember 2025                                                                            |
+| **Status**           | Aktif - Cloud Hybrid AI Architecture Implemented                                            |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
 | **Pematuhi**         | ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, PDPA 2010, MyGOV Digital Service Standards v2.1.0 |
 | **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                                                               |
@@ -30,6 +30,8 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.6.6 | 14 Disember 2025 | **Final Documentation Sync**: Comprehensive sync dengan `docs/ollama/HYBRID_BEDROCK_OLLAMA_INTEGRATION.md` dan `docs/D18_AI_CHATBOT_OLLAMA_BEDROCK.md`. Mengesahkan semua implemented features: BedrockService, BedrockChat Livewire, MCP Server, DuckDuckGo web search, conversation management. Menambah inference profile requirements (CRITICAL), model rate limits, dan hybrid query routing patterns. | Pasukan Pembangunan BPM |
+| 3.6.5 | 12 Disember 2025 | **Bedrock Documentation Sync v4**: Mengemaskini dengan insights dari keseluruhan `docs/aws_bedrock/` documentation suite. Menambah troubleshooting patterns, verification checklist, dan debugging commands. | Pasukan Pembangunan BPM |
 | 3.6.1 | 12 Disember 2025 | **Peningkatan AWS Bedrock Insights**: Multi-model intelligence, enhanced conversation management, web-augmented responses, streaming capabilities, advanced error handling, performance optimization dengan model-specific routing. Menambah Keperluan 9 untuk integrasi AWS Bedrock sebagai alternatif cloud-based. Mengekalkan D00-D17 v3.6.0 compliance. | Pasukan Pembangunan BPM |
 | 3.6.0 | 11 Disember 2025 | **Penyelarasan D00-D17 v3.6.0**: Bahasa Melayu sahaja untuk antara muka AI, True Hybrid Architecture, Self-Registration (@motac.gov.my), Laravel Pulse/Sanctum/Socialite integration, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). | Pasukan Pembangunan BPM |
 | 1.0.0 | 05 November 2025 | Versi awal spesifikasi integrasi Ollama AI dengan ICTServe v3.0.0                                                                                                                                                                                                        | Pasukan Pembangunan BPM |
@@ -49,6 +51,8 @@
 - **[D15_LANGUAGE_MS_EN.md]** - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
 - **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - AI Chatbot Hybrid Architecture (NEW)
+- **[docs/ollama/HYBRID_BEDROCK_OLLAMA_INTEGRATION.md]** - Comprehensive Hybrid Implementation Guide
 
 ---
 

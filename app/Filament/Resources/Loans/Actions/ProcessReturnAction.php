@@ -41,7 +41,7 @@ class ProcessReturnAction
     public static function make(): Action
     {
         return Action::make('processReturn')
-            ->label('Proses Pemulangan')
+            ->label(__('filament.actions.process_return'))
             ->icon(Heroicon::OutlinedArrowUturnLeft)
             ->color('info')
             ->visible(fn (LoanApplication $record) => in_array($record->status, [LoanStatus::IN_USE, LoanStatus::RETURN_DUE, LoanStatus::OVERDUE]))
@@ -53,17 +53,17 @@ class ProcessReturnAction
                     ->description('Sahkan butiran pemulangan aset')
                     ->schema([
                         TextInput::make('applicant_info')
-                            ->label('Peminjam')
+                            ->label(__('filament.return.borrower'))
                             ->default(fn (LoanApplication $record) => $record->applicant_name.' ('.$record->applicant_email.')')
                             ->disabled(),
 
                         TextInput::make('application_number')
-                            ->label('No. Permohonan')
+                            ->label(__('filament.return.application_number'))
                             ->default(fn (LoanApplication $record) => $record->application_number)
                             ->disabled(),
 
                         DateTimePicker::make('returned_at')
-                            ->label('Tarikh & Masa Pemulangan')
+                            ->label(__('filament.return.return_datetime'))
                             ->default(now())
                             ->required()
                             ->native(false)

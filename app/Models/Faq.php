@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Model FAQ untuk sistem AI Ollama
- *
+ * 
  * Per Requirements 1.1, 1.5, 4.1: FAQ management dengan True Hybrid Architecture
  * Selaras dengan D09 Database Documentation v3.6.0 (Dual Audit System)
  *
@@ -27,10 +29,40 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon|null $deleted_at
  * @property-read \App\Models\User|null $creator
+ * @property string|null $preferred_model
+ * @property float|null $complexity_score
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @method static \Database\Factories\FaqFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq search(string $searchQuery)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereAnswer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereComplexityScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereMatchScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq wherePreferredModel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereQuestion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereTags($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq withMinScore(float $minScore = 0.3)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @mixin \Eloquent
  */
 class Faq extends Model implements AuditableContract
 {
-    use Auditable, HasFactory, SoftDeletes;
+    use Auditable;
+    use HasFactory;
+    use LogsActivity;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +91,26 @@ class Faq extends Model implements AuditableContract
             'match_score' => 'float',
             'complexity_score' => 'float',
         ];
+    }
+
+    /**
+     * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'question',
+                'answer',
+                'tags',
+                'preferred_model',
+                'created_by',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('faq')
+            ->setDescriptionForEvent(fn (string $eventName) => "FAQ {$eventName}");
     }
 
     /**

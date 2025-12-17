@@ -1,5 +1,9 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
+
 return [
     'retention' => [
         'title' => 'Polisi Penyimpanan Data',

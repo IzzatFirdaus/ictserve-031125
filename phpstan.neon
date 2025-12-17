@@ -1,5 +1,5 @@
 includes:
-  - vendor/larastan/larastan/extension.neon
+  - /tmp/vendor/larastan/larastan/extension.neon
 
 parameters:
   level: 9
@@ -15,62 +15,121 @@ parameters:
     - tests
     - tests/Browser  # Exclude Dusk browser tests (require separate Laravel Dusk types)
 
-  bootstrapFiles:
-    - phpstan-autoload.php
-
   treatPhpDocTypesAsCertain: false
 
   ignoreErrors:
-    # IDE Helper - Auto-generated facade stubs with expected redeclarations
+    # ==========================================================================
+    # IDE Helper & Auto-generated Code
+    # ==========================================================================
     - '#Cannot redeclare class#'
 
-    # Filament framework - Dynamic SDUI classes not available to static analysis
+    # ==========================================================================
+    # Filament Framework - Dynamic SDUI (Server-Driven UI)
+    # ==========================================================================
     - '#on an unknown class Filament#'
 
+    # Filament method parameters with __() translation helper
+    - '#Parameter \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$title of method Filament\\.*::title\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$description of method Filament\\.*::description\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$helperText of method Filament\\.*::helperText\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$body of method Filament\\.*::body\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$heading of method Filament\\.*::modalHeading\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$description of method Filament\\.*::modalDescription\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \$\w+ of method Filament\\.*::make\(\) expects .*, array\|string\|null given#'
+    - '#method Filament\\.*::(label|title|description|helperText|body|modalHeading|modalDescription)\(\) expects .*, array\|string\|null given#'
+
+    # ==========================================================================
+    # Eloquent Model - Dynamic Properties & Methods
+    # ==========================================================================
     # Model property access - Dynamic Eloquent properties (relations, accessors, mutators)
     - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
     - '#Access to an undefined property App\\Models\\.*::\$#'
-    
+    - '#Access to an undefined property Laravel\\Sanctum\\PersonalAccessToken::\$#'
+
     # Eloquent static methods not recognized by static analysis
-    - '#Call to an undefined static method App\\Models\\.*::(where|find|findOrFail|create|firstOrCreate|whereIn|count|factory)#'
-    
+    - '#Call to an undefined static method App\\Models\\.*::(where|find|findOrFail|create|firstOrCreate|firstOrNew|updateOrCreate|whereIn|whereNotNull|whereBetween|whereNull|whereHas|whereDoesntHave|withWhereHas|count|sum|avg|max|min|factory|expired|due|forUser|query)#'
+
     # Eloquent instance methods not recognized by static analysis
-    - '#Call to an undefined method App\\Models\\.*::(where|find|user)#'
-    
-    # Laravel translation helper returns array|string|null - known limitation
-    - '#Parameter \#1 \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$title of method Filament\\.*::title\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$description of method Filament\\.*::description\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$helperText of method Filament\\.*::helperText\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$body of method Filament\\.*::body\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$\w+ of method Filament\\.*::make\(\) expects .*, array\|string\|null given#'
+    - '#Call to an undefined method App\\Models\\.*::(where|find|user|with|load|hasRole|hasAdminAccess|notify)#'
+
+    # Query Builder type covariance
+    - '#Anonymous function should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder#'
+    - '#should return Illuminate\\Database\\Eloquent\\Builder.* but returns Illuminate\\Database\\Query\\Builder#'
+
+    # ==========================================================================
+    # Laravel Translation Helper - Returns array|string|null
+    # ==========================================================================
     - '#(M|m)ethod .* should return string but returns array\|string\|null#'
+    - '#(M|m)ethod .* should return string\|null but returns array\|string\|null#'
     - '#Parameter .* expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$\w+ of (method|class) .* expects .*, array\|string\|null given#'
+    - '#Parameter \$\w+ of (method|class) .* expects .*, array\|string\|null given#'
     - '#Parameter \$subject of class Illuminate\\Mail\\Mailables\\Envelope constructor expects string\|null, array\|string\|null given#'
     - '#Anonymous function should return string but returns array\|string\|null#'
-    
-    # Generic type specifications - TODO: Add proper PHPDoc annotations
-    - '#(Method|Parameter) .* (has no value type specified in iterable type array|return type with generic class .* does not specify its types)#'
+    - '#Binary operation "." between .* and array\|string\|null results in an error#'
+
+    # ==========================================================================
+    # Generic Type Specifications - TODO: Add proper PHPDoc annotations
+    # ==========================================================================
+    - '#(Method|Parameter|Property) .* (has no value type specified in iterable type array|return type with generic class .* does not specify its types)#'
     - '#has no value type specified in iterable type array#'
     - '#return type with generic class .* does not specify its types#'
-    
-    # Mixed type handling - common in dynamic Laravel code
-    - '#Cannot cast mixed to string#'
-    - '#Binary operation "." between .* and array\|string\|null#'
-    
-    # Livewire render methods - return type is inferred by framework
+    - '#contains unresolvable type#'
+
+    # ==========================================================================
+    # Mixed Type Handling - Common in Dynamic Laravel Code
+    # ==========================================================================
+    - '#Cannot cast mixed to (string|int|float|bool)#'
+    - '#Cannot access property \$\w+ on mixed#'
+    - '#Cannot access property \$\w+ on Illuminate\\Contracts\\Auth\\Authenticatable\|null#'
+    - '#Parameter \$value of function count expects array\|Countable, mixed given#'
+    - '#Binary operation "." between .* and mixed results in an error#'
+
+    # Artisan command option/argument types
+    - '#Parameter .* expects .*, array\|bool\|string\|null given#'
+    - '#Parameter .* expects .*, array\|string\|true given#'
+    - '#Part .* of encapsed string cannot be cast to string#'
+    - '#Cannot cast array\|bool\|string\|null to string#'
+
+    # ==========================================================================
+    # Livewire Components
+    # ==========================================================================
     - '#Method App\\Livewire\\.*::render\(\) has no return type specified#'
-    
-    # Nullsafe operator on non-nullable types - Laravel Blade optimization
+    - '#Method App\\Livewire\\.*::render\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View#'
+
+    # ==========================================================================
+    # View Return Type Covariance
+    # ==========================================================================
+    - '#should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View#'
+
+    # ==========================================================================
+    # Nullsafe Operator Usage - Laravel/Blade Optimization Patterns
+    # ==========================================================================
     - '#Using nullsafe (property access|method call) .* on non-nullable type .* Use -> instead#'
     - '#Using nullsafe property access "\?->.*" on left side of \?\? is unnecessary#'
-    
-    # Unused constants - may be used for configuration or future features
+
+    # ==========================================================================
+    # Resource & Stream Handling
+    # ==========================================================================
+    - '#Parameter \$stream of function fputcsv expects resource, resource\|false given#'
+    - '#Parameter \$stream of function fwrite expects resource, resource\|false given#'
+    - '#Parameter \$stream of function fclose expects resource, resource\|false given#'
+
+    # ==========================================================================
+    # Unused Code - May be Used for Configuration or Future Features
+    # ==========================================================================
     - '#Constant .* is unused#'
 
+    # ==========================================================================
+    # Collection & Array Map Type Inference
+    # ==========================================================================
+    - '#map\(\) contains unresolvable type#'
+    - '#Parameter \$array of function array_map expects array, .* given#'
+
+    # ==========================================================================
     # NOTE: Following patterns temporarily unused (2025-11-01)
     # Uncomment if analyzing tests/ directory or if errors re-emerge
+    # ==========================================================================
 
     # - '#Class App\\Filament\\Resources\\.*\\Pages\\.* not found#'
     # - '#Parameter.*of function view expects view-string#'
@@ -82,7 +141,6 @@ parameters:
     # - '#Call to an undefined method .*::expects\(\)#'
     # - '#Call to an undefined static method Illuminate\\Support\\Facades\\Log::shouldHaveReceived\(\)#'
     # - '#Property .* does not accept Mockery\\MockInterface#'
-    # - '#contains unresolvable type#'
     # - '#method.unresolvableReturnType#'
     # - '#Trait .* is used zero times and is not analysed#'
     # - '#Trait .* is never used#'

@@ -36,6 +36,11 @@ new #[Layout('layouts.guest')] class extends Component {
     public LoginForm $form;
 
     /**
+     * Form submission state
+     */
+    public bool $isSubmitting = false;
+
+    /**
      * Handle an incoming authentication request.
      *
      * Task 4.0.4: Role-Based Redirect
@@ -47,6 +52,9 @@ new #[Layout('layouts.guest')] class extends Component {
      */
     public function login(): void
     {
+        // Set submitting state
+        $this->isSubmitting = true;
+
         $this->validate();
 
         $this->form->authenticate();
@@ -68,12 +76,12 @@ new #[Layout('layouts.guest')] class extends Component {
 }; ?>
 
 <div>
-    {{-- Page Title --}}
-    <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">
+    {{-- Page Title (MyDS Typography - D13 §2.4) --}}
+    <h1 class="text-3xl font-bold font-heading text-center text-gray-900 dark:text-white mb-6">
         {{ __('auth.login_title') }}
     </h1>
 
-    <p class="text-center text-gray-600 dark:text-gray-400 mb-8">
+    <p class="text-center text-gray-600 dark:text-gray-400 mb-8 font-body leading-relaxed max-w-md mx-auto">
         {{ __('auth.login_subtitle') }}
     </p>
 
@@ -87,71 +95,77 @@ new #[Layout('layouts.guest')] class extends Component {
         </div>
     @endif
 
-    <div class="space-y-4 mb-6">
+    <div class="space-y-6 mb-8">
         <x-auth.google-button />
-        <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+        <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 font-body">
             <span class="flex-1 border-t border-gray-200 dark:border-gray-700"></span>
-            <span class="uppercase tracking-wide font-semibold">{{ __('auth.or_separator') }}</span>
+            <span class="uppercase tracking-wide font-medium px-3 bg-white dark:bg-gray-800 text-xs">{{ __('auth.or_separator') }}</span>
             <span class="flex-1 border-t border-gray-200 dark:border-gray-700"></span>
         </div>
     </div>
 
     <form wire:submit="login" class="space-y-6">
-        {{-- Email/Username Field (Task 14.1: Flexible Login) --}}
-        <div>
-            <x-input-label for="email" :value="__('auth.email_or_username')" class="text-gray-700 dark:text-gray-300 font-medium" />
+        {{-- Email/Username Field (MyDS Form Components - D13 §2.7) --}}
+        <div class="space-y-2">
+            <x-input-label for="email" :value="__('auth.email_or_username')" class="text-gray-900 dark:text-white font-medium font-body" />
             <x-text-input wire:model="form.email" id="email"
-                class="block mt-2 w-full min-h-[48px] px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
                 type="text" name="email" required autofocus autocomplete="username"
                 placeholder="{{ __('auth.email_or_username_placeholder') }}"
                 aria-describedby="login-hint" />
             {{-- Hint text for flexible login (Task 14.1) --}}
-            <p id="login-hint" class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <p id="login-hint" class="text-sm text-gray-600 dark:text-gray-400 font-body">
                 {{ __('auth.flexible_login_hint') }}
             </p>
             @error('form.email')
-                <x-input-error :messages="$message" class="mt-2" />
+                <x-input-error :messages="$message" class="mt-1" />
             @enderror
         </div>
 
         {{-- Password --}}
-        <div>
-            <x-input-label for="password" :value="__('auth.password')" class="text-gray-700 dark:text-gray-300 font-medium" />
+        <div class="space-y-2">
+            <x-input-label for="password" :value="__('auth.password')" class="text-gray-900 dark:text-white font-medium font-body" />
             <x-text-input wire:model="form.password" id="password"
-                class="block mt-2 w-full min-h-[48px] px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
                 type="password" name="password" required autocomplete="current-password"
                 placeholder="{{ __('auth.password_placeholder') }}" />
             @error('form.password')
-                <x-input-error :messages="$message" class="mt-2" />
+                <x-input-error :messages="$message" class="mt-1" />
             @enderror
         </div>
 
-        {{-- Remember Me & Forgot Password --}}
-        <div class="flex items-center justify-between">
-            <label for="remember" class="inline-flex items-center cursor-pointer">
+        {{-- Remember Me & Forgot Password (MyDS Touch Targets - D13 §2.7) --}}
+        <div class="flex items-center justify-between pt-2">
+            <label for="remember" class="inline-flex items-center cursor-pointer min-h-11 py-2 group">
                 <input wire:model="form.remember" id="remember" type="checkbox"
-                    class="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 shadow-sm focus:ring-primary-500 dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800"
+                    class="w-4 h-4 rounded-sm border-gray-300 dark:border-gray-600 text-primary-600 shadow-sm focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800 transition-colors duration-200"
                     name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('auth.remember_me') }}</span>
+                <span class="ms-3 text-sm text-gray-600 dark:text-gray-400 font-body group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors duration-200">{{ __('auth.remember_me') }}</span>
             </label>
 
             @if (Route::has('password.request'))
-                <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 rounded"
+                <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 rounded-md min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
                     href="{{ route('password.request') }}" wire:navigate>
                     {{ __('auth.forgot_password') }}
                 </a>
             @endif
         </div>
 
-        {{-- Submit Button --}}
-        <div>
+        {{-- Submit Button (MyDS Button - D13 §2.7) --}}
+        {{-- Loading state uses hidden class as default to prevent FOUC before Livewire hydrates --}}
+        <div class="pt-4">
             <button type="submit"
-                class="w-full min-h-[48px] px-6 py-3 text-base font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-lg transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
-                wire:loading.attr="disabled">
-                <span wire:loading.remove>{{ __('auth.login_button') }}</span>
-                <span wire:loading class="inline-flex items-center">
-                    <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 24 24">
+                class="w-full min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-md shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
+                wire:loading.attr="disabled"
+                wire:target="login">
+                {{-- Default state: visible, hidden during loading --}}
+                <span wire:loading.remove wire:target="login" class="flex items-center justify-center">
+                    {{ __('auth.login_button') }}
+                </span>
+                {{-- Loading state: hidden by default (prevents FOUC), shown during loading --}}
+                <span wire:loading.flex wire:target="login" class="hidden items-center justify-center gap-2">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                             stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor"

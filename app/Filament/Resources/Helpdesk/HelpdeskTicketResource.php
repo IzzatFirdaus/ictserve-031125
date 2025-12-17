@@ -11,6 +11,7 @@ use App\Filament\Resources\Helpdesk\Schemas\HelpdeskTicketForm;
 use App\Filament\Resources\Helpdesk\Schemas\HelpdeskTicketInfolist;
 use App\Filament\Resources\Helpdesk\Tables\HelpdeskTicketsTable;
 use App\Models\HelpdeskTicket;
+use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -52,7 +53,10 @@ class HelpdeskTicketResource extends Resource
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->can('viewAny', HelpdeskTicket::class);
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->can('viewAny', HelpdeskTicket::class) ?? false;
     }
 
     public static function form(Schema $schema): Schema
@@ -94,10 +98,10 @@ class HelpdeskTicketResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Subject' => $record->subject,
+            'Subjek' => $record->subject,
             'Status' => $record->status,
-            'Priority' => $record->priority,
-            'Category' => $record->category?->name_en,
+            'Keutamaan' => $record->priority,
+            'Kategori' => $record->category?->name_ms,
         ];
     }
 

@@ -25,7 +25,7 @@ class CreateApiToken extends CreateRecord
 
     public function getTitle(): string|Htmlable
     {
-        return __('Create API Token');
+        return 'Cipta Token API';
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array
@@ -37,13 +37,13 @@ class CreateApiToken extends CreateRecord
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         /** @var User|null $user */
-        $user = User::find($data['user_id'] ?? $data['tokenable_id'] ?? null);
+        $user = User::find($data['tokenable_id'] ?? null);
 
         if ($user === null) {
             Notification::make()
                 ->danger()
-                ->title(__('Error'))
-                ->body(__('User not found.'))
+                ->title('Ralat')
+                ->body('Pengguna tidak ditemui.')
                 ->send();
 
             throw new \RuntimeException('User not found');
@@ -67,8 +67,8 @@ class CreateApiToken extends CreateRecord
         // Show the plain text token to the user (only time it's visible)
         Notification::make()
             ->success()
-            ->title(__('Token Created Successfully'))
-            ->body(__('Copy this token now. It will not be shown again: ').$token->plainTextToken)
+            ->title('Token Berjaya Dicipta')
+            ->body('Sila salin token ini sekarang. Ia tidak akan dipaparkan lagi: '.$token->plainTextToken)
             ->persistent()
             ->send();
 

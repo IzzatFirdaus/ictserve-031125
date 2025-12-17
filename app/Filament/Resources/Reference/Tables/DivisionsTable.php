@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Reference\Tables;
 
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\RestoreBulkAction;
@@ -19,35 +18,29 @@ class DivisionsTable
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
-                    ->label('Kod')
+                    ->label(__('filament.reference.code'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name_ms')
-                    ->label('Nama (BM)')
+                    ->label(__('filament.reference.name_ms'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name_en')
-                    ->label('Name (EN)')
-                    ->searchable()
-                    ->toggleable(),
                 Tables\Columns\TextColumn::make('parent.name_ms')
-                    ->label('Induk')
+                    ->label(__('filament.reference.parent'))
                     ->toggleable(),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('Aktif')
+                    ->label(__('filament.reference.active'))
                     ->boolean(),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active')->label('Status'),
+                Tables\Filters\TernaryFilter::make('is_active')->label(__('filament.reference.status')),
             ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
             ])
-            ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+            ->groupedBulkActions([
+                DeleteBulkAction::make(),
+                RestoreBulkAction::make(),
             ]);
     }
 }

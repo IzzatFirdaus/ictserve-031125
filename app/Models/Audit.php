@@ -13,14 +13,13 @@ use OwenIt\Auditing\Models\Audit as BaseAudit;
 
 /**
  * Enhanced Audit Model for ICTServe Compliance
- *
+ * 
  * Extends Laravel Auditing with 7-year retention policy,
  * immutable storage, and enhanced search capabilities.
  *
  * @see D03-FR-010.2 Audit logging system
  * @see D09 Database Documentation - Audit requirements
  * @see D11 Technical Design - Compliance standards
- *
  * @property int $id
  * @property string $user_type
  * @property int|null $user_id
@@ -37,6 +36,35 @@ use OwenIt\Auditing\Models\Audit as BaseAudit;
  * @property \Carbon\Carbon $updated_at
  * @property array<string, mixed>|null $old_values
  * @property array<string, mixed>|null $new_values
+ * @property-read \Illuminate\Database\Eloquent\Model $auditable
+ * @property-read string $changes_summary
+ * @property-read string $user_info
+ * @property-read \Illuminate\Database\Eloquent\Model|null $user
+ * @method static Builder<static>|Audit byAuditableType(string $type)
+ * @method static Builder<static>|Audit byEvent(string $event)
+ * @method static Builder<static>|Audit byUser(int $userId)
+ * @method static Builder<static>|Audit dateRange(\Illuminate\Support\Carbon $startDate, \Illuminate\Support\Carbon $endDate)
+ * @method static Builder<static>|Audit expired()
+ * @method static \Database\Factories\AuditFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Audit newModelQuery()
+ * @method static Builder<static>|Audit newQuery()
+ * @method static Builder<static>|Audit query()
+ * @method static Builder<static>|Audit securityEvents()
+ * @method static Builder<static>|Audit whereAuditableId($value)
+ * @method static Builder<static>|Audit whereAuditableType($value)
+ * @method static Builder<static>|Audit whereCreatedAt($value)
+ * @method static Builder<static>|Audit whereEvent($value)
+ * @method static Builder<static>|Audit whereId($value)
+ * @method static Builder<static>|Audit whereIpAddress($value)
+ * @method static Builder<static>|Audit whereNewValues($value)
+ * @method static Builder<static>|Audit whereOldValues($value)
+ * @method static Builder<static>|Audit whereTags($value)
+ * @method static Builder<static>|Audit whereUpdatedAt($value)
+ * @method static Builder<static>|Audit whereUrl($value)
+ * @method static Builder<static>|Audit whereUserAgent($value)
+ * @method static Builder<static>|Audit whereUserId($value)
+ * @method static Builder<static>|Audit whereUserType($value)
+ * @mixin \Eloquent
  */
 class Audit extends BaseAudit
 {

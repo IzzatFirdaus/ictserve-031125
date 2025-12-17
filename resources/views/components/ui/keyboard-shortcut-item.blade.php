@@ -1,4 +1,4 @@
-{{--
+﻿{{--
     Keyboard Shortcut Item Component (x-ui.keyboard-shortcut-item)
 
     Single shortcut display row for the keyboard shortcuts modal.
@@ -19,12 +19,12 @@
 ])
 
 <div
-    {{ $attributes->merge(['class' => 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-m']) }}
+    {{ $attributes->merge(['class' => 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md']) }}
     role="listitem">
     <span class="text-sm text-gray-700 dark:text-gray-300">
         {{ $label }}
     </span>
-    <kbd class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-xs shadow-sm">
+    <kbd class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-sm shadow-sm">
         @php
         $keys = explode(' + ', $key);
         @endphp

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Model DocumentChunk untuk sistem AI Ollama
- *
+ * 
  * Per Requirements 2.1, 2.2: Document chunking untuk vector embeddings
  * Selaras dengan D09 Database Documentation v3.6.0
  *
@@ -23,6 +23,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \App\Models\Document $document
+ * @property-read string $preview
+ * @property-read int $text_length
+ * @method static \Database\Factories\DocumentChunkFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk whereChunkIndex($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk whereChunkText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk whereEmbedding($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk whereSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk withEmbedding()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentChunk withIndex(int $index)
+ * @mixin \Eloquent
  */
 class DocumentChunk extends Model
 {
@@ -55,8 +72,6 @@ class DocumentChunk extends Model
 
     /**
      * Hubungan dengan Document
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function document(): BelongsTo
     {
@@ -66,8 +81,7 @@ class DocumentChunk extends Model
     /**
      * Scope untuk chunk dengan indeks tertentu
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int $index
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithIndex($query, int $index)
@@ -78,7 +92,7 @@ class DocumentChunk extends Model
     /**
      * Scope untuk chunk dengan embedding
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithEmbedding($query)
@@ -88,9 +102,6 @@ class DocumentChunk extends Model
 
     /**
      * Kira persamaan cosine dengan embedding lain
-     *
-     * @param array $otherEmbedding
-     * @return float
      */
     public function cosineSimilarity(array $otherEmbedding): float
     {
@@ -122,20 +133,16 @@ class DocumentChunk extends Model
 
     /**
      * Dapatkan preview teks chunk (100 karakter pertama)
-     *
-     * @return string
      */
     public function getPreviewAttribute(): string
     {
         return strlen($this->chunk_text) > 100
-            ? substr($this->chunk_text, 0, 100) . '...'
+            ? substr($this->chunk_text, 0, 100).'...'
             : $this->chunk_text;
     }
 
     /**
      * Dapatkan panjang teks chunk
-     *
-     * @return int
      */
     public function getTextLengthAttribute(): int
     {
@@ -144,11 +151,9 @@ class DocumentChunk extends Model
 
     /**
      * Semak sama ada chunk mempunyai embedding
-     *
-     * @return bool
      */
     public function hasEmbedding(): bool
     {
-        return !empty($this->embedding);
+        return ! empty($this->embedding);
     }
 }

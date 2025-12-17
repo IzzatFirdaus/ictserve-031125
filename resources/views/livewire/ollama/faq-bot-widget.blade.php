@@ -4,21 +4,15 @@
 {{-- Updated: Using Heroicons Blade components instead of inline SVGs --}}
 
 <div class="fixed z-50 {{ $position === 'bottom-right' ? 'bottom-4 right-4' : 'bottom-4 left-4' }}"
-    x-data="{
-        isOpen: @entangle('isOpen'),
-        isMinimized: @entangle('isMinimized'),
-        announcement: @entangle('announcement')
-    }" x-init="$watch('announcement', value => {
-        if (value) {
-            $dispatch('announce', { message: value });
-        }
-    });" role="region"
+    x-data="faqBotWidget"
+    x-init="initializeWidget({{ $isOpen ? 'true' : 'false' }}, {{ $isMinimized ? 'true' : 'false' }}, '{{ addslashes($announcement) }}')"
+    role="region"
     aria-label="{{ __('ollama.widget.aria_label', [], 'ms') }}">
     {{-- Screen Reader Announcements --}}
     <div aria-live="polite" aria-atomic="true" class="sr-only" x-text="announcement"></div>
 
     {{-- Widget Toggle Button (Always Visible) --}}
-    <button wire:click="toggleWidget"
+    <button wire:click="toggleWidget" x-ref="toggleButton"
         class="flex items-center justify-center w-14 h-14 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg transition-all duration-200 focus:ring-4 focus:ring-primary-500 focus:ring-offset-2 min-h-11 min-w-11"
         :class="{ 'scale-110': isOpen }" aria-label="{{ __('ollama.widget.toggle_button', [], 'ms') }}"
         aria-expanded="false" x-bind:aria-expanded="isOpen" type="button" wire:loading.attr="disabled"
@@ -40,7 +34,8 @@
         x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         class="absolute bottom-16 right-0 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
-        role="dialog" aria-modal="true" aria-labelledby="widget-title">
+        role="dialog" aria-modal="true" aria-labelledby="widget-title" x-ref="panel"
+        @keydown.tab.prevent="trapFocus($event)" @keydown.escape.prevent="$wire.closeWidget(); isOpen = false">
         {{-- Widget Header --}}
         <div class="bg-primary-600 text-white p-4 flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -62,15 +57,17 @@
             {{-- Header Actions --}}
             <div class="flex items-center space-x-1">
                 {{-- Minimize Button --}}
+                {{-- WCAG 2.5.8: Touch target minimum 44×44px (min-h-11 min-w-11) --}}
                 <button wire:click="minimizeWidget"
-                    class="p-1 hover:bg-primary-500 rounded transition-colors min-h-8 min-w-8"
+                    class="p-2 hover:bg-primary-500 rounded transition-colors min-h-11 min-w-11 flex items-center justify-center"
                     aria-label="{{ __('ollama.widget.minimize', [], 'ms') }}" type="button">
                     <x-heroicon-o-minus class="w-4 h-4" aria-hidden="true" />
                 </button>
 
                 {{-- Close Button --}}
+                {{-- WCAG 2.5.8: Touch target minimum 44×44px (min-h-11 min-w-11) --}}
                 <button wire:click="closeWidget"
-                    class="p-1 hover:bg-primary-500 rounded transition-colors min-h-8 min-w-8"
+                    class="p-2 hover:bg-primary-500 rounded transition-colors min-h-11 min-w-11 flex items-center justify-center"
                     aria-label="{{ __('ollama.widget.close', [], 'ms') }}" type="button">
                     <x-heroicon-o-x-mark class="w-4 h-4" aria-hidden="true" />
                 </button>
@@ -152,10 +149,10 @@
                         <label for="widget-query" class="sr-only">
                             {{ __('ollama.widget.query_label', [], 'ms') }}
                         </label>
-                        <input type="text" id="widget-query" wire:model="query"
+                        <input type="text" id="widget-query" wire:model="query" wire:keydown.enter="submitQuery"
                             placeholder="{{ __('ollama.widget.query_placeholder', [], 'ms') }}"
                             class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                            maxlength="500" {{ $isLoading ? 'disabled' : '' }} aria-describedby="widget-query-help">
+                            maxlength="500" {{ $isLoading ? 'disabled' : '' }} aria-describedby="widget-query-help" data-initial-focus>
 
                         {{-- Send Button --}}
                         <button type="submit"
@@ -228,4 +225,88 @@
             }
         });
     });
+
+    // Alpine.js component definition
+    Alpine.data('faqBotWidget', () => ({
+        isOpen: false,
+        isMinimized: false,
+        announcement: '',
+
+        init() {
+            // Initialize with default values - will be overridden by initializeWidget
+        },
+
+        initializeWidget(initialIsOpen, initialIsMinimized, initialAnnouncement) {
+            // Set initial values
+            this.isOpen = initialIsOpen;
+            this.isMinimized = initialIsMinimized;
+            this.announcement = initialAnnouncement;
+
+            // Wait for Livewire to be ready before setting up watchers
+            this.$nextTick(() => {
+                // Check if $wire is available, if not wait for livewire:init
+                if (typeof $wire !== 'undefined') {
+                    this.setupLivewireSync();
+                } else {
+                    // Listen for Livewire initialization
+                    document.addEventListener('livewire:init', () => {
+                        this.setupLivewireSync();
+                    });
+                }
+            });
+
+            // Handle announcements (this doesn't depend on $wire)
+            this.$watch('announcement', value => {
+                if (value) {
+                    this.$dispatch('announce', { message: value });
+                }
+            });
+
+            // Handle focus management (this doesn't depend on $wire)
+            this.$watch('isOpen', (open) => {
+                if (open) {
+                    this.focusFirst();
+                } else {
+                    this.$nextTick(() => this.$refs.toggleButton?.focus());
+                }
+            });
+        },
+
+        setupLivewireSync() {
+            // Sync with Livewire - only called when $wire is available
+            if (typeof $wire !== 'undefined') {
+                this.$watch(() => $wire.isOpen, (value) => this.isOpen = value);
+                this.$watch(() => $wire.isMinimized, (value) => this.isMinimized = value);
+                this.$watch(() => $wire.announcement, (value) => this.announcement = value);
+            }
+        },
+
+        focusableEls() {
+            return [...(this.$refs.panel?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') || [])]
+                .filter((el) => !el.disabled && el.offsetParent !== null);
+        },
+
+        trapFocus(event) {
+            if (!this.isOpen || this.isMinimized) return;
+            const els = this.focusableEls();
+            if (!els.length) return;
+            const first = els[0];
+            const last = els[els.length - 1];
+            const active = document.activeElement;
+            if (event.shiftKey && active === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && active === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        },
+
+        focusFirst() {
+            this.$nextTick(() => {
+                const target = this.$refs.panel?.querySelector('[data-initial-focus]') || this.focusableEls()[0];
+                target?.focus();
+            });
+        }
+    }));
 </script>

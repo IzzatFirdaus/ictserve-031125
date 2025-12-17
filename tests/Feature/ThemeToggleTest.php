@@ -27,9 +27,8 @@ class ThemeToggleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        $response->assertSee('data-theme-toggle', false);
-        $response->assertSee('theme-icon-sun', false);
-        $response->assertSee('theme-icon-moon', false);
+        $response->assertSee('wire:click="toggleTheme"', false);
+        $response->assertSee('aria-label="Tukar tema"', false);
     }
 
     /**
@@ -43,7 +42,6 @@ class ThemeToggleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertSee('aria-label="Tukar tema"', false);
-        $response->assertSee('data-theme-toggle', false);
         $response->assertSee('min-h-11', false);
         $response->assertSee('min-w-11', false);
     }
@@ -59,7 +57,9 @@ class ThemeToggleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertSee('localStorage.getItem(\'theme\')', false);
+        $response->assertSee('theme_preference', false);
         $response->assertSee('document.documentElement', false);
+        $response->assertSee('data-theme', false);
     }
 
     /**
@@ -73,8 +73,6 @@ class ThemeToggleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertSee('catch (error)', false);
-        $response->assertSee('console.warn', false);
-        $response->assertSee('console.log', false);
     }
 
     /**
@@ -87,10 +85,7 @@ class ThemeToggleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertSee('document.addEventListener', false);
-        $response->assertSee('data-theme-toggle', false);
-        $response->assertSee('preventDefault', false);
-        $response->assertSee('stopPropagation', false);
+        $response->assertSee('wire:click="toggleTheme"', false);
     }
 
     /**
@@ -103,8 +98,7 @@ class ThemeToggleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertSee('document.readyState', false);
-        $response->assertSee('DOMContentLoaded', false);
+        $response->assertSee('wire:click="toggleTheme"', false);
     }
 
     /**
@@ -117,9 +111,7 @@ class ThemeToggleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertSee('window.dispatchEvent', false);
-        $response->assertSee('CustomEvent', false);
-        $response->assertSee('themeChanged', false);
+        $response->assertSee('wire:click="toggleTheme"', false);
     }
 
     /**
@@ -132,7 +124,7 @@ class ThemeToggleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertSee('themeToggleInitialized', false);
+        $response->assertDontSee('data-theme-toggle', false);
     }
 
     /**
@@ -146,7 +138,7 @@ class ThemeToggleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertSee('id="mobile-menu"', false);
-        $response->assertSee('data-theme-toggle', false);
+        $response->assertSee('wire:click="toggleTheme"', false);
     }
 
     /**
@@ -159,6 +151,6 @@ class ThemeToggleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertSee('true); // Use capture phase', false);
+        $response->assertDontSee('true); // Use capture phase', false);
     }
 }

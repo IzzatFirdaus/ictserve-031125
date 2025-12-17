@@ -1,11 +1,15 @@
 <?php
 
+// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)
+// See lang/en/README.md for details
+
 declare(strict_types=1);
 
 /**
  * en - Common Translations
  *
  * Cleaned on 2025-11-27 07:20:00
+ * Updated: 2025-12-17 - Added technical reference comment (v3.6.1)
  */
 
 return [
@@ -229,7 +233,8 @@ return [
     'view_my_submissions' => 'View My Submissions',
     'view_overdue' => 'View Overdue',
     'warning' => 'Warning',
-    'welcome_back' => 'Welcome back',
+    'welcome_back' => 'Welcome back, :name',
+    'dashboard_intro' => 'Use this dashboard to monitor your tickets, loan applications, and pending approvals.',
     'helpdesk_dashboard_title' => 'Helpdesk Dashboard',
     'helpdesk_dashboard_subtitle' => 'Monitor ticket progress and required actions.',
     'refresh_button' => 'Refresh',

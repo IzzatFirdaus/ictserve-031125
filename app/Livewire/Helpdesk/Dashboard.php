@@ -144,7 +144,7 @@ class Dashboard extends Component
     }
 
     #[Layout('layouts.portal')]
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.helpdesk.dashboard');
     }

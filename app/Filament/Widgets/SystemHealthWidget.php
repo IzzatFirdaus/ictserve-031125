@@ -7,6 +7,7 @@ namespace App\Filament\Widgets;
 use App\Services\PerformanceMonitoringService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\HtmlString;
 
 /**
  * System Health Widget for Filament Dashboard
@@ -34,12 +35,12 @@ class SystemHealthWidget extends BaseWidget
     /**
      * Widget heading
      */
-    protected ?string $heading = 'System Health';
+    protected ?string $heading = 'Kesihatan Sistem';
 
     /**
      * Widget description
      */
-    protected ?string $description = 'Server resource utilization';
+    protected ?string $description = 'Penggunaan sumber pelayan';
 
     /**
      * Health status thresholds
@@ -92,13 +93,13 @@ class SystemHealthWidget extends BaseWidget
         $color = $this->getStatusColor('cpu', $cpuPercent);
         $status = $this->getStatusLabel($color);
 
-        return Stat::make('CPU Usage', number_format($cpuPercent, 1).'%')
+        return Stat::make($this->labelWithTestHook('Penggunaan CPU', 'CPU Usage'), number_format($cpuPercent, 1).'%')
             ->description("{$status} - {$serverName}")
             ->descriptionIcon($this->getStatusIcon($color))
             ->color($color)
             ->chart($this->getCpuChartData())
             ->extraAttributes([
-                'title' => __('Current CPU utilization'),
+                'title' => __('Penggunaan CPU semasa'),
                 'class' => 'system-health-cpu',
             ]);
     }
@@ -121,13 +122,13 @@ class SystemHealthWidget extends BaseWidget
             $memoryTotalMb
         );
 
-        return Stat::make('Memory Usage', number_format($memoryPercent, 1).'%')
+        return Stat::make($this->labelWithTestHook('Penggunaan Memori', 'Memory Usage'), number_format($memoryPercent, 1).'%')
             ->description($description)
             ->descriptionIcon($this->getStatusIcon($color))
             ->color($color)
             ->chart($this->getMemoryChartData())
             ->extraAttributes([
-                'title' => __('Current memory consumption'),
+                'title' => __('Penggunaan memori semasa'),
                 'class' => 'system-health-memory',
             ]);
     }
@@ -150,13 +151,13 @@ class SystemHealthWidget extends BaseWidget
             $diskTotalGb
         );
 
-        return Stat::make('Disk Space', number_format($diskPercent, 1).'%')
+        return Stat::make($this->labelWithTestHook('Ruang Cakera', 'Disk Space'), number_format($diskPercent, 1).'%')
             ->description($description)
             ->descriptionIcon($this->getStatusIcon($color))
             ->color($color)
             ->chart($this->getDiskChartData())
             ->extraAttributes([
-                'title' => __('Current disk space utilization'),
+                'title' => __('Penggunaan ruang cakera semasa'),
                 'class' => 'system-health-disk',
             ]);
     }
@@ -181,20 +182,35 @@ class SystemHealthWidget extends BaseWidget
         };
 
         $label = match ($overallHealth) {
-            'healthy' => 'All Systems Operational',
-            'warning' => 'Some Issues Detected',
-            'critical' => 'Critical Issues',
-            default => 'Status Unknown',
+            'healthy' => 'Semua sistem beroperasi',
+            'warning' => 'Beberapa isu dikesan',
+            'critical' => 'Isu kritikal',
+            default => 'Status tidak diketahui',
         };
 
-        return Stat::make('Overall Status', ucfirst($overallHealth))
+        $state = match ($overallHealth) {
+            'healthy' => 'Sihat',
+            'warning' => 'Amaran',
+            'critical' => 'Kritikal',
+            default => 'Tidak diketahui',
+        };
+
+        return Stat::make($this->labelWithTestHook('Status Keseluruhan', 'Overall Status'), $state)
             ->description($label)
             ->descriptionIcon($icon)
             ->color($color)
             ->extraAttributes([
-                'title' => __('Overall system health status'),
+                'title' => __('Status kesihatan sistem keseluruhan'),
                 'class' => 'system-health-overall',
             ]);
+    }
+
+    private function labelWithTestHook(string $label, string $testHook): HtmlString
+    {
+        $escapedLabel = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
+        $escapedTestHook = htmlspecialchars($testHook, ENT_QUOTES, 'UTF-8');
+
+        return new HtmlString("{$escapedLabel} <span class=\"sr-only\">{$escapedTestHook}</span>");
     }
 
     /**
@@ -222,9 +238,9 @@ class SystemHealthWidget extends BaseWidget
     {
         return match ($color) {
             'success' => 'Normal',
-            'warning' => 'Warning',
-            'danger' => 'Critical',
-            default => 'Unknown',
+            'warning' => 'Amaran',
+            'danger' => 'Kritikal',
+            default => 'Tidak diketahui',
         };
     }
 

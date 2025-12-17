@@ -1,11 +1,11 @@
 # Panduan Gaya UI/UX (UI/UX Style Guide)
 
-**Sistem ICTServe**
-**Versi:** 3.5.1 (SemVer)
-**Tarikh Kemaskini:** 1 Disember 2025
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** ISO 9001, ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0
 
 ---
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                                                       |
 | -------------------- | --------------------------------------------------------------------------- |
-| **Versi**            | 3.6.0                                                                       |
-| **Tarikh Kemaskini** | 8 Disember 2025                                                             |
+| **Versi**            | 3.6.1                                                                       |
+| **Tarikh Kemaskini** | 17 Disember 2025                                                            |
 | **Status**           | Aktif                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                                      |
-| **Pematuhi**         | ISO 9001, ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA, MyGOV Digital |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                   |
+| **Pematuhi**         | ISO 9001, ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, MyGOV v2.1.0 |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu                  |
 
 > Notis Penggunaan Dalaman: Panduan gaya ini adalah untuk aplikasi dalaman
 > MOTAC dan tidak digunakan untuk aplikasi awam.
@@ -30,13 +30,16 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                               | Penulis     |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal panduan gaya UI/UX                                                                                                                                                                                                           | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                  | Pasukan BPM |
 | 2.1.0 | 19 Oktober 2025  | Tambah Language Switcher row in §9.5 Component-Specific Accessibility table with cross-references                                                                                                                                       | Pasukan BPM |
 | 3.0.0 | 29 November 2025 | Major update: Tailwind CSS v4, Livewire v3.7, Filament v4.1, kemaskini komponen dan palet warna                                                                                                                                         | Pasukan BPM |
-| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Navbar dual state (Guest/Auth), Submission History table                                                                                                   | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (`resources/views/layouts/app.blade.php` vs `resources/views/layouts/guest.blade.php`), Navbar dual state (Guest/Auth), Submission History table                                                                                                   | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Registration form styling, email verification page styling, account linking prompt styling, notification preferences panel styling, API token management UI, Laravel Pulse dashboard styling. MyDS-aligned grid (12-8-4), shadow system, motion tokens. Navbar dengan butang "Daftar" dan Google SSO. Penyelarasan dengan D00-D13 v3.5.0. | Pasukan BPM |
 | 3.5.1 | 1 Disember 2025  | MyDS & MyGovEA Compliance Enhancement: Added MyDS token naming convention mapping (§4.1.1), MyDS Grid System official reference (§7.4), Icon System MyDS alignment documentation (§8.1). Enhanced colour palette with MyDS semantic token equivalents. | Pasukan BPM |
+| 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja (v3.6.0): Language switcher dilumpuhkan, Theme Switcher baru. Penyelarasan dengan D00-D15 v3.6.0. | Pasukan BPM |
+| 3.7.0 | 14 Disember 2025 | Cloud Hybrid AI Architecture (D18): Tambah §19 AI Chat Interface Styling (BedrockChat, FaqBot, AI Chat Bubbles, Model Selection, Source Attribution, Streaming Responses, Conversation Management). WCAG 2.2 AA compliance untuk komponen AI. | Pasukan BPM |
 
 ---
 
@@ -48,7 +51,8 @@
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
 - **[D12_UI_UX_DESIGN_GUIDE.md]** - Panduan Rekabentuk UI/UX (prinsip rekabentuk)
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Framework Frontend UI/UX (implementasi teknikal)
-- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa Dwibahasa
+- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa (Bahasa Melayu sahaja v3.6.0)
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Dokumentasi AI Chatbot Cloud Hybrid (v3.7.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
@@ -792,7 +796,7 @@ button:hover {
 ### 14.1 Self-Registration Form Styling
 
 **Page**: `/register`
-**Layout**: `guest.blade.php`
+**Layout**: `resources/views/layouts/guest.blade.php`
 
 | Element                | Styling                                                    |
 | ---------------------- | ---------------------------------------------------------- |
@@ -819,7 +823,7 @@ button:hover {
 ### 14.2 Flexible Login Form Styling
 
 **Page**: `/login`
-**Layout**: `guest.blade.php`
+**Layout**: `resources/views/layouts/guest.blade.php`
 
 | Element              | Styling                                                |
 | -------------------- | ------------------------------------------------------ |
@@ -844,7 +848,7 @@ button:hover {
 ### 14.3 Email Verification Page Styling
 
 **Page**: `/verify-email`
-**Layout**: `guest.blade.php`
+**Layout**: `resources/views/layouts/guest.blade.php`
 
 | Element              | Styling                                              |
 | -------------------- | ---------------------------------------------------- |
@@ -1109,6 +1113,269 @@ Rujuk Seksyen 15 untuk contoh implementasi komponen.
 | Grid System    | §7.4              | 12-8-4 responsive grid         |
 | Shadow System  | §7.5              | Button, Card, Dropdown shadows |
 | Motion System  | §7.6              | Animation timing functions     |
+
+---
+
+---
+
+## 19. Gaya Antara Muka AI Chat (AI Chat Interface Styling) - v3.7.0
+
+> **Rujukan**: Seksyen ini selaras dengan [D18_AI_CHATBOT_OLLAMA_BEDROCK.md] Cloud Hybrid AI Architecture dan [D13_UI_UX_FRONTEND_FRAMEWORK.md] §6 AI Chat Interface Components.
+
+### 19.1 Komponen BedrockChat Styling
+
+**Lokasi**: Portal Authenticated (`/ai-chat`)
+**Komponen**: `app/Livewire/BedrockChat.php`
+
+| Element | Styling |
+| ------- | ------- |
+| Chat Container | `max-w-4xl mx-auto bg-white rounded-lg shadow-card` |
+| Header Bar | `flex items-center justify-between p-4 border-b border-gray-200` |
+| Model Selector | `rounded-md border-gray-300 text-sm focus:ring-primary-500` |
+| Internet Toggle | `relative inline-flex h-6 w-11 rounded-full` |
+| Message Area | `flex-1 overflow-y-auto p-4 space-y-4` |
+| Input Container | `border-t border-gray-200 p-4` |
+| Send Button | `rounded-md bg-primary-600 px-4 py-2 text-white` |
+
+### 19.2 AI Chat Bubble Styling
+
+**User Message (Pengguna):**
+
+```blade
+<div class="flex justify-end">
+    <div class="max-w-[80%] rounded-lg bg-primary-600 px-4 py-2 text-white">
+        <p class="text-sm">{{ $message->content }}</p>
+        <span class="mt-1 block text-xs text-primary-200">
+            {{ $message->created_at->format('H:i') }}
+        </span>
+    </div>
+</div>
+```
+
+**AI Response (Pembantu AI):**
+
+```blade
+<div class="flex justify-start">
+    <div class="max-w-[80%] rounded-lg bg-gray-100 px-4 py-2">
+        {{-- Source Attribution Badge --}}
+        <div class="mb-2 flex items-center gap-2">
+            @if($message->source === 'ollama')
+                <span class="inline-flex items-center rounded-full bg-success/10 px-2 py-0.5 text-xs text-success">
+                    <x-heroicon-s-server class="mr-1 h-3 w-3" />
+                    FAQ Tempatan
+                </span>
+            @elseif($message->source === 'bedrock')
+                <span class="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary-600">
+                    <x-heroicon-s-cloud class="mr-1 h-3 w-3" />
+                    {{ $message->model_name }}
+                </span>
+            @else
+                <span class="inline-flex items-center rounded-full bg-warning/10 px-2 py-0.5 text-xs text-warning">
+                    <x-heroicon-s-sparkles class="mr-1 h-3 w-3" />
+                    Hibrid
+                </span>
+            @endif
+        </div>
+        {{-- Message Content with Markdown --}}
+        <div class="prose prose-sm max-w-none text-gray-800">
+            {!! $message->rendered_content !!}
+        </div>
+        <span class="mt-1 block text-xs text-gray-500">
+            {{ $message->created_at->format('H:i') }}
+        </span>
+    </div>
+</div>
+```
+
+### 19.3 Model Selection Dropdown Styling
+
+| Model | Badge Color | Icon | Description |
+| ----- | ----------- | ---- | ----------- |
+| **Opus 4.5** | `bg-purple-100 text-purple-700` | `sparkles` | Penaakulan kompleks |
+| **Sonnet 4.5** | `bg-primary/10 text-primary-600` | `bolt` | Seimbang (lalai) |
+| **Haiku 4.5** | `bg-success/10 text-success` | `lightning-bolt` | Respons pantas |
+
+```blade
+<select wire:model="selectedModel"
+        class="rounded-md border-gray-300 text-sm focus:border-primary-500 focus:ring-primary-500"
+        aria-label="Pilih model AI">
+    <option value="haiku">⚡ Haiku 4.5 - Pantas</option>
+    <option value="sonnet" selected>🔷 Sonnet 4.5 - Seimbang</option>
+    <option value="opus">✨ Opus 4.5 - Kompleks</option>
+</select>
+```
+
+### 19.4 Internet Search Toggle Styling
+
+```blade
+<div class="flex items-center gap-2">
+    <button type="button"
+            wire:click="toggleInternetSearch"
+            role="switch"
+            aria-checked="{{ $internetSearchEnabled ? 'true' : 'false' }}"
+            aria-label="Carian Internet"
+            class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full
+                   border-2 border-transparent transition-colors duration-200
+                   focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                   {{ $internetSearchEnabled ? 'bg-primary-600' : 'bg-gray-200' }}">
+        <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full
+                     bg-white shadow ring-0 transition duration-200
+                     {{ $internetSearchEnabled ? 'translate-x-5' : 'translate-x-0' }}">
+        </span>
+    </button>
+    <span class="text-sm text-gray-600">
+        <x-heroicon-o-globe-alt class="inline h-4 w-4" />
+        Carian Internet
+    </span>
+</div>
+```
+
+### 19.5 AI Loading States Styling
+
+**Typing Indicator (Sedang Menaip):**
+
+```blade
+<div class="flex justify-start" wire:loading wire:target="sendMessage">
+    <div class="rounded-lg bg-gray-100 px-4 py-3">
+        <div class="flex items-center gap-1">
+            <span class="h-2 w-2 animate-bounce rounded-full bg-gray-400" style="animation-delay: 0ms"></span>
+            <span class="h-2 w-2 animate-bounce rounded-full bg-gray-400" style="animation-delay: 150ms"></span>
+            <span class="h-2 w-2 animate-bounce rounded-full bg-gray-400" style="animation-delay: 300ms"></span>
+        </div>
+        <span class="sr-only">AI sedang menaip...</span>
+    </div>
+</div>
+```
+
+**Streaming Response Indicator:**
+
+```blade
+<div class="flex items-center gap-2 text-sm text-gray-500">
+    <svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+    </svg>
+    <span>Menjana respons...</span>
+</div>
+```
+
+### 19.6 Source Attribution Badge Styling
+
+| Source | Background | Text Color | Icon | Label |
+| ------ | ---------- | ---------- | ---- | ----- |
+| **Ollama (FAQ)** | `bg-success/10` | `text-success` | `server` | FAQ Tempatan |
+| **Bedrock (Cloud)** | `bg-primary/10` | `text-primary-600` | `cloud` | [Model Name] |
+| **Hybrid** | `bg-warning/10` | `text-warning` | `sparkles` | Hibrid |
+| **Web Search** | `bg-blue-100` | `text-blue-700` | `globe-alt` | Carian Web |
+
+### 19.7 FaqBot Widget Styling
+
+**Lokasi**: Borang Tetamu (Guest Forms), Portal Authenticated
+**Komponen**: `app/Livewire/Ollama/FaqBotWidget.php`
+
+| Element | Styling |
+| ------- | ------- |
+| Widget Container | `fixed bottom-4 right-4 z-50` |
+| Toggle Button | `h-14 w-14 rounded-full bg-primary-600 shadow-lg` |
+| Chat Panel | `w-80 rounded-lg bg-white shadow-dropdown` |
+| Header | `rounded-t-lg bg-primary-600 p-3 text-white` |
+| Quick Suggestions | `flex flex-wrap gap-2 p-2` |
+| Suggestion Chip | `rounded-full bg-gray-100 px-3 py-1 text-sm hover:bg-gray-200` |
+
+```blade
+{{-- FaqBot Toggle Button --}}
+<button type="button"
+        wire:click="toggleChat"
+        aria-expanded="{{ $isOpen ? 'true' : 'false' }}"
+        aria-label="Buka FAQ Bot"
+        class="flex h-14 w-14 items-center justify-center rounded-full
+               bg-primary-600 text-white shadow-lg hover:bg-primary-700
+               focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+    <x-heroicon-o-chat-bubble-left-right class="h-6 w-6" />
+</button>
+```
+
+### 19.8 Conversation Management Styling
+
+**Conversation List:**
+
+```blade
+<div class="border-r border-gray-200 w-64 overflow-y-auto">
+    @foreach($conversations as $conversation)
+        <button wire:click="loadConversation({{ $conversation->id }})"
+                class="w-full p-3 text-left hover:bg-gray-50 border-b border-gray-100
+                       {{ $activeConversation?->id === $conversation->id ? 'bg-primary-50' : '' }}">
+            <p class="font-medium text-sm text-gray-900 truncate">
+                {{ $conversation->title ?? 'Perbualan Baru' }}
+            </p>
+            <p class="text-xs text-gray-500">
+                {{ $conversation->updated_at->diffForHumans() }}
+            </p>
+        </button>
+    @endforeach
+</div>
+```
+
+**New Conversation Button:**
+
+```blade
+<button wire:click="newConversation"
+        class="flex w-full items-center gap-2 p-3 text-sm text-primary-600
+               hover:bg-primary-50 border-b border-gray-200">
+    <x-heroicon-o-plus-circle class="h-5 w-5" />
+    Perbualan Baru
+</button>
+```
+
+### 19.9 AI Accessibility Requirements (WCAG 2.2 AA)
+
+| Requirement | Implementation |
+| ----------- | -------------- |
+| **Keyboard Navigation** | Tab through messages, Enter to send, Escape to close |
+| **Screen Reader** | `aria-live="polite"` for new messages, `role="log"` for chat area |
+| **Focus Management** | Auto-focus input after AI response, focus trap in modal |
+| **Color Contrast** | Source badges meet 4.5:1 contrast ratio |
+| **Touch Targets** | Send button, toggle switches ≥44×44px |
+| **Loading States** | `aria-busy="true"`, screen reader announcements |
+| **Error Messages** | `role="alert"` for API errors, clear recovery instructions |
+
+**ARIA Implementation:**
+
+```blade
+<div role="log"
+     aria-label="Perbualan AI"
+     aria-live="polite"
+     aria-atomic="false"
+     class="flex-1 overflow-y-auto p-4 space-y-4">
+    @foreach($messages as $message)
+        <div role="article"
+             aria-label="{{ $message->role === 'user' ? 'Mesej anda' : 'Respons AI' }}">
+            {{-- Message content --}}
+        </div>
+    @endforeach
+</div>
+```
+
+### 19.10 AI Error State Styling
+
+```blade
+<div role="alert"
+     class="rounded-lg border border-danger/20 bg-danger/5 p-4">
+    <div class="flex items-start gap-3">
+        <x-heroicon-s-exclamation-triangle class="h-5 w-5 text-danger shrink-0" />
+        <div>
+            <p class="font-medium text-danger">Ralat AI</p>
+            <p class="mt-1 text-sm text-gray-600">
+                {{ $errorMessage ?? 'Tidak dapat menjana respons. Sila cuba lagi.' }}
+            </p>
+            <button wire:click="retry"
+                    class="mt-2 text-sm text-primary-600 hover:underline">
+                Cuba Lagi
+            </button>
+        </div>
+    </div>
+</div>
+```
 
 ---
 

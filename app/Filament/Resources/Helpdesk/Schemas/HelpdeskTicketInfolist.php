@@ -132,7 +132,7 @@ class HelpdeskTicketInfolist
                             ->icon('heroicon-o-arrow-top-right-on-square')
                             ->weight('bold')
                             ->color('primary'),
-                        TextEntry::make('asset.category.name_en')
+                        TextEntry::make('asset.category.name_ms')
                             ->label('Kategori')
                             ->placeholder('-')
                             ->icon('heroicon-o-tag'),

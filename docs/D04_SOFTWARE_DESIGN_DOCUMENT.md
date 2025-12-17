@@ -1,8 +1,8 @@
 # Dokumen Rekabentuk Perisian (Software Design Document - SDD)
 
 **Sistem ICTServe**  
-**Versi:** 3.5.0 (SemVer)  
-**Tarikh Kemaskini:** 30 November 2025  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                               |
 | -------------------- | --------------------------------------------------- |
-| **Versi**            | 3.5.0                                               |
-| **Tarikh Kemaskini** | 30 November 2025                                    |
+| **Versi**            | 3.6.1                                               |
+| **Tarikh Kemaskini** | 17 Disember 2025                                    |
 | **Status**           | Aktif                                               |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                          |
-| **Pematuhi**         | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)           |
+| **Pematuhi**         | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2 |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0+)                      |
 
 > Notis Penggunaan Dalaman: Sistem ini digunakan secara dalaman oleh staf dan pegawai gred MOTAC; ia bukan sistem awam.
 
@@ -29,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. **Cloud Hybrid AI Integration**: Tambah §8 AI Integration Layer dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Model routing pintar, streaming responses, web-augmented responses, conversation management. Service layer design untuk RagService, BedrockService, ModelRouter. | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini semua modul (registration, login, account linking, notifications) kepada Bahasa Melayu sahaja. Language switcher dilumpuhkan. Bilingual support→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                 | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Restore user_id nullable FK dalam HelpdeskTicket/LoanApplication. Auth::check() logic untuk auto-fill. ERD update: user_id (0..1 relationship). Penyelarasan dengan D00/D02 v3.4.0.                                                                  | Pasukan Pembangunan BPM |
@@ -58,7 +59,8 @@
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.5.0)
 - **[D15_LANGUAGE_MS_EN.md]** - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
-- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Pengurusan queue (Laravel Queue + Redis; Horizon tidak dipasang)
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.0)
 - **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
 - **docs/loan_form_to_model.md** - Asset loan data mapping
 
@@ -153,7 +155,7 @@ Di luar skop:
 
 - Redis 7.0 untuk queue dan cache
 - Supervisor untuk queue workers
-- Laravel Horizon (opsyen) untuk queue monitoring
+- Laravel Pulse + Filament Failed Jobs/Email Logs untuk pemantauan queue (Horizon tidak dipasang)
 
 **Data Storage:**
 
@@ -184,12 +186,14 @@ Di luar skop:
 
 **Komponen Utama:**
 
-- `resources/views/helpdesk/create.blade.php` - Borang hybrid (guest/auth layout)
-- `app/Livewire/Helpdesk/TicketForm.php` - Livewire component dengan Auth::check() logic
-- `app/Services/Helpdesk/HelpdeskService.php` - Business logic (create ticket, manage attachments, notifications)
+- `resources/views/livewire/helpdesk/guest-ticket-form.blade.php` - Borang tetamu (guest)
+- `resources/views/livewire/helpdesk/submit-ticket.blade.php` - Borang staf (authenticated)
+- `app/Livewire/Helpdesk/TicketForm.php` - Komponen form (termasuk pemetaan UI `submitter_*` → DB `guest_*`)
+- `app/Livewire/Helpdesk/GuestTicketForm.php` - Borang tetamu dengan `guest.ratelimit`
+- `app/Services/HelpdeskService.php` - Business logic (create ticket, manage attachments, notifications)
 - `app/Models/HelpdeskTicket.php` - Eloquent model dengan nullable `user_id` FK, relationships (`user`, `comments`, `attachments`)
-- `app/Filament/Resources/HelpdeskTicketResource.php` - Admin panel resource
-- `app/Mail/Helpdesk/TicketCreatedMail.php` - E-mel confirmation (WCAG 2.2 AA)
+- `app/Filament/Resources/Helpdesk/HelpdeskTicketResource.php` - Admin panel resource
+- `app/Mail/HelpdeskTicketCreated.php` - E-mel confirmation (WCAG 2.2 AA)
 
 **Aliran Kerja (Hybrid Flow):**
 
@@ -203,7 +207,7 @@ Di luar skop:
 2. **Input validation** (real-time + server-side):
 
    - Client-side: Alpine.js + Livewire validation
-   - Server-side: Laravel Form Request (`StoreHelpdeskTicketRequest`)
+   - Server-side: Livewire validation melalui `app/Livewire/Forms/HelpdeskTicketForm.php` (dipanggil oleh komponen Livewire)
    - Lampiran: max 5 files, 10MB each, allowed types (PDF, JPG, PNG, DOCX)
 
 3. **Ticket creation** (`HelpdeskService::createTicket()`):
@@ -229,7 +233,7 @@ Di luar skop:
 
 **Pertimbangan Rekabentuk:**
 
-- **Hybrid access**: Nullable `user_id` FK + guest tracking columns (`submitter_name`, `submitter_email`, `submitter_phone`)
+- **Hybrid access**: Nullable `user_id` FK + guest tracking columns (`guest_name`, `guest_email`, `guest_phone`) (UI menggunakan `submitter_*` tetapi disimpan sebagai `guest_*`)
 - **Auth::check() logic**: Auto-fill borang jika logged in, manual input jika guest
 - **Rate limiting**: `throttle:guest,60,1` (60 requests per minute untuk guest), `throttle:auth,120,1` (120 untuk authenticated)
 - **CSRF protection**: Semua borang dilindungi CSRF token
@@ -242,13 +246,14 @@ Di luar skop:
 
 **Komponen Utama:**
 
-- `resources/views/loan/create.blade.php` - Borang permohonan hybrid
-- `app/Livewire/Loan/ApplicationForm.php` - Multi-step wizard component dengan Auth::check() logic
-- `app/Services/Loan/LoanService.php` - Business logic (create application, asset management)
-- `app/Services/Loan/ApprovalService.php` - Token generation, e-mel approval, decision processing
+- `resources/views/livewire/loans/submit-application.blade.php` - Borang permohonan (guest + authenticated)
+- `app/Livewire/Loans/SubmitApplication.php` - Komponen permohonan (wizard) menggunakan `app/Livewire/Forms/LoanApplicationForm.php`
+- `app/Services/LoanApplicationService.php` - Business logic (create application, availability checks)
+- `app/Services/ApprovalService.php` dan `app/Services/TokenService.php` - Token generation + signed approval URL
 - `app/Models/LoanApplication.php` - Model dengan nullable `user_id` FK, relationships (`user`, `items`, `transactions`, `approvals`)
-- `app/Filament/Resources/LoanApplicationResource.php` - Admin panel resource
-- `app/Http/Controllers/Loan/ApprovalController.php` - Handle approval links
+- `app/Filament/Resources/LoanApplications/LoanApplicationResource.php` - Admin panel resource (utama)
+- `app/Filament/Resources/Loans/LoanApplicationResource.php` - Admin panel resource (alias/compat)
+- `app/Http/Controllers/LoanApprovalController.php` - Handle approval links
 
 **Aliran Kerja (Hybrid + Approval Flow):**
 
@@ -311,7 +316,7 @@ Di luar skop:
 - **Hybrid access**: Nullable `user_id` FK + guest tracking columns (`applicant_name`, `applicant_email`, `applicant_phone`)
 - **Auth::check() logic**: Auto-fill borang jika logged in, manual input jika guest
 - **Token-based approval**: Signed URL + SHA-512 hashed token (no login required)
-- **Token expiry**: 72 jam (configurable via `config/loan.php`)
+- **Token expiry**: 72 jam (default) diurus oleh `app/Services/ApprovalService.php` / `app/Services/TokenService.php`
 - **Token regeneration**: `superuser` boleh regenerate expired tokens
 - **Approval audit**: Semua decisions disimpan dalam `loan_approvals` dengan metadata lengkap
 - **Asset reservation**: Soft lock (status `reserved`) untuk prevent double booking
@@ -323,9 +328,9 @@ Di luar skop:
 
 **Komponen:**
 
-- `app/Filament/Resources/AssetResource.php` - CRUD untuk aset ICT
-- `app/Filament/Resources/AssetCategoryResource.php` - Kategori aset
-- `app/Filament/Resources/LoanTransactionResource.php` - Sejarah transaksi
+- `app/Filament/Resources/Assets/AssetResource.php` - CRUD untuk aset ICT
+- `app/Filament/Resources/Assets/AssetCategoryResource.php` - Kategori aset
+- `app/Models/LoanTransaction.php` - Sejarah transaksi (dibina melalui tindakan issuance/return dalam LoanApplicationResource)
 - `app/Models/Asset.php` - Model dengan status tracking
 
 **Fungsi:**
@@ -347,11 +352,11 @@ Di luar skop:
 
 **Filament Widgets:**
 
-- `app/Filament/Widgets/HelpdeskStatsWidget.php` - Ticket metrics (open, in progress, resolved)
-- `app/Filament/Widgets/LoanStatsWidget.php` - Loan metrics (pending, approved, on loan)
+- `app/Filament/Widgets/HelpdeskStatsOverview.php` - Ticket metrics + SLA compliance
+- `app/Filament/Widgets/AssetLoanStatsOverview.php` - Loan metrics (pending/approved/on loan)
 - `app/Filament/Widgets/AssetUtilizationWidget.php` - Asset usage statistics
-- `app/Filament/Widgets/SLAComplianceWidget.php` - SLA breach tracking
-- `app/Filament/Widgets/RecentActivityWidget.php` - Latest tickets dan loans
+- `app/Filament/Widgets/CriticalAlertsWidget.php` - SLA breach + alert kritikal
+- `app/Filament/Widgets/RecentActivityFeedWidget.php` - Latest tickets dan loans
 
 **Report Generation:**
 
@@ -398,10 +403,10 @@ Di luar skop:
 
 **Komponen Utama:**
 
-- `resources/views/auth/register.blade.php` - Registration form (Laravel Breeze)
-- `app/Services/Auth/RegistrationService.php` - Registration business logic
-- `app/Http/Controllers/Auth/RegisteredUserController.php` - Registration controller
-- `app/Mail/Auth/VerifyEmailMail.php` - Email verification notification
+- `resources/views/livewire/pages/auth/register.blade.php` - Registration form (Volt)
+- `app/Services/RegistrationService.php` - Registration business logic
+- `routes/auth.php` - Auth routes (register/login/verify email)
+- Email verification menggunakan notifikasi Laravel terbina dalam (lihat juga `app/Http/Controllers/Auth/VerifyEmailController.php`)
 - `app/Models/User.php` - User model with email verification
 
 **Aliran Kerja (Self-Registration Flow):**
@@ -465,10 +470,9 @@ Di luar skop:
 
 **Komponen Utama:**
 
-- `resources/views/auth/login.blade.php` - Login form (Laravel Breeze)
-- `app/Http/Controllers/Auth/AuthenticatedSessionController.php` - Login controller
-- `app/Http/Requests/Auth/LoginRequest.php` - Login validation
-- `app/Services/Auth/AuthenticationService.php` - Authentication logic
+- `resources/views/livewire/pages/auth/login.blade.php` - Login form (Volt)
+- `app/Livewire/Forms/LoginForm.php` - Flexible login (email/username) + validation/authenticate
+- `routes/auth.php` - Auth routes (login/logout/forgot/reset)
 
 **Aliran Kerja (Flexible Login Flow):**
 
@@ -521,9 +525,9 @@ Di luar skop:
 
 **Komponen Utama:**
 
-- `resources/views/dashboard/account-linking.blade.php` - Account linking page
-- `app/Livewire/Dashboard/AccountLinking.php` - Livewire component
-- `app/Services/Dashboard/AccountLinkingService.php` - Linking business logic
+- `resources/views/livewire/staff/account-linking.blade.php` - Account linking page
+- `app/Livewire/Staff/AccountLinking.php` - Livewire component
+- `app/Services/AccountLinkingService.php` - Linking business logic
 - `app/Models/User.php` - User model with linking relationships
 
 **Aliran Kerja (Account Linking Flow):**
@@ -537,7 +541,7 @@ Di luar skop:
 
 2. **Search for unlinked submissions** (`AccountLinkingService::findUnlinkedSubmissions()`):
 
-   - Query `helpdesk_tickets` WHERE `submitter_email` = input email AND `user_id` IS NULL
+   - Query `helpdesk_tickets` WHERE `guest_email` = input email AND `user_id` IS NULL
    - Query `loan_applications` WHERE `applicant_email` = input email AND `user_id` IS NULL
    - Return combined list with ticket/loan numbers, dates, status
    - Display results in table format (sortable, filterable)
@@ -569,7 +573,7 @@ Di luar skop:
 - **Audit trail**: Comprehensive logging of linking actions
 - **Reversibility**: `superuser` can unlink submissions if needed (via Filament)
 - **Privacy**: Only staff can link their own submissions (email must match)
-- **Performance**: Index on `submitter_email` and `applicant_email` for fast queries
+- **Performance**: Index pada `guest_email` dan `applicant_email` untuk query pantas
 - **WCAG compliance**: Accessible table with keyboard navigation
 - **Bahasa Melayu sahaja (v3.6.0)**: All messages in Bahasa Melayu only
 
@@ -579,7 +583,7 @@ Di luar skop:
 
 - `app/Providers/PulseServiceProvider.php` - Pulse configuration
 - `config/pulse.php` - Pulse settings
-- `routes/pulse.php` - Pulse dashboard routes
+- Routes Pulse dibekalkan oleh pakej; path & middleware ditetapkan dalam `config/pulse.php`
 - Pulse dashboard accessible at `/pulse` (admin/superuser only)
 
 **Fungsi Monitoring:**
@@ -632,32 +636,29 @@ Di luar skop:
 
 **Komponen Utama:**
 
-- `app/Http/Controllers/Api/V1/HelpdeskApiController.php` - Helpdesk API
-- `app/Http/Controllers/Api/V1/LoanApiController.php` - Loan API
-- `app/Http/Controllers/Api/V1/AuthApiController.php` - Authentication API
+- `app/Http/Controllers/Api/ApiTicketController.php` - Tickets API (Helpdesk)
+- `app/Http/Controllers/Api/ApiLoanController.php` - Loans API (pinjaman)
+- `app/Http/Controllers/Api/MemoryController.php` - Memory import/search (agentic)
 - `routes/api.php` - API routes (versioned)
 - `config/sanctum.php` - Sanctum configuration
+- Pengurusan token (UI): `app/Filament/Resources/ApiTokenResource.php`, `app/Services/ApiTokenService.php`
 
-**API Endpoints:**
+**API Endpoints (ringkas, rujuk `routes/api.php`):**
 
-1. **Authentication** (`/api/v1/auth`):
+1. **User Context**:
+   - `GET /api/user` - Maklumat pengguna semasa (auth:sanctum)
 
-   - `POST /login` - Generate API token
-   - `POST /logout` - Revoke API token
-   - `GET /user` - Get authenticated user details
+2. **Tickets (v1)**:
+   - `GET /api/v1/tickets`
+   - `POST /api/v1/tickets`
 
-2. **Helpdesk** (`/api/v1/helpdesk`):
+3. **Loans (v1)**:
+   - `GET /api/v1/loans`
+   - `POST /api/v1/loans`
 
-   - `GET /tickets` - List user's tickets
-   - `GET /tickets/{id}` - Get ticket details
-   - `POST /tickets` - Create new ticket
-   - `GET /tickets/{id}/status` - Check ticket status
-
-3. **Loan** (`/api/v1/loans`):
-   - `GET /applications` - List user's loan applications
-   - `GET /applications/{id}` - Get application details
-   - `POST /applications` - Create new application
-   - `GET /applications/{id}/status` - Check application status
+4. **Agentic Memory (v1)**:
+   - `POST /api/v1/memory/import`
+   - `GET /api/v1/memory/search`
 
 **Token Management:**
 
@@ -678,15 +679,15 @@ Di luar skop:
 - **Error handling**: HTTP status codes + descriptive error messages
 - **Pagination**: Cursor-based pagination for large datasets
 - **Filtering**: Query parameters for filtering, sorting, searching
-- **Documentation**: OpenAPI 3.0 specification (Swagger UI)
+- **Documentation**: OpenAPI 3.0 specification (`docs/api/openapi.yaml`, `docs/ollama/api/ollama-openapi-spec.yaml`)
 - **Security**: HTTPS only, CORS configuration, rate limiting
 
 ### 4.11. Google Workspace SSO (v3.5.0)
 
 **Komponen Utama:**
 
-- `app/Services/Auth/GoogleSsoService.php` - Google OAuth logic
-- `app/Http/Controllers/Auth/GoogleSsoController.php` - SSO controller
+- `app/Services/GoogleSsoService.php` - Google OAuth logic
+- `app/Http/Controllers/Auth/GoogleAuthController.php` - SSO controller
 - `config/services.php` - Google OAuth credentials
 - Laravel Socialite package for OAuth implementation
 
@@ -736,10 +737,11 @@ Di luar skop:
 
 **Komponen Utama:**
 
-- `app/Livewire/Dashboard/OnboardingTour.php` - Interactive tour component
-- `app/Services/Search/FuzzySearchService.php` - Fuzzy search logic
-- `app/Livewire/Dashboard/SavedFilters.php` - Filter management component
-- `resources/js/touch-gestures.js` - Touch gesture handlers
+- `app/Livewire/Portal/WelcomeTour.php` - Interactive tour component (portal)
+- `resources/views/livewire/portal/welcome-tour.blade.php` - UI untuk tour (portal)
+- `app/Services/FuzzySearchService.php` - Fuzzy search logic
+- `app/Livewire/Components/SavedFilters.php` - Filter management component
+- `resources/js/portal-mobile.js` - Mobile UX helpers (touch/responsive)
 
 **Fungsi UX:**
 
@@ -795,9 +797,10 @@ Di luar skop:
 **Komponen Utama:**
 
 - `resources/views/components/layout/gov-header.blade.php` - Government header
-- `resources/views/components/layout/motac-footer.blade.php` - MOTAC footer
-- `resources/views/components/branding/jata-negara.blade.php` - Malaysian Coat of Arms
-- `resources/views/components/branding/motac-logo.blade.php` - MOTAC logo
+- `resources/views/components/layout/gov-footer.blade.php` - Government footer
+- `resources/views/components/layout/footer.blade.php` - Footer utama portal
+- `public/images/jata-negara.svg` - Malaysian Coat of Arms (asset)
+- `public/images/motac-logo.png` - MOTAC logo (asset)
 - `public/images/` - Brand assets directory
 
 **Brand Assets:**
@@ -916,7 +919,6 @@ InnoDB (ACID compliance, foreign key support)
 | `status_tokens`        | Guest status checking tokens  | token_hash, reference_type, reference_id         | Polymorphic to tickets/loans                     |
 | `audits`               | Model audit trail (owen-it)   | auditable_type, auditable_id, old/new_values     | Polymorphic to all models                        |
 | `activity_log`         | User activity log (spatie)    | description, subject, causer, properties         | Polymorphic (Spatie)                             |
-| `departments`          | MOTAC organizational units    | id, code, name, parent_id                        | → users.department_id                            |
 | `assets`               | ICT asset inventory           | asset_code, name, status, category_id            | ← loan_items                                     |
 | `asset_categories`     | Asset categorization          | id, name, description                            | → assets                                         |
 
@@ -925,42 +927,37 @@ InnoDB (ACID compliance, foreign key support)
 #### Helpdesk Tickets (`helpdesk_tickets`)
 
 ```sql
+-- Source of truth: `database/migrations/2025_11_03_043924_create_helpdesk_tickets_table.php`
 CREATE TABLE helpdesk_tickets (
     id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    ticket_number VARCHAR(20) UNIQUE NOT NULL,
+    ticket_number VARCHAR(50) UNIQUE NOT NULL,
+    status_token_hash VARCHAR(128) NULL,
+    form_reference_code VARCHAR(50) NOT NULL,
 
-    -- Hybrid: nullable user_id FK + guest tracking
+    -- Hybrid: nullable user_id FK + guest fields
     user_id BIGINT UNSIGNED NULL,
-    submitter_name VARCHAR(255) NOT NULL,
-    submitter_email VARCHAR(255) NOT NULL,
-    submitter_phone VARCHAR(50) NOT NULL,
-    submitter_division_code VARCHAR(20) NOT NULL,
-    submitter_grade VARCHAR(50) NULL,
+    guest_name VARCHAR(255) NULL,
+    guest_email VARCHAR(255) NULL,
+    guest_phone VARCHAR(20) NULL,
+    guest_grade VARCHAR(10) NULL,
+    guest_division VARCHAR(100) NULL,
+    guest_staff_id VARCHAR(50) NULL,
 
-    -- Ticket details
-    category VARCHAR(100) NOT NULL,
-    priority ENUM('LOW','MEDIUM','HIGH','CRITICAL') NOT NULL,
+    -- Organizational context (authenticated users)
+    division_id BIGINT UNSIGNED NULL,
+
+    -- Ticket details (simplified)
+    category_id BIGINT UNSIGNED NOT NULL,
+    priority ENUM('low','normal','high','urgent') NOT NULL,
+    subject VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    asset_tag VARCHAR(100) NULL,
-    declaration BOOLEAN NOT NULL DEFAULT FALSE,
+    status ENUM('open','assigned','in_progress','pending_user','resolved','closed') NOT NULL,
+    assigned_to_division BIGINT UNSIGNED NULL,
+    assigned_to_user BIGINT UNSIGNED NULL,
 
-    -- Status tracking
-    status ENUM('OPEN','IN_PROGRESS','AWAITING_INFO','RESOLVED','CLOSED') NOT NULL DEFAULT 'OPEN',
-    assigned_admin_id BIGINT UNSIGNED NULL,
-    sla_due_at TIMESTAMP NOT NULL,
-    closed_at TIMESTAMP NULL,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    INDEX idx_ticket_number (ticket_number),
-    INDEX idx_status (status),
-    INDEX idx_user (user_id),
-    INDEX idx_assigned_admin (assigned_admin_id),
-    INDEX idx_sla_due (sla_due_at),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
-    FOREIGN KEY (assigned_admin_id) REFERENCES users(id) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL
+);
 ```
 
 **ERD Relationship**: `users` (0..1) → `helpdesk_tickets` (nullable FK)
@@ -1083,10 +1080,12 @@ CREATE TABLE users (
     id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    phone VARCHAR(30) NOT NULL,
-    department_id BIGINT UNSIGNED NULL,
-    grade VARCHAR(50) NULL,
-    role ENUM('staff','admin','superuser') NOT NULL,
+    phone VARCHAR(20) NULL,
+    division_code VARCHAR(20) NULL,
+    division_id BIGINT UNSIGNED NULL,
+    grade_id BIGINT UNSIGNED NULL,
+    position_id BIGINT UNSIGNED NULL,
+    role ENUM('staff','approver','admin','superuser') NOT NULL,
     password VARCHAR(255) NOT NULL,
     two_factor_secret TEXT NULL,
     remember_token VARCHAR(100) NULL,
@@ -1095,16 +1094,19 @@ CREATE TABLE users (
 
     INDEX idx_email (email),
     INDEX idx_role (role),
-    INDEX idx_department (department_id),
+    INDEX idx_division (division_id),
     INDEX idx_user_submissions (id),
-    FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL
+    FOREIGN KEY (division_id) REFERENCES divisions(id) ON DELETE SET NULL,
+    FOREIGN KEY (grade_id) REFERENCES grades(id) ON DELETE SET NULL,
+    FOREIGN KEY (position_id) REFERENCES positions(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
 > **Note Hybrid v3.4.0**: This table contains:
 >
-> - **Admin/Superuser**: Full system access (role='admin' or 'superuser')
-> - **Staff**: MOTAC staff with optional login (role='staff', with department_id/grade for profile)
+> - **Admin/Superuser**: Full system access (role='admin' atau 'superuser')
+> - **Approver**: Pegawai pelulus (role='approver') untuk aliran kelulusan
+> - **Staff**: Staf MOTAC dengan log masuk opsyen (role='staff', dengan `division_id`/`grade_id` untuk profil)
 > - **Guest**: Not stored in users table; submissions with user_id=NULL
 >
 > **Staff Capabilities**: view-own-history, edit-profile, access-dashboard, submit-as-authenticated
@@ -1511,7 +1513,7 @@ Log::info('Ticket created', [
 **Backend Performance:**
 
 - Laravel Telescope (development)
-- Laravel Horizon untuk queue monitoring
+- Laravel Pulse + Filament Failed Jobs untuk pemantauan queue (Horizon tidak dipasang)
 - Database query profiling (Laravel Debugbar)
 - APM tools (New Relic, Datadog - opsyen)
 
@@ -1802,7 +1804,7 @@ test("guest can submit helpdesk ticket", async ({ page }) => {
 **Queue Optimization:**
 
 - **Redis**: Fast queue driver
-- **Horizon**: Queue monitoring dan management
+- **Queue Monitoring**: Laravel Pulse + Filament Failed Jobs (Horizon tidak dipasang)
 - **Job Batching**: Process multiple jobs efficiently
 - **Failed Job Handling**: Automatic retry dengan exponential backoff
 
@@ -1968,7 +1970,421 @@ test("guest can submit helpdesk ticket", async ({ page }) => {
 
 ---
 
-## 12. PENUTUP
+## 12. AI INTEGRATION LAYER (Cloud Hybrid Architecture)
+
+> **Trace:** D18 v1.0.0 (Cloud Hybrid AI Architecture), D03 §5.9 (AI Requirements), D00 §3.2 (AI Integration)
+
+### 12.1. Architecture Overview
+
+ICTServe mengintegrasikan **True Hybrid AI Architecture** yang menggabungkan Ollama (local LLM) dengan AWS Bedrock (cloud AI) untuk memberikan pengalaman AI yang optimum dengan penghalaan pintar berdasarkan jenis pertanyaan.
+
+**Core Principles:**
+
+- **Single Interface**: Pengguna berinteraksi dengan SATU sistem chat yang menghalakan pertanyaan secara automatik
+- **Smart Routing**: Sistem menganalisis pertanyaan dan memilih AI yang optimum
+- **Hybrid Responses**: Menggabungkan pengetahuan tempatan dengan keupayaan penaakulan cloud
+- **Cost Optimization**: 82% penjimatan kos dengan penggunaan Ollama untuk FAQ
+- **Data Sovereignty**: Klasifikasi automatik untuk pemprosesan tempatan vs cloud (PDPA 2010)
+
+### 12.2. Service Layer Design
+
+#### 12.2.1. Core AI Services
+
+```php
+// Service Layer Architecture
+app/Services/
+├── AI/
+│   ├── RagService.php              // Ollama RAG integration
+│   ├── BedrockService.php          // AWS Bedrock wrapper
+│   ├── ModelRouter.php             // Smart model selection
+│   ├── EmbeddingService.php        // Vector operations
+│   ├── DocumentService.php         // Document analysis
+│   ├── ConversationService.php     // Conversation management
+│   ├── PIIDetectionService.php     // PII sanitization
+│   └── WebSearchService.php        // DuckDuckGo integration
+├── OllamaClient.php                // HTTP client for Ollama
+└── BedrockClient.php               // AWS SDK wrapper
+```
+
+#### 12.2.2. Service Interfaces
+
+**RagService Interface:**
+
+```php
+interface RagServiceContract
+{
+    public function processQuery(string $query, array $context = []): array;
+    public function searchFAQ(string $query, float $threshold = 0.3): array;
+    public function generateEmbeddings(string $text): array;
+    public function healthCheck(): bool;
+}
+```
+
+**BedrockService Interface:**
+
+```php
+interface BedrockServiceContract
+{
+    public function invoke(string $modelId, array $payload): array;
+    public function invokeWithStreaming(string $modelId, array $payload): Generator;
+    public function estimateCost(string $modelId, int $inputTokens, int $outputTokens): float;
+    public function healthCheck(): bool;
+}
+```
+
+**ModelRouter Interface:**
+
+```php
+interface ModelRouterContract
+{
+    public function analyzeQuery(string $query): string; // 'faq_specific', 'complex_reasoning', 'hybrid'
+    public function selectModel(string $taskType, array $context): string;
+    public function routeRequest(string $query, array $context): array;
+}
+```
+
+### 12.3. Data Layer Design
+
+#### 12.3.1. Enhanced Models
+
+**BedrockConversation Model:**
+
+```php
+class BedrockConversation extends Model
+{
+    use HasFactory, Auditable, LogsActivity;
+    
+    protected $fillable = [
+        'user_id', 'title', 'messages', 'model_used', 
+        'total_tokens', 'cost_estimate', 'metadata'
+    ];
+    
+    protected $casts = [
+        'messages' => 'array',
+        'metadata' => 'array',
+        'total_tokens' => 'integer',
+        'cost_estimate' => 'decimal:4'
+    ];
+    
+    // Relationships
+    public function user(): BelongsTo;
+    public function messageLogs(): HasMany;
+}
+```
+
+**Enhanced Database Schema:**
+
+```sql
+-- AI-specific tables
+CREATE TABLE bedrock_conversations (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NULL,
+    title VARCHAR(255) NOT NULL,
+    messages JSON NOT NULL,
+    model_used VARCHAR(100) NOT NULL,
+    total_tokens INT UNSIGNED DEFAULT 0,
+    cost_estimate DECIMAL(10,4) DEFAULT 0.0000,
+    metadata JSON NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE message_logs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    conversation_id BIGINT UNSIGNED NULL,
+    user_id BIGINT UNSIGNED NULL,
+    query TEXT NOT NULL,
+    response TEXT NOT NULL,
+    model_used VARCHAR(100) NOT NULL,
+    confidence_score DECIMAL(3,2) NULL,
+    processing_time DECIMAL(8,3) NOT NULL,
+    tokens_used INT UNSIGNED DEFAULT 0,
+    cost DECIMAL(10,4) DEFAULT 0.0000,
+    source ENUM('ollama', 'bedrock', 'hybrid') NOT NULL,
+    metadata JSON NULL,
+    created_at TIMESTAMP NULL,
+    FOREIGN KEY (conversation_id) REFERENCES bedrock_conversations(id) ON DELETE SET NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE document_chunks (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    document_id BIGINT UNSIGNED NOT NULL,
+    chunk_text TEXT NOT NULL,
+    chunk_index INT UNSIGNED NOT NULL,
+    embedding JSON NULL,
+    metadata JSON NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE CASCADE
+);
+```
+
+### 12.4. API Layer Design
+
+#### 12.4.1. REST API Endpoints
+
+**Base URL:** `/api/v1/ai`
+
+```php
+// API Routes (routes/api.php)
+Route::prefix('ai')->middleware(['auth:sanctum'])->group(function () {
+    // FAQ Bot
+    Route::post('/chat', [BedrockChatController::class, 'chat']);
+    Route::get('/conversations', [BedrockChatController::class, 'conversations']);
+    Route::post('/conversations/{id}/save', [BedrockChatController::class, 'saveConversation']);
+    Route::delete('/conversations/{id}', [BedrockChatController::class, 'deleteConversation']);
+    
+    // Document Analysis
+    Route::post('/documents/upload', [DocumentController::class, 'upload']);
+    Route::get('/documents/{id}/status', [DocumentController::class, 'status']);
+    Route::get('/documents/{id}/search', [DocumentController::class, 'search']);
+    
+    // Auto-Reply
+    Route::post('/auto-reply/generate', [AutoReplyController::class, 'generate']);
+    Route::post('/auto-reply/{id}/approve', [AutoReplyController::class, 'approve']);
+    
+    // Health Check
+    Route::get('/health', [HealthController::class, 'aiHealth']);
+});
+```
+
+#### 12.4.2. Livewire Components
+
+**BedrockChat Component:**
+
+```php
+class BedrockChat extends Component
+{
+    public string $prompt = '';
+    public array $messages = [];
+    public string $selectedModel = 'sonnet';
+    public bool $internetSearch = false;
+    public ?string $conversationId = null;
+    
+    protected $listeners = ['conversationLoaded'];
+    
+    public function send(): void
+    {
+        $this->validate(['prompt' => 'required|max:500']);
+        
+        $response = app(ModelRouter::class)->routeRequest(
+            $this->prompt,
+            ['internet_search' => $this->internetSearch]
+        );
+        
+        $this->messages[] = ['role' => 'user', 'content' => $this->prompt];
+        $this->messages[] = [
+            'role' => 'assistant',
+            'content' => $response['content'],
+            'source' => $response['source'],
+            'sources' => $response['sources'] ?? []
+        ];
+        
+        $this->prompt = '';
+        $this->dispatch('message-sent');
+    }
+}
+```
+
+### 12.5. Integration Patterns
+
+#### 12.5.1. Query Routing Logic
+
+```php
+class ModelRouter implements ModelRouterContract
+{
+    public function routeRequest(string $query, array $context = []): array
+    {
+        $queryType = $this->analyzeQuery($query);
+        
+        return match($queryType) {
+            'faq_specific' => $this->handleFAQQuery($query, $context),
+            'complex_reasoning' => $this->handleComplexQuery($query, $context),
+            'hybrid' => $this->handleHybridQuery($query, $context),
+            default => $this->handleFallback($query, $context)
+        };
+    }
+    
+    private function handleHybridQuery(string $query, array $context): array
+    {
+        // Get FAQ facts from Ollama
+        $faqResponse = app(RagService::class)->processQuery($query, $context);
+        
+        // Enhance with Bedrock reasoning
+        $enhancedPrompt = "Based on these facts: {$faqResponse['answer']}\n\nQuestion: {$query}";
+        $bedrockResponse = app(BedrockService::class)->invoke(
+            config('bedrock.models.sonnet'),
+            ['messages' => [['role' => 'user', 'content' => $enhancedPrompt]]]
+        );
+        
+        return [
+            'content' => $bedrockResponse['content'],
+            'source' => 'hybrid',
+            'sources' => array_merge($faqResponse['sources'], ['AI Analysis']),
+            'tokens' => $bedrockResponse['usage']['output_tokens'] ?? 0
+        ];
+    }
+}
+```
+
+#### 12.5.2. Fallback Strategy
+
+```php
+class FallbackHandler
+{
+    public function handleFailure(string $service, \Throwable $exception): array
+    {
+        Log::error("AI Service failure: {$service}", [
+            'exception' => $exception->getMessage(),
+            'trace' => $exception->getTraceAsString()
+        ]);
+        
+        return match($service) {
+            'ollama' => $this->fallbackToBedrock(),
+            'bedrock' => $this->fallbackToStatic(),
+            default => $this->staticResponse()
+        };
+    }
+    
+    private function fallbackToBedrock(): array
+    {
+        try {
+            return app(BedrockService::class)->invoke(
+                config('bedrock.models.haiku'), // Fastest, cheapest
+                ['messages' => [['role' => 'user', 'content' => 'System unavailable, please try again later.']]]
+            );
+        } catch (\Throwable $e) {
+            return $this->staticResponse();
+        }
+    }
+}
+```
+
+### 12.6. Performance & Monitoring
+
+#### 12.6.1. Caching Strategy
+
+```php
+class CachingService
+{
+    public function getCachedResponse(string $cacheKey): ?array
+    {
+        return Cache::tags(['ai-responses'])->get($cacheKey);
+    }
+    
+    public function cacheResponse(string $cacheKey, array $response, int $ttl = 3600): void
+    {
+        Cache::tags(['ai-responses'])->put($cacheKey, $response, $ttl);
+    }
+    
+    public function generateCacheKey(string $query, array $context = []): string
+    {
+        return 'ai:' . md5($query . serialize($context));
+    }
+}
+```
+
+#### 12.6.2. Health Monitoring
+
+```php
+class AIHealthService
+{
+    public function checkAllServices(): array
+    {
+        return [
+            'ollama' => $this->checkOllama(),
+            'bedrock' => $this->checkBedrock(),
+            'duckduckgo' => $this->checkWebSearch(),
+            'overall' => $this->calculateOverallHealth()
+        ];
+    }
+    
+    private function checkOllama(): array
+    {
+        try {
+            $start = microtime(true);
+            $response = app(OllamaClient::class)->healthCheck();
+            $responseTime = (microtime(true) - $start) * 1000;
+            
+            return [
+                'status' => $response ? 'up' : 'down',
+                'response_time' => round($responseTime, 2),
+                'last_check' => now()->toISOString()
+            ];
+        } catch (\Throwable $e) {
+            return ['status' => 'down', 'error' => $e->getMessage()];
+        }
+    }
+}
+```
+
+### 12.7. Security & Compliance
+
+#### 12.7.1. PII Detection
+
+```php
+class PIIDetectionService
+{
+    private array $patterns = [
+        'email' => '/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/',
+        'phone' => '/\b\d{3}-\d{3}-\d{4}\b|\b\d{10}\b/',
+        'ic' => '/\b\d{6}-\d{2}-\d{4}\b/',
+        'credit_card' => '/\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/'
+    ];
+    
+    public function detectAndSanitize(string $text): array
+    {
+        $detectedPII = [];
+        $sanitizedText = $text;
+        
+        foreach ($this->patterns as $type => $pattern) {
+            if (preg_match_all($pattern, $text, $matches)) {
+                $detectedPII[$type] = $matches[0];
+                $sanitizedText = preg_replace($pattern, "[{$type}_redacted]", $sanitizedText);
+            }
+        }
+        
+        return [
+            'original' => $text,
+            'sanitized' => $sanitizedText,
+            'detected_pii' => $detectedPII,
+            'has_pii' => !empty($detectedPII)
+        ];
+    }
+}
+```
+
+#### 12.7.2. Data Classification
+
+```php
+class DataClassificationService
+{
+    public function classifyForProcessing(string $content): string
+    {
+        $piiResult = app(PIIDetectionService::class)->detectAndSanitize($content);
+        
+        if ($piiResult['has_pii']) {
+            return 'local_only'; // Process with Ollama only
+        }
+        
+        // Check for sensitive keywords
+        $sensitiveKeywords = ['confidential', 'rahsia', 'sulit', 'internal'];
+        foreach ($sensitiveKeywords as $keyword) {
+            if (stripos($content, $keyword) !== false) {
+                return 'local_only';
+            }
+        }
+        
+        return 'allow_cloud'; // Can use Bedrock
+    }
+}
+```
+
+---
+
+## 13. PENUTUP
 
 Rekabentuk ini memastikan ICTServe mematuhi mandat **hybrid architecture**:
 

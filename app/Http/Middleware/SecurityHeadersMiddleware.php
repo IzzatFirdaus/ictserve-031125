@@ -138,8 +138,8 @@ class SecurityHeadersMiddleware
             // Objects - disallow plugins
             "object-src 'none'",
 
-            // Frames - allow same origin for Filament modals
-            "frame-src 'self'",
+            // Frames - allow same origin for Filament modals and Google Maps embeds
+            "frame-src 'self' https://www.google.com https://maps.google.com",
 
             // Frame ancestors - prevent clickjacking
             "frame-ancestors 'self'",

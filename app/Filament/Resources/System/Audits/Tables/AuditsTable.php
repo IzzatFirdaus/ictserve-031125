@@ -31,13 +31,13 @@ class AuditsTable
         return $table
             ->columns([
                 TextColumn::make('id')
-                    ->label(__('ID'))
+                    ->label('ID')
                     ->sortable()
                     ->searchable()
                     ->toggleable(),
 
                 TextColumn::make('created_at')
-                    ->label(__('Timestamp'))
+                    ->label('Cap Masa')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->searchable()
@@ -45,15 +45,15 @@ class AuditsTable
                     ->description(fn (Audit $record): string => $record->created_at?->diffForHumans() ?? ''),
 
                 TextColumn::make('user.name')
-                    ->label(__('User'))
+                    ->label('Pengguna')
                     ->sortable()
                     ->searchable()
                     ->toggleable()
-                    ->default(__('System'))
+                    ->default('Sistem')
                     ->description(fn (Audit $record) => $record->user instanceof \App\Models\User ? $record->user->email : null),
 
                 TextColumn::make('event')
-                    ->label(__('Action'))
+                    ->label('Tindakan')
                     ->sortable()
                     ->searchable()
                     ->toggleable()
@@ -74,35 +74,35 @@ class AuditsTable
                     }),
 
                 TextColumn::make('auditable_type')
-                    ->label(__('Entity Type'))
+                    ->label('Jenis Entiti')
                     ->sortable()
                     ->searchable()
                     ->toggleable()
                     ->formatStateUsing(fn (string $state): string => class_basename($state))
-                    ->description(fn (Audit $record): string => __('ID: :id', ['id' => $record->auditable_id])),
+                    ->description(fn (Audit $record): string => 'ID: '.$record->auditable_id),
 
                 TextColumn::make('ip_address')
-                    ->label(__('IP Address'))
+                    ->label('Alamat IP')
                     ->sortable()
                     ->searchable()
                     ->toggleable()
                     ->copyable()
-                    ->copyMessage(__('IP address copied'))
+                    ->copyMessage('Alamat IP disalin')
                     ->copyMessageDuration(1500),
 
                 TextColumn::make('url')
-                    ->label(__('URL'))
+                    ->label('URL')
                     ->sortable()
                     ->searchable()
                     ->toggleable()
                     ->limit(50)
                     ->tooltip(fn ($record) => $record->url)
                     ->copyable()
-                    ->copyMessage(__('URL copied'))
+                    ->copyMessage('URL disalin')
                     ->copyMessageDuration(1500),
 
                 TextColumn::make('user_agent')
-                    ->label(__('User Agent'))
+                    ->label('Ejen Pengguna')
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -110,7 +110,7 @@ class AuditsTable
                     ->tooltip(fn ($record) => $record->user_agent),
 
                 TextColumn::make('tags')
-                    ->label(__('Tags'))
+                    ->label('Tag')
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -121,12 +121,12 @@ class AuditsTable
                 Filter::make('created_at')
                     ->form([
                         \Filament\Forms\Components\DatePicker::make('created_from')
-                            ->label(__('From Date'))
+                            ->label('Tarikh Dari')
                             ->native(false)
                             ->displayFormat('d/m/Y')
                             ->maxDate(now()),
                         \Filament\Forms\Components\DatePicker::make('created_until')
-                            ->label(__('Until Date'))
+                            ->label('Tarikh Hingga')
                             ->native(false)
                             ->displayFormat('d/m/Y')
                             ->maxDate(now()),
@@ -146,18 +146,18 @@ class AuditsTable
                         $indicators = [];
 
                         if ($data['created_from'] ?? null) {
-                            $indicators[] = __('From: :date', ['date' => \Carbon\Carbon::parse($data['created_from'])->format('d/m/Y')]);
+                            $indicators[] = 'Dari: '.\Carbon\Carbon::parse($data['created_from'])->format('d/m/Y');
                         }
 
                         if ($data['created_until'] ?? null) {
-                            $indicators[] = __('Until: :date', ['date' => \Carbon\Carbon::parse($data['created_until'])->format('d/m/Y')]);
+                            $indicators[] = 'Hingga: '.\Carbon\Carbon::parse($data['created_until'])->format('d/m/Y');
                         }
 
                         return $indicators;
                     }),
 
                 SelectFilter::make('user_id')
-                    ->label(__('User'))
+                    ->label('Pengguna')
                     ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
@@ -165,17 +165,17 @@ class AuditsTable
                     ->optionsLimit(50),
 
                 SelectFilter::make('event')
-                    ->label(__('Action Type'))
+                    ->label('Jenis Tindakan')
                     ->options([
-                        'created' => __('Created'),
-                        'updated' => __('Updated'),
-                        'deleted' => __('Deleted'),
-                        'restored' => __('Restored'),
+                        'created' => 'Dicipta',
+                        'updated' => 'Dikemaskini',
+                        'deleted' => 'Dipadam',
+                        'restored' => 'Dipulihkan',
                     ])
                     ->multiple(),
 
                 SelectFilter::make('auditable_type')
-                    ->label(__('Entity Type'))
+                    ->label('Jenis Entiti')
                     ->options(function () {
                         /** @var array<int, string> $types */
                         $types = Audit::query()
@@ -194,17 +194,17 @@ class AuditsTable
             ])
             ->recordActions([
                 ViewAction::make()
-                    ->label(__('View Details'))
+                    ->label('Lihat Butiran')
                     ->icon(Heroicon::OutlinedEye->value),
             ])
             ->toolbarActions([
                 Action::make('export')
-                    ->label(__('Export Audit Log'))
+                    ->label('Eksport Log Audit')
                     ->icon(Heroicon::OutlinedArrowDownTray->value)
                     ->color(Color::Gray)
                     ->form([
                         \Filament\Forms\Components\Select::make('format')
-                            ->label(__('Export Format'))
+                            ->label('Format Eksport')
                             ->options([
                                 'csv' => 'CSV',
                                 'json' => 'JSON',
@@ -231,28 +231,28 @@ class AuditsTable
                             $downloadUrl = $exportService->getExportUrl($filepath);
 
                             \Filament\Notifications\Notification::make()
-                                ->title(__('Export Completed'))
-                                ->body(__('Your audit log export is ready. File size: :size', ['size' => $fileSize]))
+                                ->title('Eksport Selesai')
+                                ->body('Eksport log audit sedia dimuat turun. Saiz fail: '.$fileSize)
                                 ->success()
                                 ->actions([
                                     Action::make('download')
-                                        ->label(__('Download'))
+                                        ->label('Muat turun')
                                         ->url($downloadUrl)
                                         ->openUrlInNewTab(),
                                 ])
                                 ->send();
                         } catch (\Exception $e) {
                             \Filament\Notifications\Notification::make()
-                                ->title(__('Export Failed'))
-                                ->body(__('An error occurred while generating the export: :error', ['error' => $e->getMessage()]))
+                                ->title('Eksport Gagal')
+                                ->body('Ralat semasa menjana eksport: '.$e->getMessage())
                                 ->danger()
                                 ->send();
                         }
                     })
                     ->requiresConfirmation()
-                    ->modalHeading(__('Export Audit Log'))
-                    ->modalDescription(__('This will export all audit records matching the current filters. The export may take several minutes for large datasets.'))
-                    ->modalSubmitActionLabel(__('Export')),
+                    ->modalHeading('Eksport Log Audit')
+                    ->modalDescription('Ini akan mengeksport semua rekod audit yang sepadan dengan penapis semasa. Proses ini mungkin mengambil beberapa minit untuk set data yang besar.')
+                    ->modalSubmitActionLabel('Eksport'),
             ])
             ->defaultSort('created_at', 'desc')
             ->persistFiltersInSession()
@@ -264,8 +264,8 @@ class AuditsTable
             ->paginated([10, 25, 50, 100])
             ->defaultPaginationPageOption(25)
             ->poll('30s') // Auto-refresh every 30 seconds
-            ->emptyStateHeading(__('No audit records found'))
-            ->emptyStateDescription(__('Audit records will appear here as users perform actions in the system.'))
+            ->emptyStateHeading('Tiada rekod audit ditemui')
+            ->emptyStateDescription('Rekod audit akan dipaparkan di sini apabila pengguna melakukan tindakan dalam sistem.')
             ->emptyStateIcon(Heroicon::OutlinedShieldCheck->value);
     }
 }

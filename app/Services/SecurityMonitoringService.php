@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use OwenIt\Auditing\Models\Audit;
@@ -434,7 +435,7 @@ class SecurityMonitoringService
             if ($alert['id'] === $alertId) {
                 $alert['acknowledged'] = true;
                 $alert['acknowledged_at'] = Carbon::now();
-                $alert['acknowledged_by'] = auth()->user()?->name ?? 'System';
+                $alert['acknowledged_by'] = Auth::user()?->name ?? 'System';
 
                 if ($alert['severity'] === 'critical') {
                     Cache::decrement('critical_security_alerts_count');

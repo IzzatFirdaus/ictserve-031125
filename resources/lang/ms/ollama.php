@@ -282,6 +282,25 @@ return [
         'info' => 'Maklumat',
     ],
 
+    // Bedrock Integration
+    'bedrock' => [
+        'title' => 'Sembang Bedrock AI',
+        'description' => 'Tanya soalan anda menggunakan AI yang berkuasa dari AWS Bedrock',
+        'chat_button' => 'Mula Sembang AI',
+        'powered_by' => 'Dikuasakan oleh AWS Bedrock',
+        'switch_to_bedrock' => 'Tukar ke Bedrock AI',
+        'switch_to_ollama' => 'Tukar ke Ollama AI',
+        'model_selection' => 'Pilih Model AI',
+        'nova_micro' => 'Nova Micro (Sangat Pantas)',
+        'nova_lite' => 'Nova Lite (Pantas & Cekap)',
+        'nova_pro' => 'Nova Pro (Berkuasa)',
+        'titan_lite' => 'Titan Text Lite (Ringan)',
+        'titan_express' => 'Titan Text Express (Ekspres)',
+        'claude_opus' => 'Claude Opus (Paling Berkuasa)',
+        'claude_sonnet' => 'Claude Sonnet (Seimbang)',
+        'claude_haiku' => 'Claude Haiku (Paling Pantas)',
+    ],
+
     // Widget (Floating Chat Bot)
     'widget' => [
         'aria_label' => 'Widget FAQ Bot AI',

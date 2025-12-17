@@ -1,16 +1,19 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
 declare(strict_types=1);
 
 /**
- * ICTServe v3.6.0 - Bahasa Melayu (Primary Language)
+ * ICTServe v3.6.1 - Bahasa Melayu (Primary Language)
  * English translations retained in lang/en/ for technical reference only
  *
  * ms - Common Translations
  *
- * @version 3.6.0
+ * @version 3.6.1
  *
- * @updated 2025-12-09
+ * @updated 2025-12-17
  *
  * @language Bahasa Melayu (Primary)
  */
@@ -230,7 +233,8 @@ return [
     'view_details' => 'Lihat Butiran',
     'view_overdue' => 'Lihat Tertunggak',
     'warning' => 'Amaran',
-    'welcome_back' => 'Selamat kembali',
+    'welcome_back' => 'Selamat kembali, :name',
+    'dashboard_intro' => 'Gunakan papan pemuka ini untuk memantau tiket, permohonan pinjaman, dan kelulusan anda.',
     'helpdesk_dashboard_title' => 'Papan Pemuka Helpdesk',
     'helpdesk_dashboard_subtitle' => 'Pantau perkembangan tiket dan tindakan yang diperlukan.',
     'refresh_button' => 'Segar Semula',
@@ -535,4 +539,15 @@ return [
     'Penyulitan data dalam transit (TLS 1.3) dan semasa rehat (AES-256)' => 'Penyulitan data dalam transit (TLS 1.3) dan semasa rehat (AES-256)',
     'Kawalan akses berasaskan peranan (RBAC)' => 'Kawalan akses berasaskan peranan (RBAC)',
     'Pengesahan dua faktor (2FA) untuk akaun pentadbir' => 'Pengesahan dua faktor (2FA) untuk akaun pentadbir',
+
+    // Real-time connection status (Phase 9)
+    'connected' => 'Disambungkan',
+    'disconnected' => 'Terputus',
+    'reconnecting' => 'Menyambung semula...',
+    'connection_lost' => 'Sambungan terputus. Menyambung semula...',
+    'connection_restored' => 'Sambungan dipulihkan',
+    'someone' => 'Seseorang',
+    'new' => 'Baharu',
+    'read' => 'Dibaca',
+    'deselect_all' => 'Nyahpilih semua',
 ];

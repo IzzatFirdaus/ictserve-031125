@@ -46,8 +46,9 @@ class SecurityScanCommand extends Command
         }
 
         // Email report if requested
-        if ($this->option('email')) {
-            $this->emailReport($stats, $this->option('email'));
+        $emailOption = $this->option('email');
+        if ($emailOption && is_string($emailOption)) {
+            $this->emailReport($stats, $emailOption);
         }
 
         $this->info('Security scan completed successfully.');

@@ -136,4 +136,49 @@ class RegistrationTest extends TestCase
 
         $component->assertHasErrors(['email']);
     }
+
+    #[Test]
+    public function registration_page_displays_bahasa_melayu_content(): void
+    {
+        // Ensure locale is set to Bahasa Melayu
+        app()->setLocale('ms');
+
+        $response = $this->get('/register');
+
+        $response->assertStatus(200);
+
+        // Check for Bahasa Melayu content using translation keys
+        $response->assertSee(__('auth.register_title')); // Registration title
+        $response->assertSee(__('auth.name')); // Name field label
+        $response->assertSee(__('auth.email')); // Email field label
+        $response->assertSee(__('common.password')); // Password field label
+        $response->assertSee(__('auth.register_button')); // Register button text
+        $response->assertSee(__('auth.already_registered')); // Already registered link
+
+        // Verify we're using Bahasa Melayu locale
+        $this->assertEquals('ms', app()->getLocale());
+    }
+
+    #[Test]
+    public function email_verification_flow_uses_signed_url(): void
+    {
+        $password = 'TestP@ssw0rd'.time();
+        $email = 'testuser'.time().'@motac.gov.my';
+
+        $component = Volt::test('pages.auth.register')
+            ->set('name', 'Test User')
+            ->set('email', $email)
+            ->set('password', $password)
+            ->set('password_confirmation', $password);
+
+        $component->call('register');
+
+        // Should redirect to verification notice page
+        $component->assertRedirect(route('verification.notice', absolute: false));
+
+        // User should be created but not verified
+        $user = User::where('email', $email)->first();
+        $this->assertNotNull($user);
+        $this->assertNull($user->email_verified_at);
+    }
 }

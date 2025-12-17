@@ -1,120 +1,228 @@
 ---
 inclusion: always
-description: "ICTServe product overview, core modules, target users, compliance requirements, and v3.6.0 Bahasa Melayu-only interface"
-version: "3.6.0"
-last_updated: "2025-12-11"
 ---
 
-# ICTServe Product Overview
+# ICTServe Product Guidelines
 
-**Project**: ICTServe (iServe) v3.6.0  
-**Organization**: BPM MOTAC (Ministry of Tourism, Arts & Culture Malaysia)  
-**Type**: Internal True Hybrid Service Platform (Guest + Authenticated Staff)  
-**Status**: Active Production  
-**Architecture**: True Hybrid (Self-Registration + Guest Fallback)  
-**Language**: Bahasa Melayu sahaja (v3.6.0 - Language switcher disabled)
+**ICTServe v3.6.0** - Internal True Hybrid Service Platform for BPM MOTAC  
+**Architecture**: Guest Forms + Authenticated Dashboard + Admin Panel (Filament)  
+**Language**: Bahasa Melayu sahaja (language switcher disabled in v3.6.0)  
+**Status**: Active Production
 
-ICTServe is an internal digital service platform for MOTAC staff to manage ICT support requests and asset loans. Version 3.6.0 builds upon the **True Hybrid Architecture** with **Bahasa Melayu-only interface** (language switcher disabled), allowing staff to seamlessly switch between quick-access guest forms and a personalized authenticated dashboard. The system enforces strict compliance via a **Dual Audit System** and supports real-time operations via **Laravel Reverb**.
+## Product Architecture Principles
 
-## Core Value Proposition
+### True Hybrid Architecture Pattern
 
-- **True Hybrid Access**: Flexible choice between Authenticated Dashboard (full history, auto-fill) or Guest Mode (quick access without login).
-- **Dual Audit System**: Simultaneous compliance auditing (field-level via `owen-it`) and operational logging (user activity via `spatie`).
-- **Self-Registration**: Staff can register independently using official `@motac.gov.my` emails without LDAP dependencies.
-- **Automated Workflows**: Token-based approval links for department heads (no login required).
-- **Real-Time Updates**: WebSocket-powered notifications for instant status changes.
+**CRITICAL**: All features must support dual access modes:
 
-## Core Modules
+- **Guest Mode**: Quick access without authentication (email-based tracking)
+- **Authenticated Mode**: Full dashboard with history and profile integration
+- **Admin Mode**: Filament-based management interface with RBAC
 
-### 1. Helpdesk Ticketing System (Hybrid)
+**Implementation Requirements**:
 
-- **Dual Entry**: Submit as Authenticated Staff (auto-fill from profile) or Guest (manual entry).
-- **Hybrid Data Association**: Submissions automatically linked to `user_id` if logged in; fallback to email tracking for guests.
-- **SLA Tracking**: Automated category-based SLA monitoring with breach warnings.
-- **Notifications**: Multi-channel alerts (Email, Database, WebSocket) based on user preferences.
+- Models must use nullable `user_id` foreign keys for hybrid data association
+- Forms must auto-populate from user profile when authenticated
+- Guest submissions must be trackable via secure tokens
+- All workflows must function independently of authentication state
 
-### 2. ICT Asset Loan Management (Hybrid)
+### Dual Audit System Pattern
 
-- **Real-Time Availability**: Conflict detection using Livewire 3.7 during application.
-- **Token-Based Approval**: Grade 41+ officers approve/reject via signed email links (no system login required).
-- **Asset Lifecycle**: Check-out/Check-in tracking by Admin with condition reporting.
-- **Integration**: Damaged asset returns automatically trigger helpdesk maintenance tickets.
+**MANDATORY**: All data modifications must be tracked via dual audit system:
 
-### 3. Administrative Panel (Filament v4)
+- **Compliance Audit**: Field-level tracking using `owen-it/laravel-auditing`
+- **Operational Audit**: User activity logging using `spatie/laravel-activitylog`
 
-- **Role-Based Access**:
-  - `admin`: Operational management (Tickets, Loans, Assets).
-  - `superuser`: System config, Audit review, and **Laravel Telescope** access.
-- **Dashboard**: Real-time metrics via Laravel Reverb widgets.
-- **Dual Audit View**: Unified view of Compliance Logs and User Activity Logs.
-- **Inventory Management**: Full asset CRUD with QR code generation and status tracking.
+**Implementation**:
 
-### 4. Cross-Module Integration
+- Models must implement both `Auditable` and `LogsActivity` traits
+- Critical operations require audit trail documentation
+- Superuser role has exclusive access to audit review interfaces
 
-- **Unified Profile**: Dashboard shows combined history of Helpdesk Tickets and Asset Loans.
-- **Account Linking**: Optional service to retrospectively link past guest submissions to a new staff account upon registration.
-- **Shared Notification System**: Centralized queue management for both modules.
+### Self-Registration & Email Workflows
 
-## Target Users & Use Cases
+**Requirements**:
 
-### Primary Users
+- Staff registration limited to `@motac.gov.my` email domains
+- Token-based workflows for approvals (no login required for approvers)
+- Email notifications must support both authenticated and guest users
+- Account linking service for retrospective guest submission association
 
-1. **MOTAC Staff (Internal Users)**
-   - **Authenticated**: Log in via Laravel Breeze (Email/Username) to access "My Dashboard", view full history, and manage profile/preferences.
-   - **Guest**: Submit forms quickly for urgent issues without logging in.
+## Module Implementation Patterns
 
-2. **Department Heads / Approvers (Grade 41+)**
-   - Review and approve/reject loan applications via secure signed email links.
-   - **No system login required** for approval actions.
+### Helpdesk Module (Core Business Logic)
 
-3. **Admin Staff (BPM ICT Team)**
-   - Process tickets/loans and manage asset inventory via Filament.
-   - Monitor operational dashboards.
+**Models**: `HelpdeskTicket`, `HelpdeskComment`, `HelpdeskAttachment`  
+**Key Features**:
 
-4. **Superuser (BPM Management)**
-   - Manage system configuration, users, and roles.
-   - Access **Laravel Telescope** for debugging.
-   - Review comprehensive Dual Audit logs for compliance.
+- Hybrid submission (guest/authenticated) with nullable `user_id`
+- Category-based SLA tracking with automated breach warnings
+- Multi-channel notifications (Email, Database, WebSocket)
+- Status workflow: Open → In Progress → Resolved → Closed
+- AI-powered FAQ Bot integration for instant support
 
-### Common Use Cases
+**Development Guidelines**:
 
-- **UC-01:** Staff self-registers with `@motac.gov.my` email and verifies account.
-- **UC-02:** Authenticated staff submits ticket; form auto-fills name/dept/grade.
-- **UC-03:** Guest staff submits urgent ticket; tracks status via token link.
-- **UC-04:** Department head approves asset loan via email token.
-- **UC-05:** Superuser reviews audit logs to trace a status change.
-- **UC-06:** New staff member links previous guest submissions to their new account.
+- Use Livewire components for real-time status updates
+- Implement email-based tracking tokens for guest submissions
+- Ensure WCAG 2.2 AA compliance for all form interfaces
+- Add comprehensive audit logging for all status changes
+- Integrate AI chatbot for automated first-line support (D18)
 
-## Technical Highlights
+### Asset Loan Module (Approval Workflows)
 
-- **Framework**: Laravel 12.40.1, PHP 8.2.12
-- **UI**: Livewire 3.7, Volt 1.10, Tailwind 4.1 (@theme config)
-- **Admin**: Filament 4.1.10
-- **Real-Time**: Laravel Reverb 1.6.2 + Echo
-- **Audit**: `owen-it` (Compliance) + `spatie` (Operations)
-- **Debugging**: Laravel Telescope (Superuser only)
-- **Database**: MySQL 8.0 with Nullable `user_id` FKs
+**Models**: `LoanApplication`, `LoanItem`, `LoanTransaction`  
+**Key Features**:
 
-## Compliance Standards
+- Real-time availability checking via Livewire 3.7
+- Token-based approval system for Grade 41+ officers
+- Asset lifecycle management with condition reporting
+- Cross-module integration (damaged returns → helpdesk tickets)
+- AI-generated auto-reply drafts for approval workflows
 
-- **PDPA 2010**: Strict data protection for staff personal info.
-- **WCAG 2.2 AA**: Full accessibility compliance (Bahasa Melayu interface).
-- **ISO 8000**: Data quality and integrity standards.
-- **MyGOV Digital Service Standards v2.1.0**: Government digital service compliance.
-- **ISO/IEC 27701**: Privacy Information Management.
-- **ISO/IEC/IEEE 15288**: Systems and software engineering standards.
-- **ISO/IEC/IEEE 12207**: Software life cycle processes.
-- **ISO/IEC/IEEE 29148**: Requirements engineering standards.
+**Development Guidelines**:
 
-## Documentation Standards (D00-D17)
+- Implement conflict detection for asset availability
+- Use signed email links for approval workflows
+- Maintain asset inventory with QR code generation
+- Ensure proper role-based access control (RBAC)
+- Integrate AI auto-reply generation for streamlined approvals (D18)
 
-ICTServe follows comprehensive documentation standards:
+### AI Chatbot Module (Cloud Hybrid AI Architecture - D18)
 
-- **D00**: System Overview - True Hybrid Architecture governance
-- **D03**: Software Requirements - 38+ functional requirements (SRS-HELP-*, SRS-AUTH-*, SRS-DATA-*)
-- **D04**: Software Design - Architecture patterns and component structure
-- **D09**: Database Documentation - Dual audit system (owen-it + spatie)
-- **D12-D14**: UI/UX Design Standards - WCAG 2.2 AA compliance, MyDS v2025.2 alignment
-- **D15**: Language Standards - Bahasa Melayu sahaja (v3.6.0)
-- **D16**: Broadcasting Setup - Laravel Reverb WebSocket configuration
-- **D17**: Queue Management - Laravel Horizon for notifications and background jobs
+**Models**: `BedrockConversation`, `Faq`, `Document`, `MessageLog`, `AutoReplyTemplate`  
+**Key Features**:
+
+- Cloud Hybrid AI (Ollama local + AWS Bedrock cloud)
+- Multi-model intelligence (Claude Opus/Sonnet/Haiku, Nova, Titan)
+- Smart query routing (FAQ → Ollama RAG, Complex → Bedrock)
+- Web-augmented responses with DuckDuckGo integration
+- Conversation management with save/load/delete functionality
+
+**Development Guidelines**:
+
+- Use True Hybrid Architecture with nullable `user_id` FK
+- Implement model routing based on task complexity
+- Ensure data residency compliance (Malaysia)
+- Add comprehensive audit logging for AI interactions
+- Maintain WCAG 2.2 AA compliance for streaming responses
+
+### Administrative Interface (Filament v4)
+
+**Role Hierarchy**:
+
+- `staff`: Basic authenticated access to personal dashboard + AI chatbot
+- `approver`: Grade 41+ officers with approval permissions + AI auto-reply review
+- `admin`: Operational management (tickets, loans, assets) + AI configuration
+- `superuser`: System configuration, audit review, Laravel Telescope access + AI monitoring
+
+**Implementation Requirements**:
+
+- Use Filament Resources for CRUD operations
+- Implement real-time dashboard widgets via Laravel Reverb
+- Provide unified audit log viewing interface
+- Ensure proper authorization policies for each role
+- Add AI management interfaces (FAQ management, document ingestion, model configuration)
+- Implement AI performance monitoring and cost tracking dashboards
+
+## User Experience Patterns
+
+### Authentication & Access Control
+
+**Email Domain Validation**: Only `@motac.gov.my` emails allowed for registration  
+**Session Management**: Laravel Breeze with email/username login support  
+**Guest Access**: No authentication required for form submissions  
+**Token Security**: Signed URLs for approval workflows and status tracking
+
+### User Interface Standards
+
+**Language**: Bahasa Melayu sahaja (English disabled in v3.6.0)  
+**Accessibility**: WCAG 2.2 AA compliance mandatory  
+**Responsive Design**: Mobile-first approach with Tailwind CSS  
+**Real-Time Updates**: Laravel Reverb WebSocket integration
+
+**Development Requirements**:
+
+- All text must be in Bahasa Melayu
+- Form validation messages in Bahasa Melayu
+- Ensure 4.5:1 contrast ratio for text, 3:1 for UI elements
+- Implement proper focus indicators and keyboard navigation
+- Use semantic HTML and ARIA labels appropriately
+
+### Notification System Architecture
+
+**Multi-Channel Support**:
+
+- Email notifications for all user types
+- Database notifications for authenticated users
+- WebSocket real-time updates via Laravel Reverb
+- AI-powered notification content generation
+- SMS integration for critical alerts (future enhancement)
+
+**Implementation Pattern**:
+
+- Use Laravel's notification system with multiple channels
+- Queue all notifications via Redis for performance
+- Implement user preference management for notification types
+- Ensure notification templates support both guest and authenticated contexts
+- Integrate AI auto-reply generation for approval workflow notifications (D18)
+- Use streaming responses for real-time AI chat notifications
+
+## Development Standards & Compliance
+
+### Technology Stack Requirements
+
+**Backend**: Laravel 12.40.1, PHP 8.2.12 with strict typing  
+**Frontend**: Livewire 3.7, Volt 1.10, Tailwind 4.1 (@theme config)  
+**Admin Panel**: Filament 4.1.10 with role-based access control  
+**Real-Time**: Laravel Reverb 1.6.2 + Echo for WebSocket communication  
+**Database**: MySQL 8.0 with nullable `user_id` foreign keys for hybrid architecture  
+**AI Services**: Ollama (local LLM) + AWS Bedrock (Claude models, Nova, Titan)  
+**AI Infrastructure**: Redis (caching), Laravel Horizon (queue), Laravel Pulse (monitoring)
+
+### Mandatory Compliance Standards
+
+**PDPA 2010 (Malaysian Privacy Law)**:
+
+- Encrypt all personal data at rest and in transit
+- Implement data retention policies with automated cleanup
+- Provide data export/deletion capabilities for staff
+- Log all access to personal information via audit system
+
+**WCAG 2.2 AA Accessibility**:
+
+- Minimum 4.5:1 contrast ratio for normal text
+- Minimum 3:1 contrast ratio for UI components
+- Keyboard navigation support for all interactive elements
+- Screen reader compatibility with proper ARIA labels
+- Focus indicators visible and high contrast
+
+**MyGOV Digital Service Standards v2.1.0**:
+
+- Mobile-first responsive design
+- Performance: Core Web Vitals compliance
+- Security: HTTPS enforcement, CSP headers
+- Bahasa Melayu as primary interface language
+
+### Code Quality Requirements
+
+**PSR-12 Compliance**: Enforced via Laravel Pint  
+**Static Analysis**: PHPStan Level 9 via Larastan  
+**Testing**: PHPUnit 12 with PHP 8 attributes (minimum 80% coverage)  
+**Documentation**: All features must reference D00-D17 specifications
+
+### Documentation Traceability (D00-D18)
+
+**CRITICAL**: All code changes must reference appropriate documentation sections:
+
+- **D00**: System architecture decisions and hybrid patterns
+- **D03**: Functional requirements (38+ SRS specifications)
+- **D04**: Component design and integration patterns
+- **D09**: Database schema and dual audit implementation
+- **D12-D14**: UI/UX compliance and accessibility standards
+- **D15**: Language localization (Bahasa Melayu only)
+- **D16**: Real-time broadcasting setup and WebSocket configuration
+- **D17**: Background job processing and queue management
+- **D18**: AI Chatbot Ollama-Bedrock integration (Cloud Hybrid AI Architecture)
+
+**Implementation Rule**: Include D-section references in commit messages and pull request descriptions for traceability.

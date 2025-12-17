@@ -207,7 +207,7 @@ The file `.env.docker` had `APP_KEY=` (blank value). Docker Compose loads enviro
 
 ```dotenv
 APP_ENV=production
-APP_KEY=base64:/2lLuUKZI9QSDTBWO6/8pCyCvinRoBWIZRK4w50szFk=
+APP_KEY=base64:<APP_KEY_BASE64>
 APP_DEBUG=false
 ```
 
@@ -563,7 +563,7 @@ curl -s http://localhost:8000/ | grep -q "200" && echo "✓ Homepage loads"
 | File | Changes | Reason |
 |------|---------|--------|
 | `routes/channels.php` | Commented 4 Broadcast::channel() definitions | Prevent bootstrap errors with undefined Redis |
-| `.env.docker` | Added `APP_KEY=base64:/...` | Enable encryption service |
+| `.env.docker` | Added `APP_KEY=base64:<APP_KEY_BASE64>` | Enable encryption service |
 | `nginx.conf` | Changed `$host` → `$http_host` (2 locations) | Preserve port in asset URLs |
 | `public/hot` | Deleted | Force production manifest mode |
 | `database/` | Ran migrations | Create missing tables including sessions |

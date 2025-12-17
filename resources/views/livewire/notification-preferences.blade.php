@@ -53,10 +53,10 @@
                 </div>
             </div>
             <div class="flex gap-2">
-                <button type="button" wire:click="enableAll" class="text-xs px-3 py-1 min-h-44 bg-blue-600 hover:bg-blue-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button type="button" wire:click="enableAll" class="text-xs px-3 py-1 min-h-11 bg-blue-600 hover:bg-blue-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     {{ __('portal.enable_all') }}
                 </button>
-                <button type="button" wire:click="disableAll" class="text-xs px-3 py-1 min-h-44 bg-gray-600 hover:bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <button type="button" wire:click="disableAll" class="text-xs px-3 py-1 min-h-11 bg-gray-600 hover:bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                     {{ __('portal.disable_all') }}
                 </button>
             </div>
@@ -155,7 +155,7 @@
                         aria-checked="{{ $ticketStatusUpdates ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_ticket_status_updates') }}"
                         wire:click="updatePreference('ticketStatusUpdates', {{ $ticketStatusUpdates ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-44 min-w-44 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $ticketStatusUpdates ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $ticketStatusUpdates ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_ticket_status_updates') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $ticketStatusUpdates ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -187,7 +187,7 @@
                         aria-checked="{{ $loanApprovalNotifications ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_loan_approval_notifications') }}"
                         wire:click="updatePreference('loanApprovalNotifications', {{ $loanApprovalNotifications ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-44 min-w-44 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $loanApprovalNotifications ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $loanApprovalNotifications ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_loan_approval_notifications') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $loanApprovalNotifications ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -219,7 +219,7 @@
                         aria-checked="{{ $overdueReminders ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_overdue_reminders') }}"
                         wire:click="updatePreference('overdueReminders', {{ $overdueReminders ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-44 min-w-44 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $overdueReminders ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $overdueReminders ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_overdue_reminders') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $overdueReminders ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -251,7 +251,7 @@
                         aria-checked="{{ $systemAnnouncements ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_system_announcements') }}"
                         wire:click="updatePreference('systemAnnouncements', {{ $systemAnnouncements ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-44 min-w-44 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $systemAnnouncements ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $systemAnnouncements ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_system_announcements') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $systemAnnouncements ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -283,7 +283,7 @@
                         aria-checked="{{ $ticketAssignments ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_ticket_assignments') }}"
                         wire:click="updatePreference('ticketAssignments', {{ $ticketAssignments ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-44 min-w-44 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $ticketAssignments ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $ticketAssignments ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_ticket_assignments') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $ticketAssignments ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -315,7 +315,7 @@
                         aria-checked="{{ $commentReplies ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_comment_replies') }}"
                         wire:click="updatePreference('commentReplies', {{ $commentReplies ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-44 min-w-44 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $commentReplies ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $commentReplies ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_comment_replies') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $commentReplies ? 'translate-x-5' : 'translate-x-0' }}"></span>

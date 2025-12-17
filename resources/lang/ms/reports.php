@@ -13,4 +13,10 @@ return [
     'select_format' => 'Format',
     'start_date' => 'Tarikh Mula',
     'end_date' => 'Tarikh Akhir',
+
+    // Additional report translations (v3.6.0)
+    'summary_statistics' => 'Statistik Ringkasan',
+    'total_applications' => 'Jumlah Permohonan',
+    'in_use' => 'Sedang Digunakan',
+    'applications_breakdown' => 'Pecahan Permohonan',
 ];

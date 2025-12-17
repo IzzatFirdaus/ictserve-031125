@@ -55,7 +55,7 @@ null;
             @if ($showCount && $maxlength) x-on:input="charCount = $el.value.length" @endif
             {{ $attributes->except(['class'])->merge([
                 'class' =>
-                    'block w-full rounded-m border-gray-300 shadow-sm ' .
+                    'block w-full rounded-md border-gray-300 shadow-sm ' .
                     'focus:border-primary-500 focus:outline-none ' .
                     'transition-colors duration-200 ' .
                     'dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 ' .

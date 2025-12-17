@@ -1,7 +1,7 @@
 # MCP Documentation Index
 
-**Last Updated**: 2025-12-09  
-**Total Documents**: 12
+**Last Updated**: 2025-12-16  
+**Total Documents**: 13
 
 This directory contains comprehensive documentation for Model Context Protocol (MCP) server configuration and usage in the ICTServe project.
 
@@ -46,6 +46,14 @@ This directory contains comprehensive documentation for Model Context Protocol (
 - GitHub integration workflows
 
 ### Development Guides
+
+**[LARAVEL_BOOST_MCP_INTEGRATION.md](LARAVEL_BOOST_MCP_INTEGRATION.md)** - **NEW: 2025-12-16**
+
+- Laravel Boost MCP server configuration troubleshooting
+- Laravel MCP framework vs direct command approach
+- Protocol negotiation and connection timeout solutions
+- LaravelBoostCompatServer implementation details
+- **Use this for**: Laravel Boost connection issues, MCP integration problems
 
 **[DEVELOPERS_MCP.md](DEVELOPERS_MCP.md)**
 

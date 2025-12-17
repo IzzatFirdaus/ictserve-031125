@@ -34,14 +34,11 @@
       ]
     },
     "fetch": {
-      "command": "C:\\Users\\exatf\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "command": "uvx",
       "args": [
-        "-m",
-        "mcp_server_fetch"
+        "--native-tls",
+        "mcp-server-fetch"
       ],
-      "env": {
-        "PYTHONIOENCODING": "utf-8"
-      },
       "disabled": false,
       "autoApprove": [
         "fetch"
@@ -60,15 +57,12 @@
         "click",
         "fill",
         "evaluate_script",
-        "list_pages",
         "list_console_messages",
         "list_network_requests",
-        "get_network_request",
         "take_screenshot",
-        "get_console_message",
-        "resize_page",
-        "emulate",
-        "select_page"
+        "list_pages",
+        "wait_for",
+        "new_page"
       ]
     },
     "firecrawl": {
@@ -80,7 +74,7 @@
       "env": {
         "FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
       },
-      "disabled": false,
+      "disabled": true,
       "autoApprove": []
     },
     "playwright": {
@@ -96,7 +90,9 @@
         "browser_snapshot",
         "browser_fill",
         "browser_evaluate",
-        "browser_close"
+        "browser_take_screenshot",
+        "browser_type",
+        "browser_select_option"
       ]
     },
     "context7": {
@@ -108,7 +104,7 @@
       "env": {
         "CONTEXT7_API_KEY": "$env:CONTEXT7_API_KEY"
       },
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "resolve-library-id",
         "get-library-docs"
@@ -118,8 +114,13 @@
       "command": "php",
       "args": [
         "artisan",
-        "boost:mcp"
+        "mcp:start",
+        "laravel-boost"
       ],
+      "cwd": "C:\\XAMPP\\htdocs\\ictserve-031125",
+      "env": {
+        "APP_ENV": "local"
+      },
       "disabled": false,
       "autoApprove": [
         "application-info",
@@ -161,13 +162,12 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-github",
-        "--tools=get_file_contents,create_or_update_file,search_repositories,get_pull_request,list_commits,create_issue"
+        "@modelcontextprotocol/server-github"
       ],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
       },
-      "disabled": false,
+      "disabled": true,
       "autoApprove": []
     },
     "gitkraken": {
@@ -181,8 +181,7 @@
         "git_add_or_commit",
         "git_log_or_diff",
         "git_push",
-        "git_branch",
-        "git_checkout"
+        "git_stash"
       ]
     },
     "bedrock-opus": {
@@ -204,7 +203,7 @@
     },
     "figma": {
       "url": "https://mcp.figma.com/mcp",
-      "disabled": false,
+      "disabled": true,
       "autoApprove": []
     },
     "agentcore-mcp-server": {

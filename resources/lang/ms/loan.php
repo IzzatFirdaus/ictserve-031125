@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Translation file: Loan Module (Bahasa Melayu)
  * Description: Malay language translations for loan application module
@@ -17,6 +19,7 @@ return [
     'form' => [
         'title' => 'Borang Permohonan Pinjaman Peralatan ICT',
         'guest_loan_application' => 'Borang Permohonan Pinjaman Tetamu',
+        'application_description' => 'Mohon pinjaman peralatan ICT untuk kegunaan rasmi kementerian',
         'subtitle' => 'Untuk Kegunaan Rasmi Kementerian Pelancongan, Seni dan Budaya',
         'section_label' => 'BORANG',
         'of_4_pages' => 'daripada 4 muka surat',
@@ -26,6 +29,47 @@ return [
         'responsible_officer_acknowledgement' => 'Saya mengakui bahawa saya bertanggungjawab untuk menjaga dan menggunakan peralatan yang dipinjam dengan betul sepanjang tempoh pinjaman. Saya akan memastikan peralatan dipulangkan dalam keadaan baik pada atau sebelum tarikh yang ditetapkan.',
         'progress' => 'Kemajuan Permohonan',
 
+        'loan_period' => 'Tempoh Pinjaman',
+
+        // Section headers for all steps
+        'section_2_asset_selection' => 'BAHAGIAN 2 | PEMILIHAN ASET',
+        'section_3_loan_details' => 'BAHAGIAN 3 | BUTIRAN PINJAMAN',
+        'section_4_approval' => 'BAHAGIAN 4 | BUTIRAN KELULUSAN',
+        'section_5_terms' => 'BAHAGIAN 5 | TERMA DAN SYARAT',
+        'section_6_documents' => 'BAHAGIAN 6 | DOKUMEN SOKONGAN',
+        'section_7_review' => 'BAHAGIAN 7 | SEMAKAN DAN PENGESAHAN',
+        'section_7_complete' => 'BAHAGIAN 7 | PERMOHONAN SELESAI',
+        'section_8_complete' => 'BAHAGIAN 8 | PERMOHONAN SELESAI',
+
+        // Section notes
+        'select_assets_note' => 'Pilih aset yang diperlukan untuk permohonan anda',
+        'loan_details_note' => 'Berikan butiran tambahan untuk permohonan pinjaman',
+        'approval_details_note' => 'Maklumat penyelia untuk kelulusan permohonan',
+        'terms_conditions_note' => 'Baca dan terima terma dan syarat pinjaman',
+        'documents_upload_note' => 'Muat naik dokumen sokongan (pilihan)',
+        'review_details_note' => 'Semak semua maklumat sebelum menghantar permohonan',
+        'submission_complete_note' => 'Permohonan anda telah berjaya dihantar',
+
+        // Form sections
+        'available_assets' => 'Aset Yang Tersedia',
+        'selected_assets' => 'Aset Dipilih',
+        'terms_conditions_title' => 'Terma dan Syarat Pinjaman',
+        'terms_acceptance' => 'Saya bersetuju dengan terma dan syarat yang dinyatakan',
+        'liability_acceptance' => 'Saya memahami liabiliti saya terhadap aset yang dipinjam',
+        'final_confirmation_text' => 'Saya mengesahkan bahawa semua maklumat yang diberikan adalah tepat dan benar',
+        'application_submitted' => 'Permohonan Berjaya Dihantar',
+        'application_number' => 'Nombor Permohonan',
+        'confirmation_email_sent' => 'E-mel pengesahan telah dihantar ke alamat e-mel anda',
+        'approval_process_info' => 'Permohonan anda akan diproses dalam tempoh 3-5 hari bekerja',
+
+        // File upload
+        'optional' => 'pilihan',
+        'click_to_upload' => 'Klik untuk muat naik',
+        'or_drag_and_drop' => 'atau seret dan lepas',
+        'file_types' => 'Jenis fail',
+        'max_size' => 'Saiz maksimum',
+        'uploading' => 'Memuat naik',
+
         // Step labels
         'step_1_label' => 'Maklumat Pemohon',
         'step_2_label' => 'Pegawai Bertanggungjawab',
@@ -34,6 +78,7 @@ return [
         'step_5_label' => 'Pengesahan Pemohon',
         'step_6_label' => 'Pemilihan Pelulus',
         'step_7_label' => 'Semakan Akhir',
+        'step_8_label' => 'Selesai',
 
         // Section headers
         'section_1_applicant' => 'BAHAGIAN 1 | MAKLUMAT PEMOHON',
@@ -124,6 +169,16 @@ return [
         'approver_name' => 'Nama Pelulus',
         'emergency_request' => 'Permohonan Kecemasan',
         'emergency_justification' => 'Justifikasi Kecemasan',
+        'asset_tag' => 'Tag Aset',
+        'condition' => 'Keadaan',
+        'supporting_documents' => 'Dokumen Sokongan',
+        'supervisor_name' => 'Nama Penyelia',
+        'supervisor_email' => 'E-mel Penyelia',
+        'supervisor_position' => 'Jawatan Penyelia',
+        'supervisor_grade' => 'Gred Penyelia',
+        'justification' => 'Justifikasi',
+        'additional_requirements' => 'Keperluan Tambahan',
+        'special_instructions' => 'Arahan Khas',
     ],
 
     'placeholders' => [
@@ -140,6 +195,15 @@ return [
         'signature' => 'Nama penuh',
         'enter_full_name_signature' => 'Taipkan nama penuh anda',
         'search_by_name_staff_id' => 'Cari nama atau nombor kakitangan',
+        'emergency_justification' => 'Terangkan mengapa ini adalah permohonan kecemasan (minimum 50 aksara)',
+        'select_category' => 'Pilih kategori aset',
+        'supervisor_name' => 'Masukkan nama penyelia',
+        'supervisor_email' => 'Masukkan e-mel penyelia',
+        'supervisor_position' => 'Masukkan jawatan penyelia',
+        'select_grade' => 'Pilih gred penyelia',
+        'justification' => 'Berikan justifikasi untuk permohonan ini',
+        'additional_requirements' => 'Nyatakan sebarang keperluan tambahan',
+        'special_instructions' => 'Berikan arahan khas jika ada',
     ],
 
     'table' => [
@@ -157,6 +221,9 @@ return [
         'add_equipment' => 'Tambah Peralatan',
         'remove_equipment' => 'Buang Peralatan',
         'change_approver' => 'Tukar Pelulus',
+        'submitting' => 'Menghantar',
+        'submit_another' => 'Hantar Permohonan Lain',
+        'return_home' => 'Kembali ke Laman Utama',
     ],
 
     'common' => [
@@ -192,6 +259,7 @@ return [
         'if_applicable' => 'jika ada',
         'is_responsible_officer' => 'Tandakan jika anda adalah pegawai yang bertanggungjawab untuk peralatan ini',
         'applicant_is_responsible' => 'Jika ditandakan, anda akan bertanggungjawab terhadap peralatan sepanjang tempoh pinjaman.',
+        'emergency_request' => 'Tandakan jika ini adalah permohonan kecemasan yang memerlukan pemprosesan segera (kurang dari 3 hari bekerja).',
     ],
 
     'units' => [
@@ -201,6 +269,12 @@ return [
     'messages' => [
         'application_submitted' => 'Permohonan anda telah berjaya dihantar. Nombor permohonan: :application_number',
         'submission_failed' => 'Permohonan gagal dihantar. Sila cuba lagi.',
+        'application_submitted_check_email' => 'Permohonan berjaya dihantar! Sila semak emel anda.',
+        'application_linked_successfully' => 'Permohonan berjaya dipautkan ke akaun anda',
+        'extension_request_submitted' => 'Permohonan lanjutan telah dihantar untuk kelulusan',
+        'application_claimed_successfully' => 'Permohonan berjaya dituntut',
+        'application_approved' => 'Permohonan telah diluluskan',
+        'application_rejected' => 'Permohonan telah ditolak',
         'not_provided' => 'Tidak dinyatakan',
         'unknown' => 'Tidak diketahui',
         'no_assets_requested' => 'Tiada aset dipohon',
@@ -214,6 +288,9 @@ return [
         'please_read_all_terms' => 'Sila baca semua terma dan syarat sebelum meneruskan',
         'responsible_officer_required' => 'Sila berikan butiran Pegawai Bertanggungjawab di bawah.',
         'applicant_is_responsible_confirmed' => 'Anda telah mengesahkan bahawa anda adalah Pegawai Bertanggungjawab untuk peralatan ini.',
+        'emergency_request_warning' => 'Permohonan kecemasan memerlukan kelulusan daripada pegawai Gred 44 ke atas dan mungkin tertakluk kepada penelitian tambahan.',
+        'no_assets_available' => 'Tiada aset tersedia untuk kategori yang dipilih',
+        'select_category_first' => 'Sila pilih kategori terlebih dahulu untuk melihat aset yang tersedia',
     ],
 
     'declaration' => [
@@ -223,6 +300,12 @@ return [
     ],
 
     'terms' => [
+        'responsibility' => 'Peminjam bertanggungjawab sepenuhnya terhadap keselamatan dan penyelenggaraan peralatan yang dipinjam',
+        'damage_liability' => 'Sebarang kerosakan atau kehilangan peralatan akan dikenakan bayaran penggantian mengikut harga pasaran semasa',
+        'return_condition' => 'Peralatan mesti dipulangkan dalam keadaan baik pada atau sebelum tarikh yang ditetapkan',
+        'usage_restriction' => 'Peminjam tidak dibenarkan memindahkan atau meminjamkan peralatan kepada pihak ketiga tanpa kebenaran bertulis',
+        'extension_policy' => 'Permohonan lanjutan tempoh pinjaman hendaklah dibuat sekurang-kurangnya 2 hari sebelum tarikh tamat tempoh',
+        'violation_consequences' => 'Kegagalan mematuhi terma dan syarat ini boleh mengakibatkan tindakan tatatertib mengikut peraturan perkhidmatan awam',
         'line_1' => '1. Peralatan ICT ini dipinjamkan untuk kegunaan rasmi Kementerian Pelancongan, Seni dan Budaya Malaysia sahaja.',
         'line_2' => '2. Peminjam bertanggungjawab sepenuhnya terhadap keselamatan dan penyelenggaraan peralatan yang dipinjam.',
         'line_3' => '3. Sebarang kerosakan atau kehilangan peralatan akan dikenakan bayaran penggantian mengikut harga pasaran semasa.',
@@ -475,7 +558,7 @@ return [
         'success_message' => 'Keputusan anda telah direkodkan dengan jayanya. Pemohon akan dimaklumkan melalui e-mel.',
         'token_required' => 'Token kelulusan diperlukan.',
         'token_invalid' => 'Pautan kelulusan tidak sah. Pautan mungkin telah digunakan atau tidak betul.',
-        'token_expired' => 'Pautan kelulusan ini telah tamat tempoh. Sila hubungi pemohon untuk permintaan kelulusan baru.',
+        'token_expired' => 'Pautan kelulusan ini telah tamat tempoh (expired). Sila hubungi pemohon untuk permintaan kelulusan baharu.',
         'already_processed' => 'Permohonan ini telah diproses (status semasa: :status).',
         'load_error' => 'Tidak dapat memuatkan permintaan kelulusan. Sila cuba lagi kemudian.',
         'approved_via_email' => 'Diluluskan melalui pautan e-mel',
@@ -508,4 +591,10 @@ return [
         'security_notice_text' => 'Pautan kelulusan ini sah selama 7 hari dan hanya boleh digunakan sekali. Keputusan anda akan direkodkan dalam jejak audit sistem.',
         'help_text' => 'Jika anda mempunyai sebarang pertanyaan mengenai permohonan ini, sila hubungi pasukan Sokongan ICT.',
     ],
+
+    // Navigation and general keys
+    'step' => 'Langkah',
+    'of_steps' => 'daripada :total langkah',
+    'step_navigation' => 'Navigasi langkah',
+    'wizard_progress' => 'Kemajuan Borang',
 ];

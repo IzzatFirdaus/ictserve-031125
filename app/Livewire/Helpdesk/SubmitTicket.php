@@ -15,7 +15,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
@@ -41,8 +40,10 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.front')]
 class SubmitTicket extends Component
 {
-    use OptimizedFormPerformance;
-    use OptimizedLivewireComponent;
+    use OptimizedFormPerformance, OptimizedLivewireComponent {
+        OptimizedFormPerformance::getSelectColumns as getFormSelectColumns;
+        OptimizedLivewireComponent::getSelectColumns as getComponentSelectColumns;
+    }
     use WithFileUploads;
 
     // Wizard state
@@ -64,10 +65,10 @@ class SubmitTicket extends Component
     public ?string $staff_id = null;
 
     #[Validate('required|exists:divisions,id')]
-    public ?int $division_id = null;
+    public string $division_id = '';
 
     #[Validate('required|string|max:50')]
-    public ?string $job_grade = null;
+    public string $job_grade = '';
 
     #[Validate('accepted')]
     public bool $declaration_accepted = false;
@@ -105,22 +106,35 @@ class SubmitTicket extends Component
     public ?string $ticketNumber = null;
 
     /**
+     * Resolve trait method collision for getSelectColumns().
+     *
+     * OptimizedFormPerformance expects a model class string parameter, while
+     * OptimizedLivewireComponent expects no parameters.
+     *
+     * @return array<int, string>
+     */
+    protected function getSelectColumns(?string $model = null): array
+    {
+        if ($model !== null) {
+            return $this->getFormSelectColumns($model);
+        }
+
+        return $this->getComponentSelectColumns();
+    }
+
+    /**
      * Initialize component state.
-     * Prefill fields for authenticated users to meet requirement that their details are auto-filled.
+     * Ensure dropdowns show placeholders for both guest and authenticated users.
      */
     public function mount(): void
     {
-        if (Auth::check()) {
-            $user = Auth::user();
+        // Explicitly ensure dropdowns start with empty string values to show placeholders
+        $this->division_id = '';
+        $this->job_grade = '';
 
-            // Prefill division for authenticated users so final validation won't require manual input
-            if (is_null($this->division_id) && isset($user->division_id)) {
-                $this->division_id = $user->division_id;
-            }
-
-            // Authenticated users' name/email/phone/staff_id are displayed in the UI section,
-            // no need to set guest_* fields as they are ignored on submit.
-        }
+        // Initialize other form state
+        $this->declaration_accepted = false;
+        $this->terms_accepted = false;
     }
 
     /**
@@ -256,12 +270,15 @@ class SubmitTicket extends Component
      */
     protected function validateStep1(): void
     {
-        // Authenticated users: ensure division id is set (prefilled in mount)
+        // Authenticated users: require division and job grade selection
         if (Auth::check()) {
-            $user = Auth::user();
-            if ($user instanceof User && is_null($this->division_id) && isset($user->division_id)) {
-                $this->division_id = $user->division_id;
-            }
+            $this->validate([
+                'division_id' => 'required|exists:divisions,id',
+                'job_grade' => 'required|string|max:50',
+            ], [
+                'division_id.required' => __('helpdesk.division_required'),
+                'job_grade.required' => __('helpdesk.job_grade_required'),
+            ]);
 
             return; // Skip guest validation rules
         }
@@ -302,8 +319,8 @@ class SubmitTicket extends Component
                 assert($user instanceof User);
 
                 // Ensure division id is prefilled from user
-                if (is_null($this->division_id) && isset($user->division_id)) {
-                    $this->division_id = $user->division_id;
+                if (empty($this->division_id) && isset($user->division_id)) {
+                    $this->division_id = (string) $user->division_id;
                 }
 
                 $this->validate([
@@ -386,8 +403,9 @@ class SubmitTicket extends Component
                 // Guest submission - use guest fields
                 // Map selected division_id to both relational FK and human-readable guest_division
                 $selectedDivisionName = null;
-                if (! empty($this->division_id)) {
-                    $selectedDivisionName = Division::find($this->division_id)?->name;
+                $divisionId = ! empty($this->division_id) ? (int) $this->division_id : null;
+                if ($divisionId) {
+                    $selectedDivisionName = Division::find($divisionId)?->name;
                 }
 
                 $ticket = $service->createGuestTicket([
@@ -397,7 +415,7 @@ class SubmitTicket extends Component
                     'guest_staff_id' => $this->staff_id,
                     'guest_grade' => null, // Can be enhanced later
                     'guest_division' => $selectedDivisionName, // store human-readable division
-                    'division_id' => $this->division_id, // also store relational FK
+                    'division_id' => $divisionId, // also store relational FK
                     'job_grade' => $this->job_grade,
                     'declaration_accepted' => $this->declaration_accepted,
                     'category_id' => $this->category_id,
@@ -415,10 +433,13 @@ class SubmitTicket extends Component
                 foreach ($this->attachments as $attachment) {
                     $path = $attachment->store('helpdesk-attachments', 'private');
                     $ticket->attachments()->create([
-                        'file_name' => $attachment->getClientOriginalName(),
+                        'filename' => $attachment->getClientOriginalName(),
+                        'original_filename' => $attachment->getClientOriginalName(),
                         'file_path' => $path,
                         'file_size' => $attachment->getSize(),
                         'mime_type' => $attachment->getMimeType(),
+                        'disk' => 'private',
+                        'user_id' => Auth::id(),
                     ]);
                 }
             }

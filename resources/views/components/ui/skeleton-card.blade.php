@@ -1,4 +1,4 @@
-{{--
+﻿{{--
 /**
  * Skeleton Card Component
  *
@@ -52,8 +52,8 @@ default
             <div class="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-(--radius-l) skeleton-pulse"></div>
         </div>
         <div class="flex-1 space-y-2">
-            <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded-xs w-2/3 skeleton-pulse"></div>
-            <div class="h-5 bg-gray-200 dark:bg-gray-700 rounded-xs w-1/3 skeleton-pulse"></div>
+            <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded-sm w-2/3 skeleton-pulse"></div>
+            <div class="h-5 bg-gray-200 dark:bg-gray-700 rounded-sm w-1/3 skeleton-pulse"></div>
         </div>
     </div>
     @else
@@ -65,14 +65,14 @@ default
             </div>
             <div class="ml-5 w-0 flex-1">
                 <div class="space-y-3">
-                    <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-xs w-3/4 skeleton-pulse"></div>
-                    <div class="h-8 bg-gray-200 dark:bg-gray-700 rounded-xs w-1/2 skeleton-pulse"></div>
+                    <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-sm w-3/4 skeleton-pulse"></div>
+                    <div class="h-8 bg-gray-200 dark:bg-gray-700 rounded-sm w-1/2 skeleton-pulse"></div>
                 </div>
             </div>
         </div>
     </div>
     <div class="bg-gray-50 dark:bg-gray-900 px-5 py-3">
-        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-xs w-1/3 skeleton-pulse"></div>
+        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-sm w-1/3 skeleton-pulse"></div>
     </div>
     @endif
 

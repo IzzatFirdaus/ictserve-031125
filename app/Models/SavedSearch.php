@@ -10,13 +10,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * SavedSearch Model
- *
+ * 
  * Stores user search history and saved searches for cross-module search.
  * Uses existing table schema with search_type for categorization.
  *
  * @see D03-FR-011.2 (Cross-module search functionality)
  * @see D04 §5.2 (Cross-Module Search System)
- *
  * @property int $id
  * @property int $user_id
  * @property string|null $name
@@ -25,6 +24,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read User $user
+ * @property-read \Carbon\Carbon|null $last_used_at
+ * @property-read string|null $query
+ * @property-read int $result_count
+ * @method static \Database\Factories\SavedSearchFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch forUser(int $userId)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch history()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch saved()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereFilters($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereSearchType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SavedSearch whereUserId($value)
+ * @mixin \Eloquent
  */
 class SavedSearch extends Model
 {

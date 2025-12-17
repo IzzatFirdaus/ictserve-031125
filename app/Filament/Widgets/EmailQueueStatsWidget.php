@@ -16,12 +16,12 @@ class EmailQueueStatsWidget extends BaseWidget
         $failedJobs = DB::table('failed_jobs')->count();
 
         return [
-            Stat::make('Pending Emails', $pendingJobs)
-                ->description('Emails waiting in queue')
+            Stat::make('E-mel Dalam Giliran', $pendingJobs)
+                ->description('E-mel menunggu untuk dihantar')
                 ->descriptionIcon('heroicon-m-clock')
                 ->color('warning'),
-            Stat::make('Failed Emails', $failedJobs)
-                ->description('Emails failed to send')
+            Stat::make('E-mel Gagal', $failedJobs)
+                ->description('E-mel gagal dihantar')
                 ->descriptionIcon('heroicon-m-exclamation-circle')
                 ->color('danger'),
         ];

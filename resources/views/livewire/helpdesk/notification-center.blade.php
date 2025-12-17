@@ -8,7 +8,7 @@
     @wcag WCAG 2.2 AA compliant with proper ARIA labels
     @component Livewire component: App\Livewire\Helpdesk\NotificationCenter
 --}}
-<div class="relative" x-data="{ open: @entangle('showDropdown') }">
+<div class="relative" x-data="{ open: $wire.entangle('showDropdown') }">
     {{-- Notification Bell Button --}}
     <button @click="open = !open" type="button"
         class="relative rounded-full bg-slate-900/70 p-2 text-slate-300 hover:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

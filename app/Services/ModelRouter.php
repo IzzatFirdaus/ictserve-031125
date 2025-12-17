@@ -12,8 +12,23 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Pulse\Facades\Pulse;
 
-use function activity;
+use function Spatie\Activitylog\activity;
 
+/**
+ * Intelligent AI Model Router for True Hybrid Architecture.
+ *
+ * Routes AI requests between AWS Bedrock (cloud) and Ollama (local) based on:
+ * - Prompt complexity and length
+ * - Data classification and residency requirements
+ * - User consent for cloud processing
+ * - Cost optimization (82% savings vs Bedrock-only)
+ *
+ * trace: D03-SRS-AI-007, D03-SRS-AI-011, D03-SRS-AI-017 (Hybrid Processing, Smart Routing, Cost Optimization)
+ * trace: D04-§6.4, D10-§7, D18-§5.4 (AI Architecture, Model Selection Strategy)
+ *
+ * @see docs/D18_AI_CHATBOT_OLLAMA_BEDROCK.md
+ * @see docs/aws_bedrock/IMPLEMENTATION.md
+ */
 class ModelRouter
 {
     // trace: D03-FR-013, D04-§6.4, D10-§7 (AI routing and fallbacks)

@@ -29,6 +29,7 @@ class BedrockChatTest extends TestCase
         $this->instance(BedrockService::class, $mock);
 
         Livewire::test(BedrockChat::class)
+            ->set('model', 'sonnet')
             ->set('prompt', 'Apa khabar?')
             ->call('send')
             ->assertSet('prompt', '');
@@ -53,6 +54,7 @@ class BedrockChatTest extends TestCase
         $this->instance(BedrockService::class, $mock);
 
         Livewire::test(BedrockChat::class)
+            ->set('model', 'sonnet')
             ->set('prompt', 'Ujian gagal')
             ->call('send');
 
@@ -60,5 +62,55 @@ class BedrockChatTest extends TestCase
 
         $this->assertSame('assistant', $conversation->messages[1]['role']);
         $this->assertStringContainsString('Maaf', $conversation->messages[1]['content']);
+    }
+
+    public function test_nova_models_are_supported(): void
+    {
+        $mock = $this->createMock(BedrockService::class);
+        $mock->expects($this->once())
+            ->method('invoke')
+            ->willReturn([
+                'success' => true,
+                'content' => 'Nova model response',
+                'usage' => ['output_tokens' => 15],
+            ]);
+
+        $this->instance(BedrockService::class, $mock);
+
+        Livewire::test(BedrockChat::class)
+            ->set('model', 'nova_micro')
+            ->set('prompt', 'Test Nova Micro')
+            ->call('send')
+            ->assertSet('prompt', '');
+
+        $conversation = BedrockConversation::query()->firstOrFail();
+        $this->assertSame('Test Nova Micro', $conversation->messages[0]['content']);
+        $this->assertSame('Nova model response', $conversation->messages[1]['content']);
+        $this->assertSame('nova_micro', $conversation->messages[1]['model']);
+    }
+
+    public function test_titan_models_are_supported(): void
+    {
+        $mock = $this->createMock(BedrockService::class);
+        $mock->expects($this->once())
+            ->method('invoke')
+            ->willReturn([
+                'success' => true,
+                'content' => 'Titan model response',
+                'usage' => ['output_tokens' => 20],
+            ]);
+
+        $this->instance(BedrockService::class, $mock);
+
+        Livewire::test(BedrockChat::class)
+            ->set('model', 'titan_text_lite')
+            ->set('prompt', 'Test Titan Text Lite')
+            ->call('send')
+            ->assertSet('prompt', '');
+
+        $conversation = BedrockConversation::query()->firstOrFail();
+        $this->assertSame('Test Titan Text Lite', $conversation->messages[0]['content']);
+        $this->assertSame('Titan model response', $conversation->messages[1]['content']);
+        $this->assertSame('titan_text_lite', $conversation->messages[1]['model']);
     }
 }

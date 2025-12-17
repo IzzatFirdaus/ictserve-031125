@@ -57,10 +57,15 @@ class ReportBuilder extends Page implements HasForms
 
     /**
      * Control navigation visibility
+     *
+     * @phpstan-ignore method.notFound
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->hasAnyRole(['admin', 'superuser']);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return Auth::check() && $user?->hasAnyRole(['admin', 'superuser']);
     }
 
     public static function getNavigationLabel(): string

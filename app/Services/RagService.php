@@ -25,13 +25,18 @@ use function count;
  * Melaksanakan pipeline RAG untuk respons AI yang kontekstual dengan
  * sokongan True Hybrid Architecture dan pengurusan konteks perbualan.
  *
+ * trace: D03-SRS-AI-001 (FAQ Bot), D03-SRS-AI-005 (Conversation Management)
+ * trace: D03-SRS-AI-014 (Web-Augmented), D03-SRS-AI-015 (Vector Embeddings)
+ * trace: D18-§5.3 (RAG Pipeline), D10-§4.7 (Service Architecture)
+ *
  * @version 3.6.0
  *
  * @author Pasukan Pembangunan BPM MOTAC
  *
  * @compliance D10 Source Code Documentation v3.6.0
  *
- * @requirements 1.1, 1.2, 1.3, 1.7, 2.2
+ * @see docs/D18_AI_CHATBOT_OLLAMA_BEDROCK.md
+ * @see docs/ollama/README.md
  */
 class RagService
 {
@@ -53,28 +58,14 @@ class RagService
     private EmbeddingService $embeddingService;
 
     /**
-     * Perkhidmatan Bedrock (opsyen) untuk True Hybrid routing
-     */
-    private ?BedrockService $bedrockService;
-
-    /**
-     * Model router untuk pemilihan penyedia/model
-     */
-    private ?ModelRouter $modelRouter;
-
-    /**
      * Konstruktor
      */
     public function __construct(
         OllamaClientContract $ollamaClient,
-        EmbeddingService $embeddingService,
-        ?BedrockService $bedrockService = null,
-        ?ModelRouter $modelRouter = null
+        EmbeddingService $embeddingService
     ) {
         $this->ollamaClient = $ollamaClient;
         $this->embeddingService = $embeddingService;
-        $this->bedrockService = $bedrockService;
-        $this->modelRouter = $modelRouter;
         $this->config = config('ollama.rag', [
             'similarity_threshold' => 0.3,
             'max_results' => 5,
@@ -106,10 +97,15 @@ class RagService
             // 1. Sanitasi input dan PII detection
             $sanitizedQuery = $this->sanitizeInput($query);
 
-            // 2. Dapatkan konteks perbualan jika ada
+            // 2. Detect greetings and simple queries
+            if ($this->detectGreeting($sanitizedQuery)) {
+                return $this->getGreetingResponse($requestId, microtime(true) - $startTime);
+            }
+
+            // 3. Dapatkan konteks perbualan jika ada
             $conversationContext = $this->getConversationContext($sessionId, $userId);
 
-            // 3. Jana embedding untuk query (dengan fallback jika gagal)
+            // 4. Jana embedding untuk query (dengan fallback jika gagal)
             $queryEmbedding = [];
             try {
                 $queryEmbedding = $this->embeddingService->generateEmbedding($sanitizedQuery);
@@ -425,7 +421,7 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
      */
     private function generateResponse(string $prompt, ?string $sessionId = null, ?int $userId = null): array
     {
-        $modelRouter = $this->modelRouter ?? app(ModelRouter::class);
+        $modelRouter = app(ModelRouter::class);
 
         $route = $modelRouter->routeTextGeneration($prompt, [
             'session_id' => $sessionId,
@@ -433,7 +429,7 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
         ]);
 
         if (($route['provider'] ?? 'ollama') === 'bedrock') {
-            $bedrockService = $this->bedrockService ?? app(BedrockService::class);
+            $bedrockService = app(BedrockService::class);
 
             $result = $bedrockService->invoke(
                 prompt: $prompt,
@@ -764,5 +760,78 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
         $email = Auth::user()?->email;
 
         return $this->processQuery($userQuery, $sessionId, $userId, $email);
+    }
+
+    /**
+     * Detect if query is a greeting or simple acknowledgment
+     *
+     * @param  string  $query  User query to check
+     * @return bool True if greeting detected
+     */
+    private function detectGreeting(string $query): bool
+    {
+        // Check if greeting detection is enabled
+        if (! ($this->config['greeting_enabled'] ?? true)) {
+            return false;
+        }
+
+        $normalized = mb_strtolower(trim($query));
+
+        // Get greeting patterns from config
+        $greetingPatterns = $this->config['greeting_patterns'] ?? [
+            'hai', 'helo', 'hello', 'hi', 'hey',
+            'salam', 'assalamualaikum', 'selamat pagi', 'selamat petang', 'selamat malam',
+            'apa khabar', 'terima kasih', 'thanks', 'ok', 'okay',
+            'good morning', 'good afternoon', 'good evening', 'good night',
+            'thank you', 'thx', 'ty',
+        ];
+
+        // Check exact matches
+        if (in_array($normalized, $greetingPatterns, true)) {
+            return true;
+        }
+
+        // Check if query starts with greeting
+        foreach ($greetingPatterns as $pattern) {
+            if (str_starts_with($normalized, $pattern)) {
+                // Allow short queries like "hi there" or "hello bot"
+                if (str_word_count($normalized) <= 3) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get friendly greeting response
+     *
+     * @param  string  $requestId  Request ID for tracking
+     * @param  float  $processingTime  Time taken to process
+     * @return array<string, mixed> Greeting response
+     */
+    private function getGreetingResponse(string $requestId, float $processingTime): array
+    {
+        // Get greeting responses from config
+        $responses = $this->config['greeting_responses'] ?? [
+              'Selamat datang ke FAQ Bot ICTServe! 😊 Saya boleh membantu anda dengan soalan-soalan berkaitan sistem helpdesk dan pinjaman aset ICT. Apa yang boleh saya bantu hari ini?',
+              'Hai! Saya FAQ Bot ICTServe. Saya di sini untuk menjawab soalan anda tentang perkhidmatan ICT. Ada apa yang saya boleh bantu?',
+              'Hello! 😊 Saya adalah pembantu AI FAQ Bot ICTServe. Sila tanya saya tentang sistem helpdesk, pinjaman aset ICT, atau sebarang soalan berkaitan perkhidmatan ICT.',
+        ];
+
+        // Select random greeting for variety
+        $greeting = $responses[array_rand($responses)];
+
+        return [
+            'success' => true,
+            'answer' => $greeting,
+            'sources' => [],
+            'confidence' => 1.0,
+            'is_greeting' => true,
+            'request_id' => $requestId,
+            'processing_time' => $processingTime,
+            'suggestion' => 'Cuba tanya: "Bagaimana cara buat tiket helpdesk?" atau "Bagaimana proses pinjaman aset?"',
+        ];
     }
 }

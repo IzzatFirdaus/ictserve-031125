@@ -66,6 +66,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Telescope Data Pruning (ICTServe v3.6.0)
+    |--------------------------------------------------------------------------
+    |
+    | Per Requirements 17.5: Set up Telescope data pruning for production
+    | environment. Data older than the specified hours will be pruned.
+    |
+    | trace: Requirements 17.5
+    |
+    */
+
+    'prune' => [
+        'hours' => env('TELESCOPE_PRUNE_HOURS', 168), // 7 days default
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Telescope Queue
     |--------------------------------------------------------------------------
     |

@@ -1,11 +1,11 @@
 # Panduan Persediaan Penyiaran & WebSockets (Broadcasting & WebSockets Setup Guide)
 
-**Sistem ICTServe**
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
-**Status:** Aktif
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC
-**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Sistem ICTServe**  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
 **Standard Rujukan:** RFC 6455 (WebSocket Protocol), OWASP Transport Security, Laravel Framework v12
 
 ---
@@ -14,12 +14,12 @@
 
 | Atribut              | Nilai                                                                |
 | -------------------- | -------------------------------------------------------------------- |
-| **Versi**            | 3.5.0                                                                |
-| **Tarikh Kemaskini** | 1 Disember 2025                                                      |
+| **Versi**            | 3.6.1                                                                |
+| **Tarikh Kemaskini** | 17 Disember 2025                                                     |
 | **Status**           | Aktif                                                                |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                           |
-| **Pematuhi**         | RFC 6455 (WebSocket), OWASP Transport Security, Laravel Broadcasting |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                            |
+| **Pematuhi**         | RFC 6455 (WebSocket), OWASP Transport Security, Laravel Broadcasting, Laravel Reverb |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu           |
 
 > Notis Penggunaan Dalaman: Panduan ini adalah untuk persediaan infrastruktur
 > penyiaran masa nyata dalam sistem dalaman MOTAC sahaja.
@@ -30,6 +30,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis                 |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Google Workspace SSO (opsyen), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding. Penambahan acara penyiaran baharu untuk API token dan SSO events. Penyelarasan dengan D00-D15 v3.5.0. | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan Pembangunan BPM |
 | 1.3.0 | 29 November 2025 | Hybrid operations: Auth users (private-user.{id}) + Guests (private-ticket.{uuid})                                                                                                                                                                                                                  | Pasukan Pembangunan BPM |
@@ -121,22 +122,41 @@ Sistem ICTServe menggunakan **Dual Channel Strategy**:
 - **Authenticated Users**: Listen to `private-user.{id}`
 - **Guests**: Listen to `private-ticket.{uuid}` atau `private-loan.{uuid}`
 
-| Acara                                 | Saluran (Auth Users)    | Saluran (Guests)                 | Peristiwa                | Catatan                                                  |
-| ------------------------------------- | ----------------------- | -------------------------------- | ------------------------ | -------------------------------------------------------- |
-| `App\Events\NotificationCreated`      | `private-user.{userId}` | `private-ticket.{ticketUuid}`    | `notification.created`   | Hybrid: Auth users via user_id, Guests via UUID          |
-| `App\Events\StatusUpdated`            | `private-user.{userId}` | `private-ticket.{ticketUuid}`    | `status.updated`         | Hybrid: Status updates untuk authenticated DAN guests    |
-| `App\Events\CommentPosted`            | `private-user.{userId}` | `private-submission.{type}.{id}` | `comment.posted`         | Ulasan baru pada tiket/pinjaman                          |
-| `App\Events\AssetReturnedDamaged`     | `private-user.{userId}` | `private-loan.{loanUuid}`        | `asset.returned.damaged` | Hybrid: Loan updates untuk authenticated DAN guests      |
-| `App\Events\EmailVerified`            | `private-user.{userId}` | N/A (auth only)                  | `email.verified`         | Email verification confirmed for self-registered staff   |
-| `App\Events\AccountLinked`            | `private-user.{userId}` | N/A (auth only)                  | `account.linked`         | Guest submissions linked to authenticated account        |
-| `App\Events\NotificationPrefsUpdated` | `private-user.{userId}` | N/A (auth only)                  | `preferences.updated`    | Notification preferences updated                         |
-| `App\Events\WelcomeNotification`      | `private-user.{userId}` | N/A (auth only)                  | `welcome.notification`   | Welcome message for newly verified self-registered staff |
-| `App\Events\ApiTokenCreated`          | `private-user.{userId}` | N/A (auth only)                  | `api.token.created`      | API token created via Laravel Sanctum (v3.5.0)           |
-| `App\Events\ApiTokenRevoked`          | `private-user.{userId}` | N/A (auth only)                  | `api.token.revoked`      | API token revoked (v3.5.0)                               |
-| `App\Events\GoogleSsoLinked`          | `private-user.{userId}` | N/A (auth only)                  | `sso.google.linked`      | Google Workspace account linked (v3.5.0)                 |
-| `App\Events\AccessoryCheckedOut`      | `private-user.{userId}` | `private-loan.{loanUuid}`        | `accessory.checked.out`  | Loan accessory checked out (v3.5.0)                      |
-| `App\Events\AccessoryReturned`        | `private-user.{userId}` | `private-loan.{loanUuid}`        | `accessory.returned`     | Loan accessory returned (v3.5.0)                         |
-| `App\Events\ResponsibleOfficerAssigned` | `private-user.{userId}` | N/A (auth only)                | `officer.assigned`       | Responsible Officer assigned to ticket/loan (v3.5.0)     |
+| Acara                            | Saluran (Auth Users)                 | Peristiwa              | Catatan ringkas                                      |
+| ------------------------------- | ------------------------------------ | ---------------------- | ---------------------------------------------------- |
+| `App\Events\NotificationCreated` | `private-user.{userId}`              | `notification.created` | Notifikasi real-time untuk pengguna authenticated    |
+| `App\Events\StatusUpdated`       | `private-user.{userId}`              | `status.updated`       | Status tiket/pinjaman berubah (owner channel)        |
+| `App\Events\CommentPosted`       | `private-submission.{type}.{id}`     | `comment.posted`       | Ulasan dalaman pada tiket/pinjaman                   |
+| `App\Events\TicketAssigned`      | `private-user.{id}`, `admin.notifications` | `ticket.assigned` | Notifikasi tugasan tiket kepada admin                |
+| `App\Events\HighPriorityTicketCreated` | `admin.notifications` (+ `user.{id}` jika ada) | `ticket.high-priority` | Amaran tiket prioriti tinggi kepada admin/superuser |
+| `App\Events\SLABreachDetected`   | `admin.notifications` (+ `user.{id}` jika ada) | `sla.breach`      | Amaran pelanggaran SLA                                |
+| `App\Events\EmailVerified`       | `private-user.{userId}`              | `email.verified`       | Email verification untuk staff (self-registration)   |
+| `App\Events\AccountLinked`       | `private-user.{userId}`              | `account.linked`       | Rekod tetamu dipautkan kepada akaun staff            |
+| `App\Events\ApiTokenCreated`     | `private-user.{userId}`              | `api.token.created`    | Token API dicipta (Sanctum)                          |
+| `App\Events\ApiTokenRevoked`     | `private-user.{userId}`              | `api.token.revoked`    | Token API dibatalkan (Sanctum)                       |
+| `App\Events\GoogleSsoLinked`     | `private-user.{userId}`              | `sso.google.linked`    | Akaun Google SSO dipautkan                            |
+
+### 3.4. AI Real-Time Events (D18 Integration v3.6.1)
+
+Sistem menyiarkan status pemprosesan AI untuk pemantauan admin/superuser melalui saluran private (Reverb + Echo). Rujukan konfigurasi: `config/ai-broadcasting.php` dan listener frontend di `resources/js/bootstrap.js`.
+
+| Acara AI                        | Saluran                    | broadcastAs              | Catatan ringkas                                  |
+| ------------------------------ | -------------------------- | ------------------------ | ------------------------------------------------ |
+| `AIProcessingStarted`          | `private-ai-status`        | `AIProcessingStarted`    | Pemprosesan AI dimulakan                         |
+| `AIProcessingCompleted`        | `private-ai-status`        | `AIProcessingCompleted`  | Pemprosesan AI selesai                           |
+| `AIErrorOccurred`              | `private-ai-alerts`        | `AIErrorOccurred`        | Ralat AI (ShouldBroadcastNow, segera)            |
+| `AIServiceDegraded`            | `private-ai-alerts`        | `AIServiceDegraded`      | Perkhidmatan AI masuk mod degradasi              |
+| `AIServiceRestored`            | `private-ai-alerts`        | `AIServiceRestored`      | Perkhidmatan AI pulih                            |
+| `AIPerformanceUpdate`          | `private-ai-performance`   | `AIPerformanceUpdate`    | Metrik prestasi AI (sanitized, tanpa PII)        |
+| `AIPerformanceAlert`           | `private-ai-alerts`        | `AIPerformanceAlert`     | Amaran prestasi AI                               |
+| `AIResourceUsageUpdate`        | `private-ai-performance`   | `AIResourceUsageUpdate`  | CPU/memori/queue (sanitized)                     |
+| `AICacheStatsUpdate`           | `private-ai-performance`   | `AICacheStatsUpdate`     | Statistik cache AI                               |
+| `AutoReplyDraftCreated`        | `private-ai-approvals`     | `AutoReplyDraftCreated`  | Draf auto-reply memerlukan semakan               |
+| `AutoReplyApproved`            | `private-ai-approvals`     | `AutoReplyApproved`      | Kelulusan auto-reply                             |
+| `AutoReplyRejected`            | `private-ai-approvals`     | `AutoReplyRejected`      | Penolakan auto-reply                             |
+
+Nota:
+- Listener `resources/js/bootstrap.js` masih mempunyai handler `.AIProcessingFailed` untuk backward compatibility; rujuk event sebenar `AIErrorOccurred` untuk ralat.
 
 **Channel Selection Logic**:
 
@@ -207,6 +227,182 @@ if (window.userId) {
   })
   .listen(".sso.google.linked", (data) => {
    // Show Google SSO linked notification
+  });
+}
+
+// v3.6.0: AI Real-Time Events (D18 Integration)
+// Authenticated Users: AI conversation events
+if (window.userId) {
+ window.Echo.private(`user.${window.userId}`)
+  .listen(".ai.streaming.started", (data) => {
+   // Show streaming indicator
+   showAiStreamingIndicator(data.conversation_id);
+  })
+  .listen(".ai.streaming.chunk", (data) => {
+   // Append streaming content
+   appendAiStreamingChunk(data.conversation_id, data.chunk);
+  })
+  .listen(".ai.streaming.completed", (data) => {
+   // Hide streaming indicator, finalize response
+   hideAiStreamingIndicator(data.conversation_id);
+   finalizeAiResponse(data.conversation_id);
+  })
+  .listen(".ai.model.switched", (data) => {
+   // Update model selection UI
+   updateModelSelection(data.model);
+  })
+  .listen(".ai.conversation.saved", (data) => {
+   // Update conversation history sidebar
+   updateConversationHistory(data.conversation);
+  })
+  .listen(".ai.web.search.started", (data) => {
+   // Show web search indicator
+   showWebSearchIndicator(data.conversation_id);
+  })
+  .listen(".ai.web.search.completed", (data) => {
+   // Hide web search indicator, show sources
+   hideWebSearchIndicator(data.conversation_id);
+   displayWebSources(data.sources);
+  })
+  .listen(".ai.faq.suggestion", (data) => {
+   // Display FAQ suggestions
+   displayFaqSuggestions(data.suggestions);
+  })
+  .listen(".ai.error.occurred", (data) => {
+   // Show error message, suggest retry
+   showAiError(data.error, data.conversation_id);
+  })
+  .listen(".ai.metrics.updated", (data) => {
+   // Update admin dashboard metrics (admin only)
+   if (window.userRole === 'admin' || window.userRole === 'superuser') {
+     updateAiMetrics(data.metrics);
+   }
+  });
+}
+
+// Guests: AI conversation events (with conversation UUID)
+if (window.conversationUuid && window.statusToken) {
+ window.Echo.private(`conversation.${window.conversationUuid}`)
+  .listen(".ai.streaming.started", (data) => {
+   showAiStreamingIndicator(data.conversation_id);
+  })
+  .listen(".ai.streaming.chunk", (data) => {
+   appendAiStreamingChunk(data.conversation_id, data.chunk);
+  })
+  .listen(".ai.streaming.completed", (data) => {
+   hideAiStreamingIndicator(data.conversation_id);
+   finalizeAiResponse(data.conversation_id);
+  })
+  .listen(".ai.model.switched", (data) => {
+   updateModelSelection(data.model);
+  })
+  .listen(".ai.web.search.started", (data) => {
+   showWebSearchIndicator(data.conversation_id);
+  })
+  .listen(".ai.web.search.completed", (data) => {
+   hideWebSearchIndicator(data.conversation_id);
+   displayWebSources(data.sources);
+  })
+  .listen(".ai.faq.suggestion", (data) => {
+   displayFaqSuggestions(data.suggestions);
+  })
+  .listen(".ai.error.occurred", (data) => {
+   showAiError(data.error, data.conversation_id);
+  });
+}
+
+// AI Helper Functions
+function showAiStreamingIndicator(conversationId) {
+ const indicator = document.querySelector(`[data-conversation="${conversationId}"] .streaming-indicator`);
+ if (indicator) {
+  indicator.classList.remove('hidden');
+  indicator.innerHTML = '<div class="flex items-center gap-2"><div class="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div><span class="text-sm text-gray-600">AI sedang menaip...</span></div>';
+ }
+}
+
+function appendAiStreamingChunk(conversationId, chunk) {
+ const messageContainer = document.querySelector(`[data-conversation="${conversationId}"] .streaming-message .streaming-content`);
+ if (messageContainer) {
+  messageContainer.innerHTML += chunk;
+  // Auto-scroll to bottom
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+ }
+}
+
+function hideAiStreamingIndicator(conversationId) {
+ const indicator = document.querySelector(`[data-conversation="${conversationId}"] .streaming-indicator`);
+ if (indicator) {
+  indicator.classList.add('hidden');
+ }
+}
+
+function finalizeAiResponse(conversationId) {
+ const streamingMessage = document.querySelector(`[data-conversation="${conversationId}"] .streaming-message`);
+ if (streamingMessage) {
+  streamingMessage.classList.remove('streaming-message');
+  streamingMessage.classList.add('ai-message', 'completed');
+ }
+}
+
+function updateModelSelection(model) {
+ const modelButtons = document.querySelectorAll('.model-selector button');
+ modelButtons.forEach(button => {
+  if (button.dataset.model === model) {
+   button.classList.add('bg-primary-600', 'text-white');
+   button.classList.remove('bg-white', 'text-gray-600');
+  } else {
+   button.classList.remove('bg-primary-600', 'text-white');
+   button.classList.add('bg-white', 'text-gray-600');
+  }
+ });
+}
+
+function displayWebSources(sources) {
+ const sourcesContainer = document.querySelector('.web-sources');
+ if (sourcesContainer && sources.length > 0) {
+  sourcesContainer.innerHTML = sources.map(source => 
+   `<div class="flex items-center gap-2 text-sm">
+     <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+     </svg>
+     <a href="${source.url}" target="_blank" class="text-primary-600 hover:text-primary-700 truncate">${source.title}</a>
+    </div>`
+  ).join('');
+  sourcesContainer.classList.remove('hidden');
+ }
+}
+
+function displayFaqSuggestions(suggestions) {
+ const suggestionsContainer = document.querySelector('.faq-suggestions');
+ if (suggestionsContainer && suggestions.length > 0) {
+  suggestionsContainer.innerHTML = suggestions.map(suggestion => 
+   `<button onclick="selectFaqSuggestion('${suggestion}')" class="text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors">${suggestion}</button>`
+  ).join('');
+  suggestionsContainer.classList.remove('hidden');
+ }
+}
+
+function showAiError(error, conversationId) {
+ const errorContainer = document.querySelector(`[data-conversation="${conversationId}"] .ai-error`);
+ if (errorContainer) {
+  errorContainer.innerHTML = `
+   <div class="bg-red-50 border border-red-200 rounded-md p-3">
+    <div class="flex">
+     <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+     </svg>
+     <div class="ml-3">
+      <h3 class="text-sm font-medium text-red-800">Ralat AI</h3>
+      <p class="text-sm text-red-700 mt-1">${error}</p>
+      <button onclick="retryAiRequest('${conversationId}')" class="mt-2 text-sm bg-red-100 text-red-800 px-3 py-1 rounded-md hover:bg-red-200">Cuba Lagi</button>
+     </div>
+    </div>
+   </div>
+  `;
+  errorContainer.classList.remove('hidden');
+ }
+}
+   // Show Google SSO linked notification
   })
   .listen(".officer.assigned", (data) => {
    // Show Responsible Officer assigned notification
@@ -258,7 +454,7 @@ VITE_REVERB_SCHEME="${REVERB_SCHEME}"
 php artisan reverb:start
 
 # 4. Jalankan pekerja baris gilir (terminal berasingan):
-php artisan queue:work redis --queue=default
+php artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --tries=3 --timeout=1200
 
 # 5. Bina frontend (ensure Node v22 is active):
 # Option A (manual):
@@ -565,7 +761,7 @@ Penyiaran menggunakan baris gilir untuk memproses pekerjaan secara asinkron:
 
 ```bash
 # Dalam terminal berasingan, jalankan pekerja baris gilir
-php artisan queue:work redis --queue=default
+php artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --tries=3 --timeout=1200
 
 # Atau gunakan sync untuk pembangunan tempatan
 QUEUE_CONNECTION=sync
@@ -601,7 +797,7 @@ redirect_stderr=true
 stdout_logfile=/var/log/supervisor/reverb.log
 
 [program:ictserve-queue]
-command=php /var/www/ictserve/artisan queue:work redis --queue=default
+command=php /var/www/ictserve/artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --sleep=3 --tries=3 --timeout=1200
 autostart=true
 autorestart=true
 user=www-data
@@ -745,7 +941,7 @@ Broadcast::channel('ticket.{uuid}', function ($user, string $uuid) {
 ps aux | grep "queue:work"
 
 # Atau mulakan semula
-php artisan queue:work redis --queue=default
+php artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --tries=3 --timeout=1200
 
 # Periksa sambungan Redis
 php artisan tinker

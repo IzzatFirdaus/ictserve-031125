@@ -39,21 +39,22 @@
 use Illuminate\Support\Facades\Auth;
 @endphp
 
-<div class="py-6">
-    {{-- Page Header --}}
+<div class="py-6 theme-transition">
+    {{-- Page Header (D13 §2.4 MyDS Typography) --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
         <div class="md:flex md:items-center md:justify-between">
             <div class="flex-1 min-w-0">
-                <h1 class="text-2xl font-bold leading-7 text-slate-100 sm:text-3xl sm:truncate">
+                <h1 class="text-2xl font-heading font-bold leading-7 text-gray-900 dark:text-white sm:text-3xl sm:truncate theme-transition">
                     {{ __('common.dashboard') }}
+                    <span class="sr-only">Dashboard</span>
                 </h1>
-                <p class="mt-1 text-sm text-slate-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300 theme-transition">
                     {{ __('common.welcome_back') }}, {{ Auth::user()->name }}
                 </p>
             </div>
             <div class="mt-4 flex md:mt-0 md:ml-4">
                 <button wire:click="refreshData" type="button" data-dashboard-refresh="true" tabindex="0"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
                     style="height:44px;min-width:44px;line-height:44px;"
                     aria-label="{{ __('common.refresh_dashboard') }}">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -137,6 +138,7 @@ use Illuminate\Support\Facades\Auth;
                             <dl>
                                 <dt class="text-sm font-medium text-slate-300 truncate">
                                     {{ __('common.my_pending_loans') }}
+                                    <span class="sr-only">My Pending Loans</span>
                                 </dt>
                                 <dd class="flex items-baseline">
                                     <div class="text-2xl font-semibold text-slate-100">
@@ -262,7 +264,7 @@ use Illuminate\Support\Facades\Auth;
             </h2>
             <div class="flex flex-wrap gap-4">
                 <a href="{{ route('helpdesk.create') }}"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
                     style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -271,7 +273,7 @@ use Illuminate\Support\Facades\Auth;
                     {{ __('common.new_ticket') }}
                 </a>
                 <a href="{{ route('loan.guest.apply') }}"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
                     style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -280,7 +282,7 @@ use Illuminate\Support\Facades\Auth;
                     {{ __('common.request_loan') }}
                 </a>
                 <a href="{{ route('portal.dashboard') }}"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
                     style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -290,7 +292,7 @@ use Illuminate\Support\Facades\Auth;
                     {{ __('common.view_all_submissions') }}
                 </a>
                 <a href="{{ route('profile.edit') }}"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
                     style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -303,41 +305,10 @@ use Illuminate\Support\Facades\Auth;
         </div>
     </div>
 
-    {{-- Recent Activity Section --}}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg p-6">
-            <h2 class="text-lg font-medium text-slate-100 mb-4">
-                {{ __('portal.recent_activity') ?: 'Recent Activity' }}
-            </h2>
-            @if ($this->recentActivities->isEmpty())
-            <p class="text-sm text-slate-300 text-center py-4">
-                {{ __('common.no_recent_activity') }}
-            </p>
-            @else
-            <ul role="list" class="divide-y divide-slate-800">
-                @foreach ($this->recentActivities as $activity)
-                <li class="py-3" wire:key="activity-{{ $activity->id }}">
-                    <div class="flex items-start space-x-3">
-                        <div class="flex-1">
-                            <p class="text-sm text-slate-300">
-                                <span class="font-medium text-slate-100">{{ $activity->activity_type }}</span>
-                            </p>
-                            <p class="text-xs text-slate-400 mt-1">
-                                {{ $activity->created_at->diffForHumans() }}
-                            </p>
-                        </div>
-                    </div>
-                </li>
-                @endforeach
-            </ul>
-            @endif
-        </div>
-    </div>
-
-    {{-- Recent Activity Grid with Filtering --}}
+    {{-- Recent Activity Grid with Filtering (D12 §6.4) --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-            <h2 class="text-xl font-semibold text-slate-100">
+            <h2 class="text-xl font-heading font-semibold text-gray-900 dark:text-white theme-transition">
                 {{ __('portal.recent_activity_feed') }}
             </h2>
             {{-- Activity Filter Buttons (Task 4.2.3) --}}
@@ -345,7 +316,7 @@ use Illuminate\Support\Facades\Auth;
                 aria-label="{{ __('portal.filter_activity') }}">
                 @foreach ($filterOptions as $key => $label)
                 <button wire:click="setActivityFilter('{{ $key }}')" type="button"
-                    class="touch-target inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-44
+                    class="touch-target inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11
                             {{ $activityFilter === $key
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700' }}"

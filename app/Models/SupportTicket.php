@@ -11,19 +11,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Support Ticket Model
- *
+ * 
  * Represents in-app support messages from portal users.
  *
  * @version 1.0.0
- *
  * @since 2025-11-06
- *
  * @author ICTServe Development Team
- *
+ * 
  * Requirements:
  * - Requirement 12.4: Support ticket tracking
  * - D09: Database documentation and audit trail
- *
  * @property int $id
  * @property int $user_id
  * @property string $subject
@@ -32,6 +29,24 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $status
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SupportTicketAttachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read string $ticket_number
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket closed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket open()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket wherePriority($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereSubject($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SupportTicket whereUserId($value)
+ * @mixin \Eloquent
  */
 class SupportTicket extends Model
 {

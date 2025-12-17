@@ -12,7 +12,7 @@ return [
     'login_title' => 'Log Masuk',
     'login_subtitle' => 'Akses portal kakitangan ICTServe',
     'email' => 'E-mel',
-    'email_placeholder' => 'nama@bpm.gov.my',
+    'email_placeholder' => 'nama@motac.gov.my',
     'password_placeholder' => 'Masukkan kata laluan anda',
     'remember_me' => 'Ingat saya',
     'forgot_password' => 'Lupa kata laluan?',
@@ -28,7 +28,7 @@ return [
     'logged_out' => 'Anda telah log keluar dengan jayanya.',
     'logout' => 'Log Keluar',
     'must_login_portal' => 'Anda mesti log masuk untuk mengakses portal kakitangan.',
-    'password' => 'Kata laluan yang diberikan tidak betul.',
+    'password' => 'Kata Laluan',
     'session_expired' => 'Sesi anda telah tamat. Sila log masuk semula.',
     'session_expiring_message' => 'Sesi anda akan tamat disebabkan tidak aktif. Adakah anda mahu melanjutkan sesi anda?',
     'session_expiring_title' => 'Sesi Akan Tamat',
@@ -38,6 +38,12 @@ return [
     'email_unverified' => 'Alamat e-mel anda belum disahkan.',
     'resend_verification' => 'Klik di sini untuk menghantar semula e-mel pengesahan.',
     'verification_link_sent' => 'Pautan pengesahan baharu telah dihantar ke alamat e-mel anda.',
+
+    // Password Reset (v3.6.0)
+    'forgot_password_description' => 'Lupa kata laluan anda? Tiada masalah. Beritahu kami alamat e-mel anda dan kami akan menghantar pautan reset kata laluan yang membolehkan anda memilih kata laluan baharu.',
+    'email_hint_reset' => 'Masukkan e-mel @motac.gov.my yang berdaftar',
+    'send_reset_link' => 'Hantar Pautan Reset',
+    'back_to_login' => 'Kembali ke Log Masuk',
 
     // Task 14.1: Flexible Login
     'email_or_username' => 'E-mel atau Nama Pengguna',

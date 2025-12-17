@@ -22,7 +22,7 @@ class AssignmentHistoryRelationManager extends RelationManager
 {
     protected static string $relationship = 'audits';
 
-    protected static ?string $title = 'Assignment History';
+    protected static ?string $title = 'Sejarah Tugasan';
 
     public function table(Table $table): Table
     {
@@ -38,32 +38,32 @@ class AssignmentHistoryRelationManager extends RelationManager
             })
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Date & Time')
+                    ->label('Tarikh & Masa')
                     ->dateTime('d M Y, h:i A')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Assigned By')
-                    ->default('System')
+                    ->label('Ditugaskan Oleh')
+                    ->default('Sistem')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('new_values')
-                    ->label('Assigned To')
+                    ->label('Ditugaskan Kepada')
                     ->formatStateUsing(function ($state, Audit $record) {
                         $parts = [];
 
                         if (isset($state['assigned_to_user'])) {
                             $user = \App\Models\User::find($state['assigned_to_user']);
-                            $parts[] = 'User: '.($user->name ?? 'Unknown');
+                            $parts[] = 'Pengguna: '.($user->name ?? 'Tidak diketahui');
                         }
 
                         if (isset($state['assigned_to_division'])) {
                             $division = \App\Models\Division::find($state['assigned_to_division']);
-                            $parts[] = 'Division: '.($division->name_en ?? 'Unknown');
+                            $parts[] = 'Bahagian: '.($division->name_ms ?? 'Tidak diketahui');
                         }
 
                         if (isset($state['assigned_to_agency'])) {
-                            $parts[] = 'Agency: '.$state['assigned_to_agency'];
+                            $parts[] = 'Agensi: '.$state['assigned_to_agency'];
                         }
 
                         return implode(' | ', $parts) ?: '-';
@@ -71,35 +71,35 @@ class AssignmentHistoryRelationManager extends RelationManager
                     ->wrap(),
 
                 Tables\Columns\TextColumn::make('old_values')
-                    ->label('Previous Assignment')
+                    ->label('Tugasan Sebelumnya')
                     ->formatStateUsing(function ($state) {
                         if (empty($state)) {
-                            return 'Unassigned';
+                            return 'Belum Ditugaskan';
                         }
 
                         $parts = [];
 
                         if (isset($state['assigned_to_user'])) {
                             $user = \App\Models\User::find($state['assigned_to_user']);
-                            $parts[] = 'User: '.($user->name ?? 'Unknown');
+                            $parts[] = 'Pengguna: '.($user->name ?? 'Tidak diketahui');
                         }
 
                         if (isset($state['assigned_to_division'])) {
                             $division = \App\Models\Division::find($state['assigned_to_division']);
-                            $parts[] = 'Division: '.($division->name_en ?? 'Unknown');
+                            $parts[] = 'Bahagian: '.($division->name_ms ?? 'Tidak diketahui');
                         }
 
                         if (isset($state['assigned_to_agency'])) {
-                            $parts[] = 'Agency: '.$state['assigned_to_agency'];
+                            $parts[] = 'Agensi: '.$state['assigned_to_agency'];
                         }
 
-                        return implode(' | ', $parts) ?: 'Unassigned';
+                        return implode(' | ', $parts) ?: 'Belum Ditugaskan';
                     })
                     ->wrap()
                     ->toggleable(),
 
                 Tables\Columns\IconColumn::make('event')
-                    ->label('Action')
+                    ->label('Tindakan')
                     ->icon(fn (string $state): string => match ($state) {
                         'created' => Heroicon::OutlinedPlusCircle->value,
                         'updated' => Heroicon::OutlinedArrowPath->value,
@@ -114,8 +114,8 @@ class AssignmentHistoryRelationManager extends RelationManager
             ])
             ->defaultSort('created_at', 'desc')
             ->paginated([10, 25, 50])
-            ->emptyStateHeading('No Assignment History')
-            ->emptyStateDescription('This ticket has not been assigned yet.')
+            ->emptyStateHeading('Tiada Sejarah Tugasan')
+            ->emptyStateDescription('Tiket ini belum ditugaskan.')
             ->emptyStateIcon(Heroicon::OutlinedClock);
     }
 }

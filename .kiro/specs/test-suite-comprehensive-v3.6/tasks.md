@@ -16,38 +16,38 @@ This implementation plan provides a unified approach to modernizing and aligning
 
 ## Phase 1: Core Language & Authentication Tests (High Priority)
 
-- [ ] 1. Update Languthentication Foundation
+- [x] 1. Update Languthentication Foundation
 
-  - [ ] 1.1 Update tests/Feature/LanguageControllerTest.php
+  - [x] 1.1 Update tests/Feature/LanguageControllerTest.php
     - Convert to #[Test] attributes, remove test_ prefix
     - Update assertions to expect Bahasa Melayu content
     - Verify language switcher is disabled/hidden
     - _Requirements: 1.1, 1.4, 3.1, 3.2, 3.3_
 
-  - [ ] 1.2 Update tests/Feature/LanguageSwitcherTest.php
+  - [x] 1.2 Update tests/Feature/LanguageSwitcherTest.php
     - Convert to #[Test] attributes
     - Update to verify switcher is disabled in v3.6.0
     - Update assertions for BM-only UI
     - _Requirements: 1.1, 3.3_
 
-  - [ ] 1.3 Update tests/Feature/Auth/RegistrationTest.php
+  - [x] 1.3 Update tests/Feature/Auth/RegistrationTest.php
     - Convert to #[Test] attributes
     - Verify @motac.gov.my email domain restriction
     - Verify email verification flow with signed URL
     - Update assertions for BM content
     - _Requirements: 1.1, 5.1, 5.2, 5.5_
 
-  - [ ] 1.4 Update tests/Feature/Auth/AuthenticationTest.php
+  - [x] 1.4 Update tests/Feature/Auth/AuthenticationTest.php
     - Convert to #[Test] attributes
     - Verify both full email and short username login
     - Update assertions for BM content
     - _Requirements: 1.1, 5.3_
 
-  - [ ]* 1.5 Write property test for email domain restriction
+  - [x]* 1.5 Write property test for email domain restriction
     - **Property 5: Email Domain Restriction Validation**
     - **Validates: Requirements 5.1, 5.5**
 
-  - [ ]* 1.6 Write property test for flexible login
+  - [x]* 1.6 Write property test for flexible login
     - **Property 6: Flexible Login Validation**
     - **Validates: Requirements 5.3**
 
@@ -55,104 +55,111 @@ This implementation plan provides a unified approach to modernizing and aligning
 
 ## Phase 2: Hybrid Architecture Core Tests
 
-- [ ] 2. Update Helpdesk Hybrid Workflow Tests
+- [x] 2. Update Helpdesk Hybrid Workflow Tests
 
-  - [ ] 2.1 Update tests/Feature/HybridHelpdeskWorkflowTest.php
-    - Convert to #[Test] attributes
-    - Verify both authenticated (user_id linked) and guest (user_id=NULL) paths
-    - Update assertions for hybrid data association
-    - Update BM content assertions
+  - [x] 2.1 Update tests/Feature/HybridHelpdeskWorkflowTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify both authenticated (user_id linked) and guest (user_id=NULL) paths ✓
+    - Update assertions for hybrid data association ✓
+    - Update BM content assertions ✓ (added comprehensive BM interface tests)
     - _Requirements: 1.1, 4.1, 4.4, 4.5_
 
-  - [ ] 2.2 Update tests/Feature/HelpdeskAuthenticatedFormTest.php
-    - Convert to #[Test] attributes
-    - Verify form auto-fill for authenticated users
-    - Update to use BM content assertions
+  - [x] 2.2 Update tests/Feature/HelpdeskAuthenticatedFormTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify form auto-fill for authenticated users ✓
+    - Update to use BM content assertions ✓ (added comprehensive BM validation)
     - _Requirements: 1.1, 4.3_
 
-  - [ ] 2.3 Update tests/Unit/Models/HelpdeskTicketTest.php
-    - Convert to #[Test] attributes
-    - Verify nullable user_id FK behavior
-    - Test submitter_* field capture for guests
+  - [x] 2.3 Update tests/Unit/Models/HelpdeskTicketHybridTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify nullable user_id FK behavior ✓
+    - Test submitter_* field capture for guests ✓
     - _Requirements: 1.1, 4.4, 4.5_
 
-  - [ ]* 2.4 Write property test for hybrid submission paths
+  - [x]* 2.4 Write property test for hybrid submission paths
     - **Property 3: Hybrid Submission Path Validation**
     - **Validates: Requirements 4.1, 4.2, 4.4, 4.5**
+    - Created: `tests/Feature/Hybrid/HybridSubmissionPathPropertyTest.php`
 
-- [ ] 3. Update Loan Hybrid Workflow Tests
+- [x] 3. Update Loan Hybrid Workflow Tests
 
-  - [ ] 3.1 Update tests/Feature/GuestLoanApplicationWorkflowTest.php
-    - Convert to #[Test] attributes
-    - Verify guest submission with user_id=NULL
-    - Update assertions for BM content
+  - [x] 3.1 Update tests/Feature/GuestLoanApplicationWorkflowTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify guest submission with user_id=NULL ✓
+    - Update assertions for BM content ✓
     - _Requirements: 1.1, 4.2, 4.4_
 
-  - [ ] 3.2 Update tests/Feature/LoanAuthenticatedFormTest.php
-    - Convert to #[Test] attributes
-    - Verify authenticated submission with user_id linked
-    - Verify form auto-fill from profile
+  - [x] 3.2 Update tests/Feature/LoanAuthenticatedFormTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify authenticated submission with user_id linked ✓
+    - Verify form auto-fill from profile ✓
     - _Requirements: 1.1, 4.2, 4.3_
 
-  - [ ] 3.3 Update tests/Feature/Livewire/Loan/GuestApplicationFormTest.php
-    - Convert to #[Test] attributes
-    - Update Livewire component tests for hybrid flow
-    - Verify BM labels and messages
+  - [x] 3.3 Update tests/Feature/Livewire/Loan/GuestApplicationFormTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Update Livewire component tests for hybrid flow ✓
+    - Verify BM labels and messages ✓
     - _Requirements: 1.1, 4.1, 4.2_
 
-  - [ ]* 3.4 Write property test for authenticated form auto-fill
+  - [x]* 3.4 Write property test for authenticated form auto-fill
     - **Property 4: Authenticated Form Auto-Fill Validation**
     - **Validates: Requirements 4.3**
+    - Created: `tests/Feature/Hybrid/AuthenticatedFormAutoFillPropertyTest.php`
 
-- [ ] 4. Update Account Linking Tests
+- [x] 4. Update Account Linking Tests
 
-  - [ ] 4.1 Update tests/Feature/AccountLinkingServiceTest.php
-    - Convert to #[Test] attributes
-    - Verify historical guest submission linking
-    - Test account linking workflow
+  - [x] 4.1 Update tests/Feature/AccountLinkingServiceTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify historical guest submission linking ✓
+    - Test account linking workflow ✓
     - _Requirements: 1.1, 5.4_
 
-  - [ ] 4.2 Update tests/Feature/Services/RegistrationServiceTest.php
-    - Convert to #[Test] attributes
-    - Verify domain validation logic
-    - Test rejection of <non-@motac.gov.my> emails
+  - [x] 4.2 Update tests/Feature/Services/RegistrationServiceTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify domain validation logic ✓
+    - Test rejection of <non-@motac.gov.my> emails ✓
     - _Requirements: 1.1, 5.1, 5.5_
+    - **Note:** Some tests fail due to pre-existing issue with `activity()` helper function in `RegistrationService.php` - not related to test modernization
 
 ---
 
 ## Phase 3: Dual Audit System Tests
 
-- [ ] 5. Update Audit System Tests
+- [x] 5. Update Audit System Tests
 
-  - [ ] 5.1 Update tests/Feature/AuditLoggingTest.php
-    - Convert to #[Test] attributes
-    - Verify both owen-it and spatie audit systems
-    - Test field-level tracking (owen-it)
-    - Test activity logging (spatie)
+  - [x] 5.1 Update tests/Feature/AuditLoggingTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify both owen-it and spatie audit systems ✓
+    - Test field-level tracking (owen-it) ✓
+    - Test activity logging (spatie) ✓
+    - Tests: 19 passing
     - _Requirements: 1.1, 6.1, 6.2, 6.3_
 
-  - [ ] 5.2 Update tests/Feature/SimpleAuditTest.php
-    - Convert to #[Test] attributes
-    - Update for dual audit system verification
+  - [x] 5.2 Update tests/Feature/SimpleAuditTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Update for dual audit system verification ✓
+    - Tests: 3 passing
     - _Requirements: 1.1, 6.1, 6.2_
 
-  - [ ] 5.3 Update tests/Feature/Audit/AuditConfigurationTest.php
-    - Convert to #[Test] attributes
-    - Verify dual audit configuration
-    - Test audit table structure
+  - [x] 5.3 Update tests/Feature/Audit/AuditConfigurationTest.php
+    - Convert to #[Test] attributes ✓ (already using PHP 8 attributes)
+    - Verify dual audit configuration ✓
+    - Test audit table structure ✓
     - _Requirements: 1.1, 6.1, 6.2, 6.3_
 
-  - [ ]* 5.4 Write property test for dual audit system
+  - [x]* 5.4 Write property test for dual audit system
     - **Property 7: Dual Audit System Validation**
     - **Validates: Requirements 6.1, 6.2, 6.3**
+    - Created: `tests/Feature/Audit/DualAuditSystemPropertyTest.php`
+    - Tests: 10 passing (both audit systems record creation, track field changes, track causer, immutability, retention, log names, BM content, IP hashing)
 
 ---
 
 ## Phase 4: Role-Based Access Control Tests
 
-- [ ] 6. Update RBAC Tests
+- [-] 6. Update RBAC Tests
 
-  - [ ] 6.1 Update tests/Feature/RoleBasedAccessControlTest.php
+  - [x] 6.1 Update tests/Feature/RoleBasedAccessControlTest.php
     - Convert to #[Test] attributes
     - Verify staff, admin, superuser role permissions
     - Test My Dashboard access for staff
@@ -160,7 +167,7 @@ This implementation plan provides a unified approach to modernizing and aligning
     - Use comprehensive data providers
     - _Requirements: 1.1, 2.1, 7.1, 7.2, 7.3_
 
-  - [ ] 6.2 Update tests/Feature/Filament/RoleBasedAccessControlTest.php
+  - [-] 6.2 Update tests/Feature/Filament/RoleBasedAccessControlTest.php
     - Convert to #[Test] attributes
     - Verify Filament resource access by role
     - Test admin operational access

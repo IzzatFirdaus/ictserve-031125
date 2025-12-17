@@ -79,10 +79,10 @@ class LoanAuthenticatedFormTest extends TestCase
         $this->actingAs($user);
 
         // Verify form auto-fill from user profile
+        // Note: division_id is intentionally NOT pre-filled to show placeholder
         Livewire::test(GuestLoanApplication::class)
             ->assertSet('form.applicant_name', $user->name)
-            ->assertSet('form.phone', $user->phone)
-            ->assertSet('form.division_id', $user->division_id);
+            ->assertSet('form.phone', $user->phone);
     }
 
     #[Test]
