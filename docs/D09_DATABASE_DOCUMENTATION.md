@@ -19,9 +19,7 @@
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                  |
 | **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1 |
-| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                               |
-| **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1 |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                   |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu  |
 
 > Notis Penggunaan Dalaman: Semua skema dan jadual adalah untuk sistem dalaman
 > MOTAC; tiada data awam.
@@ -32,7 +30,7 @@
 
 | Versi | Tarikh           | Perubahan | Penulis |
 | ----- | ---------------- | --------- | ------- |
-| 3.6.1 | 14 Disember 2025 | Cloud Hybrid AI Architecture v3.6.1: Integrasi D18 AI Chatbot Ollama-Bedrock v1.0.0. Tambah jadual AI: `faqs`, `documents`, `document_chunks`, `embeddings`, `message_logs`, `bedrock_conversations`, `auto_reply_templates`, `auto_reply_drafts`. Multi-model intelligence, streaming responses, web-augmented responses, conversation management. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot Ollama-Bedrock v1.0.0. Tambah jadual AI: `faqs`, `documents`, `document_chunks`, `embeddings`, `message_logs`, `bedrock_conversations`, `auto_reply_templates`, `auto_reply_drafts`. Multi-model intelligence, streaming responses, web-augmented responses, conversation management. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D08 v3.5.0. Tambah jadual `loan_transaction_accessories`, `personal_access_tokens`, `pulse_*`. Tambah medan `google_id`, `form_reference_code`, `responsible_officer_*`. Laravel Pulse, Sanctum API, Google SSO. | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Restored nullable user_id FK. Added staff role to users. | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Hybrid data model: users table extended for Staff profiles | Pasukan BPM |
@@ -72,19 +70,19 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 | -------------------- | ----------------- | ------- | ----------------------------------------- |
 | RDBMS                | MySQL             | 8.x     | Production database                       |
 | Development DB       | SQLite            | 3.x     | Development/testing database              |
-| ORM                  | Eloquent          | 12.40.1 | Laravel ORM                               |
-| Migrations           | Laravel           | 12.40.1 | Schema version control                    |
+| ORM                  | Eloquent          | 12.42.0 | Laravel ORM                               |
+| Migrations           | Laravel           | 12.42.0 | Schema version control                    |
 | Caching              | Redis             | 7.x     | Query caching                             |
 | Audit (Compliance)   | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)         |
 | Audit (Operations)   | Activity Log      | 4.x     | User activity logging (spatie)            |
-| Performance Monitor  | Laravel Pulse     | 1.3.0   | Performance metrics & server health       |
-| API Authentication   | Laravel Sanctum   | 4.0     | Token-based API authentication            |
+| Performance Monitor  | Laravel Pulse     | 1.4.6   | Performance metrics & server health       |
+| API Authentication   | Laravel Sanctum   | 4.2.1   | Token-based API authentication            |
 | Permissions          | Spatie Permission | 6.23    | Role-based access control                 |
 | Debugging            | Laravel Telescope | 5.x     | System monitoring (superuser only)        |
 | **AI Local (Ollama)**| Ollama Server     | Latest  | Local LLM untuk FAQ Bot (D18 v1.0.0)     |
 | **AI Cloud (Bedrock)**| AWS Bedrock      | Latest  | Claude models untuk complex reasoning     |
 | **Vector Search**    | MySQL JSON        | 8.x     | Embedding storage dan semantic search     |
-| **AI Queue**         | Laravel Horizon   | Latest  | Background AI jobs (document ingestion)   |
+| **AI Queue**         | Laravel Queue     | Redis   | Background AI jobs (document ingestion, embeddings, auto-reply) |
 
 ---
 
@@ -95,7 +93,7 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 | Jadual                       | Fungsi                                                    |
 | ---------------------------- | --------------------------------------------------------- |
 | users                        | Akaun pengguna staf & pentadbir (portal & panel Filament) |
-| departments                  | Rujukan bahagian/unit MOTAC                               |
+| divisions                    | Rujukan bahagian/unit MOTAC                               |
 | audits                       | Jejak audit field-level (owen-it/laravel-auditing)        |
 | activity_log                 | Log aktiviti sistem (spatie/laravel-activitylog)          |
 | helpdesk_tickets             | Rekod tiket helpdesk pengguna dalaman                     |
@@ -128,33 +126,30 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 
 ### 5.1. Jadual: users
 
-| Field                    | Tipe Data                      | Keterangan                               |
-| ------------------------ | ------------------------------ | ---------------------------------------- |
-| id                       | bigint, PK                     | ID pengguna                              |
-| name                     | string(255)                    | Nama pegawai                             |
-| email                    | string(255)                    | E-mel kerajaan @motac.gov.my (unik)      |
-| email_verified_at        | timestamp (nullable)           | Tarikh pengesahan e-mel                  |
-| phone                    | string(30)                     | Telefon pegawai                          |
-| department_id            | bigint, FK nullable            | FK → departments.id                      |
-| grade                    | string(50) nullable            | Gred pegawai (e.g. 41, 44)               |
-| staff_number             | string(50) nullable            | Nombor staf (optional)                   |
-| role                     | enum(staff, admin, superuser)  | Peranan sistem (DEFAULT 'staff')         |
-| password                 | string(255)                    | Hash kata laluan                         |
-| google_id                | string(255) nullable           | Google OAuth ID (v3.5.0)                 |
-| two_factor_secret        | text (nullable)                | Rahsia TOTP (untuk superuser)            |
-| two_factor_confirmed_at  | timestamp (nullable)           | Tarikh pengesahan 2FA                    |
-| locale                   | enum(ms, en)                   | Bahasa pilihan (DEFAULT 'ms')            |
-| notify_email_frequency   | enum(immediate, daily, weekly) | Kekerapan e-mel (DEFAULT 'immediate')    |
-| notify_in_app            | boolean                        | Notifikasi dalam aplikasi (DEFAULT TRUE) |
-| guest_submissions_linked | integer                        | Bilangan submissions dilink (DEFAULT 0)  |
-| remember_token           | string(100) nullable           | Token remember me                        |
-| last_login_at            | timestamp (nullable)           | Tarikh login terakhir                    |
-| last_login_ip            | string(45) nullable            | IP login terakhir                        |
-| created_at               | timestamp                      | Tarikh cipta                             |
-| updated_at               | timestamp                      | Tarikh kemaskini                         |
-| deleted_at               | timestamp (nullable)           | Soft delete timestamp                    |
+> **Source of truth (skema sebenar)**: `database/migrations/2025_11_03_043900_create_users_table.php`
 
-**Indeks:** `(email)`, `(google_id)`, `(role)`, `(department_id)`, `(staff_number)`
+Ringkasan medan penting (bukan senarai penuh):
+
+| Field         | Tipe Data | Keterangan |
+|--------------|----------|-----------|
+| id           | bigint, PK | ID pengguna |
+| name         | string(255) | Nama pegawai |
+| email        | string(255) | E-mel kerajaan (unik) |
+| email_verified_at | timestamp (nullable) | Tarikh pengesahan e-mel |
+| role         | enum | `staff` / `approver` / `admin` / `superuser` |
+| staff_number | string(50) nullable | Nombor staf (opsyen) |
+| division_code| string(20) nullable | Kod bahagian/unit (string) |
+| division_id  | bigint, FK nullable | FK → `divisions.id` (ON DELETE SET NULL) |
+| grade_id     | bigint, FK nullable | FK → `grades.id` (ON DELETE SET NULL) |
+| position_id  | bigint, FK nullable | FK → `positions.id` (ON DELETE SET NULL) |
+| phone/mobile | string(20) nullable | Nombor telefon |
+| locale       | string(10) | **DEPRECATED v3.6.0**: sentiasa `ms` |
+| google_id    | string(255) nullable | Google OAuth ID (opsyen SSO) |
+| is_active    | boolean | Status akaun |
+| last_login_at| timestamp (nullable) | Tarikh login terakhir |
+| created_at/updated_at/deleted_at | timestamp | Timestamps + soft delete |
+
+**Indeks (ringkasan)**: `(email)`, `(role)`, `(division_id, grade_id)`, `(division_code)`, `(staff_number)`, `(google_id)`
 
 > **Nota True Hybrid Architecture v3.5.0:**
 >
@@ -163,44 +158,43 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 > - **Guest**: Tidak disimpan dalam jadual users; submissions dengan user_id=NULL
 > - **Google SSO**: Optional OAuth 2.0 login via `google_id` field
 
-### 5.2. Jadual: departments
+### 5.2. Jadual: divisions
 
-| Field      | Tipe Data           | Keterangan                     |
-| ---------- | ------------------- | ------------------------------ |
-| id         | bigint, PK          | ID bahagian                    |
-| code       | string(20)          | Kod bahagian (unik)            |
-| name       | string(255)         | Nama bahagian                  |
-| parent_id  | bigint, FK nullable | FK → departments.id (hierarki) |
-| created_at | timestamp           | Tarikh cipta                   |
-| updated_at | timestamp           | Tarikh kemaskini               |
+> **Source of truth (skema sebenar)**: `database/migrations/2025_11_03_043832_create_divisions_table.php`
+
+| Field      | Tipe Data | Keterangan |
+|-----------|----------|-----------|
+| id        | bigint, PK | ID bahagian/unit |
+| code      | string(50) | Kod bahagian/unit (unik) |
+| name_ms   | string     | Nama (BM) |
+| name_en   | string     | Nama (EN) |
+| parent_id | bigint, FK nullable | FK → `divisions.id` (hierarki) |
+| is_active | boolean | Status aktif |
+| created_at/updated_at/deleted_at | timestamp | Timestamps + soft delete |
 
 ### 5.3. Jadual: helpdesk_tickets
 
-| Field                   | Tipe Data                                                | Keterangan                              |
-| ----------------------- | -------------------------------------------------------- | --------------------------------------- |
-| id                      | bigint, PK                                               | ID tiket                                |
-| ticket_number           | string(20)                                               | Nombor tiket unik (HD-YYYYMM-XXXX)      |
-| form_reference_code     | string(50)                                               | Kod rujukan borang PK.(S).MOTAC.07.(L1) |
-| user_id                 | bigint, FK nullable                                      | FK → users.id (NULL jika Guest)         |
-| submitter_name          | string(255)                                              | Nama penghantar                         |
-| submitter_email         | string(255)                                              | E-mel penghantar                        |
-| submitter_phone         | string(50)                                               | Telefon penghantar                      |
-| submitter_division_code | string(20)                                               | Kod bahagian                            |
-| submitter_grade         | string(50)                                               | Gred (optional)                         |
-| category                | string(100)                                              | Kategori kerosakan                      |
-| priority                | enum(LOW, MEDIUM, HIGH, CRITICAL)                        | Keutamaan SLA                           |
-| description             | text                                                     | Maklumat kerosakan                      |
-| asset_tag               | string(100)                                              | Tag aset (optional)                     |
-| declaration             | boolean                                                  | Perakuan PDPA (mesti TRUE)              |
-| status                  | enum(OPEN, IN_PROGRESS, AWAITING_INFO, RESOLVED, CLOSED) | Status tiket                            |
-| assigned_admin_id       | bigint, FK nullable                                      | FK → users.id                           |
-| sla_due_at              | timestamp                                                | Tarikh sasaran SLA                      |
-| closed_at               | timestamp                                                | Tarikh tiket ditutup                    |
-| status_token_hash       | string(128)                                              | Hash token semakan status               |
-| created_at              | timestamp                                                | Tarikh cipta                            |
-| updated_at              | timestamp                                                | Tarikh kemaskini                        |
+> **Source of truth (skema sebenar)**: `database/migrations/2025_11_03_043924_create_helpdesk_tickets_table.php`
 
-**Indeks:** `(user_id, status)`, `(submitter_email, status)`, `(ticket_number)`, `(status_token_hash)`
+| Field | Tipe Data | Keterangan |
+|------|----------|-----------|
+| id | bigint, PK | ID tiket |
+| ticket_number | string(50) | Nombor tiket unik |
+| form_reference_code | string(50) | Kod rujukan borang PK.(S).MOTAC.07.(L1) |
+| status_token_hash | string(128) nullable | Hash token semakan status (untuk guest) |
+| user_id | bigint, FK nullable | FK → `users.id` (NULL jika guest) |
+| guest_name/guest_email/guest_phone | string nullable | Maklumat penghantar (untuk guest) |
+| guest_grade/guest_division/guest_staff_id | string nullable | Metadata guest (opsyen) |
+| division_id | bigint, FK nullable | FK → `divisions.id` (konteks organisasi) |
+| assigned_to_division | bigint, FK nullable | FK → `divisions.id` (agihan tiket) |
+| category_id | bigint, FK | FK → `ticket_categories.id` |
+| priority | enum | low/normal/high/urgent |
+| subject/description | string/text | Tajuk & keterangan aduan |
+| status | enum | open/assigned/in_progress/pending_user/resolved/closed |
+| asset_id | bigint, FK nullable | FK → `assets.id` (jika berkaitan perkakasan) |
+| created_at/updated_at/deleted_at | timestamp | Timestamps + soft delete |
+
+**Indeks (ringkasan)**: `(ticket_number)`, `(user_id)`, `(guest_email)`, `(status)`, `(priority)`, `(category_id)`, `(assigned_to_division)`, `(asset_id)`, `(status_token_hash)`
 
 > **Nota Hybrid:** `user_id` NULL = Guest submission; NOT NULL = Authenticated Staff submission
 > **Nota v3.5.0:** `form_reference_code` menyimpan kod rujukan borang rasmi
@@ -231,40 +225,33 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 
 ### 5.6. Jadual: loan_applications
 
-| Field                                | Tipe Data           | Keterangan                                    |
-| ------------------------------------ | ------------------- | --------------------------------------------- |
-| id                                   | bigint, PK          | ID permohonan                                 |
-| reference                            | string(20)          | Kod rujukan (LA-YYYYMM-XXXX)                  |
-| form_reference_code                  | string(50)          | Kod rujukan borang PK.(S).MOTAC.07.(L3)       |
-| user_id                              | bigint, FK nullable | FK → users.id (NULL jika Guest)               |
-| applicant_name                       | string(255)         | Nama pemohon                                  |
-| applicant_email                      | string(255)         | E-mel pemohon                                 |
-| applicant_phone                      | string(50)          | Telefon pemohon                               |
-| applicant_division_code              | string(20)          | Kod bahagian                                  |
-| applicant_grade                      | string(50)          | Gred pemohon                                  |
-| is_applicant_responsible             | boolean             | Pemohon = Pegawai Bertanggungjawab (v3.5.0)   |
-| responsible_officer_name             | string(255) null    | Nama Pegawai Bertanggungjawab (v3.5.0)        |
-| responsible_officer_grade            | string(50) null     | Gred Pegawai Bertanggungjawab (v3.5.0)        |
-| responsible_officer_phone            | string(50) null     | Telefon Pegawai Bertanggungjawab (v3.5.0)     |
-| responsible_officer_acknowledgement  | boolean             | Perakuan Pegawai Bertanggungjawab (v3.5.0)    |
-| purpose                              | text                | Tujuan pinjaman                               |
-| location                             | string(255)         | Lokasi penggunaan                             |
-| loan_start_date                      | date                | Tarikh mula                                   |
-| loan_end_date                        | date                | Tarikh akhir                                  |
-| acknowledgement                      | boolean             | Perakuan PDPA                                 |
-| status                               | enum                | Status permohonan                             |
-| approval_token_hash                  | string(128)         | Hash token kelulusan (SHA512)                 |
-| approval_token_expires_at            | timestamp           | Tarikh luput token                            |
-| status_token_hash                    | string(128)         | Hash token semakan status tetamu              |
-| created_at                           | timestamp           | Tarikh cipta                                  |
-| updated_at                           | timestamp           | Tarikh kemaskini                              |
+> **Source of truth (skema sebenar)**: `database/migrations/2025_11_03_043935_create_loan_applications_table.php`
 
-**Indeks:** `(user_id, status)`, `(applicant_email, status)`, `(reference)`, `(status_token_hash)`
+Ringkasan medan penting (bukan senarai penuh):
 
-> **Nota Hybrid:** `user_id` NULL = Guest submission; NOT NULL = Authenticated Staff submission
-> **Nota v3.5.0:** Responsible Officer fields untuk PK.(S).MOTAC.07.(L3) Part 2 & 4
+| Field | Tipe Data | Keterangan |
+|------|----------|-----------|
+| id | bigint, PK | ID permohonan |
+| application_number | string(20) | Nombor permohonan unik (format: LA[YYYY][MM][0001-9999]) |
+| form_reference_code | string(50) | Kod rujukan borang PK.(S).MOTAC.07.(L3) |
+| user_id | bigint, FK nullable | FK → `users.id` (NULL untuk permohonan guest) |
+| applicant_name/email/phone | string | Maklumat pemohon (sentiasa dipopulasi) |
+| staff_id | string(20) | ID staf MOTAC |
+| applicant_position/applicant_grade | string | Jawatan & gred (teks) |
+| grade | string(10) | Gred ringkas (contoh: 41/44/48/52/54) |
+| division_id | bigint, FK | FK → `divisions.id` |
+| purpose/location/return_location | text/string | Butiran permohonan |
+| loan_start_date/loan_end_date | date | Tarikh pinjaman dimohon |
+| status | enum | Status proses (contoh: `draft`, `submitted`, `under_review`, `approved`, `issued`, `returned`, `overdue`, dll.) |
+| priority | enum | low/normal/high/urgent |
+| approval_token_hash/status_token_hash | string(128) nullable | Hash token untuk kelulusan e-mel & semakan status |
+| pickup_otp_hash | string nullable | OTP pengambilan aset (hashed) |
+| responsible_officer_* | string/boolean/timestamp | Medan Pegawai Bertanggungjawab (jika berkaitan) |
+| created_at/updated_at/deleted_at | timestamp | Timestamps + soft delete |
 
-**Status enum values:** PENDING_SUPERVISOR_APPROVAL, APPROVED, REJECTED, AWAITING_COLLECTION, ON_LOAN, RETURNED, DAMAGED
+**Indeks (ringkasan)**: `(application_number)`, `(user_id)`, `(applicant_email)`, `(division_id)`, `(status)`, `(status_token_hash)`
+
+> **Nota Hybrid**: `user_id` NULL = permohonan guest; NOT NULL = permohonan staf berdaftar
 
 ### 5.7. Jadual: loan_items
 
@@ -583,7 +570,7 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk Seksyen 9).
 - `loan_applications` ↔ `loan_items`, `loan_transactions`, `loan_approvals`, `loan_audits`, `status_tokens`
 - `loan_transactions` ↔ `loan_transaction_accessories` (v3.5.0)
 - `assets` ↔ `loan_items`, `loan_transactions`
-- `departments` → `users.department_id`
+- `divisions` → `users.division_id`
 - `audits` polymorphic ke semua model dengan `Auditable` trait
 - `activity_log` polymorphic ke semua model untuk user activity tracking
 
@@ -753,10 +740,9 @@ Migrasi ke v3.5.0 melibatkan:
 
 Migrasi ke v3.0.0 melibatkan:
 
-- Menambah medan `submitter_*` pada `helpdesk_tickets`
+- Menambah medan `guest_*` pada `helpdesk_tickets` untuk menyokong permohonan tetamu (True Hybrid)
 - Menghapus kebergantungan `user_id` bagi tetamu
 - Menyemak `loan_approvals` supaya menyimpan e-mel pegawai secara eksplisit
-- Table rename: `divisions` → `departments`
 
 Skrip migrasi diselaras melalui `database/migrations` (rujuk D05 & D06).
 
@@ -787,11 +773,11 @@ Rujuk [GLOSSARY.md](GLOSSARY.md) untuk istilah tambahan.
 
 ### A. ERD
 
-ERD dikemas kini boleh didapati dalam repositori `/design/erd/ictserve_v3.5.0.png`.
+ERD statik tidak disimpan sebagai fail imej dalam repo v3.6.1. Rujukan struktur jadual adalah melalui migrasi dalam `database/migrations/` dan ringkasan skema dalam dokumen ini.
 
 ### B. Definisi Lengkap
 
-Fail CSV terdapat di `/docs/rtm/*` untuk pemetaan keperluan ↔ jadual.
+Fail CSV RTM untuk pemetaan keperluan ↔ jadual berada di `docs/reference/rtm/`.
 
 ### C. Piawaian Penamaan
 
@@ -819,7 +805,7 @@ Indeks utama:
 - `bedrock_conversations_expires_at_index` - Cleanup expired conversations
 - `auto_reply_drafts_replyable_type_id_index` - Auto-reply tracking
 
-Analisis prestasi disimpan dalam `performance-optimization-report.md`.
+Analisis prestasi dirujuk dalam `docs/reference/performance-optimization-guide.md`.
 
 ---
 

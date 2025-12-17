@@ -1,5 +1,8 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
 return [
 
     /*
@@ -10,6 +13,8 @@ return [
     | The following language lines are the default lines which match reasons
     | that are given by the password broker for a password update attempt
     | outcome such as failure due to an invalid password / reset token.
+    |
+    | Dikemaskini: 2025-12-17 - Tambah header versi (v3.6.1)
     |
     */
 

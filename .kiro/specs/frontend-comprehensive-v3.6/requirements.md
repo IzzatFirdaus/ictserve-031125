@@ -1,8 +1,8 @@
-# ICTServe Frontend Comprehensive v3.6.0 - Requirements Document
+# ICTServe Frontend Comprehensive v3.6.1 - Requirements Document
 
 **Sistem ICTServe**  
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 14 Disember 2025  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, ISO 9241-210/110/11, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, MyDS Design System v2025.2
@@ -13,32 +13,42 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Version** | 3.6.0-r6 |
-| **Last Updated** | 14 December 2025 |
-| **Status** | Active - Updated with FRONTPAGE_DESIGN_ANALYSIS_v3.6.0 and FRONTEND-DEVELOPMENT-v3-6-0 findings |
+| **Version** | 3.6.1-r1 |
+| **Last Updated** | 17 December 2025 |
+| **Status** | Active - Updated with D18 Cloud Hybrid AI Architecture and technology stack v3.6.1 |
 | **Classification** | Restricted - Internal BPM MOTAC |
 | **Compliance** | ISO/IEC/IEEE 15288, 12207, ISO 9241-210/110/11, WCAG 2.2 AA, MyGOV Digital Standards v2.1.0 |
 | **Language** | Bahasa Melayu (primary), English (technical) |
-| **Source Documents** | FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md |
+| **Source Documents** | D00-D18 v3.6.1, FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md |
 | **ISO Document Reference** | PK.(S).MOTAC.07.(L1) - ICTServe Portal |
 
 > **Notis Penggunaan Dalaman**: Ini adalah untuk kegunaan warga kerja MOTAC sahaja dan tidak dibuka kepada orang awam (internal use only).
 
 ---
 
-## Related Document References (D00-D17)
+## Changelog
 
-- **[D00_SYSTEM_OVERVIEW.md]** - System Overview (v3.6.0) - True Hybrid Architecture
+| Version | Date | Changes | Author |
+|---------|------|---------|--------|
+| 3.6.1-r1 | 17 December 2025 | **D18 AI Chatbot Integration**: Added Requirement 16 (Cloud Hybrid AI Chat Interface), Requirement 17 (FAQ Bot Widget), Requirement 18 (AI Admin Management Interface). Updated technology stack to v3.6.1 (Laravel 12.42.0, Livewire 3.7.1, Laravel Reverb 1.6.3, etc.). Added AI-related glossary terms. Cross-reference D18 v1.0.1. | BPM Development Team |
+| 3.6.0-r6 | 14 December 2025 | Updated with FRONTPAGE_DESIGN_ANALYSIS_v3.6.0 and FRONTEND-DEVELOPMENT-v3-6-0 findings | BPM Development Team |
+
+---
+
+## Related Document References (D00-D18)
+
+- **[D00_SYSTEM_OVERVIEW.md]** - System Overview (v3.6.1) - True Hybrid Architecture + Cloud Hybrid AI
 - **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Software Requirements Specification
-- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Software Design Document (v3.6.0)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Software Design Document (v3.6.1)
 - **[D09_DATABASE_DOCUMENTATION.md]** - Database Documentation (Dual Audit System)
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Technical Design Documentation
-- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX Design Guide (v3.6.0) - Design principles, layouts, components
-- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend Framework (v3.6.0) - Technical implementation
-- **[D14_UI_UX_STYLE_GUIDE.md]** - Style Guide (v3.6.0) - Visual standards, MyDS alignment
-- **[D15_LANGUAGE_MS_EN.md]** - Language Guide (Bahasa Melayu exclusive, v3.6.0)
-- **[D16_BROADCASTING_SETUP.md]** - Laravel Reverb WebSocket Configuration
-- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue Management for Notifications
+- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX Design Guide (v3.6.1) - Design principles, layouts, components
+- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend Framework (v3.6.1) - Technical implementation
+- **[D14_UI_UX_STYLE_GUIDE.md]** - Style Guide (v3.6.1) - Visual standards, MyDS alignment
+- **[D15_LANGUAGE_MS_EN.md]** - Language Guide (Bahasa Melayu exclusive, v3.6.0+)
+- **[D16_BROADCASTING_SETUP.md]** - Laravel Reverb WebSocket Configuration (v3.6.1)
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue Management for Notifications (Laravel Queue + Redis)
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.1) - Ollama + AWS Bedrock Integration
 
 ---
 
@@ -68,8 +78,8 @@ This specification defines the comprehensive requirements for the complete front
 
 - **ICTServe**: ICT Service Management System for MOTAC (Ministry of Tourism, Arts and Culture Malaysia)
 - **True_Hybrid_Architecture**: Three-tier system supporting guest forms, authenticated staff portal, and Filament admin (ref: D00 §1, D12 §5.1)
-- **Laravel_12**: Laravel 12.40.1 framework with PHP 8.2.12, modern syntax, and enhanced performance (ref: D00 §4.1)
-- **Livewire_3**: Livewire 3.7.0 server-driven UI framework with reactive components (ref: D12 §2, D13 §2.1)
+- **Laravel_12**: Laravel 12.42.0 framework with PHP 8.2.12, modern syntax, and enhanced performance (ref: D00 §4.1 v3.6.1)
+- **Livewire_3**: Livewire 3.7.1 server-driven UI framework with reactive components (ref: D12 §2, D13 §2.1)
 - **Volt_1**: Livewire Volt 1.10.1 single-file component API for simplified development (ref: D13 §2.1)
 - **Tailwind_CSS_4**: Tailwind CSS 4.1.17 utility-first CSS framework with @theme configuration (ref: D13 §2.2, D14 §2)
 - **Alpine_js_3**: Alpine.js 3.x lightweight JavaScript framework included with Livewire (ref: D12 §2)
@@ -83,7 +93,16 @@ This specification defines the comprehensive requirements for the complete front
 - **Core_Web_Vitals**: Performance metrics - LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms (ref: D12 §6.8)
 - **Cross_Module_Integration**: Deep integration between helpdesk and asset loan modules with shared workflows (ref: D00 §3)
 - **Four_Role_RBAC**: Staff, Approver (Grade 41+), Admin, Superuser with Spatie Permission 6.23 (ref: D00 §5.1)
-- **Laravel_Reverb**: Laravel Reverb 1.6.2 WebSocket server for real-time features (ref: D00 §4.1, D16)
+- **Laravel_Reverb**: Laravel Reverb 1.6.3 WebSocket server for real-time features (ref: D00 §4.1, D16)
+- **Cloud_Hybrid_AI**: True Hybrid AI Architecture combining Ollama (local LLM) with AWS Bedrock (cloud AI) for intelligent query routing (ref: D18 v1.0.1)
+- **FAQ_Bot**: AI-powered Q&A system accessible via guest forms and authenticated portal with model routing (ref: D18 §2.3)
+- **Multi_Model_Intelligence**: Claude Opus 4.5, Sonnet 4.5, Haiku 4.5, Nova Pro/Lite/Micro for task-specific AI routing (ref: D18 §4.4)
+- **Model_Routing**: Smart query classification (FAQ → Ollama, Complex → Bedrock, Hybrid → Both) for cost optimization (ref: D18 §5)
+- **Streaming_Responses**: Server-Sent Events (SSE) for responsive AI chat experience (ref: D18 §2.3 - future)
+- **Web_Augmented_Responses**: DuckDuckGo integration for current context in AI responses (ref: D18 §3.2.2)
+- **Conversation_Management**: Enhanced BedrockConversation model with save/load/delete and long-term memory (ref: D18 §6)
+- **Auto_Reply_Generation**: AI-generated response drafts for tickets with admin approval workflow (ref: D18 §3.2.2)
+- **Document_Analysis**: AI-powered PDF/DOCX parsing with semantic search and PII detection (ref: D18 §3.2.2)
 - **Theme_Switcher**: Light/dark mode toggle with light as immutable default, localStorage persistence, FOUT prevention (ref: D12 §6.10, D14 §6.1.2)
 - **BM_Exclusive_UI**: Bahasa Melayu exclusive interface per v3.6.0 government directive (ref: D15 v3.6.0)
 - **Filament_Panel**: Admin interface at `/admin` with four-role RBAC and comprehensive resource management
@@ -283,6 +302,51 @@ This specification defines the comprehensive requirements for the complete front
 7. THE ICTServe_System SHALL implement FOUT (Flash of Unstyled Theme) prevention via inline JavaScript in `<head>` that applies saved theme before page renders
 8. THE ICTServe_System SHALL provide theme toggle in header with ☀️/🌙 icons and smooth 200ms ease-out transition respecting prefers-reduced-motion
 9. THE ICTServe_System SHALL maintain WCAG 2.2 AA contrast ratios in both themes (gray-100 on gray-900 = 7:1 for dark mode)
+
+### Requirement 16: Cloud Hybrid AI Chat Interface (D18 v1.0.1)
+
+**User Story:** As a MOTAC staff member, I want an AI-powered chat interface that intelligently routes my queries to the most appropriate AI model (Ollama for FAQ, Bedrock for complex reasoning), so that I can get fast, accurate responses while optimizing system costs.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement Cloud_Hybrid_AI chat interface accessible at `/ai/chat` for both guest and authenticated users
+2. THE ICTServe_System SHALL implement Model_Routing that classifies queries as FAQ (→ Ollama), Complex (→ Bedrock), or Hybrid (→ Both) based on keyword analysis
+3. THE ICTServe_System SHALL provide model selection dropdown (Opus 4.5, Sonnet 4.5, Haiku 4.5) for authenticated users with appropriate permissions
+4. THE ICTServe_System SHALL implement Conversation_Management with save/load/delete functionality and conversation history persistence
+5. THE ICTServe_System SHALL display response source attribution (Ollama, Bedrock, or Hybrid) with confidence scoring
+6. THE ICTServe_System SHALL implement Web_Augmented_Responses toggle for DuckDuckGo integration to provide current context
+7. THE ICTServe_System SHALL maintain WCAG 2.2 AA compliance for all AI chat components including proper ARIA labels and keyboard navigation
+8. THE ICTServe_System SHALL display AI responses in Bahasa Melayu exclusively per D15 v3.6.0+ policy
+
+### Requirement 17: FAQ Bot Widget (D18 v1.0.1)
+
+**User Story:** As a user on any ICTServe page, I want a floating FAQ Bot widget that provides instant AI-powered answers to common questions, so that I can get help without navigating away from my current task.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement FAQ_Bot widget as a floating button (bottom-right, 44×44px minimum touch target) on all guest and authenticated pages
+2. WHEN user clicks the FAQ Bot button, THE ICTServe_System SHALL display an accessible chat panel with ARIA dialog pattern and focus trap
+3. THE ICTServe_System SHALL route FAQ queries to Ollama RAG service for fast, cost-effective responses (<5 seconds response time)
+4. THE ICTServe_System SHALL display context-aware FAQ suggestions based on current page context (helpdesk, loan, status check)
+5. THE ICTServe_System SHALL implement keyboard navigation (ESC to close, Tab navigation within panel) and screen reader support
+6. THE ICTServe_System SHALL persist FAQ Bot conversation state within the browser session
+7. THE ICTServe_System SHALL implement ARIA live regions for announcing new AI responses to screen readers
+8. THE ICTServe_System SHALL display all FAQ Bot content in Bahasa Melayu exclusively
+
+### Requirement 18: AI Admin Management Interface (D18 v1.0.1)
+
+**User Story:** As an admin or superuser, I want a comprehensive AI management interface in Filament, so that I can configure AI models, manage FAQ knowledge base, review auto-reply drafts, and monitor AI system health.
+
+#### Acceptance Criteria
+
+1. THE Filament_Panel SHALL provide AI Dashboard widget displaying real-time metrics (model usage, response times, cost estimates, health status)
+2. THE Filament_Panel SHALL implement FaqResource for CRUD operations on FAQ knowledge base with bulk import/export
+3. THE Filament_Panel SHALL provide DocumentResource for AI document ingestion with PII detection and semantic search configuration
+4. THE Filament_Panel SHALL implement AutoReplyResource for reviewing and approving AI-generated response drafts with approval workflow
+5. THE Filament_Panel SHALL provide Model Configuration page for tuning Ollama and Bedrock model parameters (temperature, max_tokens, etc.)
+6. THE Filament_Panel SHALL display multi-system health monitoring (Ollama server, AWS Bedrock API, DuckDuckGo integration)
+7. THE Filament_Panel SHALL implement conversation analytics with usage patterns and performance insights
+8. THE Filament_Panel SHALL restrict AI management features to admin and superuser roles per Four_Role_RBAC
 
 ### Requirement 3: Figma MCP Design Integration
 
