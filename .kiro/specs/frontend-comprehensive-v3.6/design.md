@@ -1,9 +1,9 @@
-# ICTServe Frontend Comprehensive v3.6.0 - Design Document
+# ICTServe Frontend Comprehensive v3.6.1 - Design Document
 
 **Sistem ICTServe**  
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 14 Disember 2025  
-**Status:** Aktif - Consolidated from filament-admin-access and staff-dashboard-profile specs  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 17 Disember 2025  
+**Status:** Aktif - Updated with D18 Cloud Hybrid AI Architecture  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 
 ---
@@ -12,30 +12,32 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Version** | 3.6.0-r3 |
-| **Last Updated** | 14 December 2025 |
-| **Status** | Active - Updated with FRONTPAGE_DESIGN_ANALYSIS_v3.6.0 and FRONTEND-DEVELOPMENT-v3-6-0 findings |
+| **Version** | 3.6.1-r1 |
+| **Last Updated** | 17 December 2025 |
+| **Status** | Active - Updated with D18 Cloud Hybrid AI Architecture and technology stack v3.6.1 |
 | **Classification** | Restricted - Internal BPM MOTAC |
-| **Dependencies** | requirements.md v3.6.0-r6 |
+| **Dependencies** | requirements.md v3.6.1-r1 |
 | **ISO Document Reference** | PK.(S).MOTAC.07.(L1) - ICTServe Portal |
-| **Source Documents** | FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md |
+| **Source Documents** | D00-D18 v3.6.1, FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md |
 
 ---
 
 ## Overview
 
-This design document outlines the comprehensive frontend architecture for ICTServe v3.6.0, consolidating all user interface components across the True Hybrid Architecture. The design encompasses guest forms, authenticated staff portal, and Filament admin panel with unified component library, accessibility compliance, performance optimization, and cross-module integration.
+This design document outlines the comprehensive frontend architecture for ICTServe v3.6.1, consolidating all user interface components across the True Hybrid Architecture. The design encompasses guest forms, authenticated staff portal, Filament admin panel, and **Cloud Hybrid AI interfaces** with unified component library, accessibility compliance, performance optimization, and cross-module integration.
 
 **Consolidated Design Scope:**
 
 - **Guest Forms**: Public-facing helpdesk and asset loan submission interfaces
 - **Authenticated Portal**: Staff dashboard, submission management, profile, and approval workflows
 - **Filament Admin Panel**: Administrative interface with RBAC, reporting, and system management
-- **Unified Component Library**: Standardized components across all three layers
-- **Real-Time Features**: WebSocket integration for live updates and notifications
-- **Cross-Module Integration**: Deep integration between helpdesk and asset loan modules
+- **Cloud Hybrid AI Interface**: AI chat with model routing (Ollama + AWS Bedrock) per D18 v1.0.1
+- **FAQ Bot Widget**: Floating AI assistant accessible on all pages
+- **Unified Component Library**: Standardized components across all four layers
+- **Real-Time Features**: WebSocket integration for live updates, notifications, and AI streaming
+- **Cross-Module Integration**: Deep integration between helpdesk, asset loan, and AI modules
 
-The design integrates Figma MCP workflows, MyDS Design System compliance, Bahasa Melayu exclusive interface, theme switching capabilities, four-role RBAC, and comprehensive accessibility standards while maintaining optimal performance.
+The design integrates Figma MCP workflows, MyDS Design System compliance, Bahasa Melayu exclusive interface, theme switching capabilities, four-role RBAC, Cloud Hybrid AI Architecture (D18), and comprehensive accessibility standards while maintaining optimal performance.
 
 ## Architecture
 
@@ -67,7 +69,7 @@ graph TB
             O[Tailwind CSS 4.1.17<br/>@theme Configuration]
             P[Alpine.js 3.x<br/>Lightweight JS]
             Q[Filament 4.1.10<br/>Admin Framework]
-            R[Laravel Reverb 1.6.2<br/>WebSocket Server]
+            R[Laravel Reverb 1.6.3<br/>WebSocket Server]
         end
         
         subgraph "Design Systems & Standards"
@@ -416,6 +418,34 @@ class FigmaDesignContext
 **Validates: Requirements 7.3, 7.4, 20.3**
 
 ### Property 20: Malaysian Government Grade System Completeness
+
+*For any* grade selection dropdown, the component should include all government grades (1-56), JUSA grades (A, B, C), and Turus grades (I, II, III) organized by optgroup for easy navigation
+**Validates: Requirements 20.3**
+
+### Property 21: Cloud Hybrid AI Query Routing (D18 v1.0.1)
+
+*For any* AI chat query, the system should correctly classify the query type (FAQ, Complex, Hybrid) and route to the appropriate AI backend (Ollama for FAQ, Bedrock for Complex, Both for Hybrid) with response time <5 seconds for FAQ queries
+**Validates: Requirements 16.1, 16.2, 16.3**
+
+### Property 22: FAQ Bot Widget Accessibility (D18 v1.0.1)
+
+*For any* FAQ Bot widget interaction, the floating button should meet 44×44px minimum touch target, the chat panel should implement ARIA dialog pattern with focus trap, and all responses should be announced via ARIA live regions
+**Validates: Requirements 17.1, 17.2, 17.5, 17.7**
+
+### Property 23: AI Response Source Attribution (D18 v1.0.1)
+
+*For any* AI-generated response, the system should display clear source attribution (Ollama, Bedrock, or Hybrid) with confidence scoring, and all response content should be in Bahasa Melayu exclusively
+**Validates: Requirements 16.5, 16.8, 17.8**
+
+### Property 24: AI Conversation Persistence (D18 v1.0.1)
+
+*For any* authenticated user AI conversation, the system should persist conversation history with save/load/delete functionality, and conversation state should be maintained across browser sessions
+**Validates: Requirements 16.4, 17.6**
+
+### Property 25: AI Admin Dashboard Metrics (D18 v1.0.1)
+
+*For any* AI admin dashboard view, the system should display real-time metrics (model usage, response times, cost estimates) with multi-system health status (Ollama, Bedrock, DuckDuckGo) and restrict access to admin/superuser roles
+**Validates: Requirements 18.1, 18.6, 18.8**
 
 *For any* grade selection dropdown, the component should include all government grades (1-56), JUSA grades (A, B, C), and Turus grades (I, II, III) organized by optgroup for easy navigation
 **Validates: Requirements 20.3**
