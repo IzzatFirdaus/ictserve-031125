@@ -66,7 +66,7 @@ Route::get('/loan/create-legacy', App\Livewire\GuestLoanApplication::class)
 // @see Requirements 3.1, 3.2, 3.4, 24.2, 25.1, 25.2, 25.3, 25.6
 Route::prefix('loan')->name('loan.')->middleware(['guest.ratelimit'])->group(function () {
     Route::get('/wizard', App\Livewire\GuestLoanApplication::class)->name('wizard');
-    Route::get('/success', fn () => view('loan.success'))->name('success');
+    Route::get('/success', fn() => view('loan.success'))->name('success');
 });
 
 // Unified Status Checker (Token-based lookup for tickets and loans) - v3.5.0 True Hybrid
@@ -239,7 +239,7 @@ Route::middleware(['auth', 'verified'])
 // Email Approval Routes (No Authentication Required)
 Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
     // v3.5.0 Volt Component - Guest-accessible approval page per Requirements 4.2, 4.3
-    Route::get('/review/{token}', fn (string $token) => view('livewire.loan.approval-page', ['token' => $token]))
+    Route::get('/review/{token}', fn(string $token) => view('livewire.loan.approval-page', ['token' => $token]))
         ->name('review');
 
     // Legacy controller-based routes (kept for backward compatibility)
@@ -314,6 +314,9 @@ Route::get('/bedrock-chat', App\Livewire\BedrockChat::class)->name('bedrock.chat
 // AI FAQ Bot Routes (True Hybrid Architecture - D00 v3.6.0)
 // Supports both guest and authenticated access with Bahasa Melayu sahaja (D15 v3.6.0)
 Route::prefix('ai')->name('ai.')->middleware(['guest.ratelimit'])->group(function () {
+    // Cloud Hybrid AI Chat Interface (D18 v1.0.1) - Requirement 16.1
+    Route::get('/chat', App\Livewire\BedrockChat::class)->name('chat');
+
     // FAQ Bot - Main interface (guest + authenticated access)
     Route::get('/faq', App\Livewire\Ollama\FaqBot::class)->name('faq');
 
@@ -336,7 +339,7 @@ Route::middleware(['auth', 'verified'])->prefix('ai')->name('ai.authenticated.')
     Route::get('/link-conversations', App\Livewire\Ollama\LinkConversations::class)->name('link-conversations');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::get('/two-factor-challenge', App\Livewire\Auth\TwoFactorChallenge::class)
     ->middleware(['auth'])
