@@ -602,6 +602,16 @@ class GuestLoanApplication extends Component
                 ->orderBy('sort_order')
                 ->orderBy('name')
                 ->get(),
+            'assetCategories' => AssetCategory::where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('name')
+                ->get()
+                ->map(function ($category) {
+                    return [
+                        'id' => $category->id,
+                        'name' => $category->name,
+                    ];
+                }),
             'layout' => $layout,
         ]);
     }

@@ -271,82 +271,65 @@
                 </section>
             @endif
 
-            {{-- Step 2: Asset Selection --}}
+            {{-- Step 2: Responsible Officer --}}
             @if ($currentStep === 2)
                 <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="guest-loan-step-2-heading" role="region">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-2-description">
                         <legend class="sr-only">
-                            {{ __('loan.form.section_2_asset_selection') }}
+                            {{ __('loan.form.section_2_responsible_officer') }}
                         </legend>
 
                         {{-- Section Header --}}
                         <div id="guest-loan-step-2-description" class="rounded-lg border border-gray-700 dark:border-gray-600 bg-gray-800 dark:bg-gray-800 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-2-heading" class="text-lg font-heading font-semibold text-white">
-                                {{ __('loan.form.section_2_asset_selection') }}
+                                {{ __('loan.form.section_2_responsible_officer') }}
                             </h2>
-                            <p class="text-sm text-gray-300 mt-1">{{ __('loan.form.select_assets_note') }}</p>
+                            <p class="text-sm text-gray-300 mt-1">Maklumat pegawai bertanggungjawab untuk permohonan ini</p>
                             <p class="text-xs text-gray-400 mt-3">
                                 No. Dokumen : PK.(S).MOTAC.07.(L3) &middot; Rujukan Operasi: PK.(S).KPK.08.(L3) Pin.1 |
                                 Tarikh Kuatkuasa: 1/12/2023 | Muka Surat: 2 daripada 7
                             </p>
                         </div>
 
-                        {{-- Asset Category Selection --}}
-                        <x-form.select wire:model.live="form.asset_category_id" name="form.asset_category_id"
-                            :label="__('loan.fields.asset_category')" required :placeholder="__('loan.placeholders.select_category')">
-                            @forelse ($assetCategories as $category)
-                                <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
-                            @empty
-                                <option value="">{{ __('loan.placeholders.select_category') }}</option>
-                            @endforelse
-                        </x-form.select>
+                        {{-- Responsible Officer Toggle --}}
+                        <div class="space-y-4">
+                            <x-form.toggle wire:model.live="form.is_responsible_officer" name="form.is_responsible_officer"
+                                label="Memohon bagi pihak pegawai lain?" 
+                                description="Tandakan jika anda memohon bagi pihak pegawai lain" />
 
-                        {{-- Available Assets --}}
-                        @if (!empty($availableAssets))
-                            <div class="space-y-4">
-                                <h3 class="text-base font-heading font-semibold text-gray-900 dark:text-white">
-                                    {{ __('loan.form.available_assets') }}
-                                </h3>
+                            {{-- Responsible Officer Fields (conditional) --}}
+                            @if ($form['is_responsible_officer'])
+                                <div class="space-y-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-600">
+                                    <h3 class="text-sm font-medium text-gray-900 dark:text-white">
+                                        Maklumat Pegawai Bertanggungjawab
+                                    </h3>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    @foreach ($availableAssets as $asset)
-                                        <div class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-4 theme-transition">
-                                            <label class="flex items-start space-x-3 cursor-pointer">
-                                                <input type="checkbox" wire:model.live="form.selected_assets"
-                                                    value="{{ $asset['id'] }}"
-                                                    class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800" />
-                                                <div class="flex-1">
-                                                    <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {{ $asset['name'] }}
-                                                    </div>
-                                                    <div class="text-xs text-gray-500 dark:text-gray-400">
-                                                        {{ __('loan.fields.asset_tag') }}: {{ $asset['asset_tag'] }}
-                                                    </div>
-                                                    @if ($asset['description'])
-                                                        <div class="text-xs text-gray-600 dark:text-gray-300 mt-1">
-                                                            {{ $asset['description'] }}
-                                                        </div>
-                                                    @endif
-                                                    @if ($asset['condition'])
-                                                        <div class="text-xs text-gray-600 dark:text-gray-300 mt-1">
-                                                            {{ __('loan.fields.condition') }}: {{ $asset['condition'] }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </label>
-                                        </div>
-                                    @endforeach
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_name"
+                                            name="form.responsible_officer_name" type="text" required
+                                            label="Nama Penuh Pegawai Bertanggungjawab"
+                                            placeholder="Masukkan nama penuh" />
+
+                                        <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_position"
+                                            name="form.responsible_officer_position" type="text" required
+                                            label="Jawatan"
+                                            placeholder="Contoh: Pegawai Tadbir N41" />
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_grade"
+                                            name="form.responsible_officer_grade" type="text" required
+                                            label="Gred"
+                                            placeholder="Contoh: N41" />
+
+                                        <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_phone"
+                                            name="form.responsible_officer_phone" type="tel" required
+                                            label="Nombor Telefon"
+                                            placeholder="Contoh: 03-2161 2345" />
+                                    </div>
                                 </div>
-                            </div>
-                        @else
-                            <div class="text-center py-8">
-                                <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                                </svg>
-                                <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('loan.messages.no_assets_available') }}</h3>
-                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('loan.messages.select_category_first') }}</p>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
                     </fieldset>
                 </section>
             @endif
