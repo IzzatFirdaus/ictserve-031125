@@ -167,20 +167,20 @@ This implementation plan provides a unified approach to modernizing and aligning
     - Use comprehensive data providers
     - _Requirements: 1.1, 2.1, 7.1, 7.2, 7.3_
 
-  - [-] 6.2 Update tests/Feature/Filament/RoleBasedAccessControlTest.php
+  - [x] 6.2 Update tests/Feature/Filament/RoleBasedAccessControlTest.php
     - Convert to #[Test] attributes
     - Verify Filament resource access by role
     - Test admin operational access
     - Test superuser config access
     - _Requirements: 1.1, 7.2, 7.3_
 
-  - [ ] 6.3 Update tests/Feature/Auth/TelescopeAccessTest.php
+  - [x] 6.3 Update tests/Feature/Auth/TelescopeAccessTest.php
     - Convert to #[Test] attributes
     - Verify only superuser can access Telescope
     - Test unrestricted access for superuser
     - _Requirements: 1.1, 7.4_
 
-  - [ ] 6.4 Update tests/Feature/Auth/PulseAccessTest.php
+  - [x] 6.4 Update tests/Feature/Auth/PulseAccessTest.php
     - Convert to #[Test] attributes
     - Verify admin and superuser can access Pulse
     - Test staff cannot access Pulse
