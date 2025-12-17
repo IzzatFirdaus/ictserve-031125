@@ -35,7 +35,7 @@ class AICacheStatsUpdate implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param  array  $stats  Statistik cache AI
+     * @param  array<string, mixed>  $stats  Statistik cache AI
      */
     public function __construct(array $stats)
     {
@@ -45,6 +45,9 @@ class AICacheStatsUpdate implements ShouldBroadcast
 
     /**
      * Sanitize stats to only include allowed keys.
+     *
+     * @param  array<string, mixed>  $stats
+     * @return array<string, mixed>
      */
     private function sanitizeStats(array $stats): array
     {
