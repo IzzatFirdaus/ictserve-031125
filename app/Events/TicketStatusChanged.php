@@ -68,7 +68,7 @@ class TicketStatusChanged implements ShouldBroadcast
         }
 
         // Broadcast to admin notifications channel for high-priority tickets
-        if ($this->ticket->priority && in_array($this->ticket->priority->value, ['high', 'critical'], true)) {
+        if ($this->ticket->priority && in_array($this->ticket->priority, ['high', 'critical'], true)) {
             $channels[] = new PrivateChannel('admin.notifications');
         }
 
@@ -97,7 +97,7 @@ class TicketStatusChanged implements ShouldBroadcast
             'old_status' => $this->oldStatus,
             'new_status' => $this->newStatus,
             'title' => $this->ticket->title,
-            'priority' => $this->ticket->priority?->value,
+            'priority' => $this->ticket->priority,
             'updated_at' => now()->toISOString(),
             'message' => __('notifications.ticket_status_changed', [
                 'ticket' => $this->ticket->ticket_number,
