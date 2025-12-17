@@ -146,34 +146,43 @@ class WcagComplianceTest extends TestCase
     }
 
     /**
-     * Test WCAG 2.2 AA compliance for language switcher
-     * Requirements: 6.1, 7.3, 15.2, 1.5
+     * Test WCAG 2.2 AA compliance for BM-exclusive interface (v3.6.0+)
+     *
+     * Language switcher has been removed per government directive.
+     * System is now Bahasa Melayu exclusive.
+     *
+     * Requirements: 1.1, 1.2 (BM Exclusive Interface)
      */
     #[Test]
-    public function language_switcher_wcag_compliance(): void
+    public function bm_exclusive_interface_wcag_compliance(): void
     {
         $response = $this->get('/');
 
         $response->assertStatus(200);
 
-        // Test ARIA menu button pattern
-        $response->assertSee('aria-haspopup="menu"', false);
-        $response->assertSee('aria-expanded', false);
-        $response->assertSee('role="menu"', false);
-        // Accept either menuitem or menuitemradio (menuitemradio is more specific)
-        $content = $response->getContent();
-        $this->assertTrue(
-            str_contains($content, 'role="menuitem"') || str_contains($content, 'role="menuitemradio"'),
-            'Language switcher must have menu items with proper role'
-        );
+        // Verify BM-exclusive locale is set
+        $this->assertEquals('ms', config('app.locale'));
 
-        // Test language attributes
-        $response->assertSee('lang="en"', false);
+        // Verify page has proper lang attribute for Bahasa Melayu
         $response->assertSee('lang="ms"', false);
 
-        // Test keyboard navigation
+        // Verify no language switcher component exists
+        $content = $response->getContent();
+        $this->assertFalse(
+            str_contains($content, 'language-switcher') || str_contains($content, 'LanguageSwitcher'),
+            'Language switcher should not exist in BM-exclusive interface'
+        );
+
+        // Verify BM text is present (sample check)
+        $this->assertTrue(
+            str_contains($content, 'Aduan') ||
+                str_contains($content, 'Pinjaman') ||
+                str_contains($content, 'Perkhidmatan'),
+            'Page should contain Bahasa Melayu text'
+        );
+
+        // Test keyboard navigation still works (ESC for modals)
         $response->assertSee('@keydown.escape', false);
-        $response->assertSee('@click.away', false);
     }
 
     /**
@@ -304,9 +313,9 @@ class WcagComplianceTest extends TestCase
         if (str_contains($content, 'type="button"') || str_contains($content, 'type="submit"')) {
             $this->assertTrue(
                 str_contains($content, 'min-h-[44px]') ||
-                str_contains($content, 'min-h-44') ||
-                str_contains($content, 'h-11') || // 44px equivalent
-                str_contains($content, 'py-2') && str_contains($content, 'px-4'), // Standard button padding
+                    str_contains($content, 'min-h-44') ||
+                    str_contains($content, 'h-11') || // 44px equivalent
+                    str_contains($content, 'py-2') && str_contains($content, 'px-4'), // Standard button padding
                 'Interactive elements must meet minimum 44x44px touch target size'
             );
         }
@@ -418,7 +427,7 @@ class WcagComplianceTest extends TestCase
         foreach ($requiredLandmarks as $landmark) {
             $this->assertTrue(
                 str_contains($content, "role=\"{$landmark}\"") ||
-                str_contains($content, "<{$landmark}"),
+                    str_contains($content, "<{$landmark}"),
                 "Page must contain {$landmark} landmark"
             );
         }
@@ -437,19 +446,21 @@ class WcagComplianceTest extends TestCase
             if (str_contains($content, '<input')) {
                 $this->assertTrue(
                     str_contains($content, 'aria-label') ||
-                    str_contains($content, 'aria-labelledby') ||
-                    str_contains($content, '<label'),
+                        str_contains($content, 'aria-labelledby') ||
+                        str_contains($content, '<label'),
                     'Form inputs must have accessible labels'
                 );
             }
 
             // Test for error message association (only check if error class is present)
-            if (str_contains($content, 'class="error"') ||
+            if (
+                str_contains($content, 'class="error"') ||
                 str_contains($content, 'class="is-invalid"') ||
-                str_contains($content, 'aria-invalid="true"')) {
+                str_contains($content, 'aria-invalid="true"')
+            ) {
                 $this->assertTrue(
                     str_contains($content, 'aria-describedby') ||
-                    str_contains($content, 'aria-invalid'),
+                        str_contains($content, 'aria-invalid'),
                     'Form errors must be properly associated with inputs'
                 );
             }
@@ -458,7 +469,7 @@ class WcagComplianceTest extends TestCase
             if (str_contains($content, 'required')) {
                 $this->assertTrue(
                     str_contains($content, 'aria-required') ||
-                    str_contains($content, 'required'),
+                        str_contains($content, 'required'),
                     'Required fields must be properly indicated'
                 );
             }
@@ -477,7 +488,7 @@ class WcagComplianceTest extends TestCase
         if (str_contains($content, 'wire:click')) {
             $this->assertTrue(
                 str_contains($content, 'type="button"') ||
-                str_contains($content, 'role="button"'),
+                    str_contains($content, 'role="button"'),
                 'Clickable elements must have proper button semantics'
             );
         }
@@ -486,7 +497,7 @@ class WcagComplianceTest extends TestCase
         if (str_contains($content, 'wire:loading')) {
             $this->assertTrue(
                 str_contains($content, 'aria-live') ||
-                str_contains($content, 'aria-busy'),
+                    str_contains($content, 'aria-busy'),
                 'Loading states must be announced to screen readers'
             );
         }
@@ -503,8 +514,8 @@ class WcagComplianceTest extends TestCase
         if (str_contains($content, 'role="alert"') || str_contains($content, 'class="error-message"')) {
             $this->assertTrue(
                 str_contains($content, 'role="alert"') ||
-                str_contains($content, 'aria-live="assertive"') ||
-                str_contains($content, 'aria-live="polite"'),
+                    str_contains($content, 'aria-live="assertive"') ||
+                    str_contains($content, 'aria-live="polite"'),
                 'Error messages must be announced to screen readers'
             );
         }
@@ -513,7 +524,7 @@ class WcagComplianceTest extends TestCase
         if (str_contains($content, 'aria-invalid="true"') || str_contains($content, 'is-invalid')) {
             $this->assertTrue(
                 str_contains($content, 'aria-describedby') ||
-                str_contains($content, 'aria-invalid'),
+                    str_contains($content, 'aria-invalid'),
                 'Validation feedback must be properly associated'
             );
         }
