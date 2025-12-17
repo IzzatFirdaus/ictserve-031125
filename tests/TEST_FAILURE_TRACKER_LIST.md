@@ -86,7 +86,7 @@
 
 - tests\Feature\Livewire\Portal\Widgets\PersonalStatsWidgetTest.php *DONE* *some test are skipped.
 
-- tests\Feature\Livewire\RecentActivityTest.php
+- tests\Feature\Livewire\RecentActivityTest.php *DONE* *some test are skipped.
 
 - tests\Feature\Livewire\Staff\AccountLinkingTest.php
 
