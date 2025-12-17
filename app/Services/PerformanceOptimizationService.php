@@ -98,8 +98,10 @@ class PerformanceOptimizationService
      */
     public function getOptimizedImageSources(string $imagePath): array
     {
-        $pathInfo = pathinfo($imagePath);
-        $webpPath = $pathInfo['dirname'].'/'.$pathInfo['filename'].'.webp';
+        $directory = dirname($imagePath);
+        $filename = pathinfo($imagePath, PATHINFO_FILENAME);
+
+        $webpPath = ($directory === '.' ? '' : $directory.DIRECTORY_SEPARATOR).$filename.'.webp';
 
         return [
             'webp' => $webpPath,
@@ -111,10 +113,10 @@ class PerformanceOptimizationService
      * Cache dashboard statistics with Redis
      *
      * @param  string  $userId  User ID for cache key
-     * @param  callable  $callback  Data generation callback
+     * @param  \Closure(): mixed  $callback  Data generation callback
      * @return mixed Cached or fresh data
      */
-    public function cacheDashboardStats(string $userId, callable $callback): mixed
+    public function cacheDashboardStats(string $userId, \Closure $callback): mixed
     {
         $cacheKey = "dashboard.stats.{$userId}";
 
@@ -125,10 +127,10 @@ class PerformanceOptimizationService
      * Cache user data with longer TTL
      *
      * @param  string  $userId  User ID for cache key
-     * @param  callable  $callback  Data generation callback
+     * @param  \Closure(): mixed  $callback  Data generation callback
      * @return mixed Cached or fresh data
      */
-    public function cacheUserData(string $userId, callable $callback): mixed
+    public function cacheUserData(string $userId, \Closure $callback): mixed
     {
         $cacheKey = "user.data.{$userId}";
 
@@ -206,15 +208,56 @@ class PerformanceOptimizationService
     /**
      * Get performance metrics for monitoring
      *
-     * @return array{memory_mb: float, peak_memory_mb: float, query_count: int}
+     * @return array{
+     *   cache_hit_rate: float,
+     *   average_query_time: float,
+     *   slow_queries_count: int,
+     *   memory_usage: int,
+     *   peak_memory_usage: int
+     * }
      */
     public function getPerformanceMetrics(): array
     {
+        /** @var array<int, array<string, mixed>> $queries */
+        $queries = DB::getQueryLog();
+
+        $queryTimes = array_map(
+            static fn (array $query): float => is_numeric($query['time'] ?? null) ? (float) $query['time'] : 0.0,
+            $queries
+        );
+
+        $averageQueryTime = count($queryTimes) > 0 ? array_sum($queryTimes) / count($queryTimes) : 0.0;
+        $slowQueriesCount = count(array_filter($queryTimes, static fn (float $time): bool => $time > 1000));
+
+        $cacheHits = Cache::get('performance.cache.hits');
+        $cacheMisses = Cache::get('performance.cache.misses');
+
+        $cacheHitRate = 0.0;
+        if (is_numeric($cacheHits) && is_numeric($cacheMisses)) {
+            $total = (float) $cacheHits + (float) $cacheMisses;
+            if ($total > 0) {
+                $cacheHitRate = ((float) $cacheHits / $total) * 100;
+            }
+        }
+
         return [
-            'memory_mb' => round(memory_get_usage(true) / 1024 / 1024, 2),
-            'peak_memory_mb' => round(memory_get_peak_usage(true) / 1024 / 1024, 2),
-            'query_count' => count(DB::getQueryLog()),
+            'cache_hit_rate' => round($cacheHitRate, 1),
+            'average_query_time' => round($averageQueryTime, 2),
+            'slow_queries_count' => $slowQueriesCount,
+            'memory_usage' => memory_get_usage(true),
+            'peak_memory_usage' => memory_get_peak_usage(true),
         ];
+    }
+
+    public function clearAllCaches(): void
+    {
+        Cache::flush();
+    }
+
+    public function warmUpCaches(): void
+    {
+        Cache::add('performance.cache.hits', 0, self::CACHE_TTL_STATISTICS);
+        Cache::add('performance.cache.misses', 0, self::CACHE_TTL_STATISTICS);
     }
 
     /**
@@ -303,31 +346,32 @@ class PerformanceOptimizationService
     public function checkCoreWebVitals(array $metrics): array
     {
         $details = [];
-        $allPassed = true;
 
         if (isset($metrics['lcp'])) {
             $passed = $metrics['lcp'] <= self::TARGET_LCP;
             $details['lcp'] = ['value' => $metrics['lcp'], 'target' => self::TARGET_LCP, 'passed' => $passed];
-            $allPassed = $allPassed && $passed;
         }
 
         if (isset($metrics['fid'])) {
             $passed = $metrics['fid'] <= self::TARGET_FID;
             $details['fid'] = ['value' => $metrics['fid'], 'target' => self::TARGET_FID, 'passed' => $passed];
-            $allPassed = $allPassed && $passed;
         }
 
         if (isset($metrics['cls'])) {
             $passed = $metrics['cls'] <= self::TARGET_CLS;
             $details['cls'] = ['value' => $metrics['cls'], 'target' => self::TARGET_CLS, 'passed' => $passed];
-            $allPassed = $allPassed && $passed;
         }
 
         if (isset($metrics['ttfb'])) {
             $passed = $metrics['ttfb'] <= self::TARGET_TTFB;
             $details['ttfb'] = ['value' => $metrics['ttfb'], 'target' => self::TARGET_TTFB, 'passed' => $passed];
-            $allPassed = $allPassed && $passed;
         }
+
+        $allPassed = array_reduce(
+            $details,
+            static fn (bool $carry, array $detail): bool => $carry && $detail['passed'],
+            true
+        );
 
         return ['passed' => $allPassed, 'details' => $details];
     }
