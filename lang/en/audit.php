@@ -1,5 +1,8 @@
 <?php
 
+// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)
+// See lang/en/README.md for details
+
 return [
     'retention' => [
         'title' => 'Data Retention Policy',

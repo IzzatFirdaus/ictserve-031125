@@ -1,5 +1,8 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
 return [
 
     /*
@@ -10,6 +13,8 @@ return [
     | The following language lines contain the default error messages used by
     | the validator class. Some of these rules have multiple versions such
     | as the size rules. Feel free to tweak each of these messages here.
+    |
+    | Dikemaskini: 2025-12-17 - Tambah header versi (v3.6.1)
     |
     */
 

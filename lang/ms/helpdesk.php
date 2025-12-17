@@ -1,11 +1,15 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
 declare(strict_types=1);
 
 /**
  * Ms - Helpdesk Translations
  *
  * Auto-generated on 2025-11-15 06:16:53
+ * Dikemaskini: 2025-12-17 - Tambah header versi (v3.6.1)
  */
 
 return [

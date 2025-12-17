@@ -2,15 +2,15 @@
 
 ## Overview
 
-The ICTServe System v3.6.0 is designed as a comprehensive, integrated digital platform for managing ICT services within MOTAC BPM using a **True Hybrid Architecture** that combines guest-accessible public forms with an authenticated internal portal for MOTAC staff. The system provides flexibility by allowing quick guest submissions without login while also offering enhanced features through an authenticated portal for staff who prefer comprehensive submission management.
+The ICTServe System v3.6.1 is designed as a comprehensive, integrated digital platform for managing ICT services within MOTAC BPM using a **True Hybrid Architecture** that combines guest-accessible public forms with an authenticated internal portal for MOTAC staff. The system provides flexibility by allowing quick guest submissions without login while also offering enhanced features through an authenticated portal for staff who prefer comprehensive submission management. The system now includes **Cloud Hybrid AI Architecture** integrating Ollama (local LLM) with AWS Bedrock (Claude models) for intelligent assistance.
 
-**Critical Design Principle v3.6.0**: The system operates on a **True Hybrid Architecture with Bahasa Melayu exclusive interface**:
+**Critical Design Principle v3.6.1**: The system operates on a **True Hybrid Architecture with Bahasa Melayu exclusive interface and Cloud Hybrid AI**:
 
-1. **Guest Access (No Login)**: Public forms for quick helpdesk tickets and asset loan applications, accessible to all MOTAC staff without authentication
-2. **Authenticated Portal (Login Required)**: Internal portal for staff to view submission history, manage profiles, add comments, track status, and access enhanced features
-3. **Admin Access (Filament Panel)**: Backend management accessible to four roles: staff (own submissions), approver (Grade 41+ approval rights), admin (operational management), and superuser (full governance)
+1. **Guest Access (No Login)**: Public forms for quick helpdesk tickets and asset loan applications, accessible to all MOTAC staff without authentication, with **AI-powered FAQ Bot** using smart model routing
+2. **Authenticated Portal (Login Required)**: Internal portal for staff to view submission history, manage profiles, add comments, track status, and access **enhanced AI features** including document analysis, conversation management, and personalized responses
+3. **Admin Access (Filament Panel)**: Backend management accessible to four roles: staff (own submissions), approver (Grade 41+ approval rights), admin (operational management), and superuser (full governance), with **AI configuration and monitoring** capabilities
 
-The design emphasizes **Bahasa Melayu exclusive UI** (language switcher disabled), dual-path workflows (guest + authenticated), email-based approvals for Grade 41+ officers, unified frontend components, seamless module integration, modern web technologies (Laravel 12, Livewire 3, Volt, Filament 4, Laravel Breeze), responsive UI/UX following **WCAG 2.2 Level AA standards**, **Core Web Vitals performance targets**, self-registration capability, dual audit system, and comprehensive monitoring with Laravel Pulse and Telescope.
+The design emphasizes **Bahasa Melayu exclusive UI** (language switcher disabled), dual-path workflows (guest + authenticated), email-based approvals for Grade 41+ officers, unified frontend components, seamless module integration, modern web technologies (Laravel 12.42.0, Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10, Laravel Breeze 2.3.8), responsive UI/UX following **WCAG 2.2 Level AA standards**, **Core Web Vitals performance targets**, self-registration capability, dual audit system, comprehensive monitoring with Laravel Pulse 1.4.6 and Telescope 5.16.0, and **Cloud Hybrid AI integration** (Ollama + AWS Bedrock) per D18 v1.0.1.
 
 ## Architecture
 
@@ -122,14 +122,14 @@ graph TB
     RealtimeComm --> Redis
 ```
 
-### Technology Stack v3.6.0
+### Technology Stack v3.6.1
 
 | Layer | Technology | Version | Purpose |
 |-------|------------|---------|---------|
-| **Backend Framework** | Laravel | 12.40.1 | Core application framework |
+| **Backend Framework** | Laravel | 12.42.0 | Core application framework |
 | **Language** | PHP | 8.2.12+ | Server-side programming |
 | **Authentication** | Laravel Breeze | 2.3.8 | Staff portal authentication |
-| **Frontend Framework** | Livewire | 3.7.0 | Dynamic UI components |
+| **Frontend Framework** | Livewire | 3.7.1 | Dynamic UI components |
 | **Single-File Components** | Volt | 1.10.1 | Simplified component development |
 | **Admin Panel** | Filament | 4.1.10 | Administrative interface (4 roles) |
 | **Templating** | Blade | - | Server-side templating |
@@ -137,15 +137,21 @@ graph TB
 | **Build Tool** | Vite | 7.0.7 | Asset compilation and optimization |
 | **Database** | MySQL | 8.0+ | Primary data storage |
 | **Cache/Sessions** | Redis | 7.0+ | Caching and session management |
-| **Queue System** | Laravel Queue | - | Background job processing |
-| **Performance Monitoring** | Laravel Pulse | 1.3.0 | Real-time performance metrics |
-| **System Debugging** | Laravel Telescope | 5.x | System debugging (superuser only) |
-| **API Authentication** | Laravel Sanctum | 4.0 | API token authentication |
-| **SSO Integration** | Laravel Socialite | 5.x | Google Workspace SSO |
-| **Real-time Communication** | Laravel Reverb | 1.6.2 | WebSocket server |
+| **Queue System** | Laravel Queue | - | Background job processing (Horizon not installed) |
+| **Performance Monitoring** | Laravel Pulse | 1.4.6 | Real-time performance metrics |
+| **System Debugging** | Laravel Telescope | 5.16.0 | System debugging (superuser only) |
+| **API Authentication** | Laravel Sanctum | 4.2.1 | API token authentication |
+| **SSO Integration** | Laravel Socialite | 5.24.0 | Google Workspace SSO |
+| **Real-time Communication** | Laravel Reverb | 1.6.3 | WebSocket server |
 | **WebSocket Client** | Laravel Echo | 2.2.6 | Client-side WebSocket communication |
 | **Compliance Audit** | owen-it/laravel-auditing | 14.x | Field-level audit tracking |
 | **Operational Logging** | spatie/laravel-activitylog | 4.x | User activity logging |
+| **Local AI (LLM)** | Ollama | Latest | Local LLM server for FAQ (data sovereignty) |
+| **Cloud AI** | AWS Bedrock | - | Claude Opus/Sonnet/Haiku 4.5, Nova, Titan models |
+| **MCP Server** | Laravel MCP | 0.3.4 | Model Context Protocol for AI assistants |
+| **Testing** | PHPUnit | 11.5.46 | Unit and feature testing |
+| **Static Analysis** | Larastan | 3.8.1 | PHPStan Level 9 analysis |
+| **Code Formatting** | Laravel Pint | 1.26.0 | PSR-12 compliance |
 
 ### Design Patterns
 
@@ -154,6 +160,8 @@ graph TB
 - **Email-First Communication**: Primary interaction through automated email workflows for both guest and authenticated users
 - **Dual Approval Pattern**: Support for both email-based approvals (no login) and portal-based approvals (authenticated)
 - **Dual Audit Pattern**: Simultaneous compliance auditing and operational logging
+- **Cloud Hybrid AI Pattern**: Smart routing between local Ollama (FAQ, data sovereignty) and cloud Bedrock (complex reasoning)
+- **Model Routing Pattern**: Automatic AI model selection based on task complexity and cost optimization
 - **MVC (Model-View-Controller)**: Laravel's core architectural pattern
 - **Repository Pattern**: Data access abstraction for testability
 - **Service Layer Pattern**: Business logic encapsulation
@@ -164,7 +172,7 @@ graph TB
 
 ## Components and Interfaces
 
-### Core Components v3.6.0
+### Core Components v3.6.1
 
 #### 1. Enhanced Authentication Component with Self-Registration
 

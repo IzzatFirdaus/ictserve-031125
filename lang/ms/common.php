@@ -1,16 +1,19 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
 declare(strict_types=1);
 
 /**
- * ICTServe v3.6.0 - Bahasa Melayu (Primary Language)
+ * ICTServe v3.6.1 - Bahasa Melayu (Primary Language)
  * English translations retained in lang/en/ for technical reference only
  *
  * ms - Common Translations
  *
- * @version 3.6.0
+ * @version 3.6.1
  *
- * @updated 2025-12-09
+ * @updated 2025-12-17
  *
  * @language Bahasa Melayu (Primary)
  */

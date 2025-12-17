@@ -1,5 +1,8 @@
 <?php
 
+// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)
+// See lang/en/README.md for details
+
 declare(strict_types=1);
 
 /**
@@ -8,6 +11,7 @@ declare(strict_types=1);
  * Auto-generated on 2025-11-11 13:02:54
  * Updated: 2025-12-02 - Added registration translations for Task 13.1
  * Updated: 2025-12-02 - Added flexible login translations for Task 14.1
+ * Updated: 2025-12-17 - Added technical reference comment (v3.6.1)
  */
 
 return [

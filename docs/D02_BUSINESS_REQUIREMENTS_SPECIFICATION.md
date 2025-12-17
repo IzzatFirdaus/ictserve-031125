@@ -29,9 +29,9 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Laravel Socialite (Google SSO optional), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. **Cloud Hybrid AI Integration:** Tambah keperluan perniagaan AI (§6.7) untuk D18 Cloud Hybrid Architecture. Kemaskini objektif terukur dengan AI automation targets. Tambah stakeholder AI Services dan Data Residency Officer. Cross-reference D18 v1.0.1. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini keperluan UI dwibahasa→UI Bahasa Melayu sahaja. Language switcher dilumpuhkan. Email notifications→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                                                              | Pasukan Pembangunan BPM |
-| 3.6.1 | 14 Disember 2025 | **Cloud Hybrid AI Integration:** Tambah keperluan perniagaan AI (§4.4) untuk D18 Cloud Hybrid Architecture. Kemaskini objektif terukur dengan AI automation targets. Tambah stakeholder AI Services dan Data Residency Officer. Cross-reference D18 v1.0.0. | Pasukan Pembangunan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Laravel Socialite (Google SSO optional), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: FR-001 ubah 'Portal (login pilihan)', tambah FR-050 'Staff boleh akses sebagai tetamu atau pengguna berdaftar'. Penyelarasan dengan D00/D04 v3.4.0.                                                                                                  | Pasukan Pembangunan BPM |
 | 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus rujukan 'Portal Intranet (Login)' untuk staf, ganti dengan 'Guest Form'. Penyelarasan dengan D00/D04/D05 v3.3.0.                                                                                                                      | Pasukan Pembangunan BPM |
 | 3.2.1 | 29 November 2025 | Penjajaran kepada seni bina "Guest-First": Staf/Pengguna Dalaman menggunakan borang tetamu (tanpa log masuk). Authentication terhad kepada admin/superuser sahaja. Penyelarasan dengan D00 v3.2.1 dan D04 v3.2.1.                                                         | Pasukan Pembangunan BPM |
@@ -58,24 +58,23 @@
 - **[D12_UI_UX_DESIGN_GUIDE.md]**
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]**
 - **[D14_UI_UX_STYLE_GUIDE.md]**
-- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.0)
-- **docs/helpdesk_form_to_model.md**
-- **docs/loan_form_to_model.md**
-- **docs/frontend/accessibility-guidelines.md**
-- **docs/frontend/core-web-vitals-testing-guide.md**
-- **docs/performance-optimization-report.md**
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.1)
+- **Rujukan implementasi Helpdesk (kod):** `app/Livewire/Helpdesk/TicketForm.php`, `database/migrations/2025_11_03_043924_create_helpdesk_tickets_table.php`
+- **Rujukan implementasi Pinjaman Aset (kod):** `app/Livewire/Forms/LoanApplicationForm.php`, `database/migrations/2025_11_03_043935_create_loan_applications_table.php`
+- **Aksesibiliti (WCAG 2.2 AA):** `docs/D12_UI_UX_DESIGN_GUIDE.md`, `docs/D14_UI_UX_STYLE_GUIDE.md`, `tests/e2e/accessibility.comprehensive.spec.ts`, `tests/e2e/ACCESSIBILITY_TEST_RESULTS.md`
+- **Prestasi (CWV/Lighthouse):** `tests/e2e/performance/core-web-vitals.spec.ts`, `tests/e2e/performance/lighthouse-audit.spec.ts`, `docs/reference/performance-optimization-guide.md`
 
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-Dokumen ini mentakrifkan keperluan perniagaan bagi sistem ICTServe yang digunakan secara dalaman (internal-only) oleh warga kerja MOTAC. Ia menetapkan matlamat, skop, keperluan fungsional dan bukan fungsional, serta kriteria kejayaan yang memacu pembangunan modul Helpdesk & Asset Loan, dan menggariskan tanggungjawab peranan (staf, pegawai kelulusan, admin, super admin) melalui portal dan panel Filament 4.1.10. Sistem dibina menggunakan Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.2 untuk komunikasi masa nyata.
+Dokumen ini mentakrifkan keperluan perniagaan bagi sistem ICTServe yang digunakan secara dalaman (internal-only) oleh warga kerja MOTAC. Ia menetapkan matlamat, skop, keperluan fungsional dan bukan fungsional, serta kriteria kejayaan yang memacu pembangunan modul Helpdesk & Asset Loan, dan menggariskan tanggungjawab peranan (staf, pegawai kelulusan, admin, super admin) melalui portal dan panel Filament 4.1.10. Sistem dibina menggunakan Laravel 12.42.0, Livewire 3.7.1, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.3 untuk komunikasi masa nyata.
 
 ---
 
 ## 2. LATAR BELAKANG (Background)
 
-Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis. Analisis semula aliran kerja dan laporan pematuhan v2.1.0 mengesahkan bahawa model tersebut tidak lagi relevan. Sistem kini memfokuskan borang tetamu terbuka yang mematuhi WCAG 2.2 AA, Core Web Vitals, dan standard MyGOV Digital Service. Semua operasi dalaman dihadkan kepada dua peranan pentadbir yang log masuk ke panel Filament 4.1.10. Teknologi semasa termasuk Laravel 12.40.1 dengan Livewire 3.7.0 untuk komponen interaktif, Volt 1.10.1 untuk single-file components, Alpine.js 3 untuk interaktiviti frontend, Tailwind CSS 4.1.17 untuk styling, dan Laravel Reverb 1.6.2 untuk WebSocket real-time.
+Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis. Analisis semula aliran kerja dan laporan pematuhan v2.1.0 mengesahkan bahawa model tersebut tidak lagi relevan. Sistem kini memfokuskan borang tetamu terbuka yang mematuhi WCAG 2.2 AA, Core Web Vitals, dan standard MyGOV Digital Service. Semua operasi dalaman dihadkan kepada dua peranan pentadbir yang log masuk ke panel Filament 4.1.10. Teknologi semasa termasuk Laravel 12.42.0 dengan Livewire 3.7.1 untuk komponen interaktif, Volt 1.10.1 untuk single-file components, Alpine.js 3 untuk interaktiviti frontend, Tailwind CSS 4.1.17 untuk styling, dan Laravel Reverb 1.6.3 untuk WebSocket real-time.
 
 ---
 
@@ -207,9 +206,9 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 | LUARAN: Google Workspace (SSO) | Email Gateway | External APIs (Future)  |
 +-------------------------------------------------------------------------+
 |                           TEKNOLOGI                                     |
-| Laravel 12.40.1 | PHP 8.2.12 | MySQL 8.0 | Redis 7.0 | Livewire 3.7.0    |
-| Filament 4.1.10 | Laravel Reverb 1.6.2 | Laravel Pulse 1.3.0              |
-| Laravel Sanctum 4.0 | Laravel Socialite 5.x | Tailwind CSS 4.1.17          |
+| Laravel 12.42.0 | PHP 8.2.12 | MySQL 8.0 | Redis 7.0 | Livewire 3.7.1    |
+| Filament 4.1.10 | Laravel Reverb 1.6.3 | Laravel Pulse 1.4.6              |
+| Laravel Sanctum 4.2.1 | Laravel Socialite 5.24.0 | Tailwind CSS 4.1.17          |
 +-------------------------------------------------------------------------+
 ```
 
@@ -318,7 +317,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 
 - `helpdesk_tickets.user_id` → nullable FK to users.id (ON DELETE SET NULL)
 - `loan_applications.user_id` → nullable FK to users.id (ON DELETE SET NULL)
-- Retain all `submitter_*` / `applicant_*` string columns for guest fallback
+- Retain all `guest_*` (Helpdesk) / `applicant_*` (Pinjaman) string columns untuk hybrid access (guest fallback)
 - Index on `user_id` for performance (My Submissions queries)
 
 **Business Logic:**
@@ -326,25 +325,25 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 - Form submission controller MUST check `Auth::check()` before saving
 - If authenticated: `$ticket->user_id = Auth::id()`
 - If guest: `$ticket->user_id = null`
-- Email notifications sent to `submitter_email` regardless of auth status
+- Notifikasi e-mel dihantar kepada `guest_email` (Helpdesk) / `applicant_email` (Pinjaman) tanpa mengira status auth
 
 ### 6.1. Helpdesk Ticketing Module (Hybrid Access)
 
 - **Borang Aduan Hybrid:**  
-  Staf boleh log masuk (auto-fill dari user profile) atau gunakan borang tetamu. Livewire 3.7.0 + Volt 1.10.1 dengan validasi masa nyata. Medan: nama, e-mel, telefon, bahagian, gred, kategori, deskripsi, lampiran. Auth::check() logic untuk auto-fill. Interface menggunakan Alpine.js 3 dan Tailwind CSS 4.1.17.
+  Staf boleh log masuk (auto-fill dari user profile) atau gunakan borang tetamu. Livewire 3.7.1 + Volt 1.10.1 dengan validasi masa nyata. Medan: nama, e-mel, telefon, bahagian, gred, kategori, deskripsi, lampiran. Auth::check() logic untuk auto-fill. Interface menggunakan Alpine.js 3 dan Tailwind CSS 4.1.17.
 - **Pengurusan Kategori & SLA:**  
   Sistem menandakan keutamaan berdasarkan kategori/SLA. `admin` boleh mengubah suai templat kategori dan pautan bantuan (rujuk D04 §4.1).
 - **Automasi Notifikasi:**  
-  Pengesahan e-mel dihantar kepada pengguna dengan nombor tiket. `admin` menerima pemberitahuan queue; `super admin` menerima amaran bagi pelanggaran SLA. Notifikasi masa nyata dihantar melalui Laravel Reverb 1.6.2 (WebSocket) dan Laravel Echo 2.2.6.
+  Pengesahan e-mel dihantar kepada pengguna dengan nombor tiket. `admin` menerima pemberitahuan queue; `superuser` menerima amaran bagi pelanggaran SLA. Notifikasi masa nyata dihantar melalui Laravel Reverb 1.6.3 (WebSocket) dan Laravel Echo 2.2.6.
 - **Audit & Tindak Lanjut:**  
   Semua interaksi (komen, ubah status) dicap masa. Pengguna boleh memuat naik bukti lanjutan melalui pautan selamat; Filament menyatukan komunikasi.
 - **Pelaporan:**  
-  Dashboard Filament 4.1.10 menyediakan laporan kategori, trend, SLA, dan statistik backlog untuk pengurusan BPM. Widget interaktif dibina menggunakan Livewire 3.7.0 dengan kemaskini masa nyata.
+  Dashboard Filament 4.1.10 menyediakan laporan kategori, trend, SLA, dan statistik backlog untuk pengurusan BPM. Widget interaktif dibina menggunakan Livewire 3.7.1 dengan kemaskini masa nyata.
 
 ### 6.2. ICT Asset Loan Module (Hybrid Access)
 
 - **Borang Permohonan Hybrid:**  
-  Staf boleh log masuk (auto-fill) atau gunakan borang tetamu. Livewire 3.7.0 + Volt 1.10.1 untuk pilih aset, tempoh, lokasi, tujuan. Auth::check() logic untuk auto-fill. Sistem memeriksa konflik tempahan dan ketersediaan aset secara masa nyata dengan Alpine.js 3.
+  Staf boleh log masuk (auto-fill) atau gunakan borang tetamu. Livewire 3.7.1 + Volt 1.10.1 untuk pilih aset, tempoh, lokasi, tujuan. Auth::check() logic untuk auto-fill. Sistem memeriksa konflik tempahan dan ketersediaan aset secara masa nyata dengan Alpine.js 3.
 - **Workflow Kelulusan Berpautan E-mel:**
   1. Permohonan berjaya dihantar menjana `loan_application` dengan kod rujukan dan nullable `user_id` (jika logged in).
   2. Sistem mengenal pasti pegawai Gred 41 berkaitan (rujuk kamus bahagian) dan menggunakan peranan dalaman untuk kelulusan.
@@ -353,7 +352,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
   5. Pautan membuka halaman kelulusan dalam portal dalaman yang memaparkan ringkasan permohonan; pegawai memilih keputusan, memasukkan catatan (optional), dan mengesahkan.
   6. Keputusan dicap masa. Pengguna (jika logged in) dan `admin` menerima pemberitahuan automatik.
 - **Pengeluaran & Pemulangan Aset:**  
-  `admin` melaksanakan check-out/in melalui Filament 4.1.10, merekod pegawai BPM yang menyerahkan/menerima, dan menandai kerosakan. Interface menggunakan Livewire 3.7.0 untuk operasi real-time.
+  `admin` melaksanakan check-out/in melalui Filament 4.1.10, merekod pegawai BPM yang menyerahkan/menerima, dan menandai kerosakan. Interface menggunakan Livewire 3.7.1 untuk operasi real-time.
 - **Audit & Laporan:**  
   `loan_transactions`, `loan_audits`, dan `loan_approvals` menyimpan jejak lengkap. Laporan penggunaan aset, kerosakan, dan overdue dijana secara berkala.
 
@@ -366,7 +365,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 ### 6.4. Pemantauan Prestasi Aplikasi (Laravel Pulse)
 
 - **Dashboard Prestasi Masa Nyata:**  
-  `admin` dan `superuser` boleh mengakses dashboard Laravel Pulse 1.3.0 di `/pulse` untuk memantau prestasi aplikasi secara proaktif. Dashboard memaparkan query database yang perlahan (>500ms), prestasi queue job, corak permintaan pengguna, dan metrik kesihatan pelayan.
+  `admin` dan `superuser` boleh mengakses dashboard Laravel Pulse 1.4.6 di `/pulse` untuk memantau prestasi aplikasi secara proaktif. Dashboard memaparkan query database yang perlahan (>500ms), prestasi queue job, corak permintaan pengguna, dan metrik kesihatan pelayan.
 - **Pengesanan Isu Proaktif:**  
   Sistem menjejaki masa tindak balas, penggunaan memori, kadar cache hit, dan pola kegagalan queue. Apabila ambang prestasi melebihi had, sistem menghantar amaran melalui saluran notifikasi yang dikonfigurasi.
 - **Pengurusan Data:**  
@@ -377,7 +376,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 ### 6.5. Pengesahan API (Laravel Sanctum) - Pertimbangan Masa Depan
 
 - **Keupayaan API Token:**  
-  Sistem menyediakan pengesahan berasaskan token menggunakan Laravel Sanctum 4.0 untuk menyokong aplikasi mudah alih masa depan dan integrasi luaran. Token API boleh dikonfigurasi dengan tempoh tamat masa (lalai: 30 hari) dan keupayaan terperinci (read:tickets, write:tickets, read:loans, write:loans, admin:all).
+  Sistem menyediakan pengesahan berasaskan token menggunakan Laravel Sanctum 4.2.1 untuk menyokong aplikasi mudah alih masa depan dan integrasi luaran. Token API boleh dikonfigurasi dengan tempoh tamat masa (lalai: 30 hari) dan keupayaan terperinci (read:tickets, write:tickets, read:loans, write:loans, admin:all).
 - **Keselamatan API:**  
   Sistem menguatkuasakan rate limiting pada endpoint API (60 permintaan/minit untuk token yang disahkan, 10 permintaan/minit untuk tidak disahkan). Semua percubaan pengesahan API dan penggunaan token dilog dalam audit trail untuk pematuhan keselamatan.
 - **Persediaan Integrasi:**  
@@ -386,7 +385,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 ### 6.6. Google Workspace SSO (Peningkatan Pilihan)
 
 - **Pengesahan OAuth 2.0:**  
-  Sistem menyokong log masuk menggunakan akaun Google Workspace melalui Laravel Socialite 5.x untuk staf MOTAC. Ciri ini adalah pilihan dan bergantung kepada dasar IT MOTAC mengenai penggunaan Google Workspace untuk e-mel rasmi.
+  Sistem menyokong log masuk menggunakan akaun Google Workspace melalui Laravel Socialite 5.24.0 untuk staf MOTAC. Ciri ini adalah pilihan dan bergantung kepada dasar IT MOTAC mengenai penggunaan Google Workspace untuk e-mel rasmi.
 - **Sekatan Domain:**  
   Log masuk Google terhad kepada domain `@motac.gov.my` sahaja. Sistem menolak semua domain lain untuk memastikan hanya staf MOTAC yang sah boleh mengakses sistem.
 - **Penciptaan Akaun Automatik:**  
@@ -398,7 +397,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 
 ### 6.7. Cloud Hybrid AI Services (D18 Integration)
 
-> **Trace:** D18 v1.0.0 (Cloud Hybrid AI Architecture), True Hybrid Architecture alignment
+> **Trace:** D18 v1.0.1 (Cloud Hybrid AI Architecture), True Hybrid Architecture alignment
 
 - **FAQ Bot dengan Model Routing Pintar:**  
   Sistem menyediakan chatbot AI yang boleh diakses oleh guest dan authenticated users melalui `/ai/chat`. Model routing pintar menganalisis pertanyaan dan menghalakan kepada Ollama (local, percuma) untuk FAQ atau AWS Bedrock Claude (cloud, berbayar) untuk penaakulan kompleks. Sasaran masa respons <5 saat dengan 82% penjimatan kos berbanding cloud-only.
@@ -428,8 +427,8 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 
 ## 7. KEPERLUAN BUKAN FUNGSI (Non-Functional Requirements)
 
-- **Kebolehcapaian:** Mematuhi WCAG 2.2 AA, 44x44px touch target, 3px focus outline, struktur ARIA (rujuk D12-D14, `accessibility-testing-checklist.md`).
-- **Prestasi:** LCP <2.5s untuk borang utama, TTI <4s, skor Lighthouse ≥90 (rujuk `core-web-vitals-testing-guide.md`, `performance-optimization-report.md`).
+- **Kebolehcapaian:** Mematuhi WCAG 2.2 AA, 44x44px touch target, 3px focus outline, struktur ARIA (rujuk D12–D14, `tests/e2e/accessibility.comprehensive.spec.ts`).
+- **Prestasi:** LCP <2.5s untuk borang utama, TTI <4s, skor Lighthouse ≥90 (rujuk `tests/e2e/performance/core-web-vitals.spec.ts`, `docs/reference/performance-optimization-guide.md`).
 - **Keselamatan:** reCAPTCHA Enterprise, rate limiting, storage token hashed, audit log penuh (D09 §8).
 - **Kebolehskalaan:** Boleh menambah borang tetamu baharu tanpa menambah peranan pengguna.
 - **Kebolehgunaan:** UI Bahasa Melayu sahaja (v3.6.0), navigasi jelas, panduan inline untuk tetamu, status real-time.
@@ -520,8 +519,8 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 
 ### 13.1. Borang Rujukan
 
-- `helpdesk_form_to_model.md` – Mapping borang helpdesk kepada model & validasi.
-- `loan_form_to_model.md` – Mapping borang pinjaman kepada model & kelulusan.
+- `app/Livewire/Helpdesk/TicketForm.php` – Implementasi mapping borang helpdesk → `helpdesk_tickets` (termasuk pemetaan `submitter_*` → `guest_*`).
+- `app/Livewire/Forms/LoanApplicationForm.php` – Implementasi mapping borang pinjaman → `loan_applications` (validasi & logik kelulusan).
 
 ### 13.2. Carta Alir & Diagram
 
@@ -530,8 +529,8 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 
 ### 13.3. Dokumen Sokongan
 
-- `filament-admin-interface-compliance.md` – Bukti pematuhan panel pentadbir.
-- `accessibility-testing-checklist.md` – Log ujian kebolehcapaian.
+- `docs/reference/FILAMENT_UPDATE_STATUS.md` – Bukti/status pematuhan panel pentadbir (Filament).
+- `tests/e2e/ACCESSIBILITY_TEST_RESULTS.md` – Ringkasan hasil ujian kebolehcapaian (E2E).
 
 ---
 
@@ -769,4 +768,4 @@ Berdasarkan 515 Function Points:
 
 ## 16. MATRIKS PEMETAAN KEPERLUAN (Requirements Traceability Matrix)
 
-RTM diselenggara dalam `docs/rtm/loan_requirements_rtm.csv` dan `docs/rtm/helpdesk_requirements_rtm.csv`. Semua keperluan baharu bercap ID `BRS-3.x` dan dipetakan kepada SRS (D03), SDD (D04), serta kes ujian berkaitan (PHPUnit, Livewire, Lighthouse). Kemas kini RTM hendaklah mematuhi D01 §9.3 untuk penjejakan perubahan.
+RTM diselenggara dalam `docs/reference/rtm/loan_requirements_rtm.csv` dan `docs/reference/rtm/helpdesk_requirements_rtm.csv`. Semua keperluan baharu bercap ID `BRS-3.x` dan dipetakan kepada SRS (D03), SDD (D04), serta kes ujian berkaitan (PHPUnit, Livewire, Lighthouse). Kemas kini RTM hendaklah mematuhi D01 §9.3 untuk penjejakan perubahan.

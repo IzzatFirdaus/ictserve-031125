@@ -1,9 +1,9 @@
 # Dokumentasi Induk Sistem ICTServe (iServe)
 
 **Sistem Helpdesk & ICT Asset Loan MOTAC BPM**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 1 Disember 2025
-**Status:** Aktif - Penyeragaman Mengikut D00-D17
+**Versi:** 3.6.1 (SemVer)
+**Tarikh Kemaskini:** 17 Disember 2025
+**Status:** Aktif - Penyeragaman Mengikut D00-D18
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0
@@ -14,13 +14,13 @@
 
 | Atribut          | Nilai                                                                                       |
 | ---------------- | ------------------------------------------------------------------------------------------- |
-| Versi Dokumen    | 3.5.0 (SemVer)                                                                              |
-| Tarikh Kemaskini | 1 Disember 2025                                                                             |
-| Status           | Aktif - Penyeragaman D00-D17 Lengkap                                                        |
+| Versi Dokumen    | 3.6.1 (SemVer)                                                                              |
+| Tarikh Kemaskini | 17 Disember 2025                                                                             |
+| Status           | Aktif - Penyeragaman D00-D18 Lengkap                                                        |
 | Klasifikasi      | Terhad - Dalaman MOTAC                                                                      |
 | Pematuhi         | ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, MyGOV DSS v2.1.0   |
 | Penulis          | Pasukan Pembangunan BPM MOTAC                                                               |
-| Bahasa           | Bahasa Melayu (utama) dengan istilah Inggeris                                               |
+| Bahasa           | Bahasa Melayu sahaja (v3.6.0+)                                                              |
 
 > **Notis Penggunaan Dalaman:** Sistem ICTServe/iServe adalah untuk kegunaan dalaman
 > Kementerian Pelancongan, Seni dan Budaya (MOTAC) sahaja dan tidak ditujukan untuk
@@ -32,6 +32,8 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis     |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Vite 7.0.7, Tailwind CSS 4.1.17, Playwright 1.57.0. **Cloud Hybrid AI Integration**: Integrasi D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock) dengan model routing pintar, streaming responses, web-augmented responses, conversation management. **AI Packages**: cloudstudio/ollama-laravel 1.1+, aws/aws-sdk-php 3.363+. Penyelarasan penuh dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.0 | 8 Disember 2025  | **Bahasa Melayu sahaja untuk antara muka pengguna**: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Penyelarasan dengan D00-D18 v3.6.0. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0, Laravel Sanctum v4.0, Laravel Socialite v5.x. Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases. Penyelarasan penuh dengan D00-D17 v3.5.0.                                                                     | Pasukan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences.                                     | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus staff/approver dari RBAC                                                                                                                                                                                                                                        | Pasukan BPM |
@@ -44,7 +46,7 @@
 
 ---
 
-## Rujukan Dokumen Berkaitan (D00-D17)
+## Rujukan Dokumen Berkaitan (D00-D18)
 
 | Dokumen | Penerangan                       | Pautan                                                                                   |
 | ------- | -------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -65,7 +67,8 @@
 | D14     | Panduan Gaya UI/UX               | [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md)                                     |
 | D15     | Penyetempatan Bahasa (MS/EN)     | [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md)                                           |
 | D16     | Persediaan Broadcasting          | [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md)                                   |
-| D17     | Pengurusan Queue (Horizon)       | [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md)                       |
+| D17     | Pengurusan Queue (Redis)         | [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md)                       |
+| D18     | AI Chatbot Ollama-Bedrock        | [D18_AI_CHATBOT_OLLAMA_BEDROCK.md](D18_AI_CHATBOT_OLLAMA_BEDROCK.md)                     |
 
 ---
 
@@ -85,10 +88,11 @@ Tujuan utama dokumen induk ini adalah untuk:
 
 ## Ringkasan Sistem
 
-ICTServe (iServe) v3.5.0 adalah platform digital bersepadu yang direka khusus untuk
+ICTServe (iServe) v3.6.1 adalah platform digital bersepadu yang direka khusus untuk
 mengurus perkhidmatan ICT di Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC).
 Sistem ini menggantikan proses manual tradisional dengan penyelesaian digital yang
-cekap, selamat, dan mesra pengguna.
+cekap, selamat, dan mesra pengguna. Versi 3.6.1 memperkenalkan antara muka Bahasa Melayu
+sahaja dan integrasi Cloud Hybrid AI Architecture (Ollama + AWS Bedrock).
 
 ### Modul Utama
 
@@ -101,23 +105,25 @@ cekap, selamat, dan mesra pengguna.
 
 ### Teknologi Teras
 
-| Komponen               | Teknologi         | Versi   |
-| ---------------------- | ----------------- | ------- |
-| Backend Framework      | Laravel           | 12.40.1 |
-| PHP Runtime            | PHP               | 8.2.12  |
-| Admin Panel            | Filament          | 4.1.10  |
-| Frontend Components    | Livewire          | 3.7.0   |
-| Single-File Components | Livewire Volt     | 1.10.1  |
-| CSS Framework          | Tailwind CSS      | 4.1.17  |
-| Build Tool             | Vite              | 7.0.7   |
-| WebSocket Server       | Laravel Reverb    | 1.6.2   |
-| WebSocket Client       | Laravel Echo      | 2.2.6   |
-| Queue Management       | Laravel Horizon   | Latest  |
-| Performance Monitor    | Laravel Pulse     | 1.3.0   |
-| API Authentication     | Laravel Sanctum   | 4.0     |
-| OAuth SSO (Opsyen)     | Laravel Socialite | 5.x     |
-| Database               | MySQL             | 8.x     |
-| Cache/Queue            | Redis             | 7.x     |
+| Komponen               | Teknologi         | Versi                |
+| ---------------------- | ----------------- | -------------------- |
+| Backend Framework      | Laravel           | 12.42.0              |
+| PHP Runtime            | PHP               | 8.2.12               |
+| Admin Panel            | Filament          | 4.1.10               |
+| Frontend Components    | Livewire          | 3.7.1                |
+| Single-File Components | Livewire Volt     | 1.10.1               |
+| CSS Framework          | Tailwind CSS      | 4.1.17               |
+| Build Tool             | Vite              | 7.0.7                |
+| WebSocket Server       | Laravel Reverb    | 1.6.3                |
+| WebSocket Client       | Laravel Echo      | 2.2.6                |
+| Queue Processing       | Laravel Queue     | Redis (tanpa Horizon) |
+| Performance Monitor    | Laravel Pulse     | 1.4.6                |
+| API Authentication     | Laravel Sanctum   | 4.2.1                |
+| OAuth SSO (Opsyen)     | Laravel Socialite | 5.24.0               |
+| AI Integration (Local) | Ollama Laravel    | 1.1+                 |
+| AI Integration (Cloud) | AWS SDK PHP       | 3.363+               |
+| Database               | MySQL             | 8.x                  |
+| Cache/Queue            | Redis             | 7.x                  |
 
 ---
 
@@ -312,19 +318,27 @@ ICTServe menggunakan corak seni bina berlapis (Layered Architecture) dengan prin
 graph TB
     subgraph "Frontend Stack"
         Blade[Templat Blade]
-        Livewire[Livewire 3.7.0]
+        Livewire[Livewire 3.7.1]
+        Volt[Volt 1.10.1]
         Alpine[Alpine.js 3.x]
-        Tailwind[Tailwind CSS 4.x]
+        Tailwind[Tailwind CSS 4.1.17]
         Vite[Vite 7.0.7]
     end
 
     subgraph "Backend Stack"
-        Laravel[Laravel 12.40.1]
+        Laravel[Laravel 12.42.0]
         PHP[PHP 8.2.12]
         Filament[Filament 4.1.10]
-        Reverb[Laravel Reverb 1.6.2]
-        Horizon[Laravel Horizon]
-        Pulse[Laravel Pulse 1.3.0]
+        Reverb[Laravel Reverb 1.6.3]
+        Queue[Laravel Queue (Redis)]
+        Pulse[Laravel Pulse 1.4.6]
+        MCP[Laravel MCP 0.3.4]
+    end
+
+    subgraph "AI Integration"
+        Ollama[Ollama Laravel 1.1+]
+        AWS[AWS SDK PHP 3.363+]
+        Bedrock[AWS Bedrock Models]
     end
 
     subgraph "Data Layer"
@@ -358,7 +372,7 @@ graph TB
     Laravel --> MySQL
     Laravel --> Redis
     Laravel --> Reverb
-    Laravel --> Horizon
+    Laravel --> Queue
     Laravel --> Pulse
     Nginx --> Laravel
     Supervisor --> Laravel
@@ -366,31 +380,37 @@ graph TB
 
 ### Jadual Teknologi Terperinci
 
-| Kategori       | Teknologi         | Versi   | Tujuan Utama                            |
-| -------------- | ----------------- | ------- | --------------------------------------- |
-| Backend        | Laravel           | 12.40.1 | Rangka kerja utama aplikasi             |
-| Backend        | PHP               | 8.2.12  | Bahasa pengaturcaraan pelayan           |
-| Backend        | Filament          | 4.1.10  | Panel pentadbir dan pembina UI          |
-| Frontend       | Livewire          | 3.7.0   | Komponen UI yang dinamik dan reaktif    |
-| Frontend       | Livewire Volt     | 1.10.1  | Single-file Livewire components         |
-| Frontend       | Alpine.js         | 3.x     | Rangka kerja JavaScript yang ringan     |
-| Frontend       | Tailwind CSS      | 4.1.17  | Rangka kerja CSS utility-first          |
-| Frontend       | Vite              | 7.0.7   | Alat binaan untuk aset frontend         |
-| Real-time      | Laravel Reverb    | 1.6.2   | WebSocket server untuk ciri masa nyata  |
-| Real-time      | Laravel Echo      | 2.2.6   | WebSocket client                        |
-| Queue          | Laravel Horizon   | Latest  | Pengurusan queue Redis                  |
-| Monitoring     | Laravel Pulse     | 1.3.0   | Performance monitoring dashboard        |
-| Monitoring     | Laravel Telescope | 5.x     | Debugging & monitoring (superuser)      |
-| API            | Laravel Sanctum   | 4.0     | Token-based API authentication          |
-| OAuth          | Laravel Socialite | 5.x     | Google Workspace SSO (opsyen)           |
-| Database       | MySQL             | 8.0+    | Pangkalan data utama (Relasional)       |
-| Cache          | Redis             | 7.0+    | Cache, Sesi, dan Barisan                |
-| Infrastructure | Docker            | Latest  | Kontainerisasi aplikasi                 |
-| Infrastructure | Nginx             | 1.24+   | Pelayan web dan proksi terbalik         |
-| Packages       | Spatie Permission | 6.23    | Pengurusan peranan dan kebenaran (RBAC) |
-| Packages       | Laravel Auditing  | 14.x    | Jejak audit untuk model Eloquent        |
-| Packages       | Activity Log      | 4.x     | User activity logging (spatie)          |
-| Packages       | Laravel Breeze    | 2.3.8   | Authentication scaffolding              |
+| Kategori       | Teknologi         | Versi                | Tujuan Utama                            |
+| -------------- | ----------------- | -------------------- | --------------------------------------- |
+| Backend        | Laravel           | 12.42.0              | Rangka kerja utama aplikasi             |
+| Backend        | PHP               | 8.2.12               | Bahasa pengaturcaraan pelayan           |
+| Backend        | Filament          | 4.1.10               | Panel pentadbir dan pembina UI          |
+| Frontend       | Livewire          | 3.7.1                | Komponen UI yang dinamik dan reaktif    |
+| Frontend       | Livewire Volt     | 1.10.1               | Single-file Livewire components         |
+| Frontend       | Alpine.js         | 3.x                  | Rangka kerja JavaScript yang ringan     |
+| Frontend       | Tailwind CSS      | 4.1.17               | Rangka kerja CSS utility-first          |
+| Frontend       | Vite              | 7.0.7                | Alat binaan untuk aset frontend         |
+| Real-time      | Laravel Reverb    | 1.6.3                | WebSocket server untuk ciri masa nyata  |
+| Real-time      | Laravel Echo      | 2.2.6                | WebSocket client                        |
+| Queue          | Laravel Queue     | Redis (tanpa Horizon) | Pemprosesan job latar belakang          |
+| Monitoring     | Laravel Pulse     | 1.4.6                | Performance monitoring dashboard        |
+| Monitoring     | Laravel Telescope | 5.x                  | Debugging & monitoring (superuser)      |
+| API            | Laravel Sanctum   | 4.2.1                | Token-based API authentication          |
+| OAuth          | Laravel Socialite | 5.24.0               | Google Workspace SSO (opsyen)           |
+| AI (Local)     | Ollama Laravel    | 1.1+                 | Local LLM integration                   |
+| AI (Cloud)     | AWS SDK PHP       | 3.363+               | AWS Bedrock cloud AI integration        |
+| MCP            | Laravel MCP       | 0.3.4                | Model Context Protocol server           |
+| Database       | MySQL             | 8.0+                 | Pangkalan data utama (Relasional)       |
+| Cache          | Redis             | 7.0+                 | Cache, Sesi, dan Barisan                |
+| Infrastructure | Docker            | Latest               | Kontainerisasi aplikasi                 |
+| Infrastructure | Nginx             | 1.24+                | Pelayan web dan proksi terbalik         |
+| Packages       | Spatie Permission | 6.23                 | Pengurusan peranan dan kebenaran (RBAC) |
+| Packages       | Laravel Auditing  | 14.x                 | Jejak audit untuk model Eloquent        |
+| Packages       | Activity Log      | 4.x                  | User activity logging (spatie)          |
+| Packages       | Laravel Breeze    | 2.3.8                | Authentication scaffolding              |
+| Testing        | PHPUnit           | 11.5.46              | Unit dan feature testing                |
+| Testing        | Playwright        | 1.57.0               | End-to-end browser testing              |
+| Testing        | Axe Core          | 4.11.0               | Accessibility testing                   |
 
 ---
 
@@ -784,11 +804,11 @@ erDiagram
 
 | Dokumen                                    | Tujuan                                |
 | ------------------------------------------ | ------------------------------------- |
-| accessibility-guidelines.md                | Panduan aksesibiliti WCAG 2.2 AA      |
-| color-contrast-accessibility.md            | Pematuhan kontras warna               |
-| core-web-vitals-testing-guide.md           | Panduan ujian prestasi                |
-| filament-admin-interface-compliance.md     | Pematuhan antara muka Filament        |
-| css-js-optimization-audit.md               | Audit pengoptimuman frontend          |
+| docs/D12_UI_UX_DESIGN_GUIDE.md             | Panduan UI/UX (termasuk kebolehcapaian) |
+| docs/D14_UI_UX_STYLE_GUIDE.md              | Style guide & WCAG 2.2 AA               |
+| tests/e2e/ACCESSIBILITY_TEST_RESULTS.md    | Ringkasan hasil ujian aksesibiliti (E2E) |
+| docs/reference/performance-optimization-guide.md | Panduan & hasil audit prestasi (CWV/Lighthouse) |
+| docs/reference/FILAMENT_UPDATE_STATUS.md   | Status/pematuhan panel Filament         |
 
 ---
 
@@ -800,7 +820,7 @@ erDiagram
 | ----------------- | ------------------------------------------- | --------------- | ---------- |
 | Laravel Pulse     | Performance monitoring dashboard masa nyata | admin/superuser | D11 §9     |
 | Laravel Telescope | Debugging dan monitoring terperinci         | superuser       | D11 §10    |
-| Laravel Horizon   | Queue monitoring dan management             | admin/superuser | D17        |
+| Laravel Queue (Redis) | Pemprosesan job + failed jobs (Horizon tidak dipasang) | admin/superuser | D17        |
 
 ### Laravel Pulse Metrics
 
@@ -850,7 +870,7 @@ erDiagram
 | **Admin**                | Pegawai BPM yang memproses tiket & permohonan melalui Filament              |
 | **Superuser**            | Pegawai pengurusan BPM yang mentadbir konfigurasi, keselamatan, dan audit   |
 | **Signed Approval Link** | Pautan e-mel ber-token yang membolehkan kelulusan tanpa log masuk           |
-| **guest.blade.php**      | Layout utama untuk semua paparan tetamu                                     |
+| `resources/views/layouts/guest.blade.php`      | Layout utama untuk semua paparan tetamu                                     |
 | **Livewire**             | Full-stack framework untuk dynamic interfaces dengan server-side rendering  |
 | **Volt**                 | Single-file Livewire components dengan simplified syntax                    |
 | **Filament**             | Server-Driven UI (SDUI) framework untuk admin panel                         |
@@ -859,7 +879,7 @@ erDiagram
 | **Telescope**            | Laravel debugging dan monitoring tool untuk superuser                       |
 | **Sanctum**              | Laravel API token authentication system                                     |
 | **Socialite**            | Laravel OAuth 2.0 library untuk Google Workspace SSO                        |
-| **Horizon**              | Laravel queue management dashboard                                          |
+| **Horizon**              | Dashboard queue (opsyenal). Tidak dipasang dalam repo v3.6.1 (diganti dengan Laravel Pulse + Failed Jobs) |
 | **RBAC**                 | Role-Based Access Control - kawalan akses berasaskan peranan                |
 | **SLA**                  | Service Level Agreement - perjanjian tahap perkhidmatan                     |
 | **WCAG**                 | Web Content Accessibility Guidelines - panduan aksesibiliti web             |
@@ -874,8 +894,8 @@ erDiagram
 | Teknologi         | Versi   | Tujuan                                |
 | ----------------- | ------- | ------------------------------------- |
 | PHP               | 8.2.12  | Backend programming language          |
-| Laravel           | 12.40.1 | Web application framework             |
-| Livewire          | 3.7.0   | Reactive components                   |
+| Laravel           | 12.42.0 | Web application framework             |
+| Livewire          | 3.7.1   | Reactive components                   |
 | Volt              | 1.10.1  | Single-file components                |
 | Filament          | 4.1.10  | Admin panel                           |
 | Alpine.js         | 3       | Lightweight JavaScript framework      |
@@ -883,11 +903,11 @@ erDiagram
 | Vite              | 7.0.7   | Asset bundler/build tool              |
 | Nginx             | 1.24    | Reverse proxy / web server            |
 | Redis             | 7.0     | Queue, cache, broadcasting backend    |
-| Laravel Reverb    | 1.6.2   | WebSocket server                      |
+| Laravel Reverb    | 1.6.3   | WebSocket server                      |
 | Laravel Echo      | 2.2.6   | Client-side event handling            |
 | Laravel Breeze    | 2.3.8   | Authentication scaffolding            |
 | Laravel Pint      | 1.26.0  | Code formatter (PSR-12)               |
-| Larastan          | 3.8.0   | Static analysis (PHPStan for Laravel) |
+| Larastan          | 3.8.1   | Static analysis (PHPStan for Laravel) |
 | PHPUnit           | 11.5.44 | Testing framework                     |
 | Playwright        | 1.56.1  | End-to-end browser testing            |
 | axe-core          | 4.11.0  | Accessibility testing library         |
@@ -941,5 +961,5 @@ Sistem ini menyokong visi Digital MOTAC 2025 dan mematuhi MyGOV Digital Service 
 
 ---
 
-**Dokumen ini adalah sebahagian daripada pakej dokumentasi ICTServe v3.5.0.**
-**Untuk maklumat lanjut, rujuk dokumen D00-D17 yang berkaitan.**
+**Dokumen ini adalah sebahagian daripada pakej dokumentasi ICTServe v3.6.1.**
+**Untuk maklumat lanjut, rujuk dokumen D00-D18 yang berkaitan.**

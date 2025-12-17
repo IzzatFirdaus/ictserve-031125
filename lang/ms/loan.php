@@ -1,5 +1,9 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
+
 /**
  * Translation file: Loan Module (Bahasa Melayu)
  * Description: Malay language translations for loan application module
