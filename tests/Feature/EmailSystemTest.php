@@ -807,12 +807,13 @@ class EmailSystemTest extends TestCase
         $response->assertViewIs('loans.approval-form');
         $response->assertViewHas('token', $token);
 
-        // 2. Test Process Approval
-        $this->withoutExceptionHandling();
-        $response = $this->post(route('loan.approval.approve.process'), [
-            'token' => $token,
-            'comments' => 'Approved via controller',
-        ]);
+        // 2. Test Process Approval (using session to bypass CSRF)
+        $response = $this->withSession(['_token' => 'test-token'])
+            ->post(route('loan.approval.approve.process'), [
+                '_token' => 'test-token',
+                'token' => $token,
+                'comments' => 'Approved via controller',
+            ]);
 
         $response->assertRedirect(route('welcome'));
 
@@ -836,12 +837,13 @@ class EmailSystemTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('loans.approval-form');
 
-        // 2. Test Process Decline
-        $this->withoutExceptionHandling();
-        $response = $this->post(route('loan.approval.decline.process'), [
-            'token' => $token,
-            'reason' => 'Declined via controller',
-        ]);
+        // 2. Test Process Decline (using session to bypass CSRF)
+        $response = $this->withSession(['_token' => 'test-token'])
+            ->post(route('loan.approval.decline.process'), [
+                '_token' => 'test-token',
+                'token' => $token,
+                'reason' => 'Declined via controller',
+            ]);
 
         $response->assertRedirect(route('welcome'));
 
@@ -868,11 +870,13 @@ class EmailSystemTest extends TestCase
         $response = $this->get(route('loan.approval.approve', ['token' => $token]));
         $response->assertRedirect(route('welcome'));
 
-        // Test Process with expired token - should also redirect
-        $response = $this->post(route('loan.approval.approve.process'), [
-            'token' => $token,
-            'comments' => 'Should fail',
-        ]);
+        // Test Process with expired token - should also redirect (using session to bypass CSRF)
+        $response = $this->withSession(['_token' => 'test-token'])
+            ->post(route('loan.approval.approve.process'), [
+                '_token' => 'test-token',
+                'token' => $token,
+                'comments' => 'Should fail',
+            ]);
 
         $response->assertRedirect(route('welcome'));
     }

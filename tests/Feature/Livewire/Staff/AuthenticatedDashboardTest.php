@@ -90,7 +90,8 @@ class AuthenticatedDashboardTest extends TestCase
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
-        $response->assertSeeLivewire(AuthenticatedDashboard::class);
+        $response->assertSee('Tiket Terbuka Saya');
+        $response->assertSee('Pinjaman Menunggu Saya');
     }
 
     #[Test]

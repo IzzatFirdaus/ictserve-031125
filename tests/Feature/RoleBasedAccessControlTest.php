@@ -8,8 +8,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 /**
@@ -248,7 +246,9 @@ class RoleBasedAccessControlTest extends TestCase
 
         $response->assertStatus(200);
         // Verify BM content is displayed
-        $response->assertSee(__('dashboard.title'));
+        $response->assertSee('Tiket Terbuka Saya');
+        $response->assertSee('Pinjaman Menunggu Saya');
+        $response->assertSee('Tindakan Pantas');
     }
 
     /**

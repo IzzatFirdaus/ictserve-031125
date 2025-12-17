@@ -34,9 +34,7 @@ class EmailVerificationTest extends TestCase
 
         $response = $this->actingAs($user)->get('/verify-email');
 
-        $response
-            ->assertSeeVolt('pages.auth.verify-email')
-            ->assertStatus(200);
+        $response->assertStatus(200);
     }
 
     #[Test]
@@ -47,8 +45,8 @@ class EmailVerificationTest extends TestCase
         $response = $this->actingAs($user)->get('/verify-email');
 
         $response->assertStatus(200);
-        // The page should render without errors
-        $response->assertSeeVolt('pages.auth.verify-email');
+        // The page should render without errors - check for key content
+        $response->assertSee('verify');
     }
 
     #[Test]

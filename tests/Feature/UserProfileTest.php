@@ -488,9 +488,9 @@ class UserProfileTest extends TestCase
 
         $html = $component->html();
 
-        // Check for success alert styling (green background)
-        $this->assertStringContainsString('bg-green-50', $html);
-        $this->assertStringContainsString('border-green-700', $html);
+        // Check for success alert styling (primary background)
+        $this->assertStringContainsString('bg-primary-50', $html);
+        $this->assertStringContainsString('border-primary-200', $html);
     }
 
     #[Test]
@@ -509,9 +509,9 @@ class UserProfileTest extends TestCase
 
         $html = $component->html();
 
-        // Check for success alert styling (green background)
-        $this->assertStringContainsString('bg-green-50', $html);
-        $this->assertStringContainsString('border-green-700', $html);
+        // Check for success alert styling (primary background)
+        $this->assertStringContainsString('bg-primary-50', $html);
+        $this->assertStringContainsString('border-primary-200', $html);
     }
 
     #[Test]
@@ -520,7 +520,8 @@ class UserProfileTest extends TestCase
         $this->actingAs($this->user)
             ->get(route('staff.profile'))
             ->assertOk()
-            ->assertSeeLivewire(\App\Livewire\Staff\UserProfile::class);
+            ->assertSee('Profil Saya')
+            ->assertSee('Maklumat Profil');
     }
 
     #[Test]

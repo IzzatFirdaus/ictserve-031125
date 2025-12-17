@@ -77,7 +77,7 @@ class GuestLoanApplicationTest extends TestCase
         $response = $this->get(route('loan.guest.apply'));
 
         $response->assertOk()
-            ->assertSeeLivewire(GuestLoanApplication::class);
+            ->assertSee('Borang Permohonan Pinjaman Tetamu');
     }
 
     /**

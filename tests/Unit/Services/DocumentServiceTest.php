@@ -266,6 +266,9 @@ class DocumentServiceTest extends TestCase
         $this->assertDatabaseMissing('documents', ['id' => $document->id]);
         Storage::disk('local')->assertMissing('documents/' . $storedName);
     }
+}documents', ['id' => $document->id]);
+        Storage::disk('local')->assertMissing('documents/' . $storedName);
+    }
 
     #[Test]
     public function it_deletes_chunks_when_deleting_document(): void

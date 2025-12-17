@@ -45,9 +45,13 @@ class NotificationJobsTest extends TestCase
     #[Test]
     public function send_ticket_notification_job_can_be_dispatched(): void
     {
+        $user = User::factory()->create([
+            'email' => 'test@motac.gov.my',
+            'name' => 'Test User',
+        ]);
+
         $ticket = HelpdeskTicket::factory()->create([
-            'submitter_email' => 'test@motac.gov.my',
-            'submitter_name' => 'Test User',
+            'user_id' => $user->id,
         ]);
 
         SendTicketNotification::dispatch([
@@ -198,9 +202,13 @@ class NotificationJobsTest extends TestCase
     {
         Mail::fake();
 
+        $user = User::factory()->create([
+            'email' => 'test@motac.gov.my',
+            'name' => 'Test User',
+        ]);
+
         $ticket = HelpdeskTicket::factory()->create([
-            'submitter_email' => 'test@motac.gov.my',
-            'submitter_name' => 'Test User',
+            'user_id' => $user->id,
         ]);
 
         $job = new SendTicketNotification([

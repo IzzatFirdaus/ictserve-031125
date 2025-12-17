@@ -325,8 +325,8 @@ class SubmitTicketTest extends TestCase
 		Livewire::test(SubmitTicket::class)
 			->set('currentStep', 1)
 			->call('submit')
-			->assertSee('Full name is required')
-			->assertSee('Email address is required');
+			->assertSee('You must accept this declaration to continue')
+			->assertSee('You must accept the terms of service to continue');
 	}
 
 	#[Test]
@@ -337,8 +337,8 @@ class SubmitTicketTest extends TestCase
 		Livewire::test(SubmitTicket::class)
 			->set('currentStep', 1)
 			->call('submit')
-			->assertSee('Nama penuh diperlukan')
-			->assertSee('Alamat e-mel diperlukan');
+			->assertSee('Anda mesti menerima pengakuan ini untuk meneruskan')
+			->assertSee('Anda mesti menerima terma perkhidmatan untuk meneruskan');
 	}
 
 	#[Test]

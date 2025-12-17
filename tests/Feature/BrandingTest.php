@@ -40,7 +40,7 @@ final class BrandingTest extends TestCase
             'slot' => 'Laravel',
         ])->render();
 
-        $this->assertStringContainsString('images/motac-logo.jpeg', $html);
+        $this->assertStringContainsString('images/motac-logo.png', $html);
         $this->assertStringContainsString(__('common.motac_logo'), $html);
     }
 

@@ -146,34 +146,32 @@ class WcagComplianceTest extends TestCase
     }
 
     /**
-     * Test WCAG 2.2 AA compliance for language switcher
+     * Test WCAG 2.2 AA compliance for language implementation (v3.6.0 - Bahasa Melayu sahaja)
      * Requirements: 6.1, 7.3, 15.2, 1.5
+     * @trace D15 §1.1 (Bahasa Melayu Sahaja)
      */
     #[Test]
-    public function language_switcher_wcag_compliance(): void
+    public function language_implementation_wcag_compliance(): void
     {
         $response = $this->get('/');
 
         $response->assertStatus(200);
 
-        // Test ARIA menu button pattern
-        $response->assertSee('aria-haspopup="menu"', false);
-        $response->assertSee('aria-expanded', false);
-        $response->assertSee('role="menu"', false);
-        // Accept either menuitem or menuitemradio (menuitemradio is more specific)
-        $content = $response->getContent();
-        $this->assertTrue(
-            str_contains($content, 'role="menuitem"') || str_contains($content, 'role="menuitemradio"'),
-            'Language switcher must have menu items with proper role'
-        );
-
-        // Test language attributes
-        $response->assertSee('lang="en"', false);
+        // Test that page is properly set to Bahasa Melayu (v3.6.0)
         $response->assertSee('lang="ms"', false);
 
-        // Test keyboard navigation
-        $response->assertSee('@keydown.escape', false);
-        $response->assertSee('@click.away', false);
+        // Verify Bahasa Melayu content is present
+        $response->assertSee('ICTServe');
+
+        // Test that language switcher is disabled (per D15 v3.6.0)
+        $content = $response->getContent();
+        $this->assertFalse(
+            str_contains($content, 'aria-haspopup="menu"') && str_contains($content, 'language'),
+            'Language switcher should be disabled in v3.6.0'
+        );
+
+        // Verify accessibility attributes for main content
+        $response->assertSee('role="main"', false);
     }
 
     /**
