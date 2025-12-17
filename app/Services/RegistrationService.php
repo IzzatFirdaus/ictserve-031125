@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
-use function Spatie\Activitylog\activity;
+use Spatie\Activitylog\Facades\Activity;
 
 /**
  * Registration Service Implementation for ICTServe v3.5.0
@@ -294,8 +294,7 @@ class RegistrationService implements RegistrationServiceInterface
     private function logRegistrationActivity(User $user): void
     {
         // Log to Laravel's log system for audit trail
-        activity('registration')
-            ->performedOn($user)
+        Activity::performedOn($user)
             ->causedBy($user)
             ->withProperties([
                 'user_id' => $user->id,

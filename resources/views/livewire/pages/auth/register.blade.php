@@ -18,6 +18,7 @@
 
 use App\Contracts\RegistrationServiceInterface;
 use App\Exceptions\InvalidEmailDomainException;
+use App\Rules\MotacEmailDomain;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
@@ -28,7 +29,7 @@ new #[Layout('layouts.guest')] class extends Component
     #[Validate('required|string|max:255')]
     public string $name = '';
 
-    #[Validate('required|string|lowercase|email|max:255|unique:users,email|ends_with:@motac.gov.my')]
+    #[Validate(['required', 'string', 'email', 'max:255', 'unique:users,email', new MotacEmailDomain()])]
     public string $email = '';
 
     #[Validate('required|string|min:8|confirmed')]
