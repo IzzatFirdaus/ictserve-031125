@@ -1,14 +1,18 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md, D18_AI_CHATBOT_OLLAMA_BEDROCK.md
+
 declare(strict_types=1);
 
 /**
  * Terjemahan Bahasa Melayu untuk Modul Ollama AI
  *
- * Selaras dengan D15 v3.6.0: Bahasa Melayu sahaja
+ * Selaras dengan D15 v3.6.1: Bahasa Melayu sahaja
  * Semua teks antara muka AI dalam Bahasa Melayu
  *
  * Trace: Requirements 1.4, 5.4, 5.5
+ * Dikemaskini: 2025-12-17 - Tambah header versi (v3.6.1)
  */
 return [
     // Navigation
