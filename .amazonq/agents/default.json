@@ -17,8 +17,7 @@
     "@sequentialthinking",
     "@fetch",
     "@memory",
-    "@gitkraken",
-    "@deepl"
+    "@gitkraken"
   ],
   "toolAliases": {},
   "allowedTools": [
@@ -109,8 +108,11 @@
     "@memory/open_nodes",
     "@gitkraken/git_add_or_commit",
     "@gitkraken/git_blame",
+    "@gitkraken/git_branch",
     "@gitkraken/git_checkout",
     "@gitkraken/git_log_or_diff",
+    "@gitkraken/git_push",
+    "@gitkraken/git_stash",
     "@gitkraken/git_status",
     "@gitkraken/git_worktree",
     "@gitkraken/gitkraken_workspace_list",
@@ -118,14 +120,11 @@
     "@gitkraken/issues_assigned_to_me",
     "@gitkraken/issues_get_detail",
     "@gitkraken/pull_request_assigned_to_me",
-    "@gitkraken/repository_get_file_content",
-    "@gitkraken/git_branch",
-    "@gitkraken/git_push",
-    "@gitkraken/git_stash",
     "@gitkraken/pull_request_create",
     "@gitkraken/pull_request_create_review",
     "@gitkraken/pull_request_get_comments",
-    "@gitkraken/pull_request_get_detail"
+    "@gitkraken/pull_request_get_detail",
+    "@gitkraken/repository_get_file_content"
   ],
   "toolsSettings": {
     "use_aws": {

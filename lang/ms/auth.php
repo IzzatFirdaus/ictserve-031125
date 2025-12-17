@@ -81,6 +81,10 @@ return [
     'verification_expired' => 'Pautan pengesahan ini telah tamat tempoh. Sila minta yang baharu.',
     'verification_already_verified' => 'E-mel anda sudah disahkan.',
 
+    // Terjemahan pengesahan kata laluan
+    'confirm_password_message' => 'Ini adalah kawasan selamat aplikasi. Sila sahkan kata laluan anda sebelum meneruskan.',
+    'confirm_button' => 'Sahkan',
+
     // Mesej Ralat Google SSO (Tugasan 4.1 - Keperluan 2.1, 2.2, 2.3)
     'google_sso_failed' => 'Pengesahan Google gagal. Sila cuba lagi atau gunakan log masuk biasa.',
     'google_sso_domain_error' => 'Hanya akaun @motac.gov.my sahaja dibenarkan untuk log masuk melalui Google SSO.',

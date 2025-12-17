@@ -84,7 +84,7 @@
 
 - tests\Feature\UserProfileTest.php *DONE*
 
-- tests\Feature\Livewire\Portal\Widgets\PersonalStatsWidgetTest.php
+- tests\Feature\Livewire\Portal\Widgets\PersonalStatsWidgetTest.php *DONE* *some test are skipped.
 
 - tests\Feature\Livewire\RecentActivityTest.php
 
