@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -28,7 +29,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BedrockConversation extends Model
 {
-    protected $fillable = ['title', 'messages', 'model'];
+    use HasFactory;
+
+    protected $fillable = ['user_id', 'title', 'messages', 'model', 'total_tokens'];
 
     protected function casts(): array
     {
