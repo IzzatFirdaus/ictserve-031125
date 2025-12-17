@@ -137,13 +137,13 @@ graph TB
 | **Build Tool** | Vite | 7.0.7 | Asset compilation and optimization |
 | **Database** | MySQL | 8.0+ | Primary data storage |
 | **Cache/Sessions** | Redis | 7.0+ | Caching and session management |
-| **Queue System** | Laravel Queue | - | Background job processing (Horizon not installed) |
+| **Queue System** | Laravel Horizon | 5.x | Redis queue dashboard and monitoring |
 | **Performance Monitoring** | Laravel Pulse | 1.4.6 | Real-time performance metrics |
 | **System Debugging** | Laravel Telescope | 5.16.0 | System debugging (superuser only) |
 | **API Authentication** | Laravel Sanctum | 4.2.1 | API token authentication |
 | **SSO Integration** | Laravel Socialite | 5.24.0 | Google Workspace SSO |
-| **Real-time Communication** | Laravel Reverb | 1.6.3 | WebSocket server |
-| **WebSocket Client** | Laravel Echo | 2.2.6 | Client-side WebSocket communication |
+| **Real-time Communication** | Laravel Reverb | 1.6.3 | WebSocket server (Redis scaling, Pulse/Telescope integration) |
+| **WebSocket Client** | Laravel Echo | 2.2.6 | Client-side WebSocket communication with reconnection handling |
 | **Compliance Audit** | owen-it/laravel-auditing | 14.x | Field-level audit tracking |
 | **Operational Logging** | spatie/laravel-activitylog | 4.x | User activity logging |
 | **Local AI (LLM)** | Ollama | Latest | Local LLM server for FAQ (data sovereignty) |
@@ -169,6 +169,7 @@ graph TB
 - **Strategy Pattern**: Configurable approval workflows via email and portal
 - **Factory Pattern**: Model factories for testing and seeding
 - **Role-Based Access Control (RBAC)**: Four-tier role system (staff, approver, admin, superuser)
+- **Queue Supervisor Pattern**: Laravel Horizon for Redis queue management with auto-scaling workers
 
 ## Components and Interfaces
 
@@ -939,6 +940,14 @@ class EnhancedDualApprovalService
 ### Property 15: Data Backup and Recovery Integrity
 *For any* backup operation, data integrity should be maintained with RTO of 4 hours and RPO of 24 hours, with successful restoration verification.
 **Validates: Requirements 15.3, 15.4**
+
+### Property 16: Queue Job Processing Reliability
+*For any* queued job in the system, Laravel Horizon should process the job within the configured timeout, retry failed jobs with exponential backoff, and maintain accurate metrics for monitoring.
+**Validates: Requirements 23.1, 23.4, 23.6**
+
+### Property 17: Queue Supervisor Auto-Scaling
+*For any* queue workload increase, Laravel Horizon supervisors should automatically scale worker processes within configured min/max bounds while maintaining job processing throughput.
+**Validates: Requirements 23.3, 23.5**
 
 ## Error Handling
 

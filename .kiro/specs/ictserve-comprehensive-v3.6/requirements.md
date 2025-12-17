@@ -57,6 +57,7 @@ The system emphasizes **Bahasa Melayu only interface** (language switcher disabl
 - **Laravel_Socialite**: Google Workspace SSO option for @motac.gov.my accounts
 - **Laravel_Telescope**: System debugging tool accessible to superuser only
 - **Laravel_Reverb**: WebSocket server for real-time features and notifications
+- **Laravel_Horizon**: Redis queue dashboard and monitoring system for background job management, providing real-time metrics, job throughput monitoring, and queue worker supervision accessible to admin and superuser roles
 - **Ollama**: Open-source local LLM server for running AI models on-premise, ensuring data sovereignty and PDPA compliance
 - **AWS_Bedrock**: Amazon's managed AI service providing access to Claude models (Opus 4.5, Sonnet 4.5, Haiku 4.5) for complex reasoning
 - **RAG**: Retrieval-Augmented Generation - AI technique combining document retrieval with language generation for FAQ responses
@@ -136,11 +137,12 @@ The system emphasizes **Bahasa Melayu only interface** (language switcher disabl
 
 #### Acceptance Criteria
 
-1. THE ICTServe_System SHALL implement Laravel Reverb v1.6.2 WebSocket server for real-time features and notifications
-2. THE ICTServe_System SHALL use Laravel Echo v2.2.6 for client-side WebSocket communication and real-time updates
-3. THE ICTServe_System SHALL provide multi-channel notifications (email, database, WebSocket) based on user preferences
-4. WHEN status changes occur, THE ICTServe_System SHALL broadcast real-time updates to authenticated users via WebSocket connections
-5. THE ICTServe_System SHALL implement automated email notifications within 60 seconds for all status changes and important events using queued jobs
+1. THE ICTServe_System SHALL implement Laravel Reverb v1.6.3 WebSocket server for real-time features and notifications with Redis scaling support and Pulse/Telescope integration
+2. THE ICTServe_System SHALL use Laravel Echo v2.2.6 for client-side WebSocket communication with exponential backoff reconnection (1s-30s, max 10 attempts) and graceful fallback mechanisms
+3. THE ICTServe_System SHALL provide multi-channel notifications (email, database, WebSocket) based on user preferences with WCAG 2.2 AA compliant toast notifications
+4. WHEN status changes occur, THE ICTServe_System SHALL broadcast real-time updates to authenticated users via private WebSocket channels (user.{userId}, admin.notifications) within 5 seconds
+5. THE ICTServe_System SHALL implement automated email notifications within 60 seconds for all status changes and important events using Laravel Horizon queued jobs
+6. THE ICTServe_System SHALL support guest channel access via UUID-based channels (ticket.{uuid}, loan.{uuid}) with hash-based status token validation for secure guest notifications
 
 ### Requirement 7: Bahasa Melayu Exclusive Interface
 
@@ -220,11 +222,41 @@ The system emphasizes **Bahasa Melayu only interface** (language switcher disabl
 
 #### Acceptance Criteria
 
-1. THE ICTServe_System SHALL implement automated email notifications using Laravel Queue system with Redis driver
+1. THE ICTServe_System SHALL implement automated email notifications using Laravel Queue system with Redis driver managed by Laravel Horizon
 2. THE ICTServe_System SHALL provide automated reminder systems for overdue asset returns and pending approvals
 3. THE ICTServe_System SHALL implement configurable business rules and triggers accessible to superuser through admin panel
 4. THE ICTServe_System SHALL provide automated report generation with scheduled email delivery to designated admin users
 5. THE ICTServe_System SHALL implement retry mechanisms with exponential backoff for failed notifications and processes
+
+### Requirement 23: Laravel Horizon Queue Management
+
+**User Story:** As an admin or superuser, I want comprehensive queue management and monitoring using Laravel Horizon, so that I can monitor background job processing, identify failed jobs, and ensure reliable system operations.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement Laravel Horizon v5.x for Redis queue management with dashboard accessible to admin and superuser roles
+2. THE ICTServe_System SHALL configure queue supervisors for ICTServe-specific job types including helpdesk notifications, loan approval workflows, AI processing, and report generation
+3. THE ICTServe_System SHALL implement job balancing strategies with auto-scaling based on queue workload for optimal resource utilization
+4. THE ICTServe_System SHALL provide real-time metrics including job throughput, wait times, failed job counts, and worker status with 60-second refresh intervals
+5. THE ICTServe_System SHALL implement automated alerting for queue issues including long wait times exceeding 60 seconds, failed job accumulation exceeding 10 jobs, and worker process failures
+6. THE ICTServe_System SHALL configure job retry policies with exponential backoff (10s, 30s, 60s) and maximum retry attempts of 3 for transient failures
+7. THE ICTServe_System SHALL implement job tagging for ICTServe operations enabling filtering by module (helpdesk, asset-loan, ai-chatbot) and priority level
+8. THE ICTServe_System SHALL integrate Horizon metrics with Laravel Pulse for unified performance monitoring and historical trend analysis
+
+### Requirement 24: Laravel Reverb Real-Time Communication
+
+**User Story:** As a system user, I want reliable real-time WebSocket communication for instant notifications and live updates, so that I receive immediate feedback on system changes without page refreshes.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement Laravel Reverb v1.6.3 WebSocket server with configurable host (default 0.0.0.0), port (default 8080), and max request size (10,000 bytes)
+2. THE ICTServe_System SHALL configure Redis scaling support for horizontal scaling with configurable channel settings and connection pooling
+3. THE ICTServe_System SHALL integrate Reverb with Laravel Pulse (15-second ingest interval) and Laravel Telescope (15-second ingest interval) for comprehensive monitoring
+4. THE ICTServe_System SHALL implement Laravel Echo v2.2.6 client with exponential backoff reconnection strategy (1s-30s with jitter, maximum 10 attempts) and graceful fallback mechanisms
+5. THE ICTServe_System SHALL provide private channel authorization for authenticated users (user.{userId}, admin.notifications) with policy-based access control
+6. THE ICTServe_System SHALL support guest channel access via UUID-based channels (ticket.{uuid}, loan.{uuid}) with hash-based status token validation for secure guest notifications
+7. THE ICTServe_System SHALL implement AI-specific broadcast channels (ai-status, ai-alerts, ai-performance, ai-approvals) with role-based authorization for admin/superuser/approver access
+8. THE ICTServe_System SHALL provide WCAG 2.2 AA compliant connection status UI with reconnection toast notifications and custom events (echo:connected, echo:disconnected, echo:unavailable)
 
 ### Requirement 14: Monitoring and Analytics
 
