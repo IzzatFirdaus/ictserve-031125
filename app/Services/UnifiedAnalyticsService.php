@@ -34,6 +34,8 @@ class UnifiedAnalyticsService
     /**
      * Get unified dashboard metrics combining helpdesk and loan data.
      * Results are cached for 5 minutes to optimize performance.
+     *
+     * @return array<string, mixed>
      */
     public function getDashboardMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
@@ -217,6 +219,11 @@ class UnifiedAnalyticsService
 
     /**
      * Calculate summary metrics across modules
+     *
+     * @param  array<string, mixed>  $helpdesk
+     * @param  array<string, mixed>  $loans
+     * @param  array<string, mixed>  $assets
+     * @return array<string, mixed>
      */
     private function calculateSummaryMetrics(array $helpdesk, array $loans, array $assets): array
     {
@@ -232,6 +239,10 @@ class UnifiedAnalyticsService
 
     /**
      * Calculate overall system health score (0-100)
+     *
+     * @param  array<string, mixed>  $helpdesk
+     * @param  array<string, mixed>  $loans
+     * @param  array<string, mixed>  $assets
      */
     private function calculateSystemHealth(array $helpdesk, array $loans, array $assets): float
     {
@@ -368,6 +379,9 @@ class UnifiedAnalyticsService
 
     /**
      * Get drill-down data for specific metric
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<int, array<string, mixed>>
      */
     public function getDrillDownData(string $metric, array $filters = []): array
     {
@@ -382,6 +396,9 @@ class UnifiedAnalyticsService
 
     /**
      * Get detailed overdue tickets data
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<int, array<string, mixed>>
      */
     private function getOverdueTicketsDetail(array $filters): array
     {
@@ -405,14 +422,17 @@ class UnifiedAnalyticsService
                 'priority' => $ticket->priority,
                 'category' => $ticket->category?->name_en ?? 'Uncategorized',
                 'assigned_to' => $ticket->assignedUser?->name ?? 'Unassigned',
-                'days_overdue' => now()->diffInDays($ticket->sla_resolution_due_at),
-                'created_at' => $ticket->created_at->format('Y-m-d H:i'),
+                'days_overdue' => $ticket->sla_resolution_due_at ? now()->diffInDays($ticket->sla_resolution_due_at) : 0,
+                'created_at' => $ticket->created_at?->format('Y-m-d H:i') ?? 'N/A',
             ];
         })->toArray();
     }
 
     /**
      * Get detailed overdue loans data
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<int, array<string, mixed>>
      */
     private function getOverdueLoansDetail(array $filters): array
     {
@@ -426,7 +446,7 @@ class UnifiedAnalyticsService
                 'application_number' => $loan->application_number,
                 'applicant_name' => $loan->applicant_name,
                 'loan_end_date' => $loan->loan_end_date,
-                'days_overdue' => now()->diffInDays($loan->loan_end_date),
+                'days_overdue' => $loan->loan_end_date ? now()->diffInDays($loan->loan_end_date) : 0,
                 'total_value' => $loan->total_value,
                 'asset_count' => $loan->loanItems->count(),
                 'assets' => $loan->loanItems->pluck('asset.name')->join(', '),
@@ -436,6 +456,9 @@ class UnifiedAnalyticsService
 
     /**
      * Get detailed maintenance assets data
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<int, array<string, mixed>>
      */
     private function getMaintenanceAssetsDetail(array $filters): array
     {
@@ -458,6 +481,9 @@ class UnifiedAnalyticsService
 
     /**
      * Get detailed cross-module integrations data
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<int, array<string, mixed>>
      */
     private function getCrossModuleIntegrationsDetail(array $filters): array
     {
@@ -474,8 +500,8 @@ class UnifiedAnalyticsService
                 'trigger_event' => $integration->trigger_event,
                 'ticket_number' => $integration->helpdeskTicket?->ticket_number,
                 'loan_number' => $integration->loanApplication?->application_number,
-                'processed_at' => $integration->processed_at?->format('Y-m-d H:i'),
-                'created_at' => $integration->created_at->format('Y-m-d H:i'),
+                'processed_at' => $integration->processed_at?->format('Y-m-d H:i') ?? 'N/A',
+                'created_at' => $integration->created_at?->format('Y-m-d H:i') ?? 'N/A',
             ];
         })->toArray();
     }
