@@ -25,8 +25,13 @@ class PortalLoanApprovalController extends Controller
     /**
      * Approve an application assigned to the current approver.
      */
-    public function approve(Request $request, LoanApplication $application): RedirectResponse
+    public function approve(Request $request, $application): RedirectResponse
     {
+        // Resolve the application if route model binding didn't work
+        if (!$application instanceof LoanApplication) {
+            $application = LoanApplication::findOrFail($application);
+        }
+
         $user = Auth::user();
 
         // Only assigned approver (or higher) can approve
@@ -60,8 +65,13 @@ class PortalLoanApprovalController extends Controller
     /**
      * Reject an application assigned to the current approver.
      */
-    public function reject(Request $request, LoanApplication $application): RedirectResponse
+    public function reject(Request $request, $application): RedirectResponse
     {
+        // Resolve the application if route model binding didn't work
+        if (!$application instanceof LoanApplication) {
+            $application = LoanApplication::findOrFail($application);
+        }
+
         $user = Auth::user();
 
         abort_unless(
