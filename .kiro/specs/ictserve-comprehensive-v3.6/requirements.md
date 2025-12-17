@@ -2,27 +2,28 @@
 
 ## Introduction
 
-The ICTServe System is a comprehensive digital platform for managing ICT services within the Ministry of Tourism, Arts and Culture Malaysia (MOTAC). This system operates on a **True Hybrid Architecture** combining guest-accessible public forms with authenticated internal portal features for MOTAC staff. The system encompasses two main integrated modules: the Helpdesk Ticketing System and the ICT Asset Loan Management System.
+The ICTServe System is a comprehensive digital platform for managing ICT services within the Ministry of Tourism, Arts and Culture Malaysia (MOTAC). This system operates on a **True Hybrid Architecture** combining guest-accessible public forms with authenticated internal portal features for MOTAC staff. The system encompasses three main integrated modules: the Helpdesk Ticketing System, the ICT Asset Loan Management System, and the **Cloud Hybrid AI Chatbot** (Ollama + AWS Bedrock).
 
-**Critical Architecture v3.6.0**: The system provides a dual-access model with **Bahasa Melayu exclusive UI**:
+**Critical Architecture v3.6.1**: The system provides a dual-access model with **Bahasa Melayu exclusive UI**:
 
-1. **Guest Access (No Login)**: Public forms for helpdesk tickets and asset loan applications, email-based approvals for Grade 41+ officers, and status tracking via email links
-2. **Authenticated Access (Login Required)**: Internal portal for staff to view their submissions, manage profiles, and access advanced features  
-3. **Admin Access (Filament Panel)**: Backend management for admin and superuser roles only
+1. **Guest Access (No Login)**: Public forms for helpdesk tickets and asset loan applications, email-based approvals for Grade 41+ officers, status tracking via email links, and **AI-powered FAQ Bot** with smart model routing
+2. **Authenticated Access (Login Required)**: Internal portal for staff to view their submissions, manage profiles, access advanced features, and **enhanced AI capabilities** including document analysis, conversation management, and personalized responses
+3. **Admin Access (Filament Panel)**: Backend management for admin and superuser roles including **AI configuration**, model management, FAQ administration, and performance monitoring
 
-The system emphasizes **Bahasa Melayu only interface** (language switcher disabled), email-based workflows for guest interactions, authenticated portal features for staff convenience, automated notifications, and comprehensive backend management while adhering to WCAG 2.2 Level AA accessibility standards and Core Web Vitals performance targets.
+The system emphasizes **Bahasa Melayu only interface** (language switcher disabled), email-based workflows for guest interactions, authenticated portal features for staff convenience, automated notifications, **Cloud Hybrid AI integration** (Ollama local + AWS Bedrock cloud), and comprehensive backend management while adhering to WCAG 2.2 Level AA accessibility standards and Core Web Vitals performance targets.
 
-**Version**: 3.6.0 (SemVer)  
-**Last Updated**: 11 Disember 2025  
-**Status**: Active - Aligned with D00-D17 v3.6.0 Standards  
+**Version**: 3.6.1 (SemVer)  
+**Last Updated**: 17 Disember 2025  
+**Status**: Active - Aligned with D00-D18 v3.6.1 Standards  
 **Classification**: Restricted - Internal MOTAC BPM  
-**Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, PDPA 2010
+**Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, PDPA 2010, OWASP ASVS L2
 
 ## Glossary
 
-- **ICTServe_System**: The complete integrated platform for managing ICT services at MOTAC BPM with **True Hybrid Architecture** (guest + authenticated access) and **Bahasa Melayu exclusive UI**
-- **Helpdesk_Module**: Digital ticketing system for managing ICT support requests via public forms (guest) and internal portal (authenticated staff)
-- **Asset_Loan_Module**: Digital system for managing ICT equipment loan lifecycle from public application (guest) to authenticated staff tracking and email-based approval
+- **ICTServe_System**: The complete integrated platform for managing ICT services at MOTAC BPM with **True Hybrid Architecture** (guest + authenticated access), **Bahasa Melayu exclusive UI**, and **Cloud Hybrid AI** (Ollama + AWS Bedrock)
+- **Helpdesk_Module**: Digital ticketing system for managing ICT support requests via public forms (guest) and internal portal (authenticated staff) with AI-powered auto-reply generation
+- **Asset_Loan_Module**: Digital system for managing ICT equipment loan lifecycle from public application (guest) to authenticated staff tracking, email-based approval, and AI-assisted document analysis
+- **AI_Chatbot_Module**: Cloud Hybrid AI system combining Ollama (local LLM for FAQ) and AWS Bedrock (Claude models for complex reasoning) with smart model routing, streaming responses, and web-augmented answers
 - **BPM_MOTAC**: Bahagian Pengurusan Maklumat (Information Management Division) of MOTAC
 - **Staf_MOTAC**: MOTAC staff members who can access system via guest forms (no login) OR authenticated portal (with login) for enhanced features
 - **Pegawai_Penyokong**: Grade 41+ officers who approve loan applications via **email links** (no system login required) or through authenticated portal
@@ -56,6 +57,15 @@ The system emphasizes **Bahasa Melayu only interface** (language switcher disabl
 - **Laravel_Socialite**: Google Workspace SSO option for @motac.gov.my accounts
 - **Laravel_Telescope**: System debugging tool accessible to superuser only
 - **Laravel_Reverb**: WebSocket server for real-time features and notifications
+- **Ollama**: Open-source local LLM server for running AI models on-premise, ensuring data sovereignty and PDPA compliance
+- **AWS_Bedrock**: Amazon's managed AI service providing access to Claude models (Opus 4.5, Sonnet 4.5, Haiku 4.5) for complex reasoning
+- **RAG**: Retrieval-Augmented Generation - AI technique combining document retrieval with language generation for FAQ responses
+- **Model_Routing**: Smart automatic routing of AI requests to optimal model based on task complexity and cost optimization
+- **Streaming_Responses**: Server-Sent Events (SSE) for progressive AI response delivery
+- **Web_Augmented_Responses**: AI responses enriched with current information from web search (DuckDuckGo integration)
+- **Conversation_Management**: Enhanced conversation context management with long-term memory and save/load/delete capabilities
+- **PII_Detection**: Automatic detection and sanitization of Personally Identifiable Information for PDPA 2010 compliance
+- **MCP_Server**: Model Context Protocol server for AI assistant integrations (Amazon Q, Kiro IDE)
 
 ## Requirements
 
@@ -276,14 +286,53 @@ The system emphasizes **Bahasa Melayu only interface** (language switcher disabl
 4. THE ICTServe_System SHALL implement Core Web Vitals performance testing with automated validation ensuring LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms
 5. THE ICTServe_System SHALL implement accessibility testing with WCAG 2.2 AA compliance verification using automated tools and manual testing protocols
 
-### Requirement 19: System Validation and Go-Live
+### Requirement 19: Cloud Hybrid AI Chatbot Integration
+
+**User Story:** As a MOTAC staff member, I want an AI-powered chatbot that can answer my questions about ICTServe system and help with common tasks, so that I can get instant support without waiting for human assistance.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement Cloud Hybrid AI Architecture combining Ollama (local LLM for FAQ) and AWS Bedrock (Claude models for complex reasoning) with smart model routing based on query analysis
+2. WHEN a user submits a query to the AI chatbot, THE ICTServe_System SHALL analyze the query and route it to the optimal AI backend: Ollama for FAQ-specific queries, Bedrock for complex reasoning, or hybrid for combined responses
+3. THE ICTServe_System SHALL provide AI chatbot access to both guest users (FAQ Bot on public forms) and authenticated users (enhanced AI features in portal) with appropriate feature differentiation
+4. THE ICTServe_System SHALL implement multi-model intelligence supporting Claude Opus 4.5 (complex), Sonnet 4.5 (balanced), and Haiku 4.5 (fast) with automatic model selection based on task complexity
+5. THE ICTServe_System SHALL ensure data residency compliance by automatically classifying queries for local (Ollama) vs cloud (Bedrock) processing based on PII detection and PDPA 2010 requirements
+6. THE ICTServe_System SHALL provide conversation management capabilities including save, load, and delete conversations with long-term memory for authenticated users
+7. THE ICTServe_System SHALL implement web-augmented responses using DuckDuckGo integration for queries requiring current information
+8. THE ICTServe_System SHALL provide AI response times under 5 seconds for FAQ queries (Ollama) and under 15 seconds for complex queries (Bedrock) with confidence scoring and source attribution
+
+### Requirement 20: AI Auto-Reply and Document Analysis
+
+**User Story:** As an admin user, I want AI-generated response drafts for common ticket categories and AI-powered document analysis, so that I can respond to users faster and process documents more efficiently.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL generate AI-powered auto-reply drafts for helpdesk tickets using smart model routing, requiring admin review and approval before sending
+2. THE ICTServe_System SHALL implement document analysis capabilities for PDF/DOCX/images using AWS Bedrock Nova Pro with semantic search via vector embeddings
+3. THE ICTServe_System SHALL provide automated document categorization with confidence scoring and PII detection for PDPA 2010 compliance
+4. THE ICTServe_System SHALL implement MCP Server integration providing 3 tools for AI assistants (Amazon Q, Kiro IDE) with standardized interface for AI tool access
+5. THE ICTServe_System SHALL provide AI management interfaces in Filament admin including model configuration, FAQ management, conversation analytics, and health monitoring for Ollama and Bedrock systems
+
+### Requirement 21: Asset Management Lifecycle
+
+**User Story:** As an admin user, I want comprehensive asset lifecycle management including preventive maintenance scheduling and inter-department transfers, so that I can maintain asset health and track asset movements across the organization.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement preventive maintenance scheduling based on time intervals (monthly/quarterly/annually) with automated reminder notifications
+2. THE ICTServe_System SHALL support corrective maintenance tracking in response to reported issues including troubleshooting logs, parts tracking, and repair history
+3. THE ICTServe_System SHALL implement asset transfer workflows between divisions with approval signatures, timestamps, handover certificates, and custodian assignment
+4. THE ICTServe_System SHALL maintain asset custodian records with department head accountability for assets under their custody
+5. THE ICTServe_System SHALL provide asset utilization analytics with predictive insights for maintenance scheduling and replacement planning
+
+### Requirement 22: System Validation and Go-Live
 
 **User Story:** As a project stakeholder, I want comprehensive system validation before go-live, so that I can ensure the system meets all requirements and is ready for production use.
 
 #### Acceptance Criteria
 
-1. THE ICTServe_System SHALL pass all automated tests with comprehensive coverage validation including unit tests, integration tests, and end-to-end tests
-2. THE ICTServe_System SHALL validate all performance targets including Core Web Vitals thresholds and response time requirements
-3. THE ICTServe_System SHALL confirm all security requirements including authentication, authorization, data encryption, and audit trail functionality
-4. THE ICTServe_System SHALL verify all integration points including email workflows, real-time communication, and cross-module features
-5. THE ICTServe_System SHALL complete final user acceptance testing with documented sign-off from designated stakeholders
+1. THE ICTServe_System SHALL pass all automated tests with comprehensive coverage validation including unit tests, integration tests, and end-to-end tests achieving minimum 80% code coverage
+2. THE ICTServe_System SHALL validate all performance targets including Core Web Vitals thresholds (LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms) and AI response time requirements
+3. THE ICTServe_System SHALL confirm all security requirements including authentication, authorization, data encryption, audit trail functionality, and AI data residency compliance
+4. THE ICTServe_System SHALL verify all integration points including email workflows, real-time communication, cross-module features, and Cloud Hybrid AI integration
+5. THE ICTServe_System SHALL complete final user acceptance testing with documented sign-off from designated stakeholders including AI chatbot functionality validation
