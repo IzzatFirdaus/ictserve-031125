@@ -26,6 +26,7 @@ class GenerateLoanReportCommand extends Command
 
         if (! is_string($period)) {
             $this->error('Invalid period argument');
+
             return Command::FAILURE;
         }
 
@@ -54,7 +55,7 @@ class GenerateLoanReportCommand extends Command
                 ['Total Assets', $assetStats['total_assets']],
                 ['Available', $assetStats['available_assets']],
                 ['Loaned', $assetStats['loaned_assets']],
-                ['Utilization Rate', $assetStats['utilization_rate'].'%'],
+                ['Utilization Rate', ($assetStats['utilization_rate'] ?? 0).'%'],
             ]
         );
 
