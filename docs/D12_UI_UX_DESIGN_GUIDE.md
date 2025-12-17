@@ -1,6 +1,6 @@
 # D12: Panduan Reka Bentuk UI/UX (UI/UX Design Guide)
 
-## ICTServe v3.6.0 - True Hybrid Architecture dengan AI Integration
+## ICTServe v3.6.1 - True Hybrid Architecture dengan AI Integration
 
 | Atribut | Nilai |
 |---------|-------|
@@ -19,7 +19,7 @@
 
 | Versi | Tarikh | Perubahan | Penulis |
 |-------|--------|-----------|---------|
-| 3.6.1 | 2025-12-17 | Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D18 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+) | Pasukan Pembangunan BPM |
+| 3.6.1 | 2025-12-17 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D18 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+). | Pasukan Pembangunan BPM |
 | 3.6.0 | 2025-12-14 | Integrasi lengkap D18 Cloud Hybrid AI Architecture - AI chat interface, streaming responses, model selection, conversation management, web-augmented responses, WCAG 2.2 AA compliance | Pasukan Pembangunan BPM |
 | 3.5.0 | 2025-11-01 | Kemaskini untuk Laravel Reverb, Laravel Pulse, dan pematuhan WCAG 2.2 AA | Pasukan Pembangunan BPM |
 | 3.4.0 | 2025-10-15 | Penyepaduan Filament v4, Livewire v3, dan Tailwind v4 | Pasukan Pembangunan BPM |
@@ -50,11 +50,9 @@
 5. [Tipografi (Typography)](#5-tipografi-typography)
 6. [Struktur Halaman (Page Structure)](#6-struktur-halaman-page-structure)
 7. [Antara Muka AI (AI Interface Design)](#7-antara-muka-ai-ai-interface-design)
-8. [Komponen UI (UI Components)](#8-komponen-ui-ui-components)
-9. [Kebolehcapaian (Accessibility)](#9-kebolehcapaian-accessibility)
-10. [Responsif dan Mobile (Responsive & Mobile)](#10-responsif-dan-mobile-responsive--mobile)
-11. [Prestasi (Performance)](#11-prestasi-performance)
-12. [Pematuhan (Compliance)](#12-pematuhan-compliance)
+8. [Integrasi dengan D18 Cloud Hybrid AI Architecture](#8-integrasi-dengan-d18-cloud-hybrid-ai-architecture)
+9. [Rujukan Silang dengan D00-D17](#9-rujukan-silang-dengan-d00-d17)
+10. [Kesimpulan](#10-kesimpulan)
 
 ---
 
@@ -241,7 +239,7 @@ font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 
 ### 6.1 Layout Hierarchy
 
-#### Guest Layout (`layouts/guest.blade.php`)
+#### Guest Layout (`resources/views/layouts/guest.blade.php`)
 
 ```text
 ┌─────────────────────────────────────┐
@@ -258,7 +256,7 @@ font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 └─────────────────────────────────────┘
 ```
 
-#### Authenticated Layout (`layouts/app.blade.php`)
+#### Authenticated Layout (`resources/views/layouts/app.blade.php`)
 
 ```text
 ┌─────────────────────────────────────┐
@@ -388,46 +386,23 @@ font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 
 #### 7.1.2. Streaming Response UI Patterns
 
-**Server-Sent Events (SSE) Integration**:
+**WebSocket (Laravel Reverb + Echo) untuk status AI (admin/superuser)**:
 
 ```javascript
-// resources/js/ai-chat.js
-class AIChatStreaming {
-    constructor(chatContainer) {
-        this.chatContainer = chatContainer;
-        this.eventSource = null;
-    }
+// resources/js/bootstrap.js
+// Ringkasan: subscribe ke channel AI untuk notifikasi status dan amaran prestasi.
+window.initAIBroadcasting = function (userRole) {
+    if (!window.Echo) return;
+    if (!['admin', 'superuser'].includes(userRole)) return;
 
-    startStreaming(conversationId) {
-        this.eventSource = new EventSource(`/ai/stream/${conversationId}`);
-        
-        this.eventSource.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            this.appendStreamingContent(data.content);
-        };
-
-        this.eventSource.onerror = () => {
-            this.handleStreamingError();
-        };
-
-        this.eventSource.addEventListener('complete', () => {
-            this.eventSource.close();
-            this.markStreamingComplete();
+    window.Echo.private('ai-status')
+        .listen('.AIProcessingStarted', (data) => {
+            window.dispatchEvent(new CustomEvent('ai:processing:started', { detail: data }));
+        })
+        .listen('.AIProcessingCompleted', (data) => {
+            window.dispatchEvent(new CustomEvent('ai:processing:completed', { detail: data }));
         });
-    }
-
-    appendStreamingContent(content) {
-        const streamingMessage = document.querySelector('.streaming-message');
-        if (streamingMessage) {
-            streamingMessage.innerHTML += content;
-            this.scrollToBottom();
-        }
-    }
-
-    scrollToBottom() {
-        this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
-    }
-}
+};
 ```
 
 #### 7.1.3. Model Selection Interface
@@ -765,13 +740,13 @@ class StreamingResponseHandler {
 
 **Playwright E2E Tests for AI Interface**:
 
-```javascript
-// tests/ai-interface-accessibility.spec.js
+```typescript
+// tests/e2e/ollama-accessibility.spec.ts
 import { test, expect } from '@playwright/test';
 
 test.describe('AI Chat Interface Accessibility', () => {
     test('should have proper ARIA labels and roles', async ({ page }) => {
-        await page.goto('/ai-chat');
+        await page.goto('/bedrock-chat');
         
         // Check chat container has proper role
         const chatContainer = page.locator('[role="log"]');
@@ -787,7 +762,7 @@ test.describe('AI Chat Interface Accessibility', () => {
     });
 
     test('should support keyboard navigation', async ({ page }) => {
-        await page.goto('/ai-chat');
+        await page.goto('/bedrock-chat');
         
         // Tab through interface elements
         await page.keyboard.press('Tab');

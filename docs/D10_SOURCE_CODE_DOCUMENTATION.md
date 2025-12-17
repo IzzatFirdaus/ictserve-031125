@@ -19,9 +19,7 @@
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000, ISO/IEC/IEEE 12207 |
-| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)             |
-| **Pematuhi**         | ISO/IEC/IEEE 5055, 25000 Series, 12207    |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 ---
 
@@ -29,6 +27,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                  | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi kod sumber                                                                                                                                                                                                                                                          | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                     | Pasukan BPM |
 | 3.0.0 | 29 November 2025 | Kemaskini struktur kod, Laravel 12, Filament 4, Livewire 3, Tailwind CSS                                                                                                                                                                                                                   | Pasukan BPM |
@@ -69,13 +68,13 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 | Komponen              | Versi   | Fungsi                                |
 | --------------------- | ------- | ------------------------------------- |
 | **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama           |
-| **Laravel**           | 12.40.1 | Framework aplikasi web                |
+| **Laravel**           | 12.42.0 | Framework aplikasi web                |
 | **Filament**          | 4.1.10  | Admin panel framework                 |
-| **Livewire**          | 3.7.0   | Server-driven UI components           |
+| **Livewire**          | 3.7.1   | Server-driven UI components           |
 | **Livewire Volt**     | 1.10.1  | Single-file Livewire components       |
 | **Tailwind CSS**      | 4.1.17  | Utility-first CSS framework           |
 | **Alpine.js**         | 3.x     | Lightweight JavaScript framework      |
-| **Laravel Reverb**    | 1.6.2   | WebSocket server untuk real-time      |
+| **Laravel Reverb**    | 1.6.3   | WebSocket server untuk real-time      |
 | **Laravel Echo**      | 2.2.6   | WebSocket client                      |
 | **PHPUnit**           | 11.5.44 | Testing framework                     |
 | **Larastan**          | 3.8.0   | Static analysis (PHPStan for Laravel) |
@@ -475,7 +474,7 @@ class LoanApplication extends Model implements Auditable
  * @property string $name
  * @property string $email Must be @motac.gov.my for staff
  * @property string|null $google_id Google OAuth ID (v3.5.0)
- * @property int|null $department_id FK to departments
+ * @property int|null $division_id FK to divisions
  * @property string|null $grade Gred pegawai
  * @property string|null $staff_number Nombor staf
  * @property string $role staff|admin|superuser

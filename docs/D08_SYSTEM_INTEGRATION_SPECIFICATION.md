@@ -19,9 +19,7 @@
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 15289, ISO/IEC TS 24748-6 |
-| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)             |
-| **Pematuhi**         | ISO/IEC/IEEE 15288, 15289, TS 24748-6     |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 > Notis Penggunaan Dalaman: Spesifikasi integrasi ini adalah untuk kegunaan
 > dalaman MOTAC sahaja dan tidak melibatkan API awam.
@@ -32,7 +30,8 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D07 v3.5.0. Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Google SSO (optional), Responsible Officer tracking, Accessory Tracking, Form Reference Codes, MOTAC Branding, Enhanced UX. Hapus rujukan LDAP/SSO legacy. Tukar `divisions` kepada `departments`. Pematuhan Jabatan Digital Negara. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D07 v3.5.0. Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Google SSO (optional), Responsible Officer tracking, Accessory Tracking, Form Reference Codes, MOTAC Branding, Enhanced UX. Hapus rujukan LDAP/SSO legacy. Pematuhan Jabatan Digital Negara. | Pasukan BPM |
 | 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah spesifikasi integrasi AI (Ollama API, AWS Bedrock API, model routing, RAG pipeline, streaming responses, MCP server). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture.                                                                                                                                                                                                                                                                                                                                                                      | Pasukan BPM |
 | 3.4.0 | 30 November 2025 | Hybrid Architecture v3.4.0: Restore LDAP/SSO integration sebagai optional authentication untuk staff. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                                                                                                                                                                                                                                                           | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan penuh Guest-First: hapus semua rujukan LDAP/SSO/User Sync. Hanya admin/superuser authenticate.                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Pasukan BPM |
@@ -235,34 +234,28 @@ Laravel Sanctum Bearer token authentication.
 
 | Endpoint                             | Method | Autentikasi              | Fungsi                                  |
 | ------------------------------------ | ------ | ------------------------ | --------------------------------------- |
-| `/api/v1/tickets`                    | GET    | Sanctum token            | Senarai tiket (paginated)               |
-| `/api/v1/tickets`                    | POST   | Sanctum token            | Cipta tiket baru                        |
-| `/api/v1/tickets/{id}`               | GET    | Sanctum token            | Detail tiket                            |
-| `/api/v1/tickets/{id}`               | PUT    | Sanctum token + Policy   | Update tiket                            |
-| `/api/v1/assets`                     | GET    | Sanctum token            | Senarai aset                            |
-| `/api/v1/assets/{id}`                | GET    | Sanctum token            | Detail aset + sejarah                   |
-| `/api/v1/loans`                      | GET    | Sanctum token            | Senarai permohonan pinjaman             |
-| `/api/v1/loans`                      | POST   | Sanctum token            | Cipta permohonan pinjaman               |
-| `/api/v1/loans/{id}`                 | GET    | Sanctum token            | Detail permohonan pinjaman              |
-| `/api/v1/loans/{id}/approve`         | PATCH  | Sanctum token + Approver | Luluskan pinjaman                       |
-| `/api/v1/loans/{id}/checkout`        | POST   | Sanctum token + Admin    | Check-out aset dengan aksesori          |
-| `/api/v1/loans/{id}/checkin`         | POST   | Sanctum token + Admin    | Check-in aset dengan aksesori           |
-| `/api/v1/departments`                | GET    | Public                   | Senarai bahagian/unit                   |
-| `/api/v1/users/profile`              | GET    | Sanctum token            | Profil staff login                      |
-| `/api/v1/auth/register`              | POST   | Public                   | Staff self-registration (@motac.gov.my) |
-| `/api/v1/auth/verify-email`          | POST   | Sanctum token            | Email verification                      |
-| `/api/v1/auth/login`                 | POST   | Public                   | Login (email/username + password)       |
-| `/api/v1/auth/google`                | GET    | Public                   | Google SSO redirect                     |
-| `/api/v1/auth/google/callback`       | GET    | Public                   | Google SSO callback                     |
-| `/api/v1/account/link-submissions`   | POST   | Sanctum token + Staff    | Link guest submissions to account       |
-| `/api/v1/account/preferences`        | PUT    | Sanctum token            | Update notification preferences         |
-| `/api/v1/tokens`                     | GET    | Sanctum token + Admin    | List API tokens                         |
-| `/api/v1/tokens`                     | POST   | Sanctum token + Admin    | Create API token                        |
-| `/api/v1/tokens/{id}`                | DELETE | Sanctum token + Admin    | Revoke API token                        |
-| `/api/v1/audit-logs`                 | GET    | Sanctum token + Admin    | Senarai audit logs                      |
-| `/api/v1/activity-logs`              | GET    | Sanctum token + Admin    | Senarai activity logs                   |
-| `/pulse`                             | GET    | Sanctum token + Admin    | Performance monitoring dashboard        |
-| `/telescope/*`                       | GET    | Sanctum token + Superuser| Debugging/monitoring (unrestricted)     |
+| `/api/v1/tickets`                    | GET    | `auth:sanctum` + `ability:read:tickets,admin:all` | Senarai tiket (Cross-Module Integration API) |
+| `/api/v1/tickets`                    | POST   | `auth:sanctum` + `ability:write:tickets,admin:all` | Cipta tiket (Cross-Module Integration API) |
+| `/api/v1/loans`                      | GET    | `auth:sanctum` + `ability:read:loans,admin:all` | Senarai permohonan pinjaman (Cross-Module Integration API) |
+| `/api/v1/loans`                      | POST   | `auth:sanctum` + `ability:write:loans,admin:all` | Cipta permohonan pinjaman (Cross-Module Integration API) |
+| `/api/v1/asset-returns/notify-damage` | POST  | `auth:sanctum`            | Notifikasi kerosakan / trigger penyelenggaraan |
+| `/api/v1/asset-returns/create-maintenance-ticket` | POST | `auth:sanctum` | Cipta tiket penyelenggaraan daripada pemulangan aset |
+| `/api/v1/ticket-asset/link`          | POST   | `auth:sanctum`            | Paut tiket ↔ aset |
+| `/api/v1/ticket-asset/unlink/{ticket}` | DELETE | `auth:sanctum`           | Nyahpaut tiket ↔ aset |
+| `/api/v1/ticket-asset/ticket/{ticket}/asset` | GET | `auth:sanctum`          | Senarai aset bagi sesuatu tiket |
+| `/api/v1/ticket-asset/asset/{asset}/tickets` | GET | `auth:sanctum`          | Senarai tiket bagi sesuatu aset |
+| `/api/v1/memory/import`              | POST   | Token aplikasi (MEMORY_API_TOKEN) | Import memori agen (bukan `auth:sanctum`) |
+| `/api/v1/memory/search`              | GET    | Token aplikasi (MEMORY_API_TOKEN) | Carian memori agen (bukan `auth:sanctum`) |
+| `/api/v1/ollama/faq/query`           | POST   | Hybrid (guest + auth)     | FAQ Bot query (throttle) |
+| `/api/v1/ollama/faq/history`         | GET    | Hybrid (guest + auth)     | Sejarah perbualan FAQ (throttle) |
+| `/api/v1/ollama/faq/claim`           | POST   | `auth:sanctum`            | Claim perbualan guest kepada akaun |
+| `/api/v1/ollama/documents/*`         | GET/POST/DELETE | `auth:sanctum` + `ability:admin:all` | Pengurusan dokumen AI (admin) |
+| `/api/v1/ollama/auto-reply/*`        | GET/POST | Campuran (`auth:sanctum` untuk admin; token-based untuk approve/reject) | Auto-reply AI (D18) |
+| `/api/assets/search`                 | GET    | `auth:web`                | Carian aset (digunakan oleh UI staf) |
+| `/api/loan-applications`             | GET    | `auth:web`                | Senarai permohonan pinjaman (digunakan oleh UI staf) |
+| `/api/health/*`                      | GET    | Public                     | Health checks (basic/ai/performance/detailed) |
+| `/api/analytics/web-vitals`          | POST   | Public (throttle)          | Penghantaran metrik Web Vitals (observability) |
+| `/api/tickets`, `/api/loans`         | GET/POST | `auth:sanctum` + abilities | Laluan serasi-ke-belakang (non-versioned) |
 
 ### 9.2. Contoh Permintaan & Respons (Request/Response Examples)
 
@@ -272,10 +265,11 @@ Laravel Sanctum Bearer token authentication.
 
 ```json
 {
-  "damage_type": "Hardware",
-  "damage_info": "Laptop tidak menyala selepas update BIOS",
-  "asset_no": "LT-2024-001",
-  "category": "Critical"
+  "subject": "Laptop tidak menyala selepas kemas kini BIOS",
+  "description": "Laptop tidak boleh dihidupkan selepas kemas kini BIOS. Tiada bunyi kipas dan tiada paparan.",
+  "category_id": 1,
+  "priority": "HIGH",
+  "asset_id": 2001
 }
 ```
 
@@ -284,13 +278,12 @@ Laravel Sanctum Bearer token authentication.
 ```json
 {
   "success": true,
-  "ticket": {
+  "data": {
     "id": 1001,
-    "ticket_no": "HD-202512-001",
+    "ticket_number": "HD2025000001",
     "form_reference_code": "PK.(S).MOTAC.07.(L1)",
-    "status": "Open",
-    "created_at": "2025-12-01T10:30:00Z",
-    "assigned_to": null
+    "status": "OPEN",
+    "created_at": "2025-12-01T10:30:00Z"
   }
 }
 ```
@@ -301,70 +294,14 @@ Laravel Sanctum Bearer token authentication.
 {
   "success": false,
   "errors": {
-    "damage_type": ["The damage_type field is required."],
-    "damage_info": ["The damage_info must be at least 10 characters."]
+    "subject": ["The subject field is required."],
+    "description": ["The description field is required."],
+    "category_id": ["The selected category id is invalid."]
   }
 }
 ```
 
-#### POST /api/v1/loans/{id}/checkout (Check-out Aset dengan Aksesori)
-
-**Request:**
-
-```json
-{
-  "condition_notes": "Aset dalam keadaan baik",
-  "accessories": [
-    {"type": "POWER_ADAPTER", "present": true, "condition": "Good"},
-    {"type": "BAG", "present": true, "condition": "Good"},
-    {"type": "MOUSE", "present": false},
-    {"type": "OTHERS", "name": "USB Hub", "present": true, "condition": "Good"}
-  ]
-}
-```
-
-**Response (Success - 200 OK):**
-
-```json
-{
-  "success": true,
-  "transaction": {
-    "id": 5001,
-    "type": "CHECK_OUT",
-    "loan_id": 1001,
-    "asset_id": 2001,
-    "accessories_count": 4,
-    "transaction_at": "2025-12-01T14:00:00Z"
-  }
-}
-```
-
-#### PATCH /api/v1/loans/{id}/approve (Luluskan Pinjaman)
-
-**Request:**
-
-```json
-{
-  "approved": true,
-  "remarks": "Diluluskan sebagai dimaklumkan"
-}
-```
-
-**Response (Success - 200 OK):**
-
-```json
-{
-  "success": true,
-  "loan": {
-    "id": 5001,
-    "reference": "LA-202512-001",
-    "form_reference_code": "PK.(S).MOTAC.07.(L3)",
-    "status": "APPROVED",
-    "approved_by": "BPM_ADMIN_01",
-    "approved_at": "2025-12-01T14:00:00Z"
-  }
-}
-```
+> **Nota (repo v3.6.1)**: Operasi kelulusan, pengeluaran (issuance), dan pemulangan aset dilaksanakan melalui UI dalaman (Filament Actions + aliran kelulusan e-mel bertoken). Endpoint REST seperti `/api/v1/loans/{id}/approve`, `/api/v1/loans/{id}/checkout`, dan `/api/v1/loans/{id}/checkin` **tidak wujud** dalam `routes/api.php`.
 
 ---
 
@@ -400,26 +337,26 @@ Laravel Sanctum Bearer token authentication.
 
 | Komponen             | Teknologi         | Versi   | Fungsi                                    |
 | -------------------- | ----------------- | ------- | ----------------------------------------- |
-| Framework            | Laravel           | 12.40.1 | Backend application framework             |
+| Framework            | Laravel           | 12.42.0 | Backend application framework             |
 | Admin Panel          | Filament          | 4.1.10  | CRUD interfaces, dashboard                |
-| Reactive UI          | Livewire          | 3.7.0   | Server-driven UI components               |
+| Reactive UI          | Livewire          | 3.7.1   | Server-driven UI components               |
 | Single-file Livewire | Volt              | 1.10.1  | Single-file Livewire components           |
-| WebSocket Server     | Laravel Reverb    | 1.6.2   | Real-time communication                   |
+| WebSocket Server     | Laravel Reverb    | 1.6.3   | Real-time communication                   |
 | WebSocket Client     | Laravel Echo      | 2.2.6   | Client-side WebSocket integration         |
 | CSS Framework        | Tailwind CSS      | 4.1.17  | Utility-first styling                     |
 | Database             | MySQL             | 8.x     | Production database                       |
 | Queue & Cache        | Redis             | 7.x     | Job queue & caching                       |
-| Testing              | PHPUnit           | 11.5.44 | Unit & integration testing                |
-| E2E Testing          | Playwright        | 1.56.1  | Browser automation testing                |
-| Static Analysis      | Larastan          | 3.8.0   | PHP static analysis                       |
+| Testing              | PHPUnit           | 11.5.46 | Unit & integration testing                |
+| E2E Testing          | Playwright        | 1.57.0  | Browser automation testing                |
+| Static Analysis      | Larastan          | 3.8.1   | PHP static analysis                       |
 | Code Style           | Laravel Pint      | 1.26.0  | PSR-12 code formatting                    |
 | Permissions          | Spatie Permission | 6.23    | Role-based access control                 |
 | Audit (Compliance)   | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)         |
 | Audit (Operations)   | Activity Log      | 4.x     | User activity logging (spatie)            |
-| Performance Monitor  | Laravel Pulse     | 1.3.0   | Performance metrics & server health       |
-| API Authentication   | Laravel Sanctum   | 4.0     | Token-based API authentication            |
-| OAuth SSO            | Laravel Socialite | 5.x     | Google Workspace SSO (optional)           |
-| Debugging            | Laravel Telescope | 5.x     | System monitoring (superuser only)        |
+| Performance Monitor  | Laravel Pulse     | 1.4.6   | Performance metrics & server health       |
+| API Authentication   | Laravel Sanctum   | 4.2.1   | Token-based API authentication            |
+| OAuth SSO            | Laravel Socialite | 5.24.0  | Google Workspace SSO (optional)           |
+| Debugging            | Laravel Telescope | 5.16.0  | System monitoring (superuser only)        |
 
 ---
 

@@ -19,9 +19,7 @@
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                      |
 | **Pematuhi**         | IEEE 1016, ISO/IEC/IEEE 2651x series, ISO 9001, ISO/IEC/IEEE 12207 |
-| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                               |
-| **Pematuhi**         | IEEE 1016, ISO/IEC/IEEE 2651x, ISO 9001, ISO/IEC/IEEE 12207 |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                   |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu  |
 
 > Notis Penggunaan Dalaman: Reka bentuk teknikal ini adalah khusus untuk sistem dalaman MOTAC; bukan untuk aplikasi awam.
 
@@ -31,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                          | Penulis     |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi rekabentuk teknikal                                                                                                                                                                                                                                         | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                             | Pasukan BPM |
 | 2.1.0 | 19 Oktober 2025  | Tambah §7a Internationalization & Language Support                                                                                                                                                                                                                                 | Pasukan BPM |
@@ -74,18 +73,18 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 | Komponen              | Versi   | Fungsi                            |
 | --------------------- | ------- | --------------------------------- |
 | **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama       |
-| **Laravel**           | 12.40.1 | Framework aplikasi web            |
+| **Laravel**           | 12.42.0 | Framework aplikasi web            |
 | **Filament**          | 4.1.10  | Admin panel framework             |
-| **Livewire**          | 3.7.0   | Server-driven UI components       |
+| **Livewire**          | 3.7.1   | Server-driven UI components       |
 | **Livewire Volt**     | 1.10.1  | Single-file Livewire components   |
-| **Laravel Reverb**    | 1.6.2   | WebSocket server untuk real-time  |
+| **Laravel Reverb**    | 1.6.3   | WebSocket server untuk real-time  |
 | **Spatie Permission** | 6.23    | Role-based access control         |
 | **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it) |
 | **Activity Log**      | 4.x     | User activity logging (spatie)    |
-| **Laravel Pulse**     | 1.3.0   | Performance monitoring (v3.5.0)   |
-| **Laravel Sanctum**   | 4.0     | API token authentication (v3.5.0) |
-| **Laravel Socialite** | 5.x     | Google OAuth SSO (v3.5.0)         |
-| **Laravel Telescope** | 5.x     | System debugging (superuser only) |
+| **Laravel Pulse**     | 1.4.6   | Performance monitoring (admin/superuser) |
+| **Laravel Sanctum**   | 4.2.1   | API token authentication           |
+| **Laravel Socialite** | 5.24.0  | Google OAuth SSO (opsyen)          |
+| **Laravel Telescope** | 5.16.0  | System debugging (superuser only)  |
 | **Ollama**            | Latest  | Local LLM server (FAQ, RAG)       |
 | **AWS Bedrock**       | Latest  | Cloud AI (Claude models)          |
 
@@ -111,10 +110,10 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 
 | Komponen         | Versi   | Fungsi                   |
 | ---------------- | ------- | ------------------------ |
-| **PHPUnit**      | 11.5.44 | Testing framework        |
-| **Larastan**     | 3.8.0   | Static analysis          |
+| **PHPUnit**      | 11.5.46 | Testing framework        |
+| **Larastan**     | 3.8.1   | Static analysis          |
 | **Laravel Pint** | 1.26.0  | Code formatting (PSR-12) |
-| **Playwright**   | 1.56+   | E2E testing              |
+| **Playwright**   | 1.57.0  | E2E testing              |
 
 ---
 
@@ -124,8 +123,8 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 
 Laravel 12 menggunakan struktur fail yang dipermudahkan:
 
-- **Tiada `app/Http/Kernel.php`** - Middleware didaftarkan dalam `bootstrap/app.php`
-- **Tiada `app/Console/Kernel.php`** - Commands auto-register dari `app/Console/Commands/`
+- **Tiada Kernel HTTP dalam `app/` (Laravel 12)** - Middleware didaftarkan dalam `bootstrap/app.php`
+- **Tiada Kernel Console dalam `app/` (Laravel 12)** - Commands auto-register dari `app/Console/Commands/`
 - **Service Providers** - Didaftarkan dalam `bootstrap/providers.php`
 
 ### 4.2. Application Bootstrap (`bootstrap/app.php`)
@@ -278,7 +277,7 @@ return Application::configure(basePath: dirname(__DIR__))
 - **Email Verification**: WAJIB sebelum akses Dashboard/Profile
 - **Flexible Login**: Email penuh (`user@motac.gov.my`) ATAU username pendek (`user`)
 - **Optional Account Linking**: Selepas login pertama, papar prompt untuk link submissions sedia ada
-- **Tiada LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
+- **Tiada LDAP**: SSO Google Workspace adalah opsyen (Laravel Socialite) selain login biasa
 
 Admin dan superuser memerlukan authentication untuk pengurusan sistem. Approvers (Grade 41+) meluluskan permohonan melalui signed email tokens, bukan login sistem.
 
@@ -287,10 +286,10 @@ Admin dan superuser memerlukan authentication untuk pengurusan sistem. Approvers
 | Capability                | Description                                                                        | Implementation                                         |
 | ------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
 | `view-own-history`        | Lihat tiket/permohonan sendiri sahaja                                              | Policy: `WHERE user_id = Auth::id()`                   |
-| `edit-profile`            | Kemaskini maklumat peribadi (name, phone, department*id, grade, locale, notify*\*) | Route: `/profile`, Policy: `update(Auth::user())`      |
+| `edit-profile`            | Kemaskini maklumat peribadi (name, phone, division_id, grade_id, locale, notify*\*) | Route: `/profile`, Policy: `update(Auth::user())`      |
 | `access-dashboard`        | Akses Dashboard Staf dengan statistik peribadi                                     | Route: `/dashboard`, Middleware: `auth,verified,staff` |
 | `submit-as-authenticated` | Hantar tiket/permohonan dengan user_id linkage (auto-fill forms dari profile)      | Form: Pre-populate dari Auth::user() attributes        |
-| `link-guest-submissions`  | Link submissions tetamu sedia ada kepada akaun                                     | Route: `/account/link-submissions`                     |
+| `link-guest-submissions`  | Link submissions tetamu sedia ada kepada akaun                                     | Route: `/dashboard/link-submissions`                   |
 
 **Query Pattern untuk Staff**:
 
@@ -437,7 +436,7 @@ Gate::define('viewTelescope', function ($user) {
 
 ### 7.1. Laravel Reverb Configuration
 
-**Server**: Laravel Reverb 1.6.2 (native Laravel WebSocket server)
+**Server**: Laravel Reverb 1.6.3 (native Laravel WebSocket server)
 
 ```php
 // config/broadcasting.php
@@ -526,7 +525,7 @@ class TicketStatusChanged implements ShouldBroadcast
 ### 8.3. Language Switcher Component (DILUMPUHKAN v3.6.0)
 
 **Framework**: Livewire 3.x
-**Location**: `app/Livewire/LanguageSwitcher.php`
+**Location**: `app/Http/Controllers/LanguageController.php` (route: `routes/web.php` → `/change-locale/{locale}`)
 
 **Features**:
 
@@ -685,7 +684,7 @@ ICTServe mengintegrasikan **True Hybrid AI Architecture** yang menggabungkan Oll
 |----------|--------|--------|--------|
 | **Ollama Server** | localhost:11434 | Local LLM untuk FAQ dan data sovereignty | ✅ Active |
 | **AWS Bedrock** | us-east-1 | Cloud AI untuk complex reasoning | ✅ Active |
-| **Model Router** | `app/Services/AI/ModelRouter.php` | Smart query routing | ✅ Active |
+| **Model Router** | `app/Services/ModelRouter.php` | Smart query routing | ✅ Active |
 | **Vector Database** | MySQL + JSON columns | Embeddings storage | ✅ Active |
 | **MCP Server** | Port 3000 | AI tool integration | ✅ Active |
 
@@ -984,9 +983,9 @@ ollama pull llama3.1:8b-instruct-q4_K_M
 ollama pull nomic-embed-text
 
 # Laravel setup
-php artisan migrate --path=database/migrations/ai
-php artisan queue:work --queue=ai-processing,document-ingestion,auto-reply
-php artisan reverb:start --host=127.0.0.1 --port=6001
+php artisan migrate
+php artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --tries=3 --timeout=1200
+php artisan reverb:serve --host=127.0.0.1 --port=8080 --scheme=http
 ```
 
 ---
@@ -997,7 +996,7 @@ php artisan reverb:start --host=127.0.0.1 --port=6001
 
 | KPI                     | Target     | Alatan                    |
 | ----------------------- | ---------- | ------------------------- |
-| **Uptime**              | 99.5%      | Laravel Horizon           |
+| **Uptime**              | 99.5%      | Health checks (`/up`, `/api/health/*`) + Laravel Pulse |
 | **Response Time (p95)** | <2 seconds | Laravel Pulse (v3.5.0)    |
 | **Error Rate (5xx)**    | <0.5%      | Sentry                    |
 | **Database Query Time** | <500ms avg | Laravel Pulse (v3.5.0)    |

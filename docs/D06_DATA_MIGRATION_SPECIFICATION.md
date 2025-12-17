@@ -19,9 +19,7 @@
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO 8000, ISO/IEC 38505-1                 |
-| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)             |
-| **Pematuhi**         | ISO 8000, ISO/IEC 38505-1                 |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 > Notis Penggunaan Dalaman: Spesifikasi ini adalah untuk migrasi data dalaman MOTAC; pastikan pematuhan PDPA.
 
@@ -31,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                               | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding, Enhanced UX. Penyelarasan dengan D00-D05 v3.5.0. | Pasukan BPM |
 | 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah struktur data AI (faqs, documents, embeddings, bedrock_conversations, ai_message_logs). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture (Ollama + AWS Bedrock).                                                                                                                                          | Pasukan BPM |
 | 3.4.0 | 29 November 2025   | Hybrid Architecture v3.4.0: Staff migration to users table, email-based linking, restore LDAP/SSO as optional authentication. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                       | Pasukan BPM |
@@ -101,20 +100,25 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 | ----------------------- | ----------- | ----------- | ------------------------------------- |
 | id                      | bigint      | Ya          | Auto increment (primary key)          |
 | user_id                 | bigint      | Tidak       | FK → users.id (NULL untuk Guest)      |
-| submitter_name          | string(255) | Ya          | Nama penghantar                       |
-| submitter_email         | string(255) | Ya          | E-mel penghantar                      |
-| submitter_phone         | string(50)  | Ya          | Nombor telefon                        |
-| submitter_division_code | string(50)  | Ya          | Kod bahagian                          |
-| submitter_grade         | string(50)  | Tidak       | Gred jawatan                          |
-| damage_type             | string(100) | Ya          | Kategori kerosakan (dropdown)         |
-| damage_info             | text        | Ya          | Keterangan masalah                    |
-| asset_no                | string(100) | Conditional | Diisi jika aduan berkaitan perkakasan |
-| declaration             | boolean     | Ya          | Perakuan/disclaimer                   |
-| status                  | string(50)  | Ya          | Status tiket                          |
+| ticket_number           | string(50)  | Ya          | Nombor tiket (unik)                   |
+| guest_name              | string(255) | Tidak       | Nama penghantar (untuk guest)         |
+| guest_email             | string(255) | Tidak       | E-mel penghantar (untuk guest)        |
+| guest_phone             | string(20)  | Tidak       | Nombor telefon (untuk guest)          |
+| guest_division          | string(100) | Tidak       | Bahagian/unit (teks) (untuk guest)    |
+| guest_grade             | string(10)  | Tidak       | Gred (untuk guest)                    |
+| division_id             | bigint      | Tidak       | FK → divisions.id (untuk staf berdaftar) |
+| category_id             | bigint      | Ya          | FK → ticket_categories.id             |
+| priority                | enum        | Ya          | low/normal/high/urgent                |
+| subject                 | string(255) | Ya          | Tajuk aduan                           |
+| description             | text        | Ya          | Keterangan masalah                    |
+| damage_type             | string      | Tidak       | Jenis kerosakan (jika berkaitan)      |
+| asset_id                | bigint      | Tidak       | FK → assets.id (jika berkaitan perkakasan) |
+| declaration_accepted    | boolean     | Ya          | Perakuan/disclaimer                   |
+| status                  | enum        | Ya          | open/assigned/in_progress/pending_user/resolved/closed |
 | created_at              | timestamp   | Ya          | Tarikh aduan dibuat                   |
 | updated_at              | timestamp   | Ya          | Tarikh kemaskini terakhir             |
 
-**Indeks:** `(user_id, status)`, `(submitter_email, status)`
+**Indeks (ringkasan):** `(user_id, status)`, `(guest_email, status)`, `(status, priority)`, `(ticket_number)`
 
 > **Nota Hybrid Model**: `user_id` NULL = Guest; NOT NULL = Staff berdaftar
 
@@ -126,28 +130,31 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 | user_id                              | bigint      | Tidak       | FK → users.id (NULL untuk Guest)              |
 | applicant_name                       | string(255) | Ya          | Nama pemohon                                  |
 | applicant_email                      | string(255) | Ya          | E-mel pemohon                                 |
-| applicant_phone                      | string(50)  | Ya          | Telefon pemohon                               |
-| applicant_division_code              | string(50)  | Ya          | Kod bahagian                                  |
-| applicant_grade                      | string(50)  | Ya          | Jawatan & gred                                |
-| purpose                              | string(255) | Ya          | Tujuan pinjaman                               |
-| location                             | string(255) | Ya          | Lokasi penggunaan                             |
+| applicant_phone                      | string(20)  | Ya          | Telefon pemohon                               |
+| applicant_position                   | string      | Ya          | Jawatan pemohon                               |
+| applicant_grade                      | string      | Ya          | Gred jawatan (teks)                           |
+| staff_id                             | string(20)  | Ya          | ID staf MOTAC                                 |
+| grade                                | string(10)  | Ya          | Gred ringkas (contoh: 41/44/48/52/54)         |
+| division_id                          | bigint      | Ya          | FK → divisions.id                             |
+| application_number                   | string(20)  | Ya          | Nombor permohonan (unik)                      |
+| purpose                              | text        | Ya          | Tujuan pinjaman                               |
+| location                             | string      | Ya          | Lokasi penggunaan                             |
+| return_location                      | string      | Ya          | Lokasi pemulangan                             |
 | loan_start_date                      | date        | Ya          | Tarikh mula pinjam                            |
 | loan_end_date                        | date        | Ya          | Tarikh dijangka pulang                        |
-| equipment_list                       | json/text   | Ya          | Senarai peralatan, kuantiti, catatan          |
-| declaration                          | boolean     | Ya          | Perakuan/disclaimer                           |
+| status                               | enum        | Ya          | Status permohonan (rujuk migration)           |
+| priority                             | enum        | Ya          | low/normal/high/urgent                        |
+| terms_acknowledged                   | boolean     | Ya          | Perakuan/disclaimer                           |
 | form_reference_code                  | string(50)  | Ya          | Kod rujukan borang (DEFAULT PK.(S).MOTAC.07.(L3)) |
 | is_applicant_responsible             | boolean     | Ya          | Pemohon adalah Pegawai Bertanggungjawab (DEFAULT TRUE) |
 | responsible_officer_name             | string(255) | Conditional | Nama Pegawai Bertanggungjawab (jika berbeza)  |
 | responsible_officer_grade            | string(50)  | Conditional | Gred Pegawai Bertanggungjawab                 |
 | responsible_officer_phone            | string(50)  | Conditional | Telefon Pegawai Bertanggungjawab              |
 | responsible_officer_acknowledgement  | boolean     | Conditional | Perakuan Pegawai Bertanggungjawab             |
-| endorsement_status                   | string(20)  | Ya          | PENDING / APPROVED / REJECTED                 |
-| endorsement_date                     | date        | Conditional | Tarikh kelulusan (jika diluluskan)            |
-| return_notes                         | text        | Tidak       | Catatan semasa pulang                         |
 | created_at                           | timestamp   | Ya          | Tarikh permohonan                             |
 | updated_at                           | timestamp   | Ya          | Tarikh kemaskini terakhir                     |
 
-**Indeks:** `(user_id, status)`, `(applicant_email, status)`, `(form_reference_code)`
+**Indeks (ringkasan):** `(user_id, status)`, `(applicant_email, status)`, `(application_number)`, `(division_id)`
 
 > **Nota Hybrid Model**: `user_id` NULL = Guest; NOT NULL = Staff berdaftar. Kelulusan melalui email token (dual approval workflow).
 >
@@ -187,39 +194,29 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 
 ### 4.4. Profil Pengguna (User Profiles)
 
-| Field                    | Jenis Data                     | Mandatori | Keterangan                                         |
-| ------------------------ | ------------------------------ | --------- | -------------------------------------------------- |
-| id                       | bigint, PK                     | Ya        | Primary Key                                        |
-| name                     | string(255)                    | Ya        | Nama pegawai                                       |
-| email                    | string(255)                    | Ya        | E-mel kerajaan @motac.gov.my (unique)              |
-| email_verified_at        | timestamp                      | Tidak     | Tarikh pengesahan e-mel                            |
-| phone                    | string(30)                     | Ya        | Telefon pegawai                                    |
-| department_id            | bigint, FK nullable            | Tidak     | FK → departments.id (nullable, ON DELETE SET NULL) |
-| grade                    | string(50)                     | Tidak     | Gred jawatan (VARCHAR, simplified)                 |
-| staff_number             | string(50)                     | Tidak     | Nombor staf (optional)                             |
-| role                     | enum(staff, admin, superuser)  | Ya        | Peranan sistem (DEFAULT 'staff')                   |
-| password                 | string(255)                    | Ya        | Hash kata laluan                                   |
-| two_factor_secret        | text (nullable)                | Tidak     | Rahsia TOTP (untuk superuser)                      |
-| two_factor_confirmed_at  | timestamp                      | Tidak     | Tarikh pengesahan 2FA                              |
-| locale                   | enum(ms, en)                   | Ya        | Bahasa pilihan (DEFAULT 'ms')                      |
-| notify_email_frequency   | enum(immediate, daily, weekly) | Ya        | Kekerapan e-mel (DEFAULT 'immediate')              |
-| notify_in_app            | boolean                        | Ya        | Notifikasi dalam aplikasi (DEFAULT TRUE)           |
-| guest_submissions_linked | integer                        | Ya        | Bilangan submissions dilink (DEFAULT 0)            |
-| remember_token           | string(100)                    | Tidak     | Token remember me                                  |
-| last_login_at            | timestamp                      | Tidak     | Tarikh login terakhir                              |
-| last_login_ip            | string(45)                     | Tidak     | IP login terakhir                                  |
-| created_at               | timestamp                      | Ya        | Tarikh cipta                                       |
-| updated_at               | timestamp                      | Ya        | Tarikh kemaskini                                   |
-| deleted_at               | timestamp                      | Tidak     | Soft delete timestamp                              |
-| google_id                | string(255)                    | Tidak     | Google OAuth ID (untuk SSO)                        |
-| google_avatar            | string(500)                    | Tidak     | URL avatar Google                                  |
-| auth_provider            | enum(local, google)            | Ya        | Kaedah authentication (DEFAULT 'local')            |
-| onboarding_completed     | boolean                        | Ya        | Tour onboarding selesai (DEFAULT FALSE)            |
-| dashboard_layout         | json                           | Tidak     | Konfigurasi layout dashboard                       |
-| saved_filters            | json                           | Tidak     | Filter tersimpan pengguna                          |
-| theme_preference         | enum(light, dark, system)      | Ya        | Pilihan tema (DEFAULT 'system')                    |
+> **Source of truth (skema sebenar)**: `database/migrations/2025_11_03_043900_create_users_table.php`
 
-**Indeks:** `(email)`, `(email_prefix via SUBSTRING_INDEX)`, `(role)`, `(department_id)`, `(staff_number)`, `(google_id)`
+Ringkasan medan berkaitan migrasi (bukan senarai penuh):
+
+| Field         | Jenis Data          | Mandatori | Keterangan |
+|--------------|---------------------|----------:|-----------|
+| id           | bigint, PK          | Ya        | Primary key |
+| name         | string(255)         | Ya        | Nama pegawai |
+| email        | string(255)         | Ya        | E-mel kerajaan (unique) |
+| email_verified_at | timestamp      | Tidak     | Tarikh pengesahan e-mel |
+| role         | enum               | Ya        | `staff` / `approver` / `admin` / `superuser` |
+| staff_number | string(50)          | Tidak     | Nombor staf (opsyen) |
+| division_code| string(20)          | Tidak     | Kod bahagian/unit (string) |
+| division_id  | bigint, FK nullable | Tidak     | FK → `divisions.id` (ON DELETE SET NULL) |
+| grade_id     | bigint, FK nullable | Tidak     | FK → `grades.id` (ON DELETE SET NULL) |
+| position_id  | bigint, FK nullable | Tidak     | FK → `positions.id` (ON DELETE SET NULL) |
+| phone        | string(20)          | Tidak     | Telefon |
+| mobile       | string(20)          | Tidak     | Telefon bimbit |
+| locale       | string(10)          | Ya        | **DEPRECATED v3.6.0**: sentiasa `ms` |
+| google_id    | string(255)         | Tidak     | Google OAuth ID (opsyen SSO) |
+| theme_preference | string(10)      | Ya        | `light` / `dark` / `system` |
+
+**Indeks (ringkasan)**: `(email)`, `(role)`, `(staff_number)`, `(division_code)`, `(division_id, grade_id)`, `(google_id)`
 
 > **Nota True Hybrid Architecture v3.5.0:**
 >
@@ -301,29 +298,32 @@ Tambahan medan untuk helpdesk_tickets:
 ```sql
 -- Migrate legacy Staff to users table dengan medan baharu
 INSERT INTO users (
-    name, email, phone, department_id, grade, staff_number,
-    role, password, email_verified_at, locale,
-    notify_email_frequency, notify_in_app, guest_submissions_linked,
-    created_at, updated_at
+    name, email, phone, staff_number, division_code,
+    role, password, email_verified_at, locale, theme_preference,
+    guest_submissions_linked, created_at, updated_at
 )
 SELECT
     name,
     email,
     phone,
-    department_id,
-    grade,
     staff_id as staff_number,
+    division_code,
     'staff' as role,
     '$2y$12$HASHED_DEFAULT_PASSWORD' as password,
     NOW() as email_verified_at,  -- Auto-verified for migrated staff
-    'ms' as locale,
-    'immediate' as notify_email_frequency,
-    TRUE as notify_in_app,
+    'ms' as locale, -- DEPRECATED v3.6.0: sentiasa 'ms'
+    'system' as theme_preference,
     0 as guest_submissions_linked,
     NOW() as created_at,
     NOW() as updated_at
 FROM legacy_staff_table
 WHERE email LIKE '%@motac.gov.my';  -- Only @motac.gov.my emails
+
+-- (Opsyen) Padankan FK division_id selepas divisions disemai:
+-- UPDATE users u
+-- JOIN divisions d ON d.code = u.division_code
+-- SET u.division_id = d.id
+-- WHERE u.division_id IS NULL AND u.division_code IS NOT NULL;
 ```
 
 ### 8.2. Langkah 2: Link Historical Tickets via Email
@@ -331,7 +331,7 @@ WHERE email LIKE '%@motac.gov.my';  -- Only @motac.gov.my emails
 ```sql
 -- Link historical helpdesk tickets to Staff users (case-insensitive)
 UPDATE helpdesk_tickets ht
-INNER JOIN users u ON LOWER(ht.submitter_email) = LOWER(u.email)
+INNER JOIN users u ON LOWER(ht.guest_email) = LOWER(u.email)
 SET ht.user_id = u.id
 WHERE ht.user_id IS NULL AND u.role = 'staff';
 ```

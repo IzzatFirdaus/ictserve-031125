@@ -18,10 +18,8 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                                                     |
 | **Status**           | Aktif                                                                |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                           |
-| **Pematuhi**         | RFC 6455, OWASP Transport Security, Laravel Framework v12            |
-| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                                        |
-| **Pematuhi**         | RFC 6455 (WebSocket), OWASP Transport Security, Laravel Broadcasting |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                            |
+| **Pematuhi**         | RFC 6455 (WebSocket), OWASP Transport Security, Laravel Broadcasting, Laravel Reverb |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu           |
 
 > Notis Penggunaan Dalaman: Panduan ini adalah untuk persediaan infrastruktur
 > penyiaran masa nyata dalam sistem dalaman MOTAC sahaja.
@@ -32,6 +30,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis                 |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Google Workspace SSO (opsyen), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding. Penambahan acara penyiaran baharu untuk API token dan SSO events. Penyelarasan dengan D00-D15 v3.5.0. | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan Pembangunan BPM |
 | 1.3.0 | 29 November 2025 | Hybrid operations: Auth users (private-user.{id}) + Guests (private-ticket.{uuid})                                                                                                                                                                                                                  | Pasukan Pembangunan BPM |
@@ -123,114 +122,41 @@ Sistem ICTServe menggunakan **Dual Channel Strategy**:
 - **Authenticated Users**: Listen to `private-user.{id}`
 - **Guests**: Listen to `private-ticket.{uuid}` atau `private-loan.{uuid}`
 
-| Acara                                 | Saluran (Auth Users)    | Saluran (Guests)                 | Peristiwa                | Catatan                                                  |
-| ------------------------------------- | ----------------------- | -------------------------------- | ------------------------ | -------------------------------------------------------- |
-| `App\Events\NotificationCreated`      | `private-user.{userId}` | `private-ticket.{ticketUuid}`    | `notification.created`   | Hybrid: Auth users via user_id, Guests via UUID          |
-| `App\Events\StatusUpdated`            | `private-user.{userId}` | `private-ticket.{ticketUuid}`    | `status.updated`         | Hybrid: Status updates untuk authenticated DAN guests    |
-| `App\Events\CommentPosted`            | `private-user.{userId}` | `private-submission.{type}.{id}` | `comment.posted`         | Ulasan baru pada tiket/pinjaman                          |
-| `App\Events\AssetReturnedDamaged`     | `private-user.{userId}` | `private-loan.{loanUuid}`        | `asset.returned.damaged` | Hybrid: Loan updates untuk authenticated DAN guests      |
-| `App\Events\EmailVerified`            | `private-user.{userId}` | N/A (auth only)                  | `email.verified`         | Email verification confirmed for self-registered staff   |
-| `App\Events\AccountLinked`            | `private-user.{userId}` | N/A (auth only)                  | `account.linked`         | Guest submissions linked to authenticated account        |
-| `App\Events\NotificationPrefsUpdated` | `private-user.{userId}` | N/A (auth only)                  | `preferences.updated`    | Notification preferences updated                         |
-| `App\Events\WelcomeNotification`      | `private-user.{userId}` | N/A (auth only)                  | `welcome.notification`   | Welcome message for newly verified self-registered staff |
-| `App\Events\ApiTokenCreated`          | `private-user.{userId}` | N/A (auth only)                  | `api.token.created`      | API token created via Laravel Sanctum (v3.5.0)           |
-| `App\Events\ApiTokenRevoked`          | `private-user.{userId}` | N/A (auth only)                  | `api.token.revoked`      | API token revoked (v3.5.0)                               |
-| `App\Events\GoogleSsoLinked`          | `private-user.{userId}` | N/A (auth only)                  | `sso.google.linked`      | Google Workspace account linked (v3.5.0)                 |
-| `App\Events\AccessoryCheckedOut`      | `private-user.{userId}` | `private-loan.{loanUuid}`        | `accessory.checked.out`  | Loan accessory checked out (v3.5.0)                      |
-| `App\Events\AccessoryReturned`        | `private-user.{userId}` | `private-loan.{loanUuid}`        | `accessory.returned`     | Loan accessory returned (v3.5.0)                         |
-| `App\Events\ResponsibleOfficerAssigned` | `private-user.{userId}` | N/A (auth only)                | `officer.assigned`       | Responsible Officer assigned to ticket/loan (v3.5.0)     |
+| Acara                            | Saluran (Auth Users)                 | Peristiwa              | Catatan ringkas                                      |
+| ------------------------------- | ------------------------------------ | ---------------------- | ---------------------------------------------------- |
+| `App\Events\NotificationCreated` | `private-user.{userId}`              | `notification.created` | Notifikasi real-time untuk pengguna authenticated    |
+| `App\Events\StatusUpdated`       | `private-user.{userId}`              | `status.updated`       | Status tiket/pinjaman berubah (owner channel)        |
+| `App\Events\CommentPosted`       | `private-submission.{type}.{id}`     | `comment.posted`       | Ulasan dalaman pada tiket/pinjaman                   |
+| `App\Events\TicketAssigned`      | `private-user.{id}`, `admin.notifications` | `ticket.assigned` | Notifikasi tugasan tiket kepada admin                |
+| `App\Events\HighPriorityTicketCreated` | `admin.notifications` (+ `user.{id}` jika ada) | `ticket.high-priority` | Amaran tiket prioriti tinggi kepada admin/superuser |
+| `App\Events\SLABreachDetected`   | `admin.notifications` (+ `user.{id}` jika ada) | `sla.breach`      | Amaran pelanggaran SLA                                |
+| `App\Events\EmailVerified`       | `private-user.{userId}`              | `email.verified`       | Email verification untuk staff (self-registration)   |
+| `App\Events\AccountLinked`       | `private-user.{userId}`              | `account.linked`       | Rekod tetamu dipautkan kepada akaun staff            |
+| `App\Events\ApiTokenCreated`     | `private-user.{userId}`              | `api.token.created`    | Token API dicipta (Sanctum)                          |
+| `App\Events\ApiTokenRevoked`     | `private-user.{userId}`              | `api.token.revoked`    | Token API dibatalkan (Sanctum)                       |
+| `App\Events\GoogleSsoLinked`     | `private-user.{userId}`              | `sso.google.linked`    | Akaun Google SSO dipautkan                            |
 
-### 3.4. AI Real-Time Events (D18 Integration v3.6.0)
+### 3.4. AI Real-Time Events (D18 Integration v3.6.1)
 
-Sistem ICTServe v3.6.0 menambah sokongan untuk **Cloud Hybrid AI Architecture** dengan acara masa nyata untuk streaming responses, conversation management, dan model switching:
+Sistem menyiarkan status pemprosesan AI untuk pemantauan admin/superuser melalui saluran private (Reverb + Echo). Rujukan konfigurasi: `config/ai-broadcasting.php` dan listener frontend di `resources/js/bootstrap.js`.
 
-| Acara AI                              | Saluran (Auth Users)    | Saluran (Guests)                 | Peristiwa                | Catatan                                                  |
-| ------------------------------------- | ----------------------- | -------------------------------- | ------------------------ | -------------------------------------------------------- |
-| `App\Events\AiStreamingStarted`       | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.streaming.started`   | AI response streaming dimulakan                          |
-| `App\Events\AiStreamingChunk`         | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.streaming.chunk`     | Chunk respons AI (Server-Sent Events)                   |
-| `App\Events\AiStreamingCompleted`     | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.streaming.completed` | AI response streaming selesai                            |
-| `App\Events\AiModelSwitched`          | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.model.switched`      | Model AI ditukar (Auto/Opus/Sonnet/Haiku)               |
-| `App\Events\AiConversationSaved`      | `private-user.{userId}` | N/A (auth only)                  | `ai.conversation.saved`  | Perbualan AI disimpan untuk authenticated users         |
-| `App\Events\AiWebSearchStarted`       | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.web.search.started`  | Web-augmented search dimulakan                          |
-| `App\Events\AiWebSearchCompleted`     | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.web.search.completed`| Web search selesai, respons diperkaya                   |
-| `App\Events\AiFaqSuggestionGenerated` | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.faq.suggestion`      | FAQ suggestions dijana berdasarkan pertanyaan           |
-| `App\Events\AiErrorOccurred`          | `private-user.{userId}` | `private-conversation.{uuid}`    | `ai.error.occurred`      | Error dalam pemprosesan AI (fallback ke model lain)     |
-| `App\Events\AiUsageMetricsUpdated`    | `private-user.{userId}` | N/A (admin only)                 | `ai.metrics.updated`     | Metrik penggunaan AI dikemas kini (admin dashboard)     |
+| Acara AI                        | Saluran                    | broadcastAs              | Catatan ringkas                                  |
+| ------------------------------ | -------------------------- | ------------------------ | ------------------------------------------------ |
+| `AIProcessingStarted`          | `private-ai-status`        | `AIProcessingStarted`    | Pemprosesan AI dimulakan                         |
+| `AIProcessingCompleted`        | `private-ai-status`        | `AIProcessingCompleted`  | Pemprosesan AI selesai                           |
+| `AIErrorOccurred`              | `private-ai-alerts`        | `AIErrorOccurred`        | Ralat AI (ShouldBroadcastNow, segera)            |
+| `AIServiceDegraded`            | `private-ai-alerts`        | `AIServiceDegraded`      | Perkhidmatan AI masuk mod degradasi              |
+| `AIServiceRestored`            | `private-ai-alerts`        | `AIServiceRestored`      | Perkhidmatan AI pulih                            |
+| `AIPerformanceUpdate`          | `private-ai-performance`   | `AIPerformanceUpdate`    | Metrik prestasi AI (sanitized, tanpa PII)        |
+| `AIPerformanceAlert`           | `private-ai-alerts`        | `AIPerformanceAlert`     | Amaran prestasi AI                               |
+| `AIResourceUsageUpdate`        | `private-ai-performance`   | `AIResourceUsageUpdate`  | CPU/memori/queue (sanitized)                     |
+| `AICacheStatsUpdate`           | `private-ai-performance`   | `AICacheStatsUpdate`     | Statistik cache AI                               |
+| `AutoReplyDraftCreated`        | `private-ai-approvals`     | `AutoReplyDraftCreated`  | Draf auto-reply memerlukan semakan               |
+| `AutoReplyApproved`            | `private-ai-approvals`     | `AutoReplyApproved`      | Kelulusan auto-reply                             |
+| `AutoReplyRejected`            | `private-ai-approvals`     | `AutoReplyRejected`      | Penolakan auto-reply                             |
 
-**AI Channel Selection Logic**:
-
-```php
-// app/Events/AiStreamingChunk.php
-public function broadcastOn(): array
-{
-    if ($this->conversation->user_id) {
-        // Authenticated: Broadcast to user channel
-        return [new PrivateChannel('user.' . $this->conversation->user_id)];
-    } else {
-        // Guest: Broadcast to conversation UUID channel
-        return [new PrivateChannel('conversation.' . $this->conversation->uuid)];
-    }
-}
-
-public function broadcastWith(): array
-{
-    return [
-        'conversation_id' => $this->conversation->id,
-        'chunk' => $this->chunk,
-        'model_used' => $this->modelUsed,
-        'is_final' => $this->isFinal,
-        'timestamp' => now()->toISOString(),
-    ];
-}
-```
-
-**AI Streaming Implementation (Server-Sent Events)**:
-
-```php
-// app/Http/Controllers/AiStreamingController.php
-public function stream(Request $request, string $conversationId)
-{
-    return response()->stream(function () use ($conversationId) {
-        $conversation = BedrockConversation::findOrFail($conversationId);
-        
-        // Authorize access
-        if ($conversation->user_id && $conversation->user_id !== auth()->id()) {
-            abort(403);
-        }
-        
-        // Start streaming
-        event(new AiStreamingStarted($conversation));
-        
-        // Process with selected model
-        $service = app(BedrockService::class);
-        $chunks = $service->streamResponse($conversation);
-        
-        foreach ($chunks as $chunk) {
-            // Broadcast each chunk
-            event(new AiStreamingChunk($conversation, $chunk));
-            
-            // Send SSE
-            echo "data: " . json_encode([
-                'content' => $chunk,
-                'conversation_id' => $conversationId
-            ]) . "\n\n";
-            
-            ob_flush();
-            flush();
-        }
-        
-        // Complete streaming
-        event(new AiStreamingCompleted($conversation));
-        
-        echo "event: complete\n";
-        echo "data: {\"status\": \"completed\"}\n\n";
-    }, 200, [
-        'Content-Type' => 'text/event-stream',
-        'Cache-Control' => 'no-cache',
-        'Connection' => 'keep-alive',
-    ]);
-}
-```
+Nota:
+- Listener `resources/js/bootstrap.js` masih mempunyai handler `.AIProcessingFailed` untuk backward compatibility; rujuk event sebenar `AIErrorOccurred` untuk ralat.
 
 **Channel Selection Logic**:
 
@@ -528,7 +454,7 @@ VITE_REVERB_SCHEME="${REVERB_SCHEME}"
 php artisan reverb:start
 
 # 4. Jalankan pekerja baris gilir (terminal berasingan):
-php artisan queue:work redis --queue=default
+php artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --tries=3 --timeout=1200
 
 # 5. Bina frontend (ensure Node v22 is active):
 # Option A (manual):
@@ -835,7 +761,7 @@ Penyiaran menggunakan baris gilir untuk memproses pekerjaan secara asinkron:
 
 ```bash
 # Dalam terminal berasingan, jalankan pekerja baris gilir
-php artisan queue:work redis --queue=default
+php artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --tries=3 --timeout=1200
 
 # Atau gunakan sync untuk pembangunan tempatan
 QUEUE_CONNECTION=sync
@@ -871,7 +797,7 @@ redirect_stderr=true
 stdout_logfile=/var/log/supervisor/reverb.log
 
 [program:ictserve-queue]
-command=php /var/www/ictserve/artisan queue:work redis --queue=default
+command=php /var/www/ictserve/artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --sleep=3 --tries=3 --timeout=1200
 autostart=true
 autorestart=true
 user=www-data
@@ -1015,7 +941,7 @@ Broadcast::channel('ticket.{uuid}', function ($user, string $uuid) {
 ps aux | grep "queue:work"
 
 # Atau mulakan semula
-php artisan queue:work redis --queue=default
+php artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --tries=3 --timeout=1200
 
 # Periksa sambungan Redis
 php artisan tinker
