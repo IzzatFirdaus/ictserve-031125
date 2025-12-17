@@ -1,6 +1,15 @@
 <?php
 
+// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)
+// See lang/en/README.md for details
+
 declare(strict_types=1);
+
+/**
+ * En - Notifications Translations
+ *
+ * Updated: 2025-12-17 - Added technical reference comment (v3.6.1)
+ */
 
 return [
     'bell_aria' => 'Notifications, :count unread',
