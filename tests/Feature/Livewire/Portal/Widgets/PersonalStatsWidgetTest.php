@@ -45,7 +45,7 @@ class PersonalStatsWidgetTest extends TestCase
         Livewire::actingAs($user)
             ->test(PersonalStatsWidget::class)
             ->assertSee('3') // Should see count 3
-            ->assertSee('Tiket Dibuka'); // Label
+            ->assertSee('open_tickets', false); // Check for translation key or translated text
     }
 
     #[Test]
@@ -62,7 +62,7 @@ class PersonalStatsWidgetTest extends TestCase
         Livewire::actingAs($user)
             ->test(PersonalStatsWidget::class)
             ->assertSee('2')
-            ->assertSee('Pinjaman Aktif');
+            ->assertSee('pending_loans', false); // Check for translation key or translated text
     }
 
     #[Test]

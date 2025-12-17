@@ -20,8 +20,9 @@ class PasswordConfirmationTest extends TestCase
         $response = $this->actingAs($user)->get('/confirm-password');
 
         $response
-            ->assertSeeVolt('pages.auth.confirm-password')
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->assertSee('Sahkan')  // Check for password confirmation content in Bahasa Melayu
+            ->assertSee('Kata Laluan');
     }
 
     #[Test]

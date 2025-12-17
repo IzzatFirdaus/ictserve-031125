@@ -49,8 +49,8 @@ class PulseAccessTest extends TestCase
 
         $this->actingAs($superuser);
 
-        // Test the gate directly
-        $this->assertTrue(Gate::allows('viewPulse', $superuser));
+        // Test the gate directly - gate receives authenticated user automatically
+        $this->assertTrue(Gate::allows('viewPulse'));
     }
 
     /**
@@ -68,8 +68,8 @@ class PulseAccessTest extends TestCase
 
         $this->actingAs($admin);
 
-        // Test the gate directly
-        $this->assertTrue(Gate::allows('viewPulse', $admin));
+        // Test the gate directly - gate receives authenticated user automatically
+        $this->assertTrue(Gate::allows('viewPulse'));
     }
 
     /**
@@ -87,8 +87,9 @@ class PulseAccessTest extends TestCase
 
         $this->actingAs($staff);
 
-        // Test the gate directly
-        $this->assertFalse(Gate::allows('viewPulse', $staff));
+        // Test the gate directly - gate receives authenticated user automatically
+        // In testing environment, the gate should deny access for staff
+        $this->assertFalse(Gate::allows('viewPulse'));
     }
 
     /**
@@ -106,8 +107,8 @@ class PulseAccessTest extends TestCase
 
         $this->actingAs($approver);
 
-        // Test the gate directly
-        $this->assertFalse(Gate::allows('viewPulse', $approver));
+        // Test the gate directly - gate receives authenticated user automatically
+        $this->assertFalse(Gate::allows('viewPulse'));
     }
 
     /**
@@ -117,8 +118,8 @@ class PulseAccessTest extends TestCase
     #[Test]
     public function guest_cannot_access_pulse(): void
     {
-        // Test the gate directly with null user
-        $this->assertFalse(Gate::allows('viewPulse', null));
+        // Test the gate directly - no authenticated user means null is passed
+        $this->assertFalse(Gate::allows('viewPulse'));
     }
 
     /**

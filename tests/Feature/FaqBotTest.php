@@ -20,7 +20,7 @@ class FaqBotTest extends TestCase
         Livewire::test(FaqBot::class)
             ->assertStatus(200)
             ->assertSee('FAQ Bot AI')
-            ->assertSee('Tanya soalan anda');
+            ->assertSee('Taip soalan anda');
     }
 
     #[Test]

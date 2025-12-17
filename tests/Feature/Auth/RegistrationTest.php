@@ -32,7 +32,9 @@ class RegistrationTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSeeVolt('pages.auth.register');
+            ->assertSee('Daftar')  // Check for registration form content in Bahasa Melayu
+            ->assertSee('E-mel')
+            ->assertSee('Kata Laluan');
     }
 
     #[Test]

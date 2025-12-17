@@ -312,8 +312,9 @@ class AuthenticationSecurityTest extends TestCase
 
         $sessionId = Session::getId();
 
-        // Logout
-        $this->post(route('logout'));
+        // Logout with CSRF token
+        $this->withSession(['_token' => 'test-token'])
+            ->post(route('logout'), ['_token' => 'test-token']);
 
         // Session ID should be regenerated
         $this->assertNotEquals($sessionId, Session::getId());
