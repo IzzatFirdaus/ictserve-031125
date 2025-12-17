@@ -200,7 +200,7 @@ class AuditsTable
             ->toolbarActions([
                 Action::make('export')
                     ->label('Eksport Log Audit')
-                    ->icon(Heroicon::OutlinedArrowDownTray->value)
+                    ->icon('heroicon-o-arrow-down-tray')
                     ->color(Color::Gray)
                     ->form([
                         \Filament\Forms\Components\Select::make('format')
