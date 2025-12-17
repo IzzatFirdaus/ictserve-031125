@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use App\Broadcasting\ChannelRegistrar;
 use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
-| Broadcast Channels - True Hybrid Architecture v3.5.0
+| Broadcast Channels - ICTServe v3.6.0 Laravel Reverb Integration
 |--------------------------------------------------------------------------
 |
 | This file defines the authorization callbacks for private and presence
@@ -21,22 +21,16 @@ use Illuminate\Support\Facades\Hash;
 | - Guests: Listen to private-ticket.{uuid} or private-loan.{uuid}
 |
 | @see D16_BROADCASTING_SETUP.md - WebSocket configuration
-| @see Requirements 8.1, 8.2 - Real-time notifications
+| @see Requirements 6.1, 6.2, 6.3, 8.1, 8.2 - Real-time notifications
 |
 */
-
-$channels = app()->bound(ChannelRegistrar::class)
-    ? app(ChannelRegistrar::class)
-    : new ChannelRegistrar;
-
-app()->instance(ChannelRegistrar::class, $channels);
 
 /**
  * Private user channel for authenticated users
  *
  * @see D03 SRS-FR-008, D04 §5.3 (Requirements 6.1, 6.2, 8.1)
  */
-$channels->channel('user.{userId}', function (User $user, string $userId): bool {
+Broadcast::channel('user.{userId}', function (User $user, string $userId): bool {
     return (int) $user->id === (int) $userId;
 });
 
@@ -45,8 +39,8 @@ $channels->channel('user.{userId}', function (User $user, string $userId): bool 
  *
  * @see Requirements 8.1, 8.2 - High-priority ticket broadcast, SLA breach notification
  */
-$channels->channel('admin.notifications', function (User $user): bool {
-    return in_array($user->role, ['admin', 'superuser'], true);
+Broadcast::channel('admin.notifications', function (User $user): bool {
+    return $user->hasAdminAccess();
 });
 
 /**
@@ -55,7 +49,7 @@ $channels->channel('admin.notifications', function (User $user): bool {
  * @see D16_BROADCASTING_SETUP.md §6.1 - Hybrid channel authorization
  * @see Requirements 2.1, 2.3 - Status checking and notifications
  */
-$channels->channel('ticket.{uuid}', function (?User $user, string $uuid): bool {
+Broadcast::channel('ticket.{uuid}', function (?User $user, string $uuid): bool {
     $ticket = HelpdeskTicket::where('uuid', $uuid)->first();
 
     if (! $ticket) {
@@ -69,7 +63,7 @@ $channels->channel('ticket.{uuid}', function (?User $user, string $uuid): bool {
         }
     }
 
-    if ($user && $user->can('view', $ticket)) {
+    if ($user?->can('view', $ticket)) {
         return true;
     }
 
@@ -82,7 +76,7 @@ $channels->channel('ticket.{uuid}', function (?User $user, string $uuid): bool {
  * @see D16_BROADCASTING_SETUP.md §6.1 - Hybrid channel authorization
  * @see Requirements 4.5, 8.3 - Loan notifications and overdue reminders
  */
-$channels->channel('loan.{uuid}', function (?User $user, string $uuid): bool {
+Broadcast::channel('loan.{uuid}', function (?User $user, string $uuid): bool {
     $loan = LoanApplication::where('uuid', $uuid)->first();
 
     if (! $loan) {
@@ -96,7 +90,7 @@ $channels->channel('loan.{uuid}', function (?User $user, string $uuid): bool {
         }
     }
 
-    if ($user && $user->can('view', $loan)) {
+    if ($user?->can('view', $loan)) {
         return true;
     }
 
@@ -108,7 +102,7 @@ $channels->channel('loan.{uuid}', function (?User $user, string $uuid): bool {
  *
  * @see D03 SRS-FR-008, D04 §5.3 (Requirements 7.4)
  */
-$channels->channel('submission.{type}.{id}', function (User $user, string $type, string $id): bool {
+Broadcast::channel('submission.{type}.{id}', function (User $user, string $type, string $id): bool {
     $submissionId = (int) $id;
 
     return match ($type) {
@@ -123,7 +117,7 @@ $channels->channel('submission.{type}.{id}', function (User $user, string $type,
  *
  * @see D03 SRS-FR-018.3, D04 §5.3
  */
-$channels->channel('asset.{id}', function (User $user, string $id): bool {
+Broadcast::channel('asset.{id}', function (User $user, string $id): bool {
     $asset = Asset::find((int) $id);
 
     return $asset && $user->can('view', $asset);
@@ -148,8 +142,8 @@ $channels->channel('asset.{id}', function (User $user, string $id): bool {
  * @see Requirements 11.1, 11.2 - AI processing notifications
  * @see D16 Broadcasting Setup v3.6.0
  */
-$channels->channel('ai-status', function (User $user): bool {
-    return in_array($user->role, ['admin', 'superuser'], true);
+Broadcast::channel('ai-status', function (User $user): bool {
+    return $user->hasAdminAccess();
 });
 
 /**
@@ -158,8 +152,8 @@ $channels->channel('ai-status', function (User $user): bool {
  * @see Requirements 8.4 - Graceful degradation notifications
  * @see D11 Technical Design v3.6.0
  */
-$channels->channel('ai-alerts', function (User $user): bool {
-    return in_array($user->role, ['admin', 'superuser'], true);
+Broadcast::channel('ai-alerts', function (User $user): bool {
+    return $user->hasAdminAccess();
 });
 
 /**
@@ -168,8 +162,8 @@ $channels->channel('ai-alerts', function (User $user): bool {
  * @see Requirements 8.7 - Performance monitoring dashboard
  * @see Laravel Pulse integration
  */
-$channels->channel('ai-performance', function (User $user): bool {
-    return in_array($user->role, ['admin', 'superuser'], true);
+Broadcast::channel('ai-performance', function (User $user): bool {
+    return $user->hasAdminAccess();
 });
 
 /**
@@ -178,7 +172,7 @@ $channels->channel('ai-performance', function (User $user): bool {
  * @see Requirements 3.4, 3.6 - Email-based approval workflow
  * @see D00 Four-tier role system v3.6.0
  */
-$channels->channel('ai-approvals', function (User $user): bool {
+Broadcast::channel('ai-approvals', function (User $user): bool {
     // Approver (Grade 41+), Admin, and Superuser can receive approval notifications
-    return in_array($user->role, ['approver', 'admin', 'superuser'], true);
+    return $user->canApprove();
 });
