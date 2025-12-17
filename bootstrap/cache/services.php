@@ -74,7 +74,8 @@
     70 => 'App\\Providers\\RecaptchaServiceProvider',
     71 => 'App\\Providers\\ClamavServiceProvider',
     72 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    73 => 'Laravel\\Boost\\BoostServiceProvider',
+    73 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    74 => 'Laravel\\Boost\\BoostServiceProvider',
   ),
   'eager' => 
   array (
@@ -133,7 +134,8 @@
     52 => 'App\\Providers\\RecaptchaServiceProvider',
     53 => 'App\\Providers\\ClamavServiceProvider',
     54 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    55 => 'Laravel\\Boost\\BoostServiceProvider',
+    55 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    56 => 'Laravel\\Boost\\BoostServiceProvider',
   ),
   'deferred' => 
   array (
