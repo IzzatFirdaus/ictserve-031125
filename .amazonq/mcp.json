@@ -124,23 +124,6 @@
         "tinker"
       ]
     },
-    "deepl": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "deepl-mcp-server"
-      ],
-      "env": {
-        "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
-      },
-      "disabled": true,
-      "autoApprove": [
-        "get_source_languages",
-        "get_target_languages",
-        "translate_text",
-        "rephrase_text"
-      ]
-    },
     "github": {
       "command": "npx",
       "args": [
