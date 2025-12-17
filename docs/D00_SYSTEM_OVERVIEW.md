@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**  
 **Versi:** 3.6.1 (SemVer)  
-**Tarikh Kemaskini:** 13 Disember 2025  
+**Tarikh Kemaskini:** 17 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -15,7 +15,7 @@
 | Atribut              | Nilai                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------- |
 | **Versi**            | 3.6.1                                                                                       |
-| **Tarikh Kemaskini** | 13 Disember 2025                                                                            |
+| **Tarikh Kemaskini** | 17 Disember 2025                                                                            |
 | **Status**           | Aktif                                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
 | **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
@@ -29,7 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                | Penulis                 |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 14 Disember 2025 | **Cloud Hybrid AI Integration**: Kemaskini §3.2 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah model routing pintar, streaming responses, web-augmented responses, conversation management. Kemaskini §7 dengan AI Assistant comprehensive features dan Asset Management lifecycle. Cross-reference D18 v1.0.0. | Pasukan Pembangunan BPM |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. **Cloud Hybrid AI Integration**: Kemaskini §3.2 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah model routing pintar, streaming responses, web-augmented responses, conversation management. Kemaskini §7 dengan AI Assistant comprehensive features dan Asset Management lifecycle. Cross-reference D18 v1.0.1. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | **Bahasa Melayu sahaja untuk antara muka pengguna**: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Dokumentasi D00-D17 dikemaskini. Rujuk D15 v3.6.0 untuk butiran penuh. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0 (performance monitoring untuk admin/superuser), Laravel Sanctum v4.0 (API token authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen untuk @motac.gov.my). Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases.                        | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara.                                                                | Pasukan Pembangunan BPM |
@@ -37,7 +37,7 @@
 | 3.3.0 | 29 November 2025 | Penyelarasan versi dengan D04 v3.3.0 dan D05 v3.3.0: standardisasi dokumentasi guest-first architecture, token-based workflows, dan teknologi stack terkini. Kemaskini rujukan Playwright 1.56.1.                                                                                                                                        | Pasukan Pembangunan BPM |
 | 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Tailwind CSS 4.1.17, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penambahbaikan format jadual dan pematuhan markdownlint.                                                                     | Pasukan Pembangunan BPM |
 | 3.1.0 | 29 November 2025 | Kemaskini versi teknologi: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17. Penambahan Laravel MCP 0.3.4, Laravel Reverb 1.6.2. Kemaskini seni bina dengan Docker support.                                                                                                               | Pasukan Pembangunan BPM |
-| 3.0.0 | 31 Oktober 2025  | Peralihan penuh kepada seni bina dalaman (internal-only): portal staf MOTAC berasaskan Laravel 12 dengan Login (Breeze/Jetstream), kelulusan dalam sistem (role-based), Filament v4 untuk pentadbiran, dan pematuhan WCAG 2.2 AA. Rujukan silang D02, D03, D04, D09, D11, D12–D14, `helpdesk_form_to_model.md`, `loan_form_to_model.md`. | Pasukan Pembangunan BPM |
+| 3.0.0 | 31 Oktober 2025  | Peralihan penuh kepada seni bina dalaman (internal-only): portal staf MOTAC berasaskan Laravel 12 dengan Login, kelulusan dalam sistem (role-based), Filament v4 untuk pentadbiran, dan pematuhan WCAG 2.2 AA. Rujukan silang D02, D03, D04, D09, D11, D12–D14. | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                                                                   | Pasukan BPM             |
 | 1.0.0 | September 2025   | Versi awal dokumentasi sistem                                                                                                                                                                                                                                                                                                            | Pasukan BPM             |
 
@@ -62,14 +62,12 @@
 - **[D15_LANGUAGE_MS_EN.md]** - Language Implementation (Bahasa Melayu sahaja v3.6.0)
 - **[D16_BROADCASTING_SETUP.md]** - Real-time Broadcasting & WebSocket Setup
 - **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue Management & Background Jobs
-- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.0)
-- **docs/helpdesk_form_to_model.md**
-- **docs/loan_form_to_model.md**
-- **docs/frontend/accessibility-guidelines.md**
-- **docs/frontend/color-contrast-accessibility.md**
-- **docs/frontend/core-web-vitals-testing-guide.md**
-- **docs/performance-optimization-report.md**
-- **docs/frontend/filament-admin-interface-compliance.md**
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.1)
+- **Rujukan implementasi Helpdesk (kod):** `app/Livewire/Helpdesk/TicketForm.php`, `database/migrations/2025_11_03_043924_create_helpdesk_tickets_table.php`
+- **Rujukan implementasi Pinjaman Aset (kod):** `app/Livewire/Forms/LoanApplicationForm.php`, `database/migrations/2025_11_03_043935_create_loan_applications_table.php`
+- **Aksesibiliti (WCAG 2.2 AA):** `docs/D12_UI_UX_DESIGN_GUIDE.md`, `docs/D14_UI_UX_STYLE_GUIDE.md`, `tests/e2e/accessibility.comprehensive.spec.ts`, `tests/e2e/ACCESSIBILITY_TEST_RESULTS.md`
+- **Prestasi (CWV/Lighthouse):** `tests/e2e/performance/core-web-vitals.spec.ts`, `tests/e2e/performance/lighthouse-audit.spec.ts`, `docs/reference/performance-optimization-guide.md`
+- **Pematuhan panel Filament (UI/komponen):** `docs/reference/FILAMENT_UPDATE_STATUS.md`, `tests/e2e/filament.components.debug.spec.ts`
 
 ---
 
@@ -90,9 +88,9 @@ Modul helpdesk digunakan oleh staf MOTAC dengan pilihan log masuk (untuk Dashboa
 - **Borang Hybrid WCAG 2.2 AA**  
   Livewire v3 mengekalkan borang bertahap (progressive disclosure) dengan pemeriksaan masa nyata, sasaran sentuh yang sesuai, dan fokus visual mengikut D12–D14.
 - **Pilihan Akses Pengguna**  
-  Staf boleh log masuk (user_id auto-fill) ATAU gunakan borang tetamu (manual input). Nullable user_id FK dalam helpdesk_tickets (rujuk `helpdesk_form_to_model.md`).
+  Staf boleh log masuk (user_id auto-fill) ATAU gunakan borang tetamu (manual input). Nullable user_id FK dalam helpdesk_tickets (rujuk `app/Livewire/Helpdesk/TicketForm.php`, `database/migrations/2025_11_03_043924_create_helpdesk_tickets_table.php`).
 - **Lampiran & Bukti**  
-  Sehingga 5 fail (gambar, PDF) disokong, dengan penukaran automatik kepada WebP apabila sesuai (rujuk `image-optimization-implementation.md`).
+  Sehingga 5 fail (gambar, PDF) disokong, dengan penukaran automatik kepada WebP apabila sesuai (rujuk `app/Services/ImageOptimizationService.php`).
 - **Notifikasi E-mel Automatik**  
   Tetamu menerima pengesahan, manakala `admin` menerima ping melalui queue. Status tiket diterjemahkan kepada e-mel triage & SLA (rujuk D11 §6).
 - **Laluan Penyelesaian (Resolution Paths)**  
@@ -118,7 +116,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 ### 2.1. Fungsi Utama Asset Loan
 
 - **Borang Permohonan Hybrid**  
-  Staf boleh log masuk (auto-fill) atau gunakan borang tetamu. Validasi stok dan konflik tarikh dilakukan masa nyata. Nullable user_id FK dalam loan_applications (rujuk `loan_form_to_model.md`).
+  Staf boleh log masuk (auto-fill) atau gunakan borang tetamu. Validasi stok dan konflik tarikh dilakukan masa nyata. Nullable user_id FK dalam loan_applications (rujuk `app/Livewire/Forms/LoanApplicationForm.php`, `database/migrations/2025_11_03_043935_create_loan_applications_table.php`).
 - **Kelulusan Melalui Pautan E-mel**  
   Sistem menjana permintaan kelulusan untuk Ketua Bahagian (≥ Gred 41) menggunakan token bertanda masa. Pengesahan dibuat melalui klik pautan yang mengesahkan e-mel, gred, dan keputusan (APPROVE / REJECT) tanpa log masuk.
 - **Pengurusan Kitaran Hidup Aset**  
@@ -152,7 +150,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 ### 3.2. Integrasi AI & Automasi (v3.6.1) - Cloud Hybrid Architecture
 
-**Cloud Hybrid AI Integration** - Sistem ICTServe melaksanakan **True Hybrid AI Architecture** yang menggabungkan Ollama (local LLM) dengan AWS Bedrock (cloud AI) untuk memberikan pengalaman AI yang optimum dengan penghalaan pintar berdasarkan jenis pertanyaan. Rujuk **D18 v1.0.0** untuk dokumentasi teknikal penuh.
+**Cloud Hybrid AI Integration** - Sistem ICTServe melaksanakan **True Hybrid AI Architecture** yang menggabungkan Ollama (local LLM) dengan AWS Bedrock (cloud AI) untuk memberikan pengalaman AI yang optimum dengan penghalaan pintar berdasarkan jenis pertanyaan. Rujuk **D18 v1.0.1** untuk dokumentasi teknikal penuh.
 
 #### 3.2.1. Seni Bina Hibrid AI (Hybrid AI Architecture)
 
@@ -213,7 +211,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **Conversation Analytics**: Usage patterns dan performance insights
 - **Health Monitoring**: Multi-system status (Ollama + Bedrock + DuckDuckGo)
 
-**Technical Architecture** (D18 v1.0.0):
+**Technical Architecture** (D18 v1.0.1):
 
 - **Local**: Ollama server (localhost:11434) untuk FAQ dan data sovereignty
 - **Cloud**: AWS Bedrock (us-east-1) untuk complex reasoning dan multimodal tasks
@@ -222,7 +220,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **API**: `/api/v1/bedrock/*` dan `/api/v1/ollama/*` (documented dalam D18)
 - **Integration**: MCP servers untuk external AI tool access
 - **Monitoring**: Laravel Pulse + Telescope + health checks untuk multi-system status
-- **Queue**: Laravel Horizon untuk AI job processing (document ingestion, embeddings, auto-reply)
+- **Queue**: Laravel Queue (Redis) untuk AI job processing (document ingestion, embeddings, auto-reply). **Laravel Horizon tidak dipasang** dalam repo v3.6.1.
 - **Real-time**: Laravel Reverb untuk AI notifications dan streaming responses
 
 ---
@@ -233,21 +231,27 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 **Stack Teknologi Terkini:**
 
-- **Backend Framework**: Laravel 12.40.1 (PHP 8.2.12)
-- **Frontend Reactive**: Livewire 3.7.0 + Volt 1.10.1
+- **Backend Framework**: Laravel 12.42.0 (PHP 8.2.12)
+- **Frontend Reactive**: Livewire 3.7.1 + Volt 1.10.1
 - **Admin Panel**: Filament 4.1.10
 - **JavaScript Framework**: Alpine.js 3 (included with Livewire)
 - **CSS Framework**: Tailwind CSS 4.1.17
-- **Real-time**: Laravel Reverb 1.6.2 + Laravel Echo 2.2.6
-- **Testing**: PHPUnit 11.5.44, Playwright 1.56.1 (E2E)
-- **Code Quality**: Laravel Pint 1.26.0, Larastan 3.8.0
+- **Real-time**: Laravel Reverb 1.6.3 + Laravel Echo 2.2.6
+- **Performance Monitoring**: Laravel Pulse 1.4.6
+- **API Authentication**: Laravel Sanctum 4.2.1
+- **OAuth Integration**: Laravel Socialite 5.24.0
+- **MCP Server**: Laravel MCP 0.3.4
+- **CLI Prompts**: Laravel Prompts 0.3.8
+- **Debugging**: Laravel Telescope 5.16.0
+- **Testing**: PHPUnit 11.5.46, Playwright 1.56.1 (E2E)
+- **Code Quality**: Laravel Pint 1.26.0, Larastan 3.8.1
 
 **Komponen Utama:**
 
 - **Frontend Tetamu**  
   Laravel 12 + Livewire v3 + Volt dengan layout `resources/views/layouts/guest.blade.php`. Tiada modul log masuk awam; penyimpanan status menggunakan Session + Cookie.
 - **Backend Filament v4**  
-  Panel pentadbiran tunggal (`/admin`) dengan SSO larangan; hanya `admin` & `superuser` (rujuk D11 §2). Peranan sistem diurus menggunakan Spatie Permission untuk tiga peranan (`staff`, `admin`, `superuser`) bersama Laravel Policies.
+  Panel pentadbiran tunggal (`/admin`) dengan SSO larangan; hanya `admin` & `superuser` (rujuk D11 §2). Peranan sistem diurus menggunakan Spatie Permission untuk **empat peranan** (`staff`, `approver`, `admin`, `superuser`) bersama Laravel Policies.
 - **Servis Notifikasi & Kelulusan**  
   Queue Laravel mengendalikan e-mel, SMS (melalui gateway BPM), dan pautan kelulusan bertanda tangan (JWT + hashed token). Lihat D04 §4.2 serta D11 §6.
 - **Audit & Logging (Dual System)**
@@ -255,24 +259,24 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
   - `spatie/laravel-activitylog` v4.x merekod aktiviti pengguna untuk dashboard dan laporan operasi
   - Laravel Telescope v5.x untuk debugging dan monitoring (akses `superuser` sahaja, tiada sekatan)
 - **Performance Monitoring (Laravel Pulse)**
-  - Laravel Pulse v1.3.0 menyediakan dashboard prestasi masa nyata untuk `admin` dan `superuser`
+  - Laravel Pulse v1.4.6 menyediakan dashboard prestasi masa nyata untuk `admin` dan `superuser`
   - Pemantauan slow queries (>500ms threshold), queue job metrics, request response times
   - Server health metrics (CPU, memory, disk), cache hit/miss rates
   - Data retention 7 hari dengan automatic pruning
 - **API Authentication (Laravel Sanctum)**
-  - Laravel Sanctum v4.0 untuk token-based API authentication
+  - Laravel Sanctum v4.2.1 untuk token-based API authentication
   - Configurable abilities: `read:tickets`, `write:tickets`, `read:loans`, `write:loans`, `admin:all`
   - Token expiration management dan usage logging
   - Rate limiting 60 requests/minute untuk API endpoints
 - **Google Workspace SSO (Opsyen)**
-  - Laravel Socialite v5.x untuk OAuth 2.0 integration dengan Google Workspace
+  - Laravel Socialite v5.24.0 untuk OAuth 2.0 integration dengan Google Workspace
   - Domain validation: hanya `@motac.gov.my` dibenarkan
   - Auto-account creation untuk pengguna baharu, account linking untuk pengguna sedia ada
   - Audit logging untuk semua OAuth events
 - **Keselamatan**  
   CSRF untuk borang tetamu, rate limiting, reCAPTCHA Enterprise (mode invisible) untuk mencegah spam, sanitasi input ketat bagi lampiran, 2FA berasaskan TOTP untuk akaun `superuser` pada panel Filament, serta imbasan virus fail menggunakan ClamAV sebelum disimpan.
 - **Real-time Communication (D16)**  
-  Laravel Reverb 1.6.2 (WebSocket server) untuk real-time updates dengan dual channel strategy: `private-user.{id}` untuk authenticated users dan `private-ticket.{uuid}`/`private-loan.{uuid}` untuk guests. Laravel Echo 2.2.6 untuk client-side event handling. Sokongan AI streaming events untuk real-time chat responses (rujuk D16 v3.6.0).
+  Laravel Reverb 1.6.3 (WebSocket server) untuk real-time updates dengan dual channel strategy: `private-user.{id}` untuk authenticated users dan `private-ticket.{uuid}`/`private-loan.{uuid}` untuk guests. Laravel Echo 2.2.6 untuk client-side event handling. Sokongan notifikasi AI (status/alert/performance/approval) melalui channel seperti `private-ai-status`, `private-ai-alerts`, `private-ai-performance`, `private-ai-approvals` (rujuk D16 v3.6.1).
 - **Laravel Telescope**  
   Alat debugging dan monitoring untuk `superuser` sahaja. Akses penuh tanpa sekatan kepada semua ciri: requests, commands, jobs, exceptions, logs, queries, models, events, mail, notifications, cache, dan Redis.
 - **Pendaftaran Sendiri (Self-Registration)**  
@@ -280,7 +284,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **Google Workspace SSO (Opsyen)**  
   Staf MOTAC boleh log masuk menggunakan akaun Google Workspace `@motac.gov.my` sebagai alternatif kepada Laravel Breeze. Sistem akan auto-create akaun baharu atau link ke akaun sedia ada.
 - **Queue Management (D17)**  
-  Laravel queue system dengan Redis backend untuk pemprosesan asinkron. Sokongan untuk 17 jenis pekerjaan termasuk email notifications, AI processing (12 AI-specific jobs), API token management, dan Google SSO events. Queue workers diurus menggunakan Supervisor dengan 3 priority levels: ai-high, ai-medium, ai-low (rujuk D17 v3.6.0).
+  Laravel Queue dengan Redis backend untuk pemprosesan asinkron (Laravel Horizon tidak dipasang). Queue name yang digunakan oleh job sebenar termasuk `default`, `notifications`, `emails`, `digests`, `documents`, `embeddings`, dan `auto-reply`. Rujuk D17 v3.6.1 untuk arahan worker dan katalog job.
 
 ### 4.2. Database Design
 
@@ -291,7 +295,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **`User`** (`App\Models\User`)  
   Menyimpan akaun `staff`, `admin` dan `superuser`. Medan `role` diset `staff`, `admin` atau `superuser`. Staf MOTAC yang log masuk ke My Dashboard direkod sebagai `staff`, manakala tetamu kekal tanpa akaun (submissions dengan `user_id` = NULL).
 - **`HelpdeskTicket`** (`App\Models\HelpdeskTicket`)  
-  Menyimpan data borang tetamu; medan `submitter_name`, `submitter_email`, `submitter_phone` menggantikan `user_id`.
+  Menyimpan data tiket; `user_id` adalah nullable. Data tetamu disimpan dalam kolum `guest_*` (contoh `guest_email`) dan diakses di aplikasi melalui accessor `submitter_*` untuk konsistensi UI/komponen.
 - **`HelpdeskComment`** (`App\Models\HelpdeskComment`)  
   Menyimpan komen dalaman untuk tiket helpdesk.
 - **`LoanApplication`** (`App\Models\LoanApplication`)  
@@ -338,7 +342,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 | Helpdesk Guest Form        | Borang aduan, pengurusan SLA, lampiran, e-mel tetamu                          | `admin` memproses tiket melalui Filament                                                                 |
 | Asset Loan Guest Form      | Borang pinjaman, kelulusan e-mel, rekod transaksi                             | `admin` mengurus permohonan & aset                                                                       |
 | My Dashboard (Portal Staf) | Paparan sejarah tiket/permohonan, profil, dan notifikasi untuk staf berdaftar | `staff` (role='staff') melalui guard `web`; data diambil dari users, helpdesk_tickets, loan_applications |
-| AI Assistant (Cloud Hybrid) | Cloud Hybrid AI dengan model routing pintar, streaming responses, web-augmented answers, conversation management, document analysis, auto-reply generation | Ollama + AWS Bedrock; `admin` urus model configuration, conversation analytics, FAQ management, health monitoring melalui Filament (D18 v1.0.0) |
+| AI Assistant (Cloud Hybrid) | Cloud Hybrid AI dengan model routing pintar, streaming responses, web-augmented answers, conversation management, document analysis, auto-reply generation | Ollama + AWS Bedrock; `admin` urus model configuration, conversation analytics, FAQ management, health monitoring melalui Filament (D18 v1.0.1) |
 | Asset Management           | Pengurusan lifecycle aset: registration, tracking, maintenance, transfers     | `admin` urus aset inventory, preventive maintenance schedules, inter-department transfers                |
 | Filament Admin             | Dashboard operasi, laporan gabungan, pengurusan aset                          | `admin` & `superuser` sahaja                                                                             |
 | Sistem Audit & Notifikasi  | Queue e-mel/SMS, log audit, pemantauan                                        | `superuser` memantau, `admin` bertindak                                                                  |
@@ -359,12 +363,12 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 ### 9.1. Piawaian UI/UX
 
-- Mematuhi D12-D14, `accessibility-guidelines.md`, dan `color-contrast-accessibility.md`.
+- Mematuhi D12–D14 serta bukti ujian aksesibiliti (rujuk `tests/e2e/accessibility.comprehensive.spec.ts` dan `tests/e2e/ACCESSIBILITY_TEST_RESULTS.md`).
 - Palet baharu: Primary `#0056B3`, Secondary `#0B4D8F`, Success `#1B7C54`, Warning `#CC7700`, Danger `#B3002D`.
 - Inline focus ring 3px warna `#0B4D8F`, jarak minimum 16px.
-- Layout asas `guest.blade.php` menggunakan `aria` landmarks (`header`, `main`, `footer`, `nav`).
+- Layout asas `resources/views/layouts/guest.blade.php` menggunakan `aria` landmarks (`header`, `main`, `footer`, `nav`).
 - **Bahasa Melayu sahaja** (v3.6.0): Sistem menggunakan Bahasa Melayu secara eksklusif untuk semua antara muka pengguna. Language switcher telah dilumpuhkan dan semua komponen UI menggunakan `lang="ms"`. Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal sahaja. Komponen yang dilumpuhkan: `LanguageSwitcher`, `BilingualSupportService`, `SetLocale` middleware, `ictserve_locale` cookie (rujuk D15 v3.6.0).
-- Semua komponen diuji terhadap `accessibility-testing-checklist.md` dan pencapaian Lighthouse 90+ (rujuk `core-web-vitals-testing-guide.md`).
+- Semua komponen diuji melalui suite E2E aksesibiliti serta audit prestasi (rujuk `tests/e2e/accessibility.comprehensive.spec.ts`, `tests/e2e/performance/core-web-vitals.spec.ts`).
 
 ### 9.2. Ciri-ciri Utama
 
@@ -401,7 +405,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 **Laravel Reverb WebSocket Server:**
 
-- **Penyedia Utama**: Laravel Reverb 1.6.2 sebagai WebSocket server rasmi Laravel
+- **Penyedia Utama**: Laravel Reverb 1.6.3 sebagai WebSocket server rasmi Laravel
 - **Konfigurasi**: `BROADCAST_CONNECTION=reverb` dengan sokongan horizontal scaling via Redis
 - **Performance**: Dioptimumkan untuk 100+ concurrent connections dengan low latency
 - **Security**: Private channel authorization dengan token-based access untuk guests
@@ -490,36 +494,23 @@ if (window.ticketUuid && window.statusToken) {
 | `RetryFailedEmail` | Retry email gagal | Email-only retry mechanism |
 | `ExportSubmissionsJob` | Export data submissions | Authenticated users only |
 
-**True Hybrid Architecture Jobs (12 jobs):**
+**Job Sistem (berdasarkan `app/Jobs/`):**
 
-| Pekerjaan | Tujuan | Target Users |
-|-----------|---------|--------------|
-| `SendEmailVerification` | Email verification untuk self-registration | Self-registered staff |
-| `SendWelcomeEmail` | Welcome email selepas verification | Verified staff |
-| `SendAccountLinkedEmail` | Confirmation email untuk account linking | Staff yang link submissions |
-| `ProcessNotificationDigest` | Daily/weekly notification digest | Users dengan digest preference |
-| `ProcessApiTokenCreated` | API token creation notification | Sanctum token users |
-| `ProcessGoogleSsoLinked` | Google SSO linking notification | Google Workspace users |
-| `ProcessAccessoryCheckout` | Accessory checkout notification | Hybrid: Auth + Guest |
-| `ProcessResponsibleOfficer` | Responsible officer assignment | Authenticated users |
-| `PruneExpiredApiTokens` | Cleanup expired tokens | System maintenance |
-| `SyncGoogleWorkspaceAccounts` | Google account synchronization | System maintenance |
+| Pekerjaan | Queue | Timeout | Tujuan |
+|----------|-------|---------|--------|
+| `SendTicketNotification` | notifications | (worker) | Notifikasi tiket (created/assigned/status_updated) |
+| `SendLoanNotification` | notifications | (worker) | Notifikasi pinjaman aset |
+| `SendApprovalRequest` | emails | (worker) | E-mel kelulusan (signed URL/token) |
+| `ProcessNotificationDigest` | digests | (worker) | Ringkasan notifikasi (digest) |
+| `ExportSubmissionsJob` | default | 300s | Eksport submission |
 
-**AI Processing Jobs (12 jobs):**
+**AI/RAG Jobs (D18, berdasarkan `app/Jobs/`):**
 
-| Pekerjaan AI | Queue | Priority | Timeout | Tujuan |
-|--------------|-------|----------|---------|---------|
-| `ProcessAiConversation` | ai-high | High | 300s | Process AI conversations |
-| `ProcessAiStreamingResponse` | ai-high | High | 180s | Real-time streaming |
-| `ProcessAiWebSearch` | ai-medium | Medium | 120s | Web-augmented search |
-| `ProcessAiDocumentAnalysis` | ai-medium | Medium | 600s | Document analysis |
-| `ProcessAiFaqGeneration` | ai-low | Low | 60s | FAQ suggestions |
-| `ProcessAiModelFallback` | ai-high | High | 120s | Model fallback |
-| `ProcessAiUsageMetrics` | ai-low | Low | 60s | Usage metrics |
-| `ProcessAiEmbeddingGeneration` | ai-medium | Medium | 300s | Vector embeddings |
-| `ProcessAiCacheWarmup` | ai-low | Low | 180s | Cache warming |
-| `ProcessAiErrorRecovery` | ai-high | High | 60s | Error recovery |
-| `CleanupAiConversations` | default | Low | 300s | Conversation cleanup |
+| Pekerjaan AI | Queue | Timeout | Tujuan |
+|-------------|-------|---------|--------|
+| `DocumentIngestJob` | documents | 600s | Ingest dokumen untuk RAG |
+| `EmbeddingJob` | embeddings | 900s | Jana embeddings |
+| `AutoReplyGenerationJob` | auto-reply | 300s | Jana draf auto-reply |
 
 ### 11.3. Notifikasi Bergilir (Queued Notifications)
 
@@ -543,17 +534,15 @@ if (window.ticketUuid && window.statusToken) {
 ```ini
 [program:ictserve-queue]
 process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/ictserve/artisan queue:work redis --queue=default --sleep=3 --tries=3
+command=php /var/www/ictserve/artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --sleep=3 --tries=3 --timeout=1200
 autostart=true
 autorestart=true
 numprocs=2
 ```
 
-**AI-Specific Workers:**
+**Cadangan pemisahan worker (tanpa Horizon):**
 
-- **ai-high**: 3 processes untuk critical AI operations
-- **ai-medium**: 2 processes untuk standard AI tasks  
-- **ai-low**: 1 process untuk background AI maintenance
+- Asingkan worker “cepat” (`default,notifications,emails,digests`) dan worker “lama” (`documents,embeddings,auto-reply`) untuk stabiliti dan timeout (rujuk D17 v3.6.1).
 
 ---
 
@@ -576,11 +565,11 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 ## 13. Pematuhan Piawaian (Standards Compliance)
 
-- **WCAG 2.2 AA** – Lihat `accessibility-guidelines.md` & `color-contrast-accessibility.md`.
-- **Performance Optimisation** – `performance-optimization-report.md`, `core-web-vitals-testing-guide.md`.
+- **WCAG 2.2 AA** – Lihat `docs/D12_UI_UX_DESIGN_GUIDE.md`, `docs/D14_UI_UX_STYLE_GUIDE.md`, dan bukti ujian di `tests/e2e/ACCESSIBILITY_TEST_RESULTS.md`.
+- **Performance Optimisation** – Rujuk `docs/reference/performance-optimization-guide.md` serta ujian `tests/e2e/performance/core-web-vitals.spec.ts`.
 - **Security & Audit** – D09 (audit trail), D11 §8 (security design).
 - **Documentation Traceability** – D01 §9.3 memastikan semua perubahan direkod.
-- **MyGOV Digital Service Standards v2.1.0** – Bukti pematuhan disimpan dalam `filament-admin-interface-compliance.md` & `css-js-optimization-audit.md`.
+- **MyGOV Digital Service Standards v2.1.0** – Bukti pematuhan UI/komponen Filament dan audit prestasi dirujuk dalam `docs/reference/FILAMENT_UPDATE_STATUS.md` serta `docs/reference/performance-optimization-guide.md`.
 
 ---
 
@@ -623,7 +612,7 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 | **Admin**                | Pegawai BPM yang memproses tiket & permohonan melalui Filament.             |
 | **Superuser**            | Pegawai pengurusan BPM yang mentadbir konfigurasi, keselamatan, dan audit.  |
 | **Signed Approval Link** | Pautan e-mel ber-token yang membolehkan kelulusan tanpa log masuk.          |
-| **guest.blade.php**      | Layout utama untuk semua paparan tetamu.                                    |
+| `resources/views/layouts/guest.blade.php`      | Layout utama untuk semua paparan tetamu.                                    |
 | **Livewire**             | Full-stack framework untuk dynamic interfaces dengan server-side rendering. |
 | **Volt**                 | Single-file Livewire components dengan simplified syntax.                   |
 | **Filament**             | Server-Driven UI (SDUI) framework untuk admin panel.                        |
@@ -644,8 +633,8 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 | Teknologi         | Versi   | Tujuan                                |
 | ----------------- | ------- | ------------------------------------- |
 | PHP               | 8.2.12  | Backend programming language          |
-| Laravel           | 12.40.1 | Web application framework             |
-| Livewire          | 3.7.0   | Reactive components                   |
+| Laravel           | 12.42.0 | Web application framework             |
+| Livewire          | 3.7.1   | Reactive components                   |
 | Volt              | 1.10.1  | Single-file components                |
 | Filament          | 4.1.10  | Admin panel                           |
 | Alpine.js         | 3       | Lightweight JavaScript framework      |
@@ -653,20 +642,20 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 | Vite              | 7.0.7   | Asset bundler/build tool              |
 | Nginx             | 1.24    | Reverse proxy / web server            |
 | Redis             | 7.0     | Queue, cache, broadcasting backend    |
-| Laravel Reverb    | 1.6.2   | WebSocket server                      |
+| Laravel Reverb    | 1.6.3   | WebSocket server                      |
 | Laravel Echo      | 2.2.6   | Client-side event handling            |
 | Laravel Breeze    | 2.3.8   | Authentication scaffolding            |
 | Laravel Pint      | 1.26.0  | Code formatter (PSR-12)               |
-| Larastan          | 3.8.0   | Static analysis (PHPStan for Laravel) |
-| PHPUnit           | 11.5.44 | Testing framework                     |
+| Larastan          | 3.8.1   | Static analysis (PHPStan for Laravel) |
+| PHPUnit           | 11.5.46 | Testing framework                     |
 | Playwright        | 1.56.1  | End-to-end browser testing            |
 | axe-core          | 4.11.0  | Accessibility testing library         |
 | Laravel Auditing  | 14.x    | Model audit trail (owen-it)           |
 | Activity Log      | 4.x     | User activity logging (spatie)        |
 | Laravel Telescope | 5.x     | Debugging & monitoring (superuser)    |
-| Laravel Pulse     | 1.3.0   | Performance monitoring (admin/superuser) |
-| Laravel Sanctum   | 4.0     | API token authentication              |
-| Laravel Socialite | 5.x     | Google Workspace SSO (opsyen)         |
+| Laravel Pulse     | 1.4.6   | Performance monitoring (admin/superuser) |
+| Laravel Sanctum   | 4.2.1   | API token authentication              |
+| Laravel Socialite | 5.24.0  | Google Workspace SSO (opsyen)         |
 | Spatie Permission | 6.23    | Role-based access control             |
 | ClamAV            | -       | File upload virus scanning            |
 

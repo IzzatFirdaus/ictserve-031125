@@ -19,9 +19,7 @@
 | **Status**           | Aktif                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                                      |
 | **Pematuhi**         | ISO 9001, ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, MyGOV v2.1.0 |
-| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                                               |
-| **Pematuhi**         | ISO 9001, ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA, MyGOV Digital |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                   |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu                  |
 
 > Notis Penggunaan Dalaman: Panduan gaya ini adalah untuk aplikasi dalaman
 > MOTAC dan tidak digunakan untuk aplikasi awam.
@@ -32,11 +30,12 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                               | Penulis     |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal panduan gaya UI/UX                                                                                                                                                                                                           | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                  | Pasukan BPM |
 | 2.1.0 | 19 Oktober 2025  | Tambah Language Switcher row in §9.5 Component-Specific Accessibility table with cross-references                                                                                                                                       | Pasukan BPM |
 | 3.0.0 | 29 November 2025 | Major update: Tailwind CSS v4, Livewire v3.7, Filament v4.1, kemaskini komponen dan palet warna                                                                                                                                         | Pasukan BPM |
-| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Navbar dual state (Guest/Auth), Submission History table                                                                                                   | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (`resources/views/layouts/app.blade.php` vs `resources/views/layouts/guest.blade.php`), Navbar dual state (Guest/Auth), Submission History table                                                                                                   | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Registration form styling, email verification page styling, account linking prompt styling, notification preferences panel styling, API token management UI, Laravel Pulse dashboard styling. MyDS-aligned grid (12-8-4), shadow system, motion tokens. Navbar dengan butang "Daftar" dan Google SSO. Penyelarasan dengan D00-D13 v3.5.0. | Pasukan BPM |
 | 3.5.1 | 1 Disember 2025  | MyDS & MyGovEA Compliance Enhancement: Added MyDS token naming convention mapping (§4.1.1), MyDS Grid System official reference (§7.4), Icon System MyDS alignment documentation (§8.1). Enhanced colour palette with MyDS semantic token equivalents. | Pasukan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja (v3.6.0): Language switcher dilumpuhkan, Theme Switcher baru. Penyelarasan dengan D00-D15 v3.6.0. | Pasukan BPM |
@@ -797,7 +796,7 @@ button:hover {
 ### 14.1 Self-Registration Form Styling
 
 **Page**: `/register`
-**Layout**: `guest.blade.php`
+**Layout**: `resources/views/layouts/guest.blade.php`
 
 | Element                | Styling                                                    |
 | ---------------------- | ---------------------------------------------------------- |
@@ -824,7 +823,7 @@ button:hover {
 ### 14.2 Flexible Login Form Styling
 
 **Page**: `/login`
-**Layout**: `guest.blade.php`
+**Layout**: `resources/views/layouts/guest.blade.php`
 
 | Element              | Styling                                                |
 | -------------------- | ------------------------------------------------------ |
@@ -849,7 +848,7 @@ button:hover {
 ### 14.3 Email Verification Page Styling
 
 **Page**: `/verify-email`
-**Layout**: `guest.blade.php`
+**Layout**: `resources/views/layouts/guest.blade.php`
 
 | Element              | Styling                                              |
 | -------------------- | ---------------------------------------------------- |
@@ -1272,7 +1271,7 @@ Rujuk Seksyen 15 untuk contoh implementasi komponen.
 ### 19.7 FaqBot Widget Styling
 
 **Lokasi**: Borang Tetamu (Guest Forms), Portal Authenticated
-**Komponen**: `app/Livewire/FaqBotWidget.php`
+**Komponen**: `app/Livewire/Ollama/FaqBotWidget.php`
 
 | Element | Styling |
 | ------- | ------- |

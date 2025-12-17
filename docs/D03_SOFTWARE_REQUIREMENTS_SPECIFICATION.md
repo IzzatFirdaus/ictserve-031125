@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**  
 **Versi:** 3.6.1 (SemVer)  
-**Tarikh Kemaskini:** 13 Disember 2025  
+**Tarikh Kemaskini:** 17 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -15,7 +15,7 @@
 | Atribut              | Nilai                                                                                                      |
 | -------------------- | ---------------------------------------------------------------------------------------------------------- |
 | **Versi**            | 3.6.1                                                                                                      |
-| **Tarikh Kemaskini** | 13 Disember 2025                                                                                           |
+| **Tarikh Kemaskini** | 17 Disember 2025                                                                                           |
 | **Status**           | Aktif                                                                                                      |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                                 |
 | **Pematuhi**         | ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, MyGOV Digital Service Standards v2.1.0 |
@@ -29,7 +29,7 @@
 
 | Versi | Tarikh            | Perubahan                                                                                                                                                                                                                                                                                                                                                                                           | Penulis                 |
 | ----- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 14 Disember 2025  | **Cloud Hybrid AI Integration:** Kemaskini §5.9 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah SRS-AI-011 hingga SRS-AI-020 untuk model routing, streaming responses, web-augmented responses, conversation management. Kemaskini keperluan untuk modul Asset Management (§5.10-5.12) dan Laporan & Analitik (§5.13). Cross-reference D18 v1.0.0. Tambah keperluan MCP Server Integration (SRS-AI-016), Data Residency Compliance (SRS-AI-018), dan Emergency Procedures (SRS-AI-020). | Pasukan Pembangunan BPM |
+| 3.6.1 | 17 Disember 2025  | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. **Cloud Hybrid AI Integration:** Kemaskini §5.9 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah SRS-AI-011 hingga SRS-AI-020 untuk model routing, streaming responses, web-augmented responses, conversation management. Kemaskini keperluan untuk modul Asset Management (§5.10-5.12) dan Laporan & Analitik (§5.13). Cross-reference D18 v1.0.1. Tambah keperluan MCP Server Integration (SRS-AI-016), Data Residency Compliance (SRS-AI-018), dan Emergency Procedures (SRS-AI-020). | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025   | Bahasa Melayu sahaja untuk antara muka: Kemaskini SRS-HELP-001 borang dwibahasa→Bahasa Melayu sahaja. Kemaskini rujukan bahasa dwibahasa automatik→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                                                                                                                                                                                      | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025  | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara.                                                                                                                          | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025  | Hybrid Architecture: Staff boleh log masuk (Laravel Breeze - akaun pangkalan data) untuk Dashboard ATAU gunakan borang tetamu. Tambah SRS-AUTH-001 (Dual Entry), SRS-DATA-001 (Hybrid Association). Nullable user_id FK. Penyelarasan dengan D00/D02/D04 v3.4.0.                                                                                                                                  | Pasukan Pembangunan BPM |
@@ -44,10 +44,10 @@
 
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
-- **[D00_SYSTEM_OVERVIEW.md]** - System vision and governance (v3.5.0)
-- **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** - Development methodology (v3.5.0)
-- **[D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md]** - Business requirements (v3.5.0)
-- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Architecture and design (v3.5.0)
+- **[D00_SYSTEM_OVERVIEW.md]** - System vision and governance (v3.6.1)
+- **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** - Development methodology (v3.6.1)
+- **[D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md]** - Business requirements (v3.6.1)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Architecture and design (v3.6.1)
 - **[D05_DATA_MIGRATION_PLAN.md]** - Data migration strategy
 - **[D06_DATA_MIGRATION_SPECIFICATION.md]** - Migration specifications
 - **[D07_SYSTEM_INTEGRATION_PLAN.md]** - Integration planning
@@ -60,24 +60,24 @@
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.5.0)
 - **[D15_LANGUAGE_MS_EN.md]** - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
-- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
-- **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
-- **docs/loan_form_to_model.md** - Asset loan data mapping
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Pengurusan queue (Laravel Queue + Redis; Horizon tidak dipasang)
+- **Rujukan implementasi Helpdesk (kod):** `app/Livewire/Helpdesk/TicketForm.php`, `database/migrations/2025_11_03_043924_create_helpdesk_tickets_table.php`
+- **Rujukan implementasi Pinjaman Aset (kod):** `app/Livewire/Forms/LoanApplicationForm.php`, `database/migrations/2025_11_03_043935_create_loan_applications_table.php`
 - **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture documentation (v1.0.0)
-- **docs/api/ollama-ai-api-documentation.md** - Ollama AI Integration API specifications
-- **docs/api/ollama-ai-integration-api.md** - AI FAQ Bot, Auto-Reply, Document Analysis API
+- **docs/ollama/api/ollama-ai-api-documentation.md** - Ollama AI Integration API specifications
+- **docs/ollama/api/ollama-ai-integration-api.md** - AI FAQ Bot, Auto-Reply, Document Analysis API
 - **docs/ollama-laravel-README.md** - Ollama-Laravel package integration guide
-- **docs/deployment/ollama-ai-deployment-guide.md** - AI deployment and configuration guide
-- **docs/deployment/emergency-procedures.md** - AI system emergency procedures and recovery
-- **docs/frontend/accessibility-guidelines.md** - WCAG 2.2 AA compliance
-- **docs/frontend/core-web-vitals-testing-guide.md** - Performance testing
-- **docs/performance-optimization-report.md** - Performance audit results
+- **docs/ollama/deployment/ollama-ai-deployment-guide.md** - AI deployment and configuration guide
+- **docs/ollama/deployment/emergency-procedures.md** - AI system emergency procedures and recovery
+- **docs/frontend/QUICK_REFERENCE.md** - Ringkasan pematuhan WCAG/MyDS dan amalan UI
+- **docs/reference/performance-optimization-guide.md** - Panduan & hasil audit pengoptimuman prestasi
+- **docs/api/openapi.yaml** - OpenAPI spesifikasi (API sistem)
 
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-Dokumen ini mendefinisikan keperluan perisian terperinci untuk ICTServe sebagai sistem dalaman (internal-only) untuk warga kerja MOTAC. Ia meliputi keperluan fungsional, antara muka, data, keselamatan, dan kebolehcapaian untuk memastikan modul Helpdesk & Asset Loan beroperasi dengan log masuk pengguna dalaman dan kawalan pentadbiran melalui panel Filament 4.1.10. Sistem dibina menggunakan Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.2 untuk komunikasi masa nyata.
+Dokumen ini mendefinisikan keperluan perisian terperinci untuk ICTServe sebagai sistem dalaman (internal-only) untuk warga kerja MOTAC. Ia meliputi keperluan fungsional, antara muka, data, keselamatan, dan kebolehcapaian untuk memastikan modul Helpdesk & Asset Loan beroperasi dengan log masuk pengguna dalaman dan kawalan pentadbiran melalui panel Filament 4.1.10. Sistem dibina menggunakan Laravel 12.42.0, Livewire 3.7.1, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.3 untuk komunikasi masa nyata.
 
 ---
 
@@ -133,7 +133,7 @@ Di luar skop:
 | **Auto-Reply Template**        | AI-generated response templates for common ticket categories, reviewed and approved by admin before use.                   |
 | **Document Analysis**          | AI-powered document parsing for extracting key information from uploaded attachments (PDF, DOCX).                          |
 | **Asset Maintenance**          | Scheduled or reactive maintenance activities for ICT assets including preventive maintenance, repairs, and parts tracking. |
-| **Asset Transfer**             | Inter-department asset movement with approval workflow, custodian assignment, and physical tracking documentation.         |
+| **Asset Transfer**             | Pemindahan aset antara bahagian/unit (division) dengan aliran kelulusan, penetapan custodian, dan dokumentasi pemindahan. |
 | **Preventive Maintenance**     | Scheduled maintenance based on time intervals (monthly/quarterly/annually) to prevent equipment failure.                   |
 | **Corrective Maintenance**     | Reactive maintenance in response to reported issues or equipment malfunction. Includes troubleshooting and repairs.        |
 | **Asset Custodian**            | Department head responsible for assets under their custody. Accountable for asset condition and proper usage.              |
@@ -146,9 +146,9 @@ Di luar skop:
 
 ## 4. PERSEKITARAN SISTEM (System Environment)
 
-- **Platform:** Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Volt 1.10.1, Filament 4.1.10.
-- **Frontend:** Vite 7.0.7 + Tailwind CSS 4.1.17, Alpine.js 3, layout `guest.blade.php`, `@vite` bundling, responsive breakpoints (rujuk D13 §5).
-- **Real-time:** Laravel Reverb 1.6.2 (WebSocket server), Laravel Echo 2.2.6 (client).
+- **Platform:** Laravel 12.42.0, PHP 8.2.12, Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10.
+- **Frontend:** Vite 7.0.7 + Tailwind CSS 4.1.17, Alpine.js 3, layout `resources/views/layouts/guest.blade.php`, `@vite` bundling, responsive breakpoints (rujuk D13 §5).
+- **Real-time:** Laravel Reverb 1.6.3 (WebSocket server), Laravel Echo 2.2.6 (client).
 - **Backend:** PHP-FPM, queue (Redis), scheduled jobs (`artisan schedule:run`), Filament resources untuk operasi pentadbiran.
 - **Database:** MySQL 8 (utf8mb4), migrasi Laravel, audit tables (`activity_log`, `loan_audits`).
 - **Security Controls:** CSRF, rate limiting, reCAPTCHA Enterprise, signed routes, hashed tokens, encryption at rest untuk fail sensitif.
@@ -195,10 +195,10 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 | ID          | Keperluan             | Perincian                                                                                                                                                                           |
 | ----------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SRS-ADM-001 | Autentikasi Pentadbir | `admin`, `superuser`, dan `staff` wujud dalam jadual `users`. Guard Filament memerlukan 2FA (TOTP) bagi `superuser`. Staff boleh log masuk untuk My Dashboard.                      |
+| SRS-ADM-001 | Autentikasi Pentadbir | `staff`, `approver`, `admin`, dan `superuser` wujud dalam jadual `users`. Guard Filament memerlukan 2FA (TOTP) bagi `superuser`. Staff boleh log masuk untuk My Dashboard.       |
 | SRS-ADM-006 | My Dashboard (Staff)  | **NEW:** Authenticated staff akses My Dashboard: view submission history (helpdesk + loan), profile management, notification center (DB + Email), quick actions.                    |
-| SRS-ADM-002 | Kawalan Peranan       | `admin` mempunyai akses operasi; `superuser` mempunyai akses konfigurasi, audit, tetapan integrasi; `staff` mempunyai akses dashboard peribadi sahaja.                              |
-| SRS-ADM-003 | Dashboard             | Papar metrik SLA, backlog tiket, status aset, permohonan tertunggak, dan audit terkini menggunakan Filament 4.1.10 widgets dengan kemaskini real-time melalui Laravel Reverb 1.6.2. |
+| SRS-ADM-002 | Kawalan Peranan       | `admin` mempunyai akses operasi; `superuser` mempunyai akses konfigurasi, audit, tetapan integrasi; `approver` untuk kelulusan; `staff` untuk dashboard peribadi.                |
+| SRS-ADM-003 | Dashboard             | Papar metrik SLA, backlog tiket, status aset, permohonan tertunggak, dan audit terkini menggunakan Filament 4.1.10 widgets dengan kemaskini real-time melalui Laravel Reverb 1.6.3. |
 | SRS-ADM-004 | Pengurusan Kandungan  | `admin` boleh menyunting salinan borang (soalan bantu, tooltip) tanpa menyentuh kod.                                                                                                |
 | SRS-ADM-005 | Laporan               | Eksport CSV/PDF untuk statistik, pematuhan, dan audit.                                                                                                                              |
 | SRS-ADM-007 | Laravel Pulse         | **NEW:** `admin` dan `superuser` akses Laravel Pulse dashboard untuk monitor prestasi real-time: slow queries, queue jobs, server health, memory usage.                             |
@@ -325,12 +325,12 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 | ID            | Keperluan                    | Perincian                                                                                                                                                                                                           |
 | ------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SRS-TRANS-001 | Transfer Request             | Admin/Manager boleh initiate asset transfer antar bahagian atau lokasi. Transfer details: asset, dari/ke department, dari/ke location, alasan, expected date, approver (HOD level).                                |
+| SRS-TRANS-001 | Transfer Request             | Admin/Manager boleh initiate pemindahan aset antara bahagian/unit (division) atau lokasi. Implementasi jadual `asset_transfers` menyokong `from_user_id` (nullable) → `to_user_id`, `transfer_date`, lokasi, status, dan catatan. |
 | SRS-TRANS-002 | Transfer Approval Workflow   | Multi-level approval: Originating HOD (approve release) → Receiving HOD (approve acceptance). Email notifications dengan signed approval links. Timeline tracking untuk setiap approval stage.                     |
 | SRS-TRANS-003 | Physical Transfer Tracking   | Track physical movement: transfer initiated → asset packed → in transit → received → verified. GPS coordinates (optional) untuk asset location during transit. Photo evidence untuk handover.                      |
-| SRS-TRANS-004 | Custodian Assignment         | Auto-update asset custodian kepada receiving department head selepas transfer completed. Custodian accountability report: current assets under custody, value, last verification date.                             |
+| SRS-TRANS-004 | Custodian Assignment         | Custodian boleh ditentukan berdasarkan penerima (user) / konteks bahagian (division) selepas pemindahan selesai. Laporan akauntabiliti: aset di bawah jagaan, nilai, tarikh verifikasi terakhir.               |
 | SRS-TRANS-005 | Transfer Documentation       | Auto-generate transfer documentation: Transfer Order Form, Goods Received Note, Asset Handover Certificate. PDF export dengan digital signatures (approval timestamps). Archive untuk 7 tahun compliance.          |
-| SRS-TRANS-006 | Transfer History & Analytics | Dashboard untuk monitor transfer activities: pending transfers, completed transfers, transfer frequency by department, average transfer duration. Identify bottlenecks dan optimize approval workflows.            |
+| SRS-TRANS-006 | Transfer History & Analytics | Dashboard untuk monitor aktiviti pemindahan: pending transfers, completed transfers, kekerapan mengikut bahagian (division) atau penerima, purata tempoh. Kenal pasti bottleneck dan optimasi workflow.         |
 | SRS-TRANS-007 | Bulk Transfer                | Support bulk transfer operations untuk multiple assets dalam single request. CSV import untuk bulk transfer planning. Batch approval untuk reduce approval overhead.                                               |
 
 ### 5.13. Modul Laporan & Analitik (Reports & Analytics)
@@ -350,9 +350,9 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 ## 6. KEPERLUAN ANTARA MUKA (Interface Requirements)
 
-- **UI Web Tetamu:** Layout `guest.blade.php`, komponen Livewire, warna WCAG (Primary #0056B3, Secondary #0B4D8F).
+- **UI Web Tetamu:** Layout `resources/views/layouts/guest.blade.php`, komponen Livewire, warna WCAG (Primary #0056B3, Secondary #0B4D8F).
 - **UI Tetamu Kelulusan:** Halaman ringan memaparkan ringkasan permohonan dengan pilihan dua butang + input catatan.
-- **Filament Admin UI:** Tema tinggi kontras (rujuk `filament-admin-interface-compliance.md`).
+- **Filament Admin UI:** Tema tinggi kontras (rujuk `docs/reference/FILAMENT_UPDATE_STATUS.md`).
 - **Integrasi Pihak Ketiga:** JSON REST API untuk SMS gateway dan potensi webhook.
 - **Accessibility:** Semua komponen mematuhi `aria` semantics, `role`, `aria-live` untuk mesej status.
 
@@ -360,13 +360,13 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 ## 7. KEPERLUAN DATA (Data Requirements)
 
-- `users` menyimpan medan: nama, e-mel kerajaan, telefon, bahagian, gred, role (`admin`, `superuser`, atau `staff`), 2FA secret (opsyenal), preferences (`locale` untuk authenticated users), `department_id` (FK), `grade` (string). **Staff role** untuk authenticated users yang akses My Dashboard.
-- `helpdesk_tickets` menyimpan **nullable `user_id` FK (ON DELETE SET NULL)** + metadata tetamu (`submitter_name`, `submitter_email`, `submitter_phone`, `division_code`, `grade`), kategori, status, SLA, lampiran. **Index on `user_id`** for My Dashboard queries (WHERE user_id = Auth::id()).
+- `users` menyimpan medan: nama, e-mel kerajaan, telefon, peranan (`staff`, `approver`, `admin`, `superuser`), 2FA secret (opsyenal), `division_code` (string), `division_id` (FK → `divisions.id`, nullable), `grade_id` (FK → `grades.id`, nullable), `position_id` (FK → `positions.id`, nullable), serta pilihan UI (contoh: `theme_preference`). **Nota**: `locale` dikekalkan tetapi **sentiasa `ms`** (D15 v3.6.0+).
+- `helpdesk_tickets` menyimpan **nullable `user_id` FK (ON DELETE SET NULL)** + metadata tetamu (`guest_name`, `guest_email`, `guest_phone`, `guest_grade`, `guest_division`, `guest_staff_id`), konteks organisasi (`division_id`, `assigned_to_division`), kategori, status, SLA, dan lampiran. **Index pada `user_id`** untuk paparan My Dashboard (WHERE user_id = Auth::id()).
 - `loan_applications` menyimpan **nullable `user_id` FK (ON DELETE SET NULL)** + data tetamu, aset, tarikh pinjaman, tujuan, status, `approval_token`. **Index on `user_id`** for My Dashboard queries (WHERE user_id = Auth::id()).
 - `loan_approvals` menyimpan `approver_email`, `approver_grade`, `decision`, `decision_at`, `decision_ip` (hashed), catatan.
 - `status_tokens` menyimpan token unik untuk tetamu semak status.
 - `asset_maintenances` menyimpan maintenance records: asset_id, maintenance_type (preventive/corrective), status, scheduled_date, completed_date, technician, cost, notes, attachments.
-- `asset_transfers` menyimpan transfer records: asset_id, from_department_id, to_department_id, from_location, to_location, status, initiated_by, approved_by, completed_at, transfer_notes.
+- `asset_transfers` menyimpan rekod pemindahan aset: `asset_id`, `from_user_id` (nullable), `to_user_id`, `from_location`, `to_location`, `transfer_date`, `initiated_by`, `approved_by` (nullable), `status` (pending/approved/completed/cancelled), `notes`, dan `cancellation_reason` (nullable).
 - `faqs` menyimpan FAQ entries untuk AI bot: question, answer, category, priority, status (active/inactive), created_by, updated_by, usage_count (untuk analytics).
 - `auto_reply_templates` menyimpan AI-generated response templates: ticket_category_id, template_content, confidence_score, reviewed_by, approved_at, usage_count.
 - `message_logs` menyimpan AI conversation logs: user_id (nullable), session_id, query, response, model_name, confidence_score, response_time, created_at. Retention 90 hari.
@@ -492,7 +492,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 - DevOps pipeline menjalankan `vendor/bin/pint`, `vendor/bin/phpstan`, `php artisan test`, Lighthouse (CI).
 - Perubahan keperluan didokumentasi melalui D01 §9.3 (Change Request ID, impak, pemilik, pelan rollback).
-- QA melaksanakan ujian Livewire & penerimaan tetamu (rujuk `testing/user-acceptance-testing-guide.md` – bakal dikemas kini).
+- QA melaksanakan ujian Livewire & UAT bersama BPM/staf terpilih (rujuk `docs/D07_SYSTEM_INTEGRATION_PLAN.md` dan `docs/D08_SYSTEM_INTEGRATION_SPECIFICATION.md`).
 
 ---
 
@@ -573,7 +573,7 @@ ICTServe adopts Malaysia Government Design System (MYDS) guidelines sebagai best
 
 ## 13. GLOSARI & RUJUKAN (Glossary & References)
 
-Lihat D12-D14 untuk istilah UI/UX, `GLOSSARY.md` untuk istilah am (dikemas kini kepada True Hybrid Architecture).
+Lihat D12-D14 untuk istilah UI/UX, `docs/GLOSSARY.md` untuk istilah am (dikemas kini kepada True Hybrid Architecture).
 
 ---
 
@@ -581,8 +581,8 @@ Lihat D12-D14 untuk istilah UI/UX, `GLOSSARY.md` untuk istilah am (dikemas kini 
 
 ### 14.1. Borang Rujukan
 
-- `helpdesk_form_to_model.md`
-- `loan_form_to_model.md`
+- `app/Livewire/Helpdesk/TicketForm.php`
+- `app/Livewire/Forms/LoanApplicationForm.php`
 
 ### 14.2. Carta Alir & Diagram
 
@@ -591,12 +591,12 @@ Lihat D12-D14 untuk istilah UI/UX, `GLOSSARY.md` untuk istilah am (dikemas kini 
 
 ### 14.3. Dokumen Sokongan
 
-- `filament-admin-interface-compliance.md`
-- `accessibility-testing-checklist.md`
-- `core-web-vitals-testing-guide.md`
+- `docs/reference/FILAMENT_UPDATE_STATUS.md`
+- `tests/e2e/ACCESSIBILITY_TEST_RESULTS.md`
+- `tests/e2e/performance/core-web-vitals.spec.ts`
 
 ---
 
 ## 15. MATRIKS PEMETAAN KEPERLUAN (Requirements Traceability Matrix)
 
-RTM diselenggara dalam `docs/rtm/helpdesk_requirements_rtm.csv`, `docs/rtm/loan_requirements_rtm.csv`, dan `docs/rtm/coredata_requirements_rtm.csv`. Semua keperluan SRS versi 3.0.0 diberi prefix `SRS-3.x` dan dipetakan kepada SDD (D04), TDD (D11), serta kes ujian PHPUnit/Livewire. Pengurusan perubahan mematuhi D01 §9.3.
+RTM diselenggara dalam `docs/reference/rtm/helpdesk_requirements_rtm.csv`, `docs/reference/rtm/loan_requirements_rtm.csv`, dan `docs/reference/rtm/coredata_requirements_rtm.csv`. Semua keperluan SRS versi 3.0.0 diberi prefix `SRS-3.x` dan dipetakan kepada SDD (D04), TDD (D11), serta kes ujian PHPUnit/Livewire. Pengurusan perubahan mematuhi D01 §9.3.

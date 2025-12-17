@@ -20,7 +20,7 @@
 | Versi | Tarikh | Perubahan | Penulis |
 |-------|--------|-----------|---------|
 | 1.0.0 | 2025-12-14 | Dokumen asal D18 - Konsolidasi lengkap dokumentasi AI Chatbot termasuk API Reference, Deployment Guide, Emergency Procedures, dan pematuhan D00-D17 v3.6.0 | Pasukan Pembangunan BPM |
-| 1.0.1 | 2025-12-17 | Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D17 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+) | Pasukan Pembangunan BPM |
+| 1.0.1 | 2025-12-17 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D18 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+) | Pasukan Pembangunan BPM |
 
 ---
 
@@ -28,14 +28,14 @@
 
 | Dokumen | Penerangan | Versi |
 |---------|------------|-------|
-| [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) | Gambaran keseluruhan sistem dan tadbir urus | v3.6.0 |
-| [D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | Spesifikasi keperluan perisian | v3.6.0 |
-| [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) | Seni bina dan reka bentuk | v3.6.0 |
-| [D09_DATABASE_DOCUMENTATION.md](D09_DATABASE_DOCUMENTATION.md) | Skema pangkalan data dan dual audit | v3.6.0 |
-| [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) | Infrastruktur teknikal | v3.6.0 |
-| [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Penyetempatan bahasa (Bahasa Melayu sahaja) | v3.6.0 |
-| [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md) | Konfigurasi WebSocket (Laravel Reverb) | v3.6.0 |
-| [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) | Pengurusan queue (Laravel Horizon) | v3.6.0 |
+| [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) | Gambaran keseluruhan sistem dan tadbir urus | v3.6.1 |
+| [D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | Spesifikasi keperluan perisian | v3.6.1 |
+| [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) | Seni bina dan reka bentuk | v3.6.1 |
+| [D09_DATABASE_DOCUMENTATION.md](D09_DATABASE_DOCUMENTATION.md) | Skema pangkalan data dan dual audit | v3.6.1 |
+| [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) | Infrastruktur teknikal | v3.6.1 |
+| [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Penyetempatan bahasa (Bahasa Melayu sahaja) | v3.6.1 |
+| [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md) | Konfigurasi WebSocket (Laravel Reverb) | v3.6.1 |
+| [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) | Pengurusan queue (Laravel Queue + Redis; Horizon tidak dipasang) | v3.6.1 |
 
 ---
 
@@ -55,7 +55,7 @@
 12. [Prosedur Kecemasan (Emergency Procedures)](#12-prosedur-kecemasan-emergency-procedures)
 13. [Pengujian (Testing)](#13-pengujian-testing)
 14. [Penyelesaian Masalah (Troubleshooting)](#14-penyelesaian-masalah-troubleshooting)
-15. [Pematuhan D00-D17 v3.6.0 (Compliance)](#15-pematuhan-d00-d17-v360-compliance)
+15. [Pematuhan D00-D18 v3.6.1 (Compliance)](#15-pematuhan-d00-d18-v361-compliance)
 
 ---
 
@@ -85,7 +85,7 @@
 | **SSE** | Server-Sent Events - protokol untuk streaming data dari pelayan ke klien |
 | **Laravel Sanctum** | Sistem pengesahan API token untuk Laravel |
 | **Laravel Reverb** | Pelayan WebSocket untuk notifikasi masa nyata |
-| **Laravel Horizon** | Dashboard pengurusan queue untuk Laravel |
+| **Laravel Horizon** | Dashboard pengurusan queue (opsyenal). **Tidak dipasang** dalam repo v3.6.1; pemantauan queue menggunakan Laravel Pulse + Filament Failed Jobs/Email Logs |
 | **Laravel Pulse** | Dashboard pemantauan prestasi masa nyata |
 | **Laravel Telescope** | Alat debugging untuk Laravel (superuser sahaja) |
 
@@ -221,18 +221,18 @@ Integrasi **Cloud Hybrid AI Architecture** mesti selaras dengan **True Hybrid Ar
 |----------|-----------|--------|
 | **Bedrock** | AWS Bedrock Runtime | Model Claude Opus 4.5/Sonnet 4.5/Haiku 4.5 |
 | **Ollama** | Local LLM + RAG | Pangkalan pengetahuan khusus FAQ |
-| **Frontend** | Livewire 3.7 + Volt 1.10 | Antara muka chat reaktif |
-| **Backend** | Laravel 12.40.1, PHP 8.2.12 | Orkestrasi API |
+| **Frontend** | Livewire 3.7.1 + Volt 1.10.1 | Antara muka chat reaktif |
+| **Backend** | Laravel 12.42.0, PHP 8.2.12 | Orkestrasi API |
 | **Admin Panel** | Filament 4.1.10 | Antara muka pengurusan AI |
-| **Real-time** | Laravel Reverb 1.6.2 | Notifikasi WebSocket |
-| **Queue** | Laravel Horizon | Pemprosesan kerja latar belakang |
-| **Audit** | owen-it + spatie | Sistem audit dwi (D09 v3.6.0) |
+| **Real-time** | Laravel Reverb 1.6.3 | Notifikasi WebSocket |
+| **Queue** | Laravel Queue + Redis | Pemprosesan kerja latar belakang (Horizon tidak dipasang) |
+| **Audit** | owen-it + spatie | Sistem audit dwi (D09 v3.6.1) |
 
 ### 3.4 Seni Bina Lapisan Perkhidmatan (Service Layer Architecture)
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                        Laravel 12.40.1 Application                         │
+│                        Laravel 12.42.0 Application                         │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │  Controllers (API & Web) - Bahasa Melayu sahaja                            │
 │  ├── OllamaController (API endpoints)                                      │
@@ -241,7 +241,7 @@ Integrasi **Cloud Hybrid AI Architecture** mesti selaras dengan **True Hybrid Ar
 │  ├── AutoReplyController (Approval workflow dengan email tokens)           │
 │  └── Auth Controllers (Self-Registration, Flexible Login, Account Linking) │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  Services (Business Logic) - D00-D17 v3.6.0 Compliant                     │
+│  Services (Business Logic) - D00-D18 v3.6.1 Compliant                     │
 │  ├── OllamaClient (HTTP wrapper + health check)                            │
 │  ├── BedrockClient (AWS SDK wrapper + model routing)                       │
 │  ├── RagService (RAG + conversation context, Bahasa Melayu responses)      │
@@ -260,7 +260,7 @@ Integrasi **Cloud Hybrid AI Architecture** mesti selaras dengan **True Hybrid Ar
 │  ├── BedrockConversation (Enhanced conversation management)                │
 │  └── ActivityLog, Audits (Dual audit system untuk compliance)             │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  Jobs & Queues (Laravel Horizon Integration)                               │
+│  Jobs & Queues (Laravel Queue + Redis)                                     │
 │  ├── DocumentIngestJob (Background processing)                             │
 │  ├── EmbeddingJob (Vector generation)                                      │
 │  ├── AutoReplyGenerationJob (AI response drafts)                           │
@@ -770,51 +770,16 @@ ACTIVITY_LOGGER_ENABLED=true
 
 ### 9.2 Fail Konfigurasi Hibrid AI
 
-**Fail:** `config/hybrid_ai.php`
+Konfigurasi AI dipecahkan kepada beberapa fail (source of truth):
+- `config/ollama.php` (endpoint, model, timeout, caching, RAG settings)
+- `config/bedrock.php` (model ID, region, default model, retries)
+- `config/ollama-laravel.php` (integrasi pakej `ollama-laravel`)
+- `config/ai-broadcasting.php` (channel AI untuk Reverb/Echo)
 
-```php
-<?php
-
-return [
-    'enabled' => env('HYBRID_AI_ENABLED', true),
-
-    'ollama' => [
-        'host' => env('OLLAMA_HOST', 'http://localhost:11434'),
-        'model' => env('OLLAMA_MODEL', 'llama3.1'),
-        'embedding_model' => env('OLLAMA_EMBEDDING_MODEL', 'nomic-embed-text'),
-        'timeout' => 30,
-    ],
-
-    'bedrock' => [
-        'region' => env('AWS_BEDROCK_REGION', 'us-east-1'),
-        'default_model' => env('AWS_BEDROCK_MODEL_ID'),
-        'models' => [
-            'opus' => 'global.anthropic.claude-opus-4-5:v1',
-            'sonnet' => 'us.anthropic.claude-3-5-sonnet-20241022-v2:0',
-            'haiku' => 'us.anthropic.claude-3-5-haiku-20241022-v1:0',
-        ],
-    ],
-
-    'routing' => [
-        'faq_keywords' => [
-            'tiket', 'helpdesk', 'pinjaman', 'aset', 'status',
-            'permohonan', 'sistem', 'ictserve', 'motac', 'bpm',
-            'kelulusan', 'gred', 'pegawai', 'borang', 'sla'
-        ],
-        'complex_keywords' => [
-            'analisis', 'bandingkan', 'jelaskan', 'mengapa',
-            'bagaimana jika', 'strategi', 'cadangan', 'pendapat',
-            'kelebihan', 'kekurangan', 'implikasi'
-        ],
-        'faq_threshold' => env('HYBRID_FAQ_THRESHOLD', 0.3),
-    ],
-
-    'fallback' => [
-        'enabled' => env('HYBRID_FALLBACK_ENABLED', true),
-        'default_model' => 'sonnet',
-    ],
-];
-```
+Logik routing/strategi pemilihan model:
+- `app/Services/ModelRouter.php`
+- `app/Services/BedrockRoutingConfigurationService.php`
+- `app/Services/RagService.php`
 
 ---
 
@@ -822,7 +787,7 @@ return [
 
 ### 10.1 Pengenalan API
 
-API Integrasi AI Ollama menyediakan akses programmatik kepada ciri-ciri AI dalam sistem ICTServe termasuk FAQ Bot, Analisis Dokumen, dan Auto-Reply. Semua endpoint menggunakan pengesahan Laravel Sanctum dan mematuhi standard D00-D17 v3.6.0.
+API Integrasi AI Ollama menyediakan akses programmatik kepada ciri-ciri AI dalam sistem ICTServe termasuk FAQ Bot, Analisis Dokumen, dan Auto-Reply. Semua endpoint menggunakan pengesahan Laravel Sanctum dan mematuhi standard D00-D18 v3.6.1.
 
 **Base URL:**
 
@@ -1261,70 +1226,57 @@ sudo systemctl status ollama
 #### Migration untuk AI Tables
 
 ```bash
-# Jalankan migration untuk jadual AI
-php artisan migrate --path=database/migrations/ollama
+# Jalankan semua migration (termasuk jadual AI yang berada dalam `database/migrations/`)
+php artisan migrate
 
-# Semak jadual yang dicipta
-php artisan db:show --table=faqs,documents,document_chunks,auto_reply_templates,auto_reply_drafts,message_logs
+# (Opsyen) Semak jadual AI yang dicipta (jika DB driver menyokong)
+php artisan db:show --table=faqs,documents,document_chunks,auto_reply_templates,auto_reply_drafts,message_logs,bedrock_conversations
 ```
 
 #### Seeding Data Awal
 
 ```bash
-# Seed data FAQ dan templat auto-reply
-php artisan db:seed --class=OllamaAISeeder
-
-# Semak data yang dicipta
-php artisan tinker
->>> App\Models\Faq::count()
->>> App\Models\AutoReplyTemplate::count()
+# Tiada seeder khusus AI dalam repo v3.6.1.
+# Data AI (FAQ, dokumen, templat auto-reply) diurus melalui Filament:
+# - app/Filament/Resources/OllamaAI/*
+#
+# Seeder yang disediakan fokus kepada data rujukan (contoh):
+# php artisan db:seed --class=DivisionSeeder
+# php artisan db:seed --class=TicketCategorySeeder
 ```
 
 ### 11.5 Konfigurasi Queue dan Jobs
 
-#### Laravel Horizon Setup
+#### Laravel Queue (Redis) - Setup Semasa (Repo v3.6.1)
+
+> **Nota**: `laravel/horizon` **tidak dipasang** dalam repo v3.6.1. Pemantauan queue menggunakan:
+> - Laravel Pulse (metrik prestasi & job watcher)
+> - Filament resources (contoh: Failed Jobs, Email Logs)
+
+**Konfigurasi utama**:
+- `config/queue.php` (default `QUEUE_CONNECTION`, sambungan Redis, failed jobs)
+- `.env` / `.env.production` / `.env.staging` (contoh: `QUEUE_CONNECTION=redis`)
+
+**Nama queue yang digunakan oleh AI jobs (contoh)**:
+- `documents` (DocumentIngestJob)
+- `embeddings` (EmbeddingJob)
+- `auto-reply` (AutoReplyGenerationJob)
+- `notifications` (notifikasi)
+- `emails` (e-mel kelulusan/approval)
+- `digests` (ringkasan notifikasi)
+
+**Mulakan worker (contoh)**:
 
 ```bash
-# Pasang Laravel Horizon (jika belum)
-composer require laravel/horizon
-
-# Terbitkan konfigurasi
-php artisan horizon:install
-
-# Konfigurasi Horizon untuk AI jobs
-php artisan vendor:publish --tag=horizon-config
-```
-
-**Konfigurasi Horizon:** `config/horizon.php`
-
-```php
-'environments' => [
-    'production' => [
-        'supervisor-ai' => [
-            'connection' => 'redis',
-            'queue' => ['ai-processing', 'document-ingestion', 'auto-reply'],
-            'balance' => 'auto',
-            'processes' => 3,
-            'tries' => 3,
-            'timeout' => 300,
-        ],
-    ],
-],
-```
-
-```bash
-# Mulakan Horizon untuk queue processing
-php artisan horizon
-
-# Atau gunakan supervisor untuk pengeluaran
-sudo supervisorctl start horizon
+# Worker untuk Redis dengan pelbagai queue
+php artisan queue:work redis --queue=default,notifications,emails,digests,documents,embeddings,auto-reply --tries=3 --timeout=1200
 ```
 
 ### 11.6 Konfigurasi Laravel Reverb (WebSocket)
 
 ```bash
 # Mulakan Reverb server
-php artisan reverb:start --host=127.0.0.1 --port=6001
+php artisan reverb:serve --host=127.0.0.1 --port=8080 --scheme=http
 
 # Atau gunakan supervisor untuk pengeluaran
 sudo supervisorctl start reverb
@@ -1335,7 +1287,7 @@ sudo supervisorctl start reverb
 ```nginx
 # Tambah ke konfigurasi Nginx
 location /app/ {
-    proxy_pass http://127.0.0.1:6001;
+    proxy_pass http://127.0.0.1:8080;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
@@ -1675,7 +1627,13 @@ Selepas Pemulihan Sistem:
 
 ### 13.1 Unit Tests
 
-**Fail:** `tests/Unit/Services/HybridAiServiceTest.php`
+**Contoh (pseudo) untuk konsep routing** (bukan fail sebenar; hanya contoh struktur ujian)
+
+**Fail sebenar untuk rujukan (source of truth)**:
+- `tests/Unit/Services/ModelRouterTest.php`
+- `tests/Unit/Services/RagServiceTest.php`
+- `tests/Unit/Services/OllamaClientTest.php`
+- `tests/Unit/Services/BedrockServiceTest.php`
 
 ```php
 <?php
@@ -1811,7 +1769,13 @@ class HybridAiServiceTest extends TestCase
 
 ### 13.2 Feature Tests
 
-**Fail:** `tests/Feature/Livewire/BedrockChatHybridTest.php`
+**Contoh (pseudo) untuk konsep UI hibrid** (bukan fail sebenar; hanya contoh struktur ujian)
+
+**Fail sebenar untuk rujukan (source of truth)**:
+- `tests/Feature/BedrockChatTest.php`
+- `tests/Feature/AI/ModelRouterTest.php`
+- `tests/Feature/AI/HybridQueryRouterTest.php`
+- `tests/Feature/AI/HybridPerformanceTest.php`
 
 ```php
 <?php
@@ -1927,7 +1891,7 @@ class BedrockChatHybridTest extends TestCase
 php artisan test --filter=Hybrid
 
 # Run specific test file
-php artisan test tests/Feature/Livewire/BedrockChatHybridTest.php
+php artisan test tests/Feature/BedrockChatTest.php
 
 # Run with coverage
 php artisan test --filter=Hybrid --coverage --min=80
@@ -2046,7 +2010,7 @@ php artisan livewire:list
 ### 14.3 Lokasi Log (Log Locations)
 
 - **Laravel**: `storage/logs/laravel.log`
-- **MCP Server**: `scripts/mcp-debug.log`
+- **MCP Server (debugging)**: rujuk `routes/ai.php`, `docs/Laravel_MCP.md`, dan log aplikasi di `storage/logs/`
 - **Browser Console**: F12 → Console tab
 - **Network**: F12 → Network tab (check Livewire requests)
 
@@ -2069,11 +2033,11 @@ Route::get('/health/hybrid-ai', function () {
 
 ---
 
-## 15. Pematuhan D00-D17 v3.6.0 (Compliance)
+## 15. Pematuhan D00-D18 v3.6.1 (Compliance)
 
 ### 15.1 Matriks Pematuhan (Compliance Matrix)
 
-Integrasi Cloud Hybrid AI mematuhi sepenuhnya dokumentasi D00-D17 v3.6.0:
+Integrasi Cloud Hybrid AI mematuhi sepenuhnya dokumentasi D00-D18 v3.6.1:
 
 | Dokumen | Keperluan | Pelaksanaan Sistem AI |
 |---------|-----------|----------------------|
@@ -2085,7 +2049,7 @@ Integrasi Cloud Hybrid AI mematuhi sepenuhnya dokumentasi D00-D17 v3.6.0:
 | **D12-D14** | WCAG 2.2 AA | Accessible streaming UI, 4.5:1 contrast |
 | **D15** | Bahasa Melayu sahaja | No language switcher, all AI responses in Malay |
 | **D16** | Laravel Reverb | Real-time AI notifications via WebSocket |
-| **D17** | Laravel Horizon | Queue management for AI jobs |
+| **D17** | Laravel Queue + Redis | Queue management untuk AI jobs (Horizon tidak dipasang) |
 
 ### 15.2 Butiran Pematuhan (Compliance Details)
 
@@ -2167,7 +2131,7 @@ class BedrockConversation extends Model
 
 #### 15.2.9 D17 - Queue Management
 
-- **Laravel Horizon**: Dashboard pengurusan queue untuk AI jobs
+- **Laravel Queue + Redis**: Pemprosesan job latar belakang untuk AI (Horizon tidak dipasang)
 - **Job Types**: DocumentIngestJob, EmbeddingJob, AutoReplyGenerationJob
 - **Redis Driver**: High-performance queue backend
 
@@ -2327,4 +2291,4 @@ return [
 
 ---
 
-**Dokumen ini mematuhi D00-D17 v3.6.0 dan menyediakan panduan komprehensif untuk integrasi Cloud Hybrid AI (Ollama + AWS Bedrock) dalam sistem ICTServe.**
+**Dokumen ini mematuhi D00-D18 v3.6.1 dan menyediakan panduan komprehensif untuk integrasi Cloud Hybrid AI (Ollama + AWS Bedrock) dalam sistem ICTServe.**

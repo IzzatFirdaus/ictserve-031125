@@ -19,9 +19,7 @@
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO 8000, ISO/IEC 27701                   |
-| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)             |
-| **Pematuhi**         | ISO 8000, ISO/IEC 27701                   |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
+| **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 > Notis Penggunaan Dalaman: Migrasi data ini melibatkan data dalaman MOTAC dan tidak berkaitan data awam.
 
@@ -31,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                | Penulis     |
 | ----- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D04 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), MOTAC branding. Penyelarasan dengan D00-D04 v3.5.0. | Pasukan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini rujukan bilingual support→Bahasa Melayu sahaja dalam migration plan. Penyelarasan dengan D00-D17 v3.6.0.                                                  | Pasukan BPM |
 | 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah migrasi data AI (FAQ, dokumen, embeddings, conversation history). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture (Ollama + AWS Bedrock).                                    | Pasukan BPM |
@@ -60,7 +59,7 @@
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Helpdesk & ICT Asset Loan** yang berasaskan Laravel 12.40.1 untuk Bahagian Pengurusan Maklumat (BPM), MOTAC. Pelan ini mematuhi piawaian **ISO 8000** untuk kualiti data (data quality) dan **ISO/IEC 27701** untuk pengurusan privasi maklumat (privacy information management).
+Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Helpdesk & ICT Asset Loan** yang berasaskan Laravel 12.42.0 untuk Bahagian Pengurusan Maklumat (BPM), MOTAC. Pelan ini mematuhi piawaian **ISO 8000** untuk kualiti data (data quality) dan **ISO/IEC 27701** untuk pengurusan privasi maklumat (privacy information management).
 
 **Nota Penting**: Sistem baharu menggunakan True Hybrid Architecture v3.5.0 di mana staff boleh self-register dengan @motac.gov.my dan log masuk ATAU gunakan borang tetamu. Migrasi data fokus kepada:
 
@@ -76,9 +75,9 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 
 ## 2. SKOP MIGRASI (Scope)
 
-- Migrasi data berkaitan aduan ICT, inventori aset, dan sejarah pinjaman dari sistem lama (manual, Excel, Access, atau sistem digital terdahulu) ke sistem baru Laravel 12.40.1.
+- Migrasi data berkaitan aduan ICT, inventori aset, dan sejarah pinjaman dari sistem lama (manual, Excel, Access, atau sistem digital terdahulu) ke sistem baru Laravel 12.42.0.
 - Data yang terlibat:
-  - **Staff Profiles**: Migrate legacy staff ke users table (role='staff') untuk enable self-registration dan Dashboard access. Termasuk medan baharu: email_verified_at, locale, notify_email_frequency, notify_in_app, staff_number, guest_submissions_linked
+  - **Staff Profiles**: Migrate legacy staff ke `users` (role='staff') untuk enable self-registration dan akses dashboard. Medan berkaitan migrasi: `email_verified_at`, `locale` (DEPRECATED: sentiasa `ms`), `staff_number`, `division_code`, `division_id`, `grade_id`, `position_id`, `guest_submissions_linked`, `theme_preference`
   - **Tiket Helpdesk**: Rekod sejarah tiket dengan link ke user_id (jika staff) atau NULL (jika guest)
   - **Permohonan Pinjaman Aset**: Rekod sejarah permohonan dengan link ke user_id (jika staff) atau NULL (jika guest)
   - **Inventori Aset ICT**: Data lengkap aset termasuk kategori, status, dan sejarah penggunaan
@@ -117,16 +116,14 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
   - Staff:
     - `staff_name` → `users.name`
     - `staff_email` → `users.email` (mesti @motac.gov.my)
-    - `department_code` → `users.department_id`
+    - `division_code` / `department_code` → `users.division_code` (rujuk `divisions.code`)
+    - (opsyen) padankan `users.division_id` melalui lookup `divisions.code` → `divisions.id`
     - `staff_id` → `users.staff_number` (optional)
     - Set `email_verified_at` = NOW() (auto-verified untuk existing staff)
-    - Set `locale` = 'ms' (default)
-    - Set `notify_email_frequency` = 'immediate' (default)
-    - Set `notify_in_app` = TRUE (default)
-    - Set `guest_submissions_linked` = 0 (akan dikemaskini oleh linking script)
-  - Tiket helpdesk: `ticket_no` → `helpdesk_tickets.ticket_number`, `submitter_email` → link via `users.email` → `user_id`
-  - Pinjaman: `loan_ref` → `loan_applications.reference`, `applicant_email` → link via `users.email` → `user_id`
-  - Aset: `asset_id_legacy` → `assets.tag_id`, `asset_name` → `assets.name`
+    - Set `locale` = 'ms' (**DEPRECATED v3.6.0**: sentiasa `ms`)
+  - Tiket helpdesk: `ticket_no` → `helpdesk_tickets.ticket_number`, `guest_email` → link via `users.email` → `user_id` (jika staf berdaftar)
+  - Pinjaman: `loan_ref` → `loan_applications.application_number`, `applicant_email` → link via `users.email` → `user_id` (jika staf berdaftar)
+  - Aset: `asset_id_legacy` → `assets.asset_tag`, `asset_name` → `assets.name`
 - **Data Dictionary**: Sediakan kamus data untuk semua field
 - **Nota Hybrid Model**: Staff dimigrasikan ke users table; submissions dilink via email matching (user_id NOT NULL = Staff, NULL = Guest)
 
@@ -341,11 +338,11 @@ Sistem baharu menggunakan True Hybrid Architecture dengan self-registration. Str
 
 - **Migrate Legacy Staff**: Populate users table dengan staff data lengkap
 - **Email Verification**: Set `email_verified_at` = NOW() untuk staff dimigrasikan (auto-verified)
-- **New User Columns**: Populate medan baharu (locale, notify\_\*, staff_number, guest_submissions_linked)
+- **New User Columns**: Populate medan baharu (contoh: `staff_number`, `division_code`, `guest_submissions_linked`, `theme_preference`)
 - **Link Historical Submissions**: Update helpdesk_tickets dan loan_applications dengan user_id via email matching
 - **Optional Account Linking**: Sistem akan memaparkan prompt kepada staff baharu untuk link submissions sedia ada
 - **Default Password**: Set default password untuk staff (force password reset on first login)
-- **NO LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
+- **Tiada LDAP**: Authentication melalui Laravel Breeze; **SSO Google (Socialite) adalah opsyenal** mengikut konfigurasi
 
 ### 10.2. Email-Based Linking Strategy (Updated)
 
@@ -353,36 +350,39 @@ Sistem baharu menggunakan True Hybrid Architecture dengan self-registration. Str
 
 ```sql
 INSERT INTO users (
-    name, email, phone, department_id, grade, staff_number,
-    role, password, email_verified_at, locale,
-    notify_email_frequency, notify_in_app, guest_submissions_linked,
-    created_at, updated_at
+    name, email, phone, staff_number, division_code,
+    role, password, email_verified_at, locale, theme_preference,
+    guest_submissions_linked, created_at, updated_at
 )
 SELECT
     name,
     email,
     phone,
-    department_id,
-    grade,
     staff_id as staff_number,
+    division_code,
     'staff' as role,
     '$2y$12$HASHED_DEFAULT_PASSWORD' as password,
     NOW() as email_verified_at,  -- Auto-verified for migrated staff
-    'ms' as locale,
-    'immediate' as notify_email_frequency,
-    TRUE as notify_in_app,
+    'ms' as locale, -- DEPRECATED v3.6.0: sentiasa 'ms'
+    'system' as theme_preference,
     0 as guest_submissions_linked,
     NOW() as created_at,
     NOW() as updated_at
 FROM legacy_staff_table
 WHERE email LIKE '%@motac.gov.my';  -- Only @motac.gov.my emails
+
+-- (Opsyen) Padankan FK division_id selepas divisions disemai:
+-- UPDATE users u
+-- JOIN divisions d ON d.code = u.division_code
+-- SET u.division_id = d.id
+-- WHERE u.division_id IS NULL AND u.division_code IS NOT NULL;
 ```
 
 #### Langkah 2: Link Historical Tickets
 
 ```sql
 UPDATE helpdesk_tickets ht
-INNER JOIN users u ON LOWER(ht.submitter_email) = LOWER(u.email)
+INNER JOIN users u ON LOWER(ht.guest_email) = LOWER(u.email)
 SET ht.user_id = u.id
 WHERE ht.user_id IS NULL AND u.role = 'staff';
 

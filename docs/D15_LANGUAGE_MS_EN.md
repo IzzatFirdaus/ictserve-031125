@@ -1,10 +1,10 @@
 # Dokumentasi Bahasa Sistem ICTServe
 
-**Versi**: 3.6.0  
+**Versi**: 3.6.1  
 **Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/), [MyGOV Digital Service Standards v2.1.0](https://www.malaysia.gov.my/portal/content/30118), [MYDS Guidelines](https://design.digital.gov.my/)  
 **Tarikh Kemas Kini Terakhir**: 17 Disember 2025
 
-> **PENTING (v3.6.0)**: Sistem ICTServe kini menggunakan **Bahasa Melayu sahaja** untuk semua antara muka pengguna. Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal dan kemungkinan penggunaan masa depan, tetapi penukar bahasa (language switcher) telah dilumpuhkan.
+> **PENTING (v3.6.0+)**: Sistem ICTServe kini menggunakan **Bahasa Melayu sahaja** untuk semua antara muka pengguna termasuk AI Chatbot (v3.6.1). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal dan kemungkinan penggunaan masa depan, tetapi penukar bahasa (language switcher) telah dilumpuhkan.
 
 ---
 
@@ -13,14 +13,14 @@
 | Atribut             | Nilai                                                                                       |
 | ------------------- | ------------------------------------------------------------------------------------------- |
 | **Document ID**     | DOC-LANG-MS-EN-2025-Q4                                                                      |
-| **Versi**           | 3.6.0 (SemVer)                                                                              |
+| **Versi**           | 3.6.1 (SemVer)                                                                              |
 | **Tarikh Audit**    | **17 Disember 2025**                                                                        |
 | **Audit Score**     | **96/100** - Pematuhan D00~D18 dengan implementasi lengkap termasuk AI Chatbot              |
 | **Auditor**         | Tim Dokumentasi Sistem ICTServe                                                             |
-| **Status**          | Aktif - Produksi-Siap v3.6.0 (Bahasa Melayu Sahaja)                                        |
+| **Status**          | Aktif - Produksi-Siap v3.6.1 (Bahasa Melayu Sahaja + AI Chatbot)                           |
 | **Klasifikasi**     | Terhad - Dalaman MOTAC                                                                      |
-| **Bahasa**          | Bahasa Melayu sahaja (v3.6.0+)                                                              |
-| **Rujukan D00-D18** | D00, D03, D11, D12, D13, D14, D16, D17, D18 (UI/UX, Accessibility, Requirements, Technical Design, Broadcasting, Queue, AI Chatbot) |
+| **Bahasa**          | Bahasa Melayu sahaja (v3.6.0+), AI Chatbot BM (v3.6.1)                                      |
+| **Rujukan D00-D18** | D00, D03, D11, D12, D13, D14, D16, D17, D18 v1.0.1 (UI/UX, Accessibility, Requirements, Technical Design, Broadcasting, Queue, AI Chatbot) |
 
 ---
 
@@ -30,7 +30,7 @@
 | ------ | ------------ | ------------------------------------ | -------------------------------------------------- |
 | v3.5.0 | November 2025 | Dwibahasa (Bahasa Melayu + Inggeris) | True Hybrid Architecture, Self-Registration        |
 | v3.6.0 | Disember 2025 | Bahasa Melayu sahaja                 | Language Switcher dilumpuhkan, Theme Switcher baru |
-| v3.7.0 | Disember 2025 | Bahasa Melayu sahaja                 | Cloud Hybrid AI Architecture (D18): AI responses dalam Bahasa Melayu, terminologi AI, FAQ Bot, BedrockChat |
+| v3.6.1 | 17 Disember 2025 | Bahasa Melayu sahaja                 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Cloud Hybrid AI Architecture (D18 v1.0.1): AI responses dalam Bahasa Melayu, terminologi AI, FAQ Bot, BedrockChat, lang/en/ technical reference comments, lang/ms/ version headers |
 
 ---
 
@@ -68,15 +68,15 @@ Dokumen ini telah dikemaskini mengikut piawaian D00-D17 dan diluluskan oleh pasu
 
 | Dokumen                       | Rujukan                                      | Relevansi                                                                         |
 | ----------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------- |
-| **D00 System Overview**       | `D00_SYSTEM_OVERVIEW.md`                     | Konteks sistem keseluruhan; True Hybrid Architecture; language/localization context |
-| **D03 Software Requirements** | `D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md` | Language requirements, accessibility requirements mapping                         |
-| **D11 Technical Design**      | `D11_TECHNICAL_DESIGN_DOCUMENTATION.md`      | Language implementation, HTML lang attributes, internationalization (i18n) design |
-| **D12 UI/UX Design Guide**    | `D12_UI_UX_DESIGN_GUIDE.md`                  | UI language conventions, form labeling standards, MYDS alignment, user experience in BM/EN |
-| **D13 Frontend Framework**    | `D13_UI_UX_FRONTEND_FRAMEWORK.md`            | Livewire/Blade template language handling, language attribute implementation      |
-| **D14 UI/UX Style Guide**     | `D14_UI_UX_STYLE_GUIDE.md`                   | Accessibility standards (WCAG 2.2 AA), language-specific accessibility guidelines |
-| **D16 Broadcasting Setup**    | `D16_BROADCASTING_SETUP.md`                  | Laravel Reverb WebSocket configuration for real-time bilingual notifications      |
-| **D17 Queue Management**      | `D17_QUEUE_MANAGEMENT_HORIZON.md`            | Queue management for bilingual email notifications and digests                    |
-| **D18 AI Chatbot**            | `D18_AI_CHATBOT_OLLAMA_BEDROCK.md`           | Cloud Hybrid AI Architecture - AI responses dalam Bahasa Melayu sahaja (v3.7.0)   |
+| **D00 System Overview**       | `docs/D00_SYSTEM_OVERVIEW.md`                     | Konteks sistem keseluruhan; True Hybrid Architecture; language/localization context |
+| **D03 Software Requirements** | `docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md` | Language requirements, accessibility requirements mapping                         |
+| **D11 Technical Design**      | `docs/D11_TECHNICAL_DESIGN_DOCUMENTATION.md`      | Language implementation, HTML lang attributes, internationalization (i18n) design |
+| **D12 UI/UX Design Guide**    | `docs/D12_UI_UX_DESIGN_GUIDE.md`                  | UI language conventions, form labeling standards, MYDS alignment, user experience in BM/EN |
+| **D13 Frontend Framework**    | `docs/D13_UI_UX_FRONTEND_FRAMEWORK.md`            | Livewire/Blade template language handling, language attribute implementation      |
+| **D14 UI/UX Style Guide**     | `docs/D14_UI_UX_STYLE_GUIDE.md`                   | Accessibility standards (WCAG 2.2 AA), language-specific accessibility guidelines |
+| **D16 Broadcasting Setup**    | `docs/D16_BROADCASTING_SETUP.md`                  | Laravel Reverb WebSocket configuration for real-time bilingual notifications      |
+| **D17 Queue Management**      | `docs/D17_QUEUE_MANAGEMENT_HORIZON.md`            | Queue management for bilingual email notifications and digests                    |
+| **D18 AI Chatbot**            | `docs/D18_AI_CHATBOT_OLLAMA_BEDROCK.md` v1.0.1    | Cloud Hybrid AI Architecture - AI responses dalam Bahasa Melayu sahaja (v3.6.1)   |
 
 ---
 
@@ -492,7 +492,7 @@ Sistem menggunakan keutamaan berikut untuk menentukan bahasa pengguna:
 | ----------------------------- | ------------------------------------------ | ------------------------------------------------------------------------- |
 | **SetLocale Middleware**      | `app/Http/Middleware/SetLocale.php`        | Menghidrat locale untuk setiap request mengikut keutamaan                 |
 | **BilingualSupportService**   | `app/Services/BilingualSupportService.php` | Servis utama untuk pengesanan dan pengurusan locale                       |
-| **LanguageSwitcher Livewire** | `app/Livewire/LanguageSwitcher.php`        | UI dropdown; persists locale ke session DAN users.locale (jika log masuk) |
+| **LanguageController** | `app/Http/Controllers/LanguageController.php` | Endpoint tukar locale (`/change-locale/{locale}`) dan simpan locale mengikut polisi aplikasi |
 | **Config**                    | `config/app.php` - `locale`                | Lalai: 'ms'; Disokong: ['ms', 'en']                                       |
 | **User Model**                | `app/Models/User.php`                      | Menyimpan `locale` column untuk authenticated users                       |
 
@@ -533,10 +533,10 @@ Sistem menggunakan keutamaan berikut untuk menentukan bahasa pengguna:
 
 | Test Suite               | Status                | Butiran                                                                      |
 | ------------------------ | --------------------- | ---------------------------------------------------------------------------- |
-| **Feature Tests**        | 11 passing            | `tests/Feature/LanguageSwitcherTest.php`, `HardcodedTextRefactoringTest.php` |
+| **Feature Tests**        | 11 passing            | `tests/Feature/LanguageSwitcherTest.php`, `tests/Feature/LanguageControllerTest.php` |
 | **Accessibility Audit**  | Lighthouse 94/100     | axe DevTools, WAVE, manual keyboard/screen reader test                       |
 | **Cross-browser**        | Tested                | Chrome, Firefox, Edge, Safari (desktop + mobile)                             |
-| **Translation Coverage** | 36 fail setiap bahasa | `lang/ms/*.php`, `lang/en/*.php` (72 fail keseluruhan)                       |
+| **Translation Coverage** | 36 fail setiap bahasa | `resources/lang/ms/`, `resources/lang/en/` (72 fail keseluruhan)             |
 
 ---
 
@@ -759,38 +759,38 @@ Semua komponen AI mematuhi WCAG 2.2 AA dengan sokongan Bahasa Melayu:
 
 Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 
-**RTM Master File**: `docs/rtm/language_requirements_rtm.csv`
+**RTM Master File**: `docs/reference/rtm/requirements-traceability.csv`
 
 **Pemetaan Keperluan Bahasa (Language Requirements Mapping):**
 
 | SRS ID       | Keperluan                                       | Seksyen Dokumen | Design Ref  | Implementation                                                                        | Test Case                                   | Status |
 | ------------ | ----------------------------------------------- | --------------- | ----------- | ------------------------------------------------------------------------------------- | ------------------------------------------- | ------ |
-| SRS-LANG-001 | Label borang dalam Bahasa Melayu                | 3.1             | DES-LANG-01 | Blade templates, `resources/views/forms/`                                             | LanguageTest::testBMLabels                  |        |
+| SRS-LANG-001 | Label borang dalam Bahasa Melayu                | 3.1             | DES-LANG-01 | UI Livewire/Volt (`resources/views/livewire/`) & form state (`app/Livewire/Forms/`)   | LanguageTest::testBMLabels                  |        |
 | SRS-LANG-002 | Mesej ralat dalam Bahasa Melayu                 | 3.1             | DES-LANG-02 | Validation messages in `app/Rules/`                                                   | LanguageTest::testBMErrors                  |        |
 | SRS-LANG-003 | Terjemahan Bahasa Inggeris bagi label kritikal  | 2.2             | DES-LANG-03 | HTML lang="en" spans in templates                                                     | LanguageTest::testENTranslations            |        |
 | SRS-LANG-004 | Aksesibiliti papan kekunci (Keyboard nav)       | 4               | DES-LANG-04 | Tab order, focus management                                                           | AccessibilityTest::testKeyboardNav          |        |
 | SRS-LANG-005 | Pembaca skrin compatibility (Screen reader)     | 4               | DES-LANG-05 | ARIA labels, aria-required, aria-invalid                                              | AccessibilityTest::testScreenReader         |        |
 | SRS-LANG-006 | Kontras teks (Text contrast WCAG 4.5:1)         | 4               | DES-LANG-06 | CSS color utilities (Tailwind)                                                        | AccessibilityTest::testContrast             |        |
 | SRS-LANG-007 | PDPA 2010 perlindungan data peribadi            | 4.2             | DES-LANG-07 | Privacy notice, encryption in models                                                  | PrivacyTest::testPDPACompliance             |        |
-| SRS-LANG-008 | Enkripsi data (AES-256)                         | 4.2             | DES-LANG-08 | `app/Services/Security/EncryptionService.php`                                         | PrivacyTest::testEncryption                 |        |
-| SRS-LANG-009 | Language switcher UI component                  | 6.1             | DES-LANG-09 | `app/Livewire/LanguageSwitcher.php`                                                   | LanguageSwitcherTest::testDropdown          |        |
+| SRS-LANG-008 | Enkripsi data (AES-256)                         | 4.2             | DES-LANG-08 | `app/Services/EncryptionService.php`                                                  | PrivacyTest::testEncryption                 |        |
+| SRS-LANG-009 | Language switcher endpoint                       | 6.1             | DES-LANG-09 | `app/Http/Controllers/LanguageController.php`                                         | LanguageSwitcherTest::testDropdown          |        |
 | SRS-LANG-010 | Guest-only locale persistence (no user profile) | 6.2             | DES-LANG-10 | Session locale handling (guest users)                                                 | LanguageSwitcherTest::testGuestPersistence  |        |
-| SRS-LANG-011 | Cookie locale persistence (1-year)              | 6.2             | DES-LANG-11 | Cookie::queue in LanguageSwitcher                                                     | LanguageSwitcherTest::testCookie            |        |
+| SRS-LANG-011 | Cookie locale persistence (1-year)              | 6.2             | DES-LANG-11 | Cookie::queue dalam `app/Http/Controllers/LanguageController.php`                      | LanguageSwitcherTest::testCookie            |        |
 | SRS-LANG-012 | Browser language auto-detection                 | 6.2             | DES-LANG-12 | SetLocale::detectBrowserLocale()                                                      | LanguageSwitcherTest::testAutoDetect        | ✓      |
-| SRS-LANG-013 | Label borang pendaftaran dalam BM               | 5.1             | DES-LANG-13 | Blade templates, `resources/views/auth/register.blade.php`                            | LanguageTest::testBMRegistrationLabels      | ✓      |
-| SRS-LANG-014 | Mesej pengesahan e-mel dalam BM                 | 5.3             | DES-LANG-14 | Blade templates, `resources/views/auth/verify-email.blade.php`                        | LanguageTest::testBMVerificationMessages    | ✓      |
-| SRS-LANG-015 | Label log masuk fleksibel dalam BM              | 5.2             | DES-LANG-15 | Blade templates, `resources/views/auth/login.blade.php`                               | LanguageTest::testBMFlexibleLoginLabels     | ✓      |
-| SRS-LANG-016 | Mesej pautan akaun dalam BM                     | 5.4             | DES-LANG-16 | Livewire component, `app/Livewire/Account/LinkSubmissionsPrompt.php`                  | LanguageTest::testBMAccountLinkingMessages  | ✓      |
-| SRS-LANG-017 | Label tetapan notifikasi dalam BM               | 5.5             | DES-LANG-17 | Volt component, `resources/views/livewire/account/notification-preferences.blade.php` | LanguageTest::testBMNotificationPrefsLabels | ✓      |
+| SRS-LANG-013 | Label borang pendaftaran dalam BM               | 5.1             | DES-LANG-13 | Volt component, `resources/views/livewire/pages/auth/register.blade.php`              | LanguageTest::testBMRegistrationLabels      | ✓      |
+| SRS-LANG-014 | Mesej pengesahan e-mel dalam BM                 | 5.3             | DES-LANG-14 | Volt component, `resources/views/livewire/pages/auth/verify-email.blade.php`          | LanguageTest::testBMVerificationMessages    | ✓      |
+| SRS-LANG-015 | Label log masuk fleksibel dalam BM              | 5.2             | DES-LANG-15 | Volt component, `resources/views/livewire/pages/auth/login.blade.php`                 | LanguageTest::testBMFlexibleLoginLabels     | ✓      |
+| SRS-LANG-016 | Mesej pautan akaun dalam BM                     | 5.4             | DES-LANG-16 | Livewire component, `app/Livewire/Staff/AccountLinking.php`                           | LanguageTest::testBMAccountLinkingMessages  | ✓      |
+| SRS-LANG-017 | Label tetapan notifikasi dalam BM               | 5.5             | DES-LANG-17 | Livewire component, `resources/views/livewire/notification-preferences.blade.php`     | LanguageTest::testBMNotificationPrefsLabels | ✓      |
 | SRS-LANG-018 | Notifikasi e-mel dwibahasa                      | 7.1             | DES-LANG-18 | Mail templates, `resources/views/emails/`                                             | NotificationTest::testBilingualEmails       | ✓      |
 | SRS-LANG-019 | Notifikasi masa nyata dwibahasa                 | 7.2             | DES-LANG-19 | Laravel Reverb events, `app/Events/`                                                  | NotificationTest::testRealtimeBilingual     | ✓      |
 | SRS-LANG-020 | Digest e-mel dwibahasa                          | 7.3             | DES-LANG-20 | Queue jobs, `app/Jobs/ProcessNotificationDigest.php`                                  | NotificationTest::testDigestBilingual       | ✓      |
 | SRS-LANG-021 | Google SSO mesej dwibahasa                      | 5.6             | DES-LANG-21 | Socialite callbacks, `app/Http/Controllers/Auth/`                                     | AuthTest::testGoogleSSOMessages             | Planned |
 | SRS-LANG-022 | API error messages dwibahasa                    | 7.4             | DES-LANG-22 | API responses, `app/Http/Controllers/Api/`                                            | ApiTest::testBilingualErrors                | Planned |
 | SRS-LANG-023 | AI Chat interface labels dalam BM               | 8.4             | DES-LANG-23 | Livewire component, `app/Livewire/BedrockChat.php`                                    | AILanguageTest::testBMChatLabels            | ✓      |
-| SRS-LANG-024 | AI System prompts dalam BM                      | 8.3             | DES-LANG-24 | BedrockService, `app/Services/AI/BedrockService.php`                                  | AILanguageTest::testBMSystemPrompts         | ✓      |
-| SRS-LANG-025 | AI Error messages dalam BM                      | 8.5             | DES-LANG-25 | AI Services, `app/Services/AI/`                                                       | AILanguageTest::testBMErrorMessages         | ✓      |
-| SRS-LANG-026 | FAQ Bot responses dalam BM                      | 8.6             | DES-LANG-26 | OllamaClient, `app/Services/AI/OllamaClient.php`                                      | AILanguageTest::testBMFaqResponses          | ✓      |
+| SRS-LANG-024 | AI System prompts dalam BM                      | 8.3             | DES-LANG-24 | BedrockService, `app/Services/BedrockService.php`                                     | AILanguageTest::testBMSystemPrompts         | ✓      |
+| SRS-LANG-025 | AI Error messages dalam BM                      | 8.5             | DES-LANG-25 | AI Services: `app/Services/ModelRouter.php`, `app/Services/BedrockService.php`, `app/Services/OllamaClient.php` | AILanguageTest::testBMErrorMessages         | ✓      |
+| SRS-LANG-026 | FAQ Bot responses dalam BM                      | 8.6             | DES-LANG-26 | OllamaClient, `app/Services/OllamaClient.php`                                         | AILanguageTest::testBMFaqResponses          | ✓      |
 | SRS-LANG-027 | AI Model selector labels dalam BM               | 8.4             | DES-LANG-27 | BedrockChat component, model selection UI                                             | AILanguageTest::testBMModelLabels           | ✓      |
 | SRS-LANG-028 | AI Source attribution dalam BM                  | 8.4             | DES-LANG-28 | BedrockChat component, source badges                                                  | AILanguageTest::testBMSourceLabels          | ✓      |
 | SRS-LANG-029 | AI Accessibility labels dalam BM                | 8.7             | DES-LANG-29 | ARIA labels, screen reader support                                                    | AIAccessibilityTest::testBMAriaLabels       | ✓      |
@@ -804,7 +804,8 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 
 | Versi | Tarikh      | Pengubah                 | Perubahan Ringkas                                                                                                                                                                                                                                                                                   | Rujukan             |
 | ----- | ----------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| 3.7.0 | 15 Dis 2025 | Pasukan Pembangunan BPM  | Cloud Hybrid AI Architecture (D18 v1.0.0): Tambah seksyen Bahasa AI Chatbot (§8), terminologi AI dalam BM, system prompts BM, label antara muka AI, mesej ralat AI, FAQ Bot responses, aksesibiliti AI. Kemas kini RTM dengan 8 keperluan baharu (SRS-LANG-023 hingga SRS-LANG-030). | PR#d15-v370-ai      |
+| 3.6.1 | 17 Dis 2025 | Pasukan Pembangunan BPM  | Cloud Hybrid AI Architecture (D18 v1.0.1): Tambah seksyen Bahasa AI Chatbot (§8), terminologi AI dalam BM, system prompts BM, label antara muka AI, mesej ralat AI, FAQ Bot responses, aksesibiliti AI. Kemas kini RTM dengan 8 keperluan baharu (SRS-LANG-023 hingga SRS-LANG-030). Tambah komen rujukan teknikal ke fail `resources/lang/en/` dan header versi ke fail `resources/lang/ms/`. | PR#d15-v361-ai      |
+| 3.6.0 | 01 Dis 2025 | Pasukan Pembangunan BPM  | Bahasa Melayu sahaja: Language Switcher dilumpuhkan, Theme Switcher baru, fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. | PR#d15-v360-bm-only |
 | 3.5.0 | 01 Dis 2025 | Pasukan Pembangunan BPM  | Penyelarasan penuh dengan D00-D17 v3.5.0: Tambah rujukan D16/D17, kemas kini pemetaan seksyen, tambah seksyen Notifikasi Dwibahasa (§7), kemas kini RTM dengan 5 keperluan baharu (SRS-LANG-018 hingga SRS-LANG-022), kemas kini retensi data kepada 7 tahun, tambah rujukan MYDS Guidelines. | PR#d15-v350-update  |
 | 3.4.0 | 30 Nov 2025 | Pasukan Pembangunan BPM  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | PR#true-hybrid-v350 |
 | 3.0.1 | 29 Nov 2025 | Pasukan Pembangunan BPM  | Kemas kini tarikh dan maklumat teknikal: BilingualSupportService sebagai servis utama, 36 fail terjemahan setiap bahasa.                                                                                                                                                                            | PR#tech-update      |
@@ -841,9 +842,9 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 
 ### Rujukan Dalam Repo
 
-- **RTM CSV**: `docs/rtm/language_requirements_rtm.csv` - Machine-readable requirements traceability
-- **Accessibility Audit Report**: `docs/frontend/d00-d15-standards-compliance-checker.md` - Detailed findings
-- **GLOSSARY**: `GLOSSARY.md` - Glosari istilah sistem dalam BM/EN
+- **RTM CSV**: `docs/reference/rtm/requirements-traceability.csv` - Machine-readable requirements traceability
+- **Accessibility/UX Verification**: `docs/frontend/FINAL_VERIFICATION.md` - Ringkasan semakan pematuhan UI/UX
+- **GLOSSARY**: `docs/GLOSSARY.md` - Glosari istilah sistem dalam BM/EN
 
 ---
 
