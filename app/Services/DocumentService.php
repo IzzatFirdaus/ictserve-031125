@@ -409,11 +409,18 @@ class DocumentService
             }
 
             // Move position dengan overlap
-            $position = $chunkEnd - $overlap;
+            $newPosition = $chunkEnd - $overlap;
 
-            // Elakkan infinite loop
-            if ($position <= 0) {
+            // Elakkan infinite loop - pastikan position bergerak maju
+            if ($newPosition <= $position) {
                 $position = $chunkEnd;
+            } else {
+                $position = $newPosition;
+            }
+
+            // Safety check untuk elakkan infinite loop
+            if ($position >= strlen($text)) {
+                break;
             }
         }
 
