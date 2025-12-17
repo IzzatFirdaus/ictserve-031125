@@ -108,4 +108,22 @@ class ExportSubmissionsJob implements ShouldQueue
             ]);
         }
     }
+
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * Requirement 23.7: Job tagging for ICTServe operations
+     *
+     * @return array<string>
+     */
+    public function tags(): array
+    {
+        return [
+            'reports',
+            'export',
+            'user:'.$this->user->id,
+            'format:'.$this->format,
+            'job_id:'.$this->jobId,
+        ];
+    }
 }
