@@ -133,7 +133,7 @@ new class extends Component
                                 @elseif(Str::contains($notification->type, 'Approval'))
                                     <x-heroicon-o-check-circle class="w-6 h-6 text-green-600 dark:text-green-400" aria-hidden="true" />
                                 @elseif(Str::contains($notification->type, 'Loan'))
-                                    <x-heroicon-o-inbox-in class="w-6 h-6 text-purple-600 dark:text-purple-400" aria-hidden="true" />
+                                    <x-heroicon-o-inbox-arrow-down class="w-6 h-6 text-purple-600 dark:text-purple-400" aria-hidden="true" />
                                 @else
                                     <x-heroicon-o-bell class="w-6 h-6 text-gray-600 dark:text-gray-400" aria-hidden="true" />
                                 @endif

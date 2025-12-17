@@ -89,21 +89,21 @@ class EnhancedRealTimeDashboardWidget extends BaseWidget
                 ->description($metrics['helpdesk']['pending_tickets'].' tiket tertunda')
                 ->descriptionIcon('heroicon-m-ticket')
                 ->color($this->getPerformanceColor($metrics['helpdesk']['resolution_rate']))
-                ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index')),
+                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
 
             // Loan Approval Rate
             Stat::make('Kadar Kelulusan', $metrics['loans']['approval_rate'].'%')
                 ->description($metrics['loans']['pending_approval'].' menunggu kelulusan')
                 ->descriptionIcon('heroicon-m-document-check')
                 ->color($this->getPerformanceColor($metrics['loans']['approval_rate']))
-                ->url(route('filament.admin.resources.loans.loan-applications.index')),
+                ->url(route('filament.admin.operations.resources.loan-applications.index')),
 
             // Asset Utilization
             Stat::make('Penggunaan Aset', $metrics['assets']['utilization_rate'].'%')
                 ->description($metrics['assets']['available_assets'].' tersedia')
                 ->descriptionIcon('heroicon-m-cube')
                 ->color($this->getUtilizationColor($metrics['assets']['utilization_rate']))
-                ->url(route('filament.admin.resources.assets.assets.index')),
+                ->url(route('filament.admin.inventory.resources.assets.index')),
         ];
 
         // Add performance metrics for admin/superuser
