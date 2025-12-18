@@ -6,8 +6,8 @@ namespace App\Providers;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
 use Laravel\Horizon\Horizon;
-use Laravel\Horizon\HorizonApplicationServiceProvider;
 
 /**
  * ICTServe Horizon Service Provider
@@ -17,15 +17,13 @@ use Laravel\Horizon\HorizonApplicationServiceProvider;
  *
  * @see docs/D17_QUEUE_MANAGEMENT_HORIZON.md
  */
-class HorizonServiceProvider extends HorizonApplicationServiceProvider
+class HorizonServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
-        parent::boot();
-
         // Configure notification routing for queue issues
         // Requirement 23.5: Automated alerting for queue issues
         Horizon::routeMailNotificationsTo(config('horizon.notifications.email', 'admin@motac.gov.my'));
