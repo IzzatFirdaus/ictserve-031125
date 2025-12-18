@@ -24,7 +24,10 @@ services:
       DB_PASSWORD: secret
       REDIS_HOST: redis
       REDIS_PORT: 6379
-    entrypoint: ["/usr/local/bin/wait-for-db.sh"]
+      # npm configuration for www-data user
+      NPM_CONFIG_CACHE: /var/www/.npm-cache
+      NPM_CONFIG_PREFIX: /var/www/.npm-global
+    entrypoint: ["/usr/local/bin/docker-entrypoint.sh"]
     command: ["php-fpm"]
 
   nginx:
@@ -35,9 +38,24 @@ services:
       - "8000:80"
     volumes:
       - ./:/var/www/html:cached
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/prod.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
+
+  reverb:
+    image: ictserve-app:latest
+    container_name: ictserve-reverb
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html:cached
+    ports:
+      - "8080:8080"
+    env_file: ./.env.docker
+    depends_on:
+      - redis
+      - app
+    command: ["php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080", "--no-interaction"]
 
   db:
     image: mysql:8.0
@@ -119,6 +137,5 @@ services:
 volumes:
   dbdata:
   redis-data:
-
 
 
