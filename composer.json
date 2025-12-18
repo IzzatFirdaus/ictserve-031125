@@ -7,11 +7,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "aws/aws-php-sns-message-validator": "^1.10",
         "aws/aws-sdk-php": "^3.363",
         "bacon/bacon-qr-code": "^3.0",
         "barryvdh/laravel-dompdf": "^3.1",
         "cloudstudio/ollama-laravel": "^1.1",
-        "filament/filament": "4.1.10",
+        "filament/filament": "^4.1.10",
         "laravel/framework": "^12.0",
         "laravel/horizon": "^5.41",
         "laravel/mcp": "^0.3.4",
@@ -25,8 +26,10 @@
         "livewire/volt": "^1.7.0",
         "maatwebsite/excel": "^3.1",
         "owen-it/laravel-auditing": "^14.0",
+        "php-http/discovery": "^1.20",
         "phpoffice/phpword": "^1.4",
         "pragmarx/google2fa-laravel": "^2.3",
+        "predis/predis": "^3.3",
         "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-permission": "^6.23",
@@ -36,6 +39,7 @@
         "barryvdh/laravel-ide-helper": "^3.6",
         "doctrine/dbal": "*",
         "fakerphp/faker": "^1.24",
+        "filp/whoops": "^2.18",
         "larastan/larastan": "*",
         "laravel/boost": "^1.8",
         "laravel/breeze": "^2.3",
@@ -45,7 +49,8 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "nunomaduro/phpinsights": "^2.11",
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "pragmarx/recovery": "^0.2.1"
     },
     "autoload": {
         "psr-4": {
@@ -78,6 +83,10 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
+        ],
+        "test:coverage": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test --coverage --min=80"
         ],
         "analyse": "vendor/bin/phpstan analyse",
         "analyse:save": "php -r \"if (!is_dir('test-results/larastan')) { mkdir('test-results/larastan', 0777, true); }\" && php -r \"if (!is_file('vendor/larastan/larastan/extension.neon')) { fwrite(STDERR, 'ERROR: Missing larastan extension vendor/larastan/larastan/extension.neon\n'); exit(2);}\" && vendor/bin/phpstan analyse --no-progress 2>&1 | tee test-results/larastan/larastan-results.txt",
