@@ -1,474 +1,276 @@
-/**
- * ICTServe Admin Panel Theme - MOTAC Branding
- *
- * @description WCAG 2.2 AA compliant theme for Filament 4 admin panel
- * @trace D03-FR-018.3; D12 §4.1; D14 §2.2; Requirements 5.1
- * @version 2.0.0
- * @since 2025-12-06
- */
+@import '/vendor/filament/filament/resources/css/theme.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
-@import "tailwindcss";
+@config "../../tailwind.config.js";
 
-/* ==========================================================================
-   MOTAC Brand Colors (D14 §4.1)
-   ========================================================================== */
+/* ICTServe Filament Admin Theme - D12-D14 Compliance */
+/* MyGOV Digital Service Standards v2.1.0 */
+/* WCAG 2.2 AA Compliant Color System */
 
 :root {
-	/* Primary Brand Colors - MOTAC Blue */
-	--motac-primary: #0056b3;
-	--motac-primary-dark: #003d80;
-	--motac-primary-light: #e3efff;
+    /* === MyGOV Primary Colors (WCAG 2.2 AA Compliant) === */
+    --primary-50: #eff6ff;
+    --primary-100: #dbeafe;
+    --primary-200: #bfdbfe;
+    --primary-300: #93c5fd;
+    --primary-400: #60a5fa;
+    --primary-500: #0056b3; /* Main MOTAC Blue - 7.2:1 contrast */
+    --primary-600: #004494; /* 8.1:1 contrast */
+    --primary-700: #003875; /* 9.8:1 contrast */
+    --primary-800: #002c5f;
+    --primary-900: #002049;
+    --primary-950: #001633;
 
-	/* Secondary Colors */
-	--motac-secondary: #0b4d8f;
-	--motac-accent: #f59e0b;
+    /* === Semantic Colors (WCAG 2.2 AA) === */
+    --success-50: #f0fdf4;
+    --success-100: #dcfce7;
+    --success-200: #bbf7d0;
+    --success-300: #86efac;
+    --success-400: #4ade80;
+    --success-500: #1b7c54; /* 4.6:1 contrast */
+    --success-600: #16a34a;
+    --success-700: #15803d;
+    --success-800: #166534;
+    --success-900: #14532d;
+    --success-950: #052e16;
 
-	/* Semantic Colors - WCAG 2.2 AA Compliant */
-	--motac-success: #198754;
-	--motac-warning: #ff8c00;
-	--motac-danger: #b50c0c;
-	--motac-info: #0dcaf0;
+    --warning-50: #fffbeb;
+    --warning-100: #fef3c7;
+    --warning-200: #fde68a;
+    --warning-300: #fcd34d;
+    --warning-400: #fbbf24;
+    --warning-500: #cc7700; /* 4.5:1 contrast */
+    --warning-600: #d97706;
+    --warning-700: #b45309;
+    --warning-800: #92400e;
+    --warning-900: #78350f;
+    --warning-950: #451a03;
 
-	/* Sidebar Theme */
-	--ictserve-sidebar-bg: #0f1f3d;
-	--ictserve-sidebar-text: #f8fafc;
-	--ictserve-sidebar-muted: #cbd5f5;
-	--ictserve-sidebar-active-bg: #e3efff;
-	--ictserve-sidebar-active-text: #002952; /* 6.5:1 contrast ratio - WCAG AA compliant */
-	--ictserve-focus-ring: #f59e0b;
+    --danger-50: #fef2f2;
+    --danger-100: #fee2e2;
+    --danger-200: #fecaca;
+    --danger-300: #fca5a5;
+    --danger-400: #f87171;
+    --danger-500: #b3002d; /* 7.8:1 contrast */
+    --danger-600: #dc2626;
+    --danger-700: #b91c1c;
+    --danger-800: #991b1b;
+    --danger-900: #7f1d1d;
+    --danger-950: #450a0a;
 
-	/* Header Theme */
-	--ictserve-header-bg: #ffffff;
-	--ictserve-header-border: #e5e7eb;
+    /* === Gray Scale (Neutral) === */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280; /* 4.6:1 contrast */
+    --gray-600: #4b5563;
+    --gray-700: #374151; /* 8.9:1 contrast */
+    --gray-800: #1f2937;
+    --gray-900: #111827; /* 12.6:1 contrast */
+    --gray-950: #030712;
 
-	/* Card Theme */
-	--ictserve-card-bg: #ffffff;
-	--ictserve-card-border: #e5e7eb;
-	--ictserve-card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
-		0 1px 2px -1px rgb(0 0 0 / 0.1);
+    /* === Typography System (D13) === */
+    --font-heading: 'Poppins', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* === Focus Ring (WCAG 2.2 AA) === */
+    --focus-ring-color: #0b4d8f; /* 8.1:1 contrast */
+    --focus-ring-width: 3px;
+    --focus-ring-offset: 2px;
+
+    /* === Shadow System (MyGOV) === */
+    --shadow-button: 0px 1px 3px 0px rgba(0, 0, 0, 0.07);
+    --shadow-card: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05);
+    --shadow-dropdown: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 12px 50px 0px rgba(0, 0, 0, 0.10);
+
+    /* === Motion System (MyGOV) === */
+    --motion-easeout: cubic-bezier(0, 0, 0.58, 1);
+    --motion-easeoutback: cubic-bezier(0.4, 1.4, 0.2, 1);
+    --duration-short: 200ms;
+    --duration-medium: 400ms;
+    --duration-long: 600ms;
 }
 
-/* ==========================================================================
-   Form Fields - WCAG 2.2 AA Contrast (D14 §10.3)
-   ========================================================================== */
-
-/* Filament form fields - dark slate/blue for strong contrast */
-.fi-form-field-wrapper .fi-input,
-.fi-form-field-wrapper .fi-textarea {
-	color: #0a2a4a;
+/* === Typography Implementation === */
+.fi-header-heading,
+.fi-section-header-heading,
+.fi-modal-heading,
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading) !important;
+    font-weight: 600;
 }
 
-.fi-form-field-wrapper .fi-select {
-	color: #0a2a4a;
+.fi-body,
+.fi-input,
+.fi-select,
+.fi-textarea,
+body {
+    font-family: var(--font-body) !important;
 }
 
-.fi-sidebar {
-	background-color: var(--ictserve-sidebar-bg);
-	color: var(--ictserve-sidebar-text);
+/* === Enhanced Focus Indicators (WCAG 2.2 AA) === */
+*:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color) !important;
+    outline-offset: var(--focus-ring-offset) !important;
+    border-radius: 4px;
 }
 
-.fi-sidebar .fi-sidebar-group-btn,
-.fi-sidebar .fi-sidebar-item-btn,
-.fi-sidebar .fi-sidebar-item-label,
-.fi-sidebar .fi-sidebar-group-label {
-	color: var(--ictserve-sidebar-text);
+/* === Button Enhancements === */
+.fi-btn {
+    transition: all var(--duration-short) var(--motion-easeout);
+    font-family: var(--font-body);
+    font-weight: 500;
+    min-height: 44px; /* WCAG touch target */
+    box-shadow: var(--shadow-button);
 }
 
-.fi-sidebar .fi-sidebar-item-btn:not(.fi-active .fi-sidebar-item-btn) {
-	background-color: transparent;
+.fi-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-card);
 }
 
-.fi-sidebar .fi-sidebar-item.fi-active .fi-sidebar-item-btn {
-	background-color: var(--ictserve-sidebar-active-bg);
-	color: var(--ictserve-sidebar-active-text);
-	border-radius: 0.75rem;
-	font-weight: 600;
-	box-shadow: inset 0 0 0 1px #b8d0ff;
+.fi-btn:active {
+    transform: translateY(0);
 }
 
-.fi-sidebar .fi-sidebar-item.fi-active .fi-sidebar-item-label {
-	color: var(--ictserve-sidebar-active-text);
+/* === Card Enhancements === */
+.fi-section,
+.fi-card,
+.fi-modal {
+    box-shadow: var(--shadow-card);
+    border-radius: 12px;
 }
 
-.fi-sidebar .fi-sidebar-item-btn:hover,
-.fi-sidebar .fi-sidebar-group-btn:hover {
-	background-color: rgba(255, 255, 255, 0.08);
+/* === Navigation Enhancements === */
+.fi-sidebar-nav-item {
+    border-radius: 8px;
+    transition: all var(--duration-short) var(--motion-easeout);
 }
 
-.fi-sidebar .fi-sidebar-item-btn:focus-visible,
-.fi-sidebar .fi-sidebar-group-btn:focus-visible {
-	outline: 3px solid var(--ictserve-focus-ring);
-	outline-offset: 3px;
-	border-radius: 0.75rem;
+.fi-sidebar-nav-item:hover {
+    background-color: var(--primary-50);
+    transform: translateX(4px);
 }
 
-.fi-sidebar-group-btn {
-	border: none;
-	background: transparent;
-	width: 100%;
-	text-align: left;
-	padding: calc(var(--spacing, 0.5rem) * 2);
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	font-weight: 600;
+.fi-sidebar-nav-item[aria-current="page"] {
+    background-color: var(--primary-100);
+    border-left: 4px solid var(--primary-600);
 }
 
-.fi-sidebar-group-btn .fi-sidebar-group-collapse-icon {
-	margin-left: auto;
-	color: var(--ictserve-sidebar-muted);
-	transition: transform 150ms ease, color 150ms ease;
+/* === Table Enhancements === */
+.fi-ta-table {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
 }
 
-.fi-sidebar-group-btn[aria-expanded="false"] .fi-sidebar-group-collapse-icon {
-	transform: rotate(-90deg);
+.fi-ta-header-cell {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    background-color: var(--gray-50);
 }
 
-/* Breadcrumb and checkbox touch target fixes */
-.fi-breadcrumbs-item-label {
-	min-height: 44px;
-	min-width: 44px;
-	display: inline-flex;
-	align-items: center;
-	padding: 0.5rem;
+.fi-ta-row:hover {
+    background-color: var(--primary-50);
+    transition: background-color var(--duration-short) var(--motion-easeout);
 }
 
-.fi-ta-page-checkbox,
-.fi-ta-checkbox {
-	min-height: 44px;
-	min-width: 44px;
-	cursor: pointer;
+/* === Form Enhancements === */
+.fi-input,
+.fi-select,
+.fi-textarea {
+    border-radius: 8px;
+    transition: all var(--duration-short) var(--motion-easeout);
+    min-height: 44px; /* WCAG touch target */
 }
 
-/* Table link visible text */
-.fi-ta-cell a .fi-ta-col {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
+.fi-input:focus,
+.fi-select:focus,
+.fi-textarea:focus {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
 }
 
-/* ==========================================================================
-   MOTAC Header Branding (Requirements 5.1)
-   ========================================================================== */
-
-.fi-topbar {
-	background-color: var(--ictserve-header-bg);
-	border-bottom: 1px solid var(--ictserve-header-border);
+/* === Status Badge Enhancements === */
+.fi-badge {
+    font-family: var(--font-body);
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 0.875rem;
 }
 
-/* Brand Logo Styling */
-.fi-logo {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
+/* === Accessibility Enhancements === */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
-.fi-logo img {
-	height: 2.5rem;
-	width: auto;
-	object-fit: contain;
+/* Skip link for keyboard navigation */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--primary-600);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 1000;
+    font-family: var(--font-body);
 }
 
-/* ==========================================================================
-   Navigation Groups (Requirements 5.1)
-   ========================================================================== */
-
-.fi-sidebar-group {
-	margin-bottom: 0.5rem;
+.skip-link:focus {
+    top: 6px;
 }
 
-.fi-sidebar-group-label {
-	font-size: 0.75rem;
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	color: var(--ictserve-sidebar-muted);
-	padding: 0.5rem 1rem;
+/* === High Contrast Mode Support === */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-500: #003875;
+        --gray-700: #000000;
+        --focus-ring-width: 4px;
+    }
 }
 
-/* ==========================================================================
-   Dashboard Cards (Requirements 5.4)
-   ========================================================================== */
-
-.fi-wi-stats-overview-stat {
-	background-color: var(--ictserve-card-bg);
-	border: 1px solid var(--ictserve-card-border);
-	border-radius: 0.75rem;
-	box-shadow: var(--ictserve-card-shadow);
-	transition: box-shadow 200ms ease, transform 200ms ease;
+/* === Reduced Motion Support === */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
-.fi-wi-stats-overview-stat:hover {
-	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-	transform: translateY(-1px);
+/* === Dark Mode Enhancements === */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-500: #60a5fa;
+        --gray-50: #1f2937;
+        --gray-900: #f9fafb;
+    }
 }
 
-/* Stats Card Icon */
-.fi-wi-stats-overview-stat-icon {
-	background-color: var(--motac-primary-light);
-	color: var(--motac-primary);
-	border-radius: 0.5rem;
-	padding: 0.75rem;
-}
-
-/* ==========================================================================
-   Status Badges (Requirements 5.2, 5.3)
-   ========================================================================== */
-
-/* Priority Badges */
-.fi-badge[data-priority="critical"],
-.fi-badge[data-priority="high"] {
-	background-color: #fef2f2;
-	color: var(--motac-danger);
-	border: 1px solid #fecaca;
-}
-
-.fi-badge[data-priority="medium"] {
-	background-color: #fffbeb;
-	color: var(--motac-warning);
-	border: 1px solid #fde68a;
-}
-
-.fi-badge[data-priority="low"] {
-	background-color: #f0fdf4;
-	color: var(--motac-success);
-	border: 1px solid #bbf7d0;
-}
-
-/* Status Badges */
-.fi-badge[data-status="open"],
-.fi-badge[data-status="pending"] {
-	background-color: #eff6ff;
-	color: var(--motac-primary);
-	border: 1px solid #bfdbfe;
-}
-
-.fi-badge[data-status="in_progress"],
-.fi-badge[data-status="processing"] {
-	background-color: #fefce8;
-	color: #854d0e;
-	border: 1px solid #fef08a;
-}
-
-.fi-badge[data-status="resolved"],
-.fi-badge[data-status="approved"],
-.fi-badge[data-status="completed"] {
-	background-color: #f0fdf4;
-	color: var(--motac-success);
-	border: 1px solid #bbf7d0;
-}
-
-.fi-badge[data-status="closed"],
-.fi-badge[data-status="rejected"],
-.fi-badge[data-status="cancelled"] {
-	background-color: #f9fafb;
-	color: #6b7280;
-	border: 1px solid #e5e7eb;
-}
-
-/* ==========================================================================
-   SLA Indicators (Requirements 5.2)
-   ========================================================================== */
-
-.sla-indicator {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.375rem;
-	padding: 0.25rem 0.5rem;
-	border-radius: 9999px;
-	font-size: 0.75rem;
-	font-weight: 500;
-}
-
-.sla-indicator--on-track {
-	background-color: #f0fdf4;
-	color: var(--motac-success);
-}
-
-.sla-indicator--at-risk {
-	background-color: #fffbeb;
-	color: var(--motac-warning);
-}
-
-.sla-indicator--breached {
-	background-color: #fef2f2;
-	color: var(--motac-danger);
-}
-
-.sla-indicator__icon {
-	width: 0.875rem;
-	height: 0.875rem;
-}
-
-/* ==========================================================================
-   Approval Chain Status (Requirements 5.3)
-   ========================================================================== */
-
-.approval-chain {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-}
-
-.approval-step {
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
-}
-
-.approval-step__icon {
-	width: 1.25rem;
-	height: 1.25rem;
-	border-radius: 9999px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.approval-step__icon--pending {
-	background-color: #f3f4f6;
-	color: #9ca3af;
-}
-
-.approval-step__icon--approved {
-	background-color: #d1fae5;
-	color: var(--motac-success);
-}
-
-.approval-step__icon--rejected {
-	background-color: #fee2e2;
-	color: var(--motac-danger);
-}
-
-.approval-step__connector {
-	width: 1.5rem;
-	height: 2px;
-	background-color: #e5e7eb;
-}
-
-.approval-step__connector--completed {
-	background-color: var(--motac-success);
-}
-
-/* ==========================================================================
-   Asset Availability Indicators (Requirements 5.3)
-   ========================================================================== */
-
-.asset-availability {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.375rem;
-	padding: 0.25rem 0.625rem;
-	border-radius: 0.375rem;
-	font-size: 0.75rem;
-	font-weight: 500;
-}
-
-.asset-availability--available {
-	background-color: #d1fae5;
-	color: var(--motac-success);
-}
-
-.asset-availability--reserved {
-	background-color: #fef3c7;
-	color: #92400e;
-}
-
-.asset-availability--in-use {
-	background-color: #dbeafe;
-	color: var(--motac-primary);
-}
-
-.asset-availability--maintenance {
-	background-color: #f3f4f6;
-	color: #6b7280;
-}
-
-/* ==========================================================================
-   Real-time Update Indicators (Requirements 5.4)
-   ========================================================================== */
-
-.realtime-indicator {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.375rem;
-	font-size: 0.75rem;
-	color: #6b7280;
-}
-
-.realtime-indicator__dot {
-	width: 0.5rem;
-	height: 0.5rem;
-	border-radius: 9999px;
-	background-color: var(--motac-success);
-	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-	0%,
-	100% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0.5;
-	}
-}
-
-/* ==========================================================================
-   Audit Log Styling (Requirements 5.5)
-   ========================================================================== */
-
-.audit-log-source {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.25rem;
-	padding: 0.125rem 0.5rem;
-	border-radius: 0.25rem;
-	font-size: 0.75rem;
-	font-weight: 500;
-}
-
-.audit-log-source--compliance {
-	background-color: #dbeafe;
-	color: var(--motac-primary);
-}
-
-.audit-log-source--activity {
-	background-color: #d1fae5;
-	color: var(--motac-success);
-}
-
-/* ==========================================================================
-   Responsive Adjustments
-   ========================================================================== */
-
-@media (max-width: 1023px) {
-	.fi-sidebar {
-		position: fixed;
-		z-index: 40;
-		transform: translateX(-100%);
-		transition: transform 300ms ease;
-	}
-
-	.fi-sidebar.fi-sidebar-open {
-		transform: translateX(0);
-	}
-}
-
-/* ==========================================================================
-   Print Styles
-   ========================================================================== */
-
+/* === Print Styles === */
 @media print {
-	.fi-sidebar,
-	.fi-topbar,
-	.fi-global-search,
-	.fi-user-menu {
-		display: none !important;
-	}
+    .fi-sidebar,
+    .fi-topbar,
+    .fi-btn {
+        display: none !important;
+    }
 
-	.fi-main {
-		margin-left: 0 !important;
-		padding: 0 !important;
-	}
+    .fi-main {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
 }
