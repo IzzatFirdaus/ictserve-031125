@@ -1,7 +1,10 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 # Keep things non-interactive
 ARG COMPOSER_ALLOW_SUPERUSER=1
+
+# Update CA certificates and repositories
+RUN apk update --no-cache || apk add --no-cache ca-certificates && update-ca-certificates
 
 # System deps and build tools for extensions
 RUN apk add --no-cache --update \
@@ -27,7 +30,7 @@ RUN apk add --no-cache --update \
 # Configure and install PHP extensions used by Laravel
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
  && docker-php-ext-configure intl \
- && docker-php-ext-install -j$(nproc) pdo_mysql zip mbstring intl bcmath opcache gd
+ && docker-php-ext-install -j$(nproc) pdo_mysql zip mbstring intl bcmath opcache gd pcntl
 
 # Install redis php extension (phpredis) for cache/queue/session support
 RUN pecl install redis \
