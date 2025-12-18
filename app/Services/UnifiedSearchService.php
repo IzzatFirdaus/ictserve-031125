@@ -33,9 +33,9 @@ class UnifiedSearchService
      * Search across all resources with caching and relevance ranking
      *
      * @param  string  $query  Search query
-     * @param  array  $resources  Resources to search (default: all)
+     * @param  array<string>  $resources  Resources to search (default: all)
      * @param  int  $limit  Maximum results per resource
-     * @return array Grouped search results with relevance scores
+     * @return array<string, Collection> Grouped search results with relevance scores
      */
     public function search(string $query, array $resources = [], int $limit = 10): array
     {
@@ -83,7 +83,7 @@ class UnifiedSearchService
                     ->orWhere('guest_name', 'like', "%{$query}%")
                     ->orWhere('guest_email', 'like', "%{$query}%");
             })
-            ->with(['user', 'assignedTo', 'asset'])
+            ->with(['user', 'asset'])
             ->limit($limit)
             ->get()
             ->map(function ($ticket) use ($query) {
@@ -101,7 +101,7 @@ class UnifiedSearchService
                     'metadata' => [
                         'status' => $ticket->status,
                         'priority' => $ticket->priority,
-                        'created_at' => $ticket->created_at->format('d M Y'),
+                        'created_at' => $ticket->created_at?->format('d M Y') ?? 'N/A',
                     ],
                 ];
             })
@@ -137,8 +137,8 @@ class UnifiedSearchService
                         $loan->purpose,
                     ]),
                     'metadata' => [
-                        'status' => $loan->status->value ?? (string) $loan->status,
-                        'loan_date' => $loan->loan_start_date?->format('d M Y'),
+                        'status' => $loan->status->value,
+                        'loan_date' => $loan->loan_start_date?->format('d M Y') ?? 'N/A',
                         'assets_count' => $loan->loanItems->count(),
                     ],
                 ];
@@ -177,7 +177,7 @@ class UnifiedSearchService
                     'metadata' => [
                         'status' => $asset->status,
                         'condition' => $asset->condition,
-                        'category' => $asset->category?->name_en,
+                        'category' => $asset->category->name_en,
                     ],
                 ];
             })
@@ -226,7 +226,7 @@ class UnifiedSearchService
      * Calculate relevance score based on query match
      *
      * @param  string  $query  Search query
-     * @param  array  $fields  Fields to check
+     * @param  array<string|null>  $fields  Fields to check
      * @return float Relevance score (0-100)
      */
     private function calculateRelevance(string $query, array $fields): float
@@ -269,6 +269,8 @@ class UnifiedSearchService
 
     /**
      * Generate cache key for search query
+     *
+     * @param  array<string>  $resources
      */
     private function getCacheKey(string $query, array $resources, int $limit): string
     {

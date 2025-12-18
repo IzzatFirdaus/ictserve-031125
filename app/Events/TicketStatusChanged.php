@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Events;
 
 use App\Models\HelpdeskTicket;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -14,73 +14,64 @@ use Illuminate\Queue\SerializesModels;
 /**
  * Ticket Status Changed Event
  *
- * Broadcasts real-time status updates for helpdesk tickets via Laravel Reverb.
- * Sent to both user's private channel and ticket-specific channel for guest tracking.
+ * Broadcasts real-time updates when a helpdesk ticket status changes.
+ * Supports ICTServe v3.6.0 True Hybrid Architecture with guest and authenticated users.
  *
- * @see .kiro/specs/frontend-comprehensive-v3.6/requirements.md - Requirements 10.1, 10.3
- * @see D16_BROADCASTING_SETUP.md - WebSocket configuration
+ * @see D16_BROADCASTING_SETUP.md - Broadcasting configuration
+ * @see docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md - Requirements 6.1, 6.2, 6.3
  *
- * @trace D03 SRS-FR-008; D04 §5.3
+ * @requirements 6.1, 6.2, 6.3, 8.1, 8.2
  */
 class TicketStatusChanged implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * The old status before the change.
-     */
-    public string $oldStatus;
-
-    /**
-     * The new status after the change.
-     */
-    public string $newStatus;
-
-    /**
      * Create a new event instance.
+     *
+     * @param  HelpdeskTicket  $ticket  The ticket that changed status
+     * @param  string|null  $oldStatus  Previous status (optional)
+     * @param  string|null  $newStatus  New status (optional, defaults to ticket's current status)
      */
     public function __construct(
         public HelpdeskTicket $ticket,
-        ?string $oldStatus = null,
-        ?string $newStatus = null
+        public ?string $oldStatus = null,
+        public ?string $newStatus = null
     ) {
-        $this->oldStatus = $oldStatus ?? $ticket->getOriginal('status') ?? 'unknown';
-        $this->newStatus = $newStatus ?? $ticket->status->value ?? 'unknown';
+        // If new status not provided, use ticket's current status
+        $this->newStatus = $newStatus ?? $ticket->status;
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
+     * Broadcasts to multiple channels for different audiences:
+     * - Public channel for general ticket updates
+     * - Ticket-specific channel for real-time status tracking
+     * - User-specific private channel (if authenticated)
+     *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
     public function broadcastOn(): array
     {
-        $channels = [];
+        $channels = [
+            // Public channel for all helpdesk updates
+            new Channel('helpdesk'),
+            // Ticket-specific channel using ticket ID for guest access
+            new Channel("ticket.{$this->ticket->id}"),
+        ];
 
-        // Broadcast to ticket-specific channel for guest tracking
-        if ($this->ticket->uuid) {
-            $channels[] = new PrivateChannel("ticket.{$this->ticket->uuid}");
-        }
-
-        // Broadcast to user's private channel if authenticated submission
+        // Add user-specific private channel if ticket has authenticated user
         if ($this->ticket->user_id) {
-            $channels[] = new PrivateChannel("user.{$this->ticket->user_id}");
+            $channels[] = new Channel("user.{$this->ticket->user_id}");
         }
 
         // Broadcast to admin notifications channel for high-priority tickets
         if ($this->ticket->priority && in_array($this->ticket->priority, ['high', 'critical'], true)) {
-            $channels[] = new PrivateChannel('admin.notifications');
+            $channels[] = new Channel('admin.notifications');
         }
 
         return $channels;
-    }
-
-    /**
-     * The event's broadcast name.
-     */
-    public function broadcastAs(): string
-    {
-        return 'ticket.status.changed';
     }
 
     /**
@@ -93,16 +84,38 @@ class TicketStatusChanged implements ShouldBroadcast
         return [
             'ticket_id' => $this->ticket->id,
             'ticket_number' => $this->ticket->ticket_number,
-            'uuid' => $this->ticket->uuid,
             'old_status' => $this->oldStatus,
             'new_status' => $this->newStatus,
             'title' => $this->ticket->title,
             'priority' => $this->ticket->priority,
-            'updated_at' => now()->toISOString(),
-            'message' => __('notifications.ticket_status_changed', [
-                'ticket' => $this->ticket->ticket_number,
-                'status' => __("tickets.status.{$this->newStatus}"),
-            ]),
+            'subject' => $this->ticket->subject,
+            'updated_at' => $this->ticket->updated_at->toISOString(),
+            'message' => $this->getStatusMessage(),
         ];
+    }
+
+    /**
+     * The event's broadcast name.
+     */
+    public function broadcastAs(): string
+    {
+        return 'ticket.status.changed';
+    }
+
+    /**
+     * Get localized status change message.
+     */
+    private function getStatusMessage(): string
+    {
+        $statusMessages = [
+            'open' => 'Tiket telah dibuka',
+            'assigned' => 'Tiket telah diberikan kepada pegawai',
+            'in_progress' => 'Tiket sedang diproses',
+            'pending_user' => 'Menunggu maklum balas pengguna',
+            'resolved' => 'Tiket telah diselesaikan',
+            'closed' => 'Tiket telah ditutup',
+        ];
+
+        return $statusMessages[$this->newStatus] ?? "Status tiket telah dikemaskini kepada {$this->newStatus}";
     }
 }

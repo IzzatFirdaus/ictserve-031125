@@ -11,8 +11,11 @@ namespace App\Contracts;
  * dengan pelayan Ollama LLM. Selaras dengan D10 Source Code Documentation v3.6.0.
  *
  * @version 3.6.0
+ *
  * @author Pasukan Pembangunan BPM MOTAC
+ *
  * @compliance D10 Source Code Documentation v3.6.0
+ *
  * @requirements 6.1, 7.1
  */
 interface OllamaClientContract
@@ -24,14 +27,13 @@ interface OllamaClientContract
      * respons yang dijana oleh model. Menyokong konfigurasi parameter
      * seperti temperature, top_p, dan max_tokens.
      *
-     * @param array $payload Payload permintaan yang mengandungi:
-     *                      - model: string (nama model, contoh: 'llama3.1')
-     *                      - prompt: string (prompt pengguna)
-     *                      - system?: string (prompt sistem opsyen)
-     *                      - temperature?: float (kreativiti model, 0.0-1.0)
-     *                      - top_p?: float (nucleus sampling, 0.0-1.0)
-     *                      - max_tokens?: int (token maksimum untuk respons)
-     *
+     * @param  array<string, mixed>  $payload  Payload permintaan yang mengandungi:
+     *                                         - model: string (nama model, contoh: 'llama3.1')
+     *                                         - prompt: string (prompt pengguna)
+     *                                         - system?: string (prompt sistem opsyen)
+     *                                         - temperature?: float (kreativiti model, 0.0-1.0)
+     *                                         - top_p?: float (nucleus sampling, 0.0-1.0)
+     *                                         - max_tokens?: int (token maksimum untuk respons)
      * @return array Respons yang mengandungi:
      *               - response: string (teks yang dijana)
      *               - model: string (model yang digunakan)
@@ -55,9 +57,8 @@ interface OllamaClientContract
      * Kaedah ini mengubah teks input kepada representasi vektor yang boleh
      * digunakan untuk carian semantik dan perbandingan kesamaan.
      *
-     * @param string $text Teks untuk dijadikan embedding (maksimum 8192 aksara)
-     * @param string|null $model Model untuk embedding (lalai: model konfigurasi)
-     *
+     * @param  string  $text  Teks untuk dijadikan embedding (maksimum 8192 aksara)
+     * @param  string|null  $model  Model untuk embedding (lalai: model konfigurasi)
      * @return array Respons yang mengandungi:
      *               - embedding: array (vektor float dengan dimensi bergantung model)
      *               - model: string (model yang digunakan)
@@ -75,19 +76,18 @@ interface OllamaClientContract
      * Kaedah ini membolehkan perbualan berterusan dengan mengekalkan
      * konteks mesej sebelumnya untuk respons yang lebih kontekstual.
      *
-     * @param array $messages Array mesej dalam format:
-     *                        [
-     *                          ['role' => 'system', 'content' => 'prompt sistem'],
-     *                          ['role' => 'user', 'content' => 'mesej pengguna'],
-     *                          ['role' => 'assistant', 'content' => 'respons AI'],
-     *                          ...
-     *                        ]
-     * @param array $options Pilihan tambahan:
-     *                      - model?: string (model untuk digunakan)
-     *                      - temperature?: float (kreativiti)
-     *                      - max_tokens?: int (token maksimum)
-     *                      - stream?: bool (streaming respons)
-     *
+     * @param  array<int, array{role: string, content: string}>  $messages  Array mesej dalam format:
+     *                                                                      [
+     *                                                                      ['role' => 'system', 'content' => 'prompt sistem'],
+     *                                                                      ['role' => 'user', 'content' => 'mesej pengguna'],
+     *                                                                      ['role' => 'assistant', 'content' => 'respons AI'],
+     *                                                                      ...
+     *                                                                      ]
+     * @param  array<string, mixed>  $options  Pilihan tambahan:
+     *                                         - model?: string (model untuk digunakan)
+     *                                         - temperature?: float (kreativiti)
+     *                                         - max_tokens?: int (token maksimum)
+     *                                         - stream?: bool (streaming respons)
      * @return array Respons chat yang mengandungi:
      *               - message: array (mesej respons dengan role dan content)
      *               - model: string (model yang digunakan)
@@ -108,16 +108,16 @@ interface OllamaClientContract
      *
      * @return array Senarai model yang mengandungi:
      *               - models: array (senarai model dengan maklumat)
-     *                 [
-     *                   [
-     *                     'name' => 'llama3.1',
-     *                     'modified_at' => '2024-01-01T00:00:00Z',
-     *                     'size' => 4661224676,
-     *                     'digest' => 'sha256:...',
-     *                     'details' => [...]
-     *                   ],
-     *                   ...
-     *                 ]
+     *               [
+     *               [
+     *               'name' => 'llama3.1',
+     *               'modified_at' => '2024-01-01T00:00:00Z',
+     *               'size' => 4661224676,
+     *               'digest' => 'sha256:...',
+     *               'details' => [...]
+     *               ],
+     *               ...
+     *               ]
      *
      * @throws \Illuminate\Http\Client\ConnectionException Jika sambungan gagal
      */
@@ -139,8 +139,7 @@ interface OllamaClientContract
      * Kaedah ini mencari respons yang telah di-cache berdasarkan
      * kunci cache untuk meningkatkan prestasi.
      *
-     * @param string $cacheKey Kunci cache untuk dicari
-     *
+     * @param  string  $cacheKey  Kunci cache untuk dicari
      * @return array|null Respons dari cache atau null jika tidak dijumpai
      */
     public function getCachedResponse(string $cacheKey): ?array;
@@ -151,11 +150,9 @@ interface OllamaClientContract
      * Kaedah ini menyimpan respons ke dalam cache dengan TTL yang
      * ditentukan untuk kegunaan masa depan.
      *
-     * @param string $cacheKey Kunci cache untuk penyimpanan
-     * @param array $response Respons untuk disimpan
-     * @param int $ttl Masa hidup cache dalam saat
-     *
-     * @return void
+     * @param  string  $cacheKey  Kunci cache untuk penyimpanan
+     * @param  array<string, mixed>  $response  Respons untuk disimpan
+     * @param  int  $ttl  Masa hidup cache dalam saat
      */
     public function cacheResponse(string $cacheKey, array $response, int $ttl): void;
 
@@ -165,8 +162,7 @@ interface OllamaClientContract
      * Kaedah ini membolehkan pembersihan cache secara selektif
      * berdasarkan tag untuk pengurusan cache yang lebih baik.
      *
-     * @param string|array $tags Tag atau array tag untuk dibersihkan
-     *
+     * @param  string|array<int, string>  $tags  Tag atau array tag untuk dibersihkan
      * @return bool True jika berjaya, false sebaliknya
      */
     public function clearCache(string|array $tags): bool;
@@ -192,10 +188,8 @@ interface OllamaClientContract
      * Kaedah ini membolehkan penetapan konfigurasi secara dinamik
      * semasa runtime untuk penyesuaian tingkah laku klien.
      *
-     * @param string $key Kunci konfigurasi
-     * @param mixed $value Nilai konfigurasi
-     *
-     * @return void
+     * @param  string  $key  Kunci konfigurasi
+     * @param  mixed  $value  Nilai konfigurasi
      */
     public function setConfig(string $key, mixed $value): void;
 
@@ -205,8 +199,7 @@ interface OllamaClientContract
      * Kaedah ini mengembalikan konfigurasi semasa klien untuk
      * tujuan debugging dan pemantauan.
      *
-     * @param string|null $key Kunci konfigurasi khusus (opsyen)
-     *
+     * @param  string|null  $key  Kunci konfigurasi khusus (opsyen)
      * @return mixed Nilai konfigurasi atau array lengkap jika key null
      */
     public function getConfig(?string $key = null): mixed;
