@@ -104,9 +104,12 @@ RUN composer dump-autoload --optimize --no-scripts || true
 # Configure npm for www-data user (for development mode)
 RUN mkdir -p /var/www/.npm-cache /var/www/.npm-global /var/www/html/node_modules && \
     chown -R www-data:www-data /var/www/.npm-cache /var/www/.npm-global /var/www/html/node_modules && \
+    chmod -R 775 /var/www/.npm-cache /var/www/.npm-global /var/www/html/node_modules && \
     echo 'export NPM_CONFIG_CACHE=/var/www/.npm-cache' >> /etc/profile.d/npm.sh && \
     echo 'export NPM_CONFIG_PREFIX=/var/www/.npm-global' >> /etc/profile.d/npm.sh && \
-    echo 'export PATH=/var/www/.npm-global/bin:$PATH' >> /etc/profile.d/npm.sh
+    echo 'export PATH=/var/www/.npm-global/bin:$PATH' >> /etc/profile.d/npm.sh && \
+    echo 'export NPM_CONFIG_FUND=false' >> /etc/profile.d/npm.sh && \
+    echo 'export NPM_CONFIG_AUDIT=false' >> /etc/profile.d/npm.sh
 
 # Ensure storage and cache directories are writable for the www-data user
 RUN chown -R www-data:www-data storage bootstrap/cache public/build || true && \
