@@ -41,9 +41,15 @@ class AdminPanelProvider extends PanelProvider
 {
     public function boot(): void
     {
+        // Add skip link for accessibility (WCAG 2.2 AA)
         FilamentView::registerRenderHook(
             PanelsRenderHook::BODY_START,
             fn (): string => <<<'HTML'
+                <!-- Skip Link for Keyboard Navigation (D14 §9.5) -->
+                <a href="#main-content" class="skip-link">
+                    Langkau ke kandungan utama
+                </a>
+
                 <script>
                     (() => {
                         const persistSidebarState = () => {
@@ -81,6 +87,11 @@ class AdminPanelProvider extends PanelProvider
         FilamentView::registerRenderHook(
             PanelsRenderHook::HEAD_END,
             fn (): string => <<<'HTML'
+                <!-- Accessibility Meta Tags (WCAG 2.2 AA) -->
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+                <meta name="theme-color" content="#0056b3">
+                <meta name="description" content="ICTServe Admin - Sistem Pengurusan Perkhidmatan ICT MOTAC">
+
                 <style>
                     /* Global SVG icon sizing fix */
                     .fi-main-ctn svg:not([class*="w-"]):not([class*="h-"]) {
@@ -115,6 +126,21 @@ class AdminPanelProvider extends PanelProvider
                     [x-data*="globalSearchPanel"] .fi-global-search-results {
                         padding: 0.5rem;
                     }
+
+                    /* Main content anchor for skip link */
+                    #main-content {
+                        scroll-margin-top: 2rem;
+                    }
+
+                    /* Enhanced focus indicators for all interactive elements */
+                    .fi-btn:focus-visible,
+                    .fi-ta-btn:focus-visible,
+                    .fi-dropdown-trigger:focus-visible,
+                    .fi-sidebar-nav-item:focus-visible {
+                        outline: 3px solid #0056b3 !important;
+                        outline-offset: 2px !important;
+                        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.3) !important;
+                    }
                 </style>
             HTML,
         );
@@ -144,24 +170,25 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->authGuard('web')
-            ->login()
-            // MOTAC Branding Theme (Requirements 5.1, D14 §4.1)
-            // Custom theme CSS for WCAG 2.2 AA compliance and MOTAC branding
+            ->login(\App\Filament\Pages\Auth\Login::class)
+            // MOTAC Branding Theme (D12-D14 UI/UX Design Guidelines)
+            // Custom theme CSS for WCAG 2.2 AA compliance and MyGOV standards
             ->viteTheme('resources/css/filament/admin/theme.css')
-            // WCAG 2.2 AA Compliant Color Palette (Requirements 14.1, 15.1)
+            // WCAG 2.2 AA Compliant Color Palette (D14 §4.1 Color System)
             ->colors([
-                'primary' => Color::hex('#0056b3'),   // 6.8:1 contrast ratio
-                'success' => Color::hex('#198754'),   // 4.9:1 contrast ratio
-                'warning' => Color::hex('#ff8c00'),   // 4.5:1 contrast ratio
-                'danger' => Color::hex('#b50c0c'),    // 8.2:1 contrast ratio
+                'primary' => Color::hex('#0056b3'),   // MyGOV Blue - 6.8:1 contrast ratio
+                'success' => Color::hex('#198754'),   // MyGOV Green - 4.9:1 contrast ratio
+                'warning' => Color::hex('#ff8c00'),   // MyGOV Orange - 4.5:1 contrast ratio
+                'danger' => Color::hex('#b50c0c'),    // MyGOV Red - 8.2:1 contrast ratio
+                'gray' => Color::hex('#6b7280'),      // Neutral Gray - 4.5:1 contrast ratio
             ])
-            // Branding Configuration (Requirements 16.1, 21.4)
-            ->brandName('ICTServe Admin')
+            // Branding Configuration (D12 §5.1 MOTAC Branding)
+            ->brandName(__('filament::navigation.brand_name'))
             ->brandLogo(asset('images/motac-logo.png'))
             ->brandLogoHeight('2.5rem')
-            ->darkModeBrandLogo(asset('images/motac-logo.png'))
+            ->darkModeBrandLogo(asset('images/motac-logo-dark.png'))
             ->favicon(asset('favicon.ico'))
-            // Navigation Groups (Requirements 16.1)
+            // Navigation Groups (D12 §6.1 Navigation Structure - Bahasa Melayu)
             ->navigationGroups([
                 NavigationGroup::make(__('filament::navigation.operations'))
                     ->icon('heroicon-o-briefcase')
@@ -171,6 +198,9 @@ class AdminPanelProvider extends PanelProvider
                     ->collapsed(false),
                 NavigationGroup::make(__('filament::navigation.system'))
                     ->icon('heroicon-o-cog-6-tooth')
+                    ->collapsed(true),
+                NavigationGroup::make(__('filament::navigation.reports'))
+                    ->icon('heroicon-o-chart-bar')
                     ->collapsed(true),
             ])
             // Resource and Cluster Discovery

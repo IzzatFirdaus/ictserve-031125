@@ -43,6 +43,9 @@ class AdminDashboard extends BaseDashboard
 
     protected static ?int $navigationSort = -2;
 
+    // Add main content ID for skip link accessibility
+    protected string $view = 'filament.pages.admin-dashboard';
+
     /**
      * @return int|array<string, int>
      */
