@@ -132,8 +132,8 @@ class ReverbIntegrationTest extends TestCase
         ]);
 
         if ($response->status() !== 200) {
-            dump('Response status: '.$response->status());
-            dump('Response content: '.$response->getContent());
+            dump('Response status: ' . $response->status());
+            dump('Response content: ' . $response->getContent());
         }
 
         $response->assertOk();
