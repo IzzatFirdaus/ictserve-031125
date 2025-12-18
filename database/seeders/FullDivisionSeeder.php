@@ -43,6 +43,9 @@ class FullDivisionSeeder extends Seeder
         $headerColumns = array_map(static fn (?string $value): string => (string) $value, $header);
 
         while (($row = fgetcsv($handle)) !== false) {
+            // Decode HTML entities if present
+            $row = array_map(fn($value) => html_entity_decode($value ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8'), $row);
+            
             if (count($row) !== count($headerColumns)) {
                 // Skip malformed rows and warn
                 $this->command->warn('Skipping malformed CSV row: '.implode(',', $row));
