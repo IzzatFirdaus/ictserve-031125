@@ -27,6 +27,8 @@ services:
       # npm configuration for www-data user
       NPM_CONFIG_CACHE: /var/www/.npm-cache
       NPM_CONFIG_PREFIX: /var/www/.npm-global
+      NPM_CONFIG_FUND: false
+      NPM_CONFIG_AUDIT: false
     entrypoint: ["/usr/local/bin/docker-entrypoint.sh"]
     command: ["php-fpm"]
 
