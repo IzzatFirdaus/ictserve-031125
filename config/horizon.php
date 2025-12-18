@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 
 /**
@@ -25,7 +26,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'name' => env('HORIZON_NAME', 'ICTServe'),
+    'name' => Env::get('HORIZON_NAME', 'ICTServe'),
 
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +34,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'domain' => env('HORIZON_DOMAIN'),
+    'domain' => Env::get('HORIZON_DOMAIN'),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +42,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'path' => env('HORIZON_PATH', 'horizon'),
+    'path' => Env::get('HORIZON_PATH', 'horizon'),
 
     /*
     |--------------------------------------------------------------------------
@@ -57,9 +58,9 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'prefix' => env(
+    'prefix' => Env::get(
         'HORIZON_PREFIX',
-        Str::slug(env('APP_NAME', 'ictserve'), '_').'_horizon:'
+        Str::slug((string) Env::get('APP_NAME', 'ictserve'), '_').'_horizon:'
     ),
 
     /*
@@ -154,9 +155,9 @@ return [
     */
 
     'notifications' => [
-        'email' => env('HORIZON_NOTIFICATION_EMAIL', 'admin@motac.gov.my'),
-        'slack' => env('HORIZON_SLACK_WEBHOOK'),
-        'slack_channel' => env('HORIZON_SLACK_CHANNEL', '#ictserve-alerts'),
+        'email' => Env::get('HORIZON_NOTIFICATION_EMAIL', 'admin@motac.gov.my'),
+        'slack' => Env::get('HORIZON_SLACK_WEBHOOK'),
+        'slack_channel' => Env::get('HORIZON_SLACK_CHANNEL', '#ictserve-alerts'),
     ],
 
     /*
