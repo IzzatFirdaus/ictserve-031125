@@ -309,34 +309,29 @@ class GuestLoanApplicationTest extends TestCase
     #[Test]
     public function divisions_are_ordered_by_locale_specific_column(): void
     {
-        $this->markTestSkipped('Covered by component render test');
+        // Create additional divisions to test ordering
+        Division::factory()->create(['name_ms' => 'Bahagian A', 'name_en' => 'Division A']);
+        Division::factory()->create(['name_ms' => 'Bahagian Z', 'name_en' => 'Division Z']);
+
+        app()->setLocale('ms');
+
+        Livewire::test(GuestLoanApplication::class)
+            ->assertSee('Bahagian A')
+            ->assertSee('Bahagian Z');
     }
 
     /**
-     * Test form displays in english locale
-     */
-    #[Test]
-    public function form_displays_in_english_locale(): void
-    {
-        $this->markTestSkipped('Covered by localization tests');
-    }
-
-    /**
-     * Test form displays in malay locale
+     * Test form displays in malay locale (default)
      */
     #[Test]
     public function form_displays_in_malay_locale(): void
     {
-        $this->markTestSkipped('Covered by localization tests');
-    }
+        app()->setLocale('ms');
 
-    /**
-     * Test language switching persists in session
-     */
-    #[Test]
-    public function language_switching_persists_in_session(): void
-    {
-        $this->markTestSkipped('Covered by localization tests');
+        Livewire::test(GuestLoanApplication::class)
+            ->assertSee('Nama Penuh')
+            ->assertSee('No. Telefon')
+            ->assertSee('Bahagian/Unit');
     }
 
     /**
@@ -345,7 +340,12 @@ class GuestLoanApplicationTest extends TestCase
     #[Test]
     public function validation_messages_display_in_correct_language(): void
     {
-        $this->markTestSkipped('Covered by localization tests');
+        app()->setLocale('ms');
+
+        Livewire::test(GuestLoanApplication::class)
+            ->set('form.applicant_name', '')
+            ->call('nextStep')
+            ->assertHasErrors(['form.applicant_name']);
     }
 
     /**
@@ -354,69 +354,13 @@ class GuestLoanApplicationTest extends TestCase
     #[Test]
     public function asset_categories_are_loaded_correctly(): void
     {
-        $this->markTestSkipped('Covered by component render test');
-    }
+        // Create additional categories
+        AssetCategory::factory()->projectors()->create();
+        AssetCategory::factory()->tablets()->create();
 
-    /**
-     * Test component initialization performance
-     */
-    #[Test]
-    public function component_initialization_performance(): void
-    {
-        $this->markTestSkipped('Covered by performance tests');
-    }
-
-    /**
-     * Test form interaction performance
-     */
-    #[Test]
-    public function form_interaction_performance(): void
-    {
-        $this->markTestSkipped('Covered by performance tests');
-    }
-
-    /**
-     * Test asset availability check performance
-     */
-    #[Test]
-    public function asset_availability_check_performance(): void
-    {
-        $this->markTestSkipped('Covered by performance tests');
-    }
-
-    /**
-     * Test form submission performance
-     */
-    #[Test]
-    public function form_submission_performance(): void
-    {
-        $this->markTestSkipped('Covered by performance tests');
-    }
-
-    /**
-     * Test page load performance with multiple assets
-     */
-    #[Test]
-    public function page_load_performance_with_multiple_assets(): void
-    {
-        $this->markTestSkipped('Covered by performance tests');
-    }
-
-    /**
-     * Test debounced input handling performance
-     */
-    #[Test]
-    public function debounced_input_handling_performance(): void
-    {
-        $this->markTestSkipped('Covered by performance tests');
-    }
-
-    /**
-     * Test memory usage during form operations
-     */
-    #[Test]
-    public function memory_usage_during_form_operations(): void
-    {
-        $this->markTestSkipped('Covered by performance tests');
+        Livewire::test(GuestLoanApplication::class)
+            ->assertSet('currentStep', 1)
+            ->call('nextStep') // Move to step 2 where categories are shown
+            ->assertSuccessful();
     }
 }
