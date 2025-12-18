@@ -1,7 +1,7 @@
 code,name_ms,name_en,description_ms,description_en,is_active
 ICT,Bahagian Pengurusan Maklumat,Information Management Division,Menguruskan infrastruktur dan perkhidmatan ICT untuk MOTAC,Manages ICT infrastructure and services for MOTAC,true
 HR,Bahagian Pengurusan Sumber Manusia,Human Resource Management Division,Menguruskan hal ehwal kakitangan dan pembangunan sumber manusia,Manages staff affairs and human resource development,true
-FIN,Bahagian Kewangan,Finance Division,Menguruskan kewangan, perakaunan dan belanjawan,Manages finance, accounting and budgeting,true
+FIN,Bahagian Kewangan,Finance Division,"Menguruskan kewangan, perakaunan dan belanjawan","Manages finance, accounting and budgeting",true
 LEGAL,Unit Perundangan,Legal Unit,Menguruskan hal ehwal perundangan dan pematuhan,Manages legal affairs and compliance,true
 POLICY,Bahagian Dasar Kebudayaan,Cultural Policy Division,Menguruskan dasar dan pembangunan kebudayaan,Manages cultural policy and development,true
 TOURISM,Bahagian Pembangunan Pelancongan,Tourism Development Division,Menguruskan pembangunan dan promosi pelancongan,Manages tourism development and promotion,true
@@ -17,8 +17,8 @@ UUU,Unit Undang-Undang,Legal Unit,Menguruskan perihal undang-undang kementerian,
 UKPI,Unit KPI,Key Performance Indicator Unit,Menguruskan penilaian KPI dan pemantauan prestasi,Manages KPI evaluation and performance monitoring,true
 UKCOVID,Unit Khas COVID-19,COVID-19 Special Unit,Unit khas berkaitan COVID-19 operations and response,Special unit for COVID-19 response and operations,true
 VMS2026,Sekretariat Visit Malaysia 2026,Visit Malaysia 2026 Secretariat,Menguruskan koordinasi inisiatif Visit Malaysia 2026,Coordinates the Visit Malaysia 2026 initiative,true
-PMT,Pejabat Menteri,Minister's Office,Pejabat Menteri Pelancongan, Seni dan Budaya,Office of the Minister of Tourism, Arts and Culture,true
-PTMT,Pejabat Timbalan Menteri,Deputy Minister's Office,Pejabat Timbalan Menteri Pelancongan, Seni dan Budaya,Office of the Deputy Minister of Tourism, Arts and Culture,true
+PMT,Pejabat Menteri,Minister's Office,"Pejabat Menteri Pelancongan, Seni dan Budaya","Office of the Minister of Tourism, Arts and Culture",true
+PTMT,Pejabat Timbalan Menteri,Deputy Minister's Office,"Pejabat Timbalan Menteri Pelancongan, Seni dan Budaya","Office of the Deputy Minister of Tourism, Arts and Culture",true
 PKSU,Pejabat Ketua Setiausaha,Secretary-General's Office,Pejabat Ketua Setiausaha Kementerian,Office of the Ministry's Secretary General,true
 PTKSU,Pejabat Timbalan Ketua Setiausaha,Deputy Secretary-General's Office,Pejabat Timbalan Ketua Setiausaha Kementerian,Office of the Deputy Secretary General,true
 BPPR,Bahagian Pembangunan Prasarana,Infrastructure Development Division,Menguruskan pembangunan prasarana berkaitan pelancongan,Manages infrastructure development related to tourism,true
@@ -43,7 +43,7 @@ PEJ_WP_KL,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia WP Kuala Lumpu
 PEJ_WP_LABUAN,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia WP Labuan,State Office - WP Labuan,Pejabat WP Labuan bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in WP Labuan,true
 TM,Tourism Malaysia,Tourism Malaysia,Agensi promosi pelancongan Malaysia,Malaysia tourism promotion agency,true
 JKKN,Jabatan Kebudayaan dan Kesenian Negara,National Department for Culture and Arts,Jabatan yang menguruskan kebudayaan dan kesenian negara,Department managing national culture and arts,true
-ASWARA,Akademi Seni Budaya dan Warisan Kebangsaan,National Academy of Arts, Culture and Heritage,Akademi seni budaya dan warisan kebangsaan,National academy for arts, culture and heritage,true
+ASWARA,Akademi Seni Budaya dan Warisan Kebangsaan,"National Academy of Arts, Culture and Heritage",Akademi seni budaya dan warisan kebangsaan,"National academy for arts, culture and heritage",true
 ISTANA,Istana Budaya,National Theatre,Istana Budaya (Teater Kebangsaan),National theatre,true
 JMM,Jabatan Muzium Malaysia,Department of Museums Malaysia,Jabatan yang menguruskan muzium-muzium negara,Department managing national museums,true
 ARKIB,Arkib Negara Malaysia,National Archives of Malaysia,Arkib Negara Malaysia,National archives of Malaysia,true
