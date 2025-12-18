@@ -279,13 +279,41 @@
 
   - [x] 8.2 Implement Laravel Telescope system debugging
   - Configure Laravel Telescope v5.x with superuser-only access ✅ (TelescopeServiceProvider.php)
+    - TelescopeServiceProvider registered in bootstrap/providers.php
+    - Authorization gate restricts access to superuser role only
+    - Local environment allows full access for development
   - Set up comprehensive request monitoring and query analysis ✅ (configureFiltering method)
+    - Captures all entries in local environment
+    - Production filters: exceptions, failed requests, failed jobs, scheduled tasks
+    - Slow query detection (>100ms threshold)
+    - Email delivery tracking for approval workflows
   - Implement error tracking and debugging capabilities ✅ (Exception and error filtering)
+    - ReportableException capture enabled
+    - Failed request logging with full context
+    - Job failure tracking with stack traces
   - Create custom debugging tools for ICTServe-specific operations ✅ (configureTagging method)
+    - Auto-tagging: helpdesk, loan-approval, asset-management, email-delivery, approval-workflow, sla-tracking
+    - Content-based tag detection for ICTServe modules
+    - Approval email identification for workflow debugging
   - Integrate debugging data with performance monitoring ✅ (ICTServe-specific tags)
+    - Tags enable filtering by module in Telescope dashboard
+    - Cross-reference with Laravel Pulse metrics
   - Configure TelescopeServiceProvider with authorization gate ✅ (gate() method)
+    - Gate::define('viewTelescope') with superuser check
+    - User::isSuperuser() method validation
   - Implement custom Telescope watchers for email delivery and approval workflows ✅ (Auto-tagging)
+    - Mail watcher enabled for all email tracking
+    - Notification watcher for approval workflow debugging
+    - Job watcher for queue monitoring
   - Set up Telescope data pruning for production environment ✅ (config/telescope.php prune config)
+    - Default 168 hours (7 days) retention via TELESCOPE_PRUNE_HOURS
+    - Database migration: 2025_12_02_050046_create_telescope_entries_table.php
+  - Hide sensitive request details ✅ (hideSensitiveRequestDetails method)
+    - Hidden parameters: _token, password, password_confirmation, approval_token, api_token
+    - Hidden headers: cookie, x-csrf-token, x-xsrf-token, authorization
+  - Environment configuration ✅ (.env.example updated)
+    - TELESCOPE_ENABLED, TELESCOPE_PATH, TELESCOPE_DRIVER
+    - All watcher toggles configurable via environment variables
   - _Requirements: 4.2, 12.1, 14.1, 17.1, 17.2, 17.3, 17.4, 17.5_
 
   - [x] 8.3 Build enhanced security and API integration
@@ -299,16 +327,91 @@
   - Create API documentation using OpenAPI 3.0 specification
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 12.1, 12.2, 12.4, 12.5_
 
-  - [x] 8.4 Implement enhanced real-time communication system
-  - Configure Laravel Reverb v1.6.2 WebSocket server with clustering support
-  - Set up Laravel Echo v2.2.6 client integration with fallback mechanisms
-  - Implement real-time notifications with comprehensive delivery tracking
-  - Create real-time collaboration features for authenticated users
-  - Integrate real-time updates with performance monitoring
-  - Configure private and presence channels for authenticated users
-  - Implement WebSocket authentication and authorization
-  - Create fallback polling mechanism for environments without WebSocket support
+  - [ ] 8.4 Implement enhanced real-time communication system
+  - Configure Laravel Reverb v1.6.3 WebSocket server with clustering support ✅ (config/reverb.php)
+    - Server configuration: host 0.0.0.0, port 8080, max_request_size 10000
+    - Redis scaling support with configurable channel and connection settings
+    - Pulse and Telescope ingest intervals (15 seconds)
+    - App configuration with ping_interval (60s), activity_timeout (30s)
+  - Set up Laravel Echo v2.2.6 client integration with fallback mechanisms ✅ (resources/js/bootstrap.js)
+    - Reverb broadcaster configuration with wsHost, wsPort, wssPort
+    - Custom authorizer for private channel authentication via /broadcasting/auth
+    - Connection state management with reconnection tracking
+    - Exponential backoff reconnection (1s-30s with jitter, max 10 attempts)
+    - Connection event handlers: connected, disconnected, unavailable, error, state_change
+    - Fallback to Pusher/Laravel Websockets if Reverb not configured
+  - Implement real-time notifications with comprehensive delivery tracking ✅
+    - User-facing reconnection toast notifications (WCAG 2.2 AA compliant)
+    - Custom events: echo:connected, echo:disconnected, echo:unavailable
+    - AI broadcasting channel listeners for admin/superuser roles
+  - Create real-time collaboration features for authenticated users ✅
+    - Private user channels: user.{userId}
+    - Admin notification channel: admin.notifications
+    - Submission channels: ticket.{uuid}, loan.{uuid}, submission.{type}.{id}
+    - Asset update channel: asset.{id}
+  - Integrate real-time updates with performance monitoring ✅
+    - AI status channel: ai-status (document processing, FAQ operations)
+    - AI alerts channel: ai-alerts (performance degradation, system errors)
+    - AI performance channel: ai-performance (real-time metrics)
+    - AI approvals channel: ai-approvals (auto-reply workflow)
+  - Configure private and presence channels for authenticated users ✅ (routes/channels.php)
+    - ChannelRegistrar pattern for organized channel definitions
+    - Role-based authorization for admin channels
+    - UUID-based guest access with status token validation
+  - Implement WebSocket authentication and authorization ✅
+    - Hash-based status token validation for guest channels
+    - Policy-based authorization for authenticated channels
+    - Sanctum integration for API authentication
+  - Create fallback polling mechanism for environments without WebSocket support ✅
+    - Graceful degradation when Echo not initialized
+    - Console warnings in development mode only
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5_
+
+  - [x] 8.5 Implement Laravel Horizon queue management system
+  - [x] 8.5.1 Install and configure Laravel Horizon v5.x
+    - Install Laravel Horizon package via Composer
+    - Publish Horizon configuration and assets
+    - Configure HorizonServiceProvider with authorization gate for admin/superuser access
+    - Set up Horizon dashboard route with proper middleware
+    - _Requirements: 23.1_
+  - [x] 8.5.2 Configure queue supervisors for ICTServe modules
+    - Create supervisor configuration for helpdesk queue (notifications, SLA alerts)
+    - Create supervisor configuration for asset-loan queue (approvals, reminders)
+    - Create supervisor configuration for ai-chatbot queue (AI processing, document analysis)
+    - Create supervisor configuration for reports queue (scheduled reports, exports)
+    - Configure default queue for general system jobs
+    - _Requirements: 23.2, 23.3_
+  - [x] 8.5.3 Implement job balancing and auto-scaling
+    - Configure auto-scaling strategy based on queue workload
+    - Set up minProcesses and maxProcesses for each supervisor
+    - Implement balanceMaxShift and balanceCooldown settings
+    - Configure memory limits and timeout settings per queue
+    - _Requirements: 23.3_
+  - [x] 8.5.4 Set up job retry policies and failure handling
+    - Configure exponential backoff retry policy (10s, 30s, 60s)
+    - Set maximum retry attempts to 3 for transient failures
+    - Implement failed job notification to admin users
+    - Create failed job cleanup and retry mechanisms
+    - _Requirements: 23.6_
+  - [x] 8.5.5 Implement job tagging for ICTServe operations
+    - Add tags() method to all ICTServe job classes
+    - Implement module-based tagging (helpdesk, asset-loan, ai-chatbot)
+    - Add priority-level tagging for job filtering
+    - Create user-based tagging for job tracking
+    - _Requirements: 23.7_
+  - [x] 8.5.6 Configure Horizon metrics and alerting
+    - Set up wait time thresholds for queue alerting (60 seconds)
+    - Configure failed job accumulation alerts (10 jobs threshold)
+    - Implement worker process failure notifications
+    - Integrate Horizon metrics with Laravel Pulse
+    - Configure Horizon snapshot scheduling for metrics collection
+    - _Requirements: 23.4, 23.5, 23.8_
+  - [x] 8.5.7 Create Horizon production deployment configuration
+    - Configure Supervisor process management for Horizon daemon
+    - Set up Horizon restart on deployment
+    - Implement graceful shutdown with stopwaitsecs configuration
+    - Create health check endpoint for Horizon status monitoring
+    - _Requirements: 23.1, 23.4_
 
 ## Phase 6: Enhanced Testing & Quality Assurance
 
@@ -560,7 +663,7 @@
 | Phase 2: Core Modules | ✅ Complete | Helpdesk Ticketing, Asset Loan Management |
 | Phase 3: Integration | ✅ Complete | Cross-Module Services, Unified Analytics |
 | Phase 4: Frontend | ✅ Complete | WCAG 2.2 AA, Bahasa Melayu Exclusive |
-| Phase 5: Monitoring | ✅ Complete | Laravel Pulse 1.4.6, Telescope 5.16.0, Reverb 1.6.3 |
+| Phase 5: Monitoring | ✅ Complete | Laravel Pulse 1.4.6, Telescope 5.16.0, Reverb 1.6.3, **Horizon 5.x** |
 | Phase 6: Testing | ✅ Complete | 252+ test files, PHPUnit 11.5.46 with PHP 8 attributes |
 | Phase 7: Documentation | ✅ Complete | D00-D18 updated, API documentation |
 | Phase 8: Cloud Hybrid AI | ✅ Complete | Ollama + AWS Bedrock, Model Routing, FAQ Bot |
@@ -571,6 +674,7 @@
 - Unit Tests: SecurityComplianceServiceTest (16), PerformanceAlertServiceTest (11), AIServiceTests (new)
 - Integration Tests: DualAuditSystemIntegrationTest (10), NotificationWorkflowIntegrationTest (12), CrossModuleIntegrationTest (12), AIIntegrationTest (new)
 - Feature Tests: Comprehensive coverage for Helpdesk, Asset Loan, Auth, Filament, AI Chatbot
+- **Telescope Tests**: TelescopeAccessTest (7 tests) - Validates superuser-only access control with production environment simulation
 - Total Test Files: 260+
 
 **Key Services Implemented**:
@@ -600,6 +704,7 @@
 - Laravel 12.42.0, PHP 8.2.12
 - Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10
 - Laravel Pulse 1.4.6, Telescope 5.16.0
+- Laravel Horizon 5.x (Redis queue management)
 - Laravel Reverb 1.6.3, Echo 2.2.6
 - Laravel Sanctum 4.2.1, Socialite 5.24.0
 - Laravel MCP 0.3.4 (AI assistant integration)

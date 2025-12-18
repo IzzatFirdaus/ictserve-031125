@@ -6,7 +6,7 @@ inclusion: always
 
 ## Overview
 
-The Model Context Protocol (MCP) is an open standard that enables AI assistants to securely connect to data sources and tools. This steering file provides comprehensive guidelines for configuring, using, and troubleshooting MCP servers across all projects.
+The Model Context Protocol (MCP) is an open standard that enables AI assistants to securely connect to data sources and tools. This steering file provides comprehensive guidelines for configuring, using, and troubleshooting MCP servers across all projects, with specific focus on Laravel MCP integration and essential MCP servers.
 
 ## Core MCP Concepts
 
@@ -23,6 +23,160 @@ MCP follows a client-server architecture where:
 1. **Tools**: Functions that AI can call to perform actions
 2. **Resources**: Static or dynamic content that AI can read
 3. **Prompts**: Reusable prompt templates for AI interactions
+
+## Laravel MCP Integration
+
+### Installation & Setup
+
+Laravel MCP v0.3.4 provides native MCP server capabilities for Laravel applications:
+
+```bash
+# Install Laravel MCP
+composer require laravel/mcp
+
+# Publish AI routes
+php artisan vendor:publish --tag=ai-routes
+```
+
+### Creating MCP Servers
+
+Generate MCP servers using Artisan commands:
+
+```bash
+# Create a new MCP server
+php artisan make:mcp-server WeatherServer
+
+# Create tools, resources, and prompts
+php artisan make:mcp-tool CurrentWeatherTool
+php artisan make:mcp-resource WeatherGuidelinesResource
+php artisan make:mcp-prompt DescribeWeatherPrompt
+```
+
+### Server Registration
+
+Register servers in `routes/ai.php`:
+
+```php
+use App\Mcp\Servers\WeatherServer;
+use Laravel\Mcp\Facades\Mcp;
+
+// Web server (HTTP-based)
+Mcp::web('/mcp/weather', WeatherServer::class)
+    ->middleware(['auth:sanctum']);
+
+// Local server (stdio-based)
+Mcp::local('weather', WeatherServer::class);
+
+// OAuth routes for authentication
+Mcp::oauthRoutes();
+```
+
+### ICTServe MCP Server Example
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Mcp\Servers;
+
+use App\Mcp\Tools\HelpdeskTicketTool;
+use App\Mcp\Resources\SystemDocumentationResource;
+use App\Mcp\Prompts\HelpdeskAssistantPrompt;
+use Laravel\Mcp\Server;
+
+class ICTServeServer extends Server
+{
+    protected string $name = 'ICTServe Management Server';
+    protected string $version = '3.6.0';
+    protected string $instructions = 'Provides access to ICTServe helpdesk, asset loan, and system management capabilities.';
+
+    protected array $tools = [
+        HelpdeskTicketTool::class,
+        // AssetLoanTool::class,
+    ];
+
+    protected array $resources = [
+        SystemDocumentationResource::class,
+    ];
+
+    protected array $prompts = [
+        HelpdeskAssistantPrompt::class,
+    ];
+}
+```
+
+### Authentication & Authorization
+
+**Sanctum Authentication**:
+
+```php
+Mcp::web('/mcp/ictserve', ICTServeServer::class)
+    ->middleware('auth:sanctum');
+```
+
+**OAuth 2.1 Authentication**:
+
+```php
+// Register OAuth routes
+Mcp::oauthRoutes();
+
+// Protected server
+Mcp::web('/mcp/ictserve', ICTServeServer::class)
+    ->middleware('auth:api');
+```
+
+**Authorization in Tools**:
+
+```php
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+
+public function handle(Request $request): Response
+{
+    if (!$request->user()->can('manage-helpdesk')) {
+        return Response::error('Permission denied.');
+    }
+    
+    // Tool logic...
+}
+```
+
+### Testing MCP Servers
+
+**Unit Testing**:
+
+```php
+use PHPUnit\Framework\Attributes\Test;
+
+class HelpdeskTicketToolTest extends TestCase
+{
+    #[Test]
+    public function it_can_create_ticket(): void
+    {
+        $user = User::factory()->create();
+        
+        $response = ICTServeServer::actingAs($user)
+            ->tool(HelpdeskTicketTool::class, [
+                'title' => 'Test Ticket',
+                'description' => 'Test Description',
+                'category' => 'technical',
+            ]);
+
+        $response->assertOk()
+            ->assertSee('Ticket created successfully');
+    }
+}
+```
+
+**MCP Inspector**:
+
+```bash
+# Test web server
+php artisan mcp:inspector mcp/ictserve
+
+# Test local server
+php artisan mcp:inspector ictserve
+```
 
 ## MCP Server Configuration
 
@@ -142,13 +296,21 @@ Servers accessible via HTTP:
 
 1. **Memory Server**: Persistent knowledge graph across sessions
 
+   **Purpose**: Maintains comprehensive knowledge about projects, patterns, and decisions across AI sessions.
+
+   **Key Features**:
+   - Entity-relationship knowledge graph
+   - Cross-session persistence
+   - Search and retrieval capabilities
+   - Pattern storage and reuse
+
    ```json
    {
      "memory": {
        "command": "npx",
        "args": ["-y", "@modelcontextprotocol/server-memory"],
        "env": {
-         "MEMORY_FILE_PATH": "/path/to/memory.jsonl"
+         "MEMORY_FILE_PATH": "./memory.jsonl"
        },
        "autoApprove": [
          "create_entities", "create_relations", "add_observations",
@@ -159,7 +321,28 @@ Servers accessible via HTTP:
    }
    ```
 
-2. **Sequential Thinking**: Complex problem decomposition
+   **Usage Patterns**:
+
+   ```bash
+   # Store development patterns
+   create_entities [{"name": "laravel_pattern", "entityType": "development_pattern", "observations": [...]}]
+   
+   # Search for existing solutions
+   search_nodes "filament resource validation"
+   
+   # Retrieve specific knowledge
+   open_nodes ["ictserve_system_spec", "laravel_12_patterns"]
+   ```
+
+2. **Sequential Thinking**: Dynamic problem decomposition
+
+   **Purpose**: Enables complex, multi-step problem solving with adaptive thinking processes.
+
+   **Key Features**:
+   - Dynamic thought sequences
+   - Hypothesis generation and verification
+   - Branching and revision capabilities
+   - Solution validation
 
    ```json
    {
@@ -171,7 +354,27 @@ Servers accessible via HTTP:
    }
    ```
 
-3. **Fetch Server**: HTTP requests and web content retrieval
+   **Usage Patterns**:
+
+   ```bash
+   # Complex feature planning
+   sequentialthinking({
+     "thought": "Analyzing ICTServe helpdesk integration requirements...",
+     "thoughtNumber": 1,
+     "totalThoughts": 5,
+     "nextThoughtNeeded": true
+   })
+   ```
+
+3. **Fetch Server**: Web content retrieval and processing
+
+   **Purpose**: Fetches and processes web content for AI consumption, including documentation and APIs.
+
+   **Key Features**:
+   - HTTP/HTTPS content fetching
+   - Markdown conversion
+   - Content truncation and pagination
+   - Raw HTML support
 
    ```json
    {
@@ -183,9 +386,76 @@ Servers accessible via HTTP:
    }
    ```
 
+   **Usage Patterns**:
+
+   ```bash
+   # Fetch documentation
+   fetch({
+     "url": "https://laravel.com/docs/12.x/mcp",
+     "max_length": 5000
+   })
+   
+   # Get raw HTML
+   fetch({
+     "url": "https://api.example.com/docs",
+     "raw": true
+   })
+   ```
+
+4. **Filesystem Server**: Secure file operations
+
+   **Purpose**: Provides controlled access to filesystem operations with security boundaries.
+
+   **Key Features**:
+   - Configurable access controls
+   - Directory traversal protection
+   - File reading and writing
+   - Directory listing and creation
+
+   ```json
+   {
+     "filesystem": {
+       "command": "npx",
+       "args": ["-y", "@modelcontextprotocol/server-filesystem"],
+       "env": {
+         "ALLOWED_DIRECTORIES": "/workspace,/tmp"
+       },
+       "autoApprove": [
+         "read_file", "write_file", "list_directory",
+         "create_directory", "get_file_info"
+       ]
+     }
+   }
+   ```
+
+   **Usage Patterns**:
+
+   ```bash
+   # Read configuration files
+   read_file({"path": "/workspace/.env.example"})
+   
+   # List project structure
+   list_directory({"path": "/workspace/app", "recursive": true})
+   
+   # Create new files
+   write_file({
+     "path": "/workspace/config/mcp.php",
+     "content": "<?php\n\nreturn [...];"
+   })
+   ```
+
 ### Browser & Testing Servers
 
-4. **Chrome DevTools**: Browser automation and debugging
+1. **Chrome DevTools**: Browser automation and debugging
+
+   **Purpose**: Provides comprehensive browser automation and debugging capabilities.
+
+   **Key Features**:
+   - Page navigation and interaction
+   - Element inspection and manipulation
+   - JavaScript execution
+   - Network monitoring
+   - Performance analysis
 
    ```json
    {
@@ -194,13 +464,33 @@ Servers accessible via HTTP:
        "args": ["-y", "chrome-devtools-mcp@latest"],
        "autoApprove": [
          "navigate_page", "take_snapshot", "click", "fill",
-         "evaluate_script", "take_screenshot", "list_pages"
+         "evaluate_script", "take_screenshot", "list_pages",
+         "list_network_requests", "get_console_message"
        ]
      }
    }
    ```
 
-5. **Playwright**: E2E testing and browser automation
+   **Usage Patterns**:
+
+   ```bash
+   # Navigate and test ICTServe pages
+   navigate_page({"url": "http://127.0.0.1:8000/helpdesk"})
+   take_snapshot()
+   fill({"uid": "title-input", "value": "Test Ticket"})
+   click({"uid": "submit-button"})
+   ```
+
+2. **Playwright**: E2E testing and browser automation
+
+   **Purpose**: Advanced browser automation for comprehensive end-to-end testing.
+
+   **Key Features**:
+   - Multi-browser support
+   - Mobile device emulation
+   - Network interception
+   - File uploads and downloads
+   - Advanced selectors
 
    ```json
    {
@@ -209,7 +499,90 @@ Servers accessible via HTTP:
        "args": ["-y", "@playwright/mcp@latest"],
        "autoApprove": [
          "browser_navigate", "browser_click", "browser_snapshot",
-         "browser_fill", "browser_evaluate", "browser_take_screenshot"
+         "browser_fill", "browser_evaluate", "browser_take_screenshot",
+         "browser_wait_for", "browser_select_option"
+       ]
+     }
+   }
+   ```
+
+   **Usage Patterns**:
+
+   ```bash
+   # Test ICTServe workflows
+   browser_navigate({"url": "http://127.0.0.1:8000/admin"})
+   browser_fill_form({
+     "fields": [
+       {"name": "email", "type": "textbox", "ref": "email-input", "value": "admin@motac.gov.my"},
+       {"name": "password", "type": "textbox", "ref": "password-input", "value": "password"}
+     ]
+   })
+   browser_click({"element": "Login Button", "ref": "login-btn"})
+   ```
+
+### Development & Integration Servers
+
+1. **Laravel Boost**: Laravel-specific development tools
+
+   **Purpose**: Provides Laravel-specific development capabilities and documentation access.
+
+   **Key Features**:
+   - Artisan command execution
+   - Database operations and schema inspection
+   - Laravel documentation search
+   - Tinker integration
+   - Application information
+
+   ```json
+   {
+     "laravel-boost": {
+       "command": "php",
+       "args": ["artisan", "mcp:start", "boost"],
+       "cwd": "/path/to/laravel/project",
+       "autoApprove": [
+         "application_info", "search_docs", "database_query",
+         "database_schema", "tinker", "list_routes",
+         "get_config", "read_log_entries"
+       ]
+     }
+   }
+   ```
+
+   **Usage Patterns**:
+
+   ```bash
+   # Get application information
+   application_info()
+   
+   # Search Laravel documentation
+   search_docs({"queries": ["filament resources", "livewire forms"]})
+   
+   # Execute database queries
+   database_query({"query": "SELECT * FROM helpdesk_tickets LIMIT 5"})
+   
+   # Run tinker commands
+   tinker({"code": "User::factory()->create()", "timeout": 30})
+   ```
+
+2. **Git Operations**: Repository management
+
+   **Purpose**: Provides Git repository operations and version control capabilities.
+
+   **Key Features**:
+   - Repository status and history
+   - Branch management
+   - Commit operations
+   - File blame and diff
+   - Stash management
+
+   ```json
+   {
+     "git": {
+       "command": "npx",
+       "args": ["-y", "@modelcontextprotocol/server-git"],
+       "autoApprove": [
+         "git_status", "git_log_or_diff", "git_branch",
+         "git_add_or_commit", "git_blame", "git_stash"
        ]
      }
    }
@@ -217,7 +590,7 @@ Servers accessible via HTTP:
 
 ### Optional Enhancement Servers
 
-6. **GitHub Integration**: Repository operations
+1. **GitHub Integration**: Repository operations (Optional)
 
    ```json
    {
@@ -232,20 +605,20 @@ Servers accessible via HTTP:
    }
    ```
 
-7. **Context Enhancement**: Library documentation
+2. **Context Enhancement**: Library documentation (Optional)
 
-   ```json
-   {
-     "context7": {
-       "command": "npx",
-       "args": ["-y", "@upstash/context7-mcp"],
-       "env": {
-         "CONTEXT7_API_KEY": "$env:CONTEXT7_API_KEY"
-       },
-       "disabled": true
-     }
-   }
-   ```
+    ```json
+    {
+      "context7": {
+        "command": "npx",
+        "args": ["-y", "@upstash/context7-mcp"],
+        "env": {
+          "CONTEXT7_API_KEY": "$env:CONTEXT7_API_KEY"
+        },
+        "disabled": true
+      }
+    }
+    ```
 
 ## MCP Server Management
 
@@ -263,10 +636,93 @@ Servers accessible via HTTP:
 - Install via: `pip install uv` or platform-specific installer
 - `uvx` downloads and runs packages automatically
 
+**Laravel Servers**:
+
+- Implemented within Laravel applications using Laravel MCP
+- Registered in `routes/ai.php`
+- Can be web-based (HTTP) or local (stdio)
+
 **Local Servers**:
 
 - Must be implemented within your application
 - Follow framework-specific MCP implementation patterns
+
+### ICTServe MCP Configuration
+
+**Complete MCP Configuration for ICTServe**:
+
+```json
+{
+  "mcpServers": {
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {
+        "MEMORY_FILE_PATH": "./memory.jsonl"
+      },
+      "autoApprove": [
+        "create_entities", "create_relations", "add_observations",
+        "delete_entities", "delete_observations", "delete_relations",
+        "read_graph", "search_nodes", "open_nodes"
+      ]
+    },
+    "sequentialthinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "autoApprove": ["sequentialthinking"]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": ["--native-tls", "mcp-server-fetch"],
+      "autoApprove": ["fetch"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem"],
+      "env": {
+        "ALLOWED_DIRECTORIES": "./,/tmp"
+      },
+      "autoApprove": [
+        "read_file", "write_file", "list_directory",
+        "create_directory", "get_file_info"
+      ]
+    },
+    "laravel-boost": {
+      "command": "php",
+      "args": ["artisan", "mcp:start", "boost"],
+      "autoApprove": [
+        "application_info", "search_docs", "database_query",
+        "database_schema", "tinker", "list_routes",
+        "get_config", "read_log_entries", "browser_logs"
+      ]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"],
+      "autoApprove": [
+        "navigate_page", "take_snapshot", "click", "fill",
+        "evaluate_script", "take_screenshot", "list_pages"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "autoApprove": [
+        "browser_navigate", "browser_click", "browser_snapshot",
+        "browser_fill", "browser_evaluate", "browser_take_screenshot"
+      ]
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "autoApprove": [
+        "git_status", "git_log_or_diff", "git_branch",
+        "git_add_or_commit", "git_blame", "git_stash"
+      ]
+    }
+  }
+}
+```
 
 ### Server Lifecycle
 
@@ -333,45 +789,127 @@ Servers accessible via HTTP:
 - Implement rate limiting for public servers
 - Use authentication for sensitive servers
 
-## Framework-Specific Integration
+## Advanced MCP Patterns
 
-### Laravel MCP Integration
+### Memory-Driven Development Workflow
 
-For Laravel applications, implement custom MCP servers:
+**MANDATORY Integration**: All development work must integrate with the Memory MCP server.
 
-1. **Install Laravel MCP**:
+**Pre-Development**:
 
-   ```bash
-   composer require laravel/mcp
-   php artisan vendor:publish --tag=ai-routes
-   ```
+```bash
+# Query existing patterns
+search_nodes "laravel filament resource patterns"
+open_nodes ["ictserve_system_spec", "laravel_12_patterns"]
+```
 
-2. **Create MCP Server**:
+**During Development**:
 
-   ```bash
-   php artisan make:mcp-server MyServer
-   ```
+```bash
+# Store discoveries and decisions
+create_entities [{
+  "name": "filament_v4_resource_pattern",
+  "entityType": "development_pattern",
+  "observations": ["New pattern discovered...", "Implementation details..."]
+}]
+```
 
-3. **Register Server**:
+**Post-Development**:
 
-   ```php
-   // routes/ai.php
-   use Laravel\Mcp\Facades\Mcp;
-   
-   Mcp::local('my-server', MyServer::class);
-   ```
+```bash
+# Document completion and create relations
+add_observations [{
+  "entityName": "ictserve_implementation_status",
+  "contents": ["Feature X completed successfully", "Tests passing"]
+}]
 
-4. **Configuration**:
+create_relations [{
+  "from": "new_feature_pattern",
+  "to": "ictserve_system_spec",
+  "relationType": "implements"
+}]
+```
 
-   ```json
-   {
-     "my-server": {
-       "command": "php",
-       "args": ["artisan", "mcp:start", "my-server"],
-       "cwd": "/path/to/laravel/project"
-     }
-   }
-   ```
+### Sequential Thinking for Complex Features
+
+**Use Cases**:
+
+- Multi-phase feature implementation
+- Architecture decision analysis
+- Bug investigation and resolution
+- Performance optimization planning
+
+**Example Workflow**:
+
+```bash
+sequentialthinking({
+  "thought": "Analyzing ICTServe helpdesk integration requirements...",
+  "thoughtNumber": 1,
+  "totalThoughts": 8,
+  "nextThoughtNeeded": true
+})
+
+# Continue with adaptive thinking process
+sequentialthinking({
+  "thought": "Considering hybrid architecture implications...",
+  "thoughtNumber": 2,
+  "totalThoughts": 8,
+  "isRevision": false,
+  "nextThoughtNeeded": true
+})
+```
+
+### Laravel Boost Integration Patterns
+
+**Documentation-First Development**:
+
+```bash
+# Always search docs before implementation
+search_docs({
+  "queries": ["filament v4 resources", "livewire forms", "laravel validation"],
+  "packages": ["filament/filament", "livewire/livewire"]
+})
+
+# Verify current application state
+application_info()
+database_schema()
+```
+
+**Development Workflow**:
+
+```bash
+# Experiment with tinker
+tinker({
+  "code": "HelpdeskTicket::factory()->create(['status' => 'open'])",
+  "timeout": 30
+})
+
+# Check database state
+database_query({
+  "query": "SELECT status, COUNT(*) FROM helpdesk_tickets GROUP BY status"
+})
+
+# Monitor application logs
+read_log_entries({"entries": 20})
+```
+
+### Filesystem Operations for Code Generation
+
+**Safe File Operations**:
+
+```bash
+# Read existing patterns
+read_file({"path": "./app/Filament/Resources/HelpdeskTicketResource.php"})
+
+# Create new files with proper structure
+write_file({
+  "path": "./app/Filament/Resources/AssetLoanResource.php",
+  "content": "<?php\n\ndeclare(strict_types=1);\n\n..."
+})
+
+# List project structure
+list_directory({"path": "./app/Filament", "recursive": true})
+```
 
 ### Other Frameworks
 
@@ -486,7 +1024,103 @@ Configure servers that depend on others:
 }
 ```
 
+## ICTServe-Specific MCP Workflows
+
+### Helpdesk Module Development
+
+**Memory Integration**:
+
+```bash
+# Store helpdesk patterns
+create_entities [{
+  "name": "helpdesk_hybrid_pattern",
+  "entityType": "architecture_pattern",
+  "observations": [
+    "Guest + authenticated dual access pattern",
+    "Nullable user_id foreign key for hybrid support",
+    "Email-based tracking for guest submissions"
+  ]
+}]
+```
+
+**Laravel Boost Verification**:
+
+```bash
+# Verify helpdesk table structure
+database_schema({"filter": "helpdesk"})
+
+# Test helpdesk model relationships
+tinker({
+  "code": "HelpdeskTicket::with(['user', 'category'])->first()",
+  "timeout": 30
+})
+```
+
+### Asset Loan Module Development
+
+**Sequential Planning**:
+
+```bash
+sequentialthinking({
+  "thought": "Planning asset loan approval workflow integration...",
+  "thoughtNumber": 1,
+  "totalThoughts": 6,
+  "nextThoughtNeeded": true
+})
+```
+
+**Implementation Verification**:
+
+```bash
+# Check asset loan relationships
+database_query({
+  "query": "SELECT la.*, li.name as item_name FROM loan_applications la JOIN loan_items li ON la.item_id = li.id LIMIT 5"
+})
+```
+
+### AI Chatbot Integration (D18)
+
+**Documentation Research**:
+
+```bash
+# Fetch latest AI integration patterns
+fetch({
+  "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html",
+  "max_length": 8000
+})
+
+# Store AI patterns in memory
+create_entities [{
+  "name": "ollama_bedrock_hybrid_pattern",
+  "entityType": "ai_integration_pattern",
+  "observations": ["Cloud hybrid AI architecture", "Local Ollama + AWS Bedrock"]
+}]
+```
+
 ## Best Practices Summary
+
+### ICTServe Development Standards
+
+**Memory-First Approach**:
+
+- Always query memory before starting new work
+- Store all patterns and decisions for reuse
+- Create relations between related concepts
+- Update implementation status continuously
+
+**Laravel Boost Integration**:
+
+- Use `search_docs` before any Laravel/Filament work
+- Verify application state with `application_info`
+- Test with `tinker` before implementing
+- Monitor with `read_log_entries` and `browser_logs`
+
+**Sequential Thinking for Complexity**:
+
+- Use for multi-phase feature development
+- Apply to architecture decisions
+- Employ for debugging complex issues
+- Utilize for performance optimization
 
 ### Configuration Management
 
@@ -498,7 +1132,7 @@ Configure servers that depend on others:
 ### Development Workflow
 
 - Test servers locally before deployment
-- Use auto-approval judiciously
+- Use auto-approval judiciously for safe operations
 - Monitor server performance and logs
 - Implement graceful error handling
 
@@ -508,6 +1142,7 @@ Configure servers that depend on others:
 - Regular rotation of authentication tokens
 - Network security for remote servers
 - Audit logs for sensitive operations
+- PDPA 2010 compliance for Malaysian data
 
 ### Performance Optimization
 
@@ -515,6 +1150,7 @@ Configure servers that depend on others:
 - Implement caching for read-heavy workloads
 - Use connection pooling for database servers
 - Monitor and optimize memory usage
+- Chunk large operations appropriately
 
 ## Resources
 

@@ -14,7 +14,7 @@ use Tests\TestCase;
 /**
  * Test Laravel Telescope access control
  *
- * Validates Requirements 20.2 and 20.3:
+ * Validates Requirements 17.1 and 17.2:
  * - Superuser can access /telescope
  * - Non-superuser receives 403 Forbidden
  *
@@ -32,6 +32,18 @@ class TelescopeAccessTest extends TestCase
 
         // Seed roles and permissions
         $this->artisan('db:seed', ['--class' => 'RolePermissionSeeder']);
+
+        // Set environment to production to test proper access control
+        // In local environment, Telescope allows all access for development
+        app()->detectEnvironment(fn () => 'production');
+    }
+
+    protected function tearDown(): void
+    {
+        // Reset environment back to testing
+        app()->detectEnvironment(fn () => 'testing');
+
+        parent::tearDown();
     }
 
     /**
