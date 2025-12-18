@@ -13,7 +13,8 @@
 composer install && npm install
 
 # 2. Setup environment
-cp .env.example .env && php artisan key:generate
+cp .env.example .env
+php artisan key:generate
 
 # 3. Setup database
 php artisan migrate --seed
@@ -318,6 +319,204 @@ git add . && git commit -m "feat: your feature description"
 
 ---
 
+---
+
+## Docker Development
+
+### Prerequisites
+
+- **Docker Desktop**: Latest version with WSL2 backend
+- **Windows**: Windows 10/11 with WSL2 enabled
+
+### Quick Start with Docker
+
+```bash
+# Complete Docker setup (PHP 8.4 in container)
+.\docker-rebuild.ps1
+
+# Start all services
+docker compose up -d
+```
+
+**What docker-rebuild.ps1 does:**
+- ✅ Stops existing containers and cleans up
+- ✅ Rebuilds Docker image with PHP 8.4
+- ✅ Installs all dependencies inside container (Composer + NPM)
+- ✅ Generates application key
+- ✅ Runs migrations and seeds database
+- ✅ Starts all services
+
+**Services Started:**
+- 🐳 PHP 8.4-FPM (Application)
+- 🌐 Nginx (Web Server)
+- 🗄️ MySQL 8.0 (Database)
+- 🔴 Redis 7.0 (Cache/Queue)
+- 🟣 Laravel Reverb (WebSocket)
+- 🔷 Queue Worker (Background Jobs)
+
+**Access URLs:**
+- Application: http://localhost:8000
+- Admin Panel: http://localhost:8000/admin
+- Horizon: http://localhost:8000/horizon
+- Telescope: http://localhost:8000/telescope
+- Pulse: http://localhost:8000/pulse
+
+**Default Credentials:**
+- Superuser: `superuser@motac.gov.my` / `password`
+- Admin: `admin@motac.gov.my` / `password`
+- Staff: `staff@motac.gov.my` / `password`
+- Approver: `approver@motac.gov.my` / `password`
+
+### Manual Docker Commands
+
+```bash
+# Build image
+docker compose build
+
+# Start services
+docker compose up -d
+
+# Install dependencies inside container
+docker compose exec app composer install --no-scripts
+docker compose exec app php artisan package:discover
+docker compose exec app composer dump-autoload
+docker compose exec app npm ci
+
+# Setup Laravel
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --force
+docker compose exec app php artisan db:seed --force
+
+# View logs
+docker compose logs -f app
+
+# Stop services
+docker compose down
+```
+
+### Docker Troubleshooting
+
+**Issue: "Unable to set application key"**
+```bash
+# Generate key inside container
+docker compose exec app php artisan key:generate
+```
+
+**Issue: "Skipping malformed CSV row"**
+- ✅ This is normal - the seeder handles HTML entities automatically
+- ✅ Database will still be seeded correctly with all divisions
+- ✅ No action needed
+
+**Issue: "Vendor directory not found"**
+```bash
+# Install dependencies inside container
+docker compose exec app composer install --no-scripts
+docker compose exec app php artisan package:discover
+```
+
+**Issue: "Node modules binary conflicts"**
+```bash
+# Clean and reinstall inside container
+docker compose exec app rm -rf node_modules
+docker compose exec app npm ci
+```
+
+**Issue: "Port already in use"**
+```bash
+# Stop conflicting services
+docker compose down
+# Or change ports in compose.yaml
+```
+
+**Issue: "Call to undefined method ServiceProvider::boot()"**
+- ✅ Fixed in HorizonServiceProvider.php
+- ✅ Run docker-rebuild.ps1 to apply fix
+
+--- migrations and seeds database
+- Sets up Laravel completely
+
+**Access:**
+- Application: http://localhost:8000
+- Admin Panel: http://localhost:8000/admin
+- Login: superuser@motac.gov.my / password Installs all dependencies inside container
+- Sets up database and seeds data
+
+### Alternative: Host Dependencies
+
+```bash
+# If you have PHP 8.4 on Windows
+.\upgrade-php.ps1  # Upgrade guide
+composer install
+npm install
+docker compose up -d\docker-fix-vendor.ps1
+```
+
+### Docker Commands
+
+```bash
+# Start all services
+docker compose up -d
+
+# View logs
+docker compose logs -f app
+
+# Stop services
+docker compose down
+
+# Execute commands in container
+docker compose exec app php artisan migrate
+docker compose exec app composer install
+docker compose exec app npm run build
+
+# Access container shell
+docker compose exec app sh
+```
+
+### Docker Services
+
+- **app**: PHP 8.3-FPM with Laravel
+- **nginx**: Web server (port 8000)
+- **db**: MySQL 8.0 (port 3306)
+- **redis**: Redis 7.0 (port 6379)
+- **mcp-***: MCP servers for AI integration
+
+### Troubleshooting Docker
+
+#### Issue: PHP Version Mismatch
+
+**Error**: `Your php version (8.3.28) does not satisfy that requirement` or `requires php >=8.4`
+
+**Root Cause**: composer.lock requires PHP 8.4 for Symfony 8.0 packages
+
+**Solution**:
+```bash
+# Rebuild with PHP 8.4
+.\docker-rebuild.ps1
+```
+
+#### Issue: Missing vendor/autoload.php
+
+**Solution**:
+```bash
+# Install dependencies in container
+docker compose exec app composer install
+```
+
+#### Issue: Node modules binary conflicts
+
+**Error**: `Error: ENOENT: no such file or directory, open '...\node_modules\@esbuild\win32-x64\esbuild.exe'`
+
+**Solution**:
+```bash
+# Remove Windows node_modules
+Remove-Item -Recurse -Force node_modules
+
+# Install in container
+docker compose exec app npm install
+```
+
+---
+
 ### Quick Access & Testing
 
 #### Application URLs
@@ -327,7 +526,457 @@ git add . && git commit -m "feat: your feature description"
 - **Asset Loan Form**: <http://127.0.0.1:8000/loan/create>
 - **Admin Panel**: <http://127.0.0.1:8000/admin>
 - **User Dashboard**: <http://127.0.0.1:8000/dashboard>
-- **Laravel Telescope**: <http://127.0.0.1:8000/telescope>
+- **Laravel Telescope**: <http://127.0.0.1:8000/telescope>lescope> (Superuser only)
+- **Laravel Pulse**: <http://127.0.0.1:8000/pulse> (Admin/Superuser)
+
+#### Default Credentials (After Seeding)
+
+```bash
+# Superuser Account
+Email: superuser@motac.gov.my
+Password: password
+
+# Admin Account
+Email: admin@motac.gov.my
+Password: password
+
+# Staff Account
+Email: staff@motac.gov.my
+Password: password
+```
+
+---
+
+## Docker Development (Alternative)
+
+> **⚠️ CRITICAL ISSUES FIXED**:
+> 1. **PHP Version**: Dockerfile updated to PHP 8.3 (was 8.2, incompatible with dependencies)
+> 2. **Node Modules**: Must delete `node_modules/` before Docker install (Windows/Linux binary conflict)
+> 3. **PCNTL Extension**: Added for Laravel Horizon support
+
+### Quick Start with Docker
+
+#### Automated Setup (Recommended)
+
+```bash
+# One-command setup
+.\scripts\docker\setup-docker.ps1
+
+# Clean setup (removes existing containers/volumes)
+.\scripts\docker\setup-docker.ps1 -Clean
+
+# Skip rebuild (if images already exist)
+.\scripts\docker\setup-docker.ps1 -SkipBuild
+```
+
+#### Manual Setup
+
+```bash
+# 1. Build images (PHP 8.3 with pcntl extension)
+docker compose build --no-cache app
+
+# 2. Clean node_modules (Windows/Linux binary conflict)
+Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue
+
+# 3. Install dependencies IN CONTAINER (CRITICAL!)
+docker compose run --rm app composer install --no-interaction
+docker compose run --rm app npm install --no-save
+
+# 3. Setup environment
+cp .env.example .env.docker
+# Edit .env.docker with Docker settings:
+# DB_HOST=db
+# REDIS_HOST=redis
+# DB_DATABASE=ictserve
+# DB_USERNAME=root
+# DB_PASSWORD=secret
+
+# 4. Start all services
+docker compose up -d
+
+# 5. Wait for database (10 seconds)
+Start-Sleep -Seconds 10
+
+# 6. Generate app key and run migrations
+docker compose exec app php artisan key:generate --force
+docker compose exec app php artisan migrate --seed --force
+
+# 7. Build frontend assets
+docker compose exec app npm run build
+
+# 8. Fix permissions
+docker compose exec app chown -R www-data:www-data storage bootstrap/cache
+
+# Access application at http://localhost:8000
+```
+
+### Docker Services
+
+- **app**: PHP 8.2-FPM + Laravel application
+- **web**: Nginx web server (port 8000)
+- **db**: MySQL 8.0 database
+- **redis**: Redis 7.0 (cache, queue, sessions)
+- **reverb**: Laravel Reverb WebSocket server
+- **queue**: Laravel queue worker
+
+### Docker Commands
+
+```bash
+# Install/Update dependencies
+docker compose run --rm app composer install
+docker compose run --rm app npm ci
+
+# Run artisan commands
+docker compose exec app php artisan migrate
+docker compose exec app php artisan test
+docker compose exec app php artisan optimize:clear
+
+# Build assets
+docker compose exec app npm run build
+docker compose exec app npm run dev  # Development mode
+
+# Access container shell
+docker compose exec app sh
+
+# View service logs
+docker compose logs -f app
+docker compose logs -f web
+docker compose logs -f reverb
+
+# Stop services
+docker compose down
+
+# Stop and remove volumes (clean slate)
+docker compose down -v
+```
+
+### Docker Troubleshooting
+
+#### Missing vendor/node_modules
+
+```bash
+# Install dependencies inside container
+docker compose run --rm app composer install
+docker compose run --rm app npm ci
+
+# Or use volume mount (add to docker-compose.yml):
+# volumes:
+#   - ./vendor:/var/www/html/vendor
+#   - ./node_modules:/var/www/html/node_modules
+```
+
+#### Permission Issues
+
+```bash
+# Fix ownership (Linux/WSL)
+docker compose exec app chown -R www-data:www-data storage bootstrap/cache
+
+# Or run as root
+docker compose exec -u root app chown -R www-data:www-data storage
+```
+
+#### Database Connection Failed
+
+```bash
+# Verify .env.docker settings
+DB_HOST=db  # NOT 127.0.0.1
+REDIS_HOST=redis  # NOT 127.0.0.1
+
+# Check database is running
+docker compose ps db
+
+# Test connection
+docker compose exec app php artisan db:show
+```
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+#### 1. Port Already in Use
+
+```bash
+# Check what's using port 8000
+netstat -ano | findstr :8000
+
+# Kill process (replace PID)
+taskkill /PID <PID> /F
+
+# Or use different port
+php artisan serve --port=8001
+```
+
+#### 2. Redis Connection Failed
+
+```bash
+# Check Redis status (WSL)
+wsl redis-cli ping
+
+# Start Redis (WSL)
+wsl sudo systemctl start redis-server
+
+# Or disable Redis in .env
+CACHE_STORE=file
+QUEUE_CONNECTION=database
+SESSION_DRIVER=file
+```
+
+#### 3. Database Connection Error
+
+```bash
+# Verify database exists
+mysql -u root -p -e "SHOW DATABASES;"
+
+# Create database if missing
+mysql -u root -p -e "CREATE DATABASE ictserve;"
+
+# Check .env settings
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ictserve
+DB_USERNAME=root
+DB_PASSWORD=your_password
+```
+
+#### 4. Vite Build Errors
+
+```bash
+# Clear node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# Verify Node.js version (requires 22.12+)
+node --version
+
+# Clear Vite cache
+rm -rf node_modules/.vite
+npm run build
+```
+
+#### 5. Permission Errors (Linux/WSL)
+
+```bash
+# Fix storage permissions
+sudo chown -R $USER:www-data storage bootstrap/cache
+sudo chmod -R 775 storage bootstrap/cache
+```
+
+#### 6. Composer Memory Limit
+
+```bash
+# Increase memory limit
+COMPOSER_MEMORY_LIMIT=-1 composer install
+```
+
+### Service Health Checks
+
+```bash
+# Check all services
+.\scripts\dev\dev-helpers.ps1 status
+
+# Manual checks
+php artisan about                    # Laravel environment info
+php artisan config:show database     # Database configuration
+php artisan route:list               # All registered routes
+php artisan queue:monitor            # Queue status
+```
+
+### Clear All Caches
+
+```bash
+# Nuclear option - clear everything
+php artisan optimize:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan cache:clear
+composer dump-autoload
+npm run build
+```
+
+---
+
+## Advanced Configuration
+
+### Environment Variables
+
+#### Essential Settings
+
+```env
+# Application
+APP_NAME=ICTServe
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000
+APP_LOCALE=ms
+APP_FALLBACK_LOCALE=en
+
+# Database
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ictserve
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Cache & Queue
+CACHE_STORE=redis
+QUEUE_CONNECTION=redis
+SESSION_DRIVER=redis
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+
+# Broadcasting (Laravel Reverb)
+BROADCAST_CONNECTION=reverb
+REVERB_APP_ID=ictserve
+REVERB_APP_KEY=local-key
+REVERB_APP_SECRET=local-secret
+REVERB_HOST=127.0.0.1
+REVERB_PORT=6001
+REVERB_SCHEME=http
+
+# Mail (Development)
+MAIL_MAILER=log
+MAIL_FROM_ADDRESS=noreply@motac.gov.my
+MAIL_FROM_NAME="${APP_NAME}"
+
+# Laravel Pulse
+PULSE_ENABLED=true
+PULSE_INGEST_DRIVER=database
+
+# Laravel Telescope
+TELESCOPE_ENABLED=true
+```
+
+### Performance Optimization
+
+#### Development
+
+```bash
+# Enable query logging
+DB_LOG_QUERIES=true
+
+# Disable caching for development
+CACHE_STORE=array
+VIEW_COMPILED_PATH=storage/framework/views
+```
+
+#### Production
+
+```bash
+# Optimize for production
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan event:cache
+composer install --optimize-autoloader --no-dev
+npm run build
+```
+
+### IDE Configuration
+
+#### VS Code Extensions (Recommended)
+
+- PHP Intelephense
+- Laravel Extension Pack
+- Tailwind CSS IntelliSense
+- ESLint
+- Prettier
+- GitLens
+
+#### PHPStorm Setup
+
+```bash
+# Generate IDE helper files
+php artisan ide-helper:generate
+php artisan ide-helper:models
+php artisan ide-helper:meta
+```
+
+---
+
+## Testing
+
+### Run All Tests
+
+```bash
+# PHPUnit (Backend)
+php artisan test
+php artisan test --coverage
+
+# Playwright (E2E)
+npm run test:e2e
+npm run test:e2e:ui
+
+# Accessibility (WCAG 2.2 AA)
+npm run test:accessibility
+```
+
+### Test Specific Modules
+
+```bash
+# Helpdesk module
+php artisan test --filter=HelpdeskTest
+npm run test:e2e:helpdesk
+
+# Asset loan module
+php artisan test --filter=LoanTest
+npm run test:e2e:loan
+
+# Authentication
+php artisan test --filter=AuthTest
+```
+
+### Code Quality Checks
+
+```bash
+# Format code (PSR-12)
+vendor/bin/pint
+
+# Static analysis (PHPStan Level 9)
+vendor/bin/phpstan analyse
+
+# All quality checks
+.\scripts\dev\dev-helpers.ps1 format
+.\scripts\dev\dev-helpers.ps1 analyse
+```
+
+---
+
+## Additional Resources
+
+### Documentation
+
+- **System Overview**: [docs/D00_SYSTEM_OVERVIEW.md](docs/D00_SYSTEM_OVERVIEW.md)
+- **Software Requirements**: [docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md](docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md)
+- **Software Design**: [docs/D04_SOFTWARE_DESIGN_DOCUMENT.md](docs/D04_SOFTWARE_DESIGN_DOCUMENT.md)
+- **Database Documentation**: [docs/D09_DATABASE_DOCUMENTATION.md](docs/D09_DATABASE_DOCUMENTATION.md)
+- **UI/UX Design Guide**: [docs/D12_UI_UX_DESIGN_GUIDE.md](docs/D12_UI_UX_DESIGN_GUIDE.md)
+
+### External Links
+
+- **Laravel 12 Docs**: <https://laravel.com/docs/12.x>
+- **Livewire 3 Docs**: <https://livewire.laravel.com/docs/3.x>
+- **Filament 4 Docs**: <https://filamentphp.com/docs/4.x>
+- **Tailwind CSS 4**: <https://tailwindcss.com/docs>
+- **Alpine.js 3**: <https://alpinejs.dev>
+
+### Support
+
+For issues or questions:
+
+1. Check [docs/INDEX.md](docs/INDEX.md) for comprehensive documentation
+2. Review [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues
+3. Contact BPM MOTAC development team
+
+---
+
+**Last Updated**: December 3, 2025  
+**Version**: 3.6.0  
+**Maintained By**: BPM MOTAC Development Teamlescope>
 - **Laravel Pulse**: <http://127.0.0.1:8000/pulse>
 
 #### Default Test Credentials
