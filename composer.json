@@ -133,7 +133,7 @@
         "audit": {
             "ignore": ["PKSA-yb9k-ykqx-p2zw"]
         },
-        "vendor-dir": "/tmp/vendor"
+        "vendor-dir": "vendor"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
