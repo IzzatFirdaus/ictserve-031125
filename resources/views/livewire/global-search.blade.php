@@ -10,7 +10,7 @@
             @focus="open = true"
             @input="open = true"
             type="search" 
-            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" 
+            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:border-primary-500 sm:text-sm min-h-11" 
             placeholder="{{ __('Search tickets, loans, users...') }}"
             aria-label="Search"
         >
@@ -26,7 +26,7 @@
         <div 
             x-show="open" 
             x-transition
-            class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg max-h-96 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+            class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg max-h-96 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
         >
             @foreach ($results as $result)
                 <a href="{{ $result['url'] }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150 ease-in-out">
@@ -58,7 +58,7 @@
     @elseif (strlen($query) >= 3)
         <div 
             x-show="open" 
-            class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md py-4 text-center text-sm text-gray-500 dark:text-gray-400"
+            class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg py-4 text-center text-sm text-gray-500 dark:text-gray-400"
         >
             {{ __('No results found.') }}
         </div>

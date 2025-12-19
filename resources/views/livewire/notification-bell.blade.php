@@ -47,7 +47,7 @@
 
     {{-- Bell Button - 44×44px minimum touch target per D12 §4.1 --}}
     <button x-ref="bellButton" @click="open = !open; if (open) $wire.loadNotifications()" type="button"
-        class="relative inline-flex items-center justify-center min-w-11 min-h-11 p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-lg transition-colors"
+        class="relative inline-flex items-center justify-center min-w-11 min-h-11 p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 rounded-lg transition-colors"
         :aria-expanded="open" aria-haspopup="true" aria-controls="notification-dropdown"
         aria-label="{{ __('notifications.bell_aria', ['count' => $unreadCount]) }}">
 
@@ -82,7 +82,7 @@
             </h3>
             @if ($unreadCount > 0)
                 <button wire:click="markAllAsRead" type="button"
-                    class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-2 py-2 min-h-11 transition-colors">
+                    class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded px-2 py-2 min-h-11 transition-colors">
                     {{ __('notifications.mark_all_read') }}
                 </button>
             @endif
@@ -93,7 +93,7 @@
             @foreach ($categories as $key => $label)
                 <button wire:click="setCategory('{{ $key }}')" type="button" role="tab"
                     :aria-selected="activeCategory === '{{ $key }}'"
-                    class="px-3 py-2.5 text-xs font-medium rounded-md whitespace-nowrap transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11
+                    class="px-3 py-2.5 text-xs font-medium rounded-md whitespace-nowrap transition-all duration-150 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11
                                {{ $activeCategory === $key
                                    ? 'bg-primary-600 dark:bg-primary-600 text-white shadow-sm'
                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white' }}">
@@ -141,12 +141,12 @@
                             <div class="flex items-center gap-3 mt-2">
                                 @if ($notification['url'])
                                     <a href="{{ $notification['url'] }}"
-                                        class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded px-1 py-0.5 transition-colors">
+                                        class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded px-1 py-0.5 transition-colors">
                                         {{ __('notifications.view_details') }}
                                     </a>
                                 @endif
                                 <button wire:click="markAsRead('{{ $notification['id'] }}')" type="button"
-                                    class="text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded px-1 py-0.5 transition-colors">
+                                    class="text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded px-1 py-0.5 transition-colors">
                                     {{ __('notifications.mark_read') }}
                                 </button>
                             </div>
@@ -170,7 +170,7 @@
         {{-- Footer --}}
         <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
             <a href="{{ route('staff.notifications') }}"
-                class="block text-center text-sm font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-md py-2 transition-colors"
+                class="block text-center text-sm font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-md py-2 transition-colors"
                 aria-label="{{ __('notifications.view_all') }}">
                 {{ __('notifications.view_all') }}
             </a>
