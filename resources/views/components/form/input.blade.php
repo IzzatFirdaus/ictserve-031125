@@ -87,13 +87,13 @@ $ariaDescribedBy = !empty($describedBy) ? implode(' ', $describedBy) : null;
 
 // Input classes with error state styling per D14 §4.1.1
 $inputClasses =
-'block w-full rounded-md shadow-sm sm:text-sm min-h-11 px-3 py-2 ' .
+'block w-full rounded-lg shadow-sm sm:text-sm min-h-11 px-3 py-2 ' .
 'border transition-colors duration-200 ' .
-'focus:outline-none ' .
+'focus:outline-none focus:ring-3 focus:ring-offset-0 ' .
 'dark:bg-gray-800 dark:text-white ' .
 ($hasError
-? 'border-danger-500 text-danger-900 placeholder-danger-400 focus:border-danger-500 dark:border-danger-400 dark:text-danger-100'
-: 'border-gray-300 focus:border-primary-500 dark:border-gray-600');
+? 'border-danger-500 text-danger-900 placeholder-danger-400 focus:ring-danger-500 dark:border-danger-400 dark:text-danger-100'
+: 'border-gray-300 focus:ring-primary-500 dark:border-gray-600');
 @endphp
 
 <div {{ $attributes->only('class')->merge(['class' => 'w-full']) }}>
