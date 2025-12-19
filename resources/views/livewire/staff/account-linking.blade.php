@@ -85,13 +85,13 @@
                         type="email"
                         id="searchEmail"
                         wire:model="searchEmail"
-                        class="flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        class="flex-1 min-w-0 block w-full px-3 py-2 rounded-l-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-primary-500 sm:text-sm min-h-11"
                         placeholder="{{ __('account_linking.email_placeholder') }}"
                         aria-describedby="email-description"
                     >
                     <button
                         type="submit"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-r-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-r-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-h-11"
                         wire:loading.attr="disabled"
                         wire:target="searchSubmissions"
                         aria-label="{{ __('account_linking.search_button') }}"
@@ -163,7 +163,7 @@
                             <button
                                 type="button"
                                 wire:click="deselectAll"
-                                class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors"
+                                class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded-lg px-2 py-1 transition-colors min-h-11"
                             >
                                 {{ __('account_linking.deselect_all') }}
                             </button>
@@ -171,7 +171,7 @@
                             <button
                                 type="button"
                                 wire:click="selectAll"
-                                class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors"
+                                class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded-lg px-2 py-1 transition-colors min-h-11"
                             >
                                 {{ __('account_linking.select_all') }}
                             </button>
@@ -190,7 +190,7 @@
                                     type="checkbox"
                                     wire:click="toggleSelection('{{ $submission['type'] }}', {{ $submission['id'] }})"
                                     @checked($this->isSelected($submission['type'], $submission['id']))
-                                    class="h-4 w-4 text-primary-600 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 transition-colors"
+                                    class="h-5 w-5 text-primary-600 border-gray-300 dark:border-gray-600 rounded-lg focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors"
                                     aria-label="{{ __('account_linking.select_submission', ['reference' => $submission['reference']]) }}"
                                 >
                             </div>
@@ -252,7 +252,7 @@
                         <button
                             type="button"
                             wire:click="resetSearch"
-                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 min-h-11"
                         >
                             {{ __('common.cancel') }}
                         </button>
@@ -262,7 +262,7 @@
                             wire:loading.attr="disabled"
                             wire:target="linkSubmissions"
                             @disabled($this->selectedCount === 0)
-                            class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-primary-600 border border-transparent rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-h-11"
                             aria-label="{{ __('account_linking.link_button') }}"
                         >
                             <span wire:loading.remove wire:target="linkSubmissions">
@@ -296,7 +296,7 @@
                 <button
                     type="button"
                     wire:click="resetSearch"
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-200 min-h-11"
                 >
                     {{ __('account_linking.try_different_email') }}
                 </button>
