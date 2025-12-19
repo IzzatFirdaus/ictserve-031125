@@ -30,7 +30,7 @@
                 aria-controls="panel-{{ $tab['id'] }}"
                 wire:click="$set('activeTab', '{{ $tab['id'] }}')"
                 @class([
-                    'group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 min-h-44',
+                    'group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 min-h-11',
                     'border-blue-500 text-blue-600 dark:text-blue-400' => $activeTab === $tab['id'],
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300' => $activeTab !== $tab['id']
                 ])
