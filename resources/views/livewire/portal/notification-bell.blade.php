@@ -15,7 +15,7 @@
 
     {{-- Notification Bell Button --}}
     <button type="button" wire:click="toggleDropdown"
-        class="relative inline-flex items-center justify-center min-h-11 min-w-11 p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200"
+        class="relative inline-flex items-center justify-center min-h-11 min-w-11 p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200"
         aria-label="{{ __('Pemberitahuan') }} {{ $unreadCount > 0 ? '(' . $unreadCount . ' ' . __('belum dibaca') . ')' : '' }}"
         aria-expanded="{{ $open ? 'true' : 'false' }}" aria-haspopup="menu" aria-controls="notification-dropdown">
 
@@ -103,7 +103,7 @@
         @if ($notifications && $notifications->count() > 0)
             <div class="p-2 border-t border-gray-200 dark:border-gray-700">
                 <a href="{{ Route::has('notifications') ? route('notifications') : '#' }}"
-                    class="block w-full text-center text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700/50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-150">
+                    class="block w-full text-center text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-150">
                     {{ __('Lihat semua pemberitahuan') }}
                 </a>
             </div>

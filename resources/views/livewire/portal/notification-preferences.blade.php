@@ -16,7 +16,7 @@
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
                             <input id="email_notifications" type="checkbox"
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" checked>
+                                class="h-4 w-4 text-blue-600 focus-visible:ring-3 focus-visible:ring-blue-500 border-gray-300 rounded" checked>
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="email_notifications" class="font-medium text-gray-700 dark:text-gray-300">
@@ -31,7 +31,7 @@
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
                             <input id="loan_approval_notifications" type="checkbox"
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" checked>
+                                class="h-4 w-4 text-blue-600 focus-visible:ring-3 focus-visible:ring-blue-500 border-gray-300 rounded" checked>
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="loan_approval_notifications"
@@ -47,7 +47,7 @@
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
                             <input id="helpdesk_notifications" type="checkbox"
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" checked>
+                                class="h-4 w-4 text-blue-600 focus-visible:ring-3 focus-visible:ring-blue-500 border-gray-300 rounded" checked>
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="helpdesk_notifications" class="font-medium text-gray-700 dark:text-gray-300">
@@ -62,7 +62,7 @@
 
                 <div class="mt-6">
                     <button type="button"
-                        class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         {{ __('Save Preferences') }}
                     </button>
                 </div>
