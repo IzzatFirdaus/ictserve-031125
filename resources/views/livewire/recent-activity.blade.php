@@ -12,7 +12,7 @@
         </h2>
         @if($activityType !== 'all' || $dateFrom || $dateTo || $search)
             <button wire:click="clearFilters"
-                    class="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    class="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-gray-300 dark:focus-visible:ring-gray-600 min-h-11 min-w-11"
                     aria-label="{{ __('staff.recent_activity.clear_filters_aria') }}">
                 <span class="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -34,7 +34,7 @@
                 </label>
                 <select wire:model.live="activityType"
                         id="activityType"
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 min-h-11">
                     @foreach($availableActivityTypes as $value => $label)
                         <option wire:key="activity-type-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
                     @endforeach
@@ -49,7 +49,7 @@
                 <input type="date"
                        wire:model.live="dateFrom"
                        id="dateFrom"
-                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 min-h-11">
             </div>
 
             {{-- Date To Filter --}}
@@ -60,7 +60,7 @@
                 <input type="date"
                        wire:model.live="dateTo"
                        id="dateTo"
-                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 min-h-11">
             </div>
 
             {{-- Search Filter --}}
@@ -72,7 +72,7 @@
                        wire:model.live.debounce.300ms="search"
                        id="search"
                        placeholder="{{ __('staff.recent_activity.filters.search_placeholder') }}"
-                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 min-h-11">
             </div>
         </div>
     </div>
@@ -107,22 +107,22 @@
                                 <div class="flex items-center justify-center w-10 h-10 rounded-full
                                     @switch($activity->activity_type)
                                         @case('submission')
-                                            bg-blue-100 dark:bg-blue-900/30
+                                            bg-primary-100 dark:bg-primary-900/30
                                             @break
                                         @case('login')
-                                            bg-green-100 dark:bg-green-900/30
+                                            bg-success-100 dark:bg-success-900/30
                                             @break
                                         @case('update')
-                                            bg-amber-100 dark:bg-amber-900/30
+                                            bg-warning-100 dark:bg-warning-900/30
                                             @break
                                         @case('export')
-                                            bg-purple-100 dark:bg-purple-900/30
+                                            bg-secondary-100 dark:bg-secondary-900/30
                                             @break
                                         @case('claim')
-                                            bg-indigo-100 dark:bg-indigo-900/30
+                                            bg-secondary-100 dark:bg-secondary-900/30
                                             @break
                                         @case('approval')
-                                            bg-emerald-100 dark:bg-emerald-900/30
+                                            bg-success-100 dark:bg-success-900/30
                                             @break
                                         @case('comment')
                                             bg-gray-100 dark:bg-gray-700
@@ -134,22 +134,22 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5
                                         @switch($activity->activity_type)
                                             @case('submission')
-                                                text-blue-600 dark:text-blue-400
+                                                text-primary-600 dark:text-primary-400
                                                 @break
                                             @case('login')
-                                                text-green-600 dark:text-green-400
+                                                text-success-600 dark:text-success-400
                                                 @break
                                             @case('update')
-                                                text-amber-600 dark:text-amber-400
+                                                text-warning-600 dark:text-warning-400
                                                 @break
                                             @case('export')
-                                                text-purple-600 dark:text-purple-400
+                                                text-secondary-600 dark:text-secondary-400
                                                 @break
                                             @case('claim')
-                                                text-indigo-600 dark:text-indigo-400
+                                                text-secondary-600 dark:text-secondary-400
                                                 @break
                                             @case('approval')
-                                                text-emerald-600 dark:text-emerald-400
+                                                text-success-600 dark:text-success-400
                                                 @break
                                             @case('comment')
                                                 text-gray-600 dark:text-gray-400

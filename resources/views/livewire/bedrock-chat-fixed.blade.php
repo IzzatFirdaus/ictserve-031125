@@ -1,6 +1,6 @@
-<div class="min-h-screen flex flex-col bg-white dark:bg-slate-900">
+<div class="min-h-screen flex flex-col bg-white dark:bg-gray-900 theme-transition">
     <!-- Header -->
-    <header class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-orange-500/20 shadow-lg"
+    <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-primary-500/20 shadow-lg"
         role="banner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex items-center justify-between">
@@ -10,7 +10,7 @@
                         class="h-12 w-auto">
                     <!-- BPM Logo -->
                     <img src="{{ asset('images/bpm-logo.png') }}" alt="{{ __('common.bpm_logo') }}" class="h-12 w-auto">
-                    <div class="h-12 w-px bg-orange-500/30"></div>
+                    <div class="h-12 w-px bg-primary-500/30"></div>
                     <!-- AWS Logo (Correct smile logo) -->
                     <svg class="h-8 w-auto" viewBox="0 0 304 182" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -24,19 +24,19 @@
                             fill="#FF9900" />
                     </svg>
                     <h1
-                        class="text-xl font-bold bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
+                        class="text-xl font-bold bg-linear-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">
                         Sembang Bedrock
                     </h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <!-- Theme switcher -->
                     <div class="flex items-center gap-2">
-                        <div id="connection-status" class="text-sm text-orange-600 dark:text-orange-400 hidden"
+                        <div id="connection-status" class="text-sm text-primary-600 dark:text-primary-400 hidden"
                             role="status" aria-live="polite">Sambungan belum tersedia</div>
                         <livewire:components.theme-toggle-unified />
                     </div>
                     <a href="{{ route('welcome') }}"
-                        class="text-sm text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors">
+                        class="text-sm text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg">
                         {{ __('footer.home') }}
                     </a>
                 </div>
@@ -48,23 +48,23 @@
     <div class="flex-1 flex">
         <!-- Sidebar -->
         <div
-            class="{{ $showSidebar ? 'w-64' : 'w-0' }} transition-all duration-300 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-orange-900/30 overflow-hidden">
+            class="{{ $showSidebar ? 'w-64' : 'w-0' }} transition-all duration-300 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-primary-900/30 overflow-hidden">
             <div class="p-4">
                 <button wire:click="newConversation"
-                    class="w-full px-4 py-2 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg mb-4 font-semibold shadow-lg shadow-orange-500/20 min-h-11"
+                    class="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg mb-4 font-semibold shadow-lg shadow-primary-500/20 min-h-11 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:outline-none"
                     aria-label="Perbualan baharu">
                     + Perbualan Baharu
                 </button>
                 <div class="space-y-2">
                     @foreach ($conversations as $conv)
                         <div
-                            class="group flex items-center gap-2 p-2 rounded hover:bg-gray-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+                            class="group flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
                             <div wire:click="loadConversation({{ $conv->id }})"
-                                class="flex-1 truncate text-sm text-gray-300 {{ $conversationId === $conv->id ? 'font-bold text-orange-400' : '' }}">
+                                class="flex-1 truncate text-sm text-gray-300 {{ $conversationId === $conv->id ? 'font-bold text-primary-400' : '' }}">
                                 {{ $conv->title }}
                             </div>
                             <button wire:click="deleteConversation({{ $conv->id }})"
-                                class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-500 transition-opacity min-h-11 min-w-11"
+                                class="opacity-0 group-hover:opacity-100 text-danger-400 hover:text-danger-500 transition-opacity min-h-11 min-w-11 flex items-center justify-center focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 focus:opacity-100 rounded-lg"
                                 aria-label="Padam perbualan">
                                 <x-heroicon-o-x-mark class="w-5 h-5" />
                             </button>
@@ -76,23 +76,23 @@
 
         <div class="flex-1 p-6">
             <div
-                class="bg-white dark:bg-slate-800 rounded-lg shadow-2xl shadow-orange-500/10 p-6 border border-gray-200 dark:border-orange-900/30">
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl shadow-primary-500/10 p-6 border border-gray-200 dark:border-primary-900/30">
                 <div class="flex items-center justify-between mb-6">
                     <button wire:click="$toggle('showSidebar')"
-                        class="p-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11">
+                        class="p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:outline-none">
                         <x-heroicon-o-bars-3 class="w-6 h-6" />
                     </button>
                     <div class="text-center">
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Sembang <span
-                                class="text-orange-500">AWS Bedrock</span></h2>
+                                class="text-primary-500">AWS Bedrock</span></h2>
                         @if ($context === 'faq')
                             <div class="flex items-center justify-center gap-2 mt-1">
                                 <a href="{{ route('faq') }}"
-                                    class="text-sm text-gray-500 dark:text-gray-400 hover:text-orange-500 transition-colors">
+                                    class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-500 transition-colors focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                                     {{ __('Soalan Lazim') }}
                                 </a>
                                 <x-heroicon-s-chevron-right class="w-3 h-3 text-gray-400" />
-                                <span class="text-sm text-orange-500 font-medium">{{ __('Pembantu AI') }}</span>
+                                <span class="text-sm text-primary-500 font-medium">{{ __('Pembantu AI') }}</span>
                             </div>
                         @endif
                     </div>
@@ -106,7 +106,7 @@
                             {{ __('Model AI') }}
                         </label>
                         <select id="model-select" wire:model="model"
-                            class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm min-h-11"
+                            class="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-primary-900/30 rounded-lg text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 shadow-sm min-h-11"
                             aria-describedby="model-help" required>
                             <option value="" disabled>{{ __('Pilih Model') }}</option>
                             <option value="opus">Claude Opus 4.5 (Paling Berkuasa)</option>
@@ -123,9 +123,9 @@
                                 {{ __('Pilihan Tambahan') }}
                             </legend>
                             <label for="use-internet"
-                                class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors min-h-11">
+                                class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-primary-900/30 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors min-h-11">
                                 <input type="checkbox" id="use-internet" wire:model="useInternet"
-                                    class="rounded bg-white dark:bg-slate-800 border-gray-200 dark:border-orange-900/30 text-orange-500 focus:ring-orange-500"
+                                    class="rounded bg-white dark:bg-gray-800 border-gray-200 dark:border-primary-900/30 text-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                                     aria-describedby="internet-help">
                                 <x-heroicon-o-globe-alt class="w-4 h-4 text-gray-500 dark:text-gray-400"
                                     aria-hidden="true" />
@@ -141,16 +141,16 @@
                 {{-- FAQ Suggestions (shown when context is FAQ and no messages) --}}
                 @if ($context === 'faq' && count($messages) <= 1 && !empty($faqSuggestions))
                     <div
-                        class="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+                        class="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg">
                         <h3
-                            class="text-sm font-semibold text-orange-800 dark:text-orange-200 mb-3 flex items-center gap-2">
+                            class="text-sm font-semibold text-primary-800 dark:text-primary-200 mb-3 flex items-center gap-2">
                             <x-heroicon-o-light-bulb class="w-4 h-4" />
                             {{ __('Soalan Lazim') }}
                         </h3>
                         <div class="grid gap-2">
                             @foreach ($faqSuggestions as $suggestion)
                                 <button wire:click="useFaqSuggestion('{{ $suggestion }}')"
-                                    class="text-left p-3 text-sm bg-white dark:bg-slate-800 border border-orange-200 dark:border-orange-700 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/30 transition-colors focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                                    class="text-left p-3 text-sm bg-white dark:bg-gray-800 border border-primary-200 dark:border-primary-700 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                     {{ $suggestion }}
                                 </button>
                             @endforeach
@@ -159,17 +159,17 @@
                 @endif
 
                 <div id="messages-list" role="log" aria-live="polite" aria-relevant="additions"
-                    class="mb-6 h-96 overflow-y-auto border border-gray-200 dark:border-orange-900/30 rounded-lg p-4 bg-white dark:bg-slate-900/50 backdrop-blur-sm">
+                    class="mb-6 h-96 overflow-y-auto border border-gray-200 dark:border-primary-900/30 rounded-lg p-4 bg-white dark:bg-gray-900/50 backdrop-blur-sm">
                     @forelse($messages as $message)
                         <div class="mb-4 {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}" role="article"
                             aria-label="{{ $message['role'] }} message">
                             <div
-                                class="inline-block max-w-[80%] p-4 rounded-lg shadow-lg {{ $message['role'] === 'user' ? 'bg-linear-to-r from-orange-500 to-orange-600 text-white' : 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-orange-900/30 text-gray-900 dark:text-gray-100' }}">
+                                class="inline-block max-w-[80%] p-4 rounded-lg shadow-lg {{ $message['role'] === 'user' ? 'bg-primary-600/90 text-white' : 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-primary-900/30 text-gray-900 dark:text-gray-100' }}">
                                 @if ($message['role'] === 'user')
                                     <p class="whitespace-pre-wrap">{{ $message['content'] }}</p>
                                 @else
                                     <div
-                                        class="prose prose-sm prose-invert max-w-none prose-headings:text-orange-400 prose-a:text-orange-400 prose-code:text-orange-300 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-orange-900/30">
+                                        class="prose prose-sm prose-invert max-w-none prose-headings:text-primary-400 prose-a:text-primary-400 prose-code:text-primary-300 prose-pre:bg-gray-900 prose-pre:border prose-pre:border-primary-900/30">
                                         @php
                                             $converter = new \League\CommonMark\CommonMarkConverter();
                                             echo $converter->convert($message['content'])->getContent();
@@ -177,7 +177,7 @@
                                     </div>
                                 @endif
                                 @if ($message['role'] === 'assistant')
-                                    <p class="text-xs mt-2 text-orange-400/70">
+                                    <p class="text-xs mt-2 text-primary-400/70">
                                         {{ ucfirst($message['model'] ?? '') }}
                                         @if (isset($message['tokens']))
                                             • {{ $message['tokens'] }} token
@@ -188,7 +188,7 @@
                         </div>
                     @empty
                         <div class="flex flex-col items-center justify-center h-full text-gray-500">
-                            <x-heroicon-o-chat-bubble-left-ellipsis class="w-16 h-16 mb-4 text-orange-500/30" />
+                            <x-heroicon-o-chat-bubble-left-ellipsis class="w-16 h-16 mb-4 text-primary-500/30" />
                             <p class="text-center">
                                 @if ($context === 'faq')
                                     {{ 'Tanya soalan berkaitan perkhidmatan ICT...' }}
@@ -204,9 +204,9 @@
                     <label for="prompt" class="sr-only">{{ __('Mesej') }}</label>
                     <input type="text" id="prompt" wire:model="prompt" wire:keydown.enter="send"
                         placeholder="{{ 'Taip mesej anda...' }}"
-                        class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        class="flex-1 px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-primary-900/30 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-50 dark:placeholder-gray-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:border-transparent">
                     <button type="submit"
-                        class="px-8 py-3 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-11"
+                        class="px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold shadow-lg shadow-primary-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         wire:loading.attr="disabled" wire:target="send"
                         @if ($sending) disabled @endif aria-label="Hantar mesej">
                         <span wire:loading.remove wire:target="send" class="flex items-center gap-2">
@@ -224,7 +224,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-orange-500/20 mt-auto"
+    <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-primary-500/20 mt-auto"
         role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">

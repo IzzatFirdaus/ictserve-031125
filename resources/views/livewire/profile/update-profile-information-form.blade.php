@@ -78,11 +78,11 @@ new class extends Component
 
 <section>
     <header>
-        <h2 class="text-xl font-semibold text-slate-100">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
             {{ __('profile.information_title') }}
         </h2>
 
-        <p class="mt-1 text-sm text-slate-300">
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
             {{ __('profile.information_description') }}
         </p>
     </header>
@@ -101,16 +101,16 @@ new class extends Component
 
             @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())
                 <div>
-                    <p class="text-sm mt-2 text-slate-300">
+                    <p class="text-sm mt-2 text-gray-600 dark:text-gray-400">
                         {{ __('auth.email_unverified') }}
 
-                        <button wire:click.prevent="sendVerification" class="underline text-sm text-slate-400 hover:text-slate-200 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-blue-500 focus-visible:ring-offset-slate-800">
+                        <button wire:click.prevent="sendVerification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-800">
                             {{ __('auth.resend_verification') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-400">
+                        <p class="mt-2 font-medium text-sm text-success-600 dark:text-success-400">
                             {{ __('auth.verification_link_sent') }}
                         </p>
                     @endif
@@ -127,3 +127,4 @@ new class extends Component
         </div>
     </form>
 </section>
+

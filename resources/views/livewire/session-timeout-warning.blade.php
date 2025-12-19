@@ -86,7 +86,7 @@ document.addEventListener('alpine:init', () => {
 
         <!-- Modal Content -->
         <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-            <div class="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+            <div class="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <!-- Warning Icon -->
                 <div class="sm:flex sm:items-start">
                     <div class="mx-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-warning-100 dark:bg-warning-900/20 sm:mx-0 sm:h-10 sm:w-10">
@@ -114,14 +114,14 @@ document.addEventListener('alpine:init', () => {
                     <button
                         type="button"
                         wire:click="extendSession"
-                        class="inline-flex w-full justify-center rounded-md bg-primary-600 dark:bg-primary-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 sm:w-auto transition-colors"
+                        class="inline-flex w-full justify-center rounded-lg bg-primary-600 dark:bg-primary-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 dark:hover:bg-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:w-auto transition-colors min-h-11"
                     >
                         {{ __('auth.extend_session') }}
                     </button>
                     <button
                         type="button"
                         wire:click="logout"
-                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-slate-700 px-4 py-2.5 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 sm:mt-0 sm:w-auto transition-colors"
+                        class="mt-3 inline-flex w-full justify-center rounded-lg bg-white dark:bg-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:mt-0 sm:w-auto transition-colors min-h-11"
                     >
                         {{ __('auth.logout') }}
                     </button>

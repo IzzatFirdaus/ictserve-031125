@@ -20,23 +20,23 @@
 <div class="space-y-6">
     {{-- Header --}}
     <div>
-        <h2 class="text-2xl font-bold text-gray-900">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
             {{ __('portal.help.contact_support') }}
         </h2>
-        <p class="mt-2 text-sm text-gray-600">
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
             {{ __('portal.help.contact_support_description') }}
         </p>
     </div>
 
     {{-- Success Message --}}
     @if (session()->has('success'))
-        <div class="rounded-lg bg-success-50 p-4" role="alert">
+        <div class="rounded-lg bg-success-50 dark:bg-success-900/20 p-4 border border-success-200 dark:border-success-800" role="alert">
             <div class="flex">
                 <div class="shrink-0">
-                    <x-heroicon-o-check-circle class="h-5 w-5 text-success-600" />
+                    <x-heroicon-o-check-circle class="h-5 w-5 text-success-600 dark:text-success-400" />
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm font-medium text-success-800">
+                    <p class="text-sm font-medium text-success-800 dark:text-success-200">
                         {{ session('success') }}
                     </p>
                 </div>
@@ -48,17 +48,17 @@
     <form wire:submit="submit" class="space-y-6">
         {{-- Subject --}}
         <div>
-            <label for="subject" class="block text-sm font-medium text-gray-700">
+            <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ __('portal.subject') }}
                 <span class="text-danger-600">*</span>
             </label>
             <input type="text" id="subject" wire:model.live.debounce.300ms="subject"
-                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 @error('subject') border-danger-300 @enderror"
+                class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 @error('subject') border-danger-300 @enderror"
                 placeholder="{{ __('portal.support.subject_placeholder') ?? 'Brief description of your issue' }}"
                 aria-required="true" aria-invalid="{{ $errors->has('subject') ? 'true' : 'false' }}"
                 aria-describedby="{{ $errors->has('subject') ? 'subject-error' : '' }}" />
             @error('subject')
-                <p class="mt-2 text-sm text-danger-600" id="subject-error" role="alert">
+                <p class="mt-2 text-sm text-danger-600 dark:text-danger-400" id="subject-error" role="alert">
                     {{ $message }}
                 </p>
             @enderror
@@ -66,12 +66,12 @@
 
         {{-- Priority --}}
         <div>
-            <label for="priority" class="block text-sm font-medium text-gray-700">
+            <label for="priority" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ __('portal.priority') }}
                 <span class="text-danger-600">*</span>
             </label>
             <select id="priority" wire:model="priority"
-                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500"
+                class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800"
                 aria-required="true">
                 <option value="low">{{ __('portal.priority_low') }}</option>
                 <option value="normal">{{ __('portal.priority_normal') }}</option>
@@ -82,25 +82,25 @@
 
         {{-- Description --}}
         <div>
-            <label for="description" class="block text-sm font-medium text-gray-700">
+            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ __('portal.description') }}
                 <span class="text-danger-600">*</span>
             </label>
             <textarea id="description" wire:model.live.debounce.300ms="description" rows="6"
-                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 @error('description') border-danger-300 @enderror"
+                class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 @error('description') border-danger-300 @enderror"
                 placeholder="{{ __('portal.support.description_placeholder') ?? 'Provide detailed information about your issue' }}"
                 aria-required="true" aria-invalid="{{ $errors->has('description') ? 'true' : 'false' }}"
                 aria-describedby="description-help {{ $errors->has('description') ? 'description-error' : '' }}"></textarea>
             <div class="mt-2 flex items-center justify-between">
-                <p class="text-xs text-gray-500" id="description-help">
+                <p class="text-xs text-gray-500 dark:text-gray-400" id="description-help">
                     {{ __('portal.support.description_help') ?? 'Minimum 20 characters' }}
                 </p>
-                <p class="text-xs text-gray-500">
+                <p class="text-xs text-gray-500 dark:text-gray-400">
                     {{ $characterCount }} / 2000 {{ __('portal.characters') }}
                 </p>
             </div>
             @error('description')
-                <p class="mt-2 text-sm text-danger-600" id="description-error" role="alert">
+                <p class="mt-2 text-sm text-danger-600 dark:text-danger-400" id="description-error" role="alert">
                     {{ $message }}
                 </p>
             @enderror

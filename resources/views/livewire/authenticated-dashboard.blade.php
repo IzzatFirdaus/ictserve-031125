@@ -32,7 +32,7 @@
                         ]) }}
                     </p>
                     <a href="{{ route('staff.claim-submissions') }}"
-                        class="mt-2 inline-flex items-center text-sm font-medium text-warning-700 dark:text-warning-300 hover:text-warning-900 dark:hover:text-warning-100 underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-warning-500 focus:ring-offset-2 rounded min-h-11 min-w-11">
+                        class="mt-2 inline-flex items-center text-sm font-medium text-warning-700 dark:text-warning-300 hover:text-warning-900 dark:hover:text-warning-100 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-warning-500 focus-visible:ring-offset-2 rounded min-h-11 min-w-11">
                         {{ __('staff.dashboard.claim_banner.cta') }}
                         <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             aria-hidden="true">
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <button wire:click="dismissClaimBanner" type="button"
-                class="min-h-11 min-w-11 flex items-center justify-center p-2 rounded-md text-warning-500 hover:text-warning-700 dark:text-warning-400 dark:hover:text-warning-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-warning-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
+                class="min-h-11 min-w-11 flex items-center justify-center p-2 rounded-lg text-warning-500 hover:text-warning-700 dark:text-warning-400 dark:hover:text-warning-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-warning-500 focus-visible:ring-offset-2 transition-colors duration-200"
                 aria-label="{{ __('staff.dashboard.claim_banner.close') }}">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -59,7 +59,7 @@
             {{ __('staff.dashboard.welcome', ['name' => $user->name]) }}
         </h1>
         <button wire:click="refreshStatistics" type="button"
-            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 shadow-button transition-colors duration-200"
+            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 shadow-button transition-colors duration-200"
             aria-label="{{ __('staff.dashboard.refresh_aria') }}">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -244,8 +244,8 @@
                     <div class="flex items-start">
                         <div class="shrink-0">
                             <div
-                                class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="currentColor"
+                                class="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
+                                <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="currentColor"
                                     viewBox="0 0 20 20" aria-hidden="true">
                                     <path fill-rule="evenodd"
                                         d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
@@ -273,7 +273,7 @@
 @else
 {{-- Loading State --}}
 <div class="flex items-center justify-center py-12">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" role="status"
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600" role="status"
         aria-label="{{ __('common.loading') }}">
         <span class="sr-only">{{ __('common.loading') }}</span>
     </div>
