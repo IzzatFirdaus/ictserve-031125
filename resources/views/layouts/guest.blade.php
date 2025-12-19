@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Guest Layout - Unified Authentication Interface
  *

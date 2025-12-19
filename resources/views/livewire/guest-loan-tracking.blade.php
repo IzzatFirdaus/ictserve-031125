@@ -22,7 +22,7 @@
                             aria-required="true"
                             class="flex-1 min-w-0 block w-full px-3 py-2 rounded-md border-slate-600 bg-slate-900 text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:border-indigo-500 sm:text-sm"
                             placeholder="e.g. LA-20231125-0001">
-                        <button type="submit" aria-label="{{ __('loan.actions.track') }}" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 min-h-[44px]">
+                        <button type="submit" aria-label="{{ __('loan.actions.track') }}" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 min-h-44">
                             {{ __('loan.actions.track') }}
                         </button>
                     </div>

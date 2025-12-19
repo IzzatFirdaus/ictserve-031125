@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Progress Indicator Volt Component v3.6.0
  *

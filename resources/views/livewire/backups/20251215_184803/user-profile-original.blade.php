@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Component name: User Profile Management (Volt)
  * Description: Profile management interface with editable and read-only fields

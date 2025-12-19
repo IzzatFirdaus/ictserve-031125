@@ -1,4 +1,4 @@
-﻿{{--
+{{--
     name: authenticated-dashboard.blade.php
     description: Main staff dashboard view with real-time statistics and activity feed
     author: dev-team@motac.gov.my
