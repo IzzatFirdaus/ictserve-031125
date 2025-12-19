@@ -33,7 +33,7 @@
                     <div class="flex items-center gap-2">
                         <div id="connection-status" class="text-sm text-orange-600 dark:text-orange-400 hidden"
                             role="status" aria-live="polite">Sambungan belum tersedia</div>
-                        <livewire:components.theme-toggle />
+                        <livewire:components.theme-toggle-unified />
                     </div>
                     <a href="{{ route('welcome') }}"
                         class="text-sm text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors">
@@ -161,8 +161,8 @@
                 <div id="messages-list" role="log" aria-live="polite" aria-relevant="additions"
                     class="mb-6 h-96 overflow-y-auto border border-gray-200 dark:border-orange-900/30 rounded-lg p-4 bg-white dark:bg-slate-900/50 backdrop-blur-sm">
                     @forelse($messages as $message)
-                        <div class="mb-4 {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}"
-                            role="article" aria-label="{{ $message['role'] }} message">
+                        <div class="mb-4 {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}" role="article"
+                            aria-label="{{ $message['role'] }} message">
                             <div
                                 class="inline-block max-w-[80%] p-4 rounded-lg shadow-lg {{ $message['role'] === 'user' ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white' : 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-orange-900/30 text-gray-900 dark:text-gray-100' }}">
                                 @if ($message['role'] === 'user')

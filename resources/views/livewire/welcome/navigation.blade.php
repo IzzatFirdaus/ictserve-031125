@@ -17,43 +17,37 @@
  */
 --}}
 <nav class="flex flex-1 items-center justify-end gap-2" role="navigation" aria-label="{{ __('navigation.main') }}">
-    {{-- Theme Toggle (v3.6.0) --}}
-    <livewire:components.theme-toggle />
+    {{-- Theme Toggle (v3.6.1) --}}
+    <livewire:components.theme-toggle-unified />
 
     @auth
-        <a
-            href="{{ url('/dashboard') }}"
+        <a href="{{ url('/dashboard') }}"
             class="rounded-m px-4 py-2.5 min-h-11 flex items-center text-sm font-medium text-gray-700 dark:text-gray-200
                    bg-white/80 dark:bg-gray-800/80 shadow-button
                    ring-1 ring-gray-200 dark:ring-gray-700
                    transition-colors duration-200
                    hover:bg-gray-100 dark:hover:bg-gray-700
-                   focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-        >
+                   focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
             {{ __('Dashboard') }}
         </a>
     @else
-        <a
-            href="{{ route('login') }}"
+        <a href="{{ route('login') }}"
             class="rounded-m px-4 py-2.5 min-h-11 flex items-center text-sm font-medium text-gray-700 dark:text-gray-200
                    bg-white/80 dark:bg-gray-800/80 shadow-button
                    ring-1 ring-gray-200 dark:ring-gray-700
                    transition-colors duration-200
                    hover:bg-gray-100 dark:hover:bg-gray-700
-                   focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-        >
+                   focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
             {{ __('Log Masuk') }}
         </a>
 
         @if (Route::has('register'))
-            <a
-                href="{{ route('register') }}"
+            <a href="{{ route('register') }}"
                 class="rounded-m px-4 py-2.5 min-h-11 flex items-center text-sm font-medium text-white
                        bg-primary-600 shadow-button
                        transition-colors duration-200
                        hover:bg-primary-700
-                       focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-            >
+                       focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                 {{ __('Daftar') }}
             </a>
         @endif
