@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     <div class="space-y-6">
         <!-- Export Form -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             {{ $this->form }}
         </div>
 
@@ -17,9 +17,9 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Format Guidelines -->
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 class="font-semibold text-blue-900 mb-2">📊 Format Fail</h4>
-                    <ul class="text-sm text-blue-800 space-y-1">
+                <div class="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4">
+                    <h4 class="font-semibold text-primary-900 dark:text-primary-100 mb-2">📊 Format Fail</h4>
+                    <ul class="text-sm text-primary-800 dark:text-primary-200 space-y-1">
                         <li><strong>CSV:</strong> Terbaik untuk analisis data</li>
                         <li><strong>Excel:</strong> Untuk laporan dan carta</li>
                         <li><strong>PDF:</strong> Untuk dokumentasi rasmi</li>
@@ -27,9 +27,9 @@
                 </div>
 
                 <!-- Size Limits -->
-                <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                    <h4 class="font-semibold text-amber-900 mb-2">📏 Had Saiz Fail</h4>
-                    <ul class="text-sm text-amber-800 space-y-1">
+                <div class="bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 rounded-lg p-4">
+                    <h4 class="font-semibold text-warning-900 dark:text-warning-100 mb-2">📏 Had Saiz Fail</h4>
+                    <ul class="text-sm text-warning-800 dark:text-warning-200 space-y-1">
                         <li><strong>Maksimum:</strong> 50MB per fail</li>
                         <li><strong>Pemampatan:</strong> Automatik untuk fail besar</li>
                         <li><strong>Tempoh:</strong> Fail akan dipadam selepas 24 jam</li>
@@ -37,9 +37,9 @@
                 </div>
 
                 <!-- Accessibility -->
-                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <h4 class="font-semibold text-green-900 mb-2">♿ Kebolehcapaian</h4>
-                    <ul class="text-sm text-green-800 space-y-1">
+                <div class="bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 rounded-lg p-4">
+                    <h4 class="font-semibold text-success-900 dark:text-success-100 mb-2">♿ Kebolehcapaian</h4>
+                    <ul class="text-sm text-success-800 dark:text-success-200 space-y-1">
                         <li><strong>Header:</strong> Semua jadual mempunyai header</li>
                         <li><strong>Metadata:</strong> Maklumat lengkap disertakan</li>
                         <li><strong>Format:</strong> Mematuhi standard WCAG 2.2 AA</li>
@@ -136,7 +136,7 @@
                                 {{ rand(1, 25) }}.{{ rand(1, 9) }}MB
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-200">
                                     Selesai
                                 </span>
                             </td>

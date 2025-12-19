@@ -12,8 +12,8 @@
                             -
                         </p>
                     </div>
-                    <div class="rounded-full bg-blue-500/10 p-3">
-                        <x-heroicon-o-ticket class="h-5 w-5 text-blue-500" />
+                    <div class="rounded-full bg-primary-500/10 p-3">
+                        <x-heroicon-o-ticket class="h-5 w-5 text-primary-500" />
                     </div>
                 </div>
             </x-filament::section>
@@ -28,8 +28,8 @@
                             -
                         </p>
                     </div>
-                    <div class="rounded-full bg-orange-500/10 p-3">
-                        <x-heroicon-o-clock class="h-5 w-5 text-orange-500" />
+                    <div class="rounded-full bg-warning-500/10 p-3">
+                        <x-heroicon-o-clock class="h-5 w-5 text-warning-500" />
                     </div>
                 </div>
             </x-filament::section>
@@ -44,8 +44,8 @@
                             -
                         </p>
                     </div>
-                    <div class="rounded-full bg-yellow-500/10 p-3">
-                        <x-heroicon-o-pause-circle class="h-5 w-5 text-yellow-500" />
+                    <div class="rounded-full bg-warning-500/10 p-3">
+                        <x-heroicon-o-pause-circle class="h-5 w-5 text-warning-500" />
                     </div>
                 </div>
             </x-filament::section>
@@ -60,8 +60,8 @@
                             -
                         </p>
                     </div>
-                    <div class="rounded-full bg-green-500/10 p-3">
-                        <x-heroicon-o-heart class="h-5 w-5 text-green-500" />
+                    <div class="rounded-full bg-success-500/10 p-3">
+                        <x-heroicon-o-heart class="h-5 w-5 text-success-500" />
                     </div>
                 </div>
             </x-filament::section>
@@ -122,17 +122,17 @@
                 // This would typically make an AJAX call to get recent alerts
                 // For now, we'll show a placeholder message
                 recentAlertsContainer.innerHTML = `
-                    <div class="flex items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                    <div class="flex items-center p-3 bg-success-50 dark:bg-success-900/20 rounded-lg border border-success-200 dark:border-success-800">
                         <div class="flex-shrink-0">
-                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-5 h-5 text-success-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm font-medium text-green-800 dark:text-green-200">
+                            <p class="text-sm font-medium text-success-800 dark:text-success-200">
                                 Sistem beroperasi dengan normal
                             </p>
-                            <p class="text-xs text-green-600 dark:text-green-400">
+                            <p class="text-xs text-success-600 dark:text-success-400">
                                 Tiada amaran aktif pada masa ini
                             </p>
                         </div>
