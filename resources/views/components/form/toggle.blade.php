@@ -44,7 +44,7 @@ $descriptionId = $description ? $id . '-description' : null;
         :aria-checked="on.toString()"
         @click="!{{ $disabled ? 'true' : 'false' }} && (on = !on)"
         :class="on ? 'bg-primary-500' : 'bg-gray-200 dark:bg-gray-600'"
-        class="relative inline-flex h-7 w-12 min-h-11 min-w-11 items-center shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 {{ $disabled ? 'opacity-50 cursor-not-allowed' : '' }}"
+        class="relative inline-flex h-7 w-12 min-h-11 min-w-11 items-center shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 {{ $disabled ? 'opacity-50 cursor-not-allowed' : '' }}"
         {{ $attributes->except(['wire:model', 'wire:model.live', 'class']) }}>
         <span class="sr-only">{{ $label ?? __('Toggle') }}</span>
         <span aria-hidden="true" :class="on ? 'translate-x-5' : 'translate-x-0'"
