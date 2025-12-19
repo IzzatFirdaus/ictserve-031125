@@ -65,7 +65,7 @@
         class="group" @endif
     {{ $attributes->merge(['class' => 'block']) }}>
 
-    <div class="bg-gray-900 dark:bg-gray-800 border {{ $cardClasses }} rounded-lg p-6 shadow-card transition-all duration-200 {{ $href ? 'hover:scale-105 hover:shadow-dropdown focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-950' : '' }}"
+    <div class="bg-gray-900 dark:bg-gray-800 border {{ $cardClasses }} rounded-lg p-6 shadow-card transition-all duration-200 {{ $href ? 'hover:scale-105 hover:shadow-dropdown focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950' : '' }}"
         role="article" aria-label="{{ $label }}: {{ $count }}">
 
         <div class="flex items-start justify-between">
