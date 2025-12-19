@@ -107,13 +107,13 @@ $colors = $typeColors[$type] ?? $typeColors['primary'];
 <a href="{{ $href }}"
     {{ $attributes->merge([
             'class' =>
-                'block bg-white dark:bg-gray-800 rounded-(--radius-l) shadow-card border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900',
+                'block bg-white dark:bg-gray-800 rounded-lg shadow-card border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900',
         ]) }}
     aria-label="{{ $title }}: {{ $count }}">
     @else
     <div
         {{ $attributes->merge([
-                'class' => 'bg-white dark:bg-gray-800 rounded-(--radius-l) shadow-card border border-gray-200 dark:border-gray-700 p-6',
+                'class' => 'bg-white dark:bg-gray-800 rounded-lg shadow-card border border-gray-200 dark:border-gray-700 p-6',
                 'role' => 'status',
                 'aria-label' => $title . ': ' . $count,
             ]) }}>

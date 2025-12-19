@@ -74,7 +74,7 @@ $config = $variants[$variant] ?? $variants['info'];
         <div class="ml-auto pl-3">
             {{-- 44px touch target per D12 §4.1 --}}
             <button @click="show = false" type="button"
-                class="inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg p-2 focus:outline-none focus:ring-3 focus:ring-offset-2 {{ $config['container'] }} hover:bg-opacity-75 transition-colors duration-200"
+                class="inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg p-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 {{ $config['container'] }} hover:bg-opacity-75 transition-colors duration-200"
                 aria-label="{{ __('common.dismiss') }}">
                 <span class="sr-only">{{ __('common.dismiss') }}</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"

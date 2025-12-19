@@ -36,9 +36,9 @@
 
 @php
 $baseClasses = match ($variant) {
-'compact' => 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-(--radius-l) p-4',
+'compact' => 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4',
 default
-=> 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm rounded-(--radius-l)',
+=> 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm rounded-lg',
 };
 @endphp
 
@@ -49,7 +49,7 @@ default
     {{-- Compact variant for smaller cards --}}
     <div class="flex items-center gap-3">
         <div class="shrink-0">
-            <div class="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-(--radius-l) skeleton-pulse"></div>
+            <div class="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-lg skeleton-pulse"></div>
         </div>
         <div class="flex-1 space-y-2">
             <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded-sm w-2/3 skeleton-pulse"></div>
@@ -61,7 +61,7 @@ default
     <div class="p-5">
         <div class="flex items-center">
             <div class="shrink-0">
-                <div class="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-(--radius-l) skeleton-pulse"></div>
+                <div class="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-lg skeleton-pulse"></div>
             </div>
             <div class="ml-5 w-0 flex-1">
                 <div class="space-y-3">

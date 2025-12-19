@@ -40,7 +40,7 @@ $variants = [
 
 // Sizes with 44px minimum touch target (D12 §4.1, WCAG 2.5.8)
 $sizes = [
-'sm' => 'px-3 py-1.5 text-sm min-h-9', // 36px - for dense UIs only
+'sm' => 'px-3 py-1.5 text-sm min-h-11', // 44px min touch target
 'md' => 'px-4 py-2 text-base min-h-11 min-w-11', // 44px touch target
 'lg' => 'px-6 py-3 text-lg min-h-13', // 52px
 ];
