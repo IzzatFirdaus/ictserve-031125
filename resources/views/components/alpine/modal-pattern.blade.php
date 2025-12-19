@@ -13,7 +13,7 @@
     @keydown.escape.window="show = false"
     @open-modal.window="show = true"
 >
-    <button @click="show = true" class="px-4 py-2 bg-amber-600 text-white rounded-md">
+    <button @click="show = true" class="min-h-11 px-4 py-2 bg-primary-600 text-white rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
         Open Modal
     </button>
 
@@ -46,13 +46,13 @@
                 <div class="flex justify-end gap-3">
                     <button
                         @click="show = false"
-                        class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                        class="min-h-11 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     >
                         Cancel
                     </button>
                     <button
                         @click="show = false"
-                        class="px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700"
+                        class="min-h-11 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     >
                         Confirm
                     </button>
