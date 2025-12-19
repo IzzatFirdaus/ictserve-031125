@@ -89,7 +89,7 @@
                         {{ __('common.status') }}
                     </label>
                     <select id="status-filter" wire:model.live="statusFilter"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
+                        class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus-visible:ring-3 focus-visible:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
                         <option value="pending">{{ __('staff.approvals.pending') }}</option>
                         <option value="approved">{{ __('staff.approvals.approved') }}</option>
                         <option value="rejected">{{ __('staff.approvals.rejected') }}</option>
@@ -103,7 +103,7 @@
                     </label>
                     <input type="text" id="applicant-search" wire:model.live.debounce.300ms="applicantSearch"
                         placeholder="{{ __('staff.approvals.search_placeholder') }}"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
+                        class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus-visible:ring-3 focus-visible:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
                 </div>
 
                 {{-- Date From --}}
@@ -112,7 +112,7 @@
                         {{ __('common.date_from') }}
                     </label>
                     <input type="date" id="date-from" wire:model.live="dateFrom"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
+                        class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus-visible:ring-3 focus-visible:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
                 </div>
 
                 {{-- Date To --}}
@@ -121,7 +121,7 @@
                         {{ __('common.date_to') }}
                     </label>
                     <input type="date" id="date-to" wire:model.live="dateTo"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
+                        class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus-visible:ring-3 focus-visible:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
                 </div>
             </div>
 
@@ -338,7 +338,7 @@
                                             <button type="button"
                                                 wire:click="openApprovalModal({{ $application->id }}, 'approve')"
                                                 :disabled="isProcessing"
-                                                class="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 focus:outline-none focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed min-h-11 min-w-11 bg-green-600 hover:bg-green-700 text-white focus:ring-green-300 dark:focus:ring-green-800 px-3 py-2 text-sm">
+                                                class="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 focus:outline-none focus-visible:ring-3 disabled:opacity-50 disabled:cursor-not-allowed min-h-11 min-w-11 bg-green-600 hover:bg-green-700 text-white focus-visible:ring-green-300 dark:focus-visible:ring-green-800 px-3 py-2 text-sm focus-visible:ring-offset-2">
                                                 {{ __('staff.approvals.approve') }}
                                             </button>
                                             <x-ui.button
@@ -413,7 +413,7 @@
                                 {{ __('staff.approvals.remarks') }} <span class="text-red-400">*</span>
                             </label>
                             <textarea id="approval-remarks" wire:model="approvalRemarks" rows="4" required
-                                class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950"
+                                class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus-visible:ring-3 focus-visible:ring-blue-500 focus:ring-offset-slate-950"
                                 placeholder="{{ __('staff.approvals.remarks_placeholder') }}"
                                 @error('approvalRemarks') aria-invalid="true" aria-describedby="remarks-error" @enderror></textarea>
                             @error('approvalRemarks')
