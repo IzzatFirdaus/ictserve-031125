@@ -16,14 +16,14 @@
     ];
 @endphp
 
-<header class="bg-slate-900 text-slate-100 border-b border-slate-800" role="banner"
+<header class="bg-gray-900 text-gray-100 border-b border-gray-800" role="banner"
     aria-label="{{ __('common.site_header') }}">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-8">
             <a href="{{ route('staff.dashboard') }}"
-                class="flex items-center gap-3 py-3 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-md"
+                class="flex items-center gap-3 py-3 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 focus-visible:ring-offset-gray-900 rounded-lg"
                 wire:navigate aria-label="{{ __('common.home') }}">
-                <x-application-logo class="h-8 w-auto text-slate-100" />
+                <x-application-logo class="h-8 w-auto text-gray-100" />
                 <span class="text-lg font-semibold hidden sm:block">{{ config('app.name', 'ICTServe') }}</span>
             </a>
 
@@ -32,7 +32,7 @@
                 @foreach ($portalLinks as $link)
                     @continue(!Route::has($link['route']))
                     <a href="{{ route($link['route']) }}" wire:navigate
-                        class="px-4 py-3 border-b-2 rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 min-h-44 {{ request()->routeIs($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
+                        class="px-4 py-3 border-b-2 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 focus-visible:ring-offset-gray-900 min-h-11 {{ request()->routeIs($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-gray-300 hover:text-white hover:border-gray-500' }}"
                         @if (request()->routeIs($link['route'])) aria-current="page" @endif>
                         {{ $link['label'] }}
                     </a>
@@ -44,7 +44,7 @@
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
                     <button
-                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-slate-800 text-slate-200 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition">
+                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-lg bg-gray-800 text-gray-200 hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 transition">
                         <span>{{ $user?->name ?? __('staff.nav.user_menu') }}</span>
                         <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                             fill="currentColor">
@@ -72,10 +72,10 @@
         </div>
     </div>
 
-    <nav x-data="{ open: false }" class="md:hidden border-t border-slate-800" role="navigation"
+    <nav x-data="{ open: false }" class="md:hidden border-t border-gray-800" role="navigation"
         aria-label="{{ __('common.mobile_navigation') }}">
         <button type="button"
-            class="w-full px-4 py-3 flex items-center justify-between text-sm font-medium text-slate-200 bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+            class="w-full px-4 py-3 flex items-center justify-between text-sm font-medium text-gray-200 bg-gray-900 hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
             @click="open = !open" :aria-expanded="open.toString()">
             <span>{{ __('staff.nav.menu') }}</span>
             <svg class="h-5 w-5 transition-transform" :class="{ '-rotate-180': open }"
@@ -85,22 +85,22 @@
             </svg>
         </button>
 
-        <div x-show="open" x-transition class="bg-slate-900 border-t border-slate-800">
+        <div x-show="open" x-transition class="bg-gray-900 border-t border-gray-800">
             @foreach ($portalLinks as $link)
                 @continue(!Route::has($link['route']))
                 <a href="{{ route($link['route']) }}" wire:navigate
-                    class="block px-4 py-3 text-sm {{ request()->routeIs($link['route']) ? 'text-white bg-slate-800' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                    class="block px-4 py-3 text-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 {{ request()->routeIs($link['route']) ? 'text-white bg-gray-800' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     {{ $link['label'] }}
                 </a>
             @endforeach
             <a href="{{ route('staff.profile') }}" wire:navigate
-                class="block px-4 py-3 text-sm text-slate-300 hover:bg-slate-800 hover:text-white">
+                class="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900">
                 {{ __('staff.nav.profile') }}
             </a>
-            <form method="POST" action="{{ route('logout') }}" class="border-t border-slate-800">
+            <form method="POST" action="{{ route('logout') }}" class="border-t border-gray-800">
                 @csrf
                 <button type="submit"
-                    class="w-full text-left px-4 py-3 text-sm text-slate-300 hover:bg-slate-800 hover:text-white">
+                    class="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900">
                     {{ __('staff.nav.logout') }}
                 </button>
             </form>
