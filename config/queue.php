@@ -1,5 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+$redisSupported = static function (): bool {
+    return extension_loaded('redis') || class_exists(\Predis\Client::class);
+};
+
+$defaultQueueConnection = env('QUEUE_CONNECTION', 'database');
+
+if ($defaultQueueConnection === 'redis' && ! $redisSupported()) {
+    $defaultQueueConnection = 'sync';
+}
+
 return [
 
     /*
@@ -13,7 +25,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_CONNECTION', 'database'),
+    'default' => $defaultQueueConnection,
 
     /*
     |--------------------------------------------------------------------------

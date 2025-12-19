@@ -1,6 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
+
+$redisSupported = static function (): bool {
+    return extension_loaded('redis') || class_exists(\Predis\Client::class);
+};
+
+$defaultSessionDriver = env('SESSION_DRIVER', 'database');
+
+if ($defaultSessionDriver === 'redis' && ! $redisSupported()) {
+    $defaultSessionDriver = 'file';
+}
 
 return [
 
@@ -18,7 +30,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    'driver' => $defaultSessionDriver,
 
     /*
     |--------------------------------------------------------------------------

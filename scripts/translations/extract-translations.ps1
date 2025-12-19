@@ -1,4 +1,4 @@
-﻿# Extract hardcoded strings from Filament widgets
+# Extract hardcoded strings from Filament widgets
 $widgets = Get-ChildItem "app/Filament/Widgets" -Filter "*.php" -Recurse
 
 $hardcodedStrings = @()

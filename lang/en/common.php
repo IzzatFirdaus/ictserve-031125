@@ -301,8 +301,12 @@ return [
 
     // Theme and Preferences (Phase 9)
     'theme_preference' => 'Theme preference',
+    'Tukar tema' => 'Toggle theme',
+    'toggle_theme' => 'Toggle theme',
     'Light' => 'Light',
     'Dark' => 'Dark',
+    'Cahaya' => 'Light',
+    'Gelap' => 'Dark',
     'System' => 'System',
     'Current theme' => 'Current theme',
     'Select theme' => 'Select theme',

@@ -1,6 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
+
+$redisSupported = static function (): bool {
+    return extension_loaded('redis') || class_exists(\Predis\Client::class);
+};
+
+$defaultCacheStore = env('CACHE_STORE', 'database');
+
+if ($defaultCacheStore === 'redis' && ! $redisSupported()) {
+    $defaultCacheStore = 'file';
+}
 
 return [
 
@@ -15,7 +27,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_STORE', 'database'),
+    'default' => $defaultCacheStore,
 
     /*
     |--------------------------------------------------------------------------
