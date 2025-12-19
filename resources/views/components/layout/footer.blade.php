@@ -45,45 +45,45 @@
                     <ul class="space-y-2">
                         <li>
                             <a href="{{ route('welcome') }}"
-                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors">
+                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors">
                                 {{ __('footer.home') }}
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('services') }}"
-                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors">
+                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors">
                                 {{ __('common.services') }}
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('contact') }}"
-                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors">
+                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors">
                                 {{ __('common.contact') }}
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('accessibility') }}"
-                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors">
+                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors">
                                 {{ __('common.accessibility') }}
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('privacy-policy') }}"
-                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors">
+                                class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors">
                                 {{ __('footer.privacy_policy') }}
                             </a>
                         </li>
                         @auth
                             <li>
                                 <a href="{{ route('staff.dashboard') }}"
-                                    class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors">
+                                    class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors">
                                     {{ __('footer.staff_portal') }}
                                 </a>
                             </li>
                         @else
                             <li>
                                 <a href="{{ route('login') }}"
-                                    class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors">
+                                    class="inline-flex items-center px-2 py-2 min-h-11 text-gray-400 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors">
                                     {{ __('footer.staff_login') }}
                                 </a>
                             </li>
@@ -103,14 +103,14 @@
                     <p>
                         <strong>{{ __('footer.email') }}:</strong><br>
                         <a href="mailto:support@motac.gov.my"
-                            class="hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors">
+                            class="hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors">
                             support@motac.gov.my
                         </a>
                     </p>
                     <p>
                         <strong>{{ __('footer.phone') }}:</strong><br>
                         <a href="tel:+60380009999"
-                            class="hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors">
+                            class="hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors">
                             +603 8000 9999
                         </a>
                     </p>
