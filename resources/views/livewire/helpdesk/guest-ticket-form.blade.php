@@ -298,7 +298,7 @@
                                     class="text-sm text-gray-500">({{ __('Maximum 5 files') }})</span>
                             </label>
                             <input id="attachments" type="file" wire:model="attachments" multiple max="5"
-                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100" />
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100" />
                             @error('attachments.*')
                                 <p class="mt-1 text-sm text-danger-600">{{ $message }}</p>
                             @enderror
