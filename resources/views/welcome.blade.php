@@ -66,13 +66,13 @@
                     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
                         <button
                             @click="showLoginModal = true; modalAction = 'helpdesk'; modalTitle = 'Buat Aduan ICT'; guestRoute = '{{ route('helpdesk.create') }}'; loginRoute = '{{ route('login') }}'"
-                            class="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-14 min-w-[200px]">
+                            class="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 min-h-14 min-w-[200px]">
                             <x-heroicon-s-plus class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('Buat Aduan') }}
                         </button>
                         <button
                             @click="showLoginModal = true; modalAction = 'loan'; modalTitle = 'Mohon Pinjaman Aset'; guestRoute = '{{ route('loan.wizard') }}'; loginRoute = '{{ route('login') }}'"
-                            class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 min-h-14 min-w-[200px] border-2 border-white/20">
+                            class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 min-h-14 min-w-[200px] border-2 border-white/20">
                             <x-heroicon-s-clipboard-document-list class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('Mohon Pinjaman') }}
                         </button>
@@ -131,7 +131,7 @@
                         <div class="p-6 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-600">
                             <button
                                 @click="showLoginModal = true; modalAction = 'helpdesk'; modalTitle = 'Buat Aduan ICT'; guestRoute = '{{ route('helpdesk.submit') }}'; loginRoute = '{{ route('login') }}'"
-                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 <x-heroicon-s-plus class="h-5 w-5 mr-2" aria-hidden="true" />{{ __('Buat Aduan') }}
                             </button>
                         </div>
@@ -155,7 +155,7 @@
                         <div class="p-6 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-600">
                             <button
                                 @click="showLoginModal = true; modalAction = 'loan'; modalTitle = 'Mohon Pinjaman Aset'; guestRoute = '{{ route('loan.create') }}'; loginRoute = '{{ route('login') }}'"
-                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 <x-heroicon-s-clipboard-document-list class="h-5 w-5 mr-2"
                                     aria-hidden="true" />{{ __('Mohon Sekarang') }}
                             </button>
@@ -184,7 +184,7 @@
                                     <input type="text" id="ticket_no" name="reference"
                                         placeholder="{{ __('Masukkan No. Tiket atau Permohonan') }}"
                                         aria-describedby="ticket_no_hint" aria-required="true"
-                                        class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 shadow-sm focus:border-primary-500 focus:ring-3 focus:ring-primary-500 text-base min-h-11"
+                                        class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 text-base min-h-11"
                                         required>
                                     <p id="ticket_no_hint" class="text-xs text-gray-500 dark:text-gray-400 text-left">
                                         {{ __('Contoh: HD-2024-001234 atau LA-2024-005678') }}</p>
@@ -192,7 +192,7 @@
                             </div>
                             <div class="p-6 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-600">
                                 <button type="submit"
-                                    class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 text-primary-600 dark:text-white border-2 border-primary-600 dark:border-gray-500 text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                                    class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 text-primary-600 dark:text-white border-2 border-primary-600 dark:border-gray-500 text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                     <x-heroicon-s-magnifying-glass class="h-5 w-5 mr-2"
                                         aria-hidden="true" />{{ __('Semak Status') }}
                                 </button>
@@ -221,7 +221,7 @@
                     <div
                         class="bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 overflow-hidden">
                         <button @click="openFaq = openFaq === 1 ? null : 1"
-                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset min-h-11"
+                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-700 min-h-11"
                             :aria-expanded="openFaq === 1" aria-controls="faq-answer-1">
                             <span class="font-heading font-semibold text-gray-900 dark:text-gray-100 text-lg">
                                 {{ __('Bagaimana cara untuk membuat aduan ICT?') }}
@@ -243,7 +243,7 @@
                     <div
                         class="bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 overflow-hidden">
                         <button @click="openFaq = openFaq === 2 ? null : 2"
-                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset min-h-11"
+                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-700 min-h-11"
                             :aria-expanded="openFaq === 2" aria-controls="faq-answer-2">
                             <span class="font-heading font-semibold text-gray-900 dark:text-gray-100 text-lg">
                                 {{ __('Bagaimana cara memohon pinjaman aset ICT?') }}
@@ -265,7 +265,7 @@
                     <div
                         class="bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 overflow-hidden">
                         <button @click="openFaq = openFaq === 3 ? null : 3"
-                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset min-h-11"
+                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-700 min-h-11"
                             :aria-expanded="openFaq === 3" aria-controls="faq-answer-3">
                             <span class="font-heading font-semibold text-gray-900 dark:text-gray-100 text-lg">
                                 {{ __('Bagaimana saya boleh menyemak status permohonan saya?') }}
@@ -287,7 +287,7 @@
                     <div
                         class="bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 overflow-hidden">
                         <button @click="openFaq = openFaq === 4 ? null : 4"
-                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset min-h-11"
+                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-700 min-h-11"
                             :aria-expanded="openFaq === 4" aria-controls="faq-answer-4">
                             <span class="font-heading font-semibold text-gray-900 dark:text-gray-100 text-lg">
                                 {{ __('Berapa lama masa yang diperlukan untuk kelulusan pinjaman aset?') }}
@@ -309,7 +309,7 @@
                     <div
                         class="bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 overflow-hidden">
                         <button @click="openFaq = openFaq === 5 ? null : 5"
-                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset min-h-11"
+                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-700 min-h-11"
                             :aria-expanded="openFaq === 5" aria-controls="faq-answer-5">
                             <span class="font-heading font-semibold text-gray-900 dark:text-gray-100 text-lg">
                                 {{ __('Apa yang perlu saya lakukan selepas menggunakan aset yang dipinjam?') }}
@@ -331,7 +331,7 @@
                     <div
                         class="bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 overflow-hidden">
                         <button @click="openFaq = openFaq === 6 ? null : 6"
-                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset min-h-11"
+                            class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-700 min-h-11"
                             :aria-expanded="openFaq === 6" aria-controls="faq-answer-6">
                             <span class="font-heading font-semibold text-gray-900 dark:text-gray-100 text-lg">
                                 {{ __('Siapa yang boleh saya hubungi jika saya memerlukan bantuan?') }}
@@ -427,7 +427,7 @@
                             class="bg-gray-50 dark:bg-gray-700/50 px-6 py-4 flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">
                             {{-- No Button (Guest) --}}
                             <a :href="guestRoute"
-                                class="inline-flex items-center justify-center px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 min-h-11 min-w-[120px]">
+                                class="inline-flex items-center justify-center px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11 min-w-[120px]">
                                 <x-heroicon-o-user class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('Tidak') }}
                                 <span class="text-xs ml-2 text-gray-500 dark:text-gray-400">({{ __('Tetamu') }})</span>

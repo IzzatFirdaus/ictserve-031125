@@ -30,7 +30,7 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded px-1">
+                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded px-1">
                             {{ __('Utama') }}
                         </a>
                     </li>
@@ -56,7 +56,7 @@
     </section>
 
     {{-- Main Content with 12-8-4 Grid per D14 §7.4 --}}
-    <section id="main-content" class="py-12 md:py-16 bg-slate-50" aria-labelledby="services-heading">
+    <section id="main-content" class="py-12 md:py-16 bg-gray-50" aria-labelledby="services-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <h2 id="services-heading" class="sr-only">{{ __('Perkhidmatan Tersedia') }}</h2>
 
@@ -101,7 +101,7 @@
                     <div class="p-4 md:p-6 bg-gray-50 border-t border-gray-200">
                         @if ($helpdeskRouteName)
                             <a href="{{ route($helpdeskRouteName) }}"
-                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 <x-heroicon-s-plus class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('Buat Aduan') }}
                             </a>
@@ -147,7 +147,7 @@
                     <div class="p-4 md:p-6 bg-gray-50 border-t border-gray-200">
                         @if ($loanRouteName)
                             <a href="{{ route($loanRouteName) }}"
-                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-success hover:bg-success/90 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-success focus:ring-offset-2">
+                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-success hover:bg-success/90 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-success focus-visible:ring-offset-2">
                                 <x-heroicon-s-clipboard-document-list class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('Mohon Sekarang') }}
                             </a>
@@ -195,7 +195,7 @@
                     <div class="p-4 md:p-6 bg-gray-50 border-t border-gray-200">
                         @if ($serviceRequestUrl)
                             <a href="{{ $serviceRequestUrl }}"
-                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-gray-100 text-secondary-600 border-2 border-secondary-600 text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-secondary-500 focus:ring-offset-2">
+                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-gray-100 text-secondary-600 border-2 border-secondary-600 text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-secondary-500 focus-visible:ring-offset-2">
                                 <x-heroicon-s-paper-airplane class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('Hantar Permintaan') }}
                             </a>
@@ -240,7 +240,7 @@
                     <div class="p-4 md:p-6 bg-gray-50 border-t border-gray-200">
                         @if ($helpdeskRouteName)
                             <a href="{{ route($helpdeskRouteName, ['priority' => 'HIGH']) }}"
-                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-warning-50 text-warning border-2 border-warning text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-warning focus:ring-offset-2">
+                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-warning-50 text-warning border-2 border-warning text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-warning focus-visible:ring-offset-2">
                                 <x-heroicon-s-exclamation-circle class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('Laporkan Isu') }}
                             </a>
@@ -280,7 +280,7 @@
                     </div>
                     <div class="p-4 md:p-6 bg-gray-50 border-t border-gray-200">
                         <a href="{{ route('faq') }}"
-                            class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-gray-100 text-gray-700 border-2 border-gray-300 text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-gray-500 focus:ring-offset-2">
+                            class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-gray-100 text-gray-700 border-2 border-gray-300 text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:ring-offset-2">
                             <x-heroicon-s-book-open class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('Lihat FAQ') }}
                         </a>
@@ -299,7 +299,7 @@
                 <div class="flex flex-wrap justify-center gap-4">
                     @if ($helpdeskRouteName)
                         <a href="{{ route($helpdeskRouteName) }}"
-                            class="inline-flex items-center min-h-11 px-6 py-3 text-base font-semibold bg-white text-primary-600 rounded-lg hover:bg-blue-50 focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 focus:outline-none transition-colors duration-200">
+                            class="inline-flex items-center min-h-11 px-6 py-3 text-base font-semibold bg-white text-primary-600 rounded-lg hover:bg-blue-50 focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 focus:outline-none transition-colors duration-200">
                             <x-heroicon-s-ticket class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('Buat Aduan') }}
                         </a>
@@ -321,7 +321,7 @@
                     <ul class="flex flex-wrap justify-center gap-4">
                         <li>
                             <a href="{{ route('faq') }}"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 <x-heroicon-o-question-mark-circle class="h-5 w-5 text-primary-600 shrink-0"
                                     aria-hidden="true" />
                                 <span class="text-sm text-gray-700">{{ __('Soalan Lazim') }}</span>
@@ -329,21 +329,21 @@
                         </li>
                         <li>
                             <a href="{{ route('contact') }}"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 <x-heroicon-o-phone class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
                                 <span class="text-sm text-gray-700">{{ __('Hubungi Kami') }}</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('accessibility') }}"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 <x-heroicon-o-eye class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
                                 <span class="text-sm text-gray-700">{{ __('Kebolehcapaian') }}</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('privacy-policy') }}"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 <x-heroicon-o-shield-check class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
                                 <span class="text-sm text-gray-700">{{ __('Dasar Privasi') }}</span>
                             </a>
