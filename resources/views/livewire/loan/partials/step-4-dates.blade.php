@@ -24,7 +24,7 @@
                 wire:model.live="loanStartDate"
                 min="{{ date('Y-m-d', strtotime('+1 day')) }}"
                 @class([
-                    'block w-full rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm',
+                    'block w-full rounded-lg shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm',
                     'border-danger-300' => $errorBag->has('loanStartDate'),
                     'border-gray-300' => ! $errorBag->has('loanStartDate'),
                 ])
@@ -48,7 +48,7 @@
                 wire:model.live="loanEndDate"
                 min="{{ $loanStartDate ?: date('Y-m-d', strtotime('+2 days')) }}"
                 @class([
-                    'block w-full rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm',
+                    'block w-full rounded-lg shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm',
                     'border-danger-300' => $errorBag->has('loanEndDate'),
                     'border-gray-300' => ! $errorBag->has('loanEndDate'),
                 ])
@@ -90,7 +90,7 @@
                     wire:model.live="emergencyRequest"
                     class="sr-only peer"
                 >
-                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus-visible:ring-3 peer-focus-visible:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
             </label>
         </div>
 
@@ -116,7 +116,7 @@
                         minlength="50"
                         maxlength="1000"
                         @class([
-                            'block w-full rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm',
+                            'block w-full rounded-lg shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm',
                             'border-danger-300' => $errorBag->has('emergencyJustification'),
                             'border-gray-300' => ! $errorBag->has('emergencyJustification'),
                         ])

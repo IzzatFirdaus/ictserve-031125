@@ -43,7 +43,7 @@ $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-ca
                     <td class="px-4 py-4">
                         <select
                             wire:model.live="selectedAssets.{{ $index }}.category_id"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 text-sm">
+                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus:ring-offset-gray-900 text-sm">
                             <option value="">{{ __('loan.placeholders.select_equipment') }}</option>
                             @foreach ($this->assetCategories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -59,7 +59,7 @@ $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-ca
                             wire:model.live="selectedAssets.{{ $index }}.quantity"
                             min="1"
                             max="10"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 text-sm">
+                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus:ring-offset-gray-900 text-sm">
                         @error("selectedAssets.{$index}.quantity")
                         <p class="mt-1 text-xs text-danger-600">{{ $message }}</p>
                         @enderror
@@ -69,7 +69,7 @@ $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-ca
                             type="text"
                             wire:model.live.debounce.300ms="selectedAssets.{{ $index }}.notes"
                             placeholder="{{ __('loan.placeholders.notes') }}"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 text-sm">
+                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus:ring-offset-gray-900 text-sm">
                     </td>
                     <td class="px-4 py-4">
                         @if (isset($assetAvailability[$index]))
@@ -97,7 +97,7 @@ $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-ca
                         <button
                             type="button"
                             wire:click="removeAssetRow({{ $index }})"
-                            class="text-danger-600 hover:text-danger-800 p-2 rounded-md hover:bg-danger-50 min-h-11 min-w-11 flex items-center justify-center"
+                            class="text-danger-600 hover:text-danger-800 p-2 rounded-lg hover:bg-danger-50 min-h-11 min-w-11 flex items-center justify-center focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2"
                             aria-label="{{ __('loan.actions.remove_equipment') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
