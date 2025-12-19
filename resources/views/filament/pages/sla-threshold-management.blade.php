@@ -75,8 +75,8 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <x-filament::card>
                 <div class="flex items-center gap-4">
-                    <div class="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                        <x-heroicon-o-check-circle class="w-5 h-5 text-green-600 dark:text-green-400" />
+                    <div class="w-8 h-8 bg-success-100 dark:bg-success-900/20 rounded-lg flex items-center justify-center">
+                        <x-heroicon-o-check-circle class="w-5 h-5 text-success-600 dark:text-success-400" />
                     </div>
                     <div>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">Pematuhan Respons</div>
@@ -87,8 +87,8 @@
 
             <x-filament::card>
                 <div class="flex items-center gap-4">
-                    <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                        <x-heroicon-o-clock class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center">
+                        <x-heroicon-o-clock class="w-5 h-5 text-primary-600 dark:text-primary-400" />
                     </div>
                     <div>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">Pematuhan Penyelesaian</div>
@@ -99,8 +99,8 @@
 
             <x-filament::card>
                 <div class="flex items-center gap-4">
-                    <div class="w-8 h-8 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                        <x-heroicon-o-exclamation-triangle class="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                    <div class="w-8 h-8 bg-warning-100 dark:bg-warning-900/20 rounded-lg flex items-center justify-center">
+                        <x-heroicon-o-exclamation-triangle class="w-5 h-5 text-warning-600 dark:text-warning-400" />
                     </div>
                     <div>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">Eskalasi Aktif</div>
@@ -111,8 +111,8 @@
 
             <x-filament::card>
                 <div class="flex items-center gap-4">
-                    <div class="w-8 h-8 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-                        <x-heroicon-o-fire class="w-5 h-5 text-red-600 dark:text-red-400" />
+                    <div class="w-8 h-8 bg-danger-100 dark:bg-danger-900/20 rounded-lg flex items-center justify-center">
+                        <x-heroicon-o-fire class="w-5 h-5 text-danger-600 dark:text-danger-400" />
                     </div>
                     <div>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">Breach Aktif</div>
@@ -125,7 +125,7 @@
         <!-- Configuration Guidelines -->
         <x-filament::card>
             <div class="flex items-start gap-3 mb-4">
-                <x-heroicon-o-information-circle class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                <x-heroicon-o-information-circle class="w-5 h-5 text-primary-600 dark:text-primary-400 shrink-0 mt-0.5" />
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Panduan Konfigurasi SLA</h3>
             </div>
             <div class="text-sm text-gray-600 dark:text-gray-400 space-y-3">
