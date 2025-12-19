@@ -126,6 +126,19 @@ class ThemeToggle extends Component
         return $this->themes[$this->theme]['label'] ?? 'Cahaya';
     }
 
+    /**
+     * Provide a JSON-safe representation for cases where the client attempts to
+     * serialize the Livewire $wire proxy (which may trigger a toJSON call).
+     *
+     * @return array{theme: string}
+     */
+    public function toJSON(): array
+    {
+        return [
+            'theme' => $this->theme,
+        ];
+    }
+
     public function render(): \Illuminate\View\View
     {
         return view('livewire.components.theme-toggle');

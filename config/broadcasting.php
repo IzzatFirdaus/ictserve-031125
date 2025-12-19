@@ -81,6 +81,11 @@ return [
             ],
         ],
 
+        'redis' => [
+            'driver' => 'redis',
+            'connection' => env('BROADCAST_REDIS_CONNECTION', 'default'),
+        ],
+
         'ably' => [
             'driver' => 'ably',
             'key' => env('ABLY_KEY'),

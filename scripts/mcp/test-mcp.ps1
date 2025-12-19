@@ -1,4 +1,4 @@
-﻿$uri = "http://localhost:9042/mcp"
+$uri = "http://localhost:9042/mcp"
 $headers = @{
     "Content-Type" = "application/json"
     "Accept" = "application/json"
