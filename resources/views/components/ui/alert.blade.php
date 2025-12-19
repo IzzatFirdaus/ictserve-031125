@@ -52,7 +52,7 @@ $config = $variants[$variant] ?? $variants['info'];
 
 <div x-data="{ show: true }" x-show="show" x-transition:leave="transition ease-out duration-200"
     x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95"
-    class="rounded-(--radius-l) border p-4 {{ $config['container'] }}" role="alert" {{ $attributes }}>
+    class="rounded-lg border p-4 {{ $config['container'] }}" role="alert" {{ $attributes }}>
     <div class="flex">
         <div class="shrink-0">
             <svg class="h-5 w-5 {{ $config['icon'] }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -74,7 +74,7 @@ $config = $variants[$variant] ?? $variants['info'];
         <div class="ml-auto pl-3">
             {{-- 44px touch target per D12 §4.1 --}}
             <button @click="show = false" type="button"
-                class="inline-flex items-center justify-center min-h-11 min-w-11 rounded-(--radius-s) p-2 focus:outline-none {{ $config['container'] }} hover:bg-opacity-75 transition-colors duration-200"
+                class="inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg p-2 focus:outline-none focus:ring-3 focus:ring-offset-2 {{ $config['container'] }} hover:bg-opacity-75 transition-colors duration-200"
                 aria-label="{{ __('common.dismiss') }}">
                 <span class="sr-only">{{ __('common.dismiss') }}</span>
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
