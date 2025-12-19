@@ -2,11 +2,10 @@
 	"mcpServers": {
 		"memory": {
 			"command": "npx",
-			"args": [
-				"-y",
-				"@modelcontextprotocol/server-memory",
-				"storage/mcp/memory.jsonl"
-			],
+			"args": ["-y", "@modelcontextprotocol/server-memory"],
+			"env": {
+				"MEMORY_FILE_PATH": "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+			},
 			"disabled": false,
 			"autoApprove": [
 				"create_entities",
