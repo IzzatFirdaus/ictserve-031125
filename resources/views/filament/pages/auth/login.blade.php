@@ -44,8 +44,8 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
 
-    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
-    <x-theme-init-script />
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.1 --}}
+    <x-theme-init />
 
     {{-- Critical CSS inline for faster FCP --}}
     <style>
@@ -55,12 +55,21 @@
         }
 
         @keyframes skeleton-pulse {
-            0%, 100% { opacity: 1 }
-            50% { opacity: .5 }
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .5
+            }
         }
 
         /* Prevent FOUC */
-        body { opacity: 1 }
+        body {
+            opacity: 1
+        }
     </style>
 
     {{-- Scripts with defer for FID optimization --}}
@@ -76,9 +85,9 @@
     </a>
 
     <div class="min-h-screen flex flex-col">
-        {{-- Theme Switcher (Top-right, v3.6.0) --}}
+        {{-- Theme Switcher (Top-right, v3.6.1) --}}
         <div class="fixed top-4 right-4 z-50">
-            <livewire:components.theme-toggle />
+            <livewire:components.theme-toggle-unified />
         </div>
 
         {{-- Main Content --}}
@@ -89,8 +98,10 @@
             <div class="mb-12">
                 <a href="/" wire:navigate aria-label="{{ __('common.home') }}"
                     class="flex flex-col items-center gap-6 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-md p-4 min-h-11 min-w-11 transition-all duration-200 hover:scale-105">
-                    <x-application-logo class="w-20 h-20 fill-current text-primary-600 dark:text-primary-400 transition-colors duration-200" />
-                    <span class="text-2xl font-bold font-heading text-gray-900 dark:text-white tracking-tight">{{ config('app.name', 'ICTServe') }}</span>
+                    <x-application-logo
+                        class="w-20 h-20 fill-current text-primary-600 dark:text-primary-400 transition-colors duration-200" />
+                    <span
+                        class="text-2xl font-bold font-heading text-gray-900 dark:text-white tracking-tight">{{ config('app.name', 'ICTServe') }}</span>
                 </a>
             </div>
 
@@ -109,13 +120,15 @@
 
                 {{-- Session Status --}}
                 @if (session('status'))
-                    <div class="mb-4 rounded-lg border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-900" role="alert">
+                    <div class="mb-4 rounded-lg border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-900"
+                        role="alert">
                         {{ session('status') }}
                     </div>
                 @endif
 
                 @if (session('sso_fallback'))
-                    <div class="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900" role="alert">
+                    <div class="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+                        role="alert">
                         <p class="font-semibold">{{ __('auth.google_sso_unavailable') }}</p>
                         <p class="mt-1">{{ __('auth.sso_fallback_available') }}</p>
                     </div>
@@ -126,7 +139,8 @@
                     <x-auth.google-button redirect="{{ route('filament.admin.pages.dashboard') }}" />
                     <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 font-body">
                         <span class="flex-1 border-t border-gray-200 dark:border-gray-700"></span>
-                        <span class="uppercase tracking-wide font-medium px-3 bg-white dark:bg-gray-800 text-xs">{{ __('auth.or_separator') }}</span>
+                        <span
+                            class="uppercase tracking-wide font-medium px-3 bg-white dark:bg-gray-800 text-xs">{{ __('auth.or_separator') }}</span>
                         <span class="flex-1 border-t border-gray-200 dark:border-gray-700"></span>
                     </div>
                 </div>
@@ -135,10 +149,7 @@
                 <x-filament-panels::form wire:submit="authenticate">
                     {{ $this->form }}
 
-                    <x-filament-panels::form.actions
-                        :actions="$this->getCachedFormActions()"
-                        :full-width="$this->hasFullWidthFormActions()"
-                    />
+                    <x-filament-panels::form.actions :actions="$this->getCachedFormActions()" :full-width="$this->hasFullWidthFormActions()" />
                 </x-filament-panels::form>
 
                 {{-- Footer / Help --}}
@@ -157,8 +168,10 @@
                     <div class="mt-6 grid gap-4">
                         <a href="{{ route('contact') }}"
                             class="flex w-full items-center justify-center gap-3 rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-offset-0 transition-colors duration-200">
-                            <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                            <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
                             </svg>
                             <span class="text-sm font-medium">Hubungi Meja Bantuan</span>
                         </a>
