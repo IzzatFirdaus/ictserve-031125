@@ -57,6 +57,16 @@ if (-not $SkipChecks) {
         } else {
             Write-Host "[WARN] Node.js $nodeVersionNumeric may cause issues with Vite 7.0.7 (requires 22.12+)" -ForegroundColor Yellow
         }
+
+        # Check npm functionality
+        $npmTest = (& npm --version 2>&1)
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "[WARN] npm has permission issues - frontend assets may not build" -ForegroundColor Yellow
+            Write-Host "  └─ Run: .\scripts\dev\fix-npm.ps1 to attempt automatic fix" -ForegroundColor Gray
+            Write-Host "  └─ Or reinstall Node.js from: https://nodejs.org/" -ForegroundColor Gray
+        } else {
+            Write-Host "[OK] npm $npmTest" -ForegroundColor Green
+        }
     }
     catch {
         Write-Host "[ERROR] Node.js not found - please install Node.js 22.12+ or run '. .\.env.ps1'" -ForegroundColor Red
@@ -369,11 +379,11 @@ if ($servicesToStart -contains "laravel") {
     $currentService++
     Write-Host "[$currentService/$serviceCount] Laravel Application Server" -ForegroundColor Yellow
     Start-Service -Title 'Laravel Server (127.0.0.1:8000)' -Command "php artisan serve --host=127.0.0.1 --port=8000" -Color "Blue" -Description "ICTServe v3.6.0 - True Hybrid Architecture" -Critical -Priority 2
-    
+
     # Give Laravel server extra time to initialize
     Write-Host "  └─ Waiting for Laravel to initialize..." -ForegroundColor Gray
     Start-Sleep -Seconds 3
-    
+
     Check-Port -Port 8000 -Attempts 15 -DelaySeconds 2 -ServiceName 'Laravel Server' -HealthEndpoint "/api/health" -Critical
     Start-Sleep -Seconds 1
 }
@@ -383,11 +393,11 @@ if ($servicesToStart -contains "reverb") {
     $currentService++
     Write-Host "[$currentService/$serviceCount] Laravel Reverb (WebSocket)" -ForegroundColor Yellow
     Start-Service -Title 'Laravel Reverb (ws://127.0.0.1:8080)' -Command "php artisan reverb:start --host=127.0.0.1 --port=8080" -Color "Magenta" -Description "Real-time notifications, live updates, broadcasting" -Priority 3
-    
+
     # Give Reverb time to initialize
     Write-Host "  └─ Waiting for Reverb WebSocket server..." -ForegroundColor Gray
     Start-Sleep -Seconds 2
-    
+
     Check-Port -Port 8080 -Attempts 15 -DelaySeconds 1 -ServiceName 'Laravel Reverb'
     Start-Sleep -Seconds 1
 }
@@ -438,20 +448,23 @@ if ($servicesToStart -contains "queue") {
 if ($servicesToStart -contains "vite") {
     $currentService++
     Write-Host "[$currentService/$serviceCount] Vite Development Server" -ForegroundColor Yellow
-    
-    # Check if node_modules is properly installed
-    if (-not (Test-Path "node_modules\vite")) {
-        Write-Host "  └─ [WARN] Vite not found, running npm install..." -ForegroundColor Yellow
-        npm install --silent
+
+    # Check if npm is functional before starting Vite
+    $npmCheck = (& npm --version 2>&1)
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "  └─ [WARN] npm not functional - skipping Vite server" -ForegroundColor Yellow
+        Write-Host "  └─ Frontend assets will not hot-reload. Run 'npm run build' manually." -ForegroundColor Gray
+        Write-Host "  └─ To fix: Run .\scripts\dev\fix-npm.ps1 or reinstall Node.js" -ForegroundColor Cyan
+    } else {
+        # Check if node_modules is properly installed
+        if (-not (Test-Path "node_modules\vite")) {
+            Write-Host "  └─ [WARN] Vite not found, running npm install..." -ForegroundColor Yellow
+            npm install --silent
+        }
+
+        Start-Service -Title 'Vite Dev Server (127.0.0.1:5173)' -Command "npm run dev" -Color "Green" -Description "Tailwind 4.1.17, Livewire 3.7.1, Hot Module Replacement" -Priority 5
+        Check-Port -Port 5173 -Attempts 15 -DelaySeconds 1 -ServiceName 'Vite Dev Server' -HealthEndpoint "/"
     }
-    
-    Start-Service -Title 'Vite Dev Server (127.0.0.1:5173)' -Command "npx vite --host=127.0.0.1 --port=5173" -Color "Green" -Description "Tailwind 4.1.17, Livewire 3.7.1, Hot Module Replacement" -Priority 5
-    
-    # Give Vite time to initialize
-    Write-Host "  └─ Waiting for Vite to initialize..." -ForegroundColor Gray
-    Start-Sleep -Seconds 3
-    
-    Check-Port -Port 5173 -Attempts 15 -DelaySeconds 2 -ServiceName 'Vite Dev Server'
     Start-Sleep -Seconds 1
 }
 

@@ -1,7 +1,7 @@
 # MCP Documentation Index
 
 **Last Updated**: 2025-12-19  
-**Total Documents**: 15
+**Total Documents**: 12 (Consolidated from 23)
 
 This directory contains comprehensive documentation for Model Context Protocol (MCP) server configuration and usage in the ICTServe project.
 
@@ -98,37 +98,16 @@ This directory contains comprehensive documentation for Model Context Protocol (
 
 ## 📝 Historical Records
 
-**[MCP_TEST_RESULTS.md](MCP_TEST_RESULTS.md)**
+Historical documentation has been moved to the `archive/` subdirectory:
 
-- Test results from December 4, 2025
-- Server operational status snapshot
-- Configuration verification
-
-**[MCP_RESOLUTION_SUMMARY.md](MCP_RESOLUTION_SUMMARY.md)**
-
-- Memory server JSON error resolution (December 8, 2025)
-- Root cause analysis and fixes
-- Programmatic fallback documentation
-
-**[MCP_RESOLUTION_DOCKER_TO_LOCAL.md](MCP_RESOLUTION_DOCKER_TO_LOCAL.md)** - **NEW: 2025-12-19**
-
-- Docker to local development migration guide
-- Complete configuration resolution from Docker containers to direct processes
-- Performance improvements and simplified setup
-- **Use this for**: Understanding the migration from Docker-based to local MCP setup
-
-**[MCP_RESOLUTION_SUMMARY_2025_12_19.md](MCP_RESOLUTION_SUMMARY_2025_12_19.md)** - **NEW: 2025-12-19**
-
-- Executive summary of December 19, 2025 MCP resolution
-- Complete list of changes and improvements
-- Testing status and verification steps
-- **Use this for**: Quick overview of the latest MCP configuration changes
-
-**[UPDATE_SUMMARY.md](UPDATE_SUMMARY.md)**
-
-- Amazon Q configuration update (January 22, 2025)
-- Changes applied to MCP and agent configurations
-- Integration with existing systems
+- `archive/MCP_TEST_RESULTS.md` - Test results from December 4, 2025
+- `archive/MCP_RESOLUTION_SUMMARY.md` - Memory server JSON error resolution
+- `archive/UPDATE_SUMMARY.md` - Amazon Q configuration update
+- `archive/CONSOLIDATION_SUMMARY.md` - Previous consolidation efforts
+- `archive/MCP_SETUP_SUMMARY.md` - Docker setup summary
+- `archive/MCP_MEMORY_CONFIG_IMPROVEMENTS.md` - Memory configuration improvements
+- `archive/MCP_DOCKER_SETUP.md` - Docker-specific setup guide
+- `archive/FETCH_MCP.md` - Fetch server documentation
 
 ---
 
@@ -152,6 +131,12 @@ This directory contains comprehensive documentation for Model Context Protocol (
 1. **Read**: [DEVELOPERS_MCP.md](DEVELOPERS_MCP.md) - Developer guide
 2. **Implement**: [LARAVEL_MCP_IMPLEMENTATION.md](LARAVEL_MCP_IMPLEMENTATION.md) - Custom tools
 3. **Best Practices**: [MCP_SERVER_BEST_PRACTICES.md](MCP_SERVER_BEST_PRACTICES.md) - Operational guidelines
+
+### For Laravel Boost Issues
+
+1. **Check**: [LARAVEL_BOOST_MCP_INTEGRATION.md](LARAVEL_BOOST_MCP_INTEGRATION.md) - Connection timeout solutions
+2. **Troubleshoot**: Laravel MCP framework vs direct command approach
+3. **Configure**: Protocol negotiation and compatibility server setup
 
 ---
 
