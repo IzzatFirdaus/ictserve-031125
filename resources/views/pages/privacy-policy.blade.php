@@ -24,7 +24,7 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded px-1">
+                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded px-1">
                             {{ __('Utama') }}
                         </a>
                     </li>
@@ -50,7 +50,7 @@
     </section>
 
     {{-- Main Content --}}
-    <section id="main-content" class="py-12 md:py-16 bg-slate-50" aria-labelledby="privacy-heading">
+    <section id="main-content" class="py-12 md:py-16 bg-gray-50" aria-labelledby="privacy-heading">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <h2 id="privacy-heading" class="sr-only">{{ __('Maklumat Dasar Privasi') }}</h2>
 
@@ -255,7 +255,7 @@
                     @if (Route::has('staff.data-rights'))
                         <div class="mt-6 pt-6 border-t border-gray-200">
                             <a href="{{ route('staff.data-rights') }}"
-                                class="inline-flex items-center min-h-11 px-4 py-2 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200">
+                                class="inline-flex items-center min-h-11 px-4 py-2 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200">
                                 <x-heroicon-s-document-text class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('Urus Hak Data Saya') }}
                             </a>
@@ -369,7 +369,7 @@
                             <div>
                                 <h3 class="font-semibold text-white mb-1">{{ __('E-mel') }}</h3>
                                 <a href="mailto:pdpa@motac.gov.my"
-                                    class="text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
+                                    class="text-blue-100 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded">
                                     pdpa@motac.gov.my
                                 </a>
                             </div>
@@ -380,7 +380,7 @@
                             <div>
                                 <h3 class="font-semibold text-white mb-1">{{ __('Telefon') }}</h3>
                                 <a href="tel:+60388917000"
-                                    class="text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
+                                    class="text-blue-100 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded">
                                     +603-8891 7000
                                 </a>
                             </div>
@@ -405,14 +405,14 @@
                 <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <li>
                         <a href="{{ route('services') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-squares-2x2 class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
                             <span class="text-sm text-gray-700">{{ __('Perkhidmatan') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('faq') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-question-mark-circle class="h-5 w-5 text-primary-600 shrink-0"
                                 aria-hidden="true" />
                             <span class="text-sm text-gray-700">{{ __('Soalan Lazim') }}</span>
@@ -420,14 +420,14 @@
                     </li>
                     <li>
                         <a href="{{ route('contact') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-phone class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
                             <span class="text-sm text-gray-700">{{ __('Hubungi Kami') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('accessibility') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-eye class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
                             <span class="text-sm text-gray-700">{{ __('Kebolehcapaian') }}</span>
                         </a>
