@@ -165,7 +165,7 @@ $allTestsPassed = $true
 
 # Test 1: WSL Availability
 $wslAvailable = Test-WSLAvailability
-Test-TestResult "WSL Availability" $wslAvailable "WSL must be installed and running"
+Write-TestResult "WSL Availability" $wslAvailable "WSL must be installed and running"
 $allTestsPassed = $allTestsPassed -and $wslAvailable
 
 if (-not $wslAvailable) {
@@ -177,7 +177,7 @@ if (-not $wslAvailable) {
 
 # Test 2: Redis Installation
 $redisInstalled = Test-RedisInstallation
-Test-TestResult "Redis Installation" $redisInstalled "Redis server must be installed in WSL"
+Write-TestResult "Redis Installation" $redisInstalled "Redis server must be installed in WSL"
 $allTestsPassed = $allTestsPassed -and $redisInstalled
 
 if (-not $redisInstalled) {
@@ -189,38 +189,38 @@ if (-not $redisInstalled) {
 
 # Test 3: Redis Service Status
 $redisService = Test-RedisService
-Test-TestResult "Redis Service Status" $redisService "Redis service must be running"
+Write-TestResult "Redis Service Status" $redisService "Redis service must be running"
 $allTestsPassed = $allTestsPassed -and $redisService
 
 # Test 4: Redis Port Binding
 $redisPort = Test-RedisPort
-Test-TestResult "Redis Port Binding" $redisPort "Redis must be listening on port 6379"
+Write-TestResult "Redis Port Binding" $redisPort "Redis must be listening on port 6379"
 $allTestsPassed = $allTestsPassed -and $redisPort
 
 # Test 5: WSL Redis Connection
 $wslConnection = Test-WSLRedisConnection
-Test-TestResult "WSL Redis Connection" $wslConnection "Redis must respond to ping from WSL"
+Write-TestResult "WSL Redis Connection" $wslConnection "Redis must respond to ping from WSL"
 $allTestsPassed = $allTestsPassed -and $wslConnection
 
 # Test 6: Windows Host Connection
 $windowsConnection = Test-WindowsHostConnection
-Test-TestResult "Windows Host Connection" $windowsConnection "Redis must be accessible from Windows host (127.0.0.1:6379)"
+Write-TestResult "Windows Host Connection" $windowsConnection "Redis must be accessible from Windows host (127.0.0.1:6379)"
 $allTestsPassed = $allTestsPassed -and $windowsConnection
 
 # Test 7: Redis Commands
 $redisCommands = Test-RedisCommands
-Test-TestResult "Redis Commands" $redisCommands "Basic Redis commands (SET, GET, DEL) must work"
+Write-TestResult "Redis Commands" $redisCommands "Basic Redis commands (SET, GET, DEL) must work"
 $allTestsPassed = $allTestsPassed -and $redisCommands
 
 # Test 8: Redis Info
 $redisInfo = Test-RedisInfo
-Test-TestResult "Redis Info" $redisInfo "Redis server info must be accessible"
+Write-TestResult "Redis Info" $redisInfo "Redis server info must be accessible"
 $allTestsPassed = $allTestsPassed -and $redisInfo
 
 # Test 9: Laravel Redis Connection (if available)
 $laravelConnection = Test-LaravelRedisConnection
 if ($laravelConnection -ne $null) {
-    Test-TestResult "Laravel Redis Connection" $laravelConnection "Laravel must be able to connect to Redis"
+    Write-TestResult "Laravel Redis Connection" $laravelConnection "Laravel must be able to connect to Redis"
     $allTestsPassed = $allTestsPassed -and $laravelConnection
 } else {
     Write-Host "⊝ SKIP Laravel Redis Connection" -ForegroundColor Yellow
