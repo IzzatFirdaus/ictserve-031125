@@ -70,6 +70,25 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        // Conditionally register development-only service providers
+        // This prevents "ServiceProvider not found" errors when packages are not available
+
+        // Register IDE Helper service provider only in local/development environments
+        if ($this->app->environment('local', 'development') && class_exists(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class)) {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
+
+        // Register Laravel Boost service provider if available (dev dependency)
+        // Only register if the class exists to prevent errors in production/Docker
+        if (class_exists(\Laravel\Boost\BoostServiceProvider::class)) {
+            $this->app->register(\Laravel\Boost\BoostServiceProvider::class);
+        }
+
+        // Register Laravel Pail service provider if available (dev dependency)
+        if (class_exists(\Laravel\Pail\PailServiceProvider::class)) {
+            $this->app->register(\Laravel\Pail\PailServiceProvider::class);
+        }
+
         $this->app->singleton(ChannelRegistrar::class);
 
         $this->app->extend(FrameworkBroadcastManager::class, function ($manager, $app) {

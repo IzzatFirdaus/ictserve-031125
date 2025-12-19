@@ -1,6 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
+
+$mysqlHost = env('DB_HOST', '127.0.0.1');
+
+if (in_array($mysqlHost, ['db', 'mysql', 'mariadb'], true)) {
+    $resolvedHost = gethostbyname($mysqlHost);
+
+    if ($resolvedHost === $mysqlHost) {
+        $mysqlHost = '127.0.0.1';
+    }
+}
 
 return [
 
@@ -46,7 +58,7 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => $mysqlHost,
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'laravel'),
             'username' => env('DB_USERNAME', 'root'),
@@ -66,7 +78,7 @@ return [
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => $mysqlHost,
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'laravel'),
             'username' => env('DB_USERNAME', 'root'),

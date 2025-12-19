@@ -24,6 +24,11 @@ class HorizonServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Only configure Horizon if the class exists (package is installed)
+        if (! class_exists(Horizon::class)) {
+            return;
+        }
+
         // Configure notification routing for queue issues
         // Requirement 23.5: Automated alerting for queue issues
         Horizon::routeMailNotificationsTo(config('horizon.notifications.email', 'admin@motac.gov.my'));
@@ -34,6 +39,9 @@ class HorizonServiceProvider extends ServiceProvider
         // Configure custom tags for ICTServe job filtering
         // Requirement 23.7: Job tagging for ICTServe operations
         $this->configureJobTags();
+
+        // Register the Horizon gate
+        $this->gate();
     }
 
     /**

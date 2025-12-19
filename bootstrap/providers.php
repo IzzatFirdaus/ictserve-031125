@@ -10,9 +10,8 @@ return [
     App\Providers\PerformanceServiceProvider::class,
     App\Providers\PulseServiceProvider::class,
     App\Providers\RecaptchaServiceProvider::class,
-    App\Providers\TelescopeServiceProvider::class,
     App\Providers\VoltServiceProvider::class,
-    Laravel\Boost\BoostServiceProvider::class,
+
     Laravel\Sanctum\SanctumServiceProvider::class,
     Spatie\Activitylog\ActivitylogServiceProvider::class,
 ];

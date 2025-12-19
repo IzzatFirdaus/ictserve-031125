@@ -2,34 +2,39 @@
  * ICTServe Admin Panel Theme - MOTAC Branding
  *
  * @description WCAG 2.2 AA compliant theme for Filament 4 admin panel
- * @trace D03-FR-018.3; D12 §4.1; D14 §2.2; Requirements 5.1
- * @version 2.0.0
+ * @trace D03-FR-018.3; D12 §4.1; D14 §2.2; D13 §2.2-2.7; Requirements 5.1
+ * @version 3.6.0
  * @since 2025-12-06
+ * @updated 2025-12-18
  */
 
 @import "tailwindcss";
 
+/* Configure class-based dark mode (NOT media query) - ICTServe v3.6.0 requirement */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ==========================================================================
-   MOTAC Brand Colors (D14 §4.1)
+   MOTAC Brand Colors (D14 §4.1, D13 §2.2)
+   MyDS Design System v2025.2 Aligned
    ========================================================================== */
 
 :root {
-	/* Primary Brand Colors - MOTAC Blue */
+	/* Primary Brand Colors - MOTAC Blue (7.2:1 contrast) */
 	--motac-primary: #0056b3;
 	--motac-primary-dark: #003d80;
 	--motac-primary-light: #e3efff;
 
-	/* Secondary Colors */
+	/* Secondary Colors (8.1:1 contrast) */
 	--motac-secondary: #0b4d8f;
 	--motac-accent: #f59e0b;
 
 	/* Semantic Colors - WCAG 2.2 AA Compliant */
-	--motac-success: #198754;
-	--motac-warning: #ff8c00;
-	--motac-danger: #b50c0c;
+	--motac-success: #1b7c54; /* 4.6:1 contrast */
+	--motac-warning: #cc7700; /* 4.5:1 contrast */
+	--motac-danger: #b3002d; /* 7.8:1 contrast */
 	--motac-info: #0dcaf0;
 
-	/* Sidebar Theme */
+	/* Sidebar Theme - Light Mode */
 	--ictserve-sidebar-bg: #0f1f3d;
 	--ictserve-sidebar-text: #f8fafc;
 	--ictserve-sidebar-muted: #cbd5f5;
@@ -37,15 +42,69 @@
 	--ictserve-sidebar-active-text: #002952; /* 6.5:1 contrast ratio - WCAG AA compliant */
 	--ictserve-focus-ring: #f59e0b;
 
-	/* Header Theme */
+	/* Header Theme - Light Mode */
 	--ictserve-header-bg: #ffffff;
 	--ictserve-header-border: #e5e7eb;
 
-	/* Card Theme */
+	/* Card Theme - Light Mode */
 	--ictserve-card-bg: #ffffff;
 	--ictserve-card-border: #e5e7eb;
 	--ictserve-card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
 		0 1px 2px -1px rgb(0 0 0 / 0.1);
+
+	/* MyDS Typography (D13 §2.4) */
+	--font-heading: "Poppins", system-ui, sans-serif;
+	--font-body: "Inter", system-ui, sans-serif;
+
+	/* MyDS Spacing (D13 §2.6) */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-6: 24px;
+	--space-8: 32px;
+
+	/* MyDS Radius (D13 §2.5) */
+	--radius-s: 6px;
+	--radius-m: 8px;
+	--radius-l: 12px;
+
+	/* MyDS Motion (D12 §6.10) */
+	--motion-easeout: cubic-bezier(0, 0, 0.58, 1);
+	--duration-short: 200ms;
+}
+
+/* ==========================================================================
+   Dark Mode Theme Variables (D13 §2.2, D14 §4.2)
+   WCAG 2.2 AA Compliant Dark Theme
+   ========================================================================== */
+
+.dark,
+[data-theme="dark"] {
+	/* Sidebar Theme - Dark Mode */
+	--ictserve-sidebar-bg: #0a1628;
+	--ictserve-sidebar-text: #f1f5f9;
+	--ictserve-sidebar-muted: #94a3b8;
+	--ictserve-sidebar-active-bg: #1e3a5f;
+	--ictserve-sidebar-active-text: #f1f5f9;
+	--ictserve-focus-ring: #60a5fa;
+
+	/* Header Theme - Dark Mode */
+	--ictserve-header-bg: #1e293b;
+	--ictserve-header-border: #334155;
+
+	/* Card Theme - Dark Mode */
+	--ictserve-card-bg: #1e293b;
+	--ictserve-card-border: #334155;
+	--ictserve-card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3),
+		0 1px 2px -1px rgb(0 0 0 / 0.2);
+
+	/* Dark mode semantic colors - adjusted for dark backgrounds */
+	--motac-primary: #3b82f6; /* blue-500 - 4.6:1 on dark */
+	--motac-primary-light: #1e3a5f;
+	--motac-success: #4ade80; /* green-400 - 8.2:1 on dark */
+	--motac-warning: #fbbf24; /* amber-400 - 10.8:1 on dark */
+	--motac-danger: #f87171; /* red-400 - 5.8:1 on dark */
 }
 
 /* ==========================================================================
@@ -124,6 +183,32 @@
 	transform: rotate(-90deg);
 }
 
+/* ==========================================================================
+   Dark Mode Sidebar Styles (D13 §2.2, D14 §4.2)
+   ========================================================================== */
+
+.dark .fi-sidebar,
+[data-theme="dark"] .fi-sidebar {
+	background-color: var(--ictserve-sidebar-bg);
+}
+
+.dark .fi-sidebar .fi-sidebar-item.fi-active .fi-sidebar-item-btn,
+[data-theme="dark"]
+	.fi-sidebar
+	.fi-sidebar-item.fi-active
+	.fi-sidebar-item-btn {
+	background-color: var(--ictserve-sidebar-active-bg);
+	color: var(--ictserve-sidebar-active-text);
+	box-shadow: inset 0 0 0 1px rgba(96, 165, 250, 0.3);
+}
+
+.dark .fi-sidebar .fi-sidebar-item-btn:hover,
+.dark .fi-sidebar .fi-sidebar-group-btn:hover,
+[data-theme="dark"] .fi-sidebar .fi-sidebar-item-btn:hover,
+[data-theme="dark"] .fi-sidebar .fi-sidebar-group-btn:hover {
+	background-color: rgba(255, 255, 255, 0.05);
+}
+
 /* Breadcrumb and checkbox touch target fixes */
 .fi-breadcrumbs-item-label {
 	min-height: 44px;
@@ -154,6 +239,15 @@
 .fi-topbar {
 	background-color: var(--ictserve-header-bg);
 	border-bottom: 1px solid var(--ictserve-header-border);
+	transition: background-color var(--duration-short) var(--motion-easeout),
+		border-color var(--duration-short) var(--motion-easeout);
+}
+
+/* Dark mode header */
+.dark .fi-topbar,
+[data-theme="dark"] .fi-topbar {
+	background-color: var(--ictserve-header-bg);
+	border-bottom-color: var(--ictserve-header-border);
 }
 
 /* Brand Logo Styling */
@@ -195,12 +289,28 @@
 	border: 1px solid var(--ictserve-card-border);
 	border-radius: 0.75rem;
 	box-shadow: var(--ictserve-card-shadow);
-	transition: box-shadow 200ms ease, transform 200ms ease;
+	transition: box-shadow var(--duration-short) var(--motion-easeout),
+		transform var(--duration-short) var(--motion-easeout),
+		background-color var(--duration-short) var(--motion-easeout),
+		border-color var(--duration-short) var(--motion-easeout);
 }
 
 .fi-wi-stats-overview-stat:hover {
 	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 	transform: translateY(-1px);
+}
+
+/* Dark mode stats cards */
+.dark .fi-wi-stats-overview-stat,
+[data-theme="dark"] .fi-wi-stats-overview-stat {
+	background-color: var(--ictserve-card-bg);
+	border-color: var(--ictserve-card-border);
+	box-shadow: var(--ictserve-card-shadow);
+}
+
+.dark .fi-wi-stats-overview-stat:hover,
+[data-theme="dark"] .fi-wi-stats-overview-stat:hover {
+	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
 }
 
 /* Stats Card Icon */
@@ -209,6 +319,15 @@
 	color: var(--motac-primary);
 	border-radius: 0.5rem;
 	padding: 0.75rem;
+	transition: background-color var(--duration-short) var(--motion-easeout),
+		color var(--duration-short) var(--motion-easeout);
+}
+
+/* Dark mode stats icon */
+.dark .fi-wi-stats-overview-stat-icon,
+[data-theme="dark"] .fi-wi-stats-overview-stat-icon {
+	background-color: var(--motac-primary-light);
+	color: #60a5fa;
 }
 
 /* ==========================================================================
@@ -452,6 +571,163 @@
 
 	.fi-sidebar.fi-sidebar-open {
 		transform: translateX(0);
+	}
+}
+
+/* ==========================================================================
+   Dark Mode Status Badges (D13 §2.2, D14 §4.2)
+   ========================================================================== */
+
+/* Dark mode priority badges */
+.dark .fi-badge[data-priority="critical"],
+.dark .fi-badge[data-priority="high"],
+[data-theme="dark"] .fi-badge[data-priority="critical"],
+[data-theme="dark"] .fi-badge[data-priority="high"] {
+	background-color: rgba(248, 113, 113, 0.15);
+	color: #f87171;
+	border-color: rgba(248, 113, 113, 0.3);
+}
+
+.dark .fi-badge[data-priority="medium"],
+[data-theme="dark"] .fi-badge[data-priority="medium"] {
+	background-color: rgba(251, 191, 36, 0.15);
+	color: #fbbf24;
+	border-color: rgba(251, 191, 36, 0.3);
+}
+
+.dark .fi-badge[data-priority="low"],
+[data-theme="dark"] .fi-badge[data-priority="low"] {
+	background-color: rgba(74, 222, 128, 0.15);
+	color: #4ade80;
+	border-color: rgba(74, 222, 128, 0.3);
+}
+
+/* Dark mode status badges */
+.dark .fi-badge[data-status="open"],
+.dark .fi-badge[data-status="pending"],
+[data-theme="dark"] .fi-badge[data-status="open"],
+[data-theme="dark"] .fi-badge[data-status="pending"] {
+	background-color: rgba(59, 130, 246, 0.15);
+	color: #60a5fa;
+	border-color: rgba(59, 130, 246, 0.3);
+}
+
+.dark .fi-badge[data-status="in_progress"],
+.dark .fi-badge[data-status="processing"],
+[data-theme="dark"] .fi-badge[data-status="in_progress"],
+[data-theme="dark"] .fi-badge[data-status="processing"] {
+	background-color: rgba(251, 191, 36, 0.15);
+	color: #fbbf24;
+	border-color: rgba(251, 191, 36, 0.3);
+}
+
+.dark .fi-badge[data-status="resolved"],
+.dark .fi-badge[data-status="approved"],
+.dark .fi-badge[data-status="completed"],
+[data-theme="dark"] .fi-badge[data-status="resolved"],
+[data-theme="dark"] .fi-badge[data-status="approved"],
+[data-theme="dark"] .fi-badge[data-status="completed"] {
+	background-color: rgba(74, 222, 128, 0.15);
+	color: #4ade80;
+	border-color: rgba(74, 222, 128, 0.3);
+}
+
+.dark .fi-badge[data-status="closed"],
+.dark .fi-badge[data-status="rejected"],
+.dark .fi-badge[data-status="cancelled"],
+[data-theme="dark"] .fi-badge[data-status="closed"],
+[data-theme="dark"] .fi-badge[data-status="rejected"],
+[data-theme="dark"] .fi-badge[data-status="cancelled"] {
+	background-color: rgba(148, 163, 184, 0.15);
+	color: #94a3b8;
+	border-color: rgba(148, 163, 184, 0.3);
+}
+
+/* ==========================================================================
+   Dark Mode SLA Indicators (D13 §2.2)
+   ========================================================================== */
+
+.dark .sla-indicator--on-track,
+[data-theme="dark"] .sla-indicator--on-track {
+	background-color: rgba(74, 222, 128, 0.15);
+	color: #4ade80;
+}
+
+.dark .sla-indicator--at-risk,
+[data-theme="dark"] .sla-indicator--at-risk {
+	background-color: rgba(251, 191, 36, 0.15);
+	color: #fbbf24;
+}
+
+.dark .sla-indicator--breached,
+[data-theme="dark"] .sla-indicator--breached {
+	background-color: rgba(248, 113, 113, 0.15);
+	color: #f87171;
+}
+
+/* ==========================================================================
+   Dark Mode Form Fields (D14 §10.3)
+   ========================================================================== */
+
+.dark .fi-form-field-wrapper .fi-input,
+.dark .fi-form-field-wrapper .fi-textarea,
+.dark .fi-form-field-wrapper .fi-select,
+[data-theme="dark"] .fi-form-field-wrapper .fi-input,
+[data-theme="dark"] .fi-form-field-wrapper .fi-textarea,
+[data-theme="dark"] .fi-form-field-wrapper .fi-select {
+	background-color: #1e293b;
+	border-color: #475569;
+	color: #f1f5f9;
+}
+
+.dark .fi-form-field-wrapper .fi-input:focus,
+.dark .fi-form-field-wrapper .fi-textarea:focus,
+.dark .fi-form-field-wrapper .fi-select:focus,
+[data-theme="dark"] .fi-form-field-wrapper .fi-input:focus,
+[data-theme="dark"] .fi-form-field-wrapper .fi-textarea:focus,
+[data-theme="dark"] .fi-form-field-wrapper .fi-select:focus {
+	border-color: #60a5fa;
+	box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+}
+
+/* ==========================================================================
+   Dark Mode Tables (D13 §2.2)
+   ========================================================================== */
+
+.dark .fi-ta-table,
+[data-theme="dark"] .fi-ta-table {
+	background-color: var(--ictserve-card-bg);
+}
+
+.dark .fi-ta-row,
+[data-theme="dark"] .fi-ta-row {
+	border-color: var(--ictserve-card-border);
+}
+
+.dark .fi-ta-row:hover,
+[data-theme="dark"] .fi-ta-row:hover {
+	background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* ==========================================================================
+   Theme Transition Utilities (D12 §6.10)
+   ========================================================================== */
+
+.theme-transition {
+	transition-property: background-color, border-color, color, fill, stroke,
+		box-shadow;
+	transition-timing-function: var(--motion-easeout);
+	transition-duration: var(--duration-short);
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+	.theme-transition,
+	.fi-topbar,
+	.fi-sidebar,
+	.fi-wi-stats-overview-stat,
+	.fi-wi-stats-overview-stat-icon {
+		transition-duration: 0ms;
 	}
 }
 

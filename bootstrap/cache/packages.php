@@ -18,13 +18,6 @@
       0 => 'Barryvdh\\DomPDF\\ServiceProvider',
     ),
   ),
-  'barryvdh/laravel-ide-helper' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
-    ),
-  ),
   'blade-ui-kit/blade-heroicons' => 
   array (
     'providers' => 
@@ -120,29 +113,11 @@
       0 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
     ),
   ),
-  'laravel/boost' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Boost\\BoostServiceProvider',
-    ),
-  ),
   'laravel/breeze' => 
   array (
     'providers' => 
     array (
       0 => 'Laravel\\Breeze\\BreezeServiceProvider',
-    ),
-  ),
-  'laravel/horizon' => 
-  array (
-    'aliases' => 
-    array (
-      'Horizon' => 'Laravel\\Horizon\\Horizon',
-    ),
-    'providers' => 
-    array (
-      0 => 'Laravel\\Horizon\\HorizonServiceProvider',
     ),
   ),
   'laravel/mcp' => 
@@ -154,13 +129,6 @@
     'providers' => 
     array (
       0 => 'Laravel\\Mcp\\Server\\McpServiceProvider',
-    ),
-  ),
-  'laravel/pail' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Pail\\PailServiceProvider',
     ),
   ),
   'laravel/pulse' => 

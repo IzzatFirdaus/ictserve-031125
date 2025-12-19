@@ -1,32 +1,45 @@
 <?php
 
-// Override system environment variables for local development in Codespaces
-// The container sets APP_ENV=production, but we need local for Boost and debugging
+// Override system environment variables for local development
 // IMPORTANT: Do not override when running PHPUnit tests (APP_ENV=testing from phpunit.xml)
-if (!isset($_ENV['APP_ENV']) || $_ENV['APP_ENV'] !== 'testing') {
-    $_ENV['APP_ENV'] = 'local';
-    $_SERVER['APP_ENV'] = 'local';
-    putenv('APP_ENV=local');
+if (! isset($_ENV['APP_ENV']) || $_ENV['APP_ENV'] !== 'testing') {
+    // Check if running in Docker (DB_HOST=db) or Codespaces (CODESPACES=true)
+    $isDocker = isset($_ENV['DB_HOST']) && $_ENV['DB_HOST'] === 'db';
+    $isCodespaces = isset($_ENV['CODESPACES']) && $_ENV['CODESPACES'] === 'true';
+
+    if (! $isDocker) {
+        $_ENV['APP_ENV'] = 'local';
+        $_SERVER['APP_ENV'] = 'local';
+        putenv('APP_ENV=local');
+    }
+
+    if ($isCodespaces) {
+        $_ENV['COMPOSER_VENDOR_DIR'] = '/tmp/vendor';
+        $_SERVER['COMPOSER_VENDOR_DIR'] = '/tmp/vendor';
+        putenv('COMPOSER_VENDOR_DIR=/tmp/vendor');
+    }
 }
-$_ENV['APP_DEBUG'] = 'true';
-$_ENV['COMPOSER_VENDOR_DIR'] = '/tmp/vendor';
-$_SERVER['APP_DEBUG'] = 'true';
-$_SERVER['COMPOSER_VENDOR_DIR'] = '/tmp/vendor';
-putenv('APP_DEBUG=true');
-putenv('COMPOSER_VENDOR_DIR=/tmp/vendor');
+
+if (! isset($_ENV['APP_ENV']) || $_ENV['APP_ENV'] !== 'testing') {
+    $_ENV['APP_DEBUG'] = 'true';
+    $_SERVER['APP_DEBUG'] = 'true';
+    putenv('APP_DEBUG=true');
+}
 
 // Load the Composer autoloader BEFORE using Laravel classes
-if (file_exists('/tmp/vendor/autoload.php')) {
+// Priority: Codespaces vendor -> Local vendor -> Fallback
+if (isset($_ENV['CODESPACES']) && file_exists('/tmp/vendor/autoload.php')) {
     require '/tmp/vendor/autoload.php';
-} elseif (file_exists(__DIR__ . '/../vendor/autoload.php')) {
-    require __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__.'/../vendor/autoload.php')) {
+    require __DIR__.'/../vendor/autoload.php';
 } else {
-    require __DIR__ . '/../../../vendor/autoload.php';
+    require __DIR__.'/../../../vendor/autoload.php';
 }
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -37,6 +50,10 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
+        then: function () {
+            Route::middleware('web')
+                ->group(base_path('routes/ai.php'));
+        },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // Register session middleware before SetLocaleMiddleware
