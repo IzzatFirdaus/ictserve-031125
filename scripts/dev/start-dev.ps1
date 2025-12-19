@@ -165,17 +165,26 @@ function Check-Port {
                 # Additional health check if endpoint provided
                 if ($HealthEndpoint) {
                     try {
-                        $response = Invoke-WebRequest -Uri "http://127.0.0.1:$Port$HealthEndpoint" -TimeoutSec 5 -UseBasicParsing
+                        $response = Invoke-WebRequest -Uri "http://127.0.0.1:$Port$HealthEndpoint" -TimeoutSec 10 -UseBasicParsing -ErrorAction Stop
                         if ($response.StatusCode -eq 200) {
-                            Write-Host "[$timestamp] [OK] $serviceLabel healthy on 127.0.0.1:$Port" -ForegroundColor Green
+                            Write-Host "[$timestamp] [OK] $serviceLabel healthy on 127.0.0.1:$Port$HealthEndpoint" -ForegroundColor Green
                             return $true
+                        } else {
+                            Write-Host "[$timestamp] [WAIT] $serviceLabel returned status $($response.StatusCode) (attempt $($i+1)/$Attempts)" -ForegroundColor Yellow
                         }
                     }
                     catch {
-                        Write-Host "[$timestamp] [WAIT] $serviceLabel port open but health check failed (attempt $($i+1)/$Attempts)" -ForegroundColor Yellow
-                        Start-Sleep -Seconds $DelaySeconds
-                        continue
+                        $errorMsg = $_.Exception.Message
+                        if ($errorMsg -match "timeout|timed out") {
+                            Write-Host "[$timestamp] [WAIT] $serviceLabel health check timeout (attempt $($i+1)/$Attempts)" -ForegroundColor Yellow
+                        } elseif ($errorMsg -match "connection refused|could not connect") {
+                            Write-Host "[$timestamp] [WAIT] $serviceLabel not ready yet (attempt $($i+1)/$Attempts)" -ForegroundColor Yellow
+                        } else {
+                            Write-Host "[$timestamp] [WAIT] $serviceLabel health check error: $($errorMsg -replace "`n|`r", " ") (attempt $($i+1)/$Attempts)" -ForegroundColor Yellow
+                        }
                     }
+                    Start-Sleep -Seconds $DelaySeconds
+                    continue
                 } else {
                     Write-Host "[$timestamp] [OK] $serviceLabel ready on 127.0.0.1:$Port" -ForegroundColor Green
                     return $true
@@ -360,7 +369,12 @@ if ($servicesToStart -contains "laravel") {
     $currentService++
     Write-Host "[$currentService/$serviceCount] Laravel Application Server" -ForegroundColor Yellow
     Start-Service -Title 'Laravel Server (127.0.0.1:8000)' -Command "php artisan serve --host=127.0.0.1 --port=8000" -Color "Blue" -Description "ICTServe v3.6.0 - True Hybrid Architecture" -Critical -Priority 2
-    Check-Port -Port 8000 -Attempts 15 -DelaySeconds 1 -ServiceName 'Laravel Server' -HealthEndpoint "/" -Critical
+    
+    # Give Laravel server extra time to initialize
+    Write-Host "  └─ Waiting for Laravel to initialize..." -ForegroundColor Gray
+    Start-Sleep -Seconds 3
+    
+    Check-Port -Port 8000 -Attempts 15 -DelaySeconds 2 -ServiceName 'Laravel Server' -HealthEndpoint "/api/health" -Critical
     Start-Sleep -Seconds 1
 }
 
@@ -368,7 +382,12 @@ if ($servicesToStart -contains "laravel") {
 if ($servicesToStart -contains "reverb") {
     $currentService++
     Write-Host "[$currentService/$serviceCount] Laravel Reverb (WebSocket)" -ForegroundColor Yellow
-    Start-Service -Title 'Laravel Reverb (ws://127.0.0.1:8080)' -Command "php artisan reverb:start" -Color "Magenta" -Description "Real-time notifications, live updates, broadcasting" -Priority 3
+    Start-Service -Title 'Laravel Reverb (ws://127.0.0.1:8080)' -Command "php artisan reverb:start --host=127.0.0.1 --port=8080" -Color "Magenta" -Description "Real-time notifications, live updates, broadcasting" -Priority 3
+    
+    # Give Reverb time to initialize
+    Write-Host "  └─ Waiting for Reverb WebSocket server..." -ForegroundColor Gray
+    Start-Sleep -Seconds 2
+    
     Check-Port -Port 8080 -Attempts 15 -DelaySeconds 1 -ServiceName 'Laravel Reverb'
     Start-Sleep -Seconds 1
 }
@@ -419,8 +438,20 @@ if ($servicesToStart -contains "queue") {
 if ($servicesToStart -contains "vite") {
     $currentService++
     Write-Host "[$currentService/$serviceCount] Vite Development Server" -ForegroundColor Yellow
-    Start-Service -Title 'Vite Dev Server (127.0.0.1:5173)' -Command "npm run dev" -Color "Green" -Description "Tailwind 4.1.17, Livewire 3.7.1, Hot Module Replacement" -Priority 5
-    Check-Port -Port 5173 -Attempts 15 -DelaySeconds 1 -ServiceName 'Vite Dev Server' -HealthEndpoint "/"
+    
+    # Check if node_modules is properly installed
+    if (-not (Test-Path "node_modules\vite")) {
+        Write-Host "  └─ [WARN] Vite not found, running npm install..." -ForegroundColor Yellow
+        npm install --silent
+    }
+    
+    Start-Service -Title 'Vite Dev Server (127.0.0.1:5173)' -Command "npx vite --host=127.0.0.1 --port=5173" -Color "Green" -Description "Tailwind 4.1.17, Livewire 3.7.1, Hot Module Replacement" -Priority 5
+    
+    # Give Vite time to initialize
+    Write-Host "  └─ Waiting for Vite to initialize..." -ForegroundColor Gray
+    Start-Sleep -Seconds 3
+    
+    Check-Port -Port 5173 -Attempts 15 -DelaySeconds 2 -ServiceName 'Vite Dev Server'
     Start-Sleep -Seconds 1
 }
 

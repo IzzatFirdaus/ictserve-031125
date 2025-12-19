@@ -16,6 +16,7 @@
         "barryvdh/laravel-dompdf": "^3.1",
         "cloudstudio/ollama-laravel": "^1.1",
         "filament/filament": "^4.1.10",
+        "filament/query-builder": "*",
         "laravel/framework": "^12.0",
         "laravel/horizon": "^5.41",
         "laravel/mcp": "^0.3.4",
