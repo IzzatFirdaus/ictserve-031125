@@ -33,7 +33,7 @@
                     <div class="flex items-center gap-2">
                         <div id="connection-status" class="text-sm text-orange-600 dark:text-orange-400 hidden"
                             role="status" aria-live="polite">Sambungan belum tersedia</div>
-                        <livewire:components.theme-toggle />
+                        <livewire:components.theme-toggle-unified />
                     </div>
                     <a href="{{ route('welcome') }}"
                         class="text-sm text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors">
@@ -220,12 +220,14 @@
 
                 <form wire:submit.prevent="send" class="space-y-2" role="form" aria-label="Send message form">
                     @error('model')
-                        <div class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                        <div
+                            class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
                             {{ $message }}
                         </div>
                     @enderror
                     @error('prompt')
-                        <div class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                        <div
+                            class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
                             {{ $message }}
                         </div>
                     @enderror
@@ -233,7 +235,11 @@
                         <label for="prompt" class="sr-only">{{ __('Mesej') }}</label>
                         <input type="text" id="prompt" wire:model="prompt" wire:keydown.enter="send"
                             placeholder="{{ 'Taip mesej anda...' }}"
-                            class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 dark:border-orange-900/30 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('prompt') border-red-500 @else border-gray-200 @enderror">
+                            @class([
+                                'flex-1 px-4 py-3 bg-white dark:bg-slate-900 dark:border-orange-900/30 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent',
+                                'border-red-500' => $errors->has('prompt'),
+                                'border-gray-200' => ! $errors->has('prompt'),
+                            ])>
                         <button type="submit"
                             class="px-8 py-3 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-11"
                             wire:loading.attr="disabled" wire:target="send"

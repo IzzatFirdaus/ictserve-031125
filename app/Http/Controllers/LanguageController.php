@@ -4,55 +4,42 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cookie;
-
 /**
  * LanguageController
  *
- * Handles language switching for the ICTServe application using session/cookie persistence.
- * NO user profile storage - designed for guest-first architecture.
+ * @deprecated v3.6.0 Language switching disabled per D15 documentation.
+ *             ICTServe now uses Bahasa Melayu-only interface as per government directive.
+ *             This controller is retained for backward compatibility but all methods
+ *             redirect to home with appropriate messages.
  *
- * Storage Strategy:
- * - Session: Immediate application for current session
- * - Cookie: 1-year persistence for future visits
- * - Application: Applied to current request
+ * Previously handled language switching for the ICTServe application using session/cookie persistence.
+ * NO user profile storage - was designed for guest-first architecture.
  *
  * @author Pasukan BPM MOTAC
  *
- * @version 1.0.0
+ * @version 3.6.0 (Deprecated)
  *
  * @since 2025-11-03
  *
- * Requirements: 20.3, 20.4, 15.2
+ * Requirements: D15 §2.1 (Bahasa Melayu Primary Language)
  * WCAG Level: AA (SC 3.1.2 Language of Parts)
- * Standards: D03-FR-020, D04 §7.3, D10 §5.2, D11 §6.1
+ * Standards: D15 v3.6.0 (Bahasa Melayu Only)
  */
 class LanguageController extends Controller
 {
     /**
      * Change the application locale.
+     *
+     * @deprecated v3.6.0 Language switching disabled per D15 documentation.
+     *             ICTServe now uses Bahasa Melayu-only interface.
      */
-    public function change(Request $request, string $locale): RedirectResponse
+    public function change(): \Illuminate\Http\RedirectResponse
     {
-        // Validate locale parameter
-        if (! $this->isValidLocale($locale)) {
-            abort(400, 'Invalid locale specified.');
-        }
-
-        // Store locale in session (immediate application)
-        $request->session()->put('locale', $locale);
-
-        // Store locale in cookie (1 year persistence)
-        Cookie::queue('locale', $locale, 60 * 24 * 365);
-
-        // Apply locale to current request
-        App::setLocale($locale);
-
-        // Redirect back with success message
-        return redirect()->back()->with('message', __('common.language_changed'));
+        // v3.6.0: Language switching disabled - redirect to home with message
+        return redirect()->route('home')->with(
+            'error',
+            'Penukaran bahasa telah dilumpuhkan. Sistem ICTServe kini menggunakan Bahasa Melayu sahaja.'
+        );
     }
 
     /**
@@ -64,10 +51,10 @@ class LanguageController extends Controller
     {
         // v3.6.0: Bahasa Melayu sahaja - only 'ms' locale is supported
         $supportedLocales = config('app.supported_locales', ['ms']);
-        if (! is_array($supportedLocales)) {
+        if (! \is_array($supportedLocales)) {
             $supportedLocales = ['ms'];
         }
 
-        return in_array($locale, $supportedLocales, true);
+        return \in_array($locale, $supportedLocales, true);
     }
 }

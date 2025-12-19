@@ -43,7 +43,7 @@
                 @elseif($hasUrl)
                     <a
                         href="{{ $item['url'] }}"
-                        class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 rounded px-2 py-1 min-h-[44px]"
+                        class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 rounded px-2 py-1 min-h-44"
                     >
                         @if($index === 0 && isset($item['icon']))
                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">

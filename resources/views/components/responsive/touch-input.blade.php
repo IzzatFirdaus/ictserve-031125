@@ -123,7 +123,7 @@
         {{-- Clear button --}}
         @if ($showClear && !$disabled && !$readonly)
             <button type="button" x-show="value.length > 0" @click="value = ''; $refs.input?.focus()"
-                class="absolute right-3 top-1/2 -translate-y-1/2 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md"
+                class="absolute right-3 top-1/2 -translate-y-1/2 p-2 min-w-44 min-h-44 flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md"
                 aria-label="{{ __('Kosongkan medan') }}" x-cloak>
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

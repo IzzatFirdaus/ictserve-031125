@@ -1,4 +1,4 @@
-﻿{{--
+{{--
     Keyboard Shortcut Item Component (x-ui.keyboard-shortcut-item)
 
     Single shortcut display row for the keyboard shortcuts modal.

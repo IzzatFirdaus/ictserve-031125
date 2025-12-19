@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Guest Layout - Unified Authentication Interface
  *
@@ -34,8 +34,8 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
 
-    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
-    <x-theme-init-script />
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.1 --}}
+    <x-theme-init />
 
     {{-- Critical CSS inline for faster FCP (Requirement 10.1) --}}
     <style>
@@ -75,9 +75,9 @@
 
     <div class="min-h-screen flex flex-col">
         {{-- Language Switcher removed per D15 v3.6.0 - Bahasa Melayu sahaja --}}
-        {{-- Theme Switcher (Top-right, v3.6.0) --}}
+        {{-- Theme Switcher (Top-right, v3.6.1) --}}
         <div class="fixed top-4 right-4 z-50">
-            <livewire:components.theme-toggle />
+            <livewire:components.theme-toggle-unified />
         </div>
 
         {{-- Main Content --}}
@@ -88,8 +88,10 @@
             <div class="mb-12">
                 <a href="/" wire:navigate aria-label="{{ __('common.home') }}"
                     class="flex flex-col items-center gap-6 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-md p-4 min-h-11 min-w-11 transition-all duration-200 hover:scale-105">
-                    <x-application-logo class="w-20 h-20 fill-current text-primary-600 dark:text-primary-400 transition-colors duration-200" />
-                    <span class="text-2xl font-bold font-heading text-gray-900 dark:text-white tracking-tight">{{ config('app.name', 'ICTServe') }}</span>
+                    <x-application-logo
+                        class="w-20 h-20 fill-current text-primary-600 dark:text-primary-400 transition-colors duration-200" />
+                    <span
+                        class="text-2xl font-bold font-heading text-gray-900 dark:text-white tracking-tight">{{ config('app.name', 'ICTServe') }}</span>
                 </a>
             </div>
 

@@ -39,8 +39,8 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
 
-    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
-    <x-theme-init-script />
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.1 --}}
+    <x-theme-init />
 
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

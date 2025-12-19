@@ -102,8 +102,8 @@
 
             {{-- Right Side Actions --}}
             <div class="flex items-center space-x-2 sm:space-x-4">
-                {{-- Theme Switcher (v3.6.0) --}}
-                <livewire:components.theme-toggle />
+                {{-- Theme Switcher (v3.6.1) --}}
+                <livewire:components.theme-toggle-unified />
 
                 {{-- Notification Bell with Badge (wire:poll.30s for real-time updates) --}}
                 <div class="relative" x-data="{ open: false }">
