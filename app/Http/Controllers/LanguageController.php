@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-
 /**
  * LanguageController
  *
@@ -35,7 +33,7 @@ class LanguageController extends Controller
      * @deprecated v3.6.0 Language switching disabled per D15 documentation.
      *             ICTServe now uses Bahasa Melayu-only interface.
      */
-    public function change(): RedirectResponse
+    public function change(): \Illuminate\Http\RedirectResponse
     {
         // v3.6.0: Language switching disabled - redirect to home with message
         return redirect()->route('home')->with(
