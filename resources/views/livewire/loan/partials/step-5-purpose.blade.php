@@ -24,7 +24,7 @@
             minlength="10"
             maxlength="500"
             @class([
-                'block w-full rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm',
+                'block w-full rounded-lg shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm',
                 'border-red-300' => $errorBag->has('purpose'),
                 'border-gray-300' => ! $errorBag->has('purpose'),
             ])
@@ -51,7 +51,7 @@
             wire:model.live.debounce.300ms="location"
             maxlength="255"
             @class([
-                'block w-full rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm',
+                'block w-full rounded-lg shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm',
                 'border-red-300' => $errorBag->has('location'),
                 'border-gray-300' => ! $errorBag->has('location'),
             ])
@@ -75,7 +75,7 @@
             wire:model.live.debounce.300ms="specialInstructions"
             rows="3"
             maxlength="500"
-            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm"
             placeholder="{{ __('loan.placeholders.special_instructions') }}"
         ></textarea>
         <p class="mt-1 text-xs text-gray-500">{{ __('loan.help.special_instructions') }}</p>

@@ -284,7 +284,7 @@ $loanDuration = computed(function () {
                         <p class="mt-1 text-sm text-success-700 dark:text-success-300">{{ $success }}</p>
                         <div class="mt-4">
                             <a href="{{ url('/') }}"
-                                class="inline-flex items-center px-4 py-2 bg-success-600 hover:bg-success-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-3 focus:ring-success-500 focus:ring-offset-2">
+                                class="inline-flex items-center px-4 py-2 bg-success-600 hover:bg-success-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-success-500 focus-visible:ring-offset-2">
                                 {{ __('common.back_to_home') }}
                             </a>
                         </div>
@@ -323,7 +323,7 @@ $loanDuration = computed(function () {
                         @endif
                         <div class="mt-4">
                             <a href="{{ url('/') }}"
-                                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-3 focus:ring-gray-500 focus:ring-offset-2">
+                                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:ring-offset-2">
                                 {{ __('common.back_to_home') }}
                             </a>
                         </div>
@@ -511,7 +511,7 @@ $loanDuration = computed(function () {
                                     class="text-gray-400 text-xs ml-1">({{ __('loan.approval.required_for_rejection') }})</span>
                             </label>
                             <textarea id="remarks" wire:model="remarks" rows="4"
-                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-3 focus:ring-primary-500 focus:border-primary-500 transition-colors resize-none"
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-primary-500 transition-colors resize-none"
                                 placeholder="{{ __('loan.approval.remarks_placeholder') }}" aria-describedby="remarks-help" maxlength="1000"></textarea>
                             <p id="remarks-help" class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                                 {{ __('loan.approval.remarks_help') }}
@@ -527,7 +527,7 @@ $loanDuration = computed(function () {
                             {{-- Approve Button --}}
                             <button type="button" wire:click="approve" wire:loading.attr="disabled"
                                 wire:target="approve" @if ($isProcessing) disabled @endif
-                                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-success-600 hover:bg-success-700 disabled:bg-success-400 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-3 focus:ring-success-300 dark:focus:ring-success-800"
+                                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-success-600 hover:bg-success-700 disabled:bg-success-400 text-white font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-success-300 dark:focus-visible:ring-success-800"
                                 aria-label="{{ __('loan.approval.approve_button') }}">
                                 <span wire:loading.remove wire:target="approve" class="flex items-center">
                                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -553,7 +553,7 @@ $loanDuration = computed(function () {
                             {{-- Reject Button --}}
                             <button type="button" wire:click="reject" wire:loading.attr="disabled"
                                 wire:target="reject" @if ($isProcessing) disabled @endif
-                                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-danger-600 hover:bg-danger-700 disabled:bg-danger-400 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-3 focus:ring-danger-300 dark:focus:ring-danger-800"
+                                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-danger-600 hover:bg-danger-700 disabled:bg-danger-400 text-white font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-300 dark:focus-visible:ring-danger-800"
                                 aria-label="{{ __('loan.approval.reject_button') }}">
                                 <span wire:loading.remove wire:target="reject" class="flex items-center">
                                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2"
