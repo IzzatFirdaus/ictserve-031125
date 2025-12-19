@@ -1,354 +1,287 @@
-# WSL Redis Management Script for ICTServe v3.6.1
-# Purpose: Manage Redis 7.0+ in Windows Subsystem for Linux
-# Requirements: WSL with Ubuntu/Debian distribution
+# WSL Redis Management Script for ICTServe
+# Provides PowerShell interface for managing Redis service in WSL
 
 param(
     [Parameter(Mandatory=$true)]
-    [ValidateSet("start", "stop", "restart", "status", "install", "configure", "test")]
+    [ValidateSet("start", "stop", "restart", "status", "test", "logs", "config", "info", "monitor")]
     [string]$Action,
     
-    [Parameter(Mandatory=$false)]
-    [string]$WSLDistribution = "Ubuntu"
+    [int]$LogLines = 50,
+    [switch]$Follow
 )
 
-# Color output functions
-function Write-Success { param($Message) Write-Host "✅ $Message" -ForegroundColor Green }
-function Write-Error { param($Message) Write-Host "❌ $Message" -ForegroundColor Red }
-function Write-Info { param($Message) Write-Host "ℹ️  $Message" -ForegroundColor Cyan }
-function Write-Warning { param($Message) Write-Host "⚠️  $Message" -ForegroundColor Yellow }
-
-# Check WSL availability
-function Test-WSLAvailability {
-    try {
-        $wslVersion = wsl --version 2>$null
-        if ($LASTEXITCODE -eq 0) {
-            Write-Success "WSL is available"
-            return $true
-        }
-    }
-    catch {
-        Write-Error "WSL is not installed or not available"
-        Write-Info "Install WSL: https://docs.microsoft.com/en-us/windows/wsl/install"
-        return $false
-    }
-    return $false
+function Write-Info($message) {
+    Write-Host $message -ForegroundColor Cyan
 }
 
-# Check if WSL distribution exists
-function Test-WSLDistribution {
+function Write-Success($message) {
+    Write-Host "✓ $message" -ForegroundColor Green
+}
+
+function Write-Warning($message) {
+    Write-Host "⚠ $message" -ForegroundColor Yellow
+}
+
+function Write-Error($message) {
+    Write-Host "✗ $message" -ForegroundColor Red
+}
+
+function Test-WSLAvailable {
     try {
-        $distributions = wsl --list --quiet
-        if ($distributions -contains $WSLDistribution) {
-            Write-Success "WSL distribution '$WSLDistribution' is available"
-            return $true
+        wsl --version > $null 2>&1
+        return $LASTEXITCODE -eq 0
+    } catch {
+        return $false
+    }
+}
+
+function Test-RedisInstalled {
+    try {
+        $version = wsl which redis-server 2>$null
+        return $version -ne $null
+    } catch {
+        return $false
+    }
+}
+
+function Start-WSLRedis {
+    Write-Info "Starting Redis in WSL..."
+    
+    if (-not (Test-WSLAvailable)) {
+        Write-Error "WSL is not available"
+        return $false
+    }
+    
+    if (-not (Test-RedisInstalled)) {
+        Write-Error "Redis is not installed in WSL. Run install-redis.ps1 first."
+        return $false
+    }
+    
+    # Try systemctl first
+    $systemctlResult = wsl sudo systemctl start redis-server 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Success "Redis started via systemctl"
+    } else {
+        # Fallback to service command
+        Write-Info "Trying service command..."
+        wsl sudo service redis-server start
+        if ($LASTEXITCODE -eq 0) {
+            Write-Success "Redis started via service command"
         } else {
-            Write-Error "WSL distribution '$WSLDistribution' not found"
-            Write-Info "Available distributions: $($distributions -join ', ')"
+            Write-Error "Failed to start Redis service"
             return $false
         }
     }
-    catch {
-        Write-Error "Failed to check WSL distributions"
-        return $false
-    }
+    
+    # Wait for Redis to start
+    Start-Sleep -Seconds 2
+    
+    # Validate Redis is running
+    return Test-RedisConnectivity
 }
 
-# Test Redis connectivity from Windows
+function Stop-WSLRedis {
+    Write-Info "Stopping Redis in WSL..."
+    
+    # Try systemctl first
+    $systemctlResult = wsl sudo systemctl stop redis-server 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Success "Redis stopped via systemctl"
+    } else {
+        # Fallback to service command
+        Write-Info "Trying service command..."
+        wsl sudo service redis-server stop
+        if ($LASTEXITCODE -eq 0) {
+            Write-Success "Redis stopped via service command"
+        } else {
+            Write-Warning "Failed to stop Redis service gracefully"
+            
+            # Force kill Redis processes
+            Write-Info "Force killing Redis processes..."
+            wsl sudo pkill -f redis-server
+            Write-Success "Redis processes terminated"
+        }
+    }
+    
+    return $true
+}
+
+function Restart-WSLRedis {
+    Write-Info "Restarting Redis in WSL..."
+    
+    Stop-WSLRedis
+    Start-Sleep -Seconds 1
+    return Start-WSLRedis
+}
+
+function Get-RedisStatus {
+    Write-Info "Checking Redis status..."
+    
+    if (-not (Test-WSLAvailable)) {
+        Write-Error "WSL is not available"
+        return
+    }
+    
+    if (-not (Test-RedisInstalled)) {
+        Write-Error "Redis is not installed in WSL"
+        return
+    }
+    
+    # Check systemctl status
+    $systemctlStatus = wsl sudo systemctl is-active redis-server 2>$null
+    Write-Host "Systemctl Status: $systemctlStatus" -ForegroundColor White
+    
+    # Check process status
+    $processes = wsl ps aux | wsl grep redis-server | wsl grep -v grep
+    if ($processes) {
+        Write-Success "Redis processes running:"
+        Write-Host $processes -ForegroundColor Gray
+    } else {
+        Write-Warning "No Redis processes found"
+    }
+    
+    # Check port binding
+    $portCheck = wsl netstat -tlnp | wsl grep :6379
+    if ($portCheck) {
+        Write-Success "Redis listening on port 6379:"
+        Write-Host $portCheck -ForegroundColor Gray
+    } else {
+        Write-Warning "Redis not listening on port 6379"
+    }
+    
+    # Test connectivity
+    Test-RedisConnectivity
+}
+
 function Test-RedisConnectivity {
+    Write-Info "Testing Redis connectivity..."
+    
+    # Test from WSL
+    $wslTest = wsl redis-cli ping 2>$null
+    if ($wslTest -eq "PONG") {
+        Write-Success "Redis responds to ping from WSL"
+    } else {
+        Write-Error "Redis is not responding from WSL"
+        return $false
+    }
+    
+    # Test from Windows host
     try {
         $tcpClient = New-Object System.Net.Sockets.TcpClient
         $tcpClient.Connect("127.0.0.1", 6379)
         $tcpClient.Close()
-        Write-Success "Redis connection successful (127.0.0.1:6379)"
+        Write-Success "Redis is accessible from Windows host (127.0.0.1:6379)"
         return $true
-    }
-    catch {
-        Write-Error "Redis connection failed: $($_.Exception.Message)"
-        Write-Info "Ensure Redis is running and configured to accept connections from Windows host"
+    } catch {
+        Write-Error "Cannot connect to Redis from Windows host: $($_.Exception.Message)"
+        Write-Warning "Check WSL networking and Windows Firewall settings"
         return $false
     }
 }
 
-# Test Redis functionality
-function Test-RedisFunctionality {
-    Write-Info "Testing Redis functionality..."
+function Show-RedisLogs {
+    Write-Info "Showing Redis logs (last $LogLines lines)..."
     
-    try {
-        # Test basic Redis operations using redis-cli in WSL
-        $testKey = "ictserve_test_$(Get-Date -Format 'yyyyMMddHHmmss')"
-        $testValue = "test_value_$(Get-Random)"
-        
-        # Set a test key
-        $setResult = wsl -d $WSLDistribution redis-cli set $testKey $testValue
-        if ($setResult -eq "OK") {
-            Write-Success "Redis SET operation successful"
-        } else {
-            Write-Error "Redis SET operation failed"
-            return $false
-        }
-        
-        # Get the test key
-        $getValue = wsl -d $WSLDistribution redis-cli get $testKey
-        if ($getValue -eq $testValue) {
-            Write-Success "Redis GET operation successful"
-        } else {
-            Write-Error "Redis GET operation failed"
-            return $false
-        }
-        
-        # Delete the test key
-        $delResult = wsl -d $WSLDistribution redis-cli del $testKey
-        if ($delResult -eq "1") {
-            Write-Success "Redis DEL operation successful"
-        } else {
-            Write-Error "Redis DEL operation failed"
-            return $false
-        }
-        
-        Write-Success "Redis functionality test completed successfully"
-        return $true
-    }
-    catch {
-        Write-Error "Redis functionality test failed: $($_.Exception.Message)"
-        return $false
+    if ($Follow) {
+        Write-Info "Following Redis logs (Ctrl+C to stop)..."
+        wsl sudo tail -f -n $LogLines /var/log/redis/redis-server.log
+    } else {
+        wsl sudo tail -n $LogLines /var/log/redis/redis-server.log
     }
 }
 
-# Install Redis in WSL
-function Install-WSLRedis {
-    Write-Info "Installing Redis in WSL distribution: $WSLDistribution"
+function Show-RedisConfig {
+    Write-Info "Redis configuration:"
+    wsl sudo cat /etc/redis/redis.conf | wsl grep -v "^#" | wsl grep -v "^$"
+}
+
+function Show-RedisInfo {
+    Write-Info "Redis server information:"
     
-    if (-not (Test-WSLDistribution)) {
-        return $false
-    }
-    
-    try {
-        Write-Info "Updating package lists..."
-        wsl -d $WSLDistribution sudo apt update
-        
-        Write-Info "Installing Redis server..."
-        wsl -d $WSLDistribution sudo apt install -y redis-server
-        
-        Write-Info "Verifying Redis installation..."
-        $redisVersion = wsl -d $WSLDistribution redis-server --version
-        Write-Success "Redis installed: $redisVersion"
-        
-        # Configure Redis for Windows host access
-        Configure-WSLRedis
-        
-        return $true
-    }
-    catch {
-        Write-Error "Failed to install Redis: $($_.Exception.Message)"
-        return $false
+    if (Test-RedisConnectivity) {
+        wsl redis-cli info server
+        Write-Host ""
+        Write-Info "Memory usage:"
+        wsl redis-cli info memory
+        Write-Host ""
+        Write-Info "Connected clients:"
+        wsl redis-cli info clients
+    } else {
+        Write-Error "Cannot connect to Redis to get information"
     }
 }
 
-# Configure Redis for ICTServe and Windows host access
-function Configure-WSLRedis {
-    Write-Info "Configuring Redis for ICTServe and Windows host access..."
-    
-    try {
-        # Backup original configuration
-        wsl -d $WSLDistribution sudo cp /etc/redis/redis.conf /etc/redis/redis.conf.backup.$(date +%Y%m%d_%H%M%S)
-        
-        # Configure Redis for Windows host connectivity
-        Write-Info "Configuring Redis to accept connections from Windows host..."
-        
-        # Allow connections from any IP (for Windows host)
-        wsl -d $WSLDistribution sudo sed -i 's/bind 127.0.0.1/bind 0.0.0.0/' /etc/redis/redis.conf
-        
-        # Disable protected mode for development
-        wsl -d $WSLDistribution sudo sed -i 's/protected-mode yes/protected-mode no/' /etc/redis/redis.conf
-        
-        # Set appropriate memory policy
-        wsl -d $WSLDistribution sudo sed -i 's/# maxmemory-policy noeviction/maxmemory-policy allkeys-lru/' /etc/redis/redis.conf
-        
-        # Add ICTServe-specific configuration
-        $redisConfig = @"
-
-# ICTServe v3.6.1 Configuration
-maxmemory 256mb
-maxmemory-policy allkeys-lru
-tcp-keepalive 300
-timeout 0
-
-# Logging
-loglevel notice
-logfile /var/log/redis/redis-server.log
-
-# Persistence (development settings)
-save 900 1
-save 300 10
-save 60 10000
-
-# Database settings
-databases 16
-"@
-        
-        # Add configuration to Redis config file
-        Write-Info "Adding ICTServe-specific Redis configuration..."
-        $configContent = $redisConfig | wsl -d $WSLDistribution sudo tee -a /etc/redis/redis.conf
-        
-        Write-Success "Redis configuration completed"
-        
-        # Create log directory if it doesn't exist
-        wsl -d $WSLDistribution sudo mkdir -p /var/log/redis
-        wsl -d $WSLDistribution sudo chown redis:redis /var/log/redis
-        
-        Write-Info "Redis is configured for ICTServe. Restart Redis to apply changes."
-        return $true
-    }
-    catch {
-        Write-Error "Failed to configure Redis: $($_.Exception.Message)"
-        return $false
-    }
+function Start-RedisMonitor {
+    Write-Info "Starting Redis monitor (Ctrl+C to stop)..."
+    Write-Warning "This will show all Redis commands in real-time"
+    wsl redis-cli monitor
 }
 
-# Start Redis service in WSL
-function Start-WSLRedis {
-    Write-Info "Starting Redis in WSL..."
-    
-    try {
-        # Check if Redis is already running
-        $redisStatus = wsl -d $WSLDistribution sudo service redis-server status
-        if ($redisStatus -match "Active: active") {
-            Write-Info "Redis is already running"
-        } else {
-            Write-Info "Starting Redis service..."
-            wsl -d $WSLDistribution sudo service redis-server start
-            Start-Sleep -Seconds 2
-        }
-        
-        # Validate Redis is running and accessible
-        if (Test-RedisConnectivity) {
-            Write-Success "Redis started successfully and is accessible from Windows"
-            return $true
-        } else {
-            Write-Error "Redis started but is not accessible from Windows"
-            return $false
-        }
-    }
-    catch {
-        Write-Error "Failed to start Redis: $($_.Exception.Message)"
-        return $false
-    }
-}
+# Main script execution
+Write-Host "=== ICTServe WSL Redis Management ===" -ForegroundColor Green
 
-# Stop Redis service in WSL
-function Stop-WSLRedis {
-    Write-Info "Stopping Redis in WSL..."
-    
-    try {
-        wsl -d $WSLDistribution sudo service redis-server stop
-        Write-Success "Redis stopped"
-        return $true
-    }
-    catch {
-        Write-Error "Failed to stop Redis: $($_.Exception.Message)"
-        return $false
-    }
-}
-
-# Get Redis status
-function Get-WSLRedisStatus {
-    Write-Info "Checking Redis status in WSL..."
-    
-    try {
-        # Check service status
-        $serviceStatus = wsl -d $WSLDistribution sudo service redis-server status
-        Write-Info "Service Status:"
-        Write-Host $serviceStatus
-        
-        # Check if Redis is responding
-        Write-Info "Testing connectivity..."
-        Test-RedisConnectivity | Out-Null
-        
-        # Check Redis info
-        Write-Info "Redis Information:"
-        $redisInfo = wsl -d $WSLDistribution redis-cli info server
-        Write-Host $redisInfo
-        
-        # Check memory usage
-        Write-Info "Memory Usage:"
-        $memoryInfo = wsl -d $WSLDistribution redis-cli info memory | Select-String "used_memory_human"
-        Write-Host $memoryInfo
-        
-        return $true
-    }
-    catch {
-        Write-Error "Failed to get Redis status: $($_.Exception.Message)"
-        return $false
-    }
-}
-
-# Enable Redis auto-start on WSL boot
-function Enable-RedisAutoStart {
-    Write-Info "Enabling Redis auto-start on WSL boot..."
-    
-    try {
-        # Create systemd service override (if systemd is available)
-        $systemdCheck = wsl -d $WSLDistribution systemctl --version 2>$null
-        if ($LASTEXITCODE -eq 0) {
-            wsl -d $WSLDistribution sudo systemctl enable redis-server
-            Write-Success "Redis auto-start enabled via systemd"
-        } else {
-            # Fallback: Add to .bashrc or create init script
-            Write-Info "Systemd not available, using alternative method..."
-            $initScript = "sudo service redis-server start > /dev/null 2>&1"
-            wsl -d $WSLDistribution "echo '$initScript' >> ~/.bashrc"
-            Write-Success "Redis auto-start added to .bashrc"
-        }
-        
-        return $true
-    }
-    catch {
-        Write-Error "Failed to enable Redis auto-start: $($_.Exception.Message)"
-        return $false
-    }
-}
-
-# Main execution
-Write-Info "WSL Redis Management for ICTServe v3.6.1"
-
-if (-not (Test-WSLAvailability)) {
-    exit 1
-}
-
-switch ($Action) {
-    "install" {
-        if (Install-WSLRedis) {
-            Write-Success "Redis installation completed"
-            Write-Info "Run: .\manage-redis.ps1 -Action start"
-        }
-    }
-    "configure" {
-        if (Configure-WSLRedis) {
-            Write-Success "Redis configuration completed"
-            Write-Info "Run: .\manage-redis.ps1 -Action restart"
-        }
-    }
+switch ($Action.ToLower()) {
     "start" {
         if (Start-WSLRedis) {
-            Enable-RedisAutoStart | Out-Null
+            Write-Success "Redis is now running"
+        } else {
+            Write-Error "Failed to start Redis"
+            exit 1
         }
     }
+    
     "stop" {
-        Stop-WSLRedis
+        if (Stop-WSLRedis) {
+            Write-Success "Redis has been stopped"
+        } else {
+            Write-Error "Failed to stop Redis"
+            exit 1
+        }
     }
+    
     "restart" {
-        Stop-WSLRedis
-        Start-Sleep -Seconds 2
-        Start-WSLRedis
+        if (Restart-WSLRedis) {
+            Write-Success "Redis has been restarted"
+        } else {
+            Write-Error "Failed to restart Redis"
+            exit 1
+        }
     }
+    
     "status" {
-        Get-WSLRedisStatus
+        Get-RedisStatus
     }
+    
     "test" {
         if (Test-RedisConnectivity) {
-            Test-RedisFunctionality
+            Write-Success "Redis connectivity test passed"
+        } else {
+            Write-Error "Redis connectivity test failed"
+            exit 1
         }
+    }
+    
+    "logs" {
+        Show-RedisLogs
+    }
+    
+    "config" {
+        Show-RedisConfig
+    }
+    
+    "info" {
+        Show-RedisInfo
+    }
+    
+    "monitor" {
+        Start-RedisMonitor
+    }
+    
+    default {
+        Write-Error "Unknown action: $Action"
+        Write-Host "Available actions: start, stop, restart, status, test, logs, config, info, monitor"
+        exit 1
     }
 }
 
-Write-Info "WSL Redis management completed. Use 'Get-Help .\manage-redis.ps1' for usage information."
+Write-Host ""

@@ -1,0 +1,47 @@
+# ICTServe WSL Redis Environment Configuration
+# Add these settings to your .env file for WSL Redis integration
+
+# Redis Configuration for WSL
+REDIS_CLIENT=phpredis
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+REDIS_DB=0
+
+# Cache Configuration
+CACHE_STORE=redis
+CACHE_PREFIX=ictserve_cache
+
+# Session Configuration
+SESSION_DRIVER=redis
+SESSION_LIFETIME=120
+SESSION_ENCRYPT=false
+SESSION_PATH=/
+SESSION_DOMAIN=null
+SESSION_SECURE_COOKIE=false
+
+# Queue Configuration
+QUEUE_CONNECTION=redis
+
+# Broadcasting Configuration (for Laravel Reverb)
+BROADCAST_CONNECTION=reverb
+REVERB_HOST=127.0.0.1
+REVERB_PORT=6001
+REVERB_SCHEME=http
+
+# Laravel Horizon Configuration (if using Horizon)
+HORIZON_REDIS_CONNECTION=default
+
+# Laravel Pulse Configuration (if using Pulse)
+PULSE_REDIS_CONNECTION=default
+
+# Additional Redis Connections (if needed)
+REDIS_CACHE_DB=1
+REDIS_SESSION_DB=2
+REDIS_QUEUE_DB=3
+REDIS_BROADCAST_DB=4
+
+# Performance Settings
+REDIS_TIMEOUT=5
+REDIS_READ_TIMEOUT=10
+REDIS_RETRY_INTERVAL=100
