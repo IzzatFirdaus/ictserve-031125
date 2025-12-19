@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
-		"dev": "node scripts/dev/check-node-version.js && vite",
+		"dev": "node scripts/dev/check-node-version.js && npx vite",
 		"check-node": "node scripts/dev/check-node-version.js",
 		"wsl-redis-setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\setup-wsl-redis.ps1",
 		"test-dev-script": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\test-script.ps1",

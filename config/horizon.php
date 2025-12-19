@@ -48,6 +48,7 @@ return [
     |--------------------------------------------------------------------------
     | Horizon Redis Connection
     |--------------------------------------------------------------------------
+    | Updated for XAMPP environment with WSL Redis integration
     */
 
     'use' => 'default',
@@ -60,7 +61,7 @@ return [
 
     'prefix' => Env::get(
         'HORIZON_PREFIX',
-        Str::slug((string) Env::get('APP_NAME', 'ictserve'), '_').'_horizon:'
+        Str::slug((string) Env::get('APP_NAME', 'ictserve'), '_') . '_horizon:'
     ),
 
     /*
@@ -323,6 +324,64 @@ return [
             'supervisor-reports' => [
                 'minProcesses' => 1,
                 'maxProcesses' => 1,
+            ],
+        ],
+
+        // XAMPP Environment Configuration (Requirements 6.2, 6.5)
+        'xampp' => [
+            'supervisor-default' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'simple',
+                'maxProcesses' => 2,
+                'memory' => 128,
+                'tries' => 3,
+                'timeout' => 60,
+                'nice' => 0,
+            ],
+            'supervisor-helpdesk' => [
+                'connection' => 'redis',
+                'queue' => ['helpdesk', 'notifications'],
+                'balance' => 'auto',
+                'minProcesses' => 1,
+                'maxProcesses' => 3,
+                'memory' => 128,
+                'tries' => 3,
+                'timeout' => 300,
+                'nice' => 0,
+            ],
+            'supervisor-asset-loan' => [
+                'connection' => 'redis',
+                'queue' => ['asset-loan', 'approvals'],
+                'balance' => 'simple',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'memory' => 128,
+                'tries' => 5,
+                'timeout' => 180,
+                'nice' => 0,
+            ],
+            'supervisor-ai' => [
+                'connection' => 'redis',
+                'queue' => ['ai-chatbot', 'document-processing'],
+                'balance' => 'simple',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'memory' => 256,
+                'tries' => 3,
+                'timeout' => 600,
+                'nice' => 0,
+            ],
+            'supervisor-reports' => [
+                'connection' => 'redis',
+                'queue' => ['reports', 'exports'],
+                'balance' => 'simple',
+                'minProcesses' => 1,
+                'maxProcesses' => 1,
+                'memory' => 256,
+                'tries' => 3,
+                'timeout' => 600,
+                'nice' => 0,
             ],
         ],
     ],
