@@ -42,7 +42,7 @@
 
     // Base input classes with 44px minimum height
     $inputClasses =
-        'block w-full min-h-[44px] px-4 py-2.5 text-base rounded-lg border shadow-sm transition-colors duration-200';
+        'block w-full min-h-44 px-4 py-2.5 text-base rounded-lg border shadow-sm transition-colors duration-200';
 
     // State-specific classes
     if ($hasError) {

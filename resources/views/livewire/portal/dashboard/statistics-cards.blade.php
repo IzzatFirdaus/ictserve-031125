@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Component: Dashboard Statistics Cards
  * Description: WCAG 2.2 AA compliant statistics cards with MyDS Design System v2025.2 tokens

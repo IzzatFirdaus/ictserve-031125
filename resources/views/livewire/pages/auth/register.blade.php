@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Component name: Register Page (Volt)
  * Description: WCAG 2.2 AA compliant bilingual registration form with @motac.gov.my validation

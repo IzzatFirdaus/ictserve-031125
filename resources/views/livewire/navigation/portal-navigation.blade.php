@@ -72,8 +72,8 @@
 
         {{-- Right-side Actions (User Menu & Language Switcher) --}}
         <div class="flex items-center gap-4" id="user-menu">
-            {{-- Theme Switcher (v3.6.0) --}}
-            <livewire:components.theme-toggle />
+            {{-- Theme Switcher (v3.6.1) --}}
+            <livewire:components.theme-toggle-unified />
 
             {{-- User Dropdown Menu --}}
             <x-dropdown align="right" width="48">

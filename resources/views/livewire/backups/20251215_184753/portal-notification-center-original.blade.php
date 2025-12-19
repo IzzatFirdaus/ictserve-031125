@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Component: Portal Notification Center
  * Description: WCAG 2.2 AA compliant full notification center with filters & pagination
