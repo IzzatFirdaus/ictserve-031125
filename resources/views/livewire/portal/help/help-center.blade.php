@@ -85,7 +85,7 @@
                             hover:shadow-lg dark:hover:shadow-gray-900/50 transition-shadow duration-200">
                     <!-- Icon -->
                     <div class="flex items-center gap-4 mb-4">
-                        <div class="shrink-0 w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg
+                        <div class="shrink-0 w-12 h-12 bg-primary-50 dark:bg-primary-900/30 rounded-lg
                                     flex items-center justify-center">
                             @if($article['icon'] === 'dashboard')
                                 <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -14,31 +14,31 @@
         </div>
 
         {{-- Active Tokens --}}
-        <div class="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
-            <div class="text-sm font-medium text-green-600 dark:text-green-400">
+        <div class="rounded-lg bg-success-50 p-4 dark:bg-success-900/20">
+            <div class="text-sm font-medium text-success-600 dark:text-success-400">
                 {{ __('Active Tokens') }}
             </div>
-            <div class="mt-1 text-2xl font-semibold text-green-700 dark:text-green-300">
+            <div class="mt-1 text-2xl font-semibold text-success-700 dark:text-success-300">
                 {{ $activeTokens }}
             </div>
         </div>
 
         {{-- Expired Tokens --}}
-        <div class="rounded-lg bg-red-50 p-4 dark:bg-red-900/20">
-            <div class="text-sm font-medium text-red-600 dark:text-red-400">
+        <div class="rounded-lg bg-danger-50 p-4 dark:bg-danger-900/20">
+            <div class="text-sm font-medium text-danger-600 dark:text-danger-400">
                 {{ __('Expired Tokens') }}
             </div>
-            <div class="mt-1 text-2xl font-semibold text-red-700 dark:text-red-300">
+            <div class="mt-1 text-2xl font-semibold text-danger-700 dark:text-danger-300">
                 {{ $expiredTokens }}
             </div>
         </div>
 
         {{-- Expiring Soon --}}
-        <div class="rounded-lg bg-yellow-50 p-4 dark:bg-yellow-900/20">
-            <div class="text-sm font-medium text-yellow-600 dark:text-yellow-400">
+        <div class="rounded-lg bg-warning-50 p-4 dark:bg-warning-900/20">
+            <div class="text-sm font-medium text-warning-600 dark:text-warning-400">
                 {{ __('Expiring Soon (7 days)') }}
             </div>
-            <div class="mt-1 text-2xl font-semibold text-yellow-700 dark:text-yellow-300">
+            <div class="mt-1 text-2xl font-semibold text-warning-700 dark:text-warning-300">
                 {{ $expiringSoon }}
             </div>
         </div>

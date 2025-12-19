@@ -138,7 +138,7 @@
 
                     {{-- Error Message --}}
                     @if ($notFound)
-                        <div class="mt-6 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 p-4"
+                        <div class="mt-6 rounded-xl bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700 p-4"
                             role="alert" aria-live="polite">
                             <div class="flex">
                                 <div class="shrink-0">
@@ -178,7 +178,7 @@
                                                 </span>
                                             @else
                                                 <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200">
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-200">
                                                     <x-heroicon-o-clipboard-document-list class="w-3 h-3 mr-1" />
                                                     {{ __('status.type_loan') }}
                                                 </span>

@@ -58,8 +58,8 @@
                         {{ __('admin.pulse_queues_description') }}
                     </p>
                 </div>
-                <div class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
-                    <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="p-3 bg-warning-100 dark:bg-warning-900/30 rounded-lg">
+                    <svg class="w-6 h-6 text-warning-600 dark:text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </div>
@@ -84,8 +84,8 @@
                         {{ __('admin.pulse_cache_description') }}
                     </p>
                 </div>
-                <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="p-3 bg-success-100 dark:bg-success-900/30 rounded-lg">
+                    <svg class="w-6 h-6 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
                     </svg>
                 </div>
@@ -110,8 +110,8 @@
                         {{ __('admin.pulse_slow_queries_description') }}
                     </p>
                 </div>
-                <div class="p-3 bg-red-100 dark:bg-red-900/30 rounded-lg">
-                    <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="p-3 bg-danger-100 dark:bg-danger-900/30 rounded-lg">
+                    <svg class="w-6 h-6 text-danger-600 dark:text-danger-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
@@ -136,8 +136,8 @@
                         {{ __('admin.pulse_slow_requests_description') }}
                     </p>
                 </div>
-                <div class="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-                    <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="p-3 bg-warning-100 dark:bg-warning-900/30 rounded-lg">
+                    <svg class="w-6 h-6 text-warning-600 dark:text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
@@ -162,8 +162,8 @@
                         {{ __('admin.pulse_exceptions_description') }}
                     </p>
                 </div>
-                <div class="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="p-3 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg">
+                    <svg class="w-6 h-6 text-secondary-600 dark:text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                 </div>

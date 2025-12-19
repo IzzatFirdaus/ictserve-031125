@@ -53,7 +53,7 @@
                     <tr>
                         <td class="px-4 py-4 text-sm text-slate-100">
                             <div class="font-medium">
-                                <a href="{{ route('loan.authenticated.show', $application) }}" class="text-blue-400 hover:text-blue-300">
+                                <a href="{{ route('loan.authenticated.show', $application) }}" class="text-primary-400 hover:text-primary-300">
                                     {{ $application->application_number }}
                                 </a>
                             </div>
@@ -67,16 +67,16 @@
                         <td class="px-4 py-4 text-sm text-slate-100">
                             @php
                                 $statusColor = match ($application->status->color()) {
-                                    'green' => 'bg-emerald-900/30 text-emerald-400 border border-emerald-800',
-                                    'blue' => 'bg-blue-900/30 text-blue-400 border border-blue-800',
-                                    'yellow' => 'bg-amber-900/30 text-amber-400 border border-amber-800',
-                                    'orange' => 'bg-orange-900/30 text-orange-400 border border-orange-800',
-                                    'red' => 'bg-rose-900/30 text-rose-400 border border-rose-800',
-                                    'purple' => 'bg-purple-900/30 text-purple-400 border border-purple-800',
-                                    'teal' => 'bg-teal-900/30 text-teal-400 border border-teal-800',
-                                    'amber' => 'bg-amber-900/30 text-amber-400 border border-amber-800',
-                                    'lime' => 'bg-lime-900/30 text-lime-400 border border-lime-800',
-                                    'emerald' => 'bg-emerald-900/30 text-emerald-400 border border-emerald-800',
+                                    'green' => 'bg-success-900/30 text-success-400 border border-success-800',
+                                    'blue' => 'bg-primary-900/30 text-primary-400 border border-primary-800',
+                                    'yellow' => 'bg-warning-900/30 text-warning-400 border border-warning-800',
+                                    'orange' => 'bg-warning-900/30 text-warning-400 border border-warning-800',
+                                    'red' => 'bg-danger-900/30 text-danger-400 border border-danger-800',
+                                    'purple' => 'bg-primary-900/30 text-primary-400 border border-primary-800',
+                                    'teal' => 'bg-success-900/30 text-success-400 border border-success-800',
+                                    'amber' => 'bg-warning-900/30 text-warning-400 border border-warning-800',
+                                    'lime' => 'bg-success-900/30 text-success-400 border border-success-800',
+                                    'emerald' => 'bg-success-900/30 text-success-400 border border-success-800',
                                     'gray' => 'bg-slate-800 text-slate-300 border border-slate-700',
                                     default => 'bg-slate-800 text-slate-300 border border-slate-700',
                                 };
@@ -102,7 +102,7 @@
                                     {{ __('Tuntut Permohonan') }}
                                 </x-ui.button>
                             @else
-                                <a href="{{ route('loan.authenticated.show', $application) }}" class="text-blue-400 hover:text-blue-300">
+                                <a href="{{ route('loan.authenticated.show', $application) }}" class="text-primary-400 hover:text-primary-300">
                                     {{ __('Lihat Butiran') }}
                                 </a>
                             @endif

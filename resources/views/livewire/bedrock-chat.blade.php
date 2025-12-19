@@ -1,6 +1,6 @@
-<div class="min-h-screen flex flex-col bg-white dark:bg-gray-900 theme-transition">
+<div class="min-h-screen flex flex-col bg-white dark:bg-slate-900 theme-transition">
     <!-- Header -->
-    <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-primary-500/20 shadow-lg"
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-primary-500/20 shadow-lg"
         role="banner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex items-center justify-between">
@@ -36,7 +36,7 @@
                         <livewire:components.theme-toggle-unified />
                     </div>
                     <a href="{{ route('welcome') }}"
-                        class="text-sm text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg">
+                        class="text-sm text-slate-600 dark:text-slate-300 hover:text-primary-500 transition-colors focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg">
                         {{ __('footer.home') }}
                     </a>
                 </div>
@@ -48,7 +48,7 @@
     <div class="flex-1 flex">
         <!-- Sidebar -->
         <div
-            class="{{ $showSidebar ? 'w-64' : 'w-0' }} transition-all duration-300 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-primary-900/30 overflow-hidden">
+            class="{{ $showSidebar ? 'w-64' : 'w-0' }} transition-all duration-300 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-primary-900/30 overflow-hidden">
             <div class="p-4">
                 <button wire:click="newConversation"
                     class="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg mb-4 font-semibold shadow-lg shadow-primary-500/20 min-h-11 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:outline-none"
@@ -58,9 +58,9 @@
                 <div class="space-y-2">
                     @foreach ($conversations as $conv)
                         <div
-                            class="group flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+                            class="group flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
                             <div wire:click="loadConversation({{ $conv->id }})"
-                                class="flex-1 truncate text-sm text-gray-300 {{ $conversationId === $conv->id ? 'font-bold text-primary-400' : '' }}">
+                                class="flex-1 truncate text-sm text-slate-300 {{ $conversationId === $conv->id ? 'font-bold text-primary-400' : '' }}">
                                 {{ $conv->title }}
                             </div>
                             <button wire:click="deleteConversation({{ $conv->id }})"
@@ -76,23 +76,23 @@
 
         <div class="flex-1 p-6">
             <div
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl shadow-primary-500/10 p-6 border border-gray-200 dark:border-primary-900/30">
+                class="bg-white dark:bg-slate-800 rounded-lg shadow-2xl shadow-primary-500/10 p-6 border border-slate-200 dark:border-primary-900/30">
                 <div class="flex items-center justify-between mb-6">
                     <button wire:click="$toggle('showSidebar')"
-                        class="p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:outline-none">
+                        class="p-2 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg transition-colors text-slate-500 dark:text-slate-200 min-h-11 min-w-11 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:outline-none">
                         <x-heroicon-o-bars-3 class="w-6 h-6" />
                     </button>
                     <div class="text-center">
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white" aria-label="Sembang AWS Bedrock">
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white" aria-label="Sembang AWS Bedrock">
                             Sembang <span class="text-primary-500">AWS Bedrock</span>
                         </h2>
                         @if ($context === 'faq')
                             <div class="flex items-center justify-center gap-2 mt-1">
                                 <a href="{{ route('faq') }}"
-                                    class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-500 transition-colors focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
+                                    class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary-500 transition-colors focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                                     {{ __('Soalan Lazim') }}
                                 </a>
-                                <x-heroicon-s-chevron-right class="w-3 h-3 text-gray-400" />
+                                <x-heroicon-s-chevron-right class="w-3 h-3 text-slate-400" />
                                 <span class="text-sm text-primary-500 font-medium">{{ __('Pembantu AI') }}</span>
                             </div>
                         @endif
@@ -103,11 +103,11 @@
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <div>
                         <label for="model-select"
-                            class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                            class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
                             {{ __('Model AI') }}
                         </label>
                         <select id="model-select" wire:model.live.debounce.150ms="model"
-                            class="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-primary-900/30 rounded-lg text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 shadow-sm min-h-11"
+                            class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-primary-900/30 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 shadow-sm min-h-11"
                             aria-describedby="model-help" required>
                             <option value="" disabled>{{ __('Pilih Model') }}</option>
 
@@ -131,25 +131,25 @@
                                 <option value="titan_text_express">Titan Text Express (Ekspres)</option>
                             </optgroup>
                         </select>
-                        <p id="model-help" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        <p id="model-help" class="mt-1 text-xs text-slate-500 dark:text-slate-400">
                             {{ __('Pilih model AI untuk perbualan anda') }}
                         </p>
                     </div>
                     <div>
                         <fieldset>
-                            <legend class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                            <legend class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
                                 {{ __('Pilihan Tambahan') }}
                             </legend>
                             <label for="use-internet"
-                                class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-primary-900/30 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors min-h-11">
+                                class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-primary-900/30 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors min-h-11">
                                 <input type="checkbox" id="use-internet" wire:model="useInternet"
-                                    class="rounded bg-white dark:bg-gray-800 border-gray-200 dark:border-primary-900/30 text-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                                    class="rounded bg-white dark:bg-slate-800 border-slate-200 dark:border-primary-900/30 text-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                                     aria-describedby="internet-help">
-                                <x-heroicon-o-globe-alt class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                <x-heroicon-o-globe-alt class="w-4 h-4 text-slate-500 dark:text-slate-400"
                                     aria-hidden="true" />
-                                <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Cari web') }}</span>
+                                <span class="text-sm text-slate-700 dark:text-slate-300">{{ __('Cari web') }}</span>
                             </label>
-                            <p id="internet-help" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            <p id="internet-help" class="mt-1 text-xs text-slate-500 dark:text-slate-400">
                                 {{ __('Gunakan carian web untuk maklumat terkini') }}
                             </p>
                         </fieldset>
@@ -168,7 +168,7 @@
                         <div class="grid gap-2">
                             @foreach ($faqSuggestions as $suggestion)
                                 <button wire:click="useFaqSuggestion('{{ $suggestion }}')"
-                                    class="text-left p-3 text-sm bg-white dark:bg-gray-800 border border-primary-200 dark:border-primary-700 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                                    class="text-left p-3 text-sm bg-white dark:bg-slate-800 border border-primary-200 dark:border-primary-700 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                     {{ $suggestion }}
                                 </button>
                             @endforeach
@@ -177,17 +177,17 @@
                 @endif
 
                 <div id="messages-list" role="log" aria-live="polite" aria-relevant="additions"
-                    class="mb-6 h-96 overflow-y-auto border border-gray-200 dark:border-primary-900/30 rounded-lg p-4 bg-white dark:bg-gray-900/50 backdrop-blur-sm">
+                    class="mb-6 h-96 overflow-y-auto border border-slate-200 dark:border-primary-900/30 rounded-lg p-4 bg-white dark:bg-slate-900/50 backdrop-blur-sm">
                     @forelse($messages as $message)
                         <div class="mb-4 flex {{ $message['role'] === 'user' ? 'justify-end' : 'justify-start' }}"
                             role="article" aria-label="{{ $message['role'] }} message">
                             <div
-                                class="max-w-[80%] p-4 rounded-lg shadow-lg {{ $message['role'] === 'user' ? 'bg-primary-600 text-white' : 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-primary-900/30 text-gray-900 dark:text-gray-100' }}">
+                                class="max-w-[80%] p-4 rounded-lg shadow-lg {{ $message['role'] === 'user' ? 'bg-primary-600 text-white' : 'bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-primary-900/30 text-slate-900 dark:text-slate-100' }}">
                                 @if ($message['role'] === 'user')
                                     <p class="whitespace-pre-wrap">{{ $message['content'] }}</p>
                                 @else
                                     <div
-                                        class="prose prose-sm prose-invert max-w-none prose-headings:text-primary-400 prose-a:text-primary-400 prose-code:text-primary-300 prose-pre:bg-gray-900 prose-pre:border prose-pre:border-primary-900/30">
+                                        class="prose prose-sm prose-invert max-w-none prose-headings:text-primary-400 prose-a:text-primary-400 prose-code:text-primary-300 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-primary-900/30">
                                         @php
                                             $converter = new \League\CommonMark\CommonMarkConverter();
                                             echo $converter->convert($message['content'])->getContent();
@@ -205,7 +205,7 @@
                             </div>
                         </div>
                     @empty
-                        <div class="flex flex-col items-center justify-center h-full text-gray-500">
+                        <div class="flex flex-col items-center justify-center h-full text-slate-500">
                             <x-heroicon-o-chat-bubble-left-ellipsis class="w-16 h-16 mb-4 text-primary-500/30" />
                             <p class="text-center">
                                 @if ($context === 'faq')
@@ -236,9 +236,9 @@
                         <input type="text" id="prompt" wire:model="prompt" wire:keydown.enter="send"
                             placeholder="{{ 'Taip mesej anda...' }}"
                             @class([
-                                'flex-1 px-4 py-3 bg-white dark:bg-gray-900 dark:border-primary-900/30 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:border-transparent',
+                                'flex-1 px-4 py-3 bg-white dark:bg-slate-900 dark:border-primary-900/30 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:border-transparent',
                                 'border-danger-500' => $errors->has('prompt'),
-                                'border-gray-200' => ! $errors->has('prompt'),
+                                'border-slate-200' => ! $errors->has('prompt'),
                             ])>
                         <button type="submit"
                             class="px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold shadow-lg shadow-primary-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
@@ -260,7 +260,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-primary-500/20 mt-auto"
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-primary-500/20 mt-auto"
         role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
@@ -270,11 +270,11 @@
                     <img src="{{ asset('images/bpm-logo.png') }}" alt="{{ __('common.bpm_logo') }}"
                         class="h-8 w-auto">
                 </div>
-                <p class="text-gray-400 text-sm text-center">
+                <p class="text-slate-400 text-sm text-center">
                     &copy; {{ date('Y') }} {{ __('footer.ministry_name') }}.
                     {{ __('footer.all_rights_reserved') }}.
                 </p>
-                <div class="flex items-center space-x-4 text-sm text-gray-400">
+                <div class="flex items-center space-x-4 text-sm text-slate-400">
                     <span>{{ __('footer.wcag_compliant') }}</span>
                     <span aria-hidden="true">|</span>
                     <span>Dikuasakan oleh AWS Bedrock</span>

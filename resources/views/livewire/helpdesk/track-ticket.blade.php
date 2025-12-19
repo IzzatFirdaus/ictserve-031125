@@ -5,10 +5,10 @@
 --}}
 @php
     $sectionCardClasses =
-        'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
+        'rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-card';
 @endphp
 
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-8">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <x-navigation.skip-links />
 
@@ -19,16 +19,16 @@
                     <p class="text-xs uppercase tracking-wide text-primary-600 dark:text-primary-400 font-semibold">
                         {{ __('ICT Support') }}
                     </p>
-                    <h1 id="form-heading" class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                    <h1 id="form-heading" class="text-2xl font-heading font-bold text-slate-900 dark:text-white">
                         {{ __('Jejak Status Tiket ICTServe') }}
                     </h1>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                    <p class="text-sm text-slate-600 dark:text-slate-400">
                         {{ __('Masukkan nombor tiket dan emel untuk melihat status terkini permohonan anda.') }}
                     </p>
                 </div>
                 <div class="flex items-start gap-3">
                     <span
-                        class="inline-flex items-center rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-1 text-xs font-mono text-gray-600 dark:text-gray-400">
+                        class="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs font-mono text-slate-600 dark:text-slate-400">
                         PK.(S).MOTAC.07.(L1)
                     </span>
                 </div>
@@ -50,9 +50,9 @@
 
                 <div class="flex items-center justify-between">
                     @if ($showResults)
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                        <p class="text-sm text-slate-500 dark:text-slate-400">
                             {{ __('Maklumat dikemaskini pada') }}
-                            <span class="font-medium text-gray-700 dark:text-gray-300">
+                            <span class="font-medium text-slate-700 dark:text-slate-300">
                                 {{ now()->translatedFormat('d M Y, h:i A') }}
                             </span>
                         </p>
@@ -76,10 +76,10 @@
         @if ($showResults && $ticket)
             <div class="{{ $sectionCardClasses }} space-y-6" aria-live="polite">
                 <header>
-                    <h2 class="text-2xl font-heading font-semibold text-gray-900 dark:text-white"></h2>
+                    <h2 class="text-2xl font-heading font-semibold text-slate-900 dark:text-white"></h2>
                     {{ $ticket->subject }}
                     </h2>
-                    <p class="mt-1 text-gray-600 dark:text-gray-400">
+                    <p class="mt-1 text-slate-600 dark:text-slate-400">
                         {{ __('Status semasa:') }}
                         <span
                             class="inline-flex items-center rounded-full bg-primary-100 dark:bg-primary-900/30 px-3 py-1 text-sm font-medium text-primary-700 dark:text-primary-300">
@@ -90,29 +90,29 @@
 
                 <dl class="grid gap-4 sm:grid-cols-2">
                     <div>
-                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Nombor Tiket') }}</dt>
-                        <dd class="mt-1 text-gray-900 dark:text-white">{{ $ticket->ticket_number }}</dd>
+                        <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Nombor Tiket') }}</dt>
+                        <dd class="mt-1 text-slate-900 dark:text-white">{{ $ticket->ticket_number }}</dd>
                     </div>
                     <div>
-                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Kategori') }}</dt>
-                        <dd class="mt-1 text-gray-900 dark:text-white">
+                        <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Kategori') }}</dt>
+                        <dd class="mt-1 text-slate-900 dark:text-white">
                             {{ $ticket->category?->name ?? __('Tidak dinyatakan') }}</dd>
                     </div>
                     <div>
-                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Dicipta') }}</dt>
-                        <dd class="mt-1 text-gray-900 dark:text-white">
+                        <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Dicipta') }}</dt>
+                        <dd class="mt-1 text-slate-900 dark:text-white">
                             {{ $ticket->created_at?->translatedFormat('d M Y, h:i A') }}</dd>
                     </div>
                     <div>
-                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Bahagian Pemohon') }}
+                        <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Bahagian Pemohon') }}
                         </dt>
-                        <dd class="mt-1 text-gray-900 dark:text-white">
+                        <dd class="mt-1 text-slate-900 dark:text-white">
                             {{ $ticket->division?->name ?? ($ticket->guest_division ?? __('Tidak dinyatakan')) }}</dd>
                     </div>
                 </dl>
 
                 <section aria-label="{{ __('Garis Masa Tiket') }}">
-                    <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-white mb-4">
+                    <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-white mb-4">
                         {{ __('Perjalanan Permohonan') }}
                     </h3>
 
@@ -120,11 +120,11 @@
                         @forelse ($timeline as $event)
                             <li>
                                 <span
-                                    class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full border border-primary-300 dark:border-primary-700 bg-white dark:bg-gray-800">
+                                    class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full border border-primary-300 dark:border-primary-700 bg-white dark:bg-slate-800">
                                     <span @class([
                                         'h-3 w-3 rounded-full',
                                         'bg-primary-600' => $event['completed'],
-                                        'bg-white dark:bg-gray-800 border border-primary-300 dark:border-primary-700' => !$event[
+                                        'bg-white dark:bg-slate-800 border border-primary-300 dark:border-primary-700' => !$event[
                                             'completed'
                                         ],
                                     ])></span>
@@ -134,12 +134,12 @@
                                     'rounded-lg border p-4 transition-colors duration-200',
                                     'border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/30 shadow-card' =>
                                         $event['current'],
-                                    'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800' => !$event[
+                                    'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800' => !$event[
                                         'current'
                                     ],
                                 ])>
                                     <h4
-                                        class="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                        class="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
                                         {{ $event['label'] }}
                                         @if ($event['current'])
                                             <span
@@ -149,20 +149,20 @@
                                         @endif
                                     </h4>
 
-                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                                         {{ $event['description'] }}
                                     </p>
 
                                     @if ($event['time'])
                                         <p
-                                            class="mt-3 text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                                            class="mt-3 text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
                                             {{ $event['time'] }}
                                         </p>
                                     @endif
                                 </div>
                             </li>
                         @empty
-                            <li class="text-sm text-gray-600 dark:text-gray-400">
+                            <li class="text-sm text-slate-600 dark:text-slate-400">
                                 {{ __('Tiada maklumat garis masa tersedia pada masa ini.') }}
                             </li>
                         @endforelse
@@ -170,11 +170,11 @@
                 </section>
 
                 <section aria-label="{{ __('Butiran Aduan') }}" class="space-y-3">
-                    <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
+                    <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-white">
                         {{ __('Butiran Aduan') }}
                     </h3>
 
-                    <div class="rounded-lg bg-gray-100 dark:bg-gray-700 p-4 text-gray-700 dark:text-gray-300">
+                    <div class="rounded-lg bg-slate-100 dark:bg-slate-700 p-4 text-slate-700 dark:text-slate-300">
                         {{ $ticket->description }}
                     </div>
 

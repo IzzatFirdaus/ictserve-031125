@@ -161,46 +161,46 @@
             </x-slot>
 
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <x-filament::section class="bg-blue-50 dark:bg-blue-500/10">
+                <x-filament::section class="bg-primary-50 dark:bg-primary-500/10">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Average Hours') }}</p>
-                        <p class="mt-2 text-3xl font-semibold text-blue-600 dark:text-blue-400">
+                        <p class="mt-2 text-3xl font-semibold text-primary-600 dark:text-primary-400">
                             {{ $reportData['resolution_times']['average_hours'] }}h
                         </p>
                     </div>
                 </x-filament::section>
 
-                <x-filament::section class="bg-green-50 dark:bg-green-500/10">
+                <x-filament::section class="bg-success-50 dark:bg-success-500/10">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Median Hours') }}</p>
-                        <p class="mt-2 text-3xl font-semibold text-green-600 dark:text-green-400">
+                        <p class="mt-2 text-3xl font-semibold text-success-600 dark:text-success-400">
                             {{ $reportData['resolution_times']['median_hours'] }}h
                         </p>
                     </div>
                 </x-filament::section>
 
-                <x-filament::section class="bg-yellow-50 dark:bg-yellow-500/10">
+                <x-filament::section class="bg-warning-50 dark:bg-warning-500/10">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Minimum Hours') }}</p>
-                        <p class="mt-2 text-3xl font-semibold text-yellow-600 dark:text-yellow-400">
+                        <p class="mt-2 text-3xl font-semibold text-warning-600 dark:text-warning-400">
                             {{ $reportData['resolution_times']['min_hours'] }}h
                         </p>
                     </div>
                 </x-filament::section>
 
-                <x-filament::section class="bg-red-50 dark:bg-red-500/10">
+                <x-filament::section class="bg-danger-50 dark:bg-danger-500/10">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Maximum Hours') }}</p>
-                        <p class="mt-2 text-3xl font-semibold text-red-600 dark:text-red-400">
+                        <p class="mt-2 text-3xl font-semibold text-danger-600 dark:text-danger-400">
                             {{ $reportData['resolution_times']['max_hours'] }}h
                         </p>
                     </div>
                 </x-filament::section>
 
-                <x-filament::section class="bg-purple-50 dark:bg-purple-500/10">
+                <x-filament::section class="bg-secondary-50 dark:bg-secondary-500/10">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Total Resolved') }}</p>
-                        <p class="mt-2 text-3xl font-semibold text-purple-600 dark:text-purple-400">
+                        <p class="mt-2 text-3xl font-semibold text-secondary-600 dark:text-secondary-400">
                             {{ $reportData['resolution_times']['total_resolved'] }}
                         </p>
                     </div>
@@ -233,37 +233,37 @@
                     </div>
                 </x-filament::section>
 
-                <x-filament::section class="bg-green-50 dark:bg-green-500/10">
+                <x-filament::section class="bg-success-50 dark:bg-success-500/10">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Met SLA') }}</p>
-                        <p class="mt-2 text-3xl font-semibold text-green-600 dark:text-green-400">
+                        <p class="mt-2 text-3xl font-semibold text-success-600 dark:text-success-400">
                             {{ $reportData['sla_compliance']['met_sla'] }}
                         </p>
                     </div>
                 </x-filament::section>
 
-                <x-filament::section class="bg-red-50 dark:bg-red-500/10">
+                <x-filament::section class="bg-danger-50 dark:bg-danger-500/10">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Breached') }}</p>
-                        <p class="mt-2 text-3xl font-semibold text-red-600 dark:text-red-400">
+                        <p class="mt-2 text-3xl font-semibold text-danger-600 dark:text-danger-400">
                             {{ $reportData['sla_compliance']['breached_sla'] }}
                         </p>
                     </div>
                 </x-filament::section>
 
-                <x-filament::section class="bg-yellow-50 dark:bg-yellow-500/10">
+                <x-filament::section class="bg-warning-50 dark:bg-warning-500/10">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('At Risk') }}</p>
-                        <p class="mt-2 text-3xl font-semibold text-yellow-600 dark:text-yellow-400">
+                        <p class="mt-2 text-3xl font-semibold text-warning-600 dark:text-warning-400">
                             {{ $reportData['sla_compliance']['at_risk'] }}
                         </p>
                     </div>
                 </x-filament::section>
 
-                <x-filament::section class="bg-blue-50 dark:bg-blue-500/10">
+                <x-filament::section class="bg-primary-50 dark:bg-primary-500/10">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Compliance Rate') }}</p>
-                        <p class="mt-2 text-3xl font-semibold text-blue-600 dark:text-blue-400">
+                        <p class="mt-2 text-3xl font-semibold text-primary-600 dark:text-primary-400">
                             {{ $reportData['sla_compliance']['compliance_rate'] }}%
                         </p>
                     </div>

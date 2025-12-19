@@ -83,12 +83,12 @@
                             </span>
                             @if ($n->read_at)
                                 <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success-100 dark:bg-success-900/50 text-success-800 dark:text-success-200">
+                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success-50 dark:bg-success-900/50 text-success-800 dark:text-success-200">
                                     {{ __('Dibaca') }}
                                 </span>
                             @else
                                 <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-warning-100 dark:bg-warning-900/50 text-warning-800 dark:text-warning-200">
+                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-warning-50 dark:bg-warning-900/50 text-warning-800 dark:text-warning-200">
                                     {{ __('Belum Dibaca') }}
                                 </span>
                             @endif

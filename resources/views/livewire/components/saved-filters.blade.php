@@ -9,17 +9,17 @@
     {{-- Quick Apply Buttons --}}
     @if (count($savedFilters) > 0)
         <div class="flex flex-wrap items-center gap-2 mb-4">
-            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">
+            <span class="text-sm font-medium text-slate-600 dark:text-slate-400">
                 {{ __('Saved Filters') }}:
             </span>
 
             @foreach ($savedFilters as $filter)
                 <button type="button" wire:click="applyFilter('{{ $filter['id'] }}')"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg
                                transition-colors duration-150
                                {{ $appliedFilterId === $filter['id']
                                    ? 'bg-primary-100 text-primary-700 border border-primary-300 dark:bg-primary-900/50 dark:text-primary-300 dark:border-primary-700'
-                                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600' }}
+                                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600' }}
                                focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
                     title="{{ $filter['description'] ?? $filter['name'] }}"
                     aria-pressed="{{ $appliedFilterId === $filter['id'] ? 'true' : 'false' }}">
@@ -33,7 +33,7 @@
                     {{-- Delete button --}}
                     <button type="button" wire:click.stop="deleteFilter('{{ $filter['id'] }}')"
                         wire:confirm="{{ __('Are you sure you want to delete this saved filter?') }}"
-                        class="ml-1 p-0.5 rounded hover:bg-gray-300 dark:hover:bg-gray-500
+                        class="ml-1 p-0.5 rounded hover:bg-slate-300 dark:hover:bg-slate-500
                                    focus:outline-none focus:ring-1 focus:ring-primary-500"
                         aria-label="{{ __('Delete filter') }}: {{ $filter['name'] }}">
                         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
@@ -47,9 +47,9 @@
             {{-- Clear Filter Button --}}
             @if ($appliedFilterId)
                 <button type="button" wire:click="clearFilter"
-                    class="inline-flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:text-gray-700
-                               dark:text-gray-400 dark:hover:text-gray-200
-                               focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
+                    class="inline-flex items-center gap-1 px-2 py-1 text-xs text-slate-500 hover:text-slate-700
+                               dark:text-slate-400 dark:hover:text-slate-200
+                               focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded-lg"
                     aria-label="{{ __('Clear applied filter') }}">
                     <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
                         aria-hidden="true">
@@ -66,9 +66,9 @@
         @if ($this->hasActiveFilters())
             <button type="button" wire:click="openSaveModal"
                 class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium
-                           text-gray-700 bg-white border border-gray-300 rounded-lg
-                           hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300
-                           dark:border-gray-600 dark:hover:bg-gray-700
+                           text-slate-700 bg-white border border-slate-300 rounded-lg
+                           hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300
+                           dark:border-slate-600 dark:hover:bg-slate-700
                            focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1
                            transition-colors duration-150">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
@@ -87,7 +87,7 @@
             role="dialog" x-data="{ show: true }" x-show="show" x-on:keydown.escape.window="$wire.closeSaveModal()">
 
             {{-- Backdrop --}}
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-80
+            <div class="fixed inset-0 bg-slate-500 bg-opacity-75 dark:bg-slate-900 dark:bg-opacity-80
                         transition-opacity"
                 x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
@@ -97,7 +97,7 @@
             {{-- Modal Panel --}}
             <div class="flex min-h-full items-center justify-center p-4">
                 <div class="relative w-full max-w-md transform overflow-hidden rounded-lg
-                            bg-white dark:bg-gray-800 shadow-xl
+                            bg-white dark:bg-slate-800 shadow-xl
                             transition-all"
                     x-show="show" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -108,13 +108,13 @@
                     x-trap.noscroll="show">
 
                     {{-- Header --}}
-                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                        <h3 id="save-filter-modal-title" class="text-lg font-semibold text-gray-900 dark:text-white">
+                    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+                        <h3 id="save-filter-modal-title" class="text-lg font-semibold text-slate-900 dark:text-white">
                             {{ __('Save Filter') }}
                         </h3>
                         <button type="button" wire:click="closeSaveModal"
-                            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600
-                                       dark:hover:text-gray-300
+                            class="absolute top-4 right-4 text-slate-400 hover:text-slate-600
+                                       dark:hover:text-slate-300
                                        focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
                             aria-label="{{ __('Close') }}">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -129,15 +129,15 @@
                         {{-- Filter Name --}}
                         <div>
                             <label for="filter-name"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                                 {{ __('Filter Name') }}
                                 <span class="text-danger-500" aria-hidden="true">*</span>
                             </label>
                             <input type="text" id="filter-name" wire:model="newFilterName"
                                 class="w-full px-3 py-2 border rounded-lg
-                                          text-gray-900 dark:text-white
-                                          bg-white dark:bg-gray-700
-                                          border-gray-300 dark:border-gray-600
+                                          text-slate-900 dark:text-white
+                                          bg-white dark:bg-slate-700
+                                          border-slate-300 dark:border-slate-600
                                           focus:ring-2 focus:ring-primary-500 focus:border-primary-500
                                           @error('newFilterName') border-danger-500 @enderror"
                                 placeholder="{{ __('e.g., High Priority Open Tickets') }}" required
@@ -154,22 +154,22 @@
                         {{-- Filter Description --}}
                         <div>
                             <label for="filter-description"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                                 {{ __('Description') }}
-                                <span class="text-gray-400 text-xs">({{ __('optional') }})</span>
+                                <span class="text-slate-400 text-xs">({{ __('optional') }})</span>
                             </label>
                             <textarea id="filter-description" wire:model="newFilterDescription" rows="2"
                                 class="w-full px-3 py-2 border rounded-lg
-                                             text-gray-900 dark:text-white
-                                             bg-white dark:bg-gray-700
-                                             border-gray-300 dark:border-gray-600
+                                             text-slate-900 dark:text-white
+                                             bg-white dark:bg-slate-700
+                                             border-slate-300 dark:border-slate-600
                                              focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                                 placeholder="{{ __('Brief description of what this filter shows') }}"></textarea>
                         </div>
 
                         {{-- Current Filters Preview --}}
-                        <div class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+                        <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
                                 {{ __('Filters to be saved') }}:
                             </p>
                             <div class="flex flex-wrap gap-1">
@@ -185,7 +185,7 @@
                                         </span>
                                     @endif
                                 @empty
-                                    <span class="text-xs text-gray-400">{{ __('No filters selected') }}</span>
+                                    <span class="text-xs text-slate-400">{{ __('No filters selected') }}</span>
                                 @endforelse
                             </div>
                         </div>
@@ -193,10 +193,10 @@
                         {{-- Actions --}}
                         <div class="flex justify-end gap-3 pt-2">
                             <button type="button" wire:click="closeSaveModal"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white
-                                           border border-gray-300 rounded-lg hover:bg-gray-50
-                                           dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600
-                                           dark:hover:bg-gray-600
+                                class="px-4 py-2 text-sm font-medium text-slate-700 bg-white
+                                           border border-slate-300 rounded-lg hover:bg-slate-50
+                                           dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600
+                                           dark:hover:bg-slate-600
                                            focus:outline-none focus:ring-2 focus:ring-primary-500">
                                 {{ __('Cancel') }}
                             </button>

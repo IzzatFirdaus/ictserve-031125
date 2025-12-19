@@ -164,7 +164,83 @@ This document provides a detailed walkthrough of the form styling updates implem
 </button>
 ```
 
-### Phase 3: Filament Admin Pages 🔄 In Progress (11/26 files)
+### Phase 3: Global View Compliance ✅
+
+#### High Priority: Layouts & Errors
+**Status**: Complete
+
+- [x] `resources/views/errors/404.blade.php` - Navigation buttons `rounded-md` → `rounded-lg`
+- [x] `resources/views/layouts/` - Verified: No legacy classes found
+
+#### High Priority: Pages & Portal
+**Status**: Complete
+
+- [x] `resources/views/pages/` - Verified: No legacy classes found
+- [x] `resources/views/portal/` - Verified: No legacy classes found
+
+#### Medium Priority: Emails & Legacy
+**Status**: Complete
+
+- [x] `resources/views/emails/layout-branded.blade.php` - Radius upgraded to 8px (inline styles for email client support)
+- [x] `resources/views/pdf/` - Verified compliant
+- [x] `resources/views/staff/` - Verified compliant
+- [x] `resources/views/loan/` & `loans/` - Verified compliant
+
+### Phase 4: Filament Admin (25+ files) ✅
+
+#### Filament Pages (25+/36 total)
+**Status**: Major progress complete
+
+**Major Updates**:
+- [x] `helpdesk-reports.blade.php` - Multiple color replacements
+- [x] `superuser-configuration.blade.php` - Semantic tokens
+- [x] `unified-audit-log.blade.php` - Color token migration
+- [x] `data-visualization.blade.php` - Chart colors updated
+- [x] `report-templates.blade.php` - `rounded-lg`, `min-h-11` enforced
+- [x] `approval-matrix-configuration.blade.php` - Semantic tokens
+- [x] `workflow-automation-configuration.blade.php` - Semantic tokens
+- [x] `alert-configuration.blade.php` - Semantic tokens
+- [x] `data-export-center.blade.php` - Semantic tokens + dark mode
+- [x] `email-queue-monitoring.blade.php` - Semantic tokens
+- [x] `filter-presets.blade.php` - Resource + action buttons
+- [x] `security-monitoring.blade.php` - Status + severity badges + `min-h-11`
+- [x] `sla-threshold-management.blade.php` - Performance cards
+- [x] `two-factor-authentication.blade.php` - Status badges + warnings
+- [x] `telescope-dashboard.blade.php` - 6 category cards + info panel
+- [x] `notification-center.blade.php` - Border radius fixed
+- [x] `auth/login.blade.php` - `rounded-lg` upgrade
+- [x] `asset-availability-calendar.blade.php` - Legacy colors replaced
+
+**Cleanup & Fixes**:
+- [x] Removed duplicate `filament/filament/pages/` directory
+- [x] Fixed line-ending issues in approval matrix and workflow config
+
+#### Filament Widgets (4/4 complete)
+**Status**: Complete
+
+- [x] `horizon-health-widget.blade.php` - Error state, queue badges
+- [x] `health-check-table.blade.php` - Semantic tokens
+- [x] `critical-alerts.blade.php` - Dynamic PHP colors (conditionally compliant)
+- [x] `quick-actions.blade.php` - Dynamic PHP colors, `min-h-11`
+
+#### Filament Components (4 files)
+**Status**: Complete
+
+- [x] `2fa-qr-code.blade.php` - `rounded-lg` standardized
+- [x] `2fa-setup-instructions.blade.php` - Verified compliant
+- [x] `portal-link.blade.php` - Verified compliant
+- [x] `translation-guidelines.blade.php` - Verified compliant
+
+#### Filament Modals (1 file)
+**Status**: Complete
+
+- [x] `api-token-stats.blade.php` - Semantic tokens applied
+
+#### Filament Resources
+**Status**: Already compliant
+
+- [x] `assign-assets.blade.php` - Uses `rounded-lg`
+- [x] `record-return.blade.php` - Uses `rounded-lg`
 
 #### Admin Dashboard
 **File**: `resources/views/filament/pages/admin-dashboard.blade.php`
@@ -211,116 +287,113 @@ This document provides a detailed walkthrough of the form styling updates implem
 - Filter inputs: Standard styling
 - Export buttons: Standard button styling
 
-### Phase 4: Filament Pages (8 files) ✅
+### Phase 5: Livewire Staff & Portal Components ✅
 
-#### Alert Configuration
-**File**: `resources/views/filament/pages/alert-configuration.blade.php`
+#### Staff Components (4 files updated)
+**Status**: Complete
 
-**Changes Applied**:
+| File | Changes | Tokens Replaced |
+|------|---------|----------------|
+| `staff/approval-interface.blade.php` | 16 | `green→success`, `red→danger`, `yellow→warning` |
+| `staff/delegation-manager.blade.php` | 8 | `green→success` |
+| `staff/account-linking.blade.php` | 10 | `blue→primary`, `green→success`, `red→danger` |
+| `staff/cross-module-search.blade.php` | 3 | `blue→primary`, `green→success` |
 
-- Replaced `blue-*` with `primary-*` tokens
-- Replaced `orange-*/yellow-*` with `warning-*` tokens
-- Replaced `green-*` with `success-*` tokens
+#### Portal Components (2 files updated)
+**Status**: Complete
 
-#### Data Export Center
-**File**: `resources/views/filament/pages/data-export-center.blade.php`
+| File | Changes | Tokens Replaced |
+|------|---------|----------------|
+| `portal/internal-comments.blade.php` | 5 | `blue→primary` |
+| `portal/notification-preferences.blade.php` | 1 | `blue→primary` |
 
-**Changes Applied**:
+#### Pulse & Status Components (2 files updated)
+**Status**: Complete
 
-- Updated `blue-*` to `primary-*`
-- Updated `amber-*` to `warning-*`
-- Updated `green-*` to `success-*`
-- Added dark mode variants
+| File | Changes | Tokens Replaced |
+|------|---------|----------------|
+| `pulse/web-vitals.blade.php` | 7 | `green→success`, `yellow→warning`, `red→danger`, `blue→primary` |
+| `status/status-checker.blade.php` | 2 | `red→danger`, `green→success` |
 
-#### Email Queue Monitoring
-**File**: `resources/views/filament/pages/email-queue-monitoring.blade.php`
+### Phase 6: Helpdesk & Loans Modules ✅
 
-**Changes Applied**:
-
-- Updated `blue-*` to `primary-*` for buttons
-- Updated `red-*` to `danger-*` for alerts
-
-#### Filter Presets
-**File**: `resources/views/filament/pages/filter-presets.blade.php`
-
-**Changes Applied**:
-
-- Updated 4 resource buttons to semantic tokens
-- Updated action buttons to semantic tokens
-
-#### Security Monitoring
-**File**: `resources/views/filament/pages/security-monitoring.blade.php`
+#### Helpdesk Directory (9 files)
+**Status**: Complete
 
 **Changes Applied**:
+- Replaced all legacy `gray` scale with MyDS `slate` tokens
+- Replaced `blue→primary`, `green→success`, `red→danger`, `yellow→warning`
+- Standardized card backgrounds to `bg-white dark:bg-slate-800`
+- Ensured WCAG 2.2 AA contrast ratios
+- Updated focus rings to `focus:ring-primary-500`
 
-- Updated status indicators to semantic tokens
-- Updated severity badges to semantic tokens
+**Files Updated**:
+- [x] `dashboard.blade.php`
+- [x] `guest-ticket-form.blade.php`
+- [x] `my-tickets.blade.php`
+- [x] `notification-center.blade.php`
+- [x] `submit-ticket.blade.php`
+- [x] `ticket-details.blade.php`
+- [x] `ticket-success.blade.php`
+- [x] `track-ticket.blade.php`
 
-#### SLA Threshold Management
-**File**: `resources/views/filament/pages/sla-threshold-management.blade.php`
+#### Loans Directory (9 files)
+**Status**: Complete
 
-**Changes Applied**:
+**Files Updated**:
+- [x] `submit-application.blade.php` - Wizard step colors
+- [x] `loan-dashboard.blade.php` - Status badges
+- [x] `approval-queue.blade.php` - Approval colors
+- [x] `authenticated-dashboard.blade.php` - Stats colors
+- [x] `loan-details.blade.php` - Status display
+- [x] `loan-extension.blade.php` - Form styling
+- [x] `loan-history.blade.php` - Table styling
+- [x] `authenticated-loan-dashboard.blade.php` - Dashboard cards
 
-- Updated performance cards to semantic tokens
+### Phase 7: AI Chat & Root Components ✅
 
-#### Two-Factor Authentication
-**File**: `resources/views/filament/pages/two-factor-authentication.blade.php`
+#### Ollama AI Directory (2 files)
+**Status**: Complete
 
-**Changes Applied**:
+- [x] `faq-bot.blade.php` - `gray→slate`, `orange→warning` for Bedrock provider
+- [x] `faq-bot-widget.blade.php` - `gray→slate` tokens
 
-- Updated status badges to semantic tokens
-- Updated warning alerts to `warning-*` tokens
+#### Root-Level Components (10 files remediated)
+**Status**: Complete
 
-#### Telescope Dashboard
-**File**: `resources/views/filament/pages/telescope-dashboard.blade.php`
+**Remediated**:
+- [x] `bedrock-chat.blade.php` - Gray to slate tokens
+- [x] `contact-form.blade.php` - Gray to slate tokens
+- [x] `notification-bell.blade.php` - Gray to slate in category tabs
+- [x] `quick-actions.blade.php` - Gray to slate for secondary buttons
+- [x] `global-search.blade.php` - Gray to slate throughout
+- [x] `recent-activity.blade.php` - Gray to slate for filters/timeline
+- [x] `session-timeout-warning.blade.php` - Gray to slate for modal
+- [x] `security-settings.blade.php` - Gray to slate for forms/cards
+- [x] `user-profile.blade.php` - Gray to slate for profile form
 
-**Changes Applied**:
+**Already Compliant (6 files)**:
+- [x] `submission-detail.blade.php`
+- [x] `submission-filters.blade.php`
+- [x] `submission-history.blade.php`
+- [x] `guest-loan-application.blade.php`
+- [x] `guest-loan-tracking.blade.php`
+- [x] `realtime-notification-listener.blade.php`
 
-- Updated 6 category cards to semantic tokens
-- Updated info panel to `info-*` tokens
+### Phase 8: Auth & Profile Forms ✅
 
-### Phase 5: Filament Widgets (3 files) ✅
+#### Auth Forms (2 files)
+**Status**: Complete
 
-#### Horizon Health Widget
-**File**: `resources/views/filament/widgets/horizon-health-widget.blade.php`
+- [x] `auth/two-factor-authentication.blade.php` - Semantic tokens
+- [x] `auth/two-factor-challenge.blade.php` - Semantic tokens
 
-**Changes Applied**:
+#### Profile Forms (3 files)
+**Status**: Complete
 
-- Updated error state indicators
-- Updated queue badges to semantic tokens
-- Updated wait/fail indicators
-
-#### Critical Alerts Widget
-**File**: `resources/views/filament/widgets/critical-alerts.blade.php`
-
-**Status**: Uses dynamic PHP colors (conditionally compliant)
-
-#### Quick Actions Widget
-**File**: `resources/views/filament/widgets/quick-actions.blade.php`
-
-**Status**: Uses dynamic PHP colors, has `min-h-11` touch targets
-
-### Phase 6: Staff Dashboard ✅
-
-#### Authenticated Dashboard
-**File**: `resources/views/livewire/staff/authenticated-dashboard.blade.php`
-
-**Changes Applied**:
-
-- Stat cards: `rounded-lg`
-- Quick action buttons: `min-h-11`
-- Recent items: Proper touch targets
-- Navigation links: `min-h-11`
-
-#### Account Linking
-**File**: `resources/views/livewire/staff/account-linking.blade.php`
-
-**Changes Applied**:
-
-- Search input: Standard styling
-- Link buttons: Primary button styling
-- Unlink buttons: Danger button styling
-- Result cards: `rounded-lg`
+- [x] `profile/delete-user-form.blade.php` - Danger button styling
+- [x] `profile/update-password-form.blade.php` - Standard input styling
+- [x] `profile/update-profile-information-form.blade.php` - Standard input styling
 
 ## Verification Results
 

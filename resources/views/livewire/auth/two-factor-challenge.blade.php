@@ -1,6 +1,6 @@
-<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-    <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-slate-100 dark:bg-slate-900">
+    <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-slate-800 shadow-md overflow-hidden sm:rounded-lg">
+        <div class="mb-4 text-sm text-slate-600 dark:text-slate-400">
             @if (! $usingRecoveryCode)
                 {{ __('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}
             @else
@@ -26,7 +26,7 @@
             @endif
 
             <div class="flex items-center justify-end mt-4">
-                <button type="button" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 underline cursor-pointer"
+                <button type="button" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 underline cursor-pointer"
                         wire:click="toggleRecovery">
                     @if (! $usingRecoveryCode)
                         {{ __('Use a recovery code') }}

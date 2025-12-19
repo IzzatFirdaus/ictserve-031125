@@ -1,16 +1,16 @@
 <x-filament-panels::page>
     <div class="space-y-6">
         {{-- Page Description --}}
-        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+        <div class="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700 rounded-lg p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <x-heroicon-o-information-circle class="w-5 h-5 text-blue-400" />
+                    <x-heroicon-o-information-circle class="w-5 h-5 text-primary-400" />
                 </div>
                 <div class="ml-3">
-                    <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">
+                    <h3 class="text-sm font-medium text-primary-800 dark:text-primary-200">
                         Notification Preferences
                     </h3>
-                    <div class="mt-2 text-sm text-blue-700 dark:text-blue-300">
+                    <div class="mt-2 text-sm text-primary-700 dark:text-primary-300">
                         <p>
                             Configure how and when you receive notifications from the ICTServe system. 
                             Your preferences will be applied to all future notifications.
@@ -39,19 +39,19 @@
                         <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3">Delivery Methods</h4>
                         <div class="space-y-2">
                             <div class="flex items-center">
-                                <div class="w-3 h-3 rounded-full {{ ($preferences['email_notifications'] ?? true) ? 'bg-green-400' : 'bg-gray-300' }} mr-2"></div>
+                                <div class="w-3 h-3 rounded-full {{ ($preferences['email_notifications'] ?? true) ? 'bg-success-400' : 'bg-gray-300' }} mr-2"></div>
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Email</span>
                             </div>
                             <div class="flex items-center">
-                                <div class="w-3 h-3 rounded-full {{ ($preferences['in_app_notifications'] ?? true) ? 'bg-green-400' : 'bg-gray-300' }} mr-2"></div>
+                                <div class="w-3 h-3 rounded-full {{ ($preferences['in_app_notifications'] ?? true) ? 'bg-success-400' : 'bg-gray-300' }} mr-2"></div>
                                 <span class="text-sm text-gray-600 dark:text-gray-400">In-App</span>
                             </div>
                             <div class="flex items-center">
-                                <div class="w-3 h-3 rounded-full {{ ($preferences['sms_notifications'] ?? false) ? 'bg-green-400' : 'bg-gray-300' }} mr-2"></div>
+                                <div class="w-3 h-3 rounded-full {{ ($preferences['sms_notifications'] ?? false) ? 'bg-success-400' : 'bg-gray-300' }} mr-2"></div>
                                 <span class="text-sm text-gray-600 dark:text-gray-400">SMS</span>
                             </div>
                             <div class="flex items-center">
-                                <div class="w-3 h-3 rounded-full {{ ($preferences['desktop_notifications'] ?? true) ? 'bg-green-400' : 'bg-gray-300' }} mr-2"></div>
+                                <div class="w-3 h-3 rounded-full {{ ($preferences['desktop_notifications'] ?? true) ? 'bg-success-400' : 'bg-gray-300' }} mr-2"></div>
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Desktop</span>
                             </div>
                         </div>
@@ -69,19 +69,19 @@
                             @endphp
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Helpdesk</span>
-                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">{{ $helpdeskCount }}</span>
+                                <span class="text-xs bg-primary-100 text-primary-800 px-2 py-1 rounded-full">{{ $helpdeskCount }}</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Asset Loans</span>
-                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">{{ $loanCount }}</span>
+                                <span class="text-xs bg-success-100 text-success-800 px-2 py-1 rounded-full">{{ $loanCount }}</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Security</span>
-                                <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">{{ $securityCount }}</span>
+                                <span class="text-xs bg-danger-100 text-danger-800 px-2 py-1 rounded-full">{{ $securityCount }}</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">System</span>
-                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">{{ $systemCount }}</span>
+                                <span class="text-xs bg-secondary-100 text-secondary-800 px-2 py-1 rounded-full">{{ $systemCount }}</span>
                             </div>
                         </div>
                     </div>
@@ -98,13 +98,13 @@
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Quiet Hours</span>
-                                <span class="text-xs {{ ($preferences['quiet_hours_enabled'] ?? false) ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }} px-2 py-1 rounded-full">
+                                <span class="text-xs {{ ($preferences['quiet_hours_enabled'] ?? false) ? 'bg-success-100 text-success-800' : 'bg-gray-100 text-gray-800' }} px-2 py-1 rounded-full">
                                     {{ ($preferences['quiet_hours_enabled'] ?? false) ? 'Enabled' : 'Disabled' }}
                                 </span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Weekends</span>
-                                <span class="text-xs {{ ($preferences['weekend_notifications'] ?? false) ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }} px-2 py-1 rounded-full">
+                                <span class="text-xs {{ ($preferences['weekend_notifications'] ?? false) ? 'bg-success-100 text-success-800' : 'bg-gray-100 text-gray-800' }} px-2 py-1 rounded-full">
                                     {{ ($preferences['weekend_notifications'] ?? false) ? 'Enabled' : 'Disabled' }}
                                 </span>
                             </div>
@@ -117,13 +117,13 @@
                         <div class="space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Urgent Only</span>
-                                <span class="text-xs {{ ($preferences['urgent_only_mode'] ?? false) ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800' }} px-2 py-1 rounded-full">
+                                <span class="text-xs {{ ($preferences['urgent_only_mode'] ?? false) ? 'bg-danger-100 text-danger-800' : 'bg-gray-100 text-gray-800' }} px-2 py-1 rounded-full">
                                     {{ ($preferences['urgent_only_mode'] ?? false) ? 'Yes' : 'No' }}
                                 </span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Min Priority</span>
-                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                                <span class="text-xs bg-primary-100 text-primary-800 px-2 py-1 rounded-full">
                                     {{ ucfirst($preferences['priority_threshold'] ?? 'medium') }}
                                 </span>
                             </div>
@@ -156,13 +156,13 @@
                     </ul>
                 </div>
             </div>
-            <div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+            <div class="mt-4 p-4 bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700 rounded-lg">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <x-heroicon-o-exclamation-triangle class="w-5 h-5 text-yellow-400" />
+                        <x-heroicon-o-exclamation-triangle class="w-5 h-5 text-warning-400" />
                     </div>
                     <div class="ml-3">
-                        <p class="text-sm text-yellow-700 dark:text-yellow-300">
+                        <p class="text-sm text-warning-700 dark:text-warning-300">
                             <strong>Note:</strong> Security incidents and critical system alerts will always be delivered 
                             regardless of your preferences to ensure system security and compliance.
                         </p>
