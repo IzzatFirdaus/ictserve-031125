@@ -23,7 +23,7 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
     {{-- Skip Link for WCAG 2.4.1 --}}
     <a href="#main-content"
-        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-md focus:shadow-button skip-to-content">
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-md focus:shadow-button focus-visible:ring-3 focus-visible:ring-primary-500 skip-to-content">
         {{ __('accessibility.skip_to_main_content') }}
     </a>
 
@@ -80,7 +80,7 @@
                                     <div class="shrink-0">
                                         <button type="button" wire:click="goToStep({{ $step }})"
                                             @class([
-                                                'flex items-center justify-center w-12 h-12 rounded-full border transition-colors duration-200 min-h-11 min-w-11 text-base font-semibold shadow-button focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800',
+                                                'flex items-center justify-center w-12 h-12 rounded-full border transition-colors duration-200 min-h-11 min-w-11 text-base font-semibold shadow-button focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800',
                                                 'bg-primary-600 border-primary-400/70 text-white ring-2 ring-primary-400/40' =>
                                                     $step <= $currentStep,
                                                 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500' =>
@@ -465,7 +465,7 @@
                             <div class="flex items-start space-x-3">
                                 <input type="checkbox" wire:model.live="form.terms_accepted"
                                     name="form.terms_accepted" id="terms_accepted"
-                                    class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                    class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                                     required />
                                 <label for="terms_accepted" class="text-sm text-gray-700 dark:text-gray-300">
                                     {{ __('loan.form.terms_acceptance') }}
@@ -476,7 +476,7 @@
                             <div class="flex items-start space-x-3">
                                 <input type="checkbox" wire:model.live="form.liability_accepted"
                                     name="form.liability_accepted" id="liability_accepted"
-                                    class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                    class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                                     required />
                                 <label for="liability_accepted" class="text-sm text-gray-700 dark:text-gray-300">
                                     {{ __('loan.form.liability_acceptance') }}
@@ -659,7 +659,7 @@
                             <div class="flex items-start space-x-3">
                                 <input type="checkbox" wire:model.live="form.final_confirmation"
                                     name="form.final_confirmation" id="final_confirmation"
-                                    class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                    class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                                     required />
                                 <label for="final_confirmation" class="text-sm text-gray-700 dark:text-gray-300">
                                     {{ __('loan.form.final_confirmation_text') }}

@@ -30,7 +30,7 @@
             <input
                 type="checkbox"
                 wire:model.live="termsAcknowledged"
-                class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2"
                 required
             >
             <span class="ml-3 text-sm text-gray-700">
@@ -52,7 +52,7 @@
             <input
                 type="checkbox"
                 wire:model.live="pdpaAcknowledged"
-                class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2"
                 required
             >
             <span class="ml-3 text-sm text-gray-700">
@@ -79,14 +79,14 @@
                 id="approverSearch"
                 wire:model.live.debounce.300ms="approverSearch"
                 wire:keyup="searchApprovers"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm"
                 placeholder="{{ __('loan.placeholders.search_approver') }}"
                 autocomplete="off"
             >
 
             {{-- Search Results Dropdown --}}
             @if (count($approverResults) > 0)
-                <div class="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-auto">
+                <div class="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-lg border border-gray-200 max-h-60 overflow-auto">
                     @foreach ($approverResults as $approver)
                         <button
                             type="button"
@@ -145,7 +145,7 @@
                     type="text"
                     value="{{ now()->format('d/m/Y') }}"
                     readonly
-                    class="block w-full rounded-md border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-900"
+                    class="block w-full rounded-lg border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-900"
                 >
             </div>
             <div>
@@ -157,7 +157,7 @@
                     id="applicantSignature"
                     wire:model.live.debounce.300ms="applicantSignature"
                     @class([
-                        'block w-full rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm',
+                        'block w-full rounded-lg shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm',
                         'border-red-300' => $errorBag->has('applicantSignature'),
                         'border-gray-300' => ! $errorBag->has('applicantSignature'),
                     ])
