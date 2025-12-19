@@ -1,30 +1,45 @@
 {
   "mcpServers": {
     "sequentialthinking": {
-      "command": "docker",
+      "command": "npx",
       "args": [
-        "exec",
-        "-i",
-        "ictserve-mcp-sequential-thinking",
-        "npx",
+        "-y",
         "@modelcontextprotocol/server-sequential-thinking"
       ],
-      "disabled": false,
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=4096",
+        "NPM_CONFIG_CACHE": "C:\\laragon\\www\\ictserve-031125\\.npm-cache",
+        "NPM_CONFIG_PREFIX": "C:\\laragon\\www\\ictserve-031125\\.npm-global",
+        "USERPROFILE": "C:\\laragon\\www\\ictserve-031125\\.npm-user",
+        "HOME": "C:\\laragon\\www\\ictserve-031125\\.npm-user",
+        "APPDATA": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\AppData\\Roaming",
+        "LOCALAPPDATA": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\AppData\\Local",
+        "TEMP": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\temp",
+        "TMP": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\temp"
+      },
+      "disabled": true,
       "autoApprove": [
         "sequentialthinking"
       ]
     },
     "memory": {
-      "command": "docker",
+      "command": "npx",
       "args": [
-        "exec",
-        "-i",
-        "ictserve-mcp-memory",
-        "npx",
+        "-y",
         "@modelcontextprotocol/server-memory",
-        "/data/memory.jsonl"
+        "C:\\laragon\\www\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       ],
-      "disabled": false,
+      "env": {
+        "NPM_CONFIG_CACHE": "C:\\laragon\\www\\ictserve-031125\\.npm-cache",
+        "NPM_CONFIG_PREFIX": "C:\\laragon\\www\\ictserve-031125\\.npm-global",
+        "USERPROFILE": "C:\\laragon\\www\\ictserve-031125\\.npm-user",
+        "HOME": "C:\\laragon\\www\\ictserve-031125\\.npm-user",
+        "APPDATA": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\AppData\\Roaming",
+        "LOCALAPPDATA": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\AppData\\Local",
+        "TEMP": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\temp",
+        "TMP": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\temp"
+      },
+      "disabled": true,
       "autoApprove": [
         "create_entities",
         "create_relations",
@@ -49,15 +64,22 @@
       ]
     },
     "chrome-devtools": {
-      "command": "docker",
+      "command": "npx",
       "args": [
-        "exec",
-        "-i",
-        "ictserve-mcp-chrome-devtools",
-        "npx",
+        "-y",
         "chrome-devtools-mcp@latest"
       ],
-      "disabled": false,
+      "env": {
+        "NPM_CONFIG_CACHE": "C:\\laragon\\www\\ictserve-031125\\.npm-cache",
+        "NPM_CONFIG_PREFIX": "C:\\laragon\\www\\ictserve-031125\\.npm-global",
+        "USERPROFILE": "C:\\laragon\\www\\ictserve-031125\\.npm-user",
+        "HOME": "C:\\laragon\\www\\ictserve-031125\\.npm-user",
+        "APPDATA": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\AppData\\Roaming",
+        "LOCALAPPDATA": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\AppData\\Local",
+        "TEMP": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\temp",
+        "TMP": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\temp"
+      },
+      "disabled": true,
       "autoApprove": [
         "navigate_page",
         "take_snapshot",
@@ -85,15 +107,22 @@
       "autoApprove": []
     },
     "playwright": {
-      "command": "docker",
+      "command": "npx",
       "args": [
-        "exec",
-        "-i",
-        "ictserve-mcp-playwright",
-        "npx",
+        "-y",
         "@playwright/mcp@latest"
       ],
-      "disabled": false,
+      "env": {
+        "NPM_CONFIG_CACHE": "C:\\laragon\\www\\ictserve-031125\\.npm-cache",
+        "NPM_CONFIG_PREFIX": "C:\\laragon\\www\\ictserve-031125\\.npm-global",
+        "USERPROFILE": "C:\\laragon\\www\\ictserve-031125\\.npm-user",
+        "HOME": "C:\\laragon\\www\\ictserve-031125\\.npm-user",
+        "APPDATA": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\AppData\\Roaming",
+        "LOCALAPPDATA": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\AppData\\Local",
+        "TEMP": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\temp",
+        "TMP": "C:\\laragon\\www\\ictserve-031125\\.npm-user\\temp"
+      },
+      "disabled": true,
       "autoApprove": [
         "browser_navigate",
         "browser_click",
@@ -118,37 +147,6 @@
       "autoApprove": [
         "resolve-library-id",
         "get-library-docs"
-      ]
-    },
-    "laravel-boost": {
-      "command": "php",
-      "args": [
-        "artisan",
-        "mcp:start",
-        "laravel-boost"
-      ],
-      "cwd": "C:\\laragon\\www\\ictserve-031125",
-      "env": {
-        "APP_ENV": "local"
-      },
-      "disabled": false,
-      "autoApprove": [
-        "application-info",
-        "browser-logs",
-        "database-connections",
-        "database-query",
-        "database-schema",
-        "get-absolute-url",
-        "get-config",
-        "last-error",
-        "list-artisan-commands",
-        "list-available-config-keys",
-        "list-available-env-vars",
-        "list-routes",
-        "read-log-entries",
-        "report-feedback",
-        "search-docs",
-        "tinker"
       ]
     },
     "deepl": {

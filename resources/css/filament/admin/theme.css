@@ -8,6 +8,7 @@
  * @updated 2025-12-18
  */
 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 /* Configure class-based dark mode (NOT media query) - ICTServe v3.6.0 requirement */

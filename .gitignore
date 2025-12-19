@@ -18,6 +18,11 @@
 /public/build
 /public/hot
 /public/storage
+
+# MCP NPM directories
+/.npm-cache
+/.npm-global
+/.npm-user
 /storage/*.key
 /storage/pail
 /storage/mcp
@@ -28,6 +33,12 @@ Thumbs.db
 
 # Development and testing directories
 /.playwright-mcp/
+
+# MCP test scripts and configurations
+test-mcp-docker.ps1
+verify-mcp-docker.ps1
+switch-mcp-config.ps1
+.kiro/settings/mcp-*backup*.json
 /.vite/
 /__pycache__/
 /copilot-data/

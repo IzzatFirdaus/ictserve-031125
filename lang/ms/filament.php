@@ -3,7 +3,6 @@
 // ICTServe v3.6.1 - Bahasa Melayu Sahaja
 // Rujukan: D15_LANGUAGE_MS_EN.md
 
-
 declare(strict_types=1);
 
 return [
@@ -12,6 +11,7 @@ return [
         'inventory' => 'Inventori',
         'management' => 'Pengurusan',
         'system' => 'Sistem',
+        'reports' => 'Laporan & Analitik',
         'ollama_ai' => 'Ollama AI',
         'asset_management' => 'Pengurusan Aset',
         'helpdesk_management' => 'Meja Bantuan',
@@ -19,8 +19,10 @@ return [
         'reference_data' => 'Data Rujukan',
         'system_management' => 'Pengurusan Sistem',
         'user_management' => 'Pengurusan Pengguna',
-        'reports' => 'Laporan & Analitik',
         'go_to_portal' => 'Pergi ke Portal',
+        'brand_name' => 'ICTServe Admin',
+        'dashboard' => 'Papan Pemuka',
+        'home' => 'Laman Utama',
     ],
 
     'labels' => [

@@ -1,22 +1,31 @@
 {
     "mcpServers": {
         "sequentialthinking": {
-            "command": "npx",
+            "command": "docker",
             "args": [
-                "-y",
+                "exec",
+                "-i",
+                "ictserve-mcp-sequential-thinking",
+                "npx",
                 "@modelcontextprotocol/server-sequential-thinking"
             ],
+            "env": {
+                "NODE_OPTIONS": "--max-old-space-size=4096"
+            },
             "disabled": false,
             "autoApprove": [
                 "sequentialthinking"
             ]
         },
         "memory": {
-            "command": "npx",
+            "command": "docker",
             "args": [
-                "-y",
+                "exec",
+                "-i",
+                "ictserve-mcp-memory",
+                "npx",
                 "@modelcontextprotocol/server-memory",
-                "${workspaceFolder}/storage/mcp/memory.jsonl"
+                "/data/memory.jsonl"
             ],
             "disabled": false,
             "autoApprove": [
@@ -32,9 +41,12 @@
             ]
         },
         "chrome-devtools": {
-            "command": "npx",
+            "command": "docker",
             "args": [
-                "-y",
+                "exec",
+                "-i",
+                "ictserve-mcp-chrome-devtools",
+                "npx",
                 "chrome-devtools-mcp@latest"
             ],
             "disabled": false,
@@ -59,9 +71,12 @@
             "autoApprove": []
         },
         "playwright": {
-            "command": "npx",
+            "command": "docker",
             "args": [
-                "-y",
+                "exec",
+                "-i",
+                "ictserve-mcp-playwright",
+                "npx",
                 "@playwright/mcp@latest"
             ],
             "disabled": false,
