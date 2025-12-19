@@ -60,7 +60,8 @@ This implementation plan provides a structured approach to reverting the ICTServ
     - Update config/broadcasting.php for Reverb with new Redis
     - _Requirements: 3.4, 6.1, 6.2, 6.3, 6.4, 6.5_
 
-  - [ ] 4.3 Create environment switching scripts
+  - [-] 4.3 Create environment switching scripts
+
     - Create PowerShell script to switch between environments
     - Implement automatic .env file switching
     - Create environment validation script
