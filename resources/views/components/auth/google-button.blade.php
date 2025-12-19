@@ -19,7 +19,7 @@
         x-on:click="loading = true"
         :aria-disabled="loading"
         :class="loading ? 'pointer-events-none opacity-70 cursor-not-allowed' : ''"
-        class="flex items-center justify-center gap-3 w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-900 transition-colors duration-150"
+        class="flex items-center justify-center gap-3 w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 transition-colors duration-150"
         aria-label="{{ __('auth.google_sign_in') }}"
     >
         {{-- Google Logo --}}

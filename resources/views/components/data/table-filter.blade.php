@@ -78,7 +78,7 @@
                     </svg>
                 </div>
                 <input type="search" id="{{ $searchId }}" x-model.debounce.300ms="search" @input="updateSearch()"
-                    class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 py-2 pl-10 pr-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-0"
+                    class="block w-full min-h-11 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 py-2 pl-10 pr-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     placeholder="{{ $searchPlaceholder }}" aria-describedby="{{ $searchHintId }}" />
             </div>
             <p id="{{ $searchHintId }}" class="sr-only">{{ __('Type to search. Results will update automatically.') }}
@@ -94,7 +94,7 @@
         <div class="relative" x-data="{ open: false }" @click.away="open = false">
             <button type="button" id="{{ $dropdownId }}-button" @click="open = !open" :aria-expanded="open"
                 aria-haspopup="listbox" aria-controls="{{ $dropdownId }}-listbox"
-                class="inline-flex items-center justify-between gap-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 min-h-11 min-w-[120px]">
+                class="inline-flex items-center justify-between gap-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11 min-w-[120px]">
                 <span>{{ $filter['label'] }}</span>
                 <svg class="h-4 w-4 text-gray-400 transition-transform" :class="open && 'rotate-180'"
                     viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -139,7 +139,7 @@
 
     {{-- Clear Filters Button - 44×44px touch target per D12 §4.1 --}}
     <button type="button" x-show="hasActiveFilters()" @click="clearAll()"
-        class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 min-h-11 min-w-11"
+        class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11 min-w-11"
         aria-label="{{ __('Clear all filters') }}" x-cloak>
         <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd"

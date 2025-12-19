@@ -68,7 +68,7 @@
                 <div class="flex-shrink-0 ml-4">
                     <a
                         href="{{ route('impersonate.stop') }}"
-                        class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-white bg-amber-800 hover:bg-amber-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-amber-400 focus:ring-white transition-colors duration-150"
+                        class="inline-flex items-center gap-2 px-3 py-1.5 min-h-11 text-sm font-semibold text-white bg-amber-800 hover:bg-amber-900 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-offset-amber-400 focus-visible:ring-white transition-colors duration-150"
                         role="button"
                         aria-label="{{ __('impersonation.stop_impersonation') }} - {{ __('impersonation.return_to_admin') }}"
                     >
