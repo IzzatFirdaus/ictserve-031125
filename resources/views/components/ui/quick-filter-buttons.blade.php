@@ -18,12 +18,12 @@
     @foreach ($filters as $filter)
     <button type="button"
         wire:click="$dispatch('apply-saved-filter', { filterId: '{{ $filter['id'] }}', context: '{{ $context }}' })"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md min-h-11
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg min-h-11
                            transition-all duration-150 ease-out
                            {{ $appliedFilterId === $filter['id']
                                ? 'bg-primary-100 text-primary-700 border-2 border-primary-400 shadow-sm dark:bg-primary-900/50 dark:text-primary-300 dark:border-primary-600'
                                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700' }}
-                           focus:outline-none
+                           focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500
                            touch-target"
         title="{{ $filter['description'] ?? __('Apply filter: :name', ['name' => $filter['name']]) }}"
         aria-pressed="{{ $appliedFilterId === $filter['id'] ? 'true' : 'false' }}">
@@ -53,8 +53,8 @@
         class="inline-flex items-center gap-1 px-2 py-1.5 text-xs font-medium min-h-11
                            text-gray-500 hover:text-gray-700 hover:bg-gray-100
                            dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
-                           rounded-md transition-colors duration-150
-                           focus:outline-none"
+                           rounded-lg transition-colors duration-150
+                           focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
         aria-label="{{ __('Clear applied filter') }}">
         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
             aria-hidden="true">

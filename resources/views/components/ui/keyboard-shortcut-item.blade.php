@@ -19,7 +19,7 @@
 ])
 
 <div
-    {{ $attributes->merge(['class' => 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md']) }}
+    {{ $attributes->merge(['class' => 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg']) }}
     role="listitem">
     <span class="text-sm text-gray-700 dark:text-gray-300">
         {{ $label }}

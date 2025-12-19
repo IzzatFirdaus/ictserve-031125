@@ -33,7 +33,7 @@ $defaultTitle = __('portal.verified_user_info');
 @if($displayUser)
 <div
     {{ $attributes->merge([
-        'class' => 'bg-teal-50 dark:bg-teal-900/20 border-l-4 border-teal-500 dark:border-teal-400 p-4 rounded-(--radius-l)',
+        'class' => 'bg-teal-50 dark:bg-teal-900/20 border-l-4 border-teal-500 dark:border-teal-400 p-4 rounded-lg',
         'role' => 'region',
         'aria-labelledby' => 'user-info-heading-' . ($displayUser->id ?? 'guest'),
     ]) }}>

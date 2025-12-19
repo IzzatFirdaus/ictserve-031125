@@ -95,7 +95,7 @@
     </div>
 @elseif($variant === 'skeleton')
     {{-- Skeleton variant --}}
-    <div {{ $attributes->merge(['class' => 'animate-pulse bg-gray-200 dark:bg-gray-700 rounded-md']) }} role="status"
+    <div {{ $attributes->merge(['class' => 'animate-pulse bg-gray-200 dark:bg-gray-700 rounded-lg']) }} role="status"
         aria-live="polite" aria-label="{{ $ariaLabel }}">
         <span class="sr-only">{{ $ariaLabel }}</span>
     </div>

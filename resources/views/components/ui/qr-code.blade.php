@@ -58,7 +58,7 @@ $displayLabel = $label ?? $defaultLabel;
 <div {{ $attributes->merge(['class' => 'qr-code-container text-center print-visible ' . $class]) }}>
     {{-- QR Code Image --}}
     <div
-        class="qr-code-wrapper inline-block p-3 bg-white rounded-md shadow-sm border border-gray-200 dark:border-gray-700">
+        class="qr-code-wrapper inline-block p-3 bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <img src="{{ $qrDataUri }}" alt="{{ __('common.qr_code_alt', ['reference' => $reference ?? 'URL']) }}"
             width="{{ $size }}" height="{{ $size }}" class="block mx-auto" loading="lazy">
     </div>
@@ -79,7 +79,7 @@ $displayLabel = $label ?? $defaultLabel;
 </div>
 @else
 <div
-    {{ $attributes->merge(['class' => 'qr-code-error text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-md ' . $class]) }}>
+    {{ $attributes->merge(['class' => 'qr-code-error text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg ' . $class]) }}>
     <p class="text-sm text-gray-500 dark:text-gray-400">
         {{ __('common.qr_code_unavailable') }}
     </p>
