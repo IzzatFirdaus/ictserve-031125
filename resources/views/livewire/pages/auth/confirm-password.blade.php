@@ -54,7 +54,7 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+    <div class="mb-4 text-sm text-slate-600 dark:text-slate-400">
         Ini adalah kawasan selamat aplikasi. Sila sahkan kata laluan anda sebelum meneruskan.
     </div>
 

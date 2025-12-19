@@ -6,10 +6,10 @@
 <div class="space-y-8">
     <header class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h1 class="text-2xl font-heading font-semibold text-gray-900 dark:text-white">
+            <h1 class="text-2xl font-heading font-semibold text-slate-900 dark:text-white">
                 {{ __('Tiket') }} {{ $ticket->ticket_number }}
             </h1>
-            <p class="text-gray-600 dark:text-gray-400">{{ $ticket->subject }}</p>
+            <p class="text-slate-600 dark:text-slate-400">{{ $ticket->subject }}</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -30,44 +30,44 @@
 
     <section aria-label="{{ __('Maklumat Tiket') }}" class="grid gap-6 lg:grid-cols-3">
         <x-ui.card class="lg:col-span-2 shadow-card">
-            <h2 class="text-lg font-heading font-semibold text-gray-900 dark:text-white mb-4">{{ __('Perincian') }}</h2>
+            <h2 class="text-lg font-heading font-semibold text-slate-900 dark:text-white mb-4">{{ __('Perincian') }}</h2>
 
             <dl class="grid gap-4 sm:grid-cols-2">
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Kategori') }}</dt>
-                    <dd class="mt-1 text-gray-900 dark:text-gray-100">
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Kategori') }}</dt>
+                    <dd class="mt-1 text-slate-900 dark:text-slate-100">
                         {{ $ticket->category?->name ?? __('Tidak dinyatakan') }}
                     </dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Keutamaan') }}</dt>
-                    <dd class="mt-1 text-gray-900 dark:text-gray-100">{{ ucfirst($ticket->priority) }}</dd>
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Keutamaan') }}</dt>
+                    <dd class="mt-1 text-slate-900 dark:text-slate-100">{{ ucfirst($ticket->priority) }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Bahagian') }}</dt>
-                    <dd class="mt-1 text-gray-900 dark:text-gray-100">
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Bahagian') }}</dt>
+                    <dd class="mt-1 text-slate-900 dark:text-slate-100">
                         {{ $ticket->division?->name ?? ($ticket->guest_division ?? __('Tidak dinyatakan')) }}
                     </dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Pegawai Bertugas') }}</dt>
-                    <dd class="mt-1 text-gray-900 dark:text-gray-100">
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Pegawai Bertugas') }}</dt>
+                    <dd class="mt-1 text-slate-900 dark:text-slate-100">
                         {{ $ticket->assignedUser?->name ?? __('Belum ditugaskan') }}
                     </dd>
                 </div>
             </dl>
 
             <div class="mt-6">
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('Keterangan Aduan') }}</h3>
-                <p class="mt-2 whitespace-pre-line text-gray-700 dark:text-gray-300">{{ $ticket->description }}</p>
+                <h3 class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('Keterangan Aduan') }}</h3>
+                <p class="mt-2 whitespace-pre-line text-slate-700 dark:text-slate-300">{{ $ticket->description }}</p>
             </div>
 
             @if ($ticket->attachments->isNotEmpty())
             <div class="mt-6">
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('Lampiran') }}</h3>
+                <h3 class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('Lampiran') }}</h3>
                 <ul class="mt-2 space-y-2">
                     @foreach ($ticket->attachments as $attachment)
-                    <li class="text-sm text-gray-700 dark:text-gray-300">
+                    <li class="text-sm text-slate-700 dark:text-slate-300">
                         {{ $attachment->file_name }}
                     </li>
                     @endforeach
@@ -77,37 +77,37 @@
         </x-ui.card>
 
         <x-ui.card class="shadow-card">
-            <h2 class="text-lg font-heading font-semibold text-gray-900 dark:text-white mb-4">{{ __('Jejak Masa') }}
+            <h2 class="text-lg font-heading font-semibold text-slate-900 dark:text-white mb-4">{{ __('Jejak Masa') }}
             </h2>
 
             <dl class="space-y-3 text-sm">
                 <div>
-                    <dt class="text-gray-500 dark:text-gray-400">{{ __('Dicipta') }}</dt>
-                    <dd class="text-gray-900 dark:text-gray-100">
+                    <dt class="text-slate-500 dark:text-slate-400">{{ __('Dicipta') }}</dt>
+                    <dd class="text-slate-900 dark:text-slate-100">
                         {{ $ticket->created_at?->translatedFormat('d M Y, h:i A') }}
                     </dd>
                 </div>
                 <div>
-                    <dt class="text-gray-500 dark:text-gray-400">{{ __('Ditugaskan') }}</dt>
-                    <dd class="text-gray-900 dark:text-gray-100">
+                    <dt class="text-slate-500 dark:text-slate-400">{{ __('Ditugaskan') }}</dt>
+                    <dd class="text-slate-900 dark:text-slate-100">
                         {{ $ticket->assigned_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}
                     </dd>
                 </div>
                 <div>
-                    <dt class="text-gray-500 dark:text-gray-400">{{ __('Respon Pertama') }}</dt>
-                    <dd class="text-gray-900 dark:text-gray-100">
+                    <dt class="text-slate-500 dark:text-slate-400">{{ __('Respon Pertama') }}</dt>
+                    <dd class="text-slate-900 dark:text-slate-100">
                         {{ $ticket->responded_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}
                     </dd>
                 </div>
                 <div>
-                    <dt class="text-gray-500 dark:text-gray-400">{{ __('Selesai') }}</dt>
-                    <dd class="text-gray-900 dark:text-gray-100">
+                    <dt class="text-slate-500 dark:text-slate-400">{{ __('Selesai') }}</dt>
+                    <dd class="text-slate-900 dark:text-slate-100">
                         {{ $ticket->resolved_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}
                     </dd>
                 </div>
                 <div>
-                    <dt class="text-gray-500 dark:text-gray-400">{{ __('Ditutup') }}</dt>
-                    <dd class="text-gray-900 dark:text-gray-100">
+                    <dt class="text-slate-500 dark:text-slate-400">{{ __('Ditutup') }}</dt>
+                    <dd class="text-slate-900 dark:text-slate-100">
                         {{ $ticket->closed_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}
                     </dd>
                 </div>
@@ -117,18 +117,18 @@
 
     <section aria-label="{{ __('Komen & Perbincangan') }}" class="grid gap-6 lg:grid-cols-3">
         <x-ui.card class="lg:col-span-2 shadow-card">
-            <h2 class="text-lg font-heading font-semibold text-gray-900 dark:text-white">{{ __('Maklum Balas') }}</h2>
+            <h2 class="text-lg font-heading font-semibold text-slate-900 dark:text-white">{{ __('Maklum Balas') }}</h2>
 
             <div class="mt-4 space-y-4">
                 @forelse ($ticket->comments as $comment)
                 <article
-                    class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 transition-colors duration-200">
+                    class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 transition-colors duration-200">
                     <header class="flex items-center justify-between text-sm">
                         <div>
-                            <p class="font-medium text-gray-900 dark:text-white">
+                            <p class="font-medium text-slate-900 dark:text-white">
                                 {{ $comment->commenter_name ?? $comment->user?->name }}
                             </p>
-                            <p class="text-gray-500 dark:text-gray-400">
+                            <p class="text-slate-500 dark:text-slate-400">
                                 {{ $comment->created_at?->diffForHumans() }}
                             </p>
                         </div>
@@ -139,12 +139,12 @@
                         </span>
                         @endif
                     </header>
-                    <p class="mt-3 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">
+                    <p class="mt-3 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-line">
                         {{ $comment->comment }}
                     </p>
                 </article>
                 @empty
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-sm text-slate-500 dark:text-slate-400">
                     {{ __('Tiada maklum balas buat masa ini.') }}
                 </p>
                 @endforelse
@@ -152,7 +152,7 @@
         </x-ui.card>
 
         <x-ui.card class="shadow-card">
-            <h2 class="text-lg font-heading font-semibold text-gray-900 dark:text-white mb-4">{{ __('Tambah Komen') }}
+            <h2 class="text-lg font-heading font-semibold text-slate-900 dark:text-white mb-4">{{ __('Tambah Komen') }}
             </h2>
 
             <form wire:submit.prevent="addComment" class="space-y-4">

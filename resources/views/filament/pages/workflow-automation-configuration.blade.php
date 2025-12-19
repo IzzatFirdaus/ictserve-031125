@@ -16,7 +16,7 @@
                                 <div class="flex items-center gap-3">
                                     <h5 class="font-medium text-gray-900 dark:text-white">{{ $rule['name'] }}</h5>
                                     @if($rule['is_active'])
-                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>
+                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200">Active</span>
                                     @endif
                                     <span class="text-xs text-gray-500">Priority: {{ $rule['priority'] }}</span>
                                 </div>

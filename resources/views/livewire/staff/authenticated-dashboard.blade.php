@@ -127,7 +127,7 @@ use Illuminate\Support\Facades\Auth;
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
-                            <svg class="h-6 w-6 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            <svg class="h-6 w-6 text-warning-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -170,7 +170,7 @@ use Illuminate\Support\Facades\Auth;
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
-                            <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            <svg class="h-6 w-6 text-success-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -203,9 +203,9 @@ use Illuminate\Support\Facades\Auth;
 
             {{-- Overdue Items Card (Task 4.2.9: Dynamic State Consistency) --}}
             @php($overdueCount = (int) ($this->statistics['overdue_items'] ?? 0))
-            @php($overdueIconColor = $overdueCount > 0 ? 'text-red-400' : 'text-green-400')
+            @php($overdueIconColor = $overdueCount > 0 ? 'text-danger-400' : 'text-success-400')
             <div @class([ 'bg-slate-900/70 backdrop-blur-sm border overflow-hidden shadow rounded-lg' ,
-                $overdueCount> 0 ? 'border-red-800/50' : 'border-slate-800',
+                $overdueCount> 0 ? 'border-danger-800/50' : 'border-slate-800',
                 ]) wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
@@ -236,7 +236,7 @@ use Illuminate\Support\Facades\Auth;
                                         {{ $overdueCount }}
                                     </div>
                                     @if ($overdueCount === 0)
-                                    <span class="ml-2 text-xs text-green-400">{{ __('common.all_clear') }}</span>
+                                    <span class="ml-2 text-xs text-success-400">{{ __('common.all_clear') }}</span>
                                     @endif
                                 </dd>
                             </dl>

@@ -10,7 +10,7 @@
  */
 --}}
 
-<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
     {{-- Success State --}}
     @if ($submitted && !$submissionFailed)
         <div class="p-8 text-center" x-data="{ copied: false }">
@@ -23,17 +23,17 @@
                 </svg>
             </div>
 
-            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                 {{ __('Mesej Berjaya Dihantar!') }}
             </h3>
 
-            <p class="text-gray-600 dark:text-gray-400 mb-6">
+            <p class="text-slate-600 dark:text-slate-400 mb-6">
                 {{ __('Terima kasih kerana menghubungi kami. Mesej anda telah diterima dan tiket sokongan telah dicipta.') }}
             </p>
 
             {{-- Ticket Number Display --}}
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 mb-6">
-                <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+            <div class="bg-slate-50 dark:bg-slate-700 rounded-xl p-6 mb-6">
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2">
                     {{ __('Nombor Tiket Anda') }}
                 </p>
                 <div class="flex items-center justify-center gap-3">
@@ -42,7 +42,7 @@
                     </span>
                     <button type="button"
                         @click="navigator.clipboard.writeText('{{ $ticketNumber }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                        class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                        class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
                         title="{{ __('Salin ke papan keratan') }}">
                         <svg x-show="!copied" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -61,7 +61,7 @@
                 @endif
             </div>
 
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">
                 {{ __('E-mel pengesahan telah dihantar ke :email. Sila simpan nombor tiket anda untuk rujukan masa hadapan.', ['email' => $email]) }}
             </p>
 
@@ -76,22 +76,22 @@
                     {{ __('Jejaki Tiket Anda') }}
                 </a>
                 <button type="button" wire:click="resetForm"
-                    class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 transition-colors min-h-11">
+                    class="inline-flex items-center justify-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-base font-medium rounded-xl text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 transition-colors min-h-11">
                     {{ __('Hantar Mesej Lain') }}
                 </button>
             </div>
         </div>
     @else
         {{-- Form Header --}}
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
+        <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-white flex items-center">
                 <svg class="h-6 w-6 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 {{ __('Hantar Mesej Kepada Kami') }}
             </h2>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 {{ __('Mesej anda akan dijejaki sebagai tiket sokongan untuk tindakan susulan.') }}
             </p>
         </div>
@@ -122,11 +122,11 @@
         <form wire:submit="submit" class="p-6 space-y-6">
             {{-- Name Field --}}
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     {{ __('Nama Penuh') }} <span class="text-danger-500">*</span>
                 </label>
                 <input type="text" id="name" wire:model.live.debounce.300ms="name"
-                    class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('name') border-danger-500 @enderror"
+                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('name') border-danger-500 @enderror"
                     placeholder="{{ __('Masukkan nama penuh anda') }}" required>
                 @error('name')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -135,11 +135,11 @@
 
             {{-- Email Field --}}
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     {{ __('Alamat E-mel') }} <span class="text-danger-500">*</span>
                 </label>
                 <input type="email" id="email" wire:model.live.debounce.300ms="email"
-                    class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('email') border-danger-500 @enderror"
+                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('email') border-danger-500 @enderror"
                     placeholder="{{ __('Masukkan alamat e-mel anda') }}" required>
                 @error('email')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -148,11 +148,11 @@
 
             {{-- Phone Field (Optional) --}}
             <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Nombor Telefon') }} <span class="text-gray-400">({{ __('Pilihan') }})</span>
+                <label for="phone" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    {{ __('Nombor Telefon') }} <span class="text-slate-400">({{ __('Pilihan') }})</span>
                 </label>
                 <input type="tel" id="phone" wire:model.live.debounce.300ms="phone"
-                    class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('phone') border-danger-500 @enderror"
+                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('phone') border-danger-500 @enderror"
                     placeholder="{{ __('Masukkan nombor telefon anda') }}">
                 @error('phone')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -161,11 +161,11 @@
 
             {{-- Subject Field --}}
             <div>
-                <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="subject" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     {{ __('Subjek') }} <span class="text-danger-500">*</span>
                 </label>
                 <input type="text" id="subject" wire:model.live.debounce.300ms="subject"
-                    class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('subject') border-danger-500 @enderror"
+                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('subject') border-danger-500 @enderror"
                     placeholder="{{ __('Apakah berkenaan mesej anda?') }}" required>
                 @error('subject')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -174,13 +174,13 @@
 
             {{-- Message Field --}}
             <div>
-                <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="message" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     {{ __('Mesej') }} <span class="text-danger-500">*</span>
                 </label>
                 <textarea id="message" wire:model.live.debounce.300ms="message" rows="5"
-                    class="block w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm @error('message') border-danger-500 @enderror"
+                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm @error('message') border-danger-500 @enderror"
                     placeholder="{{ __('Sila huraikan pertanyaan anda dengan terperinci...') }}" required></textarea>
-                <div class="mt-1 flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                <div class="mt-1 flex justify-between text-xs text-slate-500 dark:text-slate-400">
                     <span>{{ __('Minimum 10 aksara') }}</span>
                     <span>{{ strlen($message) }}/5000</span>
                 </div>

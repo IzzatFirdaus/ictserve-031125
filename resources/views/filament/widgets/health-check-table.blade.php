@@ -20,9 +20,9 @@
                             <td class="py-2 px-3">{{ ucfirst($serviceName) }}</td>
                             <td class="py-2 px-3">
                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
-                                    @if($status['status'] === 'healthy') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-                                    @elseif($status['status'] === 'warning') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
-                                    @else bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
+                                    @if($status['status'] === 'healthy') bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200
+                                    @elseif($status['status'] === 'warning') bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200
+                                    @else bg-danger-100 text-danger-800 dark:bg-danger-900 dark:text-danger-200
                                     @endif">
                                     {{ ucfirst($status['status']) }}
                                 </span>
