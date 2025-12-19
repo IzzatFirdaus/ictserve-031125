@@ -33,7 +33,7 @@
         x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
-        class="absolute bottom-16 right-0 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+        class="absolute bottom-16 right-0 w-80 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden"
         role="dialog" aria-modal="true" aria-labelledby="widget-title" x-ref="panel"
         @keydown.tab.prevent="trapFocus($event)" @keydown.escape.prevent="$wire.closeWidget(); isOpen = false">
         {{-- Widget Header --}}
@@ -77,14 +77,14 @@
         {{-- Widget Content (Hidden when minimized) --}}
         <div x-show="!isMinimized" class="flex flex-col h-96">
             {{-- Messages Area --}}
-            <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50 dark:bg-gray-900" role="log"
+            <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 dark:bg-slate-900" role="log"
                 aria-label="{{ __('ollama.widget.conversation_log', [], 'ms') }}" aria-live="polite"
                 x-ref="messagesContainer">
                 @forelse($messages as $index => $message)
                     <div class="flex {{ $message['role'] === 'user' ? 'justify-end' : 'justify-start' }}"
                         wire:key="msg-{{ $index }}">
                         <div
-                            class="max-w-xs {{ $message['role'] === 'user' ? 'bg-primary-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100' }} rounded-lg px-3 py-2 shadow-sm border border-gray-200 dark:border-gray-700">
+                            class="max-w-xs {{ $message['role'] === 'user' ? 'bg-primary-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100' }} rounded-lg px-3 py-2 shadow-sm border border-slate-200 dark:border-slate-700">
                             {{-- Message Role Label (Screen Reader Only) --}}
                             <span class="sr-only">
                                 {{ $message['role'] === 'user' ? __('ollama.widget.user_message', [], 'ms') : __('ollama.widget.bot_message', [], 'ms') }}
@@ -95,14 +95,14 @@
 
                             {{-- Timestamp --}}
                             <time
-                                class="text-xs {{ $message['role'] === 'user' ? 'text-primary-100' : 'text-gray-500 dark:text-gray-400' }} mt-1 block"
+                                class="text-xs {{ $message['role'] === 'user' ? 'text-primary-100' : 'text-slate-500 dark:text-slate-400' }} mt-1 block"
                                 datetime="{{ $message['timestamp'] }}">
                                 {{ \Carbon\Carbon::parse($message['timestamp'])->format('H:i') }}
                             </time>
                         </div>
                     </div>
                 @empty
-                    <div class="text-center text-gray-500 dark:text-gray-400 py-8">
+                    <div class="text-center text-slate-500 dark:text-slate-400 py-8">
                         <x-heroicon-o-chat-bubble-bottom-center-text class="w-12 h-12 mx-auto mb-2 opacity-50"
                             aria-hidden="true" />
                         <p class="text-sm">{{ __('ollama.widget.no_messages', [], 'ms') }}</p>
@@ -113,17 +113,17 @@
                 @if ($isLoading)
                     <div class="flex justify-start">
                         <div
-                            class="bg-white dark:bg-gray-800 rounded-lg px-3 py-2 shadow-sm border border-gray-200 dark:border-gray-700">
+                            class="bg-white dark:bg-slate-800 rounded-lg px-3 py-2 shadow-sm border border-slate-200 dark:border-slate-700">
                             <div class="flex items-center space-x-2">
                                 <div class="flex space-x-1">
                                     <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                                     <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
                                         style="animation-delay: 0.1s"></div>
-                                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                                    <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
                                         style="animation-delay: 0.2s"></div>
                                 </div>
                                 <span
-                                    class="text-xs text-gray-500 dark:text-gray-400">{{ __('ollama.widget.typing', [], 'ms') }}</span>
+                                    class="text-xs text-slate-500 dark:text-slate-400">{{ __('ollama.widget.typing', [], 'ms') }}</span>
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
             @endif
 
             {{-- Input Area --}}
-            <div class="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="p-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
                 <form wire:submit="submitQuery" class="space-y-3">
                     {{-- Query Input --}}
                     <div class="flex space-x-2">
@@ -151,12 +151,12 @@
                         </label>
                         <input type="text" id="widget-query" wire:model="query" wire:keydown.enter="submitQuery"
                             placeholder="{{ __('ollama.widget.query_placeholder', [], 'ms') }}"
-                            class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 min-h-11"
+                            class="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 min-h-11"
                             maxlength="500" {{ $isLoading ? 'disabled' : '' }} aria-describedby="widget-query-help" data-initial-focus>
 
                         {{-- Send Button --}}
                         <button type="submit"
-                            class="px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white rounded-md transition-colors focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-11 min-w-11 flex items-center justify-center"
+                            class="px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-400 text-white rounded-md transition-colors focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-11 min-w-11 flex items-center justify-center"
                             {{ $isLoading ? 'disabled' : '' }}
                             aria-label="{{ __('ollama.widget.send_button', [], 'ms') }}">
                             @if ($isLoading)
@@ -168,14 +168,14 @@
                     </div>
 
                     {{-- Help Text --}}
-                    <p id="widget-query-help" class="text-xs text-gray-500 dark:text-gray-400">
+                    <p id="widget-query-help" class="text-xs text-slate-500 dark:text-slate-400">
                         {{ __('ollama.widget.query_help', [], 'ms') }}
                     </p>
 
                     {{-- Action Buttons --}}
                     <div class="flex justify-between items-center pt-2">
                         <button type="button" wire:click="clearConversation"
-                            class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 underline focus:ring-2 focus:ring-primary-500 rounded px-1 py-1 inline-flex items-center gap-1">
+                            class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 underline focus:ring-2 focus:ring-primary-500 rounded px-1 py-1 inline-flex items-center gap-1">
                             <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
                             {{ __('ollama.widget.clear_conversation', [], 'ms') }}
                         </button>
@@ -191,9 +191,9 @@
         </div>
 
         {{-- Minimized State --}}
-        <div x-show="isMinimized" class="p-4 bg-gray-50 dark:bg-gray-900">
+        <div x-show="isMinimized" class="p-4 bg-slate-50 dark:bg-slate-900">
             <button wire:click="restoreWidget"
-                class="w-full text-left text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 focus:ring-2 focus:ring-primary-500 rounded px-2 py-1 inline-flex items-center gap-2">
+                class="w-full text-left text-sm text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 focus:ring-2 focus:ring-primary-500 rounded px-2 py-1 inline-flex items-center gap-2">
                 <x-heroicon-o-chevron-up class="w-4 h-4" aria-hidden="true" />
                 {{ __('ollama.widget.click_to_restore', [], 'ms') }}
             </button>

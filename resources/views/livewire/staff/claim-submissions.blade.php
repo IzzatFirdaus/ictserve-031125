@@ -50,14 +50,14 @@
                     {{ __('staff.claims.email_label') }}
                 </label>
                 <input type="email" id="search-email" wire:model="searchEmail" required autocomplete="email"
-                    class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-motac-blue focus-visible:ring-3 focus-visible:ring-motac-blue dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-11"
+                    class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-11"
                     aria-describedby="email-help"
                     @error('searchEmail') aria-invalid="true" aria-describedby="email-error" @enderror>
                 <p id="email-help" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                     {{ __('staff.claims.email_help') }}
                 </p>
                 @error('searchEmail')
-                    <p id="email-error" class="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">
+                    <p id="email-error" class="mt-2 text-sm text-danger-600 dark:text-danger-400" role="alert">
                         {{ $message }}
                     </p>
                 @enderror
@@ -86,9 +86,9 @@
     @if ($showResults)
         <div class="space-y-6">
             {{-- Results Summary --}}
-            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4"
+            <div class="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4"
                 role="status" aria-live="polite">
-                <p class="text-sm text-blue-800 dark:text-blue-200">
+                <p class="text-sm text-primary-800 dark:text-primary-200">
                     {{ __('staff.claims.results_found', [
                         'tickets' => $this->foundTickets->count(),
                         'loans' => $this->foundLoans->count(),

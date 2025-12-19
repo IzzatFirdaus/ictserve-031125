@@ -35,12 +35,12 @@
         x-bind:aria-pressed="theme === 'dark' ? 'true' : 'false'" aria-label="{{ __('Tukar tema') }}"
         class="flex items-center justify-center
                p-2.5 rounded-lg
-               bg-white/10 dark:bg-gray-800/50
-               hover:bg-gray-100 dark:hover:bg-gray-700
-               text-gray-600 dark:text-gray-300
+               bg-white/10 dark:bg-slate-800/50
+               hover:bg-slate-100 dark:hover:bg-slate-700
+               text-slate-600 dark:text-slate-300
                ring-1 ring-black/5 dark:ring-white/10
                focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2
-               dark:focus:ring-offset-gray-900
+               dark:focus:ring-offset-slate-900
                transition-colors duration-200
                min-h-11 min-w-11">
 
@@ -53,7 +53,7 @@
         </svg>
 
         {{-- Moon icon (shown in light mode to switch to dark) --}}
-        <svg x-show="theme === 'light'" class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none"
+        <svg x-show="theme === 'light'" class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none"
             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">

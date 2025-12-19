@@ -278,7 +278,7 @@
                                     <div class="flex items-center space-x-3 mb-2">
                                         {{-- Type Badge --}}
                                         <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $result['type'] === 'ticket' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $result['type'] === 'ticket' ? 'bg-primary-100 text-primary-800' : 'bg-success-100 text-success-800' }}">
                                             {{ $result['type'] === 'ticket' ? __('staff.search.ticket') : __('staff.search.loan') }}
                                         </span>
                                         {{-- Number --}}
@@ -416,13 +416,13 @@
                                 <div class="flex flex-wrap gap-1 mt-1">
                                     @if ($module !== 'all')
                                         <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800">
                                             {{ __('staff.search.module') }}: {{ $module }}
                                         </span>
                                     @endif
                                     @if ($status !== 'all')
                                         <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-800">
                                             {{ __('staff.search.status') }}: {{ $status }}
                                         </span>
                                     @endif

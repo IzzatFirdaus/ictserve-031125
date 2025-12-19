@@ -8,7 +8,7 @@
                 <div class="border rounded-lg p-4">
                     <div class="flex items-center justify-between mb-2">
                         <h4 class="font-medium">{{ $result['test_name'] }}</h4>
-                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium {{ $result['passed'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium {{ $result['passed'] ? 'bg-success-100 text-success-800' : 'bg-danger-100 text-danger-800' }}">
                             {{ $result['passed'] ? 'Lulus' : 'Gagal' }}
                         </span>
                     </div>

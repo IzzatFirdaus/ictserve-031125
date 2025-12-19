@@ -9,13 +9,13 @@
 
 <div class="max-w-4xl mx-auto p-6">
     {{-- Profile Completeness --}}
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-6">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('portal.profile_completeness') }}</h3>
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">{{ __('portal.profile_completeness') }}</h3>
             <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">{{ $this->profileCompleteness }}%</span>
         </div>
 
-        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+        <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3">
             <div class="bg-primary-600 dark:bg-primary-500 h-3 rounded-full transition-all duration-500"
                 style="width: {{ $this->profileCompleteness }}%"></div>
         </div>
@@ -51,16 +51,16 @@
 
     <form wire:submit="updateProfile" class="space-y-6">
         {{-- Avatar Section --}}
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h4 class="text-md font-semibold text-gray-900 dark:text-white mb-4">{{ __('portal.profile_photo') }}</h4>
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <h4 class="text-md font-semibold text-slate-900 dark:text-white mb-4">{{ __('portal.profile_photo') }}</h4>
 
             <div class="flex items-center gap-6">
                 @if ($currentAvatar)
                     <img src="{{ Storage::url($currentAvatar) }}" alt="{{ __('portal.current_avatar') }}"
                         class="w-24 h-24 rounded-full object-cover" loading="lazy" decoding="async">
                 @else
-                    <div class="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                        <x-heroicon-s-user class="w-12 h-12 text-gray-400" />
+                    <div class="w-24 h-24 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+                        <x-heroicon-s-user class="w-12 h-12 text-slate-400" />
                     </div>
                 @endif
 
@@ -81,17 +81,17 @@
 
         {{-- Editable Fields --}}
         <div
-            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 space-y-4">
-            <h4 class="text-md font-semibold text-gray-900 dark:text-white mb-4">
+            class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+            <h4 class="text-md font-semibold text-slate-900 dark:text-white mb-4">
                 {{ __('portal.personal_information') }}</h4>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="name"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('portal.name') }}
+                        class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('portal.name') }}
                         *</label>
                     <input type="text" id="name" wire:model.live.debounce.300ms="name"
-                        class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                        class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         required>
                     @error('name')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -100,10 +100,10 @@
 
                 <div>
                     <label for="email"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('portal.email') }}
+                        class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('portal.email') }}
                         *</label>
                     <input type="email" id="email" wire:model.live.debounce.300ms="email"
-                        class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                        class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         required>
                     @error('email')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -112,9 +112,9 @@
 
                 <div>
                     <label for="phone"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('portal.phone') }}</label>
+                        class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('portal.phone') }}</label>
                     <input type="tel" id="phone" wire:model.live.debounce.300ms="phone"
-                        class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                        class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     @error('phone')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                     @enderror
@@ -122,9 +122,9 @@
 
                 <div>
                     <label for="mobile"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('portal.mobile') }}</label>
+                        class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('portal.mobile') }}</label>
                     <input type="tel" id="mobile" wire:model.live.debounce.300ms="mobile"
-                        class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                        class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     @error('mobile')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                     @enderror
@@ -133,10 +133,10 @@
 
             <div>
                 <label for="bio"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('portal.bio') }}</label>
+                    class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('portal.bio') }}</label>
                 <textarea id="bio" wire:model.live.debounce.300ms="bio" rows="4" maxlength="1000"
-                    class="mt-1 block w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"></textarea>
-                <p class="mt-1 text-sm text-gray-500">{{ strlen($bio ?? '') }}/1000 {{ __('portal.characters') }}</p>
+                    class="mt-1 block w-full px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"></textarea>
+                <p class="mt-1 text-sm text-slate-500">{{ strlen($bio ?? '') }}/1000 {{ __('portal.characters') }}</p>
                 @error('bio')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                 @enderror
@@ -144,34 +144,34 @@
         </div>
 
         {{-- Read-Only Information --}}
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h4 class="text-md font-semibold text-gray-900 dark:text-white mb-4">
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <h4 class="text-md font-semibold text-slate-900 dark:text-white mb-4">
                 {{ __('portal.official_information') }}</h4>
 
             <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('portal.staff_id') }}</dt>
-                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $staffId }}</dd>
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('portal.staff_id') }}</dt>
+                    <dd class="mt-1 text-sm text-slate-900 dark:text-white">{{ $staffId }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('portal.division') }}</dt>
-                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $division }}</dd>
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('portal.division') }}</dt>
+                    <dd class="mt-1 text-sm text-slate-900 dark:text-white">{{ $division }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('portal.grade') }}</dt>
-                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $grade }}</dd>
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('portal.grade') }}</dt>
+                    <dd class="mt-1 text-sm text-slate-900 dark:text-white">{{ $grade }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('portal.position') }}</dt>
-                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $position }}</dd>
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('portal.position') }}</dt>
+                    <dd class="mt-1 text-sm text-slate-900 dark:text-white">{{ $position }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('portal.role') }}</dt>
-                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $role }}</dd>
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('portal.role') }}</dt>
+                    <dd class="mt-1 text-sm text-slate-900 dark:text-white">{{ $role }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('portal.last_login') }}</dt>
-                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $lastLoginAt ?? '-' }}</dd>
+                    <dt class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('portal.last_login') }}</dt>
+                    <dd class="mt-1 text-sm text-slate-900 dark:text-white">{{ $lastLoginAt ?? '-' }}</dd>
                 </div>
             </dl>
         </div>
@@ -187,10 +187,10 @@
 
     {{-- Loading Overlay --}}
     <div wire:loading wire:target="updateProfile,removeAvatar"
-        class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center">
+        class="fixed inset-0 bg-slate-900 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-slate-800 rounded-lg p-6 flex flex-col items-center">
             <x-heroicon-o-arrow-path class="animate-spin h-10 w-10 text-primary-600" />
-            <span class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ __('portal.saving') }}</span>
+            <span class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ __('portal.saving') }}</span>
         </div>
     </div>
 </div>

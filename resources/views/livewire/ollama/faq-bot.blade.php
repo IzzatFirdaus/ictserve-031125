@@ -9,11 +9,11 @@
     <div class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 
     {{-- Compact Header --}}
-    <header class="py-4 border-b border-gray-200 dark:border-gray-700">
+    <header class="py-4 border-b border-slate-200 dark:border-slate-700">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div
-                    class="flex items-center justify-center w-10 h-10 rounded-full {{ $aiProvider === 'bedrock' ? 'bg-orange-100 dark:bg-orange-900/30' : 'bg-primary-100 dark:bg-primary-900/30' }}">
+                    class="flex items-center justify-center w-10 h-10 rounded-full {{ $aiProvider === 'bedrock' ? 'bg-warning-100 dark:bg-warning-900/30' : 'bg-primary-100 dark:bg-primary-900/30' }}">
                     @if ($aiProvider === 'bedrock')
                         {{-- AWS Bedrock Smile Logo (D00 True Hybrid Architecture) --}}
                         <svg class="w-6 h-6" viewBox="0 0 304 182" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -41,10 +41,10 @@
                     @endif
                 </div>
                 <div>
-                    <h1 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h1 class="text-lg font-semibold text-slate-900 dark:text-white">
                         FAQ Bot AI
                     </h1>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
                         {{ $aiProvider === 'bedrock' ? 'AWS Bedrock' : 'Ollama Tempatan' }}
                         @if ($aiProvider === 'bedrock')
                             · {{ ucfirst(str_replace('_', ' ', $bedrockModel)) }}
@@ -56,7 +56,7 @@
             {{-- Quick Actions --}}
             <div class="flex items-center gap-1">
                 <button type="button" wire:click="clearConversation"
-                    class="inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-gray-500 hover:text-danger rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    class="inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-slate-500 hover:text-danger rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                     aria-label="Padam perbualan" title="Padam perbualan">
                     <x-heroicon-o-trash class="w-5 h-5" />
                 </button>
@@ -74,16 +74,16 @@
                 <div
                     class="max-w-[85%] {{ $message['role'] === 'user'
                         ? 'bg-primary-600 text-white rounded-2xl rounded-br-md'
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-2xl rounded-bl-md' }} px-4 py-3">
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-2xl rounded-bl-md' }} px-4 py-3">
                     <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ $message['content'] }}</p>
                     <div
                         class="flex items-center gap-2 mt-1.5 {{ $message['role'] === 'user' ? 'justify-end' : 'justify-start' }}">
-                        <time class="text-xs {{ $message['role'] === 'user' ? 'text-primary-200' : 'text-gray-400' }}">
+                        <time class="text-xs {{ $message['role'] === 'user' ? 'text-primary-200' : 'text-slate-400' }}">
                             {{ \Carbon\Carbon::parse($message['timestamp'])->format('H:i') }}
                         </time>
                         @if ($message['role'] === 'assistant' && isset($message['provider']))
                             <span
-                                class="text-xs {{ $message['role'] === 'user' ? 'text-primary-200' : 'text-gray-400' }}">
+                                class="text-xs {{ $message['role'] === 'user' ? 'text-primary-200' : 'text-slate-400' }}">
                                 · {{ $message['provider'] === 'bedrock' ? 'Bedrock' : 'Ollama' }}
                             </span>
                         @endif
@@ -96,10 +96,10 @@
                     class="w-16 h-16 bg-primary-50 dark:bg-primary-900/20 rounded-full flex items-center justify-center mb-4">
                     <x-heroicon-o-chat-bubble-bottom-center-text class="w-8 h-8 text-primary-500" />
                 </div>
-                <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                <h2 class="text-lg font-medium text-slate-900 dark:text-white mb-2">
                     Selamat datang ke FAQ Bot
                 </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm mb-6">
+                <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm mb-6">
                     Tanya sebarang soalan berkaitan perkhidmatan ICT. Saya akan cuba membantu anda.
                 </p>
             </div>
@@ -108,17 +108,17 @@
         {{-- Loading Indicator --}}
         @if ($isLoading)
             <div class="flex justify-start">
-                <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-bl-md px-4 py-3">
+                <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl rounded-bl-md px-4 py-3">
                     <div class="flex items-center gap-2">
                         <div class="flex space-x-1">
-                            <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
                                 style="animation-delay: 0ms;"></span>
-                            <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
                                 style="animation-delay: 150ms;"></span>
-                            <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
                                 style="animation-delay: 300ms;"></span>
                         </div>
-                        <span class="text-sm text-gray-500">Sedang memproses...</span>
+                        <span class="text-sm text-slate-500">Sedang memproses...</span>
                     </div>
                 </div>
             </div>
@@ -141,12 +141,12 @@
     @endif
 
     {{-- Input Area with Inline Provider Selection --}}
-    <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 space-y-3">
+    <div class="border-t border-slate-200 dark:border-slate-700 pt-3 pb-4 space-y-3">
         {{-- Compact Provider Toggle --}}
         <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+            <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
                 <button type="button" wire:click="switchProvider('ollama')"
-                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md transition-all min-h-11 {{ $aiProvider === 'ollama' ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400' }}"
+                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md transition-all min-h-11 {{ $aiProvider === 'ollama' ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400' }}"
                     aria-label="Tukar ke Ollama Tempatan">
                     {{-- Ollama Local AI Icon --}}
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -158,7 +158,7 @@
                     Ollama
                 </button>
                 <button type="button" wire:click="switchProvider('bedrock')"
-                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md transition-all min-h-11 {{ $aiProvider === 'bedrock' ? 'bg-white dark:bg-gray-700 text-orange-600 dark:text-orange-400 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-orange-500 dark:hover:text-orange-400' }}"
+                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md transition-all min-h-11 {{ $aiProvider === 'bedrock' ? 'bg-white dark:bg-slate-700 text-warning-600 dark:text-warning-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-warning-500 dark:hover:text-warning-400' }}"
                     aria-label="Tukar ke AWS Bedrock">
                     {{-- AWS Smile Icon (Compact) --}}
                     <svg class="w-4 h-4" viewBox="0 0 304 182" fill="currentColor" aria-hidden="true">
@@ -174,7 +174,7 @@
             {{-- Bedrock Model Selector (Compact) --}}
             @if ($aiProvider === 'bedrock')
                 <select wire:model.live="bedrockModel"
-                    class="text-xs bg-gray-100 dark:bg-gray-800 border-0 rounded-lg py-2.5 px-3 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-primary-500 min-h-11">
+                    class="text-xs bg-slate-100 dark:bg-slate-800 border-0 rounded-lg py-2.5 px-3 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-primary-500 min-h-11">
                     <optgroup label="Claude">
                         <option value="haiku">Haiku (Pantas)</option>
                         <option value="sonnet">Sonnet (Seimbang)</option>
@@ -198,7 +198,7 @@
             <div class="flex-1 relative">
                 <input type="text" id="faq-chat-input" wire:model.live="query" placeholder="Taip soalan anda..."
                     maxlength="500" autocomplete="off" @disabled($isLoading)
-                    class="w-full min-h-11 px-4 py-3 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50" />
+                    class="w-full min-h-11 px-4 py-3 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50" />
             </div>
             <button type="submit" @disabled($isLoading || empty(trim($query ?? '')))
                 class="inline-flex items-center justify-center min-h-11 min-w-11 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
@@ -211,7 +211,7 @@
         </form>
 
         {{-- Character count (subtle) --}}
-        <div class="text-right text-xs text-gray-400">
+        <div class="text-right text-xs text-slate-400">
             {{ strlen($query ?? '') }}/500
         </div>
     </div>

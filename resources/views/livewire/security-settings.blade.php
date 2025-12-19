@@ -10,8 +10,8 @@
 <div class="max-w-4xl mx-auto p-6">
     {{-- Header --}}
     <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('portal.security_settings') }}</h2>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ __('portal.security_settings_description') }}</p>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">{{ __('portal.security_settings') }}</h2>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ __('portal.security_settings_description') }}</p>
     </div>
 
     {{-- Success/Error Messages --}}
@@ -54,12 +54,12 @@
 
     <form wire:submit="changePassword" class="space-y-6">
         {{-- Change Password Card --}}
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('portal.change_password') }}</h3>
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">{{ __('portal.change_password') }}</h3>
 
             {{-- Current Password --}}
             <div class="mb-4">
-                <label for="current-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="current-password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     {{ __('portal.current_password') }} *
                 </label>
                 <div class="relative">
@@ -68,7 +68,7 @@
                         id="current-password"
                         wire:model="currentPassword"
                         autocomplete="current-password"
-                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         required
                     >
                     <button
@@ -78,11 +78,11 @@
                         aria-label="{{ $showCurrentPassword ? __('portal.hide_password') : __('portal.show_password') }}"
                     >
                         @if($showCurrentPassword)
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                             </svg>
                         @else
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
@@ -94,7 +94,7 @@
 
             {{-- New Password --}}
             <div class="mb-4">
-                <label for="new-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="new-password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     {{ __('portal.new_password') }} *
                 </label>
                 <div class="relative">
@@ -103,7 +103,7 @@
                         id="new-password"
                         wire:model.live.debounce.300ms="newPassword"
                         autocomplete="new-password"
-                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         required
                     >
                     <button
@@ -113,11 +113,11 @@
                         aria-label="{{ $showNewPassword ? __('portal.hide_password') : __('portal.show_password') }}"
                     >
                         @if($showNewPassword)
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                             </svg>
                         @else
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
@@ -129,10 +129,10 @@
                 @if($newPassword)
                     <div class="mt-3">
                         <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">{{ __('portal.password_strength') }}</span>
+                            <span class="text-xs font-medium text-slate-700 dark:text-slate-300">{{ __('portal.password_strength') }}</span>
                             <span class="text-xs font-semibold {{ $strengthTextColor }}">{{ $passwordStrength }}%</span>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
                             <div class="{{ $strengthColor }} h-2 rounded-full transition-all duration-300" style="width: {{ $passwordStrength }}%"></div>
                         </div>
                         @if($strengthFeedback)
@@ -146,7 +146,7 @@
 
             {{-- Confirm New Password --}}
             <div class="mb-4">
-                <label for="new-password-confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="new-password-confirmation" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     {{ __('portal.confirm_new_password') }} *
                 </label>
                 <input
@@ -154,42 +154,42 @@
                     id="new-password-confirmation"
                     wire:model="newPasswordConfirmation"
                     autocomplete="new-password"
-                    class="block w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                    class="block w-full px-4 py-2 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     required
                 >
                 @error('newPasswordConfirmation') <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p> @enderror
             </div>
 
             {{-- Password Requirements --}}
-            <div class="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-4">
-                <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('portal.password_requirements') }}:</p>
-                <ul class="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+            <div class="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4 mb-4">
+                <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">{{ __('portal.password_requirements') }}:</p>
+                <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1">
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ strlen($newPassword) >= 8 ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ strlen($newPassword) >= 8 ? 'text-success-500' : 'text-slate-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_min_8_chars') }}
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[A-Z]/', $newPassword) ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[A-Z]/', $newPassword) ? 'text-success-500' : 'text-slate-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_uppercase') }}
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[a-z]/', $newPassword) ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[a-z]/', $newPassword) ? 'text-success-500' : 'text-slate-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_lowercase') }}
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[0-9]/', $newPassword) ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[0-9]/', $newPassword) ? 'text-success-500' : 'text-slate-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_number') }}
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[^a-zA-Z0-9]/', $newPassword) ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[^a-zA-Z0-9]/', $newPassword) ? 'text-success-500' : 'text-slate-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_special_char') }}
@@ -207,27 +207,27 @@
     </form>
 
     {{-- Session Information (Placeholder) --}}
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('portal.active_sessions') }}</h3>
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">{{ __('portal.active_sessions') }}</h3>
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('portal.active_sessions_description') }}</p>
-                <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ $activeSessionsCount }}</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('portal.active_sessions_description') }}</p>
+                <p class="text-2xl font-bold text-slate-900 dark:text-white mt-2">{{ $activeSessionsCount }}</p>
             </div>
-            <svg class="w-12 h-12 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-12 h-12 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
         </div>
     </div>
 
     {{-- Loading Overlay --}}
-    <div wire:loading wire:target="changePassword" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center">
+    <div wire:loading wire:target="changePassword" class="fixed inset-0 bg-slate-900 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-slate-800 rounded-lg p-6 flex flex-col items-center">
             <svg class="animate-spin h-10 w-10 text-primary-600" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <span class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ __('portal.saving') }}</span>
+            <span class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ __('portal.saving') }}</span>
         </div>
     </div>
 </div>
