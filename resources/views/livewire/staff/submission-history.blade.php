@@ -64,7 +64,7 @@ new class extends Component
                         id="search"
                         wire:model.live.debounce.500ms="search"
                         placeholder="{{ __('history.search_placeholder') }}"
-                        class="form-input block w-full rounded-md border border-gray-300 dark:border-gray-600
+                        class="form-input block w-full rounded-lg border border-gray-300 dark:border-gray-600
                                bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
@@ -78,7 +78,7 @@ new class extends Component
             <div class="flex gap-2">
                 <select
                     wire:model.live="perPage"
-                    class="form-select rounded-md border border-gray-300 dark:border-gray-600
+                    class="form-select rounded-lg border border-gray-300 dark:border-gray-600
                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                            shadow-sm focus:border-primary-500 focus:ring-primary-500
                            focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
@@ -135,7 +135,7 @@ new class extends Component
                                     <button
                                         wire:click="setSortBy('ticket_number')"
                                         class="flex items-center gap-2 hover:text-primary-600 dark:hover:text-primary-400
-                                               focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 py-1"
+                                               focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 min-h-11"
                                         :aria-sort="'{{ $this->sortBy }}' === 'ticket_number' ? ('{{ $this->sortDirection }}' === 'asc' ? 'ascending' : 'descending') : 'none'">
                                         {{ __('history.ticket_no') }}
                                         @if($this->sortBy === 'ticket_number')
@@ -152,7 +152,7 @@ new class extends Component
                                     <button
                                         wire:click="setSortBy('title')"
                                         class="flex items-center gap-2 hover:text-primary-600 dark:hover:text-primary-400
-                                               focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 py-1"
+                                               focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 min-h-11"
                                         :aria-sort="'{{ $this->sortBy }}' === 'title' ? ('{{ $this->sortDirection }}' === 'asc' ? 'ascending' : 'descending') : 'none'">
                                         {{ __('history.subject') }}
                                         @if($this->sortBy === 'title')
@@ -169,7 +169,7 @@ new class extends Component
                                     <button
                                         wire:click="setSortBy('status')"
                                         class="flex items-center gap-2 hover:text-primary-600 dark:hover:text-primary-400
-                                               focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 py-1"
+                                               focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 min-h-11"
                                         :aria-sort="'{{ $this->sortBy }}' === 'status' ? ('{{ $this->sortDirection }}' === 'asc' ? 'ascending' : 'descending') : 'none'">
                                         {{ __('history.status') }}
                                         @if($this->sortBy === 'status')
@@ -186,7 +186,7 @@ new class extends Component
                                     <button
                                         wire:click="setSortBy('created_at')"
                                         class="flex items-center gap-2 hover:text-primary-600 dark:hover:text-primary-400
-                                               focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 py-1"
+                                               focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 min-h-11"
                                         :aria-sort="'{{ $this->sortBy }}' === 'created_at' ? ('{{ $this->sortDirection }}' === 'asc' ? 'ascending' : 'descending') : 'none'">
                                         {{ __('history.date') }}
                                         @if($this->sortBy === 'created_at')
@@ -215,7 +215,7 @@ new class extends Component
                                     </td>
                                     <td class="px-6 py-4">
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
-                                                   bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                                                   bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200">
                                             {{ ucfirst($submission->status) }}
                                         </span>
                                     </td>
@@ -225,7 +225,7 @@ new class extends Component
                                     <td class="px-6 py-4 text-right">
                                         <a href="{{ route('submissions.show', $submission) }}"
                                            class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300
-                                                  focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 py-1 font-medium"
+                                                  focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 font-medium min-h-11 inline-flex items-center"
                                            wire:navigate>
                                             {{ __('history.view') }}
                                             <span class="sr-only">{{ $submission->title }}</span>
