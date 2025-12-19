@@ -49,8 +49,8 @@
 
     // Size styles - all meet 44px minimum touch target
     $sizes = [
-        'sm' => 'min-h-[44px] min-w-[44px] px-4 py-2 text-sm',
-        'md' => 'min-h-[44px] min-w-[44px] px-5 py-2.5 text-base',
+        'sm' => 'min-h-44 min-w-44 px-4 py-2 text-sm',
+        'md' => 'min-h-44 min-w-44 px-5 py-2.5 text-base',
         'lg' => 'min-h-[52px] min-w-[52px] px-6 py-3 text-lg',
     ];
 

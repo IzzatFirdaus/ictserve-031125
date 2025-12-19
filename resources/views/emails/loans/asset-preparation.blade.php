@@ -1,4 +1,4 @@
-﻿<x-mail::message>
+<x-mail::message>
 # Penyediaan Aset / Asset Preparation
 
 @php

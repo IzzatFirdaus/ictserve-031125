@@ -49,6 +49,24 @@ class StaffPortalRoutesTest extends TestCase
     }
 
     #[Test]
+    public function helpdesk_authenticated_tickets_route_is_registered(): void
+    {
+        $this->assertTrue(Route::has('helpdesk.authenticated.tickets'));
+        $route = Route::getRoutes()->getByName('helpdesk.authenticated.tickets');
+
+        $this->assertStringStartsWith(\App\Livewire\Helpdesk\MyTickets::class, $route->getAction()['uses']);
+    }
+
+    #[Test]
+    public function loan_authenticated_history_route_is_registered(): void
+    {
+        $this->assertTrue(Route::has('loan.authenticated.history'));
+        $route = Route::getRoutes()->getByName('loan.authenticated.history');
+
+        $this->assertStringStartsWith(\App\Livewire\Loans\LoanHistory::class, $route->getAction()['uses']);
+    }
+
+    #[Test]
     public function staff_can_view_claim_submission_page(): void
     {
         $response = $this->actingAs($this->staff)->get(route('staff.claim-submissions'));

@@ -24,8 +24,8 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
 
-    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
-    <x-theme-init-script />
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.1 --}}
+    <x-theme-init />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -97,8 +97,8 @@
 
                     <!-- Right Side: Theme & Auth -->
                     <div class="hidden md:flex items-center gap-3">
-                        {{-- Theme Switcher (v3.6.0) --}}
-                        <livewire:components.theme-toggle />
+                        {{-- Theme Switcher (v3.6.1) --}}
+                        <livewire:components.theme-toggle-unified />
 
                         @guest
                             <a href="{{ route('register') }}"
@@ -176,7 +176,7 @@
                     <div class="px-2 space-y-2">
                         <div class="flex items-center justify-between px-3 py-2">
                             <span class="text-sm font-medium text-white">{{ __('Tema') }}</span>
-                            <livewire:components.theme-toggle />
+                            <livewire:components.theme-toggle-unified />
                         </div>
                         <a href="{{ route('register') }}"
                             class="flex items-center justify-center px-3 py-2 rounded-lg text-base font-semibold text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-white min-h-11">

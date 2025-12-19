@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Confirm Modal Volt Component v3.6.0
  *
