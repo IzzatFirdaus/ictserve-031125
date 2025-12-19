@@ -21,7 +21,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <x-theme-init-script />
+    <x-theme-init />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
@@ -83,13 +83,13 @@
                         </a>
                     </nav>
                     <div class="hidden md:flex items-center gap-3">
-                        {{-- Theme Toggle (v3.6.0) --}}
-                        <livewire:components.theme-toggle />
+                        {{-- Theme Toggle (v3.6.1) --}}
+                        <livewire:components.theme-toggle-unified />
                         {{-- Language Switcher removed per D15 v3.6.0 - Bahasa Melayu sahaja --}}
                         <a href="{{ route('register') }}"
-	                            class="px-4 py-2 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">{{ __('Daftar') }}</a>
-	                        @auth
-	                            <a href="{{ route('dashboard') }}"
+                            class="px-4 py-2 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">{{ __('Daftar') }}</a>
+                        @auth
+                            <a href="{{ route('dashboard') }}"
                                 class="px-4 py-2 border border-white rounded-lg text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">{{ __('Dashboard') }}</a>
                         @else
                             <a href="{{ route('login') }}"
@@ -150,7 +150,7 @@
                     <div class="px-2 space-y-2">
                         <div class="flex items-center justify-between px-3 py-2">
                             <span class="text-sm font-medium text-white">{{ __('Tema') }}</span>
-                            <livewire:components.theme-toggle />
+                            <livewire:components.theme-toggle-unified />
                         </div>
                         <a href="{{ route('register') }}"
                             class="flex items-center justify-center px-3 py-2 rounded-lg text-base font-semibold text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-white min-h-11">{{ __('Daftar') }}</a>

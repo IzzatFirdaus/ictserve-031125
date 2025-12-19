@@ -31,8 +31,8 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
 
-    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
-    <x-theme-init-script />
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.1 --}}
+    <x-theme-init />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -66,7 +66,8 @@
             </div>
         </main>
 
-        <footer class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 theme-transition" role="contentinfo">
+        <footer class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 theme-transition"
+            role="contentinfo">
             <div
                 class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-gray-600 dark:text-gray-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <p>&copy; {{ now()->year }} {{ __('footer.ministry_name') }}. {{ __('footer.all_rights_reserved') }}.
