@@ -1,4 +1,37 @@
-FROM php:8.4-fpm-alpine
+# Multi-stage build for ICTServe
+# Stage 1: Node.js build environment
+FROM node:24.12.0-alpine AS node-builder
+
+# Set working directory for Node.js build
+WORKDIR /app
+
+# Create non-root user for Node.js operations
+RUN addgroup -g 1001 nodeuser && \
+    adduser -D -u 1001 -G nodeuser nodeuser
+
+# Copy package files
+COPY package*.json ./
+
+# Configure npm for non-root user
+RUN mkdir -p /tmp/.npm-cache /tmp/.npm-global && \
+    npm config set cache /tmp/.npm-cache --global && \
+    npm config set prefix /tmp/.npm-global --global && \
+    chown -R nodeuser:nodeuser /app /tmp/.npm-cache /tmp/.npm-global
+
+# Switch to non-root user for npm operations
+USER nodeuser
+
+# Install dependencies
+RUN npm ci --prefer-offline --no-audit
+
+# Copy source files (as nodeuser)
+COPY --chown=nodeuser:nodeuser . .
+
+# Skip build in Docker - will be done at runtime after vendor is mounted
+# RUN npm run build
+
+# Stage 2: PHP runtime environment
+FROM php:8.2.12-fpm-alpine
 
 # Keep things non-interactive
 ARG COMPOSER_ALLOW_SUPERUSER=1
@@ -20,11 +53,13 @@ RUN apk add --no-cache --update \
     zlib-dev \
     mysql-client \
     netcat-openbsd \
-    nodejs \
-    npm \
     libpng-dev \
     libjpeg-turbo-dev \
     freetype-dev \
+    shadow \
+    sudo \
+    nodejs \
+    npm \
     $PHPIZE_DEPS
 
 # Configure and install PHP extensions used by Laravel
@@ -38,6 +73,10 @@ RUN pecl install redis \
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Create application user and group matching www-data
+RUN addgroup -g 82 -S www-data || true && \
+    adduser -u 82 -D -S -G www-data www-data || true
 
 # Create and set working directory
 WORKDIR /var/www/html
@@ -53,20 +92,28 @@ COPY composer.json composer.lock ./
 # This Dockerfile expects vendor/ to already be present from the host mount
 RUN echo "Skipping composer install in Docker build - vendor should be mounted from host"
 
-# Copy application
+# Copy application files
 COPY . .
+
+# Skip copying built assets - will be built at runtime
+# COPY --from=node-builder --chown=www-data:www-data /app/public/build ./public/build
 
 # Generate optimized autoload params (avoid running post-install scripts during build)
 RUN composer dump-autoload --optimize --no-scripts || true
 
-# Install npm dependencies and build assets (only if package.json exists)
-RUN if [ -f package.json ]; then \
-        npm ci --prefer-offline --no-audit && \
-        npm run build; \
-    fi
+# Configure npm for www-data user (for development mode)
+RUN mkdir -p /var/www/.npm-cache /var/www/.npm-global /var/www/html/node_modules && \
+    chown -R www-data:www-data /var/www/.npm-cache /var/www/.npm-global /var/www/html/node_modules && \
+    chmod -R 775 /var/www/.npm-cache /var/www/.npm-global /var/www/html/node_modules && \
+    echo 'export NPM_CONFIG_CACHE=/var/www/.npm-cache' >> /etc/profile.d/npm.sh && \
+    echo 'export NPM_CONFIG_PREFIX=/var/www/.npm-global' >> /etc/profile.d/npm.sh && \
+    echo 'export PATH=/var/www/.npm-global/bin:$PATH' >> /etc/profile.d/npm.sh && \
+    echo 'export NPM_CONFIG_FUND=false' >> /etc/profile.d/npm.sh && \
+    echo 'export NPM_CONFIG_AUDIT=false' >> /etc/profile.d/npm.sh
 
 # Ensure storage and cache directories are writable for the www-data user
-RUN chown -R www-data:www-data storage bootstrap/cache || true
+RUN chown -R www-data:www-data storage bootstrap/cache public/build || true && \
+    chmod -R 775 storage bootstrap/cache || true
 
 EXPOSE 8000
 
@@ -75,12 +122,53 @@ EXPOSE 8000
 # When running containers without docker-compose you can still set environment variables
 # or copy `.env.docker` to `.env` inside the container if necessary.
 
+# Copy PHP configuration
+COPY docker/php/php.ini /usr/local/etc/php/conf.d/ictserve.ini
+
 # Copy helper scripts and ensure they are executable
 COPY scripts/docker/wait-for-db.sh /usr/local/bin/wait-for-db.sh
 RUN chmod +x /usr/local/bin/wait-for-db.sh || true
 
-# Entrypoint waits for DB availability before launching the app command
-ENTRYPOINT ["/usr/local/bin/wait-for-db.sh"]
+# Create comprehensive entrypoint script with npm/Vite permission fixes
+RUN echo '#!/bin/sh' > /usr/local/bin/docker-entrypoint.sh && \
+    echo 'set -e' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '# Wait for database' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '/usr/local/bin/wait-for-db.sh' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '# Fix Laravel permissions on startup' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '# Comprehensive npm and Vite permission fixes' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'if [ -d /var/www/html/node_modules ]; then' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '  echo "Fixing node_modules permissions..."' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '  chown -R www-data:www-data /var/www/html/node_modules || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '  chmod -R 775 /var/www/html/node_modules || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'fi' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '# Ensure npm cache and global directories exist with correct permissions' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'mkdir -p /var/www/.npm-cache /var/www/.npm-global || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'chown -R www-data:www-data /var/www/.npm-cache /var/www/.npm-global || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'chmod -R 775 /var/www/.npm-cache /var/www/.npm-global || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '# Create Vite temp directory proactively with correct permissions' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'mkdir -p /var/www/html/node_modules/.vite-temp || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'chown -R www-data:www-data /var/www/html/node_modules/.vite-temp || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'chmod -R 775 /var/www/html/node_modules/.vite-temp || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '# Fix any existing build output permissions' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'if [ -d /var/www/html/public/build ]; then' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '  chown -R www-data:www-data /var/www/html/public/build || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '  chmod -R 775 /var/www/html/public/build || true' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'fi' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo '# Execute command' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'exec "$@"' >> /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Entrypoint handles DB wait and permission fixes
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 # Default command for local development (bind mount will override code in container)
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["php-fpm"]
