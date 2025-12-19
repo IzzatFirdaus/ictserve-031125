@@ -1,4 +1,4 @@
-﻿{{--
+{{--
     Figma Button Component Examples for ICTServe
     Demonstrates: Hybrid Architecture, Bahasa Melayu, WCAG Compliance
 --}}

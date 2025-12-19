@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * FAQ Page - Frequently Asked Questions (Enhanced v3.6.0)
  *
@@ -22,7 +22,7 @@
 
     {{-- Page Header with Enhanced Branding (D12 §3.1, D13 §2.4) --}}
     <section
-        class="bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white py-12 md:py-16 theme-transition"
+        class="bg-linear-to-r from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white py-12 md:py-16 theme-transition"
         role="banner" aria-labelledby="page-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Enhanced Breadcrumbs (D12 §6.1, WCAG 2.2 AA) --}}

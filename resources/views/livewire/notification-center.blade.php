@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use Illuminate\Notifications\DatabaseNotification;
 use Livewire\Volt\Component;

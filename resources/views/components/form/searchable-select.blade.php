@@ -71,7 +71,7 @@
         @keydown.enter.prevent="toggle()" @keydown.space.prevent="toggle()" :aria-expanded="isOpen"
         :aria-labelledby="labelId" aria-haspopup="listbox" :aria-controls="listboxId"
         :disabled="{{ $disabled ? 'true' : 'false' }}"
-        class="relative w-full cursor-pointer rounded-md border border-gray-300 bg-white py-2.5 pl-3 pr-10 text-left shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white min-h-[44px] {{ $disabled ? 'opacity-50 cursor-not-allowed' : '' }}">
+        class="relative w-full cursor-pointer rounded-md border border-gray-300 bg-white py-2.5 pl-3 pr-10 text-left shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white min-h-44 {{ $disabled ? 'opacity-50 cursor-not-allowed' : '' }}">
         <span x-text="selectedLabel || placeholder" :class="{ 'text-gray-500': !selectedLabel }"
             class="block truncate"></span>
         <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -95,7 +95,7 @@
             <input type="text" x-model="searchQuery" x-ref="searchInput" @keydown.escape="close()"
                 @keydown.arrow-down.prevent="focusNextOption()" @keydown.arrow-up.prevent="focusPreviousOption()"
                 @keydown.enter.prevent="selectFocusedOption()" :placeholder="searchPlaceholder"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white min-h-[44px]"
+                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white min-h-44"
                 aria-label="{{ __('Search options') }}" />
         </div>
 
@@ -118,7 +118,7 @@
                         'text-gray-900 dark:text-white': focusedIndex !== index,
                         'bg-primary-50 dark:bg-primary-900/20': selectedValue == option.id && focusedIndex !== index
                     }"
-                    class="relative cursor-pointer select-none py-2 pl-3 pr-9 min-h-[44px] flex items-center"
+                    class="relative cursor-pointer select-none py-2 pl-3 pr-9 min-h-44 flex items-center"
                     tabindex="-1">
                     <span x-text="option.name" :class="{ 'font-semibold': selectedValue == option.id }"
                         class="block truncate"></span>

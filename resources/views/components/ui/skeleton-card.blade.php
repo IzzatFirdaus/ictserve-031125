@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Skeleton Card Component
  *

@@ -1,4 +1,4 @@
-﻿{{--
+{{--
     QR Code Display Component
 
     @trace D12 §6.15 (Print Optimization)
