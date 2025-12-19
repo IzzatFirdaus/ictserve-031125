@@ -76,7 +76,7 @@ new class extends Component
 
         <!-- Success Message -->
         @if($showSuccessMessage)
-            <div class="mb-6 p-4 bg-green-50 dark:bg-green-900 border-l-4 border-green-500 rounded-md"
+            <div class="mb-6 p-4 bg-green-50 dark:bg-green-900 border-l-4 border-green-500 rounded-lg"
                  role="alert"
                  aria-live="polite">
                 <div class="flex items-center">
@@ -103,7 +103,7 @@ new class extends Component
                         type="text"
                         id="name"
                         wire:model.live.debounce.300ms="name"
-                        class="form-input block w-full rounded-md border border-gray-300 dark:border-gray-600
+                        class="form-input block w-full rounded-lg border border-gray-300 dark:border-gray-600
                                bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
@@ -129,7 +129,7 @@ new class extends Component
                         type="email"
                         id="email"
                         wire:model.live.debounce.300ms="email"
-                        class="form-input block w-full rounded-md border border-gray-300 dark:border-gray-600
+                        class="form-input block w-full rounded-lg border border-gray-300 dark:border-gray-600
                                bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
@@ -157,7 +157,7 @@ new class extends Component
                         type="tel"
                         id="phone"
                         wire:model.live.debounce.300ms="phone"
-                        class="form-input block w-full rounded-md border border-gray-300 dark:border-gray-600
+                        class="form-input block w-full rounded-lg border border-gray-300 dark:border-gray-600
                                bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
@@ -184,7 +184,7 @@ new class extends Component
                         type="text"
                         id="department"
                         wire:model.live.debounce.300ms="department"
-                        class="form-input block w-full rounded-md border border-gray-300 dark:border-gray-600
+                        class="form-input block w-full rounded-lg border border-gray-300 dark:border-gray-600
                                bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
@@ -202,7 +202,7 @@ new class extends Component
                 <div class="flex gap-4">
                     <button
                         type="submit"
-                        class="btn-primary min-h-11 px-6 py-3 rounded-md shadow-button
+                        class="btn-primary min-h-11 px-6 py-3 rounded-lg shadow-button
                                bg-primary-600 text-white hover:bg-primary-700 dark:hover:bg-primary-700
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                transition-colors duration-200 font-medium inline-flex items-center justify-center"
@@ -216,7 +216,7 @@ new class extends Component
                     </button>
 
                     <a href="{{ route('dashboard') }}"
-                       class="btn-secondary min-h-11 px-6 py-3 rounded-md shadow-button
+                       class="btn-secondary min-h-11 px-6 py-3 rounded-lg shadow-button
                               bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white
                               hover:bg-gray-300 dark:hover:bg-gray-600
                               focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:outline-none
@@ -229,7 +229,7 @@ new class extends Component
         </div>
 
         <!-- Additional Info -->
-        <div class="mt-8 bg-blue-50 dark:bg-blue-900 rounded-md p-4 border border-blue-200 dark:border-blue-700">
+        <div class="mt-8 bg-blue-50 dark:bg-blue-900 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
             <h3 class="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
                 {{ __('profile.security_info') }}
             </h3>
