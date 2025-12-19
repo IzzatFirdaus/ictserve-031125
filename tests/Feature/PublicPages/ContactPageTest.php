@@ -298,7 +298,7 @@ class ContactPageTest extends TestCase
         $response = $this->get(route('contact'));
 
         // Check for minimum 44px height
-        $response->assertSee('min-h-[44px]', false);
+        $response->assertSee('min-h-44', false);
     }
 
     /**
