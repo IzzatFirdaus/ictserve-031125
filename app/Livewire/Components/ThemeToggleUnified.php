@@ -40,7 +40,7 @@ class ThemeToggleUnified extends Component
         $this->dispatch('theme-changed', ['theme' => $this->theme]);
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.components.theme-toggle-unified');
     }
