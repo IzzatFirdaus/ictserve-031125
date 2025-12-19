@@ -70,7 +70,7 @@
 
             {{-- Main Content Area (role="main") - MyDS spacing per D13 §2.6 --}}
             <main id="main-content" role="main"
-                class="flex-1 overflow-y-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                class="flex-1 overflow-y-auto focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 tabindex="-1">
                 {{-- Page Header --}}
                 @if (isset($header))
