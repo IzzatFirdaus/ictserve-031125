@@ -89,11 +89,11 @@ $ariaDescribedBy = !empty($describedBy) ? implode(' ', $describedBy) : null;
 $inputClasses =
 'block w-full rounded-lg shadow-sm sm:text-sm min-h-11 px-3 py-2 ' .
 'border transition-colors duration-200 ' .
-'focus:outline-none focus:ring-3 focus:ring-offset-0 ' .
+'focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 ' .
 'dark:bg-gray-800 dark:text-white ' .
 ($hasError
-? 'border-danger-500 text-danger-900 placeholder-danger-400 focus:ring-danger-500 dark:border-danger-400 dark:text-danger-100'
-: 'border-gray-300 focus:ring-primary-500 dark:border-gray-600');
+? 'border-danger-500 text-danger-900 placeholder-danger-400 focus-visible:ring-danger-500 dark:border-danger-400 dark:text-danger-100'
+: 'border-gray-300 focus-visible:ring-primary-500 dark:border-gray-600');
 @endphp
 
 <div {{ $attributes->only('class')->merge(['class' => 'w-full']) }}>
