@@ -546,6 +546,7 @@ resources/views/
 **Service**: `app/Services/RegistrationService.php`
 
 Ringkasan implementasi (source of truth):
+
 - Validasi domain e-mel menggunakan `ends_with:@motac.gov.my`
 - Password strength indicator dan `confirmed`
 - Logik pendaftaran dipusatkan melalui `RegistrationServiceInterface`
@@ -557,6 +558,7 @@ Ringkasan implementasi (source of truth):
 **Google SSO**: `app/Http/Controllers/Auth/GoogleAuthController.php` + konfigurasi `config/services.php`
 
 Ringkasan implementasi:
+
 - UI login berasaskan Livewire Volt (bukan Blade form statik)
 - Laluan SSO Google melalui route `auth.google.redirect` / `auth.google.callback` (rujuk `routes/auth.php`)
 
@@ -574,6 +576,7 @@ Ringkasan implementasi:
 **Service**: `app/Services/AccountLinkingService.php`
 
 Ringkasan implementasi:
+
 - Pengguna authenticated (staff) boleh mencari rekod tetamu yang belum dipautkan menggunakan e-mel.
 - Pautan dibuat dengan mengemaskini `user_id` pada rekod yang dipilih.
 - Carian rekod tetamu menyasar `helpdesk_tickets.guest_email` dan `loan_applications.applicant_email` (rekod `user_id` = NULL).
@@ -585,6 +588,7 @@ Ringkasan implementasi:
 **View**: `resources/views/livewire/notification-preferences.blade.php`
 
 Ringkasan implementasi:
+
 - Toggle granular untuk jenis notifikasi (contoh: `ticketStatusUpdates`, `loanApprovalNotifications`, dsb.)
 - Konfigurasi kekerapan e-mel menggunakan nilai: `immediate`, `daily_digest`, `weekly_digest`, `disabled`
 - Penyimpanan ke `user_notification_preferences` (rujuk Model `App/Models/UserNotificationPreference.php`)
@@ -707,6 +711,7 @@ Ringkasan implementasi:
 ### 6.2. AI Chat Bubble Component
 
 UI “bubble” chat diimplementasi terus dalam view Livewire:
+
 - `resources/views/livewire/bedrock-chat.blade.php` (chat staff + token usage)
 - `resources/views/livewire/ollama/faq-bot.blade.php` (FAQ bot)
 
@@ -847,6 +852,7 @@ UI “bubble” chat diimplementasi terus dalam view Livewire:
 **Route**: `routes/web.php` (`/change-locale/{locale}`)
 
 Nota:
+
 - UI switcher berasaskan Livewire/Volt tidak digunakan dalam versi semasa (antara muka utama Bahasa Melayu).
 - Laluan tukar locale kekal untuk keperluan dalaman/ujian, tertakluk kepada polisi aplikasi.
 
@@ -1217,6 +1223,7 @@ class TicketForm extends Component
 ### 11.2. Volt Single-File Component
 
 Contoh Volt sedia ada (source of truth):
+
 - `resources/views/livewire/loan/track-application.blade.php` (token tracking + `state/mount/computed`)
 - `resources/views/livewire/components/theme-switcher.blade.php` (theme toggle + persist)
 
