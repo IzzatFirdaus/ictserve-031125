@@ -1,7 +1,7 @@
 # MCP Documentation Index
 
-**Last Updated**: 2025-12-16  
-**Total Documents**: 13
+**Last Updated**: 2025-12-19  
+**Total Documents**: 15
 
 This directory contains comprehensive documentation for Model Context Protocol (MCP) server configuration and usage in the ICTServe project.
 
@@ -109,6 +109,20 @@ This directory contains comprehensive documentation for Model Context Protocol (
 - Memory server JSON error resolution (December 8, 2025)
 - Root cause analysis and fixes
 - Programmatic fallback documentation
+
+**[MCP_RESOLUTION_DOCKER_TO_LOCAL.md](MCP_RESOLUTION_DOCKER_TO_LOCAL.md)** - **NEW: 2025-12-19**
+
+- Docker to local development migration guide
+- Complete configuration resolution from Docker containers to direct processes
+- Performance improvements and simplified setup
+- **Use this for**: Understanding the migration from Docker-based to local MCP setup
+
+**[MCP_RESOLUTION_SUMMARY_2025_12_19.md](MCP_RESOLUTION_SUMMARY_2025_12_19.md)** - **NEW: 2025-12-19**
+
+- Executive summary of December 19, 2025 MCP resolution
+- Complete list of changes and improvements
+- Testing status and verification steps
+- **Use this for**: Quick overview of the latest MCP configuration changes
 
 **[UPDATE_SUMMARY.md](UPDATE_SUMMARY.md)**
 

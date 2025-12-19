@@ -1,213 +1,154 @@
 {
-    "mcpServers": {
-        "sequentialthinking": {
-            "command": "docker",
-            "args": [
-                "exec",
-                "-i",
-                "ictserve-mcp-sequential-thinking",
-                "npx",
-                "@modelcontextprotocol/server-sequential-thinking"
-            ],
-            "env": {
-                "NODE_OPTIONS": "--max-old-space-size=4096"
-            },
-            "disabled": false,
-            "autoApprove": [
-                "sequentialthinking"
-            ]
-        },
-        "memory": {
-            "command": "docker",
-            "args": [
-                "exec",
-                "-i",
-                "ictserve-mcp-memory",
-                "npx",
-                "@modelcontextprotocol/server-memory",
-                "/data/memory.jsonl"
-            ],
-            "disabled": false,
-            "autoApprove": [
-                "create_entities",
-                "create_relations",
-                "add_observations",
-                "delete_entities",
-                "delete_observations",
-                "delete_relations",
-                "read_graph",
-                "search_nodes",
-                "open_nodes"
-            ]
-        },
-        "chrome-devtools": {
-            "command": "docker",
-            "args": [
-                "exec",
-                "-i",
-                "ictserve-mcp-chrome-devtools",
-                "npx",
-                "chrome-devtools-mcp@latest"
-            ],
-            "disabled": false,
-            "autoApprove": [
-                "navigate_page",
-                "take_snapshot",
-                "click",
-                "fill",
-                "evaluate_script"
-            ]
-        },
-        "firecrawl": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "firecrawl-mcp"
-            ],
-            "env": {
-                "FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
-            },
-            "disabled": true,
-            "autoApprove": []
-        },
-        "playwright": {
-            "command": "docker",
-            "args": [
-                "exec",
-                "-i",
-                "ictserve-mcp-playwright",
-                "npx",
-                "@playwright/mcp@latest"
-            ],
-            "disabled": false,
-            "autoApprove": [
-                "browser_navigate",
-                "browser_click",
-                "browser_snapshot",
-                "browser_fill",
-                "browser_evaluate",
-                "browser_close"
-            ]
-        },
-        "context7": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@upstash/context7-mcp"
-            ],
-            "env": {
-                "CONTEXT7_API_KEY": "$env:CONTEXT7_API_KEY"
-            },
-            "disabled": true,
-            "autoApprove": [
-                "resolve-library-id",
-                "get-library-docs"
-            ]
-        },
-        "laravel-boost": {
-            "command": "php",
-            "args": [
-                "artisan",
-                "mcp:start",
-                "laravel-boost"
-            ],
-            "cwd": "C:\\laragon\\www\\ictserve-031125",
-            "env": {
-                "APP_ENV": "local"
-            },
-            "disabled": false,
-            "autoApprove": [
-                "application-info",
-                "browser-logs",
-                "database-connections",
-                "database-query",
-                "database-schema",
-                "get-absolute-url",
-                "get-config",
-                "last-error",
-                "list-artisan-commands",
-                "list-available-config-keys",
-                "list-available-env-vars",
-                "list-routes",
-                "read-log-entries",
-                "report-feedback",
-                "search-docs",
-                "tinker"
-            ]
-        },
-        "fetch": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "mcp-server-fetch"
-            ],
-            "disabled": false,
-            "autoApprove": [
-                "fetch"
-            ]
-        },
-        "deepl": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "deepl-mcp-server"
-            ],
-            "env": {
-                "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
-            },
-            "disabled": true,
-            "autoApprove": [
-                "get-source-languages",
-                "get-target-languages",
-                "translate-text",
-                "rephrase-text"
-            ]
-        },
-        "github": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-github"
-            ],
-            "env": {
-                "GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
-            },
-            "disabled": true,
-            "autoApprove": []
-        },
-        "gitkraken": {
-            "command": "gk",
-            "args": [
-                "mcp"
-            ],
-            "disabled": true,
-            "autoApprove": []
-        },
-        "bedrock-opus": {
-            "command": "node",
-            "args": [
-                "${workspaceFolder}/mcp-servers/bedrock-server.js"
-            ],
-            "env": {
-                "AWS_ACCESS_KEY_ID": "$env:AWS_ACCESS_KEY_ID",
-                "AWS_SECRET_ACCESS_KEY": "$env:AWS_SECRET_ACCESS_KEY",
-                "AWS_BEDROCK_REGION": "us-east-1"
-            },
-            "disabled": true,
-            "autoApprove": [
-                "invoke_claude_opus",
-                "invoke_claude_sonnet",
-                "invoke_claude_haiku"
-            ]
-        },
-        "herd": {
-            "command": "php",
-            "args": [
-                "C:/Users/izzatfirdaus/.config/herd/bin/herd-mcp.phar"
-            ],
-            "env": {
-                "SITE_PATH": "C:\\laragon\\www\\ictserve-031125"
-            }
-        }
-    }
+	"mcpServers": {
+		"memory": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-memory",
+				"storage/mcp/memory.jsonl"
+			],
+			"disabled": false,
+			"autoApprove": [
+				"create_entities",
+				"create_relations",
+				"add_observations",
+				"delete_entities",
+				"delete_observations",
+				"delete_relations",
+				"read_graph",
+				"search_nodes",
+				"open_nodes"
+			]
+		},
+		"sequentialthinking": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+			"env": {
+				"NODE_OPTIONS": "--max-old-space-size=4096"
+			},
+			"disabled": false,
+			"autoApprove": ["sequentialthinking"]
+		},
+		"laravel-boost": {
+			"command": "php",
+			"args": ["artisan", "mcp:start", "laravel-boost"],
+			"env": {
+				"APP_ENV": "local"
+			},
+			"disabled": false,
+			"autoApprove": [
+				"application-info",
+				"browser-logs",
+				"database-connections",
+				"database-query",
+				"database-schema",
+				"get-absolute-url",
+				"get-config",
+				"last-error",
+				"list-artisan-commands",
+				"list-available-config-keys",
+				"list-available-env-vars",
+				"list-routes",
+				"read-log-entries",
+				"report-feedback",
+				"search-docs",
+				"tinker"
+			]
+		},
+		"ictserve": {
+			"command": "php",
+			"args": ["artisan", "mcp:start", "ictserve"],
+			"env": {
+				"APP_ENV": "local"
+			},
+			"disabled": false,
+			"autoApprove": ["query-helpdesk-tickets", "check-asset-status"]
+		},
+		"fetch": {
+			"command": "uvx",
+			"args": ["mcp-server-fetch"],
+			"disabled": false,
+			"autoApprove": ["fetch"]
+		},
+		"chrome-devtools": {
+			"command": "npx",
+			"args": ["-y", "chrome-devtools-mcp@latest"],
+			"disabled": false,
+			"autoApprove": [
+				"navigate_page",
+				"take_snapshot",
+				"click",
+				"fill",
+				"evaluate_script",
+				"take_screenshot"
+			]
+		},
+		"playwright": {
+			"command": "npx",
+			"args": ["-y", "@playwright/mcp@latest"],
+			"disabled": false,
+			"autoApprove": [
+				"browser_navigate",
+				"browser_click",
+				"browser_snapshot",
+				"browser_fill",
+				"browser_evaluate",
+				"browser_close",
+				"browser_take_screenshot"
+			]
+		},
+		"context7": {
+			"command": "npx",
+			"args": ["-y", "@upstash/context7-mcp"],
+			"env": {
+				"CONTEXT7_API_KEY": "$env:CONTEXT7_API_KEY"
+			},
+			"disabled": true,
+			"autoApprove": ["resolve-library-id", "get-library-docs"]
+		},
+		"deepl": {
+			"command": "npx",
+			"args": ["-y", "deepl-mcp-server"],
+			"env": {
+				"DEEPL_API_KEY": "$env:DEEPL_API_KEY"
+			},
+			"disabled": true,
+			"autoApprove": [
+				"get-source-languages",
+				"get-target-languages",
+				"translate-text",
+				"rephrase-text"
+			]
+		},
+		"firecrawl": {
+			"command": "npx",
+			"args": ["-y", "firecrawl-mcp"],
+			"env": {
+				"FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
+			},
+			"disabled": true,
+			"autoApprove": []
+		},
+		"github": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-github"],
+			"env": {
+				"GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
+			},
+			"disabled": false,
+			"autoApprove": [
+				"create_or_update_file",
+				"get_file_contents",
+				"get_repository",
+				"list_repositories",
+				"search_repositories"
+			]
+		},
+		"gitkraken": {
+			"command": "gk",
+			"args": ["mcp"],
+			"disabled": true,
+			"autoApprove": []
+		}
+	}
 }
