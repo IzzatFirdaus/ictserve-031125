@@ -42,8 +42,8 @@
 
                     <div class="flex items-center gap-3 ml-auto">
                         @if ($search)
-                            <button wire:click="clearSearch" type="button" class="focus:outline-none" aria-label="{{ __('unified_search.clear') }}">
-                                <x-heroicon-m-x-circle aria-hidden="true" class="w-6 h-6 text-gray-400 hover:text-red-500 transition-colors" />
+                            <button wire:click="clearSearch" type="button" class="focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded p-1 min-h-11 min-w-11 flex items-center justify-center" aria-label="{{ __('unified_search.clear') }}">
+                                <x-heroicon-m-x-circle aria-hidden="true" class="w-6 h-6 text-gray-400 hover:text-danger-500 transition-colors" />
                             </button>
                         @endif
                         <div class="hidden sm:flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg" aria-hidden="true">
@@ -271,7 +271,7 @@
                             <p class="text-gray-500 dark:text-gray-400 max-w-sm">
                                 {{ __('unified_search.no_results_message', ['query' => $search]) }}
                             </p>
-                            <button wire:click="clearSearch" class="mt-6 text-primary-600 hover:text-primary-500 font-medium">
+                            <button wire:click="clearSearch" class="mt-6 text-primary-600 hover:text-primary-500 font-medium min-h-11 flex items-center justify-center focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded px-4">
                                 {{ __('unified_search.clear') }}
                             </button>
                         </div>

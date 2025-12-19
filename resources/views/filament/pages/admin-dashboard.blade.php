@@ -56,7 +56,7 @@
 
     {{-- Live Updates Status Indicator --}}
     <div class="fixed bottom-4 right-4 z-50" x-data="{ show: false }" x-show="show" x-transition>
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-lg">
+        <div class="bg-success-50 border border-success-200 text-success-700 px-4 py-3 rounded-lg shadow-lg">
             <div class="flex items-center">
                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
