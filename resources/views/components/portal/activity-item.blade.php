@@ -77,7 +77,7 @@
     @if ($href) href="{{ $href }}"
         wire:navigate
         class="group" @endif
-    {{ $attributes->merge(['class' => 'flex gap-4 p-4 rounded-lg bg-gray-900 dark:bg-gray-800 border border-gray-700 shadow-card transition-all duration-200' . ($href ? ' hover:bg-gray-800 hover:border-gray-600 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-950' : '')]) }}>
+    {{ $attributes->merge(['class' => 'flex gap-4 p-4 rounded-lg bg-gray-900 dark:bg-gray-800 border border-gray-700 shadow-card transition-all duration-200' . ($href ? ' hover:bg-gray-800 hover:border-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950' : '')]) }}>
 
     {{-- Icon with 44px touch target --}}
     <div class="shrink-0">

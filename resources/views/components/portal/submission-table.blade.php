@@ -47,16 +47,16 @@
     $emptyText = $emptyMessage ?? ($type === 'tickets' ? __('tickets.no_submissions') : __('loans.no_submissions'));
 @endphp
 
-<div {{ $attributes->merge(['class' => 'bg-slate-900 border border-slate-800 rounded-lg overflow-hidden']) }}>
+<div {{ $attributes->merge(['class' => 'bg-gray-900 border border-gray-800 rounded-lg overflow-hidden']) }}>
     @if($items->count() > 0)
         {{-- Desktop Table --}}
         <div class="hidden md:block overflow-x-auto">
-            <table class="min-w-full divide-y divide-slate-800" role="table">
-                <thead class="bg-slate-800/50">
+            <table class="min-w-full divide-y divide-gray-800" role="table">
+                <thead class="bg-gray-800/50">
                     <tr>
                         @foreach($tableColumns as $column)
                             <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider {{ $column['sortable'] ? 'cursor-pointer hover:text-slate-200 transition-colors duration-150' : '' }}">
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider {{ $column['sortable'] ? 'cursor-pointer hover:text-gray-200 transition-colors duration-150' : '' }}">
                                 <div class="flex items-center gap-2">
                                     <span>{{ $column['label'] }}</span>
                                     @if($column['sortable'])
@@ -67,28 +67,28 @@
                                 </div>
                             </th>
                         @endforeach
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
                             {{ __('common.actions') }}
                         </th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-800">
+                <tbody class="divide-y divide-gray-800">
                     {{ $slot }}
                 </tbody>
             </table>
         </div>
 
         {{-- Mobile Cards --}}
-        <div class="md:hidden divide-y divide-slate-800">
+        <div class="md:hidden divide-y divide-gray-800">
             {{ $slot }}
         </div>
     @else
         {{-- Empty State --}}
         <div class="p-12 text-center">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 mb-4">
-                <x-heroicon-o-inbox class="w-8 h-8 text-slate-400" aria-hidden="true" />
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-800 mb-4">
+                <x-heroicon-o-inbox class="w-8 h-8 text-gray-400" aria-hidden="true" />
             </div>
-            <p class="text-slate-400 text-sm">{{ $emptyText }}</p>
+            <p class="text-gray-400 text-sm">{{ $emptyText }}</p>
         </div>
     @endif
 </div>
