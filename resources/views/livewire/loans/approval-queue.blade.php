@@ -27,60 +27,60 @@
         </x-ui.alert>
     @endif
 
-    <div class="overflow-hidden rounded-lg border border-gray-200">
-        <table class="min-w-full divide-y divide-gray-200" role="table">
-            <thead class="bg-gray-50">
+    <div class="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800">
+        <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800" role="table">
+            <thead class="bg-slate-50 dark:bg-slate-900/50">
                 <tr>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                         {{ __('Permohonan') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                         {{ __('Pemohon') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                         {{ __('Tempoh') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                         {{ __('Nilai') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                         {{ __('Catatan') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">
+                    <th scope="col" class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                         {{ __('Tindakan') }}
                     </th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200 bg-white">
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
                 @forelse ($this->applications as $application)
                     <tr>
-                        <td class="px-4 py-4 align-top text-sm text-gray-900">
+                        <td class="px-4 py-4 align-top text-sm text-slate-900 dark:text-slate-100">
                             <div class="font-semibold">
-                                <a href="{{ route('loan.authenticated.show', $application) }}" class="text-blue-600 hover:text-blue-700">
+                                <a href="{{ route('loan.authenticated.show', $application) }}" class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
                                     {{ $application->application_number }}
                                 </a>
                             </div>
-                            <p class="mt-1 text-xs text-gray-500">
+                            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
                                 {{ $application->purpose }}
                             </p>
-                            <p class="mt-1 text-xs text-gray-400">
+                            <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">
                                 {{ __('Dihantar pada') }} {{ $application->created_at?->translatedFormat('d M Y, h:i A') }}
                             </p>
                         </td>
-                        <td class="px-4 py-4 align-top text-sm text-gray-700">
+                        <td class="px-4 py-4 align-top text-sm text-slate-700 dark:text-slate-300">
                             <p class="font-medium">{{ $application->applicant_name }}</p>
-                            <p class="text-xs text-gray-500">{{ __('Gred') }}: {{ $application->grade }}</p>
-                            <p class="text-xs text-gray-500">{{ __('Bahagian') }}: {{ $application->division?->name ?? __('Tidak dinyatakan') }}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Gred') }}: {{ $application->grade }}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Bahagian') }}: {{ $application->division?->name ?? __('Tidak dinyatakan') }}</p>
                         </td>
-                        <td class="px-4 py-4 align-top text-sm text-gray-700">
+                        <td class="px-4 py-4 align-top text-sm text-slate-700 dark:text-slate-300">
                             <p>{{ $application->loan_start_date?->translatedFormat('d M Y') }}</p>
-                            <p class="text-xs text-gray-500">? {{ $application->loan_end_date?->translatedFormat('d M Y') }}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">? {{ $application->loan_end_date?->translatedFormat('d M Y') }}</p>
                         </td>
-                        <td class="px-4 py-4 align-top text-sm text-gray-700">
+                        <td class="px-4 py-4 align-top text-sm text-slate-700 dark:text-slate-300">
                             <p>RM {{ number_format($application->total_value, 2) }}</p>
-                            <p class="text-xs text-gray-500 mt-1">{{ __('Keutamaan') }}: {{ ucfirst($application->priority->value) }}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ __('Keutamaan') }}: {{ ucfirst($application->priority->value) }}</p>
                         </td>
-                        <td class="px-4 py-4 align-top text-sm text-gray-700 w-64">
+                        <td class="px-4 py-4 align-top text-sm text-slate-700 dark:text-slate-300 w-64">
                             <label for="remarks-{{ $application->id }}" class="sr-only">{{ __('Catatan Kelulusan') }}</label>
                             <x-form.textarea
                                 id="remarks-{{ $application->id }}"
@@ -91,7 +91,7 @@
                                 placeholder="{{ __('Catatan (pilihan)') }}"
                             />
                         </td>
-                        <td class="px-4 py-4 align-top text-sm text-gray-700">
+                        <td class="px-4 py-4 align-top text-sm text-slate-700 dark:text-slate-300">
                             <div class="flex flex-col items-end gap-2">
                                 <x-ui.button
                                     variant="success"
@@ -122,7 +122,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-6 text-center text-sm text-gray-500">
+                        <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">
                             {{ __('Tiada permohonan menunggu kelulusan anda buat masa ini.') }}
                         </td>
                     </tr>

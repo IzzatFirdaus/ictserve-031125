@@ -122,7 +122,7 @@ on([
                 x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                 x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95"
-                class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full overflow-hidden">
+                class="relative bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full overflow-hidden">
                 {{-- Modal Header with Icon --}}
                 <div class="p-6 pb-4">
                     <div class="flex items-start gap-4">
@@ -158,17 +158,17 @@ on([
 
                         {{-- Title and Message --}}
                         <div class="flex-1">
-                            <h3 id="confirm-modal-title" class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                            <h3 id="confirm-modal-title" class="text-lg font-semibold text-slate-900 dark:text-slate-100">
                                 {{ $title }}
                             </h3>
-                            <p id="confirm-modal-description" class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                            <p id="confirm-modal-description" class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                                 {{ $message }}
                             </p>
                         </div>
 
                         {{-- Close Button --}}
                         <button type="button" wire:click="close"
-                            class="shrink-0 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            class="shrink-0 p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                             aria-label="Tutup">
                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor">
@@ -180,15 +180,15 @@ on([
                 </div>
 
                 {{-- Modal Actions --}}
-                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3">
+                <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3">
                     <button type="button" wire:click="close"
-                        class="px-4 py-2 min-h-11 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+                        class="px-4 py-2 min-h-11 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
                         :disabled="$wire.isProcessing">
                         {{ $cancelText }}
                     </button>
                     <button type="button" wire:click="confirm" wire:loading.attr="disabled"
                         @class([
-                            'px-4 py-2 min-h-11 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
+                            'px-4 py-2 min-h-11 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
                             'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500' => $variant === 'info',
                             'bg-warning-600 hover:bg-warning-700 focus:ring-warning-500' =>
                                 $variant === 'warning',

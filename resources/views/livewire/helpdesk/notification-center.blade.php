@@ -21,7 +21,7 @@
         {{-- Unread Count Badge --}}
         @if ($this->unreadCount > 0)
             <span
-                class="absolute right-0 top-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white">
+                class="absolute right-0 top-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-danger-600 text-xs font-bold text-white">
                 {{ $this->unreadCount > 9 ? '9+' : $this->unreadCount }}
             </span>
         @endif
@@ -39,7 +39,7 @@
             <div class="flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-slate-100">{{ __('Notifikasi') }}</h3>
                 @if ($this->unreadCount > 0)
-                    <button wire:click="markAllAsRead" class="text-sm font-medium text-blue-600 hover:text-blue-700"
+                    <button wire:click="markAllAsRead" class="text-sm font-medium text-primary-600 hover:text-primary-700"
                         aria-label="{{ __('Tandakan semua sebagai dibaca') }}">
                         {{ __('Tandakan Semua') }}
                     </button>
@@ -49,23 +49,23 @@
             {{-- Filter Tabs --}}
             <div class="mt-3 flex gap-2" role="tablist">
                 <button wire:click="setFilter('all')"
-                    class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors {{ $filter === 'all' ? 'bg-blue-500/10 text-blue-700' : 'text-slate-300 hover:bg-slate-900/40' }}"
+                    class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors {{ $filter === 'all' ? 'bg-primary-500/10 text-primary-700' : 'text-slate-300 hover:bg-slate-900/40' }}"
                     role="tab" aria-selected="{{ $filter === 'all' ? 'true' : 'false' }}">
                     {{ __('Semua') }}
                 </button>
                 <button wire:click="setFilter('unread')"
-                    class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors {{ $filter === 'unread' ? 'bg-blue-500/10 text-blue-700' : 'text-slate-300 hover:bg-slate-900/40' }}"
+                    class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors {{ $filter === 'unread' ? 'bg-primary-500/10 text-primary-700' : 'text-slate-300 hover:bg-slate-900/40' }}"
                     role="tab" aria-selected="{{ $filter === 'unread' ? 'true' : 'false' }}">
                     {{ __('Belum Dibaca') }}
                     @if ($this->unreadCount > 0)
                         <span
-                            class="ml-1 inline-flex items-center rounded-full bg-blue-600 px-2 py-0.5 text-xs font-medium text-white">
+                            class="ml-1 inline-flex items-center rounded-full bg-primary-600 px-2 py-0.5 text-xs font-medium text-white">
                             {{ $this->unreadCount }}
                         </span>
                     @endif
                 </button>
                 <button wire:click="setFilter('read')"
-                    class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors {{ $filter === 'read' ? 'bg-blue-500/10 text-blue-700' : 'text-slate-300 hover:bg-slate-900/40' }}"
+                    class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors {{ $filter === 'read' ? 'bg-primary-500/10 text-primary-700' : 'text-slate-300 hover:bg-slate-900/40' }}"
                     role="tab" aria-selected="{{ $filter === 'read' ? 'true' : 'false' }}">
                     {{ __('Dibaca') }}
                 </button>
@@ -75,14 +75,14 @@
         {{-- Notifications List --}}
         <div class="max-h-96 overflow-y-auto" role="list">
             @forelse ($this->notifications as $notification)
-                <div class="border-b border-slate-800/60 px-4 py-3 transition-colors hover:bg-slate-900/40 {{ is_null($notification->read_at) ? 'bg-blue-500/10' : '' }}"
+                <div class="border-b border-slate-800/60 px-4 py-3 transition-colors hover:bg-slate-900/40 {{ is_null($notification->read_at) ? 'bg-primary-500/10' : '' }}"
                     role="listitem">
                     <div class="flex items-start gap-3">
                         {{-- Icon --}}
                         <div class="shrink-0">
                             <div
-                                class="flex h-10 w-10 items-center justify-center rounded-full {{ is_null($notification->read_at) ? 'bg-blue-500/10' : 'bg-slate-900/40' }}">
-                                <svg class="h-5 w-5 {{ is_null($notification->read_at) ? 'text-blue-600' : 'text-slate-300' }}"
+                                class="flex h-10 w-10 items-center justify-center rounded-full {{ is_null($notification->read_at) ? 'bg-primary-500/10' : 'bg-slate-900/40' }}">
+                                <svg class="h-5 w-5 {{ is_null($notification->read_at) ? 'text-primary-600' : 'text-slate-300' }}"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -116,7 +116,7 @@
                                 </button>
                             @endif
                             <button wire:click="deleteNotification('{{ $notification->id }}')"
-                                class="rounded p-1 text-slate-400 hover:bg-slate-900/40 hover:text-red-600"
+                                class="rounded p-1 text-slate-400 hover:bg-slate-900/40 hover:text-danger-600"
                                 aria-label="{{ __('Padam notifikasi') }}">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -150,7 +150,7 @@
         @if ($this->notifications->isNotEmpty())
             <div class="border-t border-slate-800 px-4 py-3 text-center">
                 <a href="{{ route('helpdesk.authenticated.notifications') }}"
-                    class="text-sm font-medium text-blue-600 hover:text-blue-700">
+                    class="text-sm font-medium text-primary-600 hover:text-primary-700">
                     {{ __('Lihat Semua Notifikasi') }} &rarr;
                 </a>
             </div>

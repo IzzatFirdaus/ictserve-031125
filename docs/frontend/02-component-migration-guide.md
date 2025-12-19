@@ -303,13 +303,20 @@ Layout already compliant with MyDS v2025.2
 
 - [x] Update authentication forms (6 files)
 - [x] Update profile forms (3 files)
-- [x] Update Filament admin pages (8 files)
-- [x] Update Filament widgets (3 files)
-- [x] Update helpdesk module (3 files)
-- [x] Update loan module (7 files)
-- [x] Update staff portal (8 files)
-- [x] Update portal components (8 files)
-- [x] Update navigation components (8 files)
+- [x] Update Filament admin pages (25+ files)
+- [x] Update Filament widgets (4 files)
+- [x] Update Filament components (4 files)
+- [x] Update Filament modals (1 file)
+- [x] Update helpdesk module (9 files)
+- [x] Update loan module (9 files)
+- [x] Update staff portal (4 files)
+- [x] Update portal components (2 files)
+- [x] Update AI chat components (2 files)
+- [x] Update root-level components (10 files)
+- [x] Update pulse/status components (2 files)
+- [x] Update navigation components (verified compliant)
+- [x] Update errors/layouts (verified compliant)
+- [x] Update emails/pdf (verified compliant)
 
 ### Post-Migration
 

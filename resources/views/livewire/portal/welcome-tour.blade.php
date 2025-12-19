@@ -96,7 +96,7 @@
                     </nav>
                     {{-- Step Icon --}}
                     <div class="mb-4 flex items-center justify-center">
-                        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary-100">
+                        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary-50">
                             @if ($currentStepData['icon'] ?? null)
                                 <x-heroicon-o-{{ $currentStepData['icon'] }} class="h-8 w-8 text-primary-600" />
                             @else

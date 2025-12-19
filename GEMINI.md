@@ -8,7 +8,7 @@ This project is a Laravel application named "ICTServe". It uses Filament for the
 
 **Main Technologies:**
 
-- PHP 8.2.12
+- PHP 8.4.11
 - Laravel 12.38.1
 - Filament 4.1.10
 - Livewire 3.6.4

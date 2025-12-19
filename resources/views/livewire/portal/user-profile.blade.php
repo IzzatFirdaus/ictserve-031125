@@ -76,13 +76,13 @@ new class extends Component
 
         <!-- Success Message -->
         @if($showSuccessMessage)
-            <div class="mb-6 p-4 bg-green-50 dark:bg-green-900 border-l-4 border-green-500 rounded-lg"
+            <div class="mb-6 p-4 bg-success-50 dark:bg-success-900 border-l-4 border-success-500 rounded-lg"
                  role="alert"
                  aria-live="polite">
                 <div class="flex items-center">
-                    <x-heroicon-o-check-circle class="w-5 h-5 text-green-600 dark:text-green-400 mr-3 shrink-0" aria-hidden="true" />
+                    <x-heroicon-o-check-circle class="w-5 h-5 text-success-600 dark:text-success-400 mr-3 shrink-0" aria-hidden="true" />
                     <div>
-                        <h3 class="text-sm font-medium text-green-800 dark:text-green-200">
+                        <h3 class="text-sm font-medium text-success-800 dark:text-success-200">
                             {{ __('profile.update_success') }}
                         </h3>
                     </div>

@@ -14,12 +14,12 @@
     {{-- Header --}}
     <header class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-            <h1 class="text-2xl font-heading font-semibold text-gray-100">{{ __('Tiket Saya') }}</h1>
-            <p class="text-gray-300">{{ __('Jejaki semua tiket helpdesk yang pernah dihantar.') }}</p>
+            <h1 class="text-2xl font-heading font-semibold text-slate-100">{{ __('Tiket Saya') }}</h1>
+            <p class="text-slate-300">{{ __('Jejaki semua tiket helpdesk yang pernah dihantar.') }}</p>
         </div>
         <div class="flex items-center gap-2">
             <a href="{{ route('tickets.create') }}"
-                class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-button transition-colors duration-200 hover:bg-primary-500 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-950 min-h-11">
+                class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-button transition-colors duration-200 hover:bg-primary-500 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11">
                 <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -33,32 +33,32 @@
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             <x-ui.card variant="portal">
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-gray-100">{{ $this->ticketStats['total'] }}</p>
-                    <p class="mt-1 text-xs text-gray-400">{{ __('Jumlah Tiket') }}</p>
+                    <p class="text-2xl font-semibold text-slate-100">{{ $this->ticketStats['total'] }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Jumlah Tiket') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card variant="portal">
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-primary-400">{{ $this->ticketStats['open'] }}</p>
-                    <p class="mt-1 text-xs text-gray-400">{{ __('Aktif') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Aktif') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card variant="portal">
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-success-400">{{ $this->ticketStats['resolved'] }}</p>
-                    <p class="mt-1 text-xs text-gray-400">{{ __('Selesai') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Selesai') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card variant="portal">
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-secondary-400">{{ $this->ticketStats['guest'] }}</p>
-                    <p class="mt-1 text-xs text-gray-400">{{ __('Tetamu') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Tetamu') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card variant="portal">
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-warning-400">{{ $this->ticketStats['authenticated'] }}</p>
-                    <p class="mt-1 text-xs text-gray-400">{{ __('Disahkan') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Disahkan') }}</p>
                 </div>
             </x-ui.card>
         </div>
@@ -107,8 +107,8 @@
             </div>
 
             {{-- Sort Options --}}
-            <div class="mt-4 flex items-center gap-4 border-t border-gray-800 pt-4">
-                <span class="text-sm font-medium text-gray-300">{{ __('Susun mengikut:') }}</span>
+            <div class="mt-4 flex items-center gap-4 border-t border-slate-800 pt-4">
+                <span class="text-sm font-medium text-slate-300">{{ __('Susun mengikut:') }}</span>
                 <div class="flex items-center gap-2">
                     <x-form.select name="sortBy" wire:model.live="sortBy" class="w-40"
                         label="{{ __('Pilih medan untuk susun') }}" aria-label="{{ __('Pilih medan untuk susun') }}"
@@ -119,7 +119,7 @@
                     </x-form.select>
 
                     <button wire:click="$set('sortDirection', '{{ $sortDirection === 'asc' ? 'desc' : 'asc' }}')"
-                        class="inline-flex items-center rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm font-medium text-gray-300 shadow-button transition-colors duration-200 hover:bg-gray-700 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-950 min-h-11"
+                        class="inline-flex items-center rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm font-medium text-slate-300 shadow-button transition-colors duration-200 hover:bg-slate-700 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11"
                         aria-label="{{ $sortDirection === 'asc' ? __('Susun menurun') : __('Susun menaik') }}">
                         @if ($sortDirection === 'asc')
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -156,52 +156,52 @@
     {{-- Tickets Table --}}
     <section aria-label="{{ __('Senarai Tiket') }}">
         <x-ui.card variant="portal">
-            <div class="overflow-hidden rounded-lg border border-gray-800">
-                <table class="min-w-full divide-y divide-gray-800">
-                    <thead class="bg-gray-800/50">
+            <div class="overflow-hidden rounded-lg border border-slate-800">
+                <table class="min-w-full divide-y divide-slate-800">
+                    <thead class="bg-slate-800/50">
                         <tr>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Tiket') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Jenis') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Kategori') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Status') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Pegawai') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Kemaskini') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-300">
+                                class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Tindakan') }}
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-800 bg-gray-900/70 backdrop-blur-sm">
+                    <tbody class="divide-y divide-slate-800 bg-slate-900/70 backdrop-blur-sm">
                         @forelse ($this->tickets as $ticket)
-                            <tr class="transition-colors duration-200 hover:bg-gray-800/50">
-                                <td class="px-4 py-4 text-sm text-gray-100">
+                            <tr class="transition-colors duration-200 hover:bg-slate-800/50">
+                                <td class="px-4 py-4 text-sm text-slate-100">
                                     <div class="font-medium">
                                         <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
                                             class="text-primary-400 hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 rounded">
                                             {{ $ticket->ticket_number }}
                                         </a>
                                     </div>
-                                    <p class="mt-1 text-xs text-gray-300">{{ $ticket->subject }}</p>
-                                    <p class="mt-1 text-xs text-gray-400">{{ __('Dicipta pada') }}
+                                    <p class="mt-1 text-xs text-slate-300">{{ $ticket->subject }}</p>
+                                    <p class="mt-1 text-xs text-slate-400">{{ __('Dicipta pada') }}
                                         {{ $ticket->created_at?->translatedFormat('d M Y') }}</p>
                                 </td>
                                 <td class="px-4 py-4">
@@ -217,7 +217,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-4 text-sm text-gray-300">
+                                <td class="px-4 py-4 text-sm text-slate-300">
                                     {{ $ticket->category?->name ?? __('Tiada') }}
                                 </td>
                                 <td class="px-4 py-4">
@@ -226,10 +226,10 @@
                                         {{ \Illuminate\Support\Str::headline($ticket->status) }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-4 text-sm text-gray-300">
+                                <td class="px-4 py-4 text-sm text-slate-300">
                                     {{ $ticket->assignedUser?->name ?? __('Belum Ditugaskan') }}
                                 </td>
-                                <td class="px-4 py-4 text-sm text-gray-300">
+                                <td class="px-4 py-4 text-sm text-slate-300">
                                     {{ $ticket->updated_at?->diffForHumans() }}
                                 </td>
                                 <td class="px-4 py-4 text-right text-sm">
@@ -250,14 +250,14 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-4 py-8 text-center text-sm text-gray-300">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
+                                <td colspan="7" class="px-4 py-8 text-center text-sm text-slate-300">
+                                    <svg class="mx-auto h-12 w-12 text-slate-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                     <p class="mt-2">{{ __('Tiada tiket untuk paparan.') }}</p>
-                                    <p class="mt-1 text-xs text-gray-400">
+                                    <p class="mt-1 text-xs text-slate-400">
                                         {{ __('Cuba ubah penapis atau carian anda.') }}</p>
                                 </td>
                             </tr>
