@@ -35,7 +35,7 @@
         </div>
         <div class="bg-gray-50 dark:bg-gray-700/50 px-5 py-3 border-t border-gray-200 dark:border-gray-700">
             <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                class="inline-flex items-center min-h-11 px-3 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-md transition-colors"
+                class="inline-flex items-center min-h-11 px-3 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-lg transition-colors"
                 aria-label="{{ __('portal.view_all_tickets') }}">
                 {{ __('portal.view_all') }}
                 <x-heroicon-m-arrow-right class="ml-1 h-4 w-4" aria-hidden="true" />
@@ -66,7 +66,7 @@
         </div>
         <div class="bg-gray-50 dark:bg-gray-700/50 px-5 py-3 border-t border-gray-200 dark:border-gray-700">
             <a href="{{ route('loan.authenticated.history') }}"
-                class="inline-flex items-center min-h-11 px-3 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-md transition-colors"
+                class="inline-flex items-center min-h-11 px-3 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-lg transition-colors"
                 aria-label="{{ __('portal.view_all_loans') }}">
                 {{ __('portal.view_all') }}
                 <x-heroicon-m-arrow-right class="ml-1 h-4 w-4" aria-hidden="true" />
@@ -100,7 +100,7 @@
         </div>
         <div class="bg-gray-50 dark:bg-gray-700/50 px-5 py-3 border-t border-gray-200 dark:border-gray-700">
             <a href="{{ route('loan.authenticated.history', ['status' => 'overdue']) }}"
-                class="inline-flex items-center min-h-11 px-3 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-md transition-colors"
+                class="inline-flex items-center min-h-11 px-3 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-lg transition-colors"
                 aria-label="{{ __('portal.view_overdue_items') }}">
                 {{ __('portal.view_overdue') }}
                 <x-heroicon-m-arrow-right class="ml-1 h-4 w-4" aria-hidden="true" />
@@ -137,7 +137,7 @@
             </div>
             <div class="bg-gray-50 dark:bg-gray-700/50 px-5 py-3 border-t border-gray-200 dark:border-gray-700">
                 <a href="{{ route('loan.authenticated.history') }}"
-                    class="inline-flex items-center min-h-11 px-3 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-md transition-colors"
+                    class="inline-flex items-center min-h-11 px-3 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-lg transition-colors"
                     aria-label="{{ __('portal.view_pending_approvals') }}">
                     {{ __('portal.view_pending') }}
                     <x-heroicon-m-arrow-right class="ml-1 h-4 w-4" aria-hidden="true" />
