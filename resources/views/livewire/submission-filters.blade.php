@@ -26,7 +26,7 @@
             <button
                 type="button"
                 wire:click="clearFilters"
-                class="inline-flex items-center px-4 py-2 min-h-11 min-w-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                class="inline-flex items-center px-4 py-2 min-h-11 min-w-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-blue-500 transition-colors duration-200"
                 aria-label="{{ __('portal.clear_all_filters') }}"
             >
                 <x-heroicon-o-x-mark class="w-4 h-4 mr-2" aria-hidden="true" />
@@ -49,7 +49,7 @@
                     type="button"
                     @click="open = !open"
                     @click.away="open = false"
-                    class="w-full inline-flex items-center justify-between px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="w-full inline-flex items-center justify-between px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     aria-haspopup="listbox"
                     aria-expanded="false"
                     :aria-expanded="open"
@@ -73,7 +73,7 @@
                     x-transition:leave="transition ease-in duration-75"
                     x-transition:leave-start="transform opacity-100 scale-100"
                     x-transition:leave-end="transform opacity-0 scale-95"
-                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 shadow-lg max-h-60 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
                     role="listbox"
                     style="display: none;"
                 >
@@ -82,14 +82,14 @@
                         <button
                             type="button"
                             wire:click="selectAllStatuses"
-                            class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-3 py-2"
+                            class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 rounded px-3 py-2"
                         >
                             {{ __('portal.select_all') }}
                         </button>
                         <button
                             type="button"
                             wire:click="deselectAllStatuses"
-                            class="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-3 py-2"
+                            class="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 font-medium focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 rounded px-3 py-2"
                         >
                             {{ __('portal.deselect_all') }}
                         </button>
@@ -107,7 +107,7 @@
                                 type="checkbox"
                                 wire:click="toggleStatus('{{ $statusValue }}')"
                                 @checked(in_array($statusValue, $selectedStatuses))
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                                class="h-4 w-4 text-blue-600 focus-visible:ring-3 focus-visible:ring-blue-500 border-gray-300 rounded cursor-pointer"
                                 aria-label="{{ $statusLabel }}"
                             >
                             <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">
@@ -128,7 +128,7 @@
                 type="date"
                 id="filter-date-from"
                 wire:model.live="dateFrom"
-                class="w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus:border-blue-500"
                 aria-label="{{ __('portal.date_from') }}"
             >
         </div>
@@ -142,7 +142,7 @@
                 type="date"
                 id="filter-date-to"
                 wire:model.live="dateTo"
-                class="w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus:border-blue-500"
                 aria-label="{{ __('portal.date_to') }}"
             >
         </div>
@@ -155,7 +155,7 @@
             <select
                 id="filter-category"
                 wire:model.live="selectedCategory"
-                class="w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus:border-blue-500"
                 aria-label="{{ $filterType === 'helpdesk' ? __('portal.category') : __('portal.asset_type') }}"
             >
                 <option value="">{{ __('portal.all_categories') }}</option>
@@ -174,7 +174,7 @@
                 <select
                     id="filter-priority"
                     wire:model.live="selectedPriority"
-                    class="w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm text-gray-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus:border-blue-500"
                     aria-label="{{ __('portal.priority') }}"
                 >
                     <option value="">{{ __('portal.all_priorities') }}</option>
@@ -201,7 +201,7 @@
                         <button
                             type="button"
                             wire:click="toggleStatus('{{ $status }}')"
-                            class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500"
                             aria-label="{{ __('portal.remove_filter', ['filter' => $this->availableStatuses[$status]]) }}"
                         >
                             <x-heroicon-s-x-mark class="w-3 h-3" aria-hidden="true" />
@@ -217,7 +217,7 @@
                         <button
                             type="button"
                             wire:click="$set('dateFrom', null); $set('dateTo', null)"
-                            class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-green-200 dark:hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-green-200 dark:hover:bg-green-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-green-500"
                             aria-label="{{ __('portal.remove_date_filter') }}"
                         >
                             <x-heroicon-s-x-mark class="w-3 h-3" aria-hidden="true" />
@@ -236,7 +236,7 @@
                         <button
                             type="button"
                             wire:click="$set('selectedCategory', null)"
-                            class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-purple-200 dark:hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-purple-200 dark:hover:bg-purple-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-purple-500"
                             aria-label="{{ __('portal.remove_category_filter') }}"
                         >
                             <x-heroicon-s-x-mark class="w-3 h-3" aria-hidden="true" />
@@ -251,7 +251,7 @@
                         <button
                             type="button"
                             wire:click="$set('selectedPriority', null)"
-                            class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-orange-200 dark:hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-orange-200 dark:hover:bg-orange-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-orange-500"
                             aria-label="{{ __('portal.remove_priority_filter') }}"
                         >
                             <x-heroicon-s-x-mark class="w-3 h-3" aria-hidden="true" />
@@ -267,7 +267,7 @@
         <button
             type="button"
             wire:click="applyFilters"
-            class="w-full inline-flex items-center justify-center px-6 py-3 min-h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+            class="w-full inline-flex items-center justify-center px-6 py-3 min-h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-blue-500 transition-colors duration-200"
             aria-label="{{ __('portal.apply_filters') }}"
         >
             <x-heroicon-o-funnel class="w-5 h-5 mr-2" aria-hidden="true" />
