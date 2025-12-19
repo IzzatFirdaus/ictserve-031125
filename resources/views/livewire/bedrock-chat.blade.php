@@ -33,7 +33,7 @@
                     <div class="flex items-center gap-2">
                         <div id="connection-status" class="text-sm text-orange-600 dark:text-orange-400 hidden"
                             role="status" aria-live="polite">Sambungan belum tersedia</div>
-                        <livewire:components.theme-toggle />
+                        <livewire:components.theme-toggle-unified />
                     </div>
                     <a href="{{ route('welcome') }}"
                         class="text-sm text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors">
@@ -220,12 +220,14 @@
 
                 <form wire:submit.prevent="send" class="space-y-2" role="form" aria-label="Send message form">
                     @error('model')
-                        <div class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                        <div
+                            class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
                             {{ $message }}
                         </div>
                     @enderror
                     @error('prompt')
-                        <div class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                        <div
+                            class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
                             {{ $message }}
                         </div>
                     @enderror
