@@ -67,7 +67,7 @@
     >
     {{-- Hamburger Toggle Button --}}
     <button type="button" @click="toggle()" :aria-expanded="open" aria-controls="{{ $id }}" aria-haspopup="true"
-        class="inline-flex items-center justify-center min-h-11 min-w-11 p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 dark:focus:ring-offset-gray-900 transition-colors duration-200 md:hidden">
+        class="inline-flex items-center justify-center min-h-11 min-w-11 p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 dark:focus:ring-offset-gray-900 transition-colors duration-200 md:hidden">
         {{ $trigger ?? '' }}
 
         @if (!isset($trigger))
@@ -105,7 +105,7 @@
                 {{ __('Menu') }}
             </span>
             <button type="button" @click="closeMenu()"
-                class="inline-flex items-center justify-center min-h-11 min-w-11 p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+                class="inline-flex items-center justify-center min-h-11 min-w-11 p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
                 aria-label="{{ __('Tutup menu') }}">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

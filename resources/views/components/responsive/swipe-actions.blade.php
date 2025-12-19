@@ -129,7 +129,7 @@
         <div class="absolute top-2 right-2 md:hidden">
             <div x-data="{ menuOpen: false }" class="relative">
                 <button type="button" @click="menuOpen = !menuOpen"
-                    class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md"
+                    class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded-lg"
                     aria-label="{{ __('Tindakan') }}" :aria-expanded="menuOpen">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
