@@ -58,7 +58,7 @@
     @mouseleave="showTooltip = false" @focusin="showTooltip = true" @focusout="showTooltip = false">
     {{-- Help Icon Button --}}
     <button type="button"
-        class="inline-flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+        class="inline-flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors"
         aria-label="{{ __('portal.contextual_help.help_icon_label') }}"
         aria-describedby="help-tooltip-{{ Str::random(8) }}" @click="showTooltip = !showTooltip">
         <x-heroicon-o-question-mark-circle class="{{ $iconSize }}" />
@@ -83,7 +83,7 @@
             {{-- Learn More Link --}}
             @if ($learnMoreUrl)
                 <a href="{{ $learnMoreUrl }}"
-                    class="mt-2 inline-flex items-center text-xs text-primary-300 hover:text-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded"
+                    class="mt-2 inline-flex items-center text-xs text-primary-300 hover:text-primary-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg"
                     target="_blank" rel="noopener noreferrer">
                     {{ __('portal.contextual_help.learn_more') }}
                     <x-heroicon-o-arrow-top-right-on-square class="ml-1 h-3 w-3" />
