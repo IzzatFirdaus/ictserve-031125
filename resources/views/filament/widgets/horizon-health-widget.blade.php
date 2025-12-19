@@ -28,15 +28,15 @@
         <div class="space-y-6">
             @if (isset($error))
                 {{-- Error State --}}
-                <div class="rounded-lg bg-red-50 dark:bg-red-900/20 p-4 border border-red-200 dark:border-red-800"
+                <div class="rounded-lg bg-danger-50 dark:bg-danger-900/20 p-4 border border-danger-200 dark:border-danger-800"
                     role="alert" aria-live="polite">
                     <div class="flex items-center gap-2">
-                        <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-red-600 dark:text-red-400" />
-                        <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+                        <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-danger-600 dark:text-danger-400" />
+                        <h3 class="text-sm font-medium text-danger-800 dark:text-danger-200">
                             Ralat Memuat Status Horizon
                         </h3>
                     </div>
-                    <p class="mt-2 text-sm text-red-700 dark:text-red-300">
+                    <p class="mt-2 text-sm text-danger-700 dark:text-danger-300">
                         {{ $error }}
                     </p>
                 </div>
@@ -229,7 +229,7 @@
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                                                 <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200">
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 dark:bg-primary-900/20 text-primary-800 dark:text-primary-200">
                                                     {{ $queueName }}
                                                 </span>
                                             </td>
@@ -239,8 +239,8 @@
                                                     $waitTime = $stats['wait_time'] ?? 0;
                                                     $waitColor =
                                                         $waitTime > 60
-                                                            ? 'text-red-600 dark:text-red-400'
-                                                            : 'text-green-600 dark:text-green-400';
+                                                            ? 'text-danger-600 dark:text-danger-400'
+                                                            : 'text-success-600 dark:text-success-400';
                                                 @endphp
                                                 <span
                                                     class="{{ $waitColor }}">{{ number_format($waitTime, 1) }}</span>
@@ -259,7 +259,7 @@
                                                     $failed = $stats['failed'] ?? 0;
                                                     $failedColor =
                                                         $failed > 0
-                                                            ? 'text-red-600 dark:text-red-400'
+                                                            ? 'text-danger-600 dark:text-danger-400'
                                                             : 'text-gray-500 dark:text-gray-400';
                                                 @endphp
                                                 <span class="{{ $failedColor }}">{{ number_format($failed) }}</span>
