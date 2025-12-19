@@ -3,16 +3,16 @@
 .gitignore
 .gitmodules
 
-# Docker
-Dockerfile
+# Docker files (except configs we need)
 docker-compose*.yml
-compose.yaml
+compose.dev.yaml
 .dockerignore
 
-# Documentation
+# Documentation (keep essential docs)
 *.md
 docs/
 README.md
+!docker/
 
 # IDE
 .vscode/
@@ -21,29 +21,34 @@ README.md
 *.swo
 *~
 
-# Node
+# Node (will be installed in container)
 node_modules/
 npm-debug.log
 yarn-error.log
+.npm/
 
-# Laravel
+# Laravel (keep structure, exclude runtime files)
 /vendor/
 /storage/*.key
 /storage/logs/*.log
 /storage/framework/cache/*
 /storage/framework/sessions/*
 /storage/framework/views/*
-.env
+.env.local*
 .env.backup
 .env.production
 
 # Testing
-/tests/
 phpunit.xml
 .phpunit.result.cache
 
-# Build artifacts
+# Build artifacts (will be built in container)
 /public/hot
 /public/storage
-/public/build
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
 

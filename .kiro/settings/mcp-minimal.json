@@ -1,0 +1,158 @@
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "--native-tls",
+        "mcp-server-fetch"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "fetch"
+      ]
+    },
+    "gitkraken": {
+      "command": "gk",
+      "args": [
+        "mcp"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "git_status",
+        "git_add_or_commit",
+        "git_log_or_diff",
+        "git_push",
+        "git_stash"
+      ]
+    },
+    "bedrock-opus": {
+      "command": "node",
+      "args": [
+        "C:\\laragon\\www\\ictserve-031125\\mcp-servers\\bedrock-server.js"
+      ],
+      "env": {
+        "AWS_ACCESS_KEY_ID": "$env:AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY": "$env:AWS_SECRET_ACCESS_KEY",
+        "AWS_BEDROCK_REGION": "us-east-1"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "invoke_claude_opus",
+        "invoke_claude_sonnet",
+        "invoke_claude_haiku"
+      ]
+    },
+    "agentcore-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
+      ],
+      "disabled": true,
+      "autoApprove": [
+        "search_agentcore_docs",
+        "fetch_agentcore_doc",
+        "manage_agentcore_runtime",
+        "manage_agentcore_memory",
+        "manage_agentcore_gateway"
+      ]
+    },
+    "strands-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "strands-agents-mcp-server"
+      ],
+      "disabled": true,
+      "autoApprove": [
+        "search_docs",
+        "fetch_doc"
+      ]
+    },
+    "figma": {
+      "url": "https://mcp.figma.com/mcp",
+      "disabled": true,
+      "autoApprove": []
+    },
+    "sequentialthinking": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "ictserve-mcp-sequential-thinking",
+        "npx",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "disabled": true,
+      "autoApprove": [
+        "sequentialthinking"
+      ]
+    },
+    "memory": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "ictserve-mcp-memory",
+        "npx",
+        "@modelcontextprotocol/server-memory",
+        "/data/memory.jsonl"
+      ],
+      "disabled": true,
+      "autoApprove": [
+        "create_entities",
+        "create_relations",
+        "add_observations",
+        "delete_entities",
+        "delete_observations",
+        "delete_relations",
+        "read_graph",
+        "search_nodes",
+        "open_nodes"
+      ]
+    },
+    "chrome-devtools": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "ictserve-mcp-chrome-devtools",
+        "npx",
+        "chrome-devtools-mcp@latest"
+      ],
+      "disabled": true,
+      "autoApprove": [
+        "navigate_page",
+        "take_snapshot",
+        "click",
+        "fill",
+        "evaluate_script",
+        "list_console_messages",
+        "list_network_requests",
+        "take_screenshot",
+        "list_pages",
+        "wait_for",
+        "new_page"
+      ]
+    },
+    "playwright": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "ictserve-mcp-playwright",
+        "npx",
+        "@playwright/mcp@latest"
+      ],
+      "disabled": true,
+      "autoApprove": [
+        "browser_navigate",
+        "browser_click",
+        "browser_snapshot",
+        "browser_fill",
+        "browser_evaluate",
+        "browser_take_screenshot",
+        "browser_type",
+        "browser_select_option"
+      ]
+    }
+  }
+}
