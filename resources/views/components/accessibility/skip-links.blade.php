@@ -16,6 +16,6 @@
 --}}
 
 <a href="#main-content"
-    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:min-h-11 focus:min-w-11 focus:px-6 focus:py-3 focus:bg-white focus:text-primary-600 focus:font-bold focus:rounded-md focus:shadow-lg focus:outline-3 focus:outline-primary-500 focus:outline-offset-2">
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:min-h-11 focus:min-w-11 focus:px-6 focus:py-3 focus:bg-white focus:text-primary-600 focus:font-bold focus:rounded-lg focus:shadow-lg focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
     {{ __('common.skip_to_main_content') }}
 </a>
