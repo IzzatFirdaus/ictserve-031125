@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
@@ -39,14 +41,17 @@ Route::view('/services', 'pages.services')->name('services');
 // Offline Page (PWA Support)
 Route::view('/offline', 'pages.offline')->name('offline');
 
-// Language Switcher Route (No Authentication Required)
-Route::get('/change-locale/{locale}', [App\Http\Controllers\LanguageController::class, 'change'])
-    ->where('locale', 'en|ms')
-    ->name('change-locale');
+// Language Switcher Route (DISABLED v3.6.0 - Bahasa Melayu Only)
+// Route::get('/change-locale/{locale}', [App\Http\Controllers\LanguageController::class, 'change'])
+//     ->where('locale', 'en|ms')
+//     ->name('change-locale');
+//
+// v3.6.0: Language switching disabled per D15 documentation.
+// ICTServe now uses Bahasa Melayu-only interface as per government directive.
+// This route is commented out to prevent language switching attempts.
 
 // Public Pages
 Route::view('/faq', 'pages.faq')->name('faq');
-Route::view('/contact', 'pages.contact')->name('contact');
 
 // Guest Helpdesk Routes (No Authentication Required) - Livewire Based
 Route::prefix('helpdesk')->name('helpdesk.')->middleware(['guest.ratelimit'])->group(function () {
@@ -93,54 +98,48 @@ Route::prefix('status')->name('status.')->middleware(['guest.ratelimit'])->group
 // @see figma-ui-redesign Requirements 31
 Route::get('/directory', App\Livewire\Directory\StaffDirectory::class)->name('directory');
 
-// ============================================================================
-// AI FAQ BOT ROUTES (v3.6.0 Ollama Integration)
-// ============================================================================
-// @trace D03-FR-AI-001 (FAQ Bot System)
-// @trace D00 v3.6.0 (True Hybrid Architecture - Guest + Authenticated Access)
-
-// Public FAQ Bot - Accessible without authentication (Guest Access)
-Route::get('/ai/faq', App\Livewire\Ollama\FaqBot::class)->name('ai.faq');
-
 /*
 |--------------------------------------------------------------------------
-| URL-Based Locale Routes (Task 3.1.7)
+| URL-Based Locale Routes (DISABLED v3.6.0 - Bahasa Melayu Only)
 |--------------------------------------------------------------------------
 |
-| These routes support URL-based locale prefixes for guest forms:
+| v3.6.0: URL-based locale routes disabled per D15 documentation.
+| ICTServe now uses Bahasa Melayu-only interface as per government directive.
+|
+| These routes previously supported URL-based locale prefixes for guest forms:
 | - /ms/helpdesk/create → Bahasa Melayu
-| - /en/helpdesk/create → English
+| - /en/helpdesk/create → English (DISABLED)
 |
-| The UrlBasedLocale middleware extracts the locale from the URL prefix
-| and sets the application locale accordingly.
+| All guest forms now use standard routes without locale prefixes and
+| serve Bahasa Melayu content only.
 |
-| @trace Task 3.1.7 - Implement URL-based locale
-| @requirements R13 (Bilingual Support)
+| @deprecated v3.6.0 - Use standard routes without locale prefixes
+| @trace D15 §2.1 (Bahasa Melayu Primary Language)
 */
 
-// Localized Guest Helpdesk Routes
-Route::prefix('{locale}')->where(['locale' => 'en|ms'])->middleware(['url.locale', 'guest.ratelimit'])->group(function () {
-    // Helpdesk routes with locale prefix
-    Route::prefix('helpdesk')->name('helpdesk.localized.')->group(function () {
-        Route::get('/create', App\Livewire\Helpdesk\GuestTicketForm::class)->name('create');
-        Route::get('/submit', App\Livewire\Helpdesk\SubmitTicket::class)->name('submit');
-        Route::get('/track/{ticketNumber?}', App\Livewire\Helpdesk\TrackTicket::class)->name('track');
-        Route::get('/success', App\Livewire\Helpdesk\TicketSuccess::class)->name('success');
-    });
-
-    // Loan routes with locale prefix
-    Route::prefix('loan')->name('loan.localized.')->group(function () {
-        Route::get('/apply', App\Livewire\GuestLoanApplication::class)->name('apply');
-        Route::get('/create', App\Livewire\GuestLoanApplication::class)->name('create');
-        Route::get('/tracking/{applicationNumber?}', App\Livewire\GuestLoanTracking::class)->name('tracking');
-    });
-
-    // Ticket routes with locale prefix (alias)
-    Route::prefix('ticket')->name('ticket.localized.')->group(function () {
-        Route::get('/create', App\Livewire\Helpdesk\GuestTicketForm::class)->name('create');
-        Route::get('/track/{ticketNumber?}', App\Livewire\Helpdesk\TrackTicket::class)->name('track');
-    });
-});
+// Localized Guest Routes (DISABLED v3.6.0)
+// Route::prefix('{locale}')->where(['locale' => 'en|ms'])->middleware(['url.locale', 'guest.ratelimit'])->group(function () {
+//     // Helpdesk routes with locale prefix
+//     Route::prefix('helpdesk')->name('helpdesk.localized.')->group(function () {
+//         Route::get('/create', App\Livewire\Helpdesk\GuestTicketForm::class)->name('create');
+//         Route::get('/submit', App\Livewire\Helpdesk\SubmitTicket::class)->name('submit');
+//         Route::get('/track/{ticketNumber?}', App\Livewire\Helpdesk\TrackTicket::class)->name('track');
+//         Route::get('/success', App\Livewire\Helpdesk\TicketSuccess::class)->name('success');
+//     });
+//
+//     // Loan routes with locale prefix
+//     Route::prefix('loan')->name('loan.localized.')->group(function () {
+//         Route::get('/apply', App\Livewire\GuestLoanApplication::class)->name('apply');
+//         Route::get('/create', App\Livewire\GuestLoanApplication::class)->name('create');
+//         Route::get('/tracking/{applicationNumber?}', App\Livewire\GuestLoanTracking::class)->name('tracking');
+//     });
+//
+//     // Ticket routes with locale prefix (alias)
+//     Route::prefix('ticket')->name('ticket.localized.')->group(function () {
+//         Route::get('/create', App\Livewire\Helpdesk\GuestTicketForm::class)->name('create');
+//         Route::get('/track/{ticketNumber?}', App\Livewire\Helpdesk\TrackTicket::class)->name('track');
+//     });
+// });
 
 Route::get('dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)
     ->middleware(['auth', 'verified'])
@@ -234,16 +233,6 @@ Route::middleware(['auth', 'verified'])->name('tickets.')->group(function () {
     Route::get('/tickets/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('create');
 });
 
-// Helpdesk Routes (Alias for Staff Helpdesk Routes) - NO NAMESPACE PREFIX
-Route::middleware(['auth', 'verified'])->prefix('helpdesk')->name('helpdesk.')->group(function () {
-    Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets.index');
-});
-
-// Loans Routes (Alias for Staff Loans Routes) - NO NAMESPACE PREFIX
-Route::middleware(['auth', 'verified'])->prefix('loans')->name('loans.')->group(function () {
-    Route::get('/history', App\Livewire\Loans\LoanHistory::class)->name('history');
-});
-
 // Loan history alias for compatibility with dashboard links and tests
 Route::middleware(['auth', 'verified'])
     ->get('/loan/history', App\Livewire\Loans\LoanHistory::class)
@@ -320,9 +309,6 @@ Route::middleware(['auth', 'verified'])->prefix('admin/analytics')->name('admin.
 });
 
 Route::get('/bedrock-chat/{id?}', App\Livewire\BedrockChat::class)->name('bedrock.chat');
-
-// Bedrock Chat with Context Support (FAQ Integration)
-Route::get('/bedrock-chat', App\Livewire\BedrockChat::class)->name('bedrock.chat.context');
 
 // AI FAQ Bot Routes (True Hybrid Architecture - D00 v3.6.0)
 // Supports both guest and authenticated access with Bahasa Melayu sahaja (D15 v3.6.0)
