@@ -75,7 +75,7 @@ new class extends Component {
             </select>
             @if(count($this->notifications) > 0)
                 <button wire:click="markAllAsRead" 
-                        class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 px-2 py-1">
+                        class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 px-2 py-1 min-h-11">
                     {{ __('staff.notifications.mark_all_read') }}
                 </button>
             @endif
@@ -86,7 +86,7 @@ new class extends Component {
     <div class="space-y-3">
         @forelse($this->notifications as $notification)
             <div wire:key="notification-{{ $notification->id }}" 
-                 class="flex items-start p-3 rounded-lg {{ $notification->read_at ? 'bg-gray-50 dark:bg-gray-700' : 'bg-blue-50 dark:bg-blue-900/20' }} border border-gray-200 dark:border-gray-600">
+                 class="flex items-start p-3 rounded-lg {{ $notification->read_at ? 'bg-gray-50 dark:bg-gray-700' : 'bg-primary-50 dark:bg-primary-900/20' }} border border-gray-200 dark:border-gray-600">
                 <div class="flex-1">
                     <p class="text-sm font-medium text-gray-900 dark:text-white">
                         {{ $notification->data['title'] ?? 'Notification' }}
@@ -100,7 +100,7 @@ new class extends Component {
                 </div>
                 @if(!$notification->read_at)
                     <button wire:click="markAsRead('{{ $notification->id }}')"
-                            class="ml-2 text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 p-1"
+                            class="ml-2 text-xs text-primary-600 hover:text-primary-800 dark:text-primary-400 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 p-1 min-h-11 min-w-11 flex items-center justify-center"
                             aria-label="{{ __('staff.notifications.mark_as_read') }}">
                         <x-heroicon-o-check class="h-4 w-4" />
                     </button>
@@ -120,7 +120,7 @@ new class extends Component {
     @if(!$this->showAll && count($this->notifications) >= 5)
         <div class="mt-4 text-center">
             <button wire:click="toggleShowAll" 
-                    class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 px-3 py-2">
+                    class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 px-3 py-2 min-h-11">
                 {{ __('staff.notifications.show_all') }}
             </button>
         </div>

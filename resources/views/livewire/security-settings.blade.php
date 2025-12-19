@@ -3,7 +3,7 @@
     description: Security settings with password change workflow, strength indicator, and validation
     author: dev-team@motac.gov.my
     trace: SRS-FR-005; D04 §3.3.3; D12 §4; Requirements 3.5
-    last-updated: 2025-11-06
+    last-updated: 2025-12-15
     WCAG 2.2 AA Compliant
 --}}
 
@@ -16,37 +16,37 @@
 
     {{-- Success/Error Messages --}}
     @if($successMessage)
-        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-4 mb-6" role="alert" aria-live="polite">
+        <div class="bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 rounded-lg p-4 mb-6" role="alert" aria-live="polite">
             <div class="flex items-center">
-                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 text-success-600 dark:text-success-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
-                <p class="text-sm text-green-800 dark:text-green-200">{{ $successMessage }}</p>
+                <p class="text-sm text-success-800 dark:text-success-200">{{ $successMessage }}</p>
             </div>
         </div>
     @endif
 
     @if($errorMessage)
-        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 mb-6" role="alert" aria-live="assertive">
+        <div class="bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-lg p-4 mb-6" role="alert" aria-live="assertive">
             <div class="flex items-center">
-                <svg class="w-5 h-5 text-red-600 dark:text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 text-danger-600 dark:text-danger-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                 </svg>
-                <p class="text-sm text-red-800 dark:text-red-200">{{ $errorMessage }}</p>
+                <p class="text-sm text-danger-800 dark:text-danger-200">{{ $errorMessage }}</p>
             </div>
         </div>
     @endif
 
     {{-- Password Information Card --}}
     @if($lastPasswordChange)
-        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+        <div class="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4 mb-6">
             <div class="flex items-center">
-                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
                 <div>
-                    <p class="text-sm font-semibold text-blue-900 dark:text-blue-100">{{ __('portal.last_password_change') }}</p>
-                    <p class="text-xs text-blue-700 dark:text-blue-300">{{ $lastPasswordChange }}</p>
+                    <p class="text-sm font-semibold text-primary-900 dark:text-primary-100">{{ __('portal.last_password_change') }}</p>
+                    <p class="text-xs text-primary-700 dark:text-primary-300">{{ $lastPasswordChange }}</p>
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@
                         id="current-password"
                         wire:model="currentPassword"
                         autocomplete="current-password"
-                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         required
                     >
                     <button
@@ -89,7 +89,7 @@
                         @endif
                     </button>
                 </div>
-                @error('currentPassword') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                @error('currentPassword') <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p> @enderror
             </div>
 
             {{-- New Password --}}
@@ -103,7 +103,7 @@
                         id="new-password"
                         wire:model.live.debounce.300ms="newPassword"
                         autocomplete="new-password"
-                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         required
                     >
                     <button
@@ -141,7 +141,7 @@
                     </div>
                 @endif
 
-                @error('newPassword') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                @error('newPassword') <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p> @enderror
             </div>
 
             {{-- Confirm New Password --}}
@@ -154,42 +154,42 @@
                     id="new-password-confirmation"
                     wire:model="newPasswordConfirmation"
                     autocomplete="new-password"
-                    class="block w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="block w-full px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     required
                 >
-                @error('newPasswordConfirmation') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                @error('newPasswordConfirmation') <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p> @enderror
             </div>
 
             {{-- Password Requirements --}}
-            <div class="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-md p-4 mb-4">
+            <div class="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-4">
                 <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('portal.password_requirements') }}:</p>
                 <ul class="text-xs text-gray-600 dark:text-gray-400 space-y-1">
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ strlen($newPassword) >= 8 ? 'text-green-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ strlen($newPassword) >= 8 ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_min_8_chars') }}
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[A-Z]/', $newPassword) ? 'text-green-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[A-Z]/', $newPassword) ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_uppercase') }}
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[a-z]/', $newPassword) ? 'text-green-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[a-z]/', $newPassword) ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_lowercase') }}
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[0-9]/', $newPassword) ? 'text-green-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[0-9]/', $newPassword) ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_number') }}
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[^a-zA-Z0-9]/', $newPassword) ? 'text-green-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 mr-2 {{ preg_match('/[^a-zA-Z0-9]/', $newPassword) ? 'text-success-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('portal.password_special_char') }}
@@ -199,7 +199,7 @@
 
             {{-- Submit Button --}}
             <div class="flex justify-end">
-                <button type="submit" class="inline-flex items-center px-6 py-3 min-h-11 min-w-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button type="submit" class="inline-flex items-center px-6 py-3 min-h-11 min-w-11 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     {{ __('portal.change_password') }}
                 </button>
             </div>
@@ -223,7 +223,7 @@
     {{-- Loading Overlay --}}
     <div wire:loading wire:target="changePassword" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center">
-            <svg class="animate-spin h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24">
+            <svg class="animate-spin h-10 w-10 text-primary-600" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>

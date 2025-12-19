@@ -1,9 +1,9 @@
 <div class="max-w-3xl mx-auto space-y-6">
     <header>
-        <h1 class="text-2xl font-semibold text-gray-900">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
             {{ __('Permohonan Lanjutan Aset') }}
         </h1>
-        <p class="mt-2 text-gray-600">
+        <p class="mt-2 text-gray-600 dark:text-gray-400">
             {{ __('Lanjutkan tarikh pemulangan bagi permohonan :number.', ['number' => $application->application_number]) }}
         </p>
     </header>
@@ -12,8 +12,8 @@
         <form wire:submit="submit" class="space-y-6" novalidate>
             <div class="grid gap-6 sm:grid-cols-2">
                 <div>
-                    <p class="text-sm font-medium text-gray-500">{{ __('Tarikh Tamat Sedia Ada') }}</p>
-                    <p class="text-base text-gray-900">
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Tarikh Tamat Sedia Ada') }}</p>
+                    <p class="text-base text-gray-900 dark:text-white">
                         {{ $application->loan_end_date?->translatedFormat('d M Y') }}
                     </p>
                 </div>
@@ -47,3 +47,4 @@
         </form>
     </x-ui.card>
 </div>
+

@@ -54,7 +54,7 @@
                 <div class="text-center py-8" x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 transform scale-95"
                     x-transition:enter-end="opacity-100 transform scale-100">
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-danger-100">
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-danger-100 dark:bg-danger-900/30">
                         <svg class="h-8 w-8 text-danger-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
@@ -89,7 +89,7 @@
                     x-transition:enter-start="opacity-0 transform scale-95"
                     x-transition:enter-end="opacity-100 transform scale-100">
                     {{-- Animated Success Icon --}}
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success-100"
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success-100 dark:bg-success-900/30"
                         x-show="!isOptimistic" x-transition>
                         <svg class="h-8 w-8 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
@@ -97,7 +97,7 @@
                         </svg>
                     </div>
                     {{-- Processing Spinner (Optimistic State) --}}
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-100"
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900/30"
                         x-show="isOptimistic" x-transition>
                         <svg class="h-8 w-8 text-primary-600 animate-spin" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -298,7 +298,7 @@
                                     class="text-sm text-gray-500">({{ __('Maximum 5 files') }})</span>
                             </label>
                             <input id="attachments" type="file" wire:model="attachments" multiple max="5"
-                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100" />
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900 dark:file:text-primary-200" />
                             @error('attachments.*')
                                 <p class="mt-1 text-sm text-danger-600">{{ $message }}</p>
                             @enderror

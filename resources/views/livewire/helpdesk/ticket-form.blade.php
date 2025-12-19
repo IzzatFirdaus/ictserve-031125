@@ -14,7 +14,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
     @trace D03-FR-011, D12-§9, D14-§2.2
     @see Requirements 1.1, 1.2, 1.4, 1.5, 24.1
 --}}
-<div class="min-h-screen bg-slate-100 py-10"
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-10"
     x-data="hybridHelpdeskForm()"
     @optimistic-submission-started.window="handleOptimisticStart($event.detail)"
     @submission-confirmed.window="handleSubmissionConfirmed($event.detail)"
@@ -32,10 +32,10 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                          alt="{{ __('common.motac_logo') }}"
                          class="h-12 w-auto p-1">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                             {{ __('helpdesk.form.title') }}
                         </h1>
-                        <p class="text-sm text-gray-600">
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
                             {{ __('helpdesk.form.subtitle') }}
                         </p>
                     </div>
@@ -43,7 +43,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
 
                 {{-- Form Reference Code (ISO Compliance) --}}
                 <div class="text-right">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-100 text-blue-800">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/30 dark:text-primary-300">
                         {{ \App\Livewire\Helpdesk\TicketForm::FORM_REFERENCE_CODE }}
                     </span>
                 </div>
@@ -51,28 +51,28 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
 
             {{-- Authentication Status Indicator --}}
             @if ($isAuthenticated)
-                <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <div class="mt-4 p-3 bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 rounded-lg">
                     <div class="flex items-center">
-                        <svg class="h-5 w-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-5 w-5 text-success-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span class="text-sm text-green-700">
+                        <span class="text-sm text-success-700 dark:text-success-300">
                             {{ __('helpdesk.form.authenticated_notice', ['name' => $submitter_name]) }}
                         </span>
                     </div>
                 </div>
             @else
-                <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div class="mt-4 p-3 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <svg class="h-5 w-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="h-5 w-5 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <span class="text-sm text-blue-700">
+                            <span class="text-sm text-primary-700 dark:text-primary-300">
                                 {{ __('helpdesk.form.guest_notice') }}
                             </span>
                         </div>
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-blue-700 hover:text-blue-600">
+                        <a href="{{ route('login') }}" class="text-sm font-medium text-primary-700 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300">
                             {{ __('auth.login') }} ->
                         </a>
                     </div>
@@ -82,13 +82,13 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
 
         {{-- Error State (Rollback from Optimistic UI) --}}
         @if ($submissionFailed)
-            <x-ui.card class="border-red-300 bg-red-50 dark:bg-red-900/20">
+            <x-ui.card class="border-danger-300 bg-danger-50 dark:bg-danger-900/20 dark:border-danger-800">
                 <div class="text-center py-8"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 transform scale-95"
                     x-transition:enter-end="opacity-100 transform scale-100">
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
-                        <svg class="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-danger-100 dark:bg-danger-900/30">
+                        <svg class="h-8 w-8 text-danger-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                             </path>
@@ -97,7 +97,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                     <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
                         {{ __('helpdesk.form.submission_failed') }}
                     </h3>
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                    <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">
                         {{ $errorMessage ?? __('helpdesk.errors.generic') }}
                     </p>
                     <div class="mt-6 flex justify-center gap-4">
@@ -124,16 +124,16 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                     x-transition:enter-start="opacity-0 transform scale-95"
                     x-transition:enter-end="opacity-100 transform scale-100">
                     {{--mated Success Icon --}}
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100"
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success-100 dark:bg-success-900/30"
                         x-show="!isOptimistic" x-transition>
-                        <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-8 w-8 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </div>
                     {{-- Processing Spinner (Optimistic State) --}}
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-100"
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900/30"
                         x-show="isOptimistic" x-transition>
-                        <svg class="h-8 w-8 text-blue-600 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <svg class="h-8 w-8 text-primary-600 animate-spin" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
@@ -146,8 +146,8 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
 
                     <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                         {{ __('helpdesk.form.ticket_number_label') }}:
-                        <span class="font-mono font-bold text-blue-600" x-text="ticketNumber || '{{ $ticketNumber }}'">{{ $ticketNumber }}</span>
-                        <span x-show="isOptimistic" class="ml-2 text-xs text-gray-500">({{ __('helpdesk.form.confirming') }})</span>
+                        <span class="font-mono font-bold text-primary-600 dark:text-primary-400" x-text="ticketNumber || '{{ $ticketNumber }}'">{{ $ticketNumber }}</span>
+                        <span x-show="isOptimistic" class="ml-2 text-xs text-gray-500 dark:text-gray-400">({{ __('helpdesk.form.confirming') }})</span>
                     </p>
 
                     <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
@@ -156,8 +156,8 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                     </p>
 
                     {{-- Email SLA Notice --}}
-                    <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg" x-show="!isOptimistic" x-transition>
-                        <p class="text-xs text-blue-700 dark:text-blue-300">
+                    <div class="mt-4 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg" x-show="!isOptimistic" x-transition>
+                        <p class="text-xs text-primary-700 dark:text-primary-300">
                             <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
@@ -170,7 +170,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                             {{ __('helpdesk.form.submit_another') }}
                         </x-ui.button>
                         @if ($isAuthenticated)
-                            <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 min-h-11">
+                            <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 min-h-11">
                                 {{ __('helpdesk.form.view_dashboard') }}
                             </a>
                         @endif
@@ -180,7 +180,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
         @else
             {{-- Progress Indicator --}}
             <div class="mb-10">
-                <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <div class="rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-xl">
                     <div class="flex items-center justify-between gap-4">
                         @foreach (range(1, $totalSteps) as $step)
                             <div class="flex-1 flex flex-col items-center">
@@ -193,8 +193,8 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                                 'flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all shadow-sm',
                                                 $currentStep >= $step
                                                     ? 'bg-primary-600 border-primary-500 text-white ring-2 ring-primary-300'
-                                                    : 'bg-slate-100 border-slate-300 text-slate-500',
-                                                $step < $currentStep ? 'hover:bg-primary-50 cursor-pointer' : 'cursor-default',
+                                                    : 'bg-gray-100 border-gray-300 text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400',
+                                                $step < $currentStep ? 'hover:bg-primary-50 dark:hover:bg-primary-900/20 cursor-pointer' : 'cursor-default',
                                             ])
                                             @if($step >= $currentStep) disabled @endif
                                             aria-label="{{ __('helpdesk.form.step') }} {{ $step }}">
@@ -213,7 +213,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                         </div>
                                     @endif
                                 </div>
-                                <p class="mt-2 text-xs font-semibold text-slate-700">
+                                <p class="mt-2 text-xs font-semibold text-gray-700 dark:text-gray-300">
                                     {{ match ($step) {
                                         1 => __('helpdesk.form.step_personal'),
                                         2 => __('helpdesk.form.step_issue'),
@@ -238,7 +238,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                             </h2>
 
                             @if ($isAuthenticated)
-                                <div class="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-sm text-green-700 dark:text-green-300">
+                                <div class="p-3 bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 rounded-lg text-sm text-success-700 dark:text-success-300">
                                     <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
@@ -336,9 +336,9 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                     wire:model="attachments"
                                     multiple
                                     accept=".pdf,.jpg,.jpeg,.png,.docx"
-                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900 dark:file:text-blue-200" />
+                                    class="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900 dark:file:text-primary-200" />
                                 @error('attachments.*')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                                 @enderror
 
                                 @if ($attachments)
@@ -346,7 +346,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                         @foreach ($attachments as $index => $attachment)
                                             <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 px-3 py-2 rounded">
                                                 <span>{{ $attachment->getClientOriginalName() }} ({{ number_format($attachment->getSize() / 1024, 2) }} KB)</span>
-                                                <button type="button" wire:click="removeAttachment({{ $index }})" class="text-red-500 hover:text-red-700">
+                                                <button type="button" wire:click="removeAttachment({{ $index }})" class="text-danger-500 hover:text-danger-700">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                     </svg>
@@ -356,7 +356,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                     </div>
                                 @endif
 
-                                <div wire:loading wire:target="attachments" class="mt-2 text-sm text-blue-600">
+                                <div wire:loading wire:target="attachments" class="mt-2 text-sm text-primary-600 dark:text-primary-400">
                                     {{ __('helpdesk.form.uploading') }}
                                 </div>
                             </div>
@@ -391,14 +391,14 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                     @if ($isAuthenticated)
                                         <div class="flex justify-between">
                                             <dt class="text-gray-600 dark:text-gray-400">{{ __('helpdesk.form.submission_type') }}:</dt>
-                                            <dd class="font-medium text-green-600 dark:text-green-400">{{ __('helpdesk.form.authenticated_submission') }}</dd>
+                                            <dd class="font-medium text-success-600 dark:text-success-400">{{ __('helpdesk.form.authenticated_submission') }}</dd>
                                         </div>
                                     @endif
                                 </dl>
                             </div>
 
                             {{-- PDPA Declaration --}}
-                            <div class="rounded-lg border-2 border-yellow-300 bg-yellow-50 dark:bg-yellow-900/20 p-4" role="region" aria-labelledby="perakuan-heading">
+                            <div class="rounded-lg border-2 border-warning-300 bg-warning-50 dark:bg-warning-900/20 dark:border-warning-700 p-4" role="region" aria-labelledby="perakuan-heading">
                                 <h3 id="perakuan-heading" class="text-base font-semibold text-gray-900 dark:text-white mb-3">
                                     {{ __('helpdesk.declaration.title') }}
                                 </h3>
@@ -422,13 +422,13 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                     </p>
                                 </div>
 
-                                <div class="border-t border-yellow-200 dark:border-yellow-700 pt-4">
+                                <div class="border-t border-warning-200 dark:border-warning-700 pt-4">
                                     <x-form.checkbox
                                         wire:model.live="declaration_accepted"
                                         label="{{ __('helpdesk.declaration.checkbox_label') }}"
                                         required />
                                     @error('declaration_accepted')
-                                        <p class="mt-2 text-sm text-red-600" role="alert">
+                                        <p class="mt-2 text-sm text-danger-600 dark:text-danger-400" role="alert">
                                             {{ __('helpdesk.validation.declaration_required') }}
                                         </p>
                                     @enderror

@@ -85,10 +85,10 @@ new class extends Component
                 <button
                     type="button"
                     wire:click="markAllAsRead"
-                    class="btn-secondary min-h-11 px-4 py-2 rounded-md shadow-button
+                    class="btn-secondary min-h-11 px-4 py-2 rounded-lg shadow-button
                            bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white
                            hover:bg-gray-300 dark:hover:bg-gray-600
-                           focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:outline-none
+                           focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:outline-none
                            transition-colors duration-200 text-sm font-medium">
                     {{ __('notifications.mark_all_read') }}
                 </button>
@@ -129,11 +129,11 @@ new class extends Component
                             <!-- Icon -->
                             <div class="shrink-0">
                                 @if(Str::contains($notification->type, 'Ticket'))
-                                    <x-heroicon-o-ticket class="w-6 h-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+                                    <x-heroicon-o-ticket class="w-6 h-6 text-primary-600 dark:text-primary-400" aria-hidden="true" />
                                 @elseif(Str::contains($notification->type, 'Approval'))
-                                    <x-heroicon-o-check-circle class="w-6 h-6 text-green-600 dark:text-green-400" aria-hidden="true" />
+                                    <x-heroicon-o-check-circle class="w-6 h-6 text-success-600 dark:text-success-400" aria-hidden="true" />
                                 @elseif(Str::contains($notification->type, 'Loan'))
-                                    <x-heroicon-o-inbox-arrow-down class="w-6 h-6 text-purple-600 dark:text-purple-400" aria-hidden="true" />
+                                    <x-heroicon-o-inbox-arrow-down class="w-6 h-6 text-secondary-600 dark:text-secondary-400" aria-hidden="true" />
                                 @else
                                     <x-heroicon-o-bell class="w-6 h-6 text-gray-600 dark:text-gray-400" aria-hidden="true" />
                                 @endif
@@ -164,9 +164,9 @@ new class extends Component
                                             <button
                                                 type="button"
                                                 wire:click="markAsRead('{{ $notification->id }}')"
-                                                class="inline-flex items-center justify-center min-h-11 min-w-11 rounded-md
+                                                class="inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg
                                                        text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-gray-700
-                                                       focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none
+                                                       focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:outline-none
                                                        transition-colors duration-200"
                                                 aria-label="{{ __('notifications.mark_read') }}"
                                                 title="{{ __('notifications.mark_read') }}">
@@ -177,9 +177,9 @@ new class extends Component
                                         <button
                                             type="button"
                                             wire:click="deleteNotification('{{ $notification->id }}')"
-                                            class="inline-flex items-center justify-center min-h-11 min-w-11 rounded-md
+                                            class="inline-flex items-center justify-center min-h-11 min-w-11 rounded-lg
                                                    text-gray-400 dark:text-gray-500 hover:text-danger-600 dark:hover:text-danger-400 hover:bg-danger-50 dark:hover:bg-gray-700
-                                                   focus-visible:ring-2 focus-visible:ring-danger-500 focus-visible:outline-none
+                                                   focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 focus-visible:outline-none
                                                    transition-colors duration-200"
                                             aria-label="{{ __('notifications.delete') }}"
                                             title="{{ __('notifications.delete') }}">
@@ -193,7 +193,7 @@ new class extends Component
                                     <a href="{{ $notification->data['action_url'] }}"
                                        class="mt-3 inline-flex items-center text-sm font-medium text-primary-600 dark:text-primary-400
                                               hover:text-primary-700 dark:hover:text-primary-300
-                                              focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none rounded px-2 py-1"
+                                              focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-lg px-2 py-1"
                                        wire:navigate>
                                         {{ $notification->data['action_text'] ?? __('notifications.view') }}
                                         <x-heroicon-o-arrow-right class="w-4 h-4 ml-2" aria-hidden="true" />
@@ -210,10 +210,10 @@ new class extends Component
                         <button
                             type="button"
                             wire:click="loadMore"
-                            class="btn-secondary min-h-11 px-6 py-2 rounded-md shadow-button
+                            class="btn-secondary min-h-11 px-6 py-2 rounded-lg shadow-button
                                    bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white
                                    hover:bg-gray-300 dark:hover:bg-gray-600
-                                   focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:outline-none
+                                   focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:outline-none
                                    transition-colors duration-200 font-medium">
                             {{ __('notifications.load_more') }}
                         </button>
@@ -228,7 +228,7 @@ new class extends Component
                             wire:click="clearAll"
                             wire:confirm="{{ __('notifications.confirm_clear_all') }}"
                             class="text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300
-                                   focus-visible:ring-2 focus-visible:ring-danger-500 focus-visible:outline-none rounded px-3 py-2
+                                   focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-lg px-3 py-2
                                    text-sm font-medium transition-colors duration-200">
                             {{ __('notifications.clear_all') }}
                         </button>
