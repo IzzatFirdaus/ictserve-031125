@@ -13,8 +13,8 @@
     <meta name="theme-color" content="#0056B3">
     <title>{{ $title ?? 'ICTServe' }}</title>
 
-    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
-    <x-theme-init-script />
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.1 --}}
+    <x-theme-init />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
