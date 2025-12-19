@@ -132,7 +132,7 @@ default => 'sm:max-w-2xl',
                 {{-- Close Button --}}
                 @if ($closeable)
                 <button type="button" @click="close()"
-                    class="absolute top-4 right-4 z-10 inline-flex items-center justify-center min-w-11 min-h-11 -m-2 rounded-lg text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 focus:outline-none transition-colors"
+                    class="absolute top-4 right-4 z-10 inline-flex items-center justify-center min-w-11 min-h-11 -m-2 rounded-lg text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors"
                     aria-label="{{ __('common.close_modal') }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         aria-hidden="true">

@@ -82,13 +82,13 @@ default => 'h-10 w-24',
 
     @case('button')
     {{-- Button skeleton --}}
-    <div class="{{ $buttonSize }} bg-gray-200 dark:bg-gray-700 rounded-md skeleton-pulse"></div>
+    <div class="{{ $buttonSize }} bg-gray-200 dark:bg-gray-700 rounded-lg skeleton-pulse"></div>
     @break
 
     @case('image')
     {{-- Image skeleton --}}
     <div
-        class="aspect-video {{ $widthClass }} bg-gray-200 dark:bg-gray-700 rounded-(--radius-l) skeleton-pulse flex items-center justify-center">
+        class="aspect-video {{ $widthClass }} bg-gray-200 dark:bg-gray-700 rounded-lg skeleton-pulse flex items-center justify-center">
         <svg class="w-10 h-10 text-gray-300 dark:text-gray-600" fill="currentColor" viewBox="0 0 20 20"
             aria-hidden="true">
             <path fill-rule="evenodd"

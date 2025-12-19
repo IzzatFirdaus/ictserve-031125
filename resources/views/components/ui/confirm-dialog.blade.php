@@ -181,11 +181,11 @@ default => [
                 {{-- Actions - 44×44px minimum touch targets per D12 §4.1 --}}
                 <div class="bg-gray-50 dark:bg-gray-900/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-3">
                     <button type="button" @click="confirm()"
-                        class="inline-flex w-full justify-center items-center min-h-11 rounded-md px-4 py-2 text-sm font-semibold text-white shadow-sm {{ $variantConfig['buttonClass'] }} focus:outline-none sm:w-auto transition-colors">
+                        class="inline-flex w-full justify-center items-center min-h-11 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm {{ $variantConfig['buttonClass'] }} focus:outline-none sm:w-auto transition-colors">
                         {{ $confirmText }}
                     </button>
                     <button type="button" @click="cancel()"
-                        class="mt-3 inline-flex w-full justify-center items-center min-h-11 rounded-md bg-white dark:bg-gray-700 px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none sm:mt-0 sm:w-auto transition-colors">
+                        class="mt-3 inline-flex w-full justify-center items-center min-h-11 rounded-lg bg-white dark:bg-gray-700 px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none sm:mt-0 sm:w-auto transition-colors">
                         {{ $cancelText }}
                     </button>
                 </div>
