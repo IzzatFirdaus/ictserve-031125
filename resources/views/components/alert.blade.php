@@ -52,7 +52,7 @@ default => 'text-gray-500',
     @if($dismissible)
     <button
         type="button"
-        class="shrink-0 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 rounded-lg"
+        class="shrink-0 min-h-11 min-w-11 flex items-center justify-center text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 rounded-lg"
         aria-label="Close alert"
         onclick="this.parentElement.remove()">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
