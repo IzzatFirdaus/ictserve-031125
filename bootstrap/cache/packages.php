@@ -120,11 +120,15 @@
       0 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
     ),
   ),
-  'laravel/breeze' => 
+  'laravel/horizon' => 
   array (
+    'aliases' => 
+    array (
+      'Horizon' => 'Laravel\\Horizon\\Horizon',
+    ),
     'providers' => 
     array (
-      0 => 'Laravel\\Breeze\\BreezeServiceProvider',
+      0 => 'Laravel\\Horizon\\HorizonServiceProvider',
     ),
   ),
   'laravel/mcp' => 
@@ -161,13 +165,6 @@
       1 => 'Laravel\\Reverb\\ReverbServiceProvider',
     ),
   ),
-  'laravel/roster' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Roster\\RosterServiceProvider',
-    ),
-  ),
   'laravel/sanctum' => 
   array (
     'providers' => 
@@ -184,13 +181,6 @@
     'providers' => 
     array (
       0 => 'Laravel\\Socialite\\SocialiteServiceProvider',
-    ),
-  ),
-  'laravel/telescope' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Telescope\\TelescopeServiceProvider',
     ),
   ),
   'laravel/tinker' => 
@@ -234,20 +224,6 @@
     'providers' => 
     array (
       0 => 'Carbon\\Laravel\\ServiceProvider',
-    ),
-  ),
-  'nunomaduro/collision' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    ),
-  ),
-  'nunomaduro/phpinsights' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'NunoMaduro\\PhpInsights\\Application\\Adapters\\Laravel\\InsightsServiceProvider',
     ),
   ),
   'nunomaduro/termwind' => 

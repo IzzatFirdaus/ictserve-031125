@@ -339,6 +339,7 @@ docker compose up -d
 ```
 
 **What docker-rebuild.ps1 does:**
+
 - ✅ Stops existing containers and cleans up
 - ✅ Rebuilds Docker image with PHP 8.4
 - ✅ Installs all dependencies inside container (Composer + NPM)
@@ -347,6 +348,7 @@ docker compose up -d
 - ✅ Starts all services
 
 **Services Started:**
+
 - 🐳 PHP 8.4-FPM (Application)
 - 🌐 Nginx (Web Server)
 - 🗄️ MySQL 8.0 (Database)
@@ -355,13 +357,15 @@ docker compose up -d
 - 🔷 Queue Worker (Background Jobs)
 
 **Access URLs:**
-- Application: http://localhost:8000
-- Admin Panel: http://localhost:8000/admin
-- Horizon: http://localhost:8000/horizon
-- Telescope: http://localhost:8000/telescope
-- Pulse: http://localhost:8000/pulse
+
+- Application: <http://localhost:8000>
+- Admin Panel: <http://localhost:8000/admin>
+- Horizon: <http://localhost:8000/horizon>
+- Telescope: <http://localhost:8000/telescope>
+- Pulse: <http://localhost:8000/pulse>
 
 **Default Credentials:**
+
 - Superuser: `superuser@motac.gov.my` / `password`
 - Admin: `admin@motac.gov.my` / `password`
 - Staff: `staff@motac.gov.my` / `password`
@@ -397,17 +401,20 @@ docker compose down
 ### Docker Troubleshooting
 
 **Issue: "Unable to set application key"**
+
 ```bash
 # Generate key inside container
 docker compose exec app php artisan key:generate
 ```
 
 **Issue: "Skipping malformed CSV row"**
+
 - ✅ This is normal - the seeder handles HTML entities automatically
 - ✅ Database will still be seeded correctly with all divisions
 - ✅ No action needed
 
 **Issue: "Vendor directory not found"**
+
 ```bash
 # Install dependencies inside container
 docker compose exec app composer install --no-scripts
@@ -415,6 +422,7 @@ docker compose exec app php artisan package:discover
 ```
 
 **Issue: "Node modules binary conflicts"**
+
 ```bash
 # Clean and reinstall inside container
 docker compose exec app rm -rf node_modules
@@ -422,6 +430,7 @@ docker compose exec app npm ci
 ```
 
 **Issue: "Port already in use"**
+
 ```bash
 # Stop conflicting services
 docker compose down
@@ -429,16 +438,19 @@ docker compose down
 ```
 
 **Issue: "Call to undefined method ServiceProvider::boot()"**
+
 - ✅ Fixed in HorizonServiceProvider.php
 - ✅ Run docker-rebuild.ps1 to apply fix
 
 --- migrations and seeds database
+
 - Sets up Laravel completely
 
 **Access:**
-- Application: http://localhost:8000
-- Admin Panel: http://localhost:8000/admin
-- Login: superuser@motac.gov.my / password Installs all dependencies inside container
+
+- Application: <http://localhost:8000>
+- Admin Panel: <http://localhost:8000/admin>
+- Login: <superuser@motac.gov.my> / password Installs all dependencies inside container
 - Sets up database and seeds data
 
 ### Alternative: Host Dependencies
@@ -489,6 +501,7 @@ docker compose exec app sh
 **Root Cause**: composer.lock requires PHP 8.4 for Symfony 8.0 packages
 
 **Solution**:
+
 ```bash
 # Rebuild with PHP 8.4
 .\docker-rebuild.ps1
@@ -497,6 +510,7 @@ docker compose exec app sh
 #### Issue: Missing vendor/autoload.php
 
 **Solution**:
+
 ```bash
 # Install dependencies in container
 docker compose exec app composer install
@@ -507,6 +521,7 @@ docker compose exec app composer install
 **Error**: `Error: ENOENT: no such file or directory, open '...\node_modules\@esbuild\win32-x64\esbuild.exe'`
 
 **Solution**:
+
 ```bash
 # Remove Windows node_modules
 Remove-Item -Recurse -Force node_modules
@@ -550,6 +565,7 @@ Password: password
 ## Docker Development (Alternative)
 
 > **⚠️ CRITICAL ISSUES FIXED**:
+>
 > 1. **PHP Version**: Dockerfile updated to PHP 8.3 (was 8.2, incompatible with dependencies)
 > 2. **Node Modules**: Must delete `node_modules/` before Docker install (Windows/Linux binary conflict)
 > 3. **PCNTL Extension**: Added for Laravel Horizon support
@@ -977,6 +993,7 @@ For issues or questions:
 **Last Updated**: December 3, 2025  
 **Version**: 3.6.0  
 **Maintained By**: BPM MOTAC Development Teamlescope>
+
 - **Laravel Pulse**: <http://127.0.0.1:8000/pulse>
 
 #### Default Test Credentials
