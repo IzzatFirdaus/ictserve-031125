@@ -1,4 +1,7 @@
-# ICTServe Quick Start Guide
+# ICTServe v3.6.0 Quick Start Guide
+
+**Last Updated**: December 19, 2024  
+**Laravel**: 12.43.1 | **PHP**: 8.2.12+ | **Node.js**: 22.12+
 
 **Version**: 3.6.0 | **Laravel**: 12.42.0 | **PHP**: 8.2.12+ | **Node.js**: 22.12+
 
@@ -1082,6 +1085,48 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
+#### npm Permission Issues (Windows)
+
+```bash
+# SOLUTION: Two-step approach for npm + Vite compatibility
+
+# Step 1: Install dependencies (Node v18 - no permission issues)
+.\scripts\dev\fix-npm-complete.ps1
+npm install
+
+# Step 2: Build assets (Node v22 - Vite 7.2.0 requirement)
+.\scripts\dev\build-with-node22.ps1
+
+# For new terminal sessions:
+.\fix-npm.ps1                    # Quick Node.js configuration for npm commands
+```
+
+**Why Two Scripts?**
+
+- **npm install**: Works with Node.js v18 (no permission issues)
+- **npm run build**: Requires Node.js v22 (Vite 7.2.0 requirement)
+- **build-with-node22.ps1**: Handles Node v22 automatically
+
+**What the scripts do:**
+
+1. **fix-npm-complete.ps1**:
+   - Finds working Node.js (Laragon v18)
+   - Configures npm directories
+   - Creates quick helper script
+
+2. **build-with-node22.ps1**:
+   - Uses Node.js v22 for Vite
+   - Temporarily disables .npmrc
+   - Builds assets successfully
+   - Restores configuration
+
+**Common npm Errors:**
+
+- **EPERM: operation not permitted** → Run `.\scripts\dev\fix-npm-complete.ps1`
+- **Vite requires Node.js 20.19+** → Run `.\scripts\dev\build-with-node22.ps1`
+- **npm config prefix error** → Fixed by build script automatically
+- **Missing node_modules** → Run `npm install` with Node v18 first
+
 #### Database Issues
 
 ```bash
@@ -1376,3 +1421,90 @@ npm run build                                  # Build assets
 
 **ICTServe v3.6.0** | **Laravel 12.42.0** | **Production Ready** ✅  
 **Last Updated**: December 16, 2025
+
+## Development Server Quick Start
+
+### Option 1: Automated Setup (Recommended)
+
+```powershell
+# Run the setup script
+.\scripts\dev\setup-project.ps1
+
+# Start development server
+.\scripts\dev\start-dev.ps1
+```
+
+### Option 2: Manual Setup
+
+```powershell
+# 1. Install dependencies
+composer install
+npm install
+
+# 2. Configure environment
+copy .env.example .env
+php artisan key:generate
+
+# 3. Setup database
+php artisan migrate
+
+# 4. Start services
+.\scripts\dev\start-dev.ps1
+```
+
+### Development Profiles
+
+```powershell
+# Minimal (Laravel + Vite only)
+.\scripts\dev\start-dev.ps1 -Profile minimal
+
+# Backend (Laravel + Redis + Queue + Reverb)
+.\scripts\dev\start-dev.ps1 -Profile backend
+
+# Full (All services)
+.\scripts\dev\start-dev.ps1 -Profile full
+
+# AI Development (All + MCP + Ollama)
+.\scripts\dev\start-dev.ps1 -Profile ai
+```
+
+## Troubleshooting
+
+### npm Issues
+
+If npm commands fail:
+
+```powershell
+.\scripts\dev\fix-npm.ps1
+```
+
+### Redis Not Available
+
+```powershell
+# WSL Redis (Recommended)
+wsl.exe sudo apt install redis-server
+wsl.exe redis-server --daemonize yes
+
+# Or use Laragon/Docker Redis
+```
+
+### Port Conflicts
+
+```powershell
+# Check port usage
+netstat -ano | findstr :8000
+
+# Kill process
+taskkill /PID <PID> /F
+```
+
+## Service URLs
+
+- Application: <http://127.0.0.1:8000>
+- Admin Panel: <http://127.0.0.1:8000/admin>
+- Telescope: <http://127.0.0.1:8000/telescope>
+- Pulse: <http://127.0.0.1:8000/pulse>
+
+## More Information
+
+See `docs/DEV_SETUP.md` for comprehensive setup guide.
