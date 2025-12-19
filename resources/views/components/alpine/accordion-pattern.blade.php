@@ -13,7 +13,7 @@
         @click="open = !open"
         :aria-expanded="open"
         aria-controls="accordion-content"
-        class="flex items-center justify-between w-full px-4 py-3 text-left bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
+        class="flex items-center justify-between w-full min-h-11 px-4 py-3 text-left bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
     >
         <span class="font-medium text-gray-900 dark:text-white">
             Accordion Title
