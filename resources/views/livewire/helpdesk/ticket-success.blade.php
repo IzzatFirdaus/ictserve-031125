@@ -30,7 +30,7 @@
                         {{ __('helpdesk.can_claim_ticket_message') }}
                     </p>
                     <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                        class="mt-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                        class="mt-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-yellow-500 min-h-11">
                         {{ __('helpdesk.view_my_tickets') }}
                     </a>
                 </div>
@@ -39,12 +39,12 @@
             <!-- Action Buttons -->
             <div class="mt-8 space-y-3">
                 <a href="{{ route('helpdesk.track', ['ticketNumber' => $ticketNumber]) }}"
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 min-h-11">
                     {{ __('helpdesk.track_ticket') }}
                 </a>
 
                 <a href="{{ route('helpdesk.create') }}"
-                    class="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    class="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 min-h-11">
                     {{ __('helpdesk.submit_another_ticket') }}
                 </a>
 

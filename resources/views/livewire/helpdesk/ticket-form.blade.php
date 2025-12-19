@@ -170,7 +170,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                             {{ __('helpdesk.form.submit_another') }}
                         </x-ui.button>
                         @if ($isAuthenticated)
-                            <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 min-h-11">
                                 {{ __('helpdesk.form.view_dashboard') }}
                             </a>
                         @endif
@@ -336,7 +336,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                     wire:model="attachments"
                                     multiple
                                     accept=".pdf,.jpg,.jpeg,.png,.docx"
-                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900 dark:file:text-blue-200" />
+                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900 dark:file:text-blue-200" />
                                 @error('attachments.*')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
