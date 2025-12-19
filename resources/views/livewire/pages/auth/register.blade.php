@@ -124,10 +124,10 @@ new #[Layout('layouts.guest')] class extends Component
     public function getPasswordStrengthColor(): string
     {
         return match ($this->passwordStrength) {
-            0, 1 => 'bg-red-500',
-            2 => 'bg-yellow-500',
-            3 => 'bg-blue-500',
-            4, 5 => 'bg-green-500',
+            0, 1 => 'bg-danger-500',
+            2 => 'bg-warning-500',
+            3 => 'bg-primary-500',
+            4, 5 => 'bg-success-500',
             default => 'bg-gray-300',
         };
     }
@@ -197,7 +197,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-text-input
                 wire:model.live.debounce.300ms="name"
                 id="name"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="text"
                 name="name"
                 required
@@ -217,7 +217,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-text-input
                 wire:model.live.debounce.300ms="email"
                 id="email"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="email"
                 name="email"
                 required
@@ -226,7 +226,7 @@ new #[Layout('layouts.guest')] class extends Component
                 aria-describedby="email-hint email-error"
             />
             {{-- Email Domain Hint --}}
-            <p id="email-hint" class="mt-2 text-sm font-body {{ $emailDomainValid ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400' }}">
+            <p id="email-hint" class="mt-2 text-sm font-body {{ $emailDomainValid ? 'text-success-600 dark:text-success-400' : 'text-gray-600 dark:text-gray-400' }}">
                 @if($email && $emailDomainValid)
                     <span class="flex items-center gap-2">
                         <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -235,7 +235,7 @@ new #[Layout('layouts.guest')] class extends Component
                         {{ __('auth.email_domain_hint') }}
                     </span>
                 @elseif($email && !$emailDomainValid)
-                    <span class="flex items-center gap-2 text-red-600 dark:text-red-400">
+                    <span class="flex items-center gap-2 text-danger-600 dark:text-danger-400">
                         <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                         </svg>
@@ -256,7 +256,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-text-input
                 wire:model.live.debounce.150ms="password"
                 id="password"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="password"
                 name="password"
                 required
@@ -270,7 +270,7 @@ new #[Layout('layouts.guest')] class extends Component
                 <div class="mt-3" id="password-strength" role="status" aria-live="polite">
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-sm text-gray-600 dark:text-gray-400 font-body">{{ __('auth.password_strength') }}:</span>
-                        <span class="text-sm font-medium font-body {{ $passwordStrength >= 4 ? 'text-green-600 dark:text-green-400' : ($passwordStrength >= 3 ? 'text-blue-600 dark:text-blue-400' : ($passwordStrength >= 2 ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400')) }}">
+                        <span class="text-sm font-medium font-body {{ $passwordStrength >= 4 ? 'text-success-600 dark:text-success-400' : ($passwordStrength >= 3 ? 'text-primary-600 dark:text-primary-400' : ($passwordStrength >= 2 ? 'text-warning-600 dark:text-warning-400' : 'text-danger-600 dark:text-danger-400')) }}">
                             {{ $this->getPasswordStrengthLabel() }}
                         </span>
                     </div>
@@ -283,7 +283,7 @@ new #[Layout('layouts.guest')] class extends Component
                 <div id="password-requirements" class="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-md border border-gray-200 dark:border-gray-600">
                     <p class="text-sm font-medium font-body text-gray-700 dark:text-gray-300 mb-3">{{ __('auth.password_requirements') }}:</p>
                     <ul class="space-y-2 text-sm font-body">
-                        <li class="flex items-center gap-2 {{ $passwordChecks['length'] ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400' }}">
+                        <li class="flex items-center gap-2 {{ $passwordChecks['length'] ? 'text-success-600 dark:text-success-400' : 'text-gray-500 dark:text-gray-400' }}">
                             @if($passwordChecks['length'])
                                 <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                             @else
@@ -291,7 +291,7 @@ new #[Layout('layouts.guest')] class extends Component
                             @endif
                             {{ __('auth.password_min_length') }}
                         </li>
-                        <li class="flex items-center gap-2 {{ $passwordChecks['uppercase'] ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400' }}">
+                        <li class="flex items-center gap-2 {{ $passwordChecks['uppercase'] ? 'text-success-600 dark:text-success-400' : 'text-gray-500 dark:text-gray-400' }}">
                             @if($passwordChecks['uppercase'])
                                 <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                             @else
@@ -299,7 +299,7 @@ new #[Layout('layouts.guest')] class extends Component
                             @endif
                             {{ __('auth.password_uppercase') }}
                         </li>
-                        <li class="flex items-center gap-2 {{ $passwordChecks['lowercase'] ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400' }}">
+                        <li class="flex items-center gap-2 {{ $passwordChecks['lowercase'] ? 'text-success-600 dark:text-success-400' : 'text-gray-500 dark:text-gray-400' }}">
                             @if($passwordChecks['lowercase'])
                                 <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                             @else
@@ -307,7 +307,7 @@ new #[Layout('layouts.guest')] class extends Component
                             @endif
                             {{ __('auth.password_lowercase') }}
                         </li>
-                        <li class="flex items-center gap-2 {{ $passwordChecks['number'] ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400' }}">
+                        <li class="flex items-center gap-2 {{ $passwordChecks['number'] ? 'text-success-600 dark:text-success-400' : 'text-gray-500 dark:text-gray-400' }}">
                             @if($passwordChecks['number'])
                                 <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                             @else
@@ -315,7 +315,7 @@ new #[Layout('layouts.guest')] class extends Component
                             @endif
                             {{ __('auth.password_number') }}
                         </li>
-                        <li class="flex items-center gap-2 {{ $passwordChecks['special'] ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400' }}">
+                        <li class="flex items-center gap-2 {{ $passwordChecks['special'] ? 'text-success-600 dark:text-success-400' : 'text-gray-500 dark:text-gray-400' }}">
                             @if($passwordChecks['special'])
                                 <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                             @else
@@ -338,7 +338,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-text-input
                 wire:model.live.debounce.300ms="password_confirmation"
                 id="password_confirmation"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="password"
                 name="password_confirmation"
                 required
@@ -348,7 +348,7 @@ new #[Layout('layouts.guest')] class extends Component
             />
             {{-- Password Match Indicator --}}
             @if($password_confirmation)
-                <p class="mt-2 text-sm font-body {{ $password === $password_confirmation ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                <p class="mt-2 text-sm font-body {{ $password === $password_confirmation ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400' }}">
                     @if($password === $password_confirmation)
                         <span class="flex items-center gap-2">
                             <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -373,14 +373,14 @@ new #[Layout('layouts.guest')] class extends Component
 
         {{-- Form Actions (MyDS Touch Targets - D13 §2.7) --}}
         <div class="flex items-center justify-between mt-8 pt-4">
-            <a class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 underline rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
+            <a class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 underline rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-800 min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
                href="{{ route('login') }}"
                wire:navigate>
                 {{ __('auth.already_registered') }}
             </a>
 
             <button type="submit"
-                class="min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-md shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
+                class="min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 rounded-lg shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
                 @if($isSubmitting) disabled @endif>
                 @if($isSubmitting)
                     <span class="flex items-center gap-2">

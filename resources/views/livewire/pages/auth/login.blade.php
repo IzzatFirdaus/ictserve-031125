@@ -89,7 +89,7 @@ new #[Layout('layouts.guest')] class extends Component {
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     @if (session('sso_fallback'))
-        <div class="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900" role="alert">
+        <div class="mb-4 rounded-lg border border-warning-200 bg-warning-50 px-4 py-3 text-sm text-warning-900" role="alert">
             <p class="font-semibold">{{ __('auth.google_sso_unavailable') }}</p>
             <p class="mt-1">{{ __('auth.sso_fallback_available') }}</p>
         </div>
@@ -109,7 +109,7 @@ new #[Layout('layouts.guest')] class extends Component {
         <div class="space-y-2">
             <x-input-label for="email" :value="__('auth.email_or_username')" class="text-gray-900 dark:text-white font-medium font-body" />
             <x-text-input wire:model="form.email" id="email"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="text" name="email" required autofocus autocomplete="username"
                 placeholder="{{ __('auth.email_or_username_placeholder') }}"
                 aria-describedby="login-hint" />
@@ -126,7 +126,7 @@ new #[Layout('layouts.guest')] class extends Component {
         <div class="space-y-2">
             <x-input-label for="password" :value="__('auth.password')" class="text-gray-900 dark:text-white font-medium font-body" />
             <x-text-input wire:model="form.password" id="password"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body transition-colors duration-200"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="password" name="password" required autocomplete="current-password"
                 placeholder="{{ __('auth.password_placeholder') }}" />
             @error('form.password')
@@ -144,7 +144,7 @@ new #[Layout('layouts.guest')] class extends Component {
             </label>
 
             @if (Route::has('password.request'))
-                <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 rounded-md min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
+                <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-800 rounded-lg min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
                     href="{{ route('password.request') }}" wire:navigate>
                     {{ __('auth.forgot_password') }}
                 </a>
@@ -155,7 +155,7 @@ new #[Layout('layouts.guest')] class extends Component {
         {{-- Loading state uses hidden class as default to prevent FOUC before Livewire hydrates --}}
         <div class="pt-4">
             <button type="submit"
-                class="w-full min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-md shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
+                class="w-full min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 rounded-lg shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
                 wire:loading.attr="disabled"
                 wire:target="login">
                 {{-- Default state: visible, hidden during loading --}}

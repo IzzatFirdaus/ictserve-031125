@@ -101,18 +101,18 @@ new #[Layout('layouts.guest')] class extends Component
     </div>
 
     {{-- Verification Message --}}
-    <div class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+    <div class="mb-6 p-4 bg-info-50 dark:bg-info-900/20 border border-info-200 dark:border-info-800 rounded-lg">
         <div class="flex">
             <div class="shrink-0">
-                <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <svg class="h-5 w-5 text-info-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
                 </svg>
             </div>
             <div class="ml-3">
-                <p class="text-sm text-blue-700 dark:text-blue-300">
+                <p class="text-sm text-info-700 dark:text-info-300">
                     {{ __('auth.verify_email_message') }}
                 </p>
-                <p class="mt-2 text-sm text-blue-600 dark:text-blue-400">
+                <p class="mt-2 text-sm text-info-600 dark:text-info-400">
                     <strong>{{ __('auth.email') }}:</strong> {{ $this->getMaskedEmail() }}
                 </p>
             </div>
@@ -121,15 +121,15 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- Success Message --}}
     @if (session('status') == 'verification-link-sent' || $emailSent)
-    <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg" role="alert" aria-live="polite">
+    <div class="mb-6 p-4 bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 rounded-lg" role="alert" aria-live="polite">
         <div class="flex">
             <div class="shrink-0">
-                <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <svg class="h-5 w-5 text-success-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
                 </svg>
             </div>
             <div class="ml-3">
-                <p class="text-sm font-medium text-green-800 dark:text-green-200">
+                <p class="text-sm font-medium text-success-800 dark:text-success-200">
                     {{ __('auth.verify_email_sent') }}
                 </p>
             </div>
@@ -144,7 +144,7 @@ new #[Layout('layouts.guest')] class extends Component
             wire:click="sendVerification"
             wire:loading.attr="disabled"
             wire:loading.class="opacity-50 cursor-not-allowed"
-            class="w-full justify-center">
+            class="w-full justify-center min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500">
             <span wire:loading.remove wire:target="sendVerification" class="flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -164,7 +164,7 @@ new #[Layout('layouts.guest')] class extends Component
         <button
             wire:click="logout"
             type="button"
-            class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 transition-colors">
+            class="w-full inline-flex items-center justify-center px-4 py-3 min-h-11 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-800 transition-colors">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>

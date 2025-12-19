@@ -74,7 +74,7 @@ new #[Layout('layouts.guest')] class extends Component
         <div class="space-y-2">
             <x-input-label for="email" :value="__('auth.email')" class="text-gray-900 dark:text-white font-medium font-body theme-transition" />
             <x-text-input wire:model="email" id="email"
-                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-body theme-transition"
+                class="block w-full min-h-11 px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-primary-500 font-body theme-transition"
                 type="email" name="email" required autofocus autocomplete="email"
                 placeholder="{{ __('auth.email_placeholder') }}"
                 aria-describedby="email-hint" />
@@ -88,12 +88,12 @@ new #[Layout('layouts.guest')] class extends Component
 
         {{-- Submit Button (MyDS Touch Targets - D13 §2.7) --}}
         <div class="flex items-center justify-between pt-2">
-            <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 rounded-md min-h-11 inline-flex items-center px-2 font-body theme-transition"
+            <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-800 rounded-lg min-h-11 inline-flex items-center px-2 font-body theme-transition"
                 href="{{ route('login') }}" wire:navigate>
                 {{ __('auth.back_to_login') }}
             </a>
 
-            <x-primary-button class="min-h-11 px-6 py-3 rounded-md shadow-button hover:shadow-button-hover focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 font-medium font-body theme-transition">
+            <x-primary-button class="min-h-11 px-6 py-3 rounded-lg shadow-button hover:shadow-button-hover focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 font-medium font-body theme-transition">
                 {{ __('auth.send_reset_link') }}
             </x-primary-button>
         </div>
