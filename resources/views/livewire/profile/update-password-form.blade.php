@@ -66,13 +66,13 @@ new class extends Component
     <form wire:submit="updatePassword" class="mt-6 space-y-6">
         <div>
             <x-input-label for="update_password_current_password" :value="__('profile.current_password')" />
-            <x-text-input wire:model="current_password" id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" :placeholder="__('profile.current_password_placeholder')" />
+            <x-text-input wire:model="current_password" id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" autocomplete="current-password" :placeholder="__('profile.current_password_placeholder')" />
             <x-input-error :messages="$errors->get('current_password')" class="mt-2" />
         </div>
 
         <div>
             <x-input-label for="update_password_password" :value="__('profile.new_password')" />
-            <x-text-input wire:model="password" id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" :placeholder="__('profile.new_password_placeholder')" />
+            <x-text-input wire:model="password" id="update_password_password" name="password" type="password" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" autocomplete="new-password" :placeholder="__('profile.new_password_placeholder')" />
             <p class="mt-2 text-xs text-slate-300">
                 {{ __('profile.password_requirements') }}
             </p>
@@ -81,12 +81,12 @@ new class extends Component
 
         <div>
             <x-input-label for="update_password_password_confirmation" :value="__('profile.confirm_password')" />
-            <x-text-input wire:model="password_confirmation" id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+            <x-text-input wire:model="password_confirmation" id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('profile.update_password') }}</x-primary-button>
+            <x-primary-button class="min-h-11 px-6 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500">{{ __('profile.update_password') }}</x-primary-button>
 
             <x-action-message class="me-3" on="password-updated">
                 {{ __('profile.password_updated') }}
