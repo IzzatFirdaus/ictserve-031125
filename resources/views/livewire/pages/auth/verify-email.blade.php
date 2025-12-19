@@ -92,10 +92,10 @@ new #[Layout('layouts.guest')] class extends Component
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
         </div>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">
             {{ __('auth.verify_email_title') }}
         </h1>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
             {{ __('auth.verify_email_subtitle') }}
         </p>
     </div>
@@ -164,7 +164,7 @@ new #[Layout('layouts.guest')] class extends Component
         <button
             wire:click="logout"
             type="button"
-            class="w-full inline-flex items-center justify-center px-4 py-3 min-h-11 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-800 transition-colors">
+            class="w-full inline-flex items-center justify-center px-4 py-3 min-h-11 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800 transition-colors">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
@@ -174,7 +174,7 @@ new #[Layout('layouts.guest')] class extends Component
 
     {{-- Help Text --}}
     <div class="mt-6 text-center">
-        <p class="text-xs text-gray-500 dark:text-gray-400">
+        <p class="text-xs text-slate-500 dark:text-slate-400">
             {{ __('auth.need_help') }}
             <a href="{{ route('contact') }}" class="text-primary-600 hover:text-primary-500 underline">
                 {{ __('auth.contact_support') }}

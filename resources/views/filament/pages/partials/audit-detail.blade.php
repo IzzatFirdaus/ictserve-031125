@@ -11,7 +11,7 @@
             <div>
                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Source') }}</p>
                 <p class="text-sm text-gray-900 dark:text-white">
-                    <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">
+                    <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200 rounded">
                         {{ __('Compliance Audit') }}
                     </span>
                 </p>
@@ -29,9 +29,9 @@
                 <p class="text-sm">
                     <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded
                         {{ match($record->event) {
-                            'created' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                            'updated' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-                            'deleted' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                            'created' => 'bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200',
+                            'updated' => 'bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200',
+                            'deleted' => 'bg-danger-100 text-danger-800 dark:bg-danger-900 dark:text-danger-200',
                             default => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
                         } }}">
                         {{ ucfirst($record->event) }}
@@ -64,14 +64,14 @@
                 <div class="grid grid-cols-2 gap-4">
                     @if($record->old_values)
                         <div>
-                            <p class="text-xs font-medium text-red-600 dark:text-red-400 mb-1">{{ __('Previous Values') }}</p>
-                            <pre class="text-xs bg-red-50 dark:bg-red-900/20 p-2 rounded overflow-auto max-h-40">{{ json_encode($record->old_values, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+                            <p class="text-xs font-medium text-danger-600 dark:text-danger-400 mb-1">{{ __('Previous Values') }}</p>
+                            <pre class="text-xs bg-danger-50 dark:bg-danger-900/20 p-2 rounded overflow-auto max-h-40">{{ json_encode($record->old_values, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
                         </div>
                     @endif
                     @if($record->new_values)
                         <div>
-                            <p class="text-xs font-medium text-green-600 dark:text-green-400 mb-1">{{ __('New Values') }}</p>
-                            <pre class="text-xs bg-green-50 dark:bg-green-900/20 p-2 rounded overflow-auto max-h-40">{{ json_encode($record->new_values, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+                            <p class="text-xs font-medium text-success-600 dark:text-success-400 mb-1">{{ __('New Values') }}</p>
+                            <pre class="text-xs bg-success-50 dark:bg-success-900/20 p-2 rounded overflow-auto max-h-40">{{ json_encode($record->new_values, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
                         </div>
                     @endif
                 </div>
@@ -83,7 +83,7 @@
             <div>
                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Source') }}</p>
                 <p class="text-sm text-gray-900 dark:text-white">
-                    <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded">
+                    <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200 rounded">
                         {{ __('Activity Log') }}
                     </span>
                 </p>

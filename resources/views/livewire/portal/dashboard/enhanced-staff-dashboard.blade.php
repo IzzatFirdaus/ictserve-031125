@@ -199,19 +199,19 @@
                                         <div class="shrink-0">
                                             @if ($action['priority'] === 'critical')
                                                 <span
-                                                    class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-danger-100 dark:bg-danger-900">
+                                                    class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-danger-50 dark:bg-danger-900">
                                                     <x-heroicon-s-exclamation-triangle class="h-5 w-5 text-danger-600"
                                                         aria-hidden="true" />
                                                 </span>
                                             @elseif($action['priority'] === 'high')
                                                 <span
-                                                    class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-warning-100 dark:bg-warning-900">
+                                                    class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-warning-50 dark:bg-warning-900">
                                                     <x-heroicon-s-clock class="h-5 w-5 text-warning-600"
                                                         aria-hidden="true" />
                                                 </span>
                                             @else
                                                 <span
-                                                    class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-info-100 dark:bg-info-900">
+                                                    class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-info-50 dark:bg-info-900">
                                                     <x-heroicon-s-information-circle class="h-5 w-5 text-info-600"
                                                         aria-hidden="true" />
                                                 </span>
@@ -227,7 +227,7 @@
                                         </div>
                                         <div class="shrink-0">
                                             <a href="{{ $action['url'] }}"
-                                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-m text-primary-700 bg-primary-100 hover:bg-primary-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-h-11 min-w-11">
+                                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-m text-primary-700 bg-primary-50 hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-h-11 min-w-11">
                                                 Lihat
                                             </a>
                                         </div>
