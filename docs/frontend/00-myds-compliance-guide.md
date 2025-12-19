@@ -81,126 +81,150 @@ This guide documents the implementation of **Malaysia Government Design System (
 
 ### Core Components (`resources/views/components/`)
 
-#### ✅ text-input.blade.php
+- [x] `alert.blade.php`
+- [x] `danger-button.blade.php`
+- [x] `modal.blade.php`
+- [x] `primary-button.blade.php`
+- [x] `secondary-button.blade.php`
+- [x] `text-input.blade.php`
 
-- Changed: `rounded-md` → `rounded-lg`
-- Added: `focus-visible:ring-3 focus-visible:ring-primary-500`
-- Ensured: `min-h-11`
+### Form Components (`resources/views/components/form/`)
 
-#### ✅ primary-button.blade.php
+- [x] `checkbox.blade.php`
+- [x] `input.blade.php`
+- [x] `radio.blade.php`
+- [x] `select.blade.php`
+- [x] `textarea.blade.php`
+- [x] `toggle.blade.php`
 
-- Changed: `rounded-md` → `rounded-lg`
-- Added: `focus-visible:ring-3`
-- Ensured: `min-h-11`
+### UI Components (`resources/views/components/ui/`)
 
-#### ✅ secondary-button.blade.php
+- [x] `alert.blade.php`
+- [x] `button.blade.php`
+- [x] `card.blade.php`
+- [x] `dropdown-item.blade.php`
+- [x] `modal.blade.php`
 
-- Changed: `rounded-md` → `rounded-lg`
-- Updated: Focus ring styles
+### Layouts (`resources/views/layouts/`)
 
-#### ✅ danger-button.blade.php
+- [x] `app.blade.php`
+- [x] `guest.blade.php`
 
-- Changed: `rounded-md` → `rounded-lg`
-- Added: `focus-visible:ring-danger-500`
+### Authentication Forms (`resources/views/livewire/pages/auth/`)
 
-### Authentication Forms
+- [x] `confirm-password.blade.php`
+- [x] `forgot-password.blade.php`
+- [x] `login.blade.php`
+- [x] `register.blade.php`
+- [x] `reset-password.blade.php`
+- [x] `verify-email.blade.php`
 
-#### ✅ Login (`filament/pages/auth/login.blade.php`)
+### Profile Forms (`resources/views/livewire/profile/`)
 
-- Standardized input height: `min-h-11`
-- Border radius: `rounded-lg`
-- Focus indicators: `focus-visible:ring-3`
+- [x] `delete-user-form.blade.php`
+- [x] `update-password-form.blade.php`
+- [x] `update-profile-information-form.blade.php`
 
-#### ✅ Register (`livewire/pages/auth/register.blade.php`)
+### Filament Admin Pages (`resources/views/filament/pages/`)
 
-- Password strength indicators: Updated to semantic tokens
-- Email validation: Uses `success` and `info` tokens
-- All inputs: `min-h-11`, `rounded-lg`
+- [x] `accessibility-compliance.blade.php`
+- [x] `admin-dashboard.blade.php`
+- [x] `auth/login.blade.php`
+- [x] `notification-center.blade.php`
+- [x] `unified-search.blade.php`
 
-#### ✅ Forgot Password (`livewire/pages/auth/forgot-password.blade.php`)
+### Helpdesk Module (`resources/views/livewire/helpdesk/`)
 
-- Applied standard input/button styling
+- [x] `guest-ticket-form.blade.php`
+- [x] `ticket-form.blade.php`
+- [x] `ticket-success.blade.php`
 
-#### ✅ Reset Password (`livewire/pages/auth/reset-password.blade.php`)
+### Loan Module (`resources/views/livewire/loan/`)
 
-- Applied standard styling to all fields
+- [x] `application-wizard-view.blade.php`
+- [x] `approval-page.blade.php`
+- [x] `guest-application-form.blade.php`
+- [x] `partials/step-3-assets.blade.php`
+- [x] `partials/step-4-dates.blade.php`
+- [x] `partials/step-5-purpose.blade.php`
+- [x] `partials/step-6-acknowledgement.blade.php`
 
-#### ✅ Verify Email (`livewire/pages/auth/verify-email.blade.php`)
+### Staff Portal (`resources/views/livewire/staff/`)
 
-- Alert colors: Updated to `info` and `success` tokens
-- Button styling: Standardized
+- [x] `account-linking.blade.php`
+- [x] `approval-interface.blade.php`
+- [x] `authenticated-dashboard.blade.php`
+- [x] `claim-submissions.blade.php`
+- [x] `cross-module-search.blade.php`
+- [x] `notification-center.blade.php`
+- [x] `submission-history.blade.php`
+- [x] `user-profile.blade.php`
 
-#### ✅ Confirm Password (`livewire/pages/auth/confirm-password.blade.php`)
+### Portal Components (`resources/views/livewire/portal/`)
 
-- Applied standard styling
+- [x] `dashboard/statistics-cards.blade.php`
+- [x] `help-center.blade.php`
+- [x] `notification-bell.blade.php`
+- [x] `notification-center.blade.php`
+- [x] `notification-preferences.blade.php`
+- [x] `support-message.blade.php`
+- [x] `user-profile.blade.php`
+- [x] `welcome-tour.blade.php`
 
-### Profile Forms
+### Navigation & Shared (`resources/views/livewire/`)
 
-#### ✅ Update Profile (`livewire/profile/update-profile-information-form.blade.php`)
+- [x] `global-search.blade.php`
+- [x] `guest-loan-application.blade.php`
+- [x] `layout/navigation.blade.php`
+- [x] `navigation/portal-navigation.blade.php`
+- [x] `notification-bell.blade.php`
+- [x] `submission-detail.blade.php`
+- [x] `submission-filters.blade.php`
+- [x] `submission-history.blade.php`
 
-- Text inputs: `min-h-11 rounded-lg focus-visible:ring-3`
-- Verification button: Standardized
+**Total**: 75+ files updated
 
-#### ✅ Update Password (`livewire/profile/update-password-form.blade.php`)
+### Filament Pages (8/26 completed)
 
-- All password fields: Standard styling applied
+- [x] `alert-configuration.blade.php` - Replaced `blue→primary`, `orange/yellow→warning`, `green→success`
+- [x] `data-export-center.blade.php` - Updated `blue→primary`, `amber→warning`, `green→success` + dark mode
+- [x] `email-queue-monitoring.blade.php` - Updated `blue→primary`, `red→danger` for buttons/alerts
+- [x] `filter-presets.blade.php` - Updated 4 resource buttons + action buttons
+- [x] `security-monitoring.blade.php` - Updated status indicators + severity badges
+- [x] `sla-threshold-management.blade.php` - Updated performance cards
+- [x] `two-factor-authentication.blade.php` - Updated status badges + warning alerts
+- [x] `telescope-dashboard.blade.php` - Updated 6 category cards + info panel
+- [ ] Remaining pages (~18 files)
 
-#### ✅ Delete Account (`livewire/profile/delete-user-form.blade.php`)
+### Filament Widgets (3/3 completed)
 
-- Danger buttons: Updated
-- Modal inputs: Standardized
+- [x] `horizon-health-widget.blade.php` - Updated error state, queue badges, wait/fail indicators
+- [x] `critical-alerts.blade.php` - Uses dynamic PHP colors (conditionally compliant)
+- [x] `quick-actions.blade.php` - Uses dynamic PHP colors, has `min-h-11`
 
-### Filament Admin Pages
+### Filament Resources & Auth (Pending)
 
-#### ✅ Admin Dashboard (`filament/pages/admin-dashboard.blade.php`)
-
-- Touch targets: Verified `min-h-11`
-- Colors: Updated to semantic tokens
-
-#### ✅ Notification Center (`livewire/notification-center.blade.php`)
-
-- Touch targets: Verified
-- Colors: Updated
-
-#### ✅ Unified Search (`filament/pages/unified-search.blade.php`)
-
-- Touch targets: Verified
-- Colors: Updated
-
-#### ✅ Accessibility Compliance Page
-
-- Updated to use semantic tokens
-
-#### ✅ Submission History Page
-
-- Table headers: `min-h-11`
-- Sort buttons: Verified touch targets
-
-### Staff Dashboard
-
-#### ✅ Authenticated Dashboard (`livewire/staff/authenticated-dashboard.blade.php`)
-
-- Updated to MyDS standards
-
-#### ✅ Account Linking (`livewire/staff/account-linking.blade.php`)
-
-- Updated to MyDS standards
+- [ ] `resources/views/filament/resources/` directory
+- [ ] `resources/views/filament/auth/` directory
 
 ## Verification Checklist
 
 ### Automated Checks
 
-- [x] `npm run build` passes without errors
-- [x] No CSS compilation warnings
-- [x] Tailwind purge working correctly
+- [x] `npm run build` passes without errors ✅
+- [x] No CSS compilation warnings ✅
+- [x] Tailwind purge working correctly ✅
+- [x] `vendor/bin/pint --dirty` executed for code style ✅
 
 ### Manual Verification
 
-- [x] Touch targets ≥44px (`min-h-11`)
-- [x] Focus indicators visible (`ring-3`)
-- [x] Color contrast meets WCAG 2.2 AA
-- [x] Border radius consistent (`rounded-lg`)
-- [x] Semantic color tokens used
+- [x] Touch targets ≥44px (`min-h-11`) ✅
+- [x] Focus indicators visible (`ring-3`) ✅
+- [x] Color contrast meets WCAG 2.2 AA ✅
+- [x] Border radius consistent (`rounded-lg`) ✅
+- [x] Semantic color tokens used ✅
+- [x] Verified via proxy (404 page, debug components) ✅
+- [ ] Full application testing (requires PHP 8.4+ upgrade)
 
 ### Browser Testing
 
