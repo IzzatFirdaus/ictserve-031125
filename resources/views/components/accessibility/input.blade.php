@@ -42,7 +42,7 @@
 
     // Base input classes with 44px minimum height
     $inputClasses =
-        'block w-full min-h-44 px-4 py-2.5 text-base rounded-lg border shadow-sm transition-colors duration-200';
+        'block w-full min-h-11 px-4 py-2.5 text-base rounded-lg border shadow-sm transition-colors duration-200';
 
     // State-specific classes
     if ($hasError) {
@@ -54,7 +54,7 @@
     }
 
     // Focus indicator - 3px outline
-    $inputClasses .= ' focus-visible:outline-3 focus-visible:outline-offset-0';
+    $inputClasses .= ' focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2';
 
     if ($disabled) {
         $inputClasses .= ' bg-gray-100 cursor-not-allowed opacity-60';
@@ -100,8 +100,7 @@
             @if ($hasError) aria-invalid="true"
                 aria-describedby="{{ $errorId }}"
             @elseif($helper)
-                aria-describedby="{{ $helperId }}" @endif
-            style="outline-width: 3px;">
+                aria-describedby="{{ $helperId }}" @endif>
 
         {{-- Suffix or error icon --}}
         @if ($hasError)
