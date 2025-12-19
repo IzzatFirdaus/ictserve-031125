@@ -53,7 +53,7 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "nunomaduro/phpinsights": "^2.11",
-        "phpunit/phpunit": "*",
+        "phpunit/phpunit": "^11.0",
         "pragmarx/recovery": "^0.2.1"
     },
     "autoload": {
@@ -143,7 +143,10 @@
                 "PKSA-yb9k-ykqx-p2zw"
             ]
         },
-        "vendor-dir": "vendor"
+        "vendor-dir": "vendor",
+        "platform": {
+            "php": "8.2.12"
+        }
     },
     "minimum-stability": "stable",
     "prefer-stable": true
