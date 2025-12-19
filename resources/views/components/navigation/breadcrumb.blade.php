@@ -43,7 +43,7 @@
         <li>
             <div>
                 <a href="{{ route($homeRoute) }}"
-                    class="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded">
+                    class="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded-lg">
                     {{-- Home icon (Heroicons) per D14 §8.1 --}}
                     <svg class="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd"
@@ -70,7 +70,7 @@
                     @if (!$loop->last && $url)
                         {{-- Link to parent page --}}
                         <a href="{{ $url }}"
-                            class="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded transition-colors duration-150">{{ $label }}</a>
+                            class="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded-lg transition-colors duration-150">{{ $label }}</a>
                     @else
                         {{-- Current page with aria-current per D14 §10.4 --}}
                         <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200"
