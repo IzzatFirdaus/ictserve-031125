@@ -5,6 +5,6 @@
     
     <div class="text-center">
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Or enter this code manually:</p>
-        <code class="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded text-sm font-mono">{{ $secretKey }}</code>
+        <code class="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm font-mono">{{ $secretKey }}</code>
     </div>
 </div>

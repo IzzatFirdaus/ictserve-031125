@@ -39,11 +39,11 @@ new class extends Component
 
 <section class="space-y-6">
     <header>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
             {{ __('profile.delete_account_title') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
             {{ __('profile.delete_account_description') }}
         </p>
     </header>
@@ -57,11 +57,11 @@ new class extends Component
     <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
         <form wire:submit="deleteUser" class="p-6">
 
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <h2 class="text-lg font-medium text-slate-900 dark:text-slate-100">
                 {{ __('profile.delete_account_confirm_title') }}
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
                 {{ __('profile.delete_account_confirm_description') }}
             </p>
 
@@ -81,7 +81,7 @@ new class extends Component
             </div>
 
             <div class="mt-6 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')" class="min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-gray-500 dark:focus-visible:ring-gray-400">
+                <x-secondary-button x-on:click="$dispatch('close')" class="min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-slate-500 dark:focus-visible:ring-slate-400">
                     {{ __('common.cancel') }}
                 </x-secondary-button>
 

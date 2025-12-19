@@ -54,11 +54,11 @@ new class extends Component
 
 <section>
     <header>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
             {{ __('profile.password_title') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
             {{ __('profile.password_description') }}
         </p>
     </header>
@@ -73,7 +73,7 @@ new class extends Component
         <div>
             <x-input-label for="update_password_password" :value="__('profile.new_password')" />
             <x-text-input wire:model="password" id="update_password_password" name="password" type="password" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" autocomplete="new-password" :placeholder="__('profile.new_password_placeholder')" />
-            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
                 {{ __('profile.password_requirements') }}
             </p>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />

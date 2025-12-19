@@ -35,19 +35,19 @@
             <div class="space-y-3">
                 @foreach ($this->delegationsToMe as $delegation)
                     <div
-                        class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                        class="flex items-center justify-between p-4 bg-success-50 dark:bg-success-900/20 rounded-lg border border-success-200 dark:border-success-800">
                         <div class="flex items-center space-x-4">
                             <div class="shrink-0">
                                 <div
-                                    class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-800 flex items-center justify-center">
-                                    <x-heroicon-o-user-circle class="w-6 h-6 text-green-600 dark:text-green-400" />
+                                    class="w-10 h-10 rounded-full bg-success-100 dark:bg-success-800 flex items-center justify-center">
+                                    <x-heroicon-o-user-circle class="w-6 h-6 text-success-600 dark:text-success-400" />
                                 </div>
                             </div>
                             <div>
-                                <p class="font-medium text-green-900 dark:text-green-100">
+                                <p class="font-medium text-success-900 dark:text-success-100">
                                     {{ __('delegation.from') }}: {{ $delegation->originalApprover->name }}
                                 </p>
-                                <p class="text-sm text-green-700 dark:text-green-300">
+                                <p class="text-sm text-success-700 dark:text-success-300">
                                     {{ $delegation->start_date->format('d/m/Y') }} -
                                     {{ $delegation->end_date->format('d/m/Y') }}
                                 </p>

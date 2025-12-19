@@ -9,13 +9,14 @@ param(
     [switch]$NoBrowser,
     [switch]$Minimal,
     [switch]$InstallRedis,
-    [string]$Profile = "full"
+    [Alias('Profile')]
+    [string]$ProfileName = "full"
 )
 
 Write-Host "ICTServe v3.6.0 Development Environment" -ForegroundColor Cyan
 Write-Host "=======================================" -ForegroundColor Cyan
 Write-Host "Laravel 12.42.0 | PHP 8.2.12 | Filament 4.1.10" -ForegroundColor Gray
-Write-Host "Profile: $Profile | Compliance: PDPA 2010 + WCAG 2.2 AA" -ForegroundColor Gray
+Write-Host "Profile: $ProfileName | Compliance: PDPA 2010 + WCAG 2.2 AA" -ForegroundColor Gray
 Write-Host ""
 
 # Get the current directory (project root)
@@ -23,8 +24,8 @@ $projectRoot = Get-Location
 $startTime = Get-Date
 
 # Source env script to set Node v22 for the current shell (for checks only)
-if (Test-Path -Path "$PSScriptRoot\..\..\.env.ps1") {
-    . "$PSScriptRoot\..\..\.env.ps1"
+if (Test-Path -Path "$PSScriptRoot\..\..\..env.ps1") {
+    . "$PSScriptRoot\..\..\..env.ps1"
 }
 
 # Pre-flight checks
@@ -114,8 +115,6 @@ function Start-Service {
 
     # Build command script with proper escaping
     $separator = "=" * $Title.Length
-    $criticalFlag = if ($Critical) { "True" } else { "False" }
-
     $commandLines = @(
         "Set-Location '$projectRoot'"
         "if (Test-Path '.\.env.ps1') { . .\.env.ps1 }"
@@ -155,7 +154,7 @@ function Start-Service {
 }
 
 # Enhanced port checking with health validation
-function Check-Port {
+function Test-Port {
     param(
         [int]$Port,
         [int]$Attempts = 10,
@@ -190,7 +189,7 @@ function Check-Port {
                         } elseif ($errorMsg -match "connection refused|could not connect") {
                             Write-Host "[$timestamp] [WAIT] $serviceLabel not ready yet (attempt $($i+1)/$Attempts)" -ForegroundColor Yellow
                         } else {
-                            Write-Host "[$timestamp] [WAIT] $serviceLabel health check error: $($errorMsg -replace "`n|`r", " ") (attempt $($i+1)/$Attempts)" -ForegroundColor Yellow
+                            Write-Host "[$timestamp] [WAIT] $serviceLabel health check error: $($errorMsg -replace '[\r\n]+', ' ') (attempt $($i+1)/$Attempts)" -ForegroundColor Yellow
                         }
                     }
                     Start-Sleep -Seconds $DelaySeconds
@@ -304,11 +303,11 @@ function Start-WSLRedis {
 }
 
 # Get services to start based on profile
-$servicesToStart = Get-ServiceProfile -ProfileName $Profile
+$servicesToStart = Get-ServiceProfile -ProfileName $ProfileName
 $serviceCount = $servicesToStart.Count
 $currentService = 0
 
-Write-Host "Starting $serviceCount services for profile: $Profile" -ForegroundColor Cyan
+Write-Host "Starting $serviceCount services for profile: $ProfileName" -ForegroundColor Cyan
 Write-Host "Services: $($servicesToStart -join ', ')" -ForegroundColor Gray
 Write-Host ""
 
@@ -333,7 +332,7 @@ if ($servicesToStart -contains "redis") {
         Start-Service -Title "Redis Server (WSL Monitor)" -Command "wsl.exe redis-cli ping; Write-Host 'Redis ready for Laravel!' -ForegroundColor Green; Write-Host 'Monitoring Redis commands...' -ForegroundColor Yellow; wsl.exe redis-cli monitor" -Color "Red" -Description "Cache, Sessions, Queues, Reverb Backend" -Priority 1
 
         # Verify Redis is accessible
-        Check-Port -Port 6379 -Attempts 10 -DelaySeconds 1 -ServiceName 'Redis (WSL)'
+        Test-Port -Port 6379 -Attempts 10 -DelaySeconds 1 -ServiceName 'Redis (WSL)'
 
     } elseif ($wslRedis.Available -and -not $wslRedis.HasRedis) {
         Write-Host "  └─ WSL available but Redis not installed" -ForegroundColor Yellow
@@ -353,7 +352,7 @@ if ($servicesToStart -contains "redis") {
         }
 
         # Check for alternative Redis (Laragon, Docker, etc.)
-        $redisFound = Check-Port -Port 6379 -Attempts 3 -DelaySeconds 1 -ServiceName 'Alternative Redis'
+        $redisFound = Test-Port -Port 6379 -Attempts 3 -DelaySeconds 1 -ServiceName 'Alternative Redis'
         if (-not $redisFound) {
             Write-Host "  └─ [WARN] No Redis found. Some features may not work." -ForegroundColor Yellow
         }
@@ -362,11 +361,11 @@ if ($servicesToStart -contains "redis") {
         Write-Host "  └─ WSL not available, checking for local Redis..." -ForegroundColor Yellow
 
         # Check for Laragon, XAMPP, or other local Redis
-        $redisFound = Check-Port -Port 6379 -Attempts 5 -DelaySeconds 1 -ServiceName 'Local Redis'
+        $redisFound = Test-Port -Port 6379 -Attempts 5 -DelaySeconds 1 -ServiceName 'Local Redis'
         if (-not $redisFound) {
             Write-Host "  └─ [WARN] No Redis found. Install via:" -ForegroundColor Yellow
             Write-Host "      - WSL: wsl.exe sudo apt install redis-server" -ForegroundColor Gray
-            Write-Host "      - Larable Redis module" -ForegroundColor Gray
+            Write-Host "      - Laragon Redis module" -ForegroundColor Gray
             Write-Host "      - Docker: docker run -d -p 6379:6379 redis:alpine" -ForegroundColor Gray
         }
     }
@@ -384,7 +383,7 @@ if ($servicesToStart -contains "laravel") {
     Write-Host "  └─ Waiting for Laravel to initialize..." -ForegroundColor Gray
     Start-Sleep -Seconds 3
 
-    Check-Port -Port 8000 -Attempts 15 -DelaySeconds 2 -ServiceName 'Laravel Server' -HealthEndpoint "/api/health" -Critical
+    Test-Port -Port 8000 -Attempts 15 -DelaySeconds 2 -ServiceName 'Laravel Server' -HealthEndpoint "/api/health" -Critical
     Start-Sleep -Seconds 1
 }
 
@@ -398,7 +397,7 @@ if ($servicesToStart -contains "reverb") {
     Write-Host "  └─ Waiting for Reverb WebSocket server..." -ForegroundColor Gray
     Start-Sleep -Seconds 2
 
-    Check-Port -Port 8080 -Attempts 15 -DelaySeconds 1 -ServiceName 'Laravel Reverb'
+    Test-Port -Port 8080 -Attempts 15 -DelaySeconds 1 -ServiceName 'Laravel Reverb'
     Start-Sleep -Seconds 1
 }
 
@@ -409,7 +408,7 @@ if ($servicesToStart -contains "queue") {
     Start-Service -Title "Laravel Queue Worker" -Command "php artisan queue:work --tries=3 --timeout=90 --sleep=3 --max-jobs=1000 --max-time=3600" -Color "Cyan" -Description "Email notifications, file processing, audit logging" -Priority 4
 
     # Enhanced queue worker verification
-    function Check-QueueWorker {
+    function Test-QueueWorker {
         $attempts = 10
         $delay = 1
         $timestamp = Get-Date -Format "HH:mm:ss"
@@ -440,7 +439,7 @@ if ($servicesToStart -contains "queue") {
         return $false
     }
 
-    Check-QueueWorker
+    Test-QueueWorker
     Start-Sleep -Seconds 1
 }
 
@@ -450,7 +449,7 @@ if ($servicesToStart -contains "vite") {
     Write-Host "[$currentService/$serviceCount] Vite Development Server" -ForegroundColor Yellow
 
     # Check if npm is functional before starting Vite
-    $npmCheck = (& npm --version 2>&1)
+    $null = (& npm --version 2>&1)
     if ($LASTEXITCODE -ne 0) {
         Write-Host "  └─ [WARN] npm not functional - skipping Vite server" -ForegroundColor Yellow
         Write-Host "  └─ Frontend assets will not hot-reload. Run 'npm run build' manually." -ForegroundColor Gray
@@ -463,7 +462,7 @@ if ($servicesToStart -contains "vite") {
         }
 
         Start-Service -Title 'Vite Dev Server (127.0.0.1:5173)' -Command "npm run dev" -Color "Green" -Description "Tailwind 4.1.17, Livewire 3.7.1, Hot Module Replacement" -Priority 5
-        Check-Port -Port 5173 -Attempts 15 -DelaySeconds 1 -ServiceName 'Vite Dev Server' -HealthEndpoint "/"
+        Test-Port -Port 5173 -Attempts 15 -DelaySeconds 1 -ServiceName 'Vite Dev Server' -HealthEndpoint "/"
     }
     Start-Sleep -Seconds 1
 }
@@ -506,7 +505,7 @@ Write-Host ""
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "ICTServe v3.6.0 Development Environment" -ForegroundColor Green
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "Profile: $Profile | Startup Time: $([math]::Round($duration, 1))s" -ForegroundColor Gray
+Write-Host "Profile: $ProfileName | Startup Time: $([math]::Round($duration, 1))s" -ForegroundColor Gray
 Write-Host ""
 
 # Service status summary
@@ -521,13 +520,13 @@ if ($servicesToStart -contains "reverb") {
     Write-Host '  [REVERB] Laravel Reverb       - WebSocket Broadcasting (ws://127.0.0.1:8080)' -ForegroundColor Magenta
 }
 if ($servicesToStart -contains "queue") {
-    Write-Host "  [QUEUE] Queue Worker          - Background Jobs `& Email Processing" -ForegroundColor Cyan
+    Write-Host '  [QUEUE] Queue Worker          - Background Jobs & Email Processing' -ForegroundColor Cyan
 }
 if ($servicesToStart -contains "vite") {
     Write-Host '  [VITE] Vite Dev Server        - Frontend Assets + HMR (127.0.0.1:5173)' -ForegroundColor Green
 }
 if ($servicesToStart -contains "mcp" -and -not $NoMCP) {
-    Write-Host "  [MCP] Laravel MCP Server      - AI Integration `& Chatbot" -ForegroundColor DarkCyan
+    Write-Host '  [MCP] Laravel MCP Server      - AI Integration & Chatbot' -ForegroundColor DarkCyan
 }
 if ($servicesToStart -contains "pulse") {
     Write-Host "  [PULSE] Laravel Pulse         - Performance Monitoring" -ForegroundColor DarkGreen
@@ -550,10 +549,10 @@ Write-Host "  • Build Assets:    npm run build" -ForegroundColor Gray
 
 Write-Host ""
 Write-Host "Compliance Reminders:" -ForegroundColor Yellow
-Write-Host "  [PDPA] PDPA 2010: Personal data encryption `& audit logging active" -ForegroundColor Gray
+Write-Host '  [PDPA] PDPA 2010: Personal data encryption & audit logging active' -ForegroundColor Gray
 Write-Host "  [WCAG] WCAG 2.2 AA: 4.5:1 text contrast, 3:1 UI contrast required" -ForegroundColor Gray
 Write-Host "  [MYGOV] MyGOV Standards: Bahasa Melayu only, mobile-first design" -ForegroundColor Gray
-Write-Host "  [PSR12] PSR-12: Run 'vendor/bin/pint' before commits" -ForegroundColor Gray
+Write-Host '  [PSR12] PSR-12: Run vendor/bin/pint before commits' -ForegroundColor Gray
 
 Write-Host ""
 Write-Host "[$timestamp] All services ready! Press any key to stop all services..." -ForegroundColor Yellow

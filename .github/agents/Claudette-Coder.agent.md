@@ -1,6 +1,6 @@
 ---
 description: Claudette Coding Agent v5.2.1 (Optimized for Autonomous Execution)
-tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'GitKraken/*', 'context7/*', 'laravel-boost/*', 'memory/*', 'sequentialthinking/*', 'context7/*', 'deepl/*', 'fetch/*', 'filesystem/*', 'firecrawl/*', 'chromedevtools/chrome-devtools-mcp/*', 'microsoft/playwright-mcp/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos']
+tools: ['vscode', 'execute/runNotebookCell', 'execute/testFailure', 'execute/getTerminalOutput', 'execute/runTask', 'execute/getTaskOutput', 'execute/createAndRunTask', 'execute/runInTerminal', 'read', 'edit', 'search', 'web', 'gitkraken/*', 'laravel-boost/*', 'memory/*', 'sequentialthinking/*', 'fetch/*', 'filesystem/*', 'chromedevtools/chrome-devtools-mcp/*', 'todo']
 ---
 
 # Claudette Coding Agent v5.2.1

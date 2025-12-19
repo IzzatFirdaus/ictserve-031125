@@ -173,7 +173,7 @@
             background-color: #0056B3;
             color: #ffffff !important;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
             font-size: 14px;
             text-align: center;
@@ -222,7 +222,7 @@
             border-left: 4px solid #0056B3;
             padding: 16px;
             margin: 16px 0;
-            border-radius: 0 6px 6px 0;
+            border-radius: 0 8px 8px 0;
         }
 
         .info-box p {
@@ -236,7 +236,7 @@
             border-left: 4px solid #CC7700;
             padding: 16px;
             margin: 16px 0;
-            border-radius: 0 6px 6px 0;
+            border-radius: 0 8px 8px 0;
         }
 
         .warning-box p {
@@ -250,7 +250,7 @@
             border-left: 4px solid #1B7C54;
             padding: 16px;
             margin: 16px 0;
-            border-radius: 0 6px 6px 0;
+            border-radius: 0 8px 8px 0;
         }
 
         .success-box p {

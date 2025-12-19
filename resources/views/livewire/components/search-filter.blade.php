@@ -172,7 +172,7 @@ on([
             <div class="relative flex-1">
                 <label for="search-input" class="sr-only">Cari</label>
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg"
+                    <svg class="h-5 w-5 text-slate-400 dark:text-slate-500" xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd"
                             d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
@@ -181,14 +181,14 @@ on([
                 </div>
                 <input type="search" id="search-input" wire:model.live.debounce.{{ $debounceMs }}ms="search"
                     placeholder="{{ $placeholder }}"
-                    class="block w-full pl-10 pr-10 py-2.5 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                    class="block w-full pl-10 pr-10 py-2.5 min-h-11 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
                     aria-describedby="search-help">
                 {{-- Clear search button --}}
                 @if (!empty($search))
                     <button type="button" wire:click="$set('search', '')"
                         class="absolute inset-y-0 right-0 pr-3 flex items-center min-w-11 min-h-11 justify-center"
                         aria-label="Kosongkan carian">
-                        <svg class="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                        <svg class="h-5 w-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path
                                 d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
@@ -200,7 +200,7 @@ on([
             {{-- Filter Toggle Button --}}
             @if (count($filterOptions) > 0)
                 <button type="button" wire:click="toggleFilters"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
+                    class="inline-flex items-center gap-2 px-4 py-2.5 min-h-11 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
                     aria-expanded="{{ $showFilters ? 'true' : 'false' }}" aria-controls="filter-panel">
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                         aria-hidden="true">
@@ -228,19 +228,19 @@ on([
     {{-- Filter Panel --}}
     @if ($showFilters && count($filterOptions) > 0)
         <div id="filter-panel"
-            class="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700"
+            class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700"
             role="region" aria-label="Panel penapis">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach ($filterOptions as $key => $option)
                     <div>
                         <label for="filter-{{ $key }}"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                             {{ $option['label'] ?? ucfirst($key) }}
                         </label>
 
                         @if (($option['type'] ?? 'select') === 'select')
                             <select id="filter-{{ $key }}" wire:model.live="activeFilters.{{ $key }}"
-                                class="block w-full px-3 py-2 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                class="block w-full px-3 py-2 min-h-11 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                 <option value="">{{ $option['placeholder'] ?? 'Semua' }}</option>
                                 @foreach ($option['options'] ?? [] as $value => $label)
                                     <option value="{{ $value }}">{{ $label }}</option>
@@ -249,7 +249,7 @@ on([
                         @elseif(($option['type'] ?? 'select') === 'date')
                             <input type="date" id="filter-{{ $key }}"
                                 wire:model.live="activeFilters.{{ $key }}"
-                                class="block w-full px-3 py-2 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                class="block w-full px-3 py-2 min-h-11 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                         @endif
                     </div>
                 @endforeach
@@ -259,7 +259,7 @@ on([
             <div class="mt-4 flex flex-wrap items-center gap-3">
                 @if ($this->hasActiveFilters)
                     <button type="button" wire:click="clearFilters"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md">
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg">
                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path
                                 d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
@@ -270,7 +270,7 @@ on([
 
                 @if ($enableSavedFilters && Auth::check())
                     <button type="button" x-on:click="showSaveModal = true"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg"
                         :disabled="!{{ $this->hasActiveFilters ? 'true' : 'false' }}">
                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path
@@ -283,20 +283,20 @@ on([
 
             {{-- Saved Filters --}}
             @if ($enableSavedFilters && count($savedFilters) > 0)
-                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                    <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                         Penapis tersimpan
                     </h4>
                     <div class="flex flex-wrap gap-2">
                         @foreach ($savedFilters as $index => $saved)
                             <div
-                                class="inline-flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full text-sm">
+                                class="inline-flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-full text-sm">
                                 <button type="button" wire:click="applySavedFilter({{ $index }})"
-                                    class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400">
+                                    class="text-slate-700 dark:text-slate-200 hover:text-primary-600 dark:hover:text-primary-400">
                                     {{ $saved['name'] }}
                                 </button>
                                 <button type="button" wire:click="deleteSavedFilter({{ $index }})"
-                                    class="ml-1 text-gray-400 hover:text-danger-600 dark:hover:text-danger-400"
+                                    class="ml-1 text-slate-400 hover:text-danger-600 dark:hover:text-danger-400"
                                     aria-label="Padam penapis {{ $saved['name'] }}">
                                     <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                         fill="currentColor">
@@ -321,29 +321,29 @@ on([
         <div class="flex min-h-screen items-center justify-center p-4">
             <div class="fixed inset-0 bg-black/50" x-on:click="showSaveModal = false"></div>
 
-            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6"
+            <div class="relative bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full p-6"
                 x-on:keydown.escape.window="showSaveModal = false">
-                <h3 id="save-filter-title" class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                <h3 id="save-filter-title" class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
                     Simpan Penapis
                 </h3>
 
                 <div class="mb-4">
-                    <label for="filter-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label for="filter-name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                         Nama penapis
                     </label>
                     <input type="text" id="filter-name" x-model="filterName"
                         placeholder="Contoh: Tiket terbuka minggu ini"
-                        class="block w-full px-3 py-2 min-h-11 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                        class="block w-full px-3 py-2 min-h-11 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                 </div>
 
                 <div class="flex justify-end gap-3">
                     <button type="button" x-on:click="showSaveModal = false"
-                        class="px-4 py-2 min-h-11 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        class="px-4 py-2 min-h-11 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
                         Batal
                     </button>
                     <button type="button"
                         x-on:click="$wire.saveCurrentFilters(filterName); showSaveModal = false; filterName = ''"
-                        class="px-4 py-2 min-h-11 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="px-4 py-2 min-h-11 bg-primary-600 text-white rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
                         Simpan
                     </button>
                 </div>
@@ -353,7 +353,7 @@ on([
 
     {{-- Loading Indicator --}}
     <div wire:loading.delay class="mt-2" role="status" aria-live="polite">
-        <span class="text-sm text-gray-500 dark:text-gray-400">
+        <span class="text-sm text-slate-500 dark:text-slate-400">
             Mencari...
         </span>
     </div>

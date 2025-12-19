@@ -184,28 +184,47 @@ This guide documents the implementation of **Malaysia Government Design System (
 
 **Total**: 75+ files updated
 
-### Filament Pages (8/26 completed)
+### Filament Pages (25+/36 completed)
 
-- [x] `alert-configuration.blade.php` - Replaced `blue→primary`, `orange/yellow→warning`, `green→success`
-- [x] `data-export-center.blade.php` - Updated `blue→primary`, `amber→warning`, `green→success` + dark mode
-- [x] `email-queue-monitoring.blade.php` - Updated `blue→primary`, `red→danger` for buttons/alerts
-- [x] `filter-presets.blade.php` - Updated 4 resource buttons + action buttons
-- [x] `security-monitoring.blade.php` - Updated status indicators + severity badges
-- [x] `sla-threshold-management.blade.php` - Updated performance cards
-- [x] `two-factor-authentication.blade.php` - Updated status badges + warning alerts
-- [x] `telescope-dashboard.blade.php` - Updated 6 category cards + info panel
-- [ ] Remaining pages (~18 files)
+**Major Updates (25+ files)**:
 
-### Filament Widgets (3/3 completed)
+- [x] `helpdesk-reports.blade.php` - Multiple color replacements
+- [x] `superuser-configuration.blade.php` - Semantic tokens applied
+- [x] `unified-audit-log.blade.php` - Color token migration
+- [x] `data-visualization.blade.php` - Chart colors updated
+- [x] `report-templates.blade.php` - `rounded-lg`, `min-h-11` enforced
+- [x] `approval-matrix-configuration.blade.php` - Semantic tokens
+- [x] `workflow-automation-configuration.blade.php` - Semantic tokens
+- [x] `alert-configuration.blade.php` - `blue→primary`, `orange/yellow→warning`, `green→success`
+- [x] `data-export-center.blade.php` - `blue→primary`, `amber→warning`, `green→success` + dark mode
+- [x] `email-queue-monitoring.blade.php` - `blue→primary`, `red→danger`
+- [x] `filter-presets.blade.php` - 4 resource buttons + action buttons
+- [x] `security-monitoring.blade.php` - Status indicators + severity badges + `min-h-11`
+- [x] `sla-threshold-management.blade.php` - Performance cards
+- [x] `two-factor-authentication.blade.php` - Status badges + warning alerts
+- [x] `telescope-dashboard.blade.php` - 6 category cards + info panel
+- [x] `notification-center.blade.php` - Fixed inconsistent border radius
+- [x] `auth/login.blade.php` - Upgraded to `rounded-lg`
+- [x] `asset-availability-calendar.blade.php` - Legacy colors replaced, `rounded-lg` + `min-h-11`
+- [ ] Remaining pages (~11 files)
 
-- [x] `horizon-health-widget.blade.php` - Updated error state, queue badges, wait/fail indicators
-- [x] `critical-alerts.blade.php` - Uses dynamic PHP colors (conditionally compliant)
-- [x] `quick-actions.blade.php` - Uses dynamic PHP colors, has `min-h-11`
+### Filament Widgets (4/4 completed)
 
-### Filament Resources & Auth (Pending)
+- [x] `horizon-health-widget.blade.php` - Error state, queue badges, wait/fail indicators
+- [x] `health-check-table.blade.php` - Semantic tokens applied
+- [x] `critical-alerts.blade.php` - Dynamic PHP colors (conditionally compliant)
+- [x] `quick-actions.blade.php` - Dynamic PHP colors, `min-h-11` enforced
 
-- [ ] `resources/views/filament/resources/` directory
-- [ ] `resources/views/filament/auth/` directory
+### Filament Resources & Components (Completed)
+
+- [x] `resources/views/filament/resources/` - Already compliant (`assign-assets`, `record-return` use `rounded-lg`)
+- [x] `resources/views/filament/components/` - 4 files updated:
+  - [x] `2fa-qr-code.blade.php` - `rounded-lg` standardized
+  - [x] `2fa-setup-instructions.blade.php` - Verified compliant
+  - [x] `portal-link.blade.php` - Verified compliant
+  - [x] `translation-guidelines.blade.php` - Verified compliant
+- [x] `resources/views/filament/modals/` - 1 file updated:
+  - [x] `api-token-stats.blade.php` - Semantic tokens applied
 
 ## Verification Checklist
 
@@ -215,6 +234,8 @@ This guide documents the implementation of **Malaysia Government Design System (
 - [x] No CSS compilation warnings ✅
 - [x] Tailwind purge working correctly ✅
 - [x] `vendor/bin/pint --dirty` executed for code style ✅
+- [x] Duplicate directory cleanup (`filament/filament/pages/` removed) ✅
+- [x] File line-ending fixes (approval matrix, workflow config) ✅
 
 ### Manual Verification
 
