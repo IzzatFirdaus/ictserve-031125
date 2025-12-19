@@ -120,14 +120,14 @@
 
                 {{-- Session Status --}}
                 @if (session('status'))
-                    <div class="mb-4 rounded-lg border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-900"
+                    <div class="mb-4 rounded-lg border border-success-200 bg-success-50 px-4 py-3 text-success-800"
                         role="alert">
                         {{ session('status') }}
                     </div>
                 @endif
 
                 @if (session('sso_fallback'))
-                    <div class="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+                    <div class="mb-4 rounded-lg border border-warning-200 bg-warning-50 px-4 py-3 text-warning-800"
                         role="alert">
                         <p class="font-semibold">{{ __('auth.google_sso_unavailable') }}</p>
                         <p class="mt-1">{{ __('auth.sso_fallback_available') }}</p>
@@ -167,7 +167,7 @@
 
                     <div class="mt-6 grid gap-4">
                         <a href="{{ route('contact') }}"
-                            class="flex w-full items-center justify-center gap-3 rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-offset-0 transition-colors duration-200">
+                            class="flex w-full min-h-11 items-center justify-center gap-3 rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200">
                             <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round"

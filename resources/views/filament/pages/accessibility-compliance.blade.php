@@ -12,10 +12,10 @@
                         $statusColor = $this->getComplianceStatus($audit);
                         $statusIcon = $this->getComplianceIcon($audit);
                         $colorClasses = match($statusColor) {
-                            'success' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                            'warning' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-                            'danger' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                            default => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                            'success' => 'bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200',
+                            'warning' => 'bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200',
+                            'danger' => 'bg-danger-100 text-danger-800 dark:bg-danger-900 dark:text-danger-200',
+                            default => 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200',
                         };
                     @endphp
                     
@@ -30,16 +30,16 @@
                         </div>
                         
                         @if(!empty($audit['issues']))
-                            <div class="text-sm text-red-600 dark:text-red-400 mb-2">
+                            <div class="text-sm text-danger-600 dark:text-danger-400 mb-2">
                                 {{ count($audit['issues']) }} issue(s) found
                             </div>
-                            <ul class="text-xs text-red-600 dark:text-red-400 list-disc list-inside">
+                            <ul class="text-xs text-danger-600 dark:text-danger-400 list-disc list-inside">
                                 @foreach($audit['issues'] as $issue)
                                     <li>{{ $issue }}</li>
                                 @endforeach
                             </ul>
                         @else
-                            <div class="text-sm text-green-600 dark:text-green-400">
+                            <div class="text-sm text-success-600 dark:text-success-400">
                                 No issues found
                             </div>
                         @endif
@@ -72,7 +72,7 @@
                                 @if(isset($colors[$context]))
                                     <div class="text-sm mb-1">
                                         <span class="font-medium">{{ str_replace('_', ' ', $context) }}:</span>
-                                        <span class="ml-2 {{ $colors[$context]['wcag_aa_text'] ? 'text-green-600' : 'text-red-600' }}">
+                                        <span class="ml-2 {{ $colors[$context]['wcag_aa_text'] ? 'text-success-600' : 'text-danger-600' }}">
                                             {{ number_format($colors[$context]['contrast_ratio'], 2) }}:1
                                             @if($colors[$context]['wcag_aa_text'])
                                                 ✓ WCAG AA
@@ -89,7 +89,7 @@
                                 @if(is_array($validation) && isset($validation['contrast_ratio']))
                                     <div class="text-sm mb-1">
                                         <span class="font-medium">{{ str_replace('_', ' ', $subCategory) }}:</span>
-                                        <span class="ml-2 {{ $validation['wcag_aa_text'] ? 'text-green-600' : 'text-red-600' }}">
+                                        <span class="ml-2 {{ $validation['wcag_aa_text'] ? 'text-success-600' : 'text-danger-600' }}">
                                             {{ number_format($validation['contrast_ratio'], 2) }}:1
                                             @if($validation['wcag_aa_text'])
                                                 ✓ WCAG AA
@@ -119,7 +119,7 @@
                 
                 <div class="space-y-3">
                     <div class="flex items-center gap-4">
-                        <button class="px-4 py-2 bg-blue-600 text-white rounded focus:outline-none" style="{{ $this->focusStyles['css'] }}">
+                        <button class="px-4 py-2 bg-primary-600 text-white rounded focus:outline-none min-h-11" style="{{ $this->focusStyles['css'] }}">
                             Sample Button (Click to see focus)
                         </button>
                         <code class="text-sm bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded">
@@ -186,7 +186,7 @@
                     <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                         @foreach($this->keyboardNavigation['tab_order']['requirements'] as $requirement)
                             <li class="flex items-start gap-2">
-                                <svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <svg class="w-4 h-4 text-success-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                                 </svg>
                                 {{ $requirement }}
