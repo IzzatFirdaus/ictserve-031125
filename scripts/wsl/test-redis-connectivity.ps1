@@ -36,23 +36,31 @@ function Test-RedisInstallation {
 
 function Test-RedisService {
     try {
-        $status = wsl sudo systemctl is-active redis-server 2>$null
-        return $status -eq "active"
-    } catch {
-        # Fallback to process check
-        try {
-            $processes = wsl pgrep redis-server 2>$null
-            return $processes -ne $null -and $processes -ne ""
-        } catch {
-            return $false
+        # First try to ping Redis directly
+        $pingResult = wsl redis-cli ping 2>$null
+        if ($pingResult -eq "PONG") {
+            return $true
         }
+        
+        # Fallback to process check
+        $processes = wsl pgrep redis-server 2>$null
+        return $processes -ne $null -and $processes -ne ""
+    } catch {
+        return $false
     }
 }
 
 function Test-RedisPort {
     try {
-        $portCheck = wsl netstat -tlnp 2>$null | wsl grep :6379
-        return $portCheck -ne $null -and $portCheck -ne ""
+        # Try netstat first
+        $portCheck = wsl netstat -tln 2>$null | wsl grep :6379
+        if ($portCheck -ne $null -and $portCheck -ne "") {
+            return $true
+        }
+        
+        # Fallback to ss command
+        $ssCheck = wsl ss -tln 2>$null | wsl grep :6379
+        return $ssCheck -ne $null -and $ssCheck -ne ""
     } catch {
         return $false
     }
@@ -117,7 +125,12 @@ function Test-RedisCommands {
 function Test-RedisInfo {
     try {
         $info = wsl redis-cli info server 2>$null
-        return $info -ne $null -and $info -ne "" -and $info.Contains("redis_version")
+        if ($info -ne $null -and $info -ne "") {
+            # Check if the info contains Redis version information
+            $infoString = $info -join "`n"
+            return $infoString.Contains("redis_version")
+        }
+        return $false
     } catch {
         return $false
     }
@@ -127,8 +140,15 @@ function Test-LaravelRedisConnection {
     # Test if Laravel can connect to Redis (if Laravel is available)
     try {
         if (Test-Path "artisan") {
-            $laravelTest = php artisan tinker --execute="Redis::connection()->ping()" 2>$null
-            return $laravelTest.Contains("PONG")
+            # Check if Redis configuration exists in Laravel
+            $envFile = Get-Content ".env" -ErrorAction SilentlyContinue
+            if ($envFile -and ($envFile | Select-String "REDIS_HOST")) {
+                # Try to test Redis connection via Laravel
+                $laravelTest = php artisan tinker --execute="try { echo Redis::connection()->ping(); } catch (Exception `$e) { echo 'ERROR: ' . `$e->getMessage(); }" 2>$null
+                return $laravelTest -and $laravelTest.Contains("PONG")
+            } else {
+                return $null # Redis not configured in Laravel
+            }
         } else {
             return $null # Laravel not available, skip test
         }
