@@ -1,4 +1,4 @@
-﻿{{--
+{{--
     Quick Filter Buttons Component
     @component QuickFilterButtons
     @description Displays quick-apply buttons for saved filters

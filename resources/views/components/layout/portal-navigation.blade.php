@@ -32,7 +32,7 @@
                 @foreach ($portalLinks as $link)
                     @continue(!Route::has($link['route']))
                     <a href="{{ route($link['route']) }}" wire:navigate
-                        class="px-4 py-3 border-b-2 rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 min-h-[44px] {{ request()->routeIs($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
+                        class="px-4 py-3 border-b-2 rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 min-h-44 {{ request()->routeIs($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
                         @if (request()->routeIs($link['route'])) aria-current="page" @endif>
                         {{ $link['label'] }}
                     </a>

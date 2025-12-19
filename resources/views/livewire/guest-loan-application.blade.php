@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Component name: Guest Loan Application Form (Multi-Step) - MyDS Design System v2025.2
  * Description: WCAG 2.2 AA compliant 7-step loan application wizard with MyDS tokens
