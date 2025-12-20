@@ -9,10 +9,10 @@
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
                 {{ __('delegation.title') }}
             </h2>
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
                 {{ __('delegation.description') }}
             </p>
         </div>
@@ -28,7 +28,7 @@
     @if ($this->delegationsToMe->count() > 0)
         <x-ui.card>
             <x-slot:header>
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+                <h3 class="text-lg font-medium text-slate-900 dark:text-white">
                     {{ __('delegation.delegated_to_me') }}
                 </h3>
             </x-slot:header>
@@ -62,7 +62,7 @@
 
     {{-- Filter --}}
     <div class="flex items-center space-x-4">
-        <label for="status_filter" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label for="status_filter" class="text-sm font-medium text-slate-700 dark:text-slate-300">
             {{ __('delegation.filter_by_status') }}:
         </label>
         <x-form.select wire:model.live="status_filter" id="status_filter" class="w-48">
@@ -77,64 +77,64 @@
     {{-- My Delegations List --}}
     <x-ui.card>
         <x-slot:header>
-            <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+            <h3 class="text-lg font-medium text-slate-900 dark:text-white">
                 {{ __('delegation.my_delegations') }}
             </h3>
         </x-slot:header>
 
         @if ($this->delegations->count() > 0)
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-800">
+                <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+                    <thead class="bg-slate-50 dark:bg-slate-800">
                         <tr>
                             <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                 {{ __('delegation.delegated_to') }}
                             </th>
                             <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                 {{ __('delegation.period') }}
                             </th>
                             <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                 {{ __('delegation.status') }}
                             </th>
                             <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                 {{ __('delegation.reason') }}
                             </th>
                             <th scope="col"
-                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                class="px-6 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                 {{ __('delegation.actions') }}
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-700">
                         @foreach ($this->delegations as $delegation)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="shrink-0 h-10 w-10">
                                             <div
-                                                class="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                                                <span class="text-sm font-medium text-gray-600 dark:text-gray-300">
+                                                class="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+                                                <span class="text-sm font-medium text-slate-600 dark:text-slate-300">
                                                     {{ substr($delegation->delegatedApprover->name, 0, 2) }}
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                            <div class="text-sm font-medium text-slate-900 dark:text-white">
                                                 {{ $delegation->delegatedApprover->name }}
                                             </div>
-                                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                            <div class="text-sm text-slate-500 dark:text-slate-400">
                                                 {{ $delegation->delegatedApprover->email }}
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">
                                     <div>{{ $delegation->start_date->format('d/m/Y') }}</div>
-                                    <div class="text-gray-500 dark:text-gray-400">
+                                    <div class="text-slate-500 dark:text-slate-400">
                                         {{ __('delegation.to') }} {{ $delegation->end_date->format('d/m/Y') }}
                                     </div>
                                 </td>
@@ -149,7 +149,7 @@
                                         <x-ui.badge type="secondary">{{ __('delegation.inactive') }}</x-ui.badge>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                                <td class="px-6 py-4 text-sm text-slate-900 dark:text-white">
                                     <div class="max-w-xs truncate" title="{{ $delegation->reason }}">
                                         {{ Str::limit($delegation->reason, 50) }}
                                     </div>
@@ -174,11 +174,11 @@
             </div>
         @else
             <div class="text-center py-12">
-                <x-heroicon-o-user-group class="mx-auto h-12 w-12 text-gray-400" />
-                <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                <x-heroicon-o-user-group class="mx-auto h-12 w-12 text-slate-400" />
+                <h3 class="mt-2 text-sm font-medium text-slate-900 dark:text-white">
                     {{ __('delegation.no_delegations') }}
                 </h3>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     {{ __('delegation.no_delegations_description') }}
                 </p>
                 <div class="mt-6">
@@ -239,7 +239,7 @@
                 @error('reason')
                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                 @enderror
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     {{ __('delegation.reason_help') }}
                 </p>
             </div>
@@ -266,7 +266,7 @@
     <x-ui.modal wire:model="showConfirmDeactivate" max-width="md">
         <x-slot:title>{{ __('delegation.confirm_deactivate') }}</x-slot:title>
 
-        <p class="text-gray-600 dark:text-gray-400">
+        <p class="text-slate-600 dark:text-slate-400">
             {{ __('delegation.confirm_deactivate_message') }}
         </p>
 

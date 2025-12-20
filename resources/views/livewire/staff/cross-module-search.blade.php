@@ -15,6 +15,9 @@
  * - High contrast search interface
  */
 --}}
+@php
+    /** @var \Illuminate\Pagination\LengthAwarePaginator|null $results */
+@endphp
 <div class="space-y-6">
     {{-- Search Header --}}
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -299,7 +302,7 @@
                                     </h4>
                                     @if ($result['description'] && $result['description'] !== $result['title'])
                                         <p class="text-sm text-gray-600 mb-2 line-clamp-2">
-                                            {{ Str::limit($result['description'], 150) }}
+                                            {{ \Illuminate\Support\Str::limit($result['description'], 150) }}
                                         </p>
                                     @endif
 
