@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2
+**Standard Rujukan:** ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, IEEE 1016:2009, ISO 9241-210, OWASP Transport Security, RFC 5322 (Format E-mel), ISO 8601 (Format Tarikh/Masa), TLS 1.3, AES-256
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                                    |
 | **Status**           | Aktif                                               |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                          |
-| **Pematuhi**         | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2 |
+| **Pematuhi**         | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, IEEE 1016:2009, ISO 9241-210, OWASP Transport Security |
 | **Bahasa**           | Bahasa Melayu sahaja (v3.6.0+)                      |
 
 > Notis Penggunaan Dalaman: Sistem ini digunakan secara dalaman oleh staf dan pegawai gred MOTAC; ia bukan sistem awam.

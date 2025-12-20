@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 12207
+**Standard Rujukan:** ISO/IEC/IEEE 12207, ISO/IEC/IEEE 15289:2019, ISO/IEC TS 24748-6, IEEE 1016:2009, Format Inference Profile (AWS Bedrock)
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
-| **Pematuhi**         | ISO/IEC/IEEE 12207                        |
+| **Pematuhi**         | ISO/IEC/IEEE 12207, ISO/IEC/IEEE 15289:2019, ISO/IEC TS 24748-6, IEEE 1016:2009 |
 | **Bahasa**           | Bahasa Melayu sahaja (v3.6.0+)            |
 
 > Notis Penggunaan Dalaman: Pelan ini dirangka untuk sistem dalaman MOTAC (bukan untuk kegunaan awam).
