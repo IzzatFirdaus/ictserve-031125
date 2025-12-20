@@ -38,7 +38,7 @@
 @props([
 'align' => 'right',
 'width' => '48',
-'contentClasses' => 'py-1 bg-white dark:bg-gray-800',
+'contentClasses' => 'py-1 bg-white dark:bg-slate-800',
 'closeOnClick' => true,
 'disabled' => false,
 ])

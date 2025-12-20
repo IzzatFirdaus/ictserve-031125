@@ -26,7 +26,7 @@ $classes = [
 
     // Variant styles using ICTServe design tokens
     'bg-primary-600 hover:bg-primary-700 text-white focus-visible:ring-primary-500 rounded-lg shadow-button' => $variant === 'primary',
-    'bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 focus-visible:ring-primary-500 rounded-lg shadow-sm' => $variant === 'secondary',
+    'bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 focus-visible:ring-primary-500 rounded-lg shadow-sm' => $variant === 'secondary',
     'bg-success-600 hover:bg-success-700 text-white focus-visible:ring-success-500 rounded-lg shadow-button' => $variant === 'success',
     'bg-danger-600 hover:bg-danger-700 text-white focus-visible:ring-danger-500 rounded-lg shadow-button' => $variant === 'danger',
 ];

@@ -46,7 +46,7 @@
     ];
 @endphp
 
-<div {{ $attributes->merge(['class' => 'bg-white dark:bg-gray-800 rounded-lg shadow p-6']) }}>
+<div {{ $attributes->merge(['class' => 'bg-white dark:bg-slate-800 rounded-lg shadow p-6']) }}>
     <div class="flex items-center">
         <div class="flex-shrink-0 {{ $colorClasses[$color] ?? $colorClasses['blue'] }} rounded-lg p-3">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -54,9 +54,9 @@
             </svg>
         </div>
         <div class="ml-4 flex-1">
-            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ $title }}</p>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ $title }}</p>
             <div class="flex items-baseline">
-                <p class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                <p class="text-2xl font-semibold text-slate-900 dark:text-slate-100">
                     {{ $value }}
                 </p>
                 @if($trend)
