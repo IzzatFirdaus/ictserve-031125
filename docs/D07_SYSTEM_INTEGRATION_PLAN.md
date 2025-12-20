@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207
+**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, RFC 5322, ISO 8601, TLS 1.3, AES-256, ISO/IEC 33063:2015 (Pengukuran Proses), ISO/IEC/IEEE 15289:2019 (Dokumentasi Sistem/Perisian)
 
 ---
 
@@ -66,6 +66,80 @@ ICT Asset Loan** BPM MOTAC, berpandukan piawaian **ISO/IEC/IEEE 15288** (system
 lifecycle processes) dan **ISO/IEC/IEEE 12207** (software lifecycle processes).
 Ia memastikan semua komponen dan modul sistem digabung secara berstruktur,
 bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
+
+---
+
+## 2. Pematuhan Standard (Additional Standards Compliance)
+
+### 2.1. ISO/IEC 33063:2015 - Process Measurement Implementation
+
+**Pematuhan Standard**: ISO/IEC 33063:2015 (Information technology — Process assessment — Process measurement framework for assessment of process capability)
+
+Sistem ICTServe mengimplementasikan pengukuran proses integrasi mengikut ISO/IEC 33063:2015 untuk memastikan kualiti dan keberkesanan proses integrasi sistem.
+
+#### 2.1.1. Process Measurement Framework
+
+**Key Performance Indicators (KPIs) untuk Integrasi**:
+
+| Metrik Proses                     | Target         | Pengukuran                                      | Frekuensi  |
+| --------------------------------- | -------------- | ----------------------------------------------- | ---------- |
+| **Integration Success Rate**      | ≥99%           | (Successful integrations / Total attempts) × 100 | Harian     |
+| **Data Consistency Rate**         | 100%           | Foreign key integrity checks                    | Real-time  |
+| **API Response Time**             | <200ms         | Average response time untuk internal APIs       | Real-time  |
+| **Integration Test Coverage**     | ≥80%           | (Tested integration points / Total points) × 100 | Per sprint |
+| **Error Recovery Time**           | <30 min        | Time to recover from integration failure        | Per incident |
+| **Cross-Module Data Sync Time**   | <5 sec         | Time untuk sync data antara Helpdesk ↔ Asset Loan | Real-time  |
+
+#### 2.1.2. Measurement Implementation dalam ICTServe
+
+**Laravel Pulse Integration untuk Process Metrics**:
+
+```php
+// app/Services/IntegrationMetricsService.php
+use Laravel\Pulse\Facades\Pulse;
+
+class IntegrationMetricsService
+{
+    public function recordIntegrationAttempt(string $module, bool $success): void
+    {
+        Pulse::record('integration_attempts', $module, $success ? 1 : 0)
+            ->count()
+            ->avg();
+    }
+
+    public function recordApiResponseTime(string $endpoint, float $duration): void
+    {
+        Pulse::record('api_response_time', $endpoint, $duration)
+            ->avg()
+            ->max();
+    }
+
+    public function recordDataSyncTime(string $operation, float $duration): void
+    {
+        Pulse::record('data_sync_time', $operation, $duration)
+            ->avg();
+    }
+}
+```
+
+**Automated Monitoring & Alerting**:
+
+- Laravel Pulse dashboard untuk real-time metrics visualization
+- Automated alerts jika metrics melebihi threshold (email kepada <admin@motac.gov.my>)
+- Weekly integration health reports kepada BPM management
+- Monthly process capability assessment reports
+
+#### 2.1.3. Process Capability Levels
+
+Sistem ICTServe mensasarkan **Level 3 (Established Process)** mengikut ISO/IEC 33063:
+
+- **Level 1 (Performed)**: ✅ Proses integrasi dilaksanakan dan mencapai objektif
+- **Level 2 (Managed)**: ✅ Proses diurus dengan planning, monitoring, dan adjustment
+- **Level 3 (Established)**: ✅ Proses standard didokumenkan dan diikuti secara konsisten
+- **Level 4 (Predictable)**: 🎯 Target masa depan - proses beroperasi dalam had yang boleh diramal
+- **Level 5 (Optimizing)**: 🎯 Target masa depan - continuous improvement berdasarkan metrics
+
+**Rujukan**: Lihat [D08_SYSTEM_INTEGRATION_SPECIFICATION.md](D08_SYSTEM_INTEGRATION_SPECIFICATION.md) untuk spesifikasi teknikal pengukuran proses.
 
 ---
 
