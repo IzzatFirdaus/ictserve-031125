@@ -47,7 +47,7 @@ $errorLabel = $errorLabel ?? __('common.retry');
 // Type-based styling
 $typeClasses = [
 'primary' => 'bg-primary-600 hover:bg-primary-700 text-white focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500',
-'secondary' => 'bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100 focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-gray-500',
+'secondary' => 'bg-slate-200 hover:bg-slate-300 text-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-100 focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-slate-500',
 'danger' => 'bg-danger-600 hover:bg-danger-700 text-white focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-danger-500',
 'success' => 'bg-success-600 hover:bg-success-700 text-white focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-success-500',
 'warning' => 'bg-warning-600 hover:bg-warning-700 text-white focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-warning-500',
