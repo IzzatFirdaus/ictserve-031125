@@ -192,6 +192,7 @@ This document provides a detailed walkthrough of the form styling updates implem
 **Status**: Major progress complete
 
 **Major Updates**:
+
 - [x] `helpdesk-reports.blade.php` - Multiple color replacements
 - [x] `superuser-configuration.blade.php` - Semantic tokens
 - [x] `unified-audit-log.blade.php` - Color token migration
@@ -212,6 +213,7 @@ This document provides a detailed walkthrough of the form styling updates implem
 - [x] `asset-availability-calendar.blade.php` - Legacy colors replaced
 
 **Cleanup & Fixes**:
+
 - [x] Removed duplicate `filament/filament/pages/` directory
 - [x] Fixed line-ending issues in approval matrix and workflow config
 
@@ -289,23 +291,39 @@ This document provides a detailed walkthrough of the form styling updates implem
 
 ### Phase 5: Livewire Staff & Portal Components ✅
 
-#### Staff Components (4 files updated)
+#### Staff Components (10 files - All Complete)
+**Status**: ✅ Complete
+
+| File | Status | Tokens Replaced |
+|------|--------|----------------|
+| `staff/approval-interface.blade.php` | ✅ Complete | `green→success`, `red→danger`, `yellow→warning` (16 changes) |
+| `staff/delegation-manager.blade.php` | ✅ Complete | `green→success` (8 changes) |
+| `staff/account-linking.blade.php` | ✅ Complete | `blue→primary`, `green→success`, `red→danger` (10 changes) |
+| `staff/cross-module-search.blade.php` | ✅ Complete | `blue→primary`, `green→success` (3 changes) |
+| `staff/authenticated-dashboard.blade.php` | ✅ Complete | Already compliant |
+| `staff/claim-submissions.blade.php` | ✅ Complete | Already compliant |
+| `staff/notification-center.blade.php` | ✅ Complete | `gray→slate` |
+| `staff/session-manager.blade.php` | ✅ Complete | `gray→slate` |
+| `staff/submission-history.blade.php` | ✅ Complete | `gray→slate`, `rounded-lg` |
+| `staff/user-profile.blade.php` | ✅ Complete | Already compliant |
+
+#### Portal Components (2 files updated, 9 pending)
 **Status**: Complete
 
-| File | Changes | Tokens Replaced |
-|------|---------|----------------|
-| `staff/approval-interface.blade.php` | 16 | `green→success`, `red→danger`, `yellow→warning` |
-| `staff/delegation-manager.blade.php` | 8 | `green→success` |
-| `staff/account-linking.blade.php` | 10 | `blue→primary`, `green→success`, `red→danger` |
-| `staff/cross-module-search.blade.php` | 3 | `blue→primary`, `green→success` |
-
-#### Portal Components (2 files updated)
-**Status**: Complete
-
-| File | Changes | Tokens Replaced |
-|------|---------|----------------|
-| `portal/internal-comments.blade.php` | 5 | `blue→primary` |
-| `portal/notification-preferences.blade.php` | 1 | `blue→primary` |
+| File | Status | Tokens Replaced |
+|------|--------|----------------|
+| `portal/internal-comments.blade.php` | ✅ Complete | `blue→primary` (5 changes) |
+| `portal/notification-preferences.blade.php` | ✅ Complete | `blue→primary` (1 change) |
+| `portal/notification-center.blade.php` | ✅ Complete | Already compliant |
+| `portal/notification-bell.blade.php` | ✅ Complete | Already compliant |
+| `portal/user-profile.blade.php` | ✅ Complete | `gray→slate` |
+| `portal/help-center.blade.php` | ✅ Complete | Already compliant |
+| `portal/support-message.blade.php` | ✅ Complete | `gray→slate`, `rounded-lg` |
+| `portal/welcome-tour.blade.php` | ✅ Complete | `gray→slate` |
+| `portal/dashboard/statistics-cards.blade.php` | ✅ Complete | `gray→slate`, `rounded-lg` |
+| `portal/help/welcome-tour.blade.php` | ✅ Complete | `gray→slate`, `rounded-lg` |
+| `portal/help/help-center.blade.php` | ✅ Complete | `gray→slate` |
+| `portal/widgets/personal-stats-widget.blade.php` | ✅ Complete | `gray→slate` |
 
 #### Pulse & Status Components (2 files updated)
 **Status**: Complete
@@ -321,6 +339,7 @@ This document provides a detailed walkthrough of the form styling updates implem
 **Status**: Complete
 
 **Changes Applied**:
+
 - Replaced all legacy `gray` scale with MyDS `slate` tokens
 - Replaced `blue→primary`, `green→success`, `red→danger`, `yellow→warning`
 - Standardized card backgrounds to `bg-white dark:bg-slate-800`
@@ -328,6 +347,7 @@ This document provides a detailed walkthrough of the form styling updates implem
 - Updated focus rings to `focus:ring-primary-500`
 
 **Files Updated**:
+
 - [x] `dashboard.blade.php`
 - [x] `guest-ticket-form.blade.php`
 - [x] `my-tickets.blade.php`
@@ -341,6 +361,7 @@ This document provides a detailed walkthrough of the form styling updates implem
 **Status**: Complete
 
 **Files Updated**:
+
 - [x] `submit-application.blade.php` - Wizard step colors
 - [x] `loan-dashboard.blade.php` - Status badges
 - [x] `approval-queue.blade.php` - Approval colors
@@ -362,6 +383,7 @@ This document provides a detailed walkthrough of the form styling updates implem
 **Status**: Complete
 
 **Remediated**:
+
 - [x] `bedrock-chat.blade.php` - Gray to slate tokens
 - [x] `contact-form.blade.php` - Gray to slate tokens
 - [x] `notification-bell.blade.php` - Gray to slate in category tabs
@@ -373,6 +395,7 @@ This document provides a detailed walkthrough of the form styling updates implem
 - [x] `user-profile.blade.php` - Gray to slate for profile form
 
 **Already Compliant (6 files)**:
+
 - [x] `submission-detail.blade.php`
 - [x] `submission-filters.blade.php`
 - [x] `submission-history.blade.php`
@@ -388,12 +411,33 @@ This document provides a detailed walkthrough of the form styling updates implem
 - [x] `auth/two-factor-authentication.blade.php` - Semantic tokens
 - [x] `auth/two-factor-challenge.blade.php` - Semantic tokens
 
-#### Profile Forms (3 files)
+#### Auth Pages (5 files)
 **Status**: Complete
 
-- [x] `profile/delete-user-form.blade.php` - Danger button styling
-- [x] `profile/update-password-form.blade.php` - Standard input styling
-- [x] `profile/update-profile-information-form.blade.php` - Standard input styling
+- [x] `pages/auth/confirm-password.blade.php` - Remediated
+- [x] `pages/auth/reset-password.blade.php` - Remediated
+- [x] `pages/auth/login.blade.php` - Remediated
+- [x] `pages/auth/register.blade.php` - Remediated
+- [x] `pages/auth/verify-email.blade.php` - Remediated
+
+### Phase 9: Livewire Components MyDS Standardization ✅
+
+- **Status**: ✅ **Completed (2025-12-20)**
+- **Components Remediated (9)**:
+  - `confirm-modal.blade.php` - `gray→slate`, `rounded-md→rounded-lg`
+  - `form-wizard.blade.php` - `gray→slate`, `rounded-md→rounded-lg`
+  - `progress-indicator.blade.php` - `gray→slate`
+  - `saved-filters.blade.php` - `gray→slate`, `rounded-md→rounded-lg`
+  - `search-filter.blade.php` - `gray→slate`, `rounded-md→rounded-lg`
+  - `theme-dropdown-unified.blade.php` - `gray→slate`
+  - `theme-toggle-unified.blade.php` - `gray→slate`
+  - `unified-search.blade.php` - `gray→slate`, `rounded-md→rounded-lg`
+  - `toast.blade.php` - Already compliant (no changes needed)
+
+- **Changes Applied**:
+  - Replaced all `gray-*` tokens with `slate-*` for consistent neutral palette
+  - Updated `rounded-md` to `rounded-lg` for modern border radii per D13 §2.7
+  - Verified accessibility compliance (min-h-11 touch targets, focus rings)
 
 ## Verification Results
 
@@ -520,9 +564,44 @@ Link element computed height: 44px
 
 ## Remaining Work
 
+### Staff & Portal Components (In Progress)
+
+#### Staff Directory (`resources/views/livewire/staff/`)
+
+- [ ] `authenticated-dashboard.blade.php` - Audit pending
+- [ ] `claim-submissions.blade.php` - Audit pending
+- [ ] `notification-center.blade.php` - Audit pending
+- [ ] `session-manager.blade.php` - Audit pending
+- [ ] `submission-history.blade.php` - Audit pending
+- [ ] `user-profile.blade.php` - Audit pending
+
+#### Portal Directory (`resources/views/livewire/portal/`)
+
+- [ ] `notification-center.blade.php` - Audit pending
+- [ ] `notification-bell.blade.php` - Audit pending
+- [ ] `user-profile.blade.php` - Audit pending
+- [ ] `help-center.blade.php` - Audit pending
+- [ ] `support-message.blade.php` - Audit pending
+- [ ] `welcome-tour.blade.php` - Audit pending
+- [ ] `dashboard/` subdirectory - Audit pending
+- [ ] `help/` subdirectory - Audit pending
+- [ ] `widgets/` subdirectory - Audit pending
+
+### Components & Pages (P2 Priority)
+
+#### Components Directory
+
+- [ ] `confirm-modal.blade.php`
+- [ ] `form-wizard.blade.php`
+- [ ] `progress-indicator.blade.php`
+
+#### Pages Directory
+
+- [ ] Structure check and audit
+
 ### Filament Admin (In Progress)
 
-- [ ] Complete remaining Filament pages (~18 files)
+- [ ] Complete remaining Filament pages (~11 files)
 - [ ] Review `resources/views/filament/resources/` directory
 - [ ] Review `resources/views/filament/auth/` directory
 

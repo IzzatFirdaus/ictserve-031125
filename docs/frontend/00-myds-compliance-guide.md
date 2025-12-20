@@ -151,25 +151,50 @@ This guide documents the implementation of **Malaysia Government Design System (
 
 ### Staff Portal (`resources/views/livewire/staff/`)
 
-- [x] `account-linking.blade.php`
-- [x] `approval-interface.blade.php`
-- [x] `authenticated-dashboard.blade.php`
-- [x] `claim-submissions.blade.php`
-- [x] `cross-module-search.blade.php`
-- [x] `notification-center.blade.php`
-- [x] `submission-history.blade.php`
-- [x] `user-profile.blade.php`
+- [x] `account-linking.blade.php` - Semantic tokens applied
+- [x] `approval-interface.blade.php` - Semantic tokens applied
+- [x] `cross-module-search.blade.php` - Semantic tokens applied
+- [x] `delegation-manager.blade.php` - Semantic tokens applied
+- [x] `authenticated-dashboard.blade.php` - Already compliant
+- [x] `claim-submissions.blade.php` - Already compliant
+- [x] `notification-center.blade.php` - Remediated (gray→slate)
+- [x] `session-manager.blade.php` - Remediated (gray→slate)
+- [x] `submission-history.blade.php` - Remediated (gray→slate, rounded-lg)
+- [x] `user-profile.blade.php` - Already compliant
 
 ### Portal Components (`resources/views/livewire/portal/`)
 
-- [x] `dashboard/statistics-cards.blade.php`
-- [x] `help-center.blade.php`
-- [x] `notification-bell.blade.php`
-- [x] `notification-center.blade.php`
-- [x] `notification-preferences.blade.php`
-- [x] `support-message.blade.php`
-- [x] `user-profile.blade.php`
-- [x] `welcome-tour.blade.php`
+- [x] `internal-comments.blade.php` - Semantic tokens applied
+- [x] `notification-preferences.blade.php` - Semantic tokens applied
+- [ ] `notification-center.blade.php` - Audit pending
+- [ ] `notification-bell.blade.php` - Audit pending
+- [ ] `user-profile.blade.php` - Audit pending
+- [ ] `help-center.blade.php` - Audit pending
+- [ ] `support-message.blade.php` - Audit pending
+- [ ] `welcome-tour.blade.php` - Audit pending
+- [ ] `dashboard/` subdirectory - Audit pending
+- [ ] `help/` subdirectory - Audit pending
+- [ ] `widgets/` subdirectory - Audit pending
+
+### Livewire Components (`resources/views/livewire/components/`)
+
+- [x] `confirm-modal.blade.php` - Remediated (gray→slate, rounded-md→rounded-lg)
+- [x] `form-wizard.blade.php` - Remediated (gray→slate, rounded-md→rounded-lg)
+- [x] `progress-indicator.blade.php` - Remediated (gray→slate)
+- [x] `saved-filters.blade.php` - Remediated (gray→slate, rounded-md→rounded-lg)
+- [x] `search-filter.blade.php` - Remediated (gray→slate, rounded-md→rounded-lg)
+- [x] `theme-dropdown-unified.blade.php` - Remediated (gray→slate)
+- [x] `theme-toggle-unified.blade.php` - Remediated (gray→slate)
+- [x] `toast.blade.php` - Already compliant
+- [x] `unified-search.blade.php` - Remediated (gray→slate, rounded-md→rounded-lg)
+
+### Auth Pages (`resources/views/livewire/pages/auth/`)
+
+- [x] `confirm-password.blade.php` - Remediated
+- [x] `reset-password.blade.php` - Remediated
+- [x] `login.blade.php` - Remediated
+- [x] `register.blade.php` - Remediated
+- [x] `verify-email.blade.php` - Remediated
 
 ### Navigation & Shared (`resources/views/livewire/`)
 
@@ -182,7 +207,7 @@ This guide documents the implementation of **Malaysia Government Design System (
 - [x] `submission-filters.blade.php`
 - [x] `submission-history.blade.php`
 
-**Total**: 75+ files updated
+**Total**: 140+ files updated (25+ Filament pages, 4 widgets, 4 components, 1 modal, 9 helpdesk, 9 loans, 10 staff, 12 portal, 9 livewire components, 5 auth pages, 3 profile, 2 AI, 10 root-level, 2 pulse/status, 28 UI components, 7 layouts, 6 pages, 2 root views, 3 admin views, plus core components)
 
 ### Filament Pages (25+/36 completed)
 

@@ -309,14 +309,18 @@ Layout already compliant with MyDS v2025.2
 - [x] Update Filament modals (1 file)
 - [x] Update helpdesk module (9 files)
 - [x] Update loan module (9 files)
-- [x] Update staff portal (4 files)
-- [x] Update portal components (2 files)
+- [x] Update staff portal (10 files - complete)
+- [x] Update portal components (2 files - partial: internal-comments, notification-preferences)
 - [x] Update AI chat components (2 files)
 - [x] Update root-level components (10 files)
 - [x] Update pulse/status components (2 files)
 - [x] Update navigation components (verified compliant)
 - [x] Update errors/layouts (verified compliant)
 - [x] Update emails/pdf (verified compliant)
+- [x] Update livewire components directory (9 files)
+- [x] Update auth pages directory (5 files)
+- [ ] Complete remaining portal components (9 files pending)
+- [ ] Update pages directory (audit pending)
 
 ### Post-Migration
 
