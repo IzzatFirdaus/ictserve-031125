@@ -51,9 +51,9 @@
 @php
 $variantClasses = match ($variant) {
 'portal' => 'bg-slate-900/50 text-slate-100 backdrop-blur-sm border border-slate-800',
-'compact' => 'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white',
+'compact' => 'bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white',
 default
-=> 'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700',
+=> 'bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700',
 };
 
 $sizeClasses = match ($size) {
@@ -82,7 +82,7 @@ default => 'text-base',
     @if ($illustration)
     <img src="{{ $illustration }}" alt="" aria-hidden="true" class="{{ $iconSize }} mb-4 object-contain" />
     @else
-    <div class="{{ $iconSize }} mb-4 text-gray-400 dark:text-gray-600" aria-hidden="true">
+    <div class="{{ $iconSize }} mb-4 text-slate-400 dark:text-slate-600" aria-hidden="true">
         @switch($icon)
         @case('search')
         <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,14 +132,14 @@ default => 'text-base',
 
     {{-- Primary Message --}}
     @if ($message)
-    <h3 class="text-center font-medium text-gray-900 dark:text-white {{ $textSize }} mb-2">
+    <h3 class="text-center font-medium text-slate-900 dark:text-white {{ $textSize }} mb-2">
         {{ $message }}
     </h3>
     @endif
 
     {{-- Description --}}
     @if ($description)
-    <p class="text-center text-gray-600 dark:text-gray-400 text-sm max-w-sm mb-4">
+    <p class="text-center text-slate-600 dark:text-slate-400 text-sm max-w-sm mb-4">
         {{ $description }}
     </p>
     @endif
