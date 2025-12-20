@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Redis;
 
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
  * Redis Configuration Unit Tests
- * 
+ *
  * Tests Redis configuration validation for ICTServe v3.6.1 Laragon optimization.
  * Validates configuration parameters, database allocation, and optimization settings.
- * 
- * @covers Redis configuration validation
- * @covers Database allocation strategy
- * @covers Performance optimization settings
- * @covers Laragon compatibility settings
  */
 class RedisConfigurationTest extends TestCase
 {
@@ -25,10 +20,10 @@ class RedisConfigurationTest extends TestCase
     public function it_has_predis_client_configured_for_laragon(): void
     {
         $redisClient = config('database.redis.client');
-        
+
         $this->assertEquals(
-            'predis', 
-            $redisClient, 
+            'predis',
+            $redisClient,
             'Redis client should be set to "predis" for Laragon compatibility'
         );
     }
@@ -37,10 +32,10 @@ class RedisConfigurationTest extends TestCase
     public function it_has_correct_host_configuration_for_laragon(): void
     {
         $redisHost = config('database.redis.default.host');
-        
+
         $this->assertEquals(
-            '127.0.0.1', 
-            $redisHost, 
+            '127.0.0.1',
+            $redisHost,
             'Redis host should be 127.0.0.1 for Laragon compatibility'
         );
     }
@@ -49,10 +44,10 @@ class RedisConfigurationTest extends TestCase
     public function it_has_correct_port_configuration(): void
     {
         $redisPort = config('database.redis.default.port');
-        
+
         $this->assertEquals(
-            '6379', 
-            $redisPort, 
+            '6379',
+            $redisPort,
             'Redis port should be 6379 (default Redis port)'
         );
     }
@@ -72,10 +67,10 @@ class RedisConfigurationTest extends TestCase
 
         foreach ($expectedDatabases as $connection => $expectedDb) {
             $actualDb = config("database.redis.{$connection}.database");
-            
+
             $this->assertEquals(
-                $expectedDb, 
-                $actualDb, 
+                $expectedDb,
+                $actualDb,
                 "Connection '{$connection}' should use database {$expectedDb}, got {$actualDb}"
             );
         }
@@ -86,18 +81,18 @@ class RedisConfigurationTest extends TestCase
     {
         $connections = ['default', 'cache', 'sessions', 'queues', 'reverb', 'pulse', 'horizon'];
         $usedDatabases = [];
-        
+
         foreach ($connections as $connection) {
             $database = config("database.redis.{$connection}.database");
-            
+
             $this->assertNotNull($database, "Database not configured for {$connection} connection");
-            
+
             $this->assertNotContains(
-                $database, 
-                $usedDatabases, 
+                $database,
+                $usedDatabases,
                 "Database {$database} is used by multiple connections"
             );
-            
+
             $usedDatabases[] = $database;
         }
     }
@@ -106,7 +101,7 @@ class RedisConfigurationTest extends TestCase
     public function it_has_redis_prefix_configured(): void
     {
         $redisPrefix = config('database.redis.options.prefix');
-        
+
         $this->assertNotEmpty($redisPrefix, 'Redis prefix should be configured');
         $this->assertStringContainsString('ictserve', strtolower($redisPrefix), 'Redis prefix should contain "ictserve"');
     }
@@ -115,7 +110,7 @@ class RedisConfigurationTest extends TestCase
     public function it_has_appropriate_timeout_settings(): void
     {
         $readTimeout = config('database.redis.default.read_timeout');
-        
+
         $this->assertNotNull($readTimeout, 'Read timeout should be configured');
         $this->assertGreaterThan(0, $readTimeout, 'Read timeout should be greater than 0');
         $this->assertLessThanOrEqual(300, $readTimeout, 'Read timeout should not exceed 5 minutes');
@@ -126,29 +121,29 @@ class RedisConfigurationTest extends TestCase
     public function it_has_consistent_configuration_across_connections(string $connection): void
     {
         $config = config("database.redis.{$connection}");
-        
+
         // Validate required configuration keys
         $requiredKeys = ['host', 'port', 'database', 'read_timeout'];
-        
+
         foreach ($requiredKeys as $key) {
             $this->assertArrayHasKey(
-                $key, 
-                $config, 
+                $key,
+                $config,
                 "Connection '{$connection}' missing required key '{$key}'"
             );
         }
-        
+
         // Validate host consistency
         $this->assertEquals(
-            '127.0.0.1', 
-            $config['host'], 
+            '127.0.0.1',
+            $config['host'],
             "Connection '{$connection}' should use host 127.0.0.1"
         );
-        
+
         // Validate port consistency
         $this->assertEquals(
-            '6379', 
-            $config['port'], 
+            '6379',
+            $config['port'],
             "Connection '{$connection}' should use port 6379"
         );
     }
@@ -157,10 +152,10 @@ class RedisConfigurationTest extends TestCase
     public function it_has_cache_store_configured_for_redis(): void
     {
         $cacheStore = config('cache.default');
-        
+
         $this->assertEquals(
-            'redis', 
-            $cacheStore, 
+            'redis',
+            $cacheStore,
             'Default cache store should be Redis for optimal performance'
         );
     }
@@ -169,10 +164,10 @@ class RedisConfigurationTest extends TestCase
     public function it_has_session_driver_configured_for_redis(): void
     {
         $sessionDriver = config('session.driver');
-        
+
         $this->assertEquals(
-            'redis', 
-            $sessionDriver, 
+            'redis',
+            $sessionDriver,
             'Session driver should be Redis for optimal performance'
         );
     }
@@ -181,10 +176,10 @@ class RedisConfigurationTest extends TestCase
     public function it_has_redis_cache_connection_configured(): void
     {
         $cacheConnection = config('cache.stores.redis.connection');
-        
+
         $this->assertEquals(
-            'cache', 
-            $cacheConnection, 
+            'cache',
+            $cacheConnection,
             'Redis cache store should use the "cache" connection'
         );
     }
@@ -194,7 +189,7 @@ class RedisConfigurationTest extends TestCase
     {
         // Test that configuration uses environment variables
         $defaultConfig = config('database.redis.default');
-        
+
         // These should be configurable via environment
         $this->assertNotNull($defaultConfig['host']);
         $this->assertNotNull($defaultConfig['port']);
@@ -205,11 +200,11 @@ class RedisConfigurationTest extends TestCase
     public function it_has_cluster_configuration_disabled(): void
     {
         $clusterConfig = config('database.redis.options.cluster');
-        
+
         // For Laragon single-instance setup, cluster should be 'redis' (not enabled)
         $this->assertEquals(
-            'redis', 
-            $clusterConfig, 
+            'redis',
+            $clusterConfig,
             'Redis cluster should be disabled for Laragon single-instance setup'
         );
     }
@@ -226,11 +221,11 @@ class RedisConfigurationTest extends TestCase
 
         foreach ($optimizationSettings as $envKey => $expectedValue) {
             $actualValue = env($envKey);
-            
+
             if ($actualValue !== null) {
                 $this->assertEquals(
-                    $expectedValue, 
-                    $actualValue, 
+                    $expectedValue,
+                    $actualValue,
                     "Environment variable {$envKey} should be {$expectedValue} for Laragon optimization"
                 );
             }
@@ -252,11 +247,11 @@ class RedisConfigurationTest extends TestCase
 
         foreach ($expectedDatabaseEnvVars as $envKey => $expectedValue) {
             $actualValue = env($envKey);
-            
+
             if ($actualValue !== null) {
                 $this->assertEquals(
-                    $expectedValue, 
-                    $actualValue, 
+                    $expectedValue,
+                    $actualValue,
                     "Environment variable {$envKey} should be {$expectedValue} for database separation"
                 );
             }
@@ -275,11 +270,11 @@ class RedisConfigurationTest extends TestCase
 
         foreach ($optimizationEnvVars as $envKey => $expectedValue) {
             $actualValue = env($envKey);
-            
+
             if ($actualValue !== null) {
                 $this->assertEquals(
-                    $expectedValue, 
-                    (int)$actualValue, 
+                    $expectedValue,
+                    (int) $actualValue,
                     "Environment variable {$envKey} should be {$expectedValue} for connection optimization"
                 );
             }
@@ -290,7 +285,7 @@ class RedisConfigurationTest extends TestCase
     public function it_has_proper_redis_context_configuration(): void
     {
         $defaultConfig = config('database.redis.default');
-        
+
         $this->assertArrayHasKey('context', $defaultConfig);
         $this->assertIsArray($defaultConfig['context']);
     }
@@ -299,14 +294,14 @@ class RedisConfigurationTest extends TestCase
     public function it_validates_password_configuration(): void
     {
         $connections = ['default', 'cache', 'sessions', 'queues', 'reverb', 'pulse', 'horizon'];
-        
+
         foreach ($connections as $connection) {
             $config = config("database.redis.{$connection}");
-            
+
             // For Laragon development, password should be null or empty
             $password = $config['password'] ?? null;
             $this->assertTrue(
-                $password === null || $password === '', 
+                $password === null || $password === '',
                 "Connection '{$connection}' should not require password for Laragon development"
             );
         }
