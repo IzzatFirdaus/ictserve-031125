@@ -22,7 +22,7 @@
                            transition-all duration-150 ease-out
                            {{ $appliedFilterId === $filter['id']
                                ? 'bg-primary-100 text-primary-700 border-2 border-primary-400 shadow-sm dark:bg-primary-900/50 dark:text-primary-300 dark:border-primary-600'
-                               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700' }}
+                               : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:border-slate-400 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-700' }}
                            focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500
                            touch-target"
         title="{{ $filter['description'] ?? __('Apply filter: :name', ['name' => $filter['name']]) }}"

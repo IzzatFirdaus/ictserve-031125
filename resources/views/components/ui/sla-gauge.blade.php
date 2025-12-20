@@ -74,7 +74,7 @@ $percentage = max(0, min(100, (float) $percentage));
         @if ($showLabel || $showPercentage)
         <div class="flex items-center justify-between mb-2">
             @if ($showLabel && $label)
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">
                 {{ $label }}
             </span>
             @endif

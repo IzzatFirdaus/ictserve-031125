@@ -55,26 +55,25 @@
                     <div class="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-full shrink-0"></div>
                     <div class="flex-1 min-w-0">
                         <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
-                        <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                        <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2"></div>
+                        <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
                     </div>
                 </div>
             @break
 
             @case('table')
                 {{-- Table row skeleton --}}
-                <div class="animate-pulse flex items-center space-x-4 p-3 border-b border-gray-200 dark:border-gray-700">
-                    <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
-                    <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-32 flex-1"></div>
-                    <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
-                    <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-16"></div>
+                <div class="animate-pulse flex items-center space-x-4 p-3 border-b border-slate-200 dark:border-slate-700">
+                    <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-20"></div>
+                    <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-32 flex-1"></div>
+                    <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-24"></div>
+                    <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-16"></div>
                 </div>
             @break
 
             @case('text')
                 {{-- Text paragraph skeleton --}}
                 <div class="animate-pulse space-y-2">
-                    <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-                    <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
                     <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-4/6"></div>
                 </div>
             @break
