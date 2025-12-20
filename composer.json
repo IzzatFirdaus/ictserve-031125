@@ -72,8 +72,14 @@
         "boost": "@php artisan boost:mcp",
         "boost:install": "@php artisan boost:install --ansi --no-interaction",
         "boost:update": "@php artisan boost:update --ansi",
+        "install": [
+            "@composer install-dependencies",
+            "@php -r \"file_exists('composer.lock') || passthru('composer dump-autoload');\"",
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump"
+        ],
+        "install-dependencies": "@php -r \"passthru('php ' . (\\PHP_OS_FAMILY === 'Windows' ? 'artisan' : '') . ' ' . escapeshellarg(\\Composer\\Factory::getComposerFile()) . ' install --no-interaction --prefer-dist --ignore-platform-reqs');\" || @composer install --no-interaction --prefer-dist --ignore-platform-reqs",
         "setup": [
-            "composer install",
+            "@composer install-dependencies",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
             "@php artisan migrate --force",
@@ -133,6 +139,11 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
+        "platform-check": false,
+        "ignore-platform-req": [
+            "ext-pcntl",
+            "ext-posix"
+        ],
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true,
@@ -145,7 +156,7 @@
         },
         "vendor-dir": "vendor",
         "platform": {
-            "php": "8.2.12"
+            "php": "8.4.11"
         }
     },
     "minimum-stability": "stable",
