@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0
+**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC 33063:2015, MyGovEA 18 Prinsip, OWASP Transport Security
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                                                                            |
 | **Status**           | Aktif                                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
-| **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
+| **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC 33063:2015, MyGovEA 18 Prinsip, OWASP Transport Security |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                                   |
 
 > Notis Penggunaan Dalaman: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam (internal use only).

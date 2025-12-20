@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 27701 (Privacy Information Management)
+**Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 27701 (Privacy Information Management), RFC 5322 (Format E-mel), ISO 8601, TLS 1.3, AES-256
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
-| **Pematuhi**         | ISO 8000, ISO/IEC 27701                   |
+| **Pematuhi**         | ISO 8000, ISO/IEC 27701, RFC 5322, ISO 8601, TLS 1.3, AES-256 |
 | **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 > Notis Penggunaan Dalaman: Migrasi data ini melibatkan data dalaman MOTAC dan tidak berkaitan data awam.
