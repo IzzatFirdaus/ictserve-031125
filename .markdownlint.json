@@ -1,11 +1,30 @@
 {
+  "default": true,
   "MD001": false,
   "MD013": false,
   "MD022": false,
   "MD024": false,
+  "MD025": false,
   "MD033": {
-    "allowed_elements": ["laravel-boost-guidelines", "code-snippet", "parameter", "div", "h1", "button", "span"]
+    "allowed_elements": [
+      "laravel-boost-guidelines",
+      "code-snippet",
+      "parameter",
+      "div",
+      "h1",
+      "button",
+      "span",
+      "details",
+      "summary",
+      "br",
+      "img"
+    ]
   },
   "MD041": false,
-  "MD046": false
+  "MD046": false,
+  "MD049": { "style": "consistent" },
+  "MD060": false,
+  "MD032": true,
+  "MD040": true,
+  "ignores": [".github/agents/*"]
 }

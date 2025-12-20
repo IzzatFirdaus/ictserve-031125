@@ -2,7 +2,7 @@
 
 ## Overview
 
-Enhanced development environment scripts for ICTServe v3.6.0 with Laravel 12.42.0, providing automated service management, WSL Redis integration, and comprehensive development tools.
+Enhanced development environment scripts for ICTServe v3.6.0 with Laravel 12.43.1, providing automated service management, WSL Redis integration, and comprehensive development tools.
 
 ## Available Scripts
 
@@ -353,5 +353,5 @@ $profiles = @{
 
 ---
 
-**ICTServe v3.6.0** | **Laravel 12.42.0** | **Enhanced Development Scripts** ✅  
-**Last Updated**: December 16, 2025
+**ICTServe v3.6.0** | **Laravel 12.43.1** | **Enhanced Development Scripts** ✅  
+**Last Updated**: December 20, 2024

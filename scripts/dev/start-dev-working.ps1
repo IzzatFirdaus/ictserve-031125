@@ -1,5 +1,5 @@
 # ICTServe v3.6.0 Development Environment - Working Version
-# Laravel 12.42.0 + Filament 4.1.10 + Livewire 3.7.1 + Tailwind 4.1.17
+# Laravel 12.43.1 + Filament 4.3.1 + Livewire 3.7.3 + Tailwind 4.1.18
 
 param(
     [switch]$SkipChecks,
@@ -9,7 +9,7 @@ param(
 
 Write-Host "ICTServe v3.6.0 Development Environment" -ForegroundColor Cyan
 Write-Host "=======================================" -ForegroundColor Cyan
-Write-Host "Laravel 12.42.0 | PHP 8.2.12 | Filament 4.1.10" -ForegroundColor Gray
+Write-Host "Laravel 12.43.1 | PHP 8.2.12 | Filament 4.3.1" -ForegroundColor Gray
 Write-Host ""
 
 $projectRoot = Get-Location
