@@ -544,7 +544,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/breeze (BREEZE) - v2
 - laravel/pint (PINT) - v1
 - laravel/telescope (TELESCOPE) - v5
-- phpunit/phpunit (PHPUNIT) - v12
+- phpunit/phpunit (PHPUNIT) - v11
 - laravel-echo (ECHO) - v2
 - tailwindcss (TAILWINDCSS) - v4
 
