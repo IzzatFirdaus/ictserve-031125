@@ -80,7 +80,7 @@ class MonitorHorizonHealth extends Command
     /**
      * Display health status in console
      *
-     * @param  array<string, mixed>  $healthStatus
+     * @param  array<string, array{healthy: bool, total_supervisors?: int, unhealthy_supervisors?: int, details?: array<int, array{name: string, status: string}>, issues?: array<int, array{severity: string, queue: string, wait_time: float, threshold: float}>, failed_count?: int, threshold?: int, healthy_ratio?: float, active_processes?: int, total_processes?: int}>  $healthStatus
      */
     private function displayHealthStatus(array $healthStatus): void
     {
@@ -89,22 +89,22 @@ class MonitorHorizonHealth extends Command
         $this->info('================================');
 
         // Supervisors
-        $supervisors = $healthStatus['supervisors'];
-        $status = $supervisors['healthy'] ? '✅' : '❌';
+        $supervisors = $healthStatus['supervisors'] ?? [];
+        $status = ($supervisors['healthy'] ?? false) ? '✅' : '❌';
         $this->line("{$status} Supervisors: {$supervisors['total_supervisors']} total, {$supervisors['unhealthy_supervisors']} unhealthy");
 
-        if (! $supervisors['healthy'] && ! empty($supervisors['details'])) {
+        if (! ($supervisors['healthy'] ?? true) && ! empty($supervisors['details'])) {
             foreach ($supervisors['details'] as $detail) {
                 $this->line("   - {$detail['name']}: {$detail['status']}");
             }
         }
 
         // Queue wait times
-        $queues = $healthStatus['queues'];
-        $status = $queues['healthy'] ? '✅' : '❌';
+        $queues = $healthStatus['queues'] ?? [];
+        $status = ($queues['healthy'] ?? false) ? '✅' : '❌';
         $this->line("{$status} Queue Wait Times");
 
-        if (! $queues['healthy'] && ! empty($queues['issues'])) {
+        if (! ($queues['healthy'] ?? true) && ! empty($queues['issues'])) {
             foreach ($queues['issues'] as $issue) {
                 $severity = $issue['severity'] === 'critical' ? '🔴' : '🟡';
                 $this->line("   {$severity} {$issue['queue']}: {$issue['wait_time']}s (threshold: {$issue['threshold']}s)");
@@ -112,14 +112,14 @@ class MonitorHorizonHealth extends Command
         }
 
         // Failed jobs
-        $failedJobs = $healthStatus['failed_jobs'];
-        $status = $failedJobs['healthy'] ? '✅' : '❌';
+        $failedJobs = $healthStatus['failed_jobs'] ?? [];
+        $status = ($failedJobs['healthy'] ?? false) ? '✅' : '❌';
         $this->line("{$status} Failed Jobs: {$failedJobs['failed_count']} (threshold: {$failedJobs['threshold']})");
 
         // Worker processes
-        $workers = $healthStatus['worker_processes'];
-        $status = $workers['healthy'] ? '✅' : '❌';
-        $ratio = round($workers['healthy_ratio'] * 100, 1);
+        $workers = $healthStatus['worker_processes'] ?? [];
+        $status = ($workers['healthy'] ?? false) ? '✅' : '❌';
+        $ratio = round((float) ($workers['healthy_ratio'] ?? 0) * 100, 1);
         $this->line("{$status} Worker Processes: {$workers['active_processes']}/{$workers['total_processes']} active ({$ratio}%)");
 
         $this->newLine();
