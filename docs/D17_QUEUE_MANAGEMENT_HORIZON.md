@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** Laravel Queue, Redis, Supervisor Process Management  
+**Standard Rujukan:** Laravel Queue, Redis, Supervisor Process Management, OWASP Transport Security, TLS 1.3, AES-256  
 
 ---
 

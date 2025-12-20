@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0
+**Standard Rujukan:** ISO 9241-210 (Human-Centred Design), ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0, MDGDM, Standard DDSA (Digital Document Standard Architecture), 18 Prinsip Reka Bentuk MyGovEA
 
 ---
 
@@ -508,7 +508,7 @@ resources/views/
 
 ```blade
 {{-- Responsive grid implementation --}}
-<div class="grid grid-cols-4 gap-[18px] px-[18px] md:grid-cols-8 md:gap-6 md:px-6 lg:grid-cols-12 lg:max-w-7xl lg:mx-auto">
+<div class="grid grid-cols-4 gap-4.5 px-4.5 md:grid-cols-8 md:gap-6 md:px-6 lg:grid-cols-12 lg:max-w-7xl lg:mx-auto">
     <div class="col-span-4 md:col-span-5 lg:col-span-8">Main Content</div>
     <div class="col-span-4 md:col-span-3 lg:col-span-4">Sidebar</div>
 </div>
@@ -646,7 +646,7 @@ Ringkasan implementasi:
 
 ```blade
 {{-- Main AI Chat Interface --}}
-<div class="flex flex-col h-[600px] bg-white rounded-lg shadow-card">
+<div class="flex flex-col h-150 bg-white rounded-lg shadow-card">
     {{-- Header with Model Selection --}}
     <div class="flex items-center justify-between p-4 border-b border-gray-200">
         <h2 class="text-lg font-semibold text-gray-900">

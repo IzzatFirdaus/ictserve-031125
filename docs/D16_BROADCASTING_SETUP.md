@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** RFC 6455 (WebSocket Protocol), OWASP Transport Security, Laravel Framework v12
+**Standard Rujukan:** RFC 6455 (Protokol WebSocket), OWASP Transport Security, Laravel Framework v12, TLS 1.3, AES-256
 
 ---
 
