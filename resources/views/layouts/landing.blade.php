@@ -26,7 +26,7 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900 theme-transition">
+<body class="font-sans antialiased text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-900 theme-transition">
     <div class="min-h-screen flex flex-col">
         <x-accessibility.skip-links />
         <header class="bg-primary-500 dark:bg-primary-600 text-white shadow-card sticky top-0 z-50 theme-transition"
@@ -169,7 +169,7 @@
             @yield('content')
             {{ $slot ?? '' }}
         </main>
-        <footer class="bg-gray-800 dark:bg-gray-900 text-gray-300 py-12 theme-transition" role="contentinfo">
+        <footer class="bg-slate-800 dark:bg-slate-900 text-slate-300 py-12 theme-transition" role="contentinfo">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
                     <div class="space-y-4">
@@ -182,15 +182,15 @@
                             <div>
                                 <p class="font-heading font-semibold text-white text-sm">
                                     {{ __('Kementerian Pelancongan, Seni dan Budaya') }}</p>
-                                <p class="text-xs text-gray-400 mt-1">{{ __('Bahagian Pengurusan Maklumat') }}</p>
+                                <p class="text-xs text-slate-400 mt-1">{{ __('Bahagian Pengurusan Maklumat') }}</p>
                             </div>
                         </div>
-                        <address class="not-italic text-sm text-gray-400 space-y-1">
+                        <address class="not-italic text-sm text-slate-400 space-y-1">
                             <p>No. 2, Menara 1, Jalan P5/6</p>
                             <p>Presint 5, 62200 PUTRAJAYA</p>
-                            <p class="pt-2"><span class="text-gray-500">{{ __('Tel') }}:</span> 03 8000 8000
+                            <p class="pt-2"><span class="text-slate-500">{{ __('Tel') }}:</span> 03 8000 8000
                             </p>
-                            <p><span class="text-gray-500">{{ __('Faks') }}:</span> 03 8891 7100</p>
+                            <p><span class="text-slate-500">{{ __('Faks') }}:</span> 03 8891 7100</p>
                         </address>
                     </div>
                     <div>
@@ -198,13 +198,13 @@
                             {{ __('Perkhidmatan') }}</h3>
                         <ul class="space-y-2">
                             <li><a href="{{ route('helpdesk.create') }}"
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200">{{ __('Aduan ICT') }}</a>
+                                    class="text-sm text-slate-400 hover:text-white transition-colors duration-200">{{ __('Aduan ICT') }}</a>
                             </li>
                             <li><a href="{{ route('loan.wizard') }}"
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200">{{ __('Pinjaman Aset') }}</a>
+                                    class="text-sm text-slate-400 hover:text-white transition-colors duration-200">{{ __('Pinjaman Aset') }}</a>
                             </li>
                             <li><a href="{{ route('status.check') }}"
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200">{{ __('Semak Status') }}</a>
+                                    class="text-sm text-slate-400 hover:text-white transition-colors duration-200">{{ __('Semak Status') }}</a>
                             </li>
                         </ul>
                     </div>
@@ -213,19 +213,19 @@
                             {{ __('Maklumat') }}</h3>
                         <ul class="space-y-2">
                             <li><a href="{{ route('directory') }}"
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200">{{ __('Direktori Kakitangan') }}</a>
+                                    class="text-sm text-slate-400 hover:text-white transition-colors duration-200">{{ __('Direktori Kakitangan') }}</a>
                             </li>
                             <li><a href="{{ route('faq') }}"
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200">{{ __('Soalan Lazim') }}</a>
+                                    class="text-sm text-slate-400 hover:text-white transition-colors duration-200">{{ __('Soalan Lazim') }}</a>
                             </li>
                             <li><a href="{{ route('contact') }}"
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200">{{ __('Hubungi Kami') }}</a>
+                                    class="text-sm text-slate-400 hover:text-white transition-colors duration-200">{{ __('Hubungi Kami') }}</a>
                             </li>
                             <li><a href="{{ route('accessibility') }}"
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200">{{ __('Kebolehcapaian') }}</a>
+                                    class="text-sm text-slate-400 hover:text-white transition-colors duration-200">{{ __('Kebolehcapaian') }}</a>
                             </li>
                             <li><a href="{{ route('privacy-policy') }}"
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200">{{ __('Dasar Privasi') }}</a>
+                                    class="text-sm text-slate-400 hover:text-white transition-colors duration-200">{{ __('Dasar Privasi') }}</a>
                             </li>
                         </ul>
                     </div>
@@ -235,7 +235,7 @@
                                 {{ __('Ikuti Kami') }}</h3>
                             <div class="flex gap-3">
                                 <a href="https://www.facebook.com/MyMOTAC" target="_blank" rel="noopener noreferrer"
-                                    class="text-gray-400 hover:text-white p-2.5 min-w-11 min-h-11 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded-lg"
+                                    class="text-slate-400 hover:text-white p-2.5 min-w-11 min-h-11 flex items-center justify-center bg-slate-700 hover:bg-slate-600 rounded-lg"
                                     aria-label="Facebook MyMOTAC">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd"
@@ -244,7 +244,7 @@
                                     </svg>
                                 </a>
                                 <a href="https://twitter.com/myMOTAC" target="_blank" rel="noopener noreferrer"
-                                    class="text-gray-400 hover:text-white p-2.5 min-w-11 min-h-11 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded-lg"
+                                    class="text-slate-400 hover:text-white p-2.5 min-w-11 min-h-11 flex items-center justify-center bg-slate-700 hover:bg-slate-600 rounded-lg"
                                     aria-label="Twitter myMOTAC">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                         <path
@@ -252,7 +252,7 @@
                                     </svg>
                                 </a>
                                 <a href="https://www.instagram.com/MyMOTAC" target="_blank" rel="noopener noreferrer"
-                                    class="text-gray-400 hover:text-white p-2.5 min-w-11 min-h-11 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded-lg"
+                                    class="text-slate-400 hover:text-white p-2.5 min-w-11 min-h-11 flex items-center justify-center bg-slate-700 hover:bg-slate-600 rounded-lg"
                                     aria-label="Instagram MyMOTAC">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd"
@@ -261,7 +261,7 @@
                                     </svg>
                                 </a>
                                 <a href="https://www.tiktok.com/@mymotac" target="_blank" rel="noopener noreferrer"
-                                    class="text-gray-400 hover:text-white p-2.5 min-w-11 min-h-11 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded-lg"
+                                    class="text-slate-400 hover:text-white p-2.5 min-w-11 min-h-11 flex items-center justify-center bg-slate-700 hover:bg-slate-600 rounded-lg"
                                     aria-label="TikTok @mymotac">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                         <path
@@ -270,23 +270,23 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="pt-4 border-t border-gray-700">
+                        <div class="pt-4 border-t border-slate-700">
                             <div class="flex items-center gap-2">
                                 <span class="relative flex h-3 w-3">
                                     <span
                                         class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                                 </span>
-                                <span class="text-sm text-gray-400">{{ __('Sistem beroperasi normal') }}</span>
+                                <span class="text-sm text-slate-400">{{ __('Sistem beroperasi normal') }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div
-                    class="mt-10 pt-6 border-t border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p class="text-xs text-gray-500">&copy; {{ date('Y') }} BPM MOTAC.
+                    class="mt-10 pt-6 border-t border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <p class="text-xs text-slate-500">&copy; {{ date('Y') }} BPM MOTAC.
                         {{ __('Hak Cipta Terpelihara') }}.</p>
-                    <p class="text-xs text-gray-500">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
+                    <p class="text-xs text-slate-500">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
                 </div>
             </div>
         </footer>

@@ -26,7 +26,7 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 theme-transition">
+<body class="font-sans antialiased bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 theme-transition">
     {{-- Theme Switcher (Top-right, v3.6.1) --}}
     <div class="fixed top-4 right-4 z-50">
         <livewire:components.theme-toggle-unified />

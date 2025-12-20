@@ -32,7 +32,7 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900 theme-transition">
+<body class="font-sans antialiased text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-900 theme-transition">
     <div class="min-h-screen flex flex-col">
         {{-- Skip Links (WCAG 2.4.1) --}}
         <x-accessibility.skip-links />
@@ -208,12 +208,12 @@
         </main>
 
         {{-- Footer --}}
-        <footer class="bg-gray-800 dark:bg-gray-900 text-gray-300 py-8 theme-transition" role="contentinfo">
+        <footer class="bg-slate-800 dark:bg-slate-900 text-slate-300 py-8 theme-transition" role="contentinfo">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p class="text-xs text-gray-500">&copy; {{ date('Y') }} BPM MOTAC.
+                    <p class="text-xs text-slate-500">&copy; {{ date('Y') }} BPM MOTAC.
                         {{ __('Hak Cipta Terpelihara') }}.</p>
-                    <p class="text-xs text-gray-500">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
+                    <p class="text-xs text-slate-500">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
                 </div>
             </div>
         </footer>

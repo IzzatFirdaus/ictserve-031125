@@ -53,7 +53,7 @@
 </head>
 
 <body
-    class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+    class="font-sans antialiased bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-200">
     {{-- Skip Links for Keyboard Navigation (WCAG 2.2 SC 2.4.1) --}}
     <x-navigation.skip-links />
 
@@ -74,7 +74,7 @@
                 tabindex="-1">
                 {{-- Page Header --}}
                 @if (isset($header))
-                    <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+                    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700">
                         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                             {{ $header }}
                         </div>

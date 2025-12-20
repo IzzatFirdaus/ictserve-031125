@@ -66,7 +66,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans text-gray-900 dark:text-gray-100 antialiased bg-gray-50 dark:bg-gray-900 theme-transition">
+<body class="font-sans text-slate-900 dark:text-slate-100 antialiased bg-slate-50 dark:bg-slate-900 theme-transition">
     {{-- Skip Link for Accessibility (WCAG 2.4.1) --}}
     <a href="#main-content"
         class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2">
@@ -91,13 +91,13 @@
                     <x-application-logo
                         class="w-20 h-20 fill-current text-primary-600 dark:text-primary-400 transition-colors duration-200" />
                     <span
-                        class="text-2xl font-bold font-heading text-gray-900 dark:text-white tracking-tight">{{ config('app.name', 'ICTServe') }}</span>
+                        class="text-2xl font-bold font-heading text-slate-900 dark:text-white tracking-tight">{{ config('app.name', 'ICTServe') }}</span>
                 </a>
             </div>
 
             {{-- Login Card (MyDS v2025.2 Compliant - D13 §2.7) --}}
             <div
-                class="w-full sm:max-w-md px-8 py-10 bg-white dark:bg-gray-800 shadow-card overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 theme-transition">
+                class="w-full sm:max-w-md px-8 py-10 bg-white dark:bg-slate-800 shadow-card overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 theme-transition">
                 @isset($slot)
                     {{ $slot }}
                 @else
@@ -106,7 +106,7 @@
             </div>
 
             {{-- Footer Links (MyDS Spacing - D13 §2.6) --}}
-            <div class="mt-8 text-center text-sm text-gray-600 dark:text-gray-400 font-body">
+            <div class="mt-8 text-center text-sm text-slate-600 dark:text-slate-400 font-body">
                 <p>{{ __('auth.need_help') }}
                     <a href="{{ route('contact') }}"
                         class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 rounded-lg min-h-11 inline-flex items-center px-2 transition-colors duration-200">
@@ -117,7 +117,7 @@
         </main>
 
         {{-- Footer --}}
-        <footer class="py-4 text-center text-sm text-gray-500 dark:text-gray-400 theme-transition">
+        <footer class="py-4 text-center text-sm text-slate-500 dark:text-slate-400 theme-transition">
             <p>&copy; {{ date('Y') }} {{ __('common.motac_full_name') }}. {{ __('common.all_rights_reserved') }}
             </p>
         </footer>
