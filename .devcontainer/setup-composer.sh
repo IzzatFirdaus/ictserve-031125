@@ -7,7 +7,7 @@ echo ""
 mkdir -p ~/.composer
 echo "✅ Composer directory created"
 # 2. Configure GitHub token authentication
-cat > ~/.composer/auth.json << 'EOF'
+cat > ~/.composer/auth.json << EOF
 {
   "github-oauth": {
     "github.com": "$GITHUB_TOKEN"
