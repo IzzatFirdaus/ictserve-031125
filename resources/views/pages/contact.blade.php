@@ -50,7 +50,7 @@
     </section>
 
     {{-- Main Content with 12-8-4 Grid per D14 §7.4 --}}
-    <section id="main-content" class="py-12 md:py-16 bg-gray-50 dark:bg-gray-800 theme-transition" aria-labelledby="contact-heading">
+    <section id="main-content" class="py-12 md:py-16 bg-slate-50 dark:bg-slate-800 theme-transition" aria-labelledby="contact-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="contact-heading" class="sr-only">{{ __('Maklumat Hubungan') }}</h2>
 
@@ -58,17 +58,17 @@
                 {{-- Contact Information Cards --}}
                 <div class="col-span-4 md:col-span-8 lg:col-span-4 space-y-6">
                     {{-- Office Location Card --}}
-                    <article class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
+                    <article class="bg-white dark:bg-slate-900 rounded-lg shadow-card dark:shadow-list border border-slate-200 dark:border-slate-700 overflow-hidden theme-transition">
                         <div class="p-6">
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
                                     aria-hidden="true">
                                     <x-heroicon-o-map-pin class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                                 </div>
-                                <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100">{{ __('Alamat Pejabat') }}</h3>
+                                <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100">{{ __('Alamat Pejabat') }}</h3>
                             </div>
-                            <address class="not-italic text-gray-700 dark:text-gray-300 text-sm space-y-1 leading-relaxed">
-                                <p class="font-semibold text-gray-900 dark:text-gray-100">Bahagian Pengurusan Maklumat</p>
+                            <address class="not-italic text-slate-700 dark:text-slate-300 text-sm space-y-1 leading-relaxed">
+                                <p class="font-semibold text-slate-900 dark:text-slate-100">Bahagian Pengurusan Maklumat</p>
                                 <p>Kementerian Pelancongan, Seni dan Budaya</p>
                                 <p>No. 2, Menara 1, Jalan P5/6</p>
                                 <p>Presint 5, 62200 Putrajaya</p>
@@ -77,20 +77,20 @@
                     </article>
 
                     {{-- Contact Channels Card --}}
-                    <article class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
+                    <article class="bg-white dark:bg-slate-900 rounded-lg shadow-card dark:shadow-list border border-slate-200 dark:border-slate-700 overflow-hidden theme-transition">
                         <div class="p-6">
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
                                     aria-hidden="true">
                                     <x-heroicon-o-phone class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                                 </div>
-                                <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100">{{ __('Saluran Hubungan') }}
+                                <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100">{{ __('Saluran Hubungan') }}
                                 </h3>
                             </div>
                             <dl class="space-y-4 text-sm">
                                 <div>
-                                    <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('Talian Am') }}</dt>
-                                    <dd class="text-gray-900 dark:text-gray-100 font-semibold">
+                                    <dt class="font-medium text-slate-500 dark:text-slate-400">{{ __('Talian Am') }}</dt>
+                                    <dd class="text-slate-900 dark:text-slate-100 font-semibold">
                                         <a href="tel:+60380008000"
                                             class="hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                                             +603-8000 8000

@@ -56,7 +56,7 @@
     </section>
 
     {{-- Main Content with 12-8-4 Grid per D14 §7.4 --}}
-    <section id="main-content" class="py-12 md:py-16 bg-gray-50" aria-labelledby="services-heading">
+    <section id="main-content" class="py-12 md:py-16 bg-slate-50" aria-labelledby="services-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <h2 id="services-heading" class="sr-only">{{ __('Perkhidmatan Tersedia') }}</h2>
 
@@ -65,7 +65,7 @@
 
                 {{-- Helpdesk Support Card --}}
                 <article
-                    class="col-span-4 md:col-span-4 lg:col-span-4 bg-white rounded-lg shadow-card hover:shadow-dropdown transition-shadow duration-200 border border-gray-200 overflow-hidden flex flex-col">
+                    class="col-span-4 md:col-span-4 lg:col-span-4 bg-white rounded-lg shadow-card hover:shadow-lg transition-shadow duration-200 border border-slate-200 overflow-hidden flex flex-col">
                     <div class="h-2 bg-primary-600"></div>
                     <div class="p-6 md:p-8 flex-1 flex flex-col space-y-4">
                         <div class="flex items-center gap-4">
@@ -73,12 +73,12 @@
                                 aria-hidden="true">
                                 <x-heroicon-o-computer-desktop class="h-7 w-7 text-primary-600" />
                             </div>
-                            <h3 class="text-xl font-heading font-bold text-gray-900">{{ __('Aduan ICT') }}</h3>
+                            <h3 class="text-xl font-heading font-bold text-slate-900">{{ __('Aduan ICT') }}</h3>
                         </div>
-                        <p class="text-gray-700 text-sm leading-relaxed">
+                        <p class="text-slate-700 text-sm leading-relaxed">
                             {{ __('Laporkan kerosakan perkakasan, perisian, atau rangkaian untuk tindakan segera oleh pasukan sokongan ICT.') }}
                         </p>
-                        <ul class="space-y-2 text-sm text-gray-700" role="list">
+                        <ul class="space-y-2 text-sm text-slate-700" role="list">
                             <li class="flex items-start gap-2">
                                 <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
                                 <span>{{ __('Kerosakan perkakasan komputer') }}</span>
@@ -96,9 +96,9 @@
                                 <span>{{ __('Sokongan e-mel dan akaun') }}</span>
                             </li>
                         </ul>
-                        <p class="text-xs text-gray-500">PK.(S).MOTAC.07.(L1)</p>
+                        <p class="text-xs text-slate-500">PK.(S).MOTAC.07.(L1)</p>
                     </div>
-                    <div class="p-4 md:p-6 bg-gray-50 border-t border-gray-200">
+                    <div class="p-4 md:p-6 bg-slate-50 border-t border-slate-200">
                         @if ($helpdeskRouteName)
                             <a href="{{ route($helpdeskRouteName) }}"
                                 class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
@@ -109,25 +109,25 @@
                     </div>
                 </article>
 
-                {{-- Asset Loan Card --}}
+                {{-- Loan Application Card --}}
                 <article
-                    class="col-span-4 md:col-span-4 lg:col-span-4 bg-white rounded-lg shadow-card hover:shadow-dropdown transition-shadow duration-200 border border-gray-200 overflow-hidden flex flex-col">
-                    <div class="h-2 bg-success"></div>
+                    class="col-span-4 md:col-span-4 lg:col-span-4 bg-white rounded-lg shadow-card hover:shadow-lg transition-shadow duration-200 border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="h-2 bg-success-600"></div>
                     <div class="p-6 md:p-8 flex-1 flex flex-col space-y-4">
                         <div class="flex items-center gap-4">
                             <div class="h-14 w-14 bg-success-50 rounded-full flex items-center justify-center shrink-0"
                                 aria-hidden="true">
-                                <x-heroicon-o-device-tablet class="h-7 w-7 text-success" />
+                                <x-heroicon-o-credit-card class="h-7 w-7 text-success-600" />
                             </div>
-                            <h3 class="text-xl font-heading font-bold text-gray-900">{{ __('Pinjaman Aset') }}</h3>
+                            <h3 class="text-xl font-heading font-bold text-slate-900">{{ __('Permohonan Pinjaman') }}</h3>
                         </div>
-                        <p class="text-gray-700 text-sm leading-relaxed">
-                            {{ __('Mohon pinjaman peralatan ICT seperti komputer riba, projektor, dan peralatan lain untuk kegunaan rasmi.') }}
+                        <p class="text-slate-700 text-sm leading-relaxed">
+                            {{ __('Mohon pinjaman peralatan ICT untuk kegunaan rasmi dengan proses kelulusan yang pantas.') }}
                         </p>
-                        <ul class="space-y-2 text-sm text-gray-700" role="list">
+                        <ul class="space-y-2 text-sm text-slate-700" role="list">
                             <li class="flex items-start gap-2">
                                 <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                                <span>{{ __('Komputer riba dan tablet') }}</span>
+                                <span>{{ __('Komputer riba & projektor') }}</span>
                             </li>
                             <li class="flex items-start gap-2">
                                 <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
@@ -139,12 +139,12 @@
                             </li>
                             <li class="flex items-start gap-2">
                                 <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                                <span>{{ __('Aksesori dan kabel') }}</span>
+                                <span>{{ __('Semakan status masa nyata') }}</span>
                             </li>
                         </ul>
-                        <p class="text-xs text-gray-500">PK.(S).MOTAC.07.(L3)</p>
+                        <p class="text-xs text-slate-500">PK.(S).MOTAC.07.(L2)</p>
                     </div>
-                    <div class="p-4 md:p-6 bg-gray-50 border-t border-gray-200">
+                    <div class="p-4 md:p-6 bg-slate-50 border-t border-slate-200">
                         @if ($loanRouteName)
                             <a href="{{ route($loanRouteName) }}"
                                 class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-success hover:bg-success/90 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-success focus-visible:ring-offset-2">
@@ -157,7 +157,7 @@
 
                 {{-- Service Request Card --}}
                 <article
-                    class="col-span-4 md:col-span-8 lg:col-span-4 bg-white rounded-lg shadow-card hover:shadow-dropdown transition-shadow duration-200 border border-gray-200 overflow-hidden flex flex-col">
+                    class="col-span-4 md:col-span-8 lg:col-span-4 bg-white rounded-lg shadow-card hover:shadow-dropdown transition-shadow duration-200 border border-slate-200 overflow-hidden flex flex-col">
                     <div class="h-2 bg-secondary-500"></div>
                     <div class="p-6 md:p-8 flex-1 flex flex-col space-y-4">
                         <div class="flex items-center gap-4">
@@ -165,13 +165,13 @@
                                 aria-hidden="true">
                                 <x-heroicon-o-clipboard-document-check class="h-7 w-7 text-secondary-600" />
                             </div>
-                            <h3 class="text-xl font-heading font-bold text-gray-900">{{ __('Permintaan Perkhidmatan') }}
+                            <h3 class="text-xl font-heading font-bold text-slate-900">{{ __('Permintaan Perkhidmatan') }}
                             </h3>
                         </div>
-                        <p class="text-gray-700 text-sm leading-relaxed">
+                        <p class="text-slate-700 text-sm leading-relaxed">
                             {{ __('Mohon perkhidmatan ICT baharu seperti pemasangan perisian, konfigurasi sistem, atau akses rangkaian.') }}
                         </p>
-                        <ul class="space-y-2 text-sm text-gray-700" role="list">
+                        <ul class="space-y-2 text-sm text-slate-700" role="list">
                             <li class="flex items-start gap-2">
                                 <x-heroicon-s-check class="h-5 w-5 text-secondary-600 shrink-0 mt-0.5" aria-hidden="true" />
                                 <span>{{ __('Pemasangan perisian') }}</span>
@@ -192,10 +192,10 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="p-4 md:p-6 bg-gray-50 border-t border-gray-200">
+                    <div class="p-4 md:p-6 bg-slate-50 border-t border-slate-200">
                         @if ($serviceRequestUrl)
                             <a href="{{ $serviceRequestUrl }}"
-                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-gray-100 text-secondary-600 border-2 border-secondary-600 text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-secondary-500 focus-visible:ring-offset-2">
+                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-slate-100 text-secondary-600 border-2 border-secondary-600 text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-secondary-500 focus-visible:ring-offset-2">
                                 <x-heroicon-s-paper-airplane class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('Hantar Permintaan') }}
                             </a>
@@ -209,7 +209,7 @@
             <div class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8">
                 {{-- Issue Reporting Card --}}
                 <article
-                    class="col-span-4 md:col-span-4 lg:col-span-6 bg-white rounded-lg shadow-card hover:shadow-dropdown transition-shadow duration-200 border border-gray-200 overflow-hidden flex flex-col">
+                    class="col-span-4 md:col-span-4 lg:col-span-6 bg-white rounded-lg shadow-card hover:shadow-dropdown transition-shadow duration-200 border border-slate-200 overflow-hidden flex flex-col">
                     <div class="h-2 bg-warning"></div>
                     <div class="p-6 md:p-8 flex-1 flex flex-col space-y-4">
                         <div class="flex items-center gap-4">
@@ -217,12 +217,12 @@
                                 aria-hidden="true">
                                 <x-heroicon-o-exclamation-triangle class="h-7 w-7 text-warning" />
                             </div>
-                            <h3 class="text-xl font-heading font-bold text-gray-900">{{ __('Laporan Isu') }}</h3>
+                            <h3 class="text-xl font-heading font-bold text-slate-900">{{ __('Laporan Isu') }}</h3>
                         </div>
-                        <p class="text-gray-700 text-sm leading-relaxed">
+                        <p class="text-slate-700 text-sm leading-relaxed">
                             {{ __('Laporkan isu keselamatan, insiden sistem, atau masalah kritikal yang memerlukan perhatian segera.') }}
                         </p>
-                        <ul class="space-y-2 text-sm text-gray-700" role="list">
+                        <ul class="space-y-2 text-sm text-slate-700" role="list">
                             <li class="flex items-start gap-2">
                                 <x-heroicon-s-check class="h-5 w-5 text-warning shrink-0 mt-0.5" aria-hidden="true" />
                                 <span>{{ __('Insiden keselamatan siber') }}</span>
@@ -237,7 +237,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="p-4 md:p-6 bg-gray-50 border-t border-gray-200">
+                    <div class="p-4 md:p-6 bg-slate-50 border-t border-slate-200">
                         @if ($helpdeskRouteName)
                             <a href="{{ route($helpdeskRouteName, ['priority' => 'HIGH']) }}"
                                 class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-warning-50 text-warning border-2 border-warning text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-warning focus-visible:ring-offset-2">
@@ -248,25 +248,25 @@
                     </div>
                 </article>
 
-                {{-- General Support Card --}}
+                {{-- Knowledge Base Card --}}
                 <article
-                    class="col-span-4 md:col-span-4 lg:col-span-6 bg-white rounded-lg shadow-card hover:shadow-dropdown transition-shadow duration-200 border border-gray-200 overflow-hidden flex flex-col">
-                    <div class="h-2 bg-gray-500"></div>
+                    class="col-span-4 md:col-span-4 lg:col-span-6 bg-white rounded-lg shadow-card hover:shadow-lg transition-shadow duration-200 border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="h-2 bg-secondary-500"></div>
                     <div class="p-6 md:p-8 flex-1 flex flex-col space-y-4">
                         <div class="flex items-center gap-4">
-                            <div class="h-14 w-14 bg-gray-100 rounded-full flex items-center justify-center shrink-0"
+                            <div class="h-14 w-14 bg-secondary-50 rounded-full flex items-center justify-center shrink-0"
                                 aria-hidden="true">
-                                <x-heroicon-o-question-mark-circle class="h-7 w-7 text-gray-600" />
+                                <x-heroicon-o-book-open class="h-7 w-7 text-secondary-600" />
                             </div>
-                            <h3 class="text-xl font-heading font-bold text-gray-900">{{ __('Sokongan Am') }}</h3>
+                            <h3 class="text-xl font-heading font-bold text-slate-900">{{ __('Pangkalan Pengetahuan') }}</h3>
                         </div>
-                        <p class="text-gray-700 text-sm leading-relaxed">
-                            {{ __('Dapatkan bantuan dan panduan untuk sebarang pertanyaan berkaitan perkhidmatan ICT.') }}
+                        <p class="text-slate-700 text-sm leading-relaxed">
+                            {{ __('Akses panduan pengguna dan soalan lazim untuk menyelesaikan masalah umum.') }}
                         </p>
-                        <ul class="space-y-2 text-sm text-gray-700" role="list">
+                        <ul class="space-y-2 text-sm text-slate-700" role="list">
                             <li class="flex items-start gap-2">
-                                <x-heroicon-s-check class="h-5 w-5 text-gray-600 shrink-0 mt-0.5" aria-hidden="true" />
-                                <span>{{ __('Panduan penggunaan sistem') }}</span>
+                                <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                                <span>{{ __('Panduan sistem langkah demi langkah') }}</span>
                             </li>
                             <li class="flex items-start gap-2">
                                 <x-heroicon-s-check class="h-5 w-5 text-gray-600 shrink-0 mt-0.5" aria-hidden="true" />
