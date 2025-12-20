@@ -177,6 +177,72 @@ resources/views/components/
     └── user-info-card.blade.php
 ```
 
+### Portal Layout Architecture
+
+The portal layout implements a comprehensive authenticated user interface with role-based navigation and accessibility compliance:
+
+#### Portal Layout Structure
+
+```text
+resources/views/portal/
+├── layouts/
+│   └── app.blade.php              # Main portal layout with header, navbar, sidebar, footer
+├── components/
+│   ├── header.blade.php           # MOTAC branding with user info and theme toggle
+│   ├── navbar.blade.php           # Primary navigation with role-based menu items
+│   ├── sidebar.blade.php          # Secondary navigation with quick actions
+│   ├── footer.blade.php           # Government compliance footer with links
+│   ├── breadcrumb.blade.php       # Navigation context with ARIA landmarks
+│   └── accessibility-menu.blade.php # WCAG 2.2 AA accessibility features
+├── partials/
+│   └── flash-messages.blade.php   # User feedback with ARIA live regions
+└── data-rights/
+    ├── index.blade.php            # PDPA 2010 data rights management
+    └── consent-history.blade.php  # User consent tracking interface
+```
+
+#### Portal Layout Features
+
+**Responsive Design**:
+
+- Mobile-first approach with collapsible sidebar
+- Hamburger menu for mobile navigation
+- Touch-friendly 44×44px minimum touch targets
+- Responsive grid system with MyDS breakpoints
+
+**Accessibility Compliance**:
+
+- WCAG 2.2 AA compliant navigation structure
+- Skip links for keyboard navigation
+- ARIA landmarks and live regions
+- Focus management and keyboard navigation
+- Screen reader optimized content structure
+
+**Theme Integration**:
+
+- Light/dark mode toggle in header
+- Theme persistence via localStorage
+- FOUT prevention with inline theme script
+- Smooth transitions with prefers-reduced-motion support
+
+**Role-Based Navigation**:
+
+- Staff: Basic portal access with submission management
+- Approver (Grade 41+): Additional approval interface
+- Admin: System management features
+- Superuser: Full administrative access
+
+#### Portal Component Specifications
+
+| Component | Purpose | WCAG Features | MyDS Compliance |
+|-----------|---------|---------------|-----------------|
+| **Header** | Branding, user info, theme toggle | Focus indicators, ARIA labels | MOTAC colors, typography |
+| **Navbar** | Primary navigation | Keyboard navigation, skip links | MyDS spacing, shadows |
+| **Sidebar** | Secondary navigation, quick actions | Collapsible, focus management | Responsive breakpoints |
+| **Footer** | Government compliance, links | Semantic structure | MyDS grid system |
+| **Breadcrumb** | Navigation context | ARIA landmarks | Consistent styling |
+| **Flash Messages** | User feedback | ARIA live regions | Alert color tokens |
+
 ### Livewire Component Architecture
 
 ```php
@@ -446,6 +512,11 @@ class FigmaDesignContext
 
 *For any* AI admin dashboard view, the system should display real-time metrics (model usage, response times, cost estimates) with multi-system health status (Ollama, Bedrock, DuckDuckGo) and restrict access to admin/superuser roles
 **Validates: Requirements 18.1, 18.6, 18.8**
+
+### Property 26: Portal Layout System Compliance
+
+*For any* portal layout component, the system should implement proper WCAG 2.2 AA landmark structure with role-based navigation, responsive design, and government compliance features including MOTAC branding and PDPA data rights management
+**Validates: Requirements 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7, 19.8**
 
 *For any* grade selection dropdown, the component should include all government grades (1-56), JUSA grades (A, B, C), and Turus grades (I, II, III) organized by optgroup for easy navigation
 **Validates: Requirements 20.3**

@@ -13,18 +13,24 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
 - php - 8.2.12
-- filament/filament (FILAMENT) - v4
-- laravel/framework (LARAVEL) - v12
-- laravel/prompts (PROMPTS) - v0
-- livewire/livewire (LIVEWIRE) - v3
-- livewire/volt (VOLT) - v1
-- larastan/larastan (LARASTAN) - v3
-- laravel/breeze (BREEZE) - v2
-- laravel/mcp (MCP) - v0
-- laravel/pint (PINT) - v1
-- laravel/sail (SAIL) - v1
-- phpunit/phpunit (PHPUNIT) - v12
-- tailwindcss (TAILWINDCSS) - v3
+- filament/filament (FILAMENT) - v4.3.1
+- laravel/framework (LARAVEL) - v12.43.1
+- laravel/horizon (HORIZON) - v5.41.0
+- laravel/prompts (PROMPTS) - v0.3.8
+- laravel/pulse (PULSE) - v1.4.7
+- laravel/reverb (REVERB) - v1.6.3
+- laravel/sanctum (SANCTUM) - v4.2.1
+- laravel/socialite (SOCIALITE) - v5.24.0
+- livewire/livewire (LIVEWIRE) - v3.7.3
+- livewire/volt (VOLT) - v1.10.1
+- larastan/larastan (LARASTAN) - v3.8.1
+- laravel/breeze (BREEZE) - v2.3.8
+- laravel/mcp (MCP) - v0.3.4
+- laravel/pint (PINT) - v1.26.0
+- laravel/telescope (TELESCOPE) - v5.16.0
+- phpunit/phpunit (PHPUNIT) - v11.5.46
+- laravel-echo (ECHO) - v2.2.6
+- tailwindcss (TAILWINDCSS) - v4.1.18
 
 ## Conventions
 

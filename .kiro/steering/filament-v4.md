@@ -2,7 +2,7 @@
 
 ## Overview
 
-Filament v4.x is a major release with significant breaking changes and new features. This steering file provides comprehensive guidelines for working with Filament v4.1.10 in the ICTServe Laravel 12 application.
+Filament v4.x is a major release with significant breaking changes and new features. This steering file provides comprehensive guidelines for working with Filament v4.3.1 in the ICTServe Laravel 12 application.
 
 **Key Changes from v3**:
 
