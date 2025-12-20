@@ -15,4 +15,4 @@
 @props([])
 
 <div role="separator" aria-orientation="horizontal"
-    {{ $attributes->merge(['class' => 'my-1 h-px bg-gray-200 dark:bg-gray-700']) }}></div>
+    {{ $attributes->merge(['class' => 'border-t border-slate-100 dark:border-slate-700 my-1']) }}></div>

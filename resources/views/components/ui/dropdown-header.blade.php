@@ -15,6 +15,6 @@
 @props([])
 
 <div role="presentation"
-    {{ $attributes->merge(['class' => 'px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400']) }}>
+    {{ $attributes->merge(['class' => 'px-4 py-2 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500']) }}>
     {{ $slot }}
 </div>

@@ -67,7 +67,7 @@ default => 'h-10 w-24',
     @switch($type)
     @case('avatar')
     {{-- Avatar skeleton --}}
-    <div class="{{ $avatarSize }} bg-gray-200 dark:bg-gray-700 rounded-full skeleton-pulse"></div>
+    <div class="{{ $avatarSize }} bg-slate-200 dark:bg-slate-700 rounded-full skeleton-pulse"></div>
     @break
 
     @case('table-row')
