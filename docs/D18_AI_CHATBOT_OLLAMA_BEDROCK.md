@@ -20,7 +20,7 @@
 | Versi | Tarikh | Perubahan | Penulis |
 |-------|--------|-----------|---------|
 | 1.0.0 | 2025-12-14 | Dokumen asal D18 - Konsolidasi lengkap dokumentasi AI Chatbot termasuk API Reference, Deployment Guide, Emergency Procedures, dan pematuhan D00-D17 v3.6.0 | Pasukan Pembangunan BPM |
-| 1.0.1 | 2025-12-17 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D18 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+) | Pasukan Pembangunan BPM |
+| 1.0.1 | 2025-12-17 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0, Filament 4.3.1. Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D18 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+), pengesahan Laravel Horizon 5.41.0 DIPASANG | Pasukan Pembangunan BPM |
 
 ---
 
@@ -35,7 +35,7 @@
 | [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) | Infrastruktur teknikal | v3.6.1 |
 | [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Penyetempatan bahasa (Bahasa Melayu sahaja) | v3.6.1 |
 | [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md) | Konfigurasi WebSocket (Laravel Reverb) | v3.6.1 |
-| [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) | Pengurusan queue (Laravel Queue + Redis; Horizon tidak dipasang) | v3.6.1 |
+| [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) | Pengurusan queue (Laravel Queue + Redis; Laravel Horizon 5.41.0 dipasang) | v3.6.1 |
 
 ---
 
@@ -85,7 +85,7 @@
 | **SSE** | Server-Sent Events - protokol untuk streaming data dari pelayan ke klien |
 | **Laravel Sanctum** | Sistem pengesahan API token untuk Laravel |
 | **Laravel Reverb** | Pelayan WebSocket untuk notifikasi masa nyata |
-| **Laravel Horizon** | Dashboard pengurusan queue (opsyenal). **Tidak dipasang** dalam repo v3.6.1; pemantauan queue menggunakan Laravel Pulse + Filament Failed Jobs/Email Logs |
+| **Laravel Horizon** | Dashboard pengurusan queue v5.41.0. **DIPASANG** dalam repo v3.6.1; dashboard tersedia di `/horizon` untuk superuser/admin |
 | **Laravel Pulse** | Dashboard pemantauan prestasi masa nyata |
 | **Laravel Telescope** | Alat debugging untuk Laravel (superuser sahaja) |
 
@@ -221,18 +221,18 @@ Integrasi **Cloud Hybrid AI Architecture** mesti selaras dengan **True Hybrid Ar
 |----------|-----------|--------|
 | **Bedrock** | AWS Bedrock Runtime | Model Claude Opus 4.5/Sonnet 4.5/Haiku 4.5 |
 | **Ollama** | Local LLM + RAG | Pangkalan pengetahuan khusus FAQ |
-| **Frontend** | Livewire 3.7.1 + Volt 1.10.1 | Antara muka chat reaktif |
-| **Backend** | Laravel 12.42.0, PHP 8.2.12 | Orkestrasi API |
-| **Admin Panel** | Filament 4.1.10 | Antara muka pengurusan AI |
+| **Frontend** | Livewire 3.7.3 + Volt 1.10.1 | Antara muka chat reaktif |
+| **Backend** | Laravel 12.43.1, PHP 8.2.12 | Orkestrasi API |
+| **Admin Panel** | Filament 4.3.1 | Antara muka pengurusan AI |
 | **Real-time** | Laravel Reverb 1.6.3 | Notifikasi WebSocket |
-| **Queue** | Laravel Queue + Redis | Pemprosesan kerja latar belakang (Horizon tidak dipasang) |
+| **Queue** | Laravel Queue + Redis + Horizon | Pemprosesan kerja latar belakang (Horizon v5.41.0 dipasang) |
 | **Audit** | owen-it + spatie | Sistem audit dwi (D09 v3.6.1) |
 
 ### 3.4 Seni Bina Lapisan Perkhidmatan (Service Layer Architecture)
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                        Laravel 12.42.0 Application                         │
+│                        Laravel 12.43.1 Application                         │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │  Controllers (API & Web) - Bahasa Melayu sahaja                            │
 │  ├── OllamaController (API endpoints)                                      │
@@ -771,12 +771,14 @@ ACTIVITY_LOGGER_ENABLED=true
 ### 9.2 Fail Konfigurasi Hibrid AI
 
 Konfigurasi AI dipecahkan kepada beberapa fail (source of truth):
+
 - `config/ollama.php` (endpoint, model, timeout, caching, RAG settings)
 - `config/bedrock.php` (model ID, region, default model, retries)
 - `config/ollama-laravel.php` (integrasi pakej `ollama-laravel`)
 - `config/ai-broadcasting.php` (channel AI untuk Reverb/Echo)
 
 Logik routing/strategi pemilihan model:
+
 - `app/Services/ModelRouter.php`
 - `app/Services/BedrockRoutingConfigurationService.php`
 - `app/Services/RagService.php`
@@ -1249,15 +1251,18 @@ php artisan db:show --table=faqs,documents,document_chunks,auto_reply_templates,
 
 #### Laravel Queue (Redis) - Setup Semasa (Repo v3.6.1)
 
-> **Nota**: `laravel/horizon` **tidak dipasang** dalam repo v3.6.1. Pemantauan queue menggunakan:
+> **Nota**: `laravel/horizon` **dipasang v5.41.0** dalam repo v3.6.1. Pemantauan queue menggunakan:
+>
 > - Laravel Pulse (metrik prestasi & job watcher)
 > - Filament resources (contoh: Failed Jobs, Email Logs)
 
 **Konfigurasi utama**:
+
 - `config/queue.php` (default `QUEUE_CONNECTION`, sambungan Redis, failed jobs)
 - `.env` / `.env.production` / `.env.staging` (contoh: `QUEUE_CONNECTION=redis`)
 
 **Nama queue yang digunakan oleh AI jobs (contoh)**:
+
 - `documents` (DocumentIngestJob)
 - `embeddings` (EmbeddingJob)
 - `auto-reply` (AutoReplyGenerationJob)
@@ -1630,6 +1635,7 @@ Selepas Pemulihan Sistem:
 **Contoh (pseudo) untuk konsep routing** (bukan fail sebenar; hanya contoh struktur ujian)
 
 **Fail sebenar untuk rujukan (source of truth)**:
+
 - `tests/Unit/Services/ModelRouterTest.php`
 - `tests/Unit/Services/RagServiceTest.php`
 - `tests/Unit/Services/OllamaClientTest.php`
@@ -1772,6 +1778,7 @@ class HybridAiServiceTest extends TestCase
 **Contoh (pseudo) untuk konsep UI hibrid** (bukan fail sebenar; hanya contoh struktur ujian)
 
 **Fail sebenar untuk rujukan (source of truth)**:
+
 - `tests/Feature/BedrockChatTest.php`
 - `tests/Feature/AI/ModelRouterTest.php`
 - `tests/Feature/AI/HybridQueryRouterTest.php`
@@ -2049,7 +2056,7 @@ Integrasi Cloud Hybrid AI mematuhi sepenuhnya dokumentasi D00-D18 v3.6.1:
 | **D12-D14** | WCAG 2.2 AA | Accessible streaming UI, 4.5:1 contrast |
 | **D15** | Bahasa Melayu sahaja | No language switcher, all AI responses in Malay |
 | **D16** | Laravel Reverb | Real-time AI notifications via WebSocket |
-| **D17** | Laravel Queue + Redis | Queue management untuk AI jobs (Horizon tidak dipasang) |
+| **D17** | Laravel Queue + Redis + Horizon | Queue management untuk AI jobs (Horizon v5.41.0 dipasang) |
 
 ### 15.2 Butiran Pematuhan (Compliance Details)
 
@@ -2131,7 +2138,7 @@ class BedrockConversation extends Model
 
 #### 15.2.9 D17 - Queue Management
 
-- **Laravel Queue + Redis**: Pemprosesan job latar belakang untuk AI (Horizon tidak dipasang)
+- **Laravel Queue + Redis + Horizon**: Pemprosesan job latar belakang untuk AI (Horizon v5.41.0 dipasang)
 - **Job Types**: DocumentIngestJob, EmbeddingJob, AutoReplyGenerationJob
 - **Redis Driver**: High-performance queue backend
 

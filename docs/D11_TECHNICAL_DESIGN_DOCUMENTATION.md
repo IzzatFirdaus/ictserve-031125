@@ -29,7 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                          | Penulis     |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi rekabentuk teknikal                                                                                                                                                                                                                                         | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                             | Pasukan BPM |
 | 2.1.0 | 19 Oktober 2025  | Tambah §7a Internationalization & Language Support                                                                                                                                                                                                                                 | Pasukan BPM |
@@ -73,18 +73,19 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 | Komponen              | Versi   | Fungsi                            |
 | --------------------- | ------- | --------------------------------- |
 | **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama       |
-| **Laravel**           | 12.42.0 | Framework aplikasi web            |
-| **Filament**          | 4.1.10  | Admin panel framework             |
-| **Livewire**          | 3.7.1   | Server-driven UI components       |
+| **Laravel**           | 12.43.1 | Framework aplikasi web            |
+| **Filament**          | 4.3.1   | Admin panel framework             |
+| **Livewire**          | 3.7.3   | Server-driven UI components       |
 | **Livewire Volt**     | 1.10.1  | Single-file Livewire components   |
 | **Laravel Reverb**    | 1.6.3   | WebSocket server untuk real-time  |
 | **Spatie Permission** | 6.23    | Role-based access control         |
 | **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it) |
 | **Activity Log**      | 4.x     | User activity logging (spatie)    |
-| **Laravel Pulse**     | 1.4.6   | Performance monitoring (admin/superuser) |
+| **Laravel Pulse**     | 1.4.7   | Performance monitoring (admin/superuser) |
 | **Laravel Sanctum**   | 4.2.1   | API token authentication           |
 | **Laravel Socialite** | 5.24.0  | Google OAuth SSO (opsyen)          |
 | **Laravel Telescope** | 5.16.0  | System debugging (superuser only)  |
+| **Laravel Horizon**   | 5.41.0  | Redis queue monitoring & management |
 | **Ollama**            | Latest  | Local LLM server (FAQ, RAG)       |
 | **AWS Bedrock**       | Latest  | Cloud AI (Claude models)          |
 
@@ -92,7 +93,7 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 
 | Komponen         | Versi  | Fungsi                           |
 | ---------------- | ------ | -------------------------------- |
-| **Tailwind CSS** | 4.1.17 | Utility-first CSS framework      |
+| **Tailwind CSS** | 4.1.18 | Utility-first CSS framework      |
 | **Alpine.js**    | 3.x    | Lightweight JavaScript framework |
 | **Laravel Echo** | 2.2.6  | WebSocket client                 |
 | **Pusher JS**    | 8.x    | WebSocket protocol               |
