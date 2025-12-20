@@ -9,10 +9,10 @@ inclusion: always
 **CRITICAL**: Use exact versions for compatibility:
 
 - **PHP**: 8.2.12 (strict typing required: `declare(strict_types=1);`)
-- **Laravel**: 12.40.1 (streamlined structure - no Kernel.php files)
-- **Livewire**: 3.7.0 (server-driven UI, single root element required)
+- **Laravel**: 12.43.1 (streamlined structure - no Kernel.php files)
+- **Livewire**: 3.7.3 (server-driven UI, single root element required)
 - **Livewire Volt**: 1.10.1 (single-file components, class-based or functional)
-- **Filament**: 4.1.10 (admin panel, v4 breaking changes applied)
+- **Filament**: 4.3.1 (admin panel, v4 breaking changes applied)
 
 ## Frontend Stack
 

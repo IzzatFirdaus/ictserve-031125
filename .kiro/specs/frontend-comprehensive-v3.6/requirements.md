@@ -396,6 +396,21 @@ This specification defines the comprehensive requirements for the complete front
 4. THE ICTServe_System SHALL provide computed properties (#[Computed]) for derived data and eager loading (with()) to prevent N+1 queries
 5. THE ICTServe_System SHALL implement proper loading states, error handling, and ARIA live regions for dynamic content updates
 
+### Requirement 19: Portal Layout System
+
+**User Story:** As an authenticated MOTAC staff member, I want a comprehensive portal layout with role-based navigation and accessibility features, so that I can efficiently access system features appropriate to my role while maintaining government compliance standards.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement portal layout with header, navbar, sidebar, footer, and main content regions following WCAG 2.2 AA landmark structure
+2. THE ICTServe_System SHALL provide role-based navigation with Staff, Approver (Grade 41+), Admin, and Superuser menu items
+3. THE ICTServe_System SHALL implement responsive design with collapsible sidebar and mobile-optimized navigation
+4. THE ICTServe_System SHALL include accessibility features (skip links, ARIA landmarks, keyboard navigation, focus management)
+5. THE ICTServe_System SHALL integrate theme switcher, breadcrumb navigation, and flash message system with ARIA live regions
+6. THE ICTServe_System SHALL display MOTAC branding and government compliance footer with proper ISO document references
+7. THE ICTServe_System SHALL implement data rights management interface for PDPA 2010 compliance
+8. THE ICTServe_System SHALL maintain consistent MyDS Design System styling across all portal components
+
 ### Requirement 7: WCAG 2.2 Level AA Accessibility Excellence
 
 **User Story:** As a user with accessibility needs, I want all UI components to meet WCAG 2.2 Level AA standards with new success criteria, so that I can effectively use the system regardless of my abilities.
