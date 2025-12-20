@@ -1,10 +1,10 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Header -->
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">
             {{ __('portal.help.center.title') }}
         </h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <p class="text-slate-600 dark:text-slate-400">
             {{ __('portal.help.center.description') }}
         </p>
     </div>
@@ -14,7 +14,7 @@
         <label for="help-search" class="sr-only">{{ __('portal.help.center.search_placeholder') }}</label>
         <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -22,16 +22,16 @@
             <input type="text"
                    id="help-search"
                    wire:model.live.debounce.300ms="search"
-                   class="block w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600
-                          rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                   class="block w-full pl-10 pr-12 py-3 border border-slate-300 dark:border-slate-600
+                          rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white
                           focus:ring-2 focus:ring-primary-500 focus:border-transparent
-                          placeholder-gray-400 dark:placeholder-gray-500"
+                          placeholder-slate-400 dark:placeholder-slate-500"
                    placeholder="{{ __('portal.help.center.search_placeholder') }}" />
 
             @if($search)
                 <button type="button"
                         wire:click="clearSearch"
-                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
                         aria-label="{{ __('portal.help.center.clear_search') }}">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -48,7 +48,7 @@
                 class="px-4 py-2 rounded-lg font-medium transition-colors duration-200
                        {{ $selectedCategory === 'all'
                           ? 'bg-primary-600 text-white'
-                          : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
+                          : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700' }}">
             {{ __('portal.help.categories.all') }}
         </button>
 
@@ -58,7 +58,7 @@
                     class="px-4 py-2 rounded-lg font-medium transition-colors duration-200
                            {{ $selectedCategory === $key
                               ? 'bg-primary-600 text-white'
-                              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
+                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700' }}">
                 {{ __($label) }}
             </button>
         @endforeach
@@ -67,22 +67,22 @@
     <!-- Articles Grid -->
     @if($articles->isEmpty())
         <div class="text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="mx-auto h-12 w-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">
+            <h3 class="mt-4 text-lg font-medium text-slate-900 dark:text-white">
                 {{ __('portal.help.center.no_results') }}
             </h3>
-            <p class="mt-2 text-gray-600 dark:text-gray-400">
+            <p class="mt-2 text-slate-600 dark:text-slate-400">
                 {{ __('portal.help.center.try_different_search') }}
             </p>
         </div>
     @else
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($articles as $article)
-                <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6
-                            hover:shadow-lg dark:hover:shadow-gray-900/50 transition-shadow duration-200">
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6
+                            hover:shadow-lg dark:hover:shadow-slate-900/50 transition-shadow duration-200">
                     <!-- Icon -->
                     <div class="flex items-center gap-4 mb-4">
                         <div class="shrink-0 w-12 h-12 bg-primary-50 dark:bg-primary-900/30 rounded-lg
@@ -104,16 +104,16 @@
                                 </svg>
                             @endif
                         </div>
-                        <span class="px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                        <span class="px-2 py-1 text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded">
                             {{ __('portal.help.categories.' . $article['category']) }}
                         </span>
                     </div>
 
                     <!-- Content -->
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                         {{ __($article['title']) }}
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">
                         {{ __($article['description']) }}
                     </p>
 

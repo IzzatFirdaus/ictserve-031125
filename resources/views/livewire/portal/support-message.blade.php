@@ -20,10 +20,10 @@
 <div class="space-y-6">
     {{-- Header --}}
     <div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
             {{ __('portal.help.contact_support') }}
         </h2>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
             {{ __('portal.help.contact_support_description') }}
         </p>
     </div>
@@ -48,12 +48,12 @@
     <form wire:submit="submit" class="space-y-6">
         {{-- Subject --}}
         <div>
-            <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label for="subject" class="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 {{ __('portal.subject') }}
                 <span class="text-danger-600">*</span>
             </label>
             <input type="text" id="subject" wire:model.live.debounce.300ms="subject"
-                class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 @error('subject') border-danger-300 @enderror"
+                class="mt-1 block w-full min-h-11 rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800 @error('subject') border-danger-300 @enderror"
                 placeholder="{{ __('portal.support.subject_placeholder') ?? 'Brief description of your issue' }}"
                 aria-required="true" aria-invalid="{{ $errors->has('subject') ? 'true' : 'false' }}"
                 aria-describedby="{{ $errors->has('subject') ? 'subject-error' : '' }}" />
@@ -66,12 +66,12 @@
 
         {{-- Priority --}}
         <div>
-            <label for="priority" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label for="priority" class="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 {{ __('portal.priority') }}
                 <span class="text-danger-600">*</span>
             </label>
             <select id="priority" wire:model="priority"
-                class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800"
+                class="mt-1 block w-full min-h-11 rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
                 aria-required="true">
                 <option value="low">{{ __('portal.priority_low') }}</option>
                 <option value="normal">{{ __('portal.priority_normal') }}</option>
@@ -82,20 +82,20 @@
 
         {{-- Description --}}
         <div>
-            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label for="description" class="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 {{ __('portal.description') }}
                 <span class="text-danger-600">*</span>
             </label>
             <textarea id="description" wire:model.live.debounce.300ms="description" rows="6"
-                class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 @error('description') border-danger-300 @enderror"
+                class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800 @error('description') border-danger-300 @enderror"
                 placeholder="{{ __('portal.support.description_placeholder') ?? 'Provide detailed information about your issue' }}"
                 aria-required="true" aria-invalid="{{ $errors->has('description') ? 'true' : 'false' }}"
                 aria-describedby="description-help {{ $errors->has('description') ? 'description-error' : '' }}"></textarea>
             <div class="mt-2 flex items-center justify-between">
-                <p class="text-xs text-gray-500 dark:text-gray-400" id="description-help">
+                <p class="text-xs text-slate-500 dark:text-slate-400" id="description-help">
                     {{ __('portal.support.description_help') ?? 'Minimum 20 characters' }}
                 </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
+                <p class="text-xs text-slate-500 dark:text-slate-400">
                     {{ $characterCount }} / 2000 {{ __('portal.characters') }}
                 </p>
             </div>
@@ -108,16 +108,16 @@
 
         {{-- Attachments --}}
         <div>
-            <label class="block text-sm font-medium text-gray-700">
+            <label class="block text-sm font-medium text-slate-700">
                 {{ __('portal.attachments') }}
-                <span class="text-gray-500">({{ __('portal.optional') ?? 'Optional' }})</span>
+                <span class="text-slate-500">({{ __('portal.optional') ?? 'Optional' }})</span>
             </label>
             <div class="mt-1">
                 <input type="file" wire:model="attachments" multiple
-                    class="block w-full text-sm text-gray-500 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-700 hover:file:bg-primary-100"
+                    class="block w-full text-sm text-slate-500 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-700 hover:file:bg-primary-100"
                     accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
             </div>
-            <p class="mt-2 text-xs text-gray-500">
+            <p class="mt-2 text-xs text-slate-500">
                 {{ __('portal.support.attachment_help') ?? 'PDF, DOC, DOCX, JPG, PNG (max 10MB each)' }}
             </p>
 
@@ -125,10 +125,10 @@
             @if (!empty($attachments))
                 <div class="mt-4 space-y-2">
                     @foreach ($attachments as $index => $attachment)
-                        <div class="flex items-center justify-between rounded-md border border-gray-200 bg-gray-50 p-3">
+                        <div class="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-3">
                             <div class="flex items-center">
-                                <x-heroicon-o-paper-clip class="h-5 w-5 text-gray-400" />
-                                <span class="ml-2 text-sm text-gray-700">
+                                <x-heroicon-o-paper-clip class="h-5 w-5 text-slate-400" />
+                                <span class="ml-2 text-sm text-slate-700">
                                     {{ $attachment->getClientOriginalName() }}
                                 </span>
                             </div>
@@ -152,7 +152,7 @@
         {{-- Submit Button --}}
         <div class="flex items-center justify-end gap-4">
             <a href="{{ route('contact') }}"
-                class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2">
+                class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2">
                 {{ __('portal.cancel') }}
             </a>
             <button type="submit"

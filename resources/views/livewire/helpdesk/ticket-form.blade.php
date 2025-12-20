@@ -14,7 +14,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
     @trace D03-FR-011, D12-§9, D14-§2.2
     @see Requirements 1.1, 1.2, 1.4, 1.5, 24.1
 --}}
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-10"
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-10"
     x-data="hybridHelpdeskForm()"
     @optimistic-submission-started.window="handleOptimisticStart($event.detail)"
     @submission-confirmed.window="handleSubmissionConfirmed($event.detail)"
@@ -32,10 +32,10 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                          alt="{{ __('common.motac_logo') }}"
                          class="h-12 w-auto p-1">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">
                             {{ __('helpdesk.form.title') }}
                         </h1>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                        <p class="text-sm text-slate-600 dark:text-slate-400">
                             {{ __('helpdesk.form.subtitle') }}
                         </p>
                     </div>
@@ -94,7 +94,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                             </path>
                         </svg>
                     </div>
-                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 class="mt-4 text-lg font-semibold text-slate-900 dark:text-white">
                         {{ __('helpdesk.form.submission_failed') }}
                     </h3>
                     <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">
