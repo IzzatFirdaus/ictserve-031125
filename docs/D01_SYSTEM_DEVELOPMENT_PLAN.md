@@ -29,14 +29,14 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. **Cloud Hybrid AI Integration**: Kemaskini pelan pembangunan dengan integrasi D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah fasa pembangunan AI: model routing pintar, streaming responses, web-augmented responses, conversation management. Kemaskini metodologi pembangunan dengan AI-enhanced workflows dan testing strategies. Cross-reference D18 v1.0.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. **Cloud Hybrid AI Integration**: Kemaskini pelan pembangunan dengan integrasi D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah fasa pembangunan AI: model routing pintar, streaming responses, web-augmented responses, conversation management. Kemaskini metodologi pembangunan dengan AI-enhanced workflows dan testing strategies. Cross-reference D18 v1.0.1. | Pasukan BPM |
 | 3.6.0 | 8 Disember 2025  | **Penyeragaman Dokumentasi v3.6.0:** Bahasa Melayu sahaja untuk antara muka pengguna. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Penyeragaman versi semua dokumen D00-D18 kepada v3.6.0 dengan integrasi Cloud Hybrid AI (D18 v1.0.0). Penyelarasan dokumentasi lengkap. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). Penambahan Laravel Pulse v1.3.0 (performance monitoring), Laravel Sanctum v4.0 (API authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen). Spec files: 38 requirements, 100 correctness properties, 19 implementation phases. | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Staf boleh log masuk (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu. Nullable user_id FK dalam tickets/loans. Penyelarasan dengan D00/D02/D03/D04 v3.4.0.                                                | Pasukan BPM |
 | 3.2.1 | 29 November 2025 | Penjajaran kepada seni bina "Guest-First": Staf menggunakan borang tetamu (tanpa log masuk). Authentication terhad kepada admin/superuser sahaja. Penyelarasan dengan D00 v3.2.1 dan D04 v3.2.1.                                                                          | Pasukan BPM |
-| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00 v3.2.0.                                                     | Pasukan BPM |
+| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.43.1, PHP 8.2.12, Livewire 3.7.3, Filament 4.3.1, PHPUnit 11.5.46, Larastan 3.8.1, Laravel Pint 1.26.0). Penyelarasan dengan D00 v3.2.0.                                                     | Pasukan BPM |
 | 3.1.0 | 29 November 2025 | Kemaskini tarikh semasa, perbaiki isu markdownlint, tambah best practices Laravel 12 (streamlined structure, attribute-based observers/scopes), kemaskini testing framework versions.                                                                                     | Pasukan BPM |
-| 3.0.0 | 31 Oktober 2025  | Kemaskini stack teknologi: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2. Tambah Docker development environment, real-time communication, enhanced testing framework.                             | Pasukan BPM |
+| 3.0.0 | 31 Oktober 2025  | Kemaskini stack teknologi: Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.18, Laravel Reverb 1.6.3. Tambah Docker development environment, real-time communication, enhanced testing framework.                             | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2024  | Penyeragaman mengikut D00-D14, SemVer, cross-reference, tambah rujukan dokumen                                                                                                                                                                                            | Pasukan BPM |
 | 1.0.0 | September 2024   | Versi awal pelan pembangunan sistem                                                                                                                                                                                                                                       | Pasukan BPM |
 
@@ -60,7 +60,7 @@
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembangunan sistem **Helpdesk & ICT Asset Loan** berasaskan Laravel 12.40.1 untuk penggunaan dalaman MOTAC BPM, mematuhi piawaian antarabangsa **ISO/IEC/IEEE 12207** untuk lifecycle pembangunan perisian (software lifecycle processes) dan **WCAG 2.2 AA** untuk aksesibiliti.
+Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembangunan sistem **Helpdesk & ICT Asset Loan** berasaskan Laravel 12.43.1 untuk penggunaan dalaman MOTAC BPM, mematuhi piawaian antarabangsa **ISO/IEC/IEEE 12207** untuk lifecycle pembangunan perisian (software lifecycle processes) dan **WCAG 2.2 AA** untuk aksesibiliti.
 
 ---
 
@@ -68,10 +68,10 @@ Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembanguna
 
 ### 2.1. Skop Sistem
 
-- Sistem web berasaskan **Laravel 12.42.0** dengan **Livewire 3.7.1**, **Filament 4.1.10**, dan **Volt 1.10.1** untuk pengurusan tiket aduan ICT & permohonan pinjaman aset ICT.
+- Sistem web berasaskan **Laravel 12.43.1** dengan **Livewire 3.7.3**, **Filament 4.3.1**, dan **Volt 1.10.1** untuk pengurusan tiket aduan ICT & permohonan pinjaman aset ICT.
 - **Pengguna Sasaran:** Staf MOTAC, Pegawai ICT BPM, Ketua Bahagian, Admin BPM.
 - **Platform:** Web-based intranet MOTAC (akses dalaman sahaja).
-- **Stack Teknologi:** PHP 8.2.12, MySQL 8.0, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.3, Laravel Pulse 1.4.6, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, Laravel MCP 0.3.4, Laravel Telescope 5.16.0.
+- **Stack Teknologi:** PHP 8.2.12, MySQL 8.0, Alpine.js 3, Tailwind CSS 4.1.18, Laravel Reverb 1.6.3, Laravel Pulse 1.4.7, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, Laravel MCP 0.3.4, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0.
 
 ### 2.2. Modul Utama
 
@@ -82,7 +82,7 @@ Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembanguna
 5. **Reporting & Dashboard** - Laporan dan analitik dengan Filament widgets
 6. **Audit Trail** - Logging dan audit compliance dengan owen-it/laravel-auditing
 7. **Real-time Communication** - WebSocket dengan Laravel Reverb 1.6.3 dan Laravel Echo 2.2.6
-8. **Performance Monitoring** - Laravel Pulse v1.4.6 untuk real-time performance dashboard (admin/superuser)
+8. **Performance Monitoring** - Laravel Pulse v1.4.7 untuk real-time performance dashboard (admin/superuser)
 9. **API Authentication** - Laravel Sanctum v4.2.1 untuk token-based API access (future mobile/external integrations)
 10. **Cloud Hybrid AI** - Ollama (local) + AWS Bedrock (cloud) untuk FAQ Bot, Document Analysis, Auto-Reply (D18 v1.0.0)
 
@@ -117,9 +117,9 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 
 ### 4.2. Rekabentuk Sistem (System Design)
 
-- **Architecture**: MVC + SDUI (Server-Driven UI) dengan Filament 4.1.10, modular, scalable.
+- **Architecture**: MVC + SDUI (Server-Driven UI) dengan Filament 4.3.1, modular, scalable.
 - **Database Design**: Entity Relationship Diagram (ERD) untuk users, tickets, assets, loans. MySQL 8.0 dengan foreign key constraints.
-- **Interface Design**: Wireframe untuk semua modul utama, responsive dengan Tailwind CSS 4.1.17, komponen Filament, dan Alpine.js 3.
+- **Interface Design**: Wireframe untuk semua modul utama, responsive dengan Tailwind CSS 4.1.18, komponen Filament, dan Alpine.js 3.
 - **Real-time Design**: WebSocket architecture dengan Laravel Reverb untuk live updates.
 
 ### 4.3. Pembangunan (Implementation)
@@ -145,16 +145,16 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
   - Helpdesk Tickets dengan HelpdeskComment model
   - Asset Loans dengan LoanApplication model
   - Internal Comments untuk komunikasi staf
-- **Livewire Components**: Reactive components dengan Livewire 3.7.0 + Volt 1.10.1 untuk single-file components.
-- **Filament Resources**: Admin panel dengan Filament 4.1.10 untuk CRUD operations.
+- **Livewire Components**: Reactive components dengan Livewire 3.7.3 + Volt 1.10.1 untuk single-file components.
+- **Filament Resources**: Admin panel dengan Filament 4.3.1 untuk CRUD operations.
 - **Relational Models**: Eloquent relationships (User, HelpdeskTicket, HelpdeskComment, LoanApplication), Soft Deletes, UUID/ULID support.
-- **Real-time Features**: Laravel Reverb 1.6.2 + Laravel Echo 2.2.6 untuk WebSocket communication.
+- **Real-time Features**: Laravel Reverb 1.6.3 + Laravel Echo 2.2.6 untuk WebSocket communication.
 - **Audit Trail (Dual System)**:
   - `owen-it/laravel-auditing` v14.x untuk field-level audit trail (compliance, PDPA)
   - `spatie/laravel-activitylog` v4.x untuk user activity logging (operations, dashboard)
   - Laravel Telescope v5.x untuk debugging (superuser only, unrestricted)
 - **Performance Monitoring**:
-  - Laravel Pulse v1.3.0 untuk real-time performance dashboard (admin/superuser)
+  - Laravel Pulse v1.4.7 untuk real-time performance dashboard (admin/superuser)
   - Slow query tracking (>500ms threshold), queue job metrics, request response times
   - Server health metrics (CPU, memory, disk), cache hit/miss rates
   - 7-day data retention dengan automatic pruning

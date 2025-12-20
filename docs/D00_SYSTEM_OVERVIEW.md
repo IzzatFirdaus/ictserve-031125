@@ -29,14 +29,14 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                | Penulis                 |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. **Cloud Hybrid AI Integration**: Kemaskini §3.2 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah model routing pintar, streaming responses, web-augmented responses, conversation management. Kemaskini §7 dengan AI Assistant comprehensive features dan Asset Management lifecycle. Cross-reference D18 v1.0.1. | Pasukan Pembangunan BPM |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Filament 4.3.1, Laravel Horizon 5.41.0. **Cloud Hybrid AI Integration**: Kemaskini §3.2 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah model routing pintar, streaming responses, web-augmented responses, conversation management. Kemaskini §7 dengan AI Assistant comprehensive features dan Asset Management lifecycle. Cross-reference D18 v1.0.1. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | **Bahasa Melayu sahaja untuk antara muka pengguna**: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Dokumentasi D00-D17 dikemaskini. Rujuk D15 v3.6.0 untuk butiran penuh. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0 (performance monitoring untuk admin/superuser), Laravel Sanctum v4.0 (API token authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen untuk @motac.gov.my). Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases.                        | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara.                                                                | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Staf boleh pilih login (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu. Database: user_id nullable FK. Matriks pengguna: Guest (Token), Staff (Auth), Admin (Filament).                                                                                                  | Pasukan Pembangunan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan versi dengan D04 v3.3.0 dan D05 v3.3.0: standardisasi dokumentasi guest-first architecture, token-based workflows, dan teknologi stack terkini. Kemaskini rujukan Playwright 1.56.1.                                                                                                                                        | Pasukan Pembangunan BPM |
-| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Tailwind CSS 4.1.17, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penambahbaikan format jadual dan pematuhan markdownlint.                                                                     | Pasukan Pembangunan BPM |
-| 3.1.0 | 29 November 2025 | Kemaskini versi teknologi: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17. Penambahan Laravel MCP 0.3.4, Laravel Reverb 1.6.2. Kemaskini seni bina dengan Docker support.                                                                                                               | Pasukan Pembangunan BPM |
+| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, Volt 1.10.1, Tailwind CSS 4.1.18, PHPUnit 11.5.46, Larastan 3.8.1, Laravel Pint 1.26.0). Penambahbaikan format jadual dan pematuhan markdownlint.                                                                     | Pasukan Pembangunan BPM |
+| 3.1.0 | 29 November 2025 | Kemaskini versi teknologi: Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.18. Penambahan Laravel MCP 0.3.4, Laravel Reverb 1.6.3. Kemaskini seni bina dengan Docker support.                                                                                                               | Pasukan Pembangunan BPM |
 | 3.0.0 | 31 Oktober 2025  | Peralihan penuh kepada seni bina dalaman (internal-only): portal staf MOTAC berasaskan Laravel 12 dengan Login, kelulusan dalam sistem (role-based), Filament v4 untuk pentadbiran, dan pematuhan WCAG 2.2 AA. Rujukan silang D02, D03, D04, D09, D11, D12–D14. | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                                                                   | Pasukan BPM             |
 | 1.0.0 | September 2025   | Versi awal dokumentasi sistem                                                                                                                                                                                                                                                                                                            | Pasukan BPM             |
@@ -220,7 +220,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **API**: `/api/v1/bedrock/*` dan `/api/v1/ollama/*` (documented dalam D18)
 - **Integration**: MCP servers untuk external AI tool access
 - **Monitoring**: Laravel Pulse + Telescope + health checks untuk multi-system status
-- **Queue**: Laravel Queue (Redis) untuk AI job processing (document ingestion, embeddings, auto-reply). **Laravel Horizon tidak dipasang** dalam repo v3.6.1.
+- **Queue**: Laravel Queue (Redis) untuk AI job processing (document ingestion, embeddings, auto-reply). **Laravel Horizon 5.41.0 DIPASANG** dalam repo v3.6.1 dengan dashboard di `/horizon`.
 - **Real-time**: Laravel Reverb untuk AI notifications dan streaming responses
 
 ---
@@ -231,13 +231,13 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 **Stack Teknologi Terkini:**
 
-- **Backend Framework**: Laravel 12.42.0 (PHP 8.2.12)
-- **Frontend Reactive**: Livewire 3.7.1 + Volt 1.10.1
-- **Admin Panel**: Filament 4.1.10
+- **Backend Framework**: Laravel 12.43.1 (PHP 8.2.12)
+- **Frontend Reactive**: Livewire 3.7.3 + Volt 1.10.1
+- **Admin Panel**: Filament 4.3.1
 - **JavaScript Framework**: Alpine.js 3 (included with Livewire)
-- **CSS Framework**: Tailwind CSS 4.1.17
+- **CSS Framework**: Tailwind CSS 4.1.18
 - **Real-time**: Laravel Reverb 1.6.3 + Laravel Echo 2.2.6
-- **Performance Monitoring**: Laravel Pulse 1.4.6
+- **Performance Monitoring**: Laravel Pulse 1.4.7
 - **API Authentication**: Laravel Sanctum 4.2.1
 - **OAuth Integration**: Laravel Socialite 5.24.0
 - **MCP Server**: Laravel MCP 0.3.4
@@ -284,7 +284,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **Google Workspace SSO (Opsyen)**  
   Staf MOTAC boleh log masuk menggunakan akaun Google Workspace `@motac.gov.my` sebagai alternatif kepada Laravel Breeze. Sistem akan auto-create akaun baharu atau link ke akaun sedia ada.
 - **Queue Management (D17)**  
-  Laravel Queue dengan Redis backend untuk pemprosesan asinkron (Laravel Horizon tidak dipasang). Queue name yang digunakan oleh job sebenar termasuk `default`, `notifications`, `emails`, `digests`, `documents`, `embeddings`, dan `auto-reply`. Rujuk D17 v3.6.1 untuk arahan worker dan katalog job.
+  Laravel Queue dengan Redis backend untuk pemprosesan asinkron (**Laravel Horizon 5.41.0 dipasang** dengan dashboard `/horizon`). Queue name yang digunakan oleh job sebenar termasuk `default`, `notifications`, `emails`, `digests`, `documents`, `embeddings`, dan `auto-reply`. Rujuk D17 v3.6.1 untuk arahan worker dan katalog job.
 
 ### 4.2. Database Design
 
@@ -384,7 +384,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **HTML Lang Attributes**: Semua halaman menggunakan `lang="ms"` untuk Bahasa Melayu Malaysia
 - **Komponen Dilumpuhkan**: Language switcher, bilingual support service, locale middleware, dan locale cookies telah dipadam/dilumpuhkan
 - **Fail Terjemahan**: `lang/en/` dikekalkan untuk rujukan teknikal sahaja; `lang/ms/` sebagai sumber utama
-- **WCAG 2.2 AA Compliance**: Audit score 95/100 dengan sokongan screen reader (NVDA/JAWS) dalam Bahasa Melayu
+- **WCAG 2.2 AA Compliance**: Audit score 96/100 dengan sokongan screen reader (NVDA/JAWS) dalam Bahasa Melayu
 - **Contoh Label**: `Nama Penuh`, `Bahagian`, `Hantar`, `Laman Utama`, `Perkhidmatan`, `Hubungi`
 - **Mesej Ralat**: `Medan ini wajib diisi`, `Emel tidak sah`, `Sila pilih kategori`
 - **Notifikasi**: Email dan WebSocket notifications dalam Bahasa Melayu dengan format yang konsisten
@@ -540,7 +540,7 @@ autorestart=true
 numprocs=2
 ```
 
-**Cadangan pemisahan worker (tanpa Horizon):**
+**Cadangan pemisahan worker (dengan Horizon v5.41.0):**
 
 - Asingkan worker “cepat” (`default,notifications,emails,digests`) dan worker “lama” (`documents,embeddings,auto-reply`) untuk stabiliti dan timeout (rujuk D17 v3.6.1).
 
@@ -633,12 +633,12 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 | Teknologi         | Versi   | Tujuan                                |
 | ----------------- | ------- | ------------------------------------- |
 | PHP               | 8.2.12  | Backend programming language          |
-| Laravel           | 12.42.0 | Web application framework             |
-| Livewire          | 3.7.1   | Reactive components                   |
+| Laravel           | 12.43.1 | Web application framework             |
+| Livewire          | 3.7.3   | Reactive components                   |
 | Volt              | 1.10.1  | Single-file components                |
-| Filament          | 4.1.10  | Admin panel                           |
+| Filament          | 4.3.1   | Admin panel                           |
 | Alpine.js         | 3       | Lightweight JavaScript framework      |
-| Tailwind CSS      | 4.1.17  | Utility-first CSS framework           |
+| Tailwind CSS      | 4.1.18  | Utility-first CSS framework           |
 | Vite              | 7.0.7   | Asset bundler/build tool              |
 | Nginx             | 1.24    | Reverse proxy / web server            |
 | Redis             | 7.0     | Queue, cache, broadcasting backend    |
