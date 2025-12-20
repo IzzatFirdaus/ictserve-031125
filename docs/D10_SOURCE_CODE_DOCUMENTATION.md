@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207, OWASP Transport Security, IEEE 1016:2009
+**Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207, OWASP Transport Security, IEEE 1016:2009, PSR-12
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
-| **Pematuhi**         | ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000, ISO/IEC/IEEE 12207 |
+| **Pematuhi**         | ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000, ISO/IEC/IEEE 12207, PSR-12 |
 | **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 ---
