@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO 8000 (Data Quality), IEEE 1016:2009 (Huraian Reka Bentuk Perisian), ISO/IEC 27701, ISO/IEC 38505-1, ISO/IEC 33063:2015, ISO/IEC/IEEE 15289:2019, ISO 8601, TLS 1.3, AES-256, RFC 5322
+**Standard Rujukan:** ISO 8000 (Data Quality), IEEE 1016:2009 (Huraian Reka Bentuk Perisian), ISO/IEC 27701, ISO/IEC 38505-1, ISO/IEC 33063:2015, ISO/IEC/IEEE 15289:2019, ISO 8601, TLS 1.3, AES-256, RFC 5322, MDGDM, DDSA
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                                            |
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                  |
-| **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1, ISO/IEC 33063:2015, ISO/IEC/IEEE 15289:2019, ISO 8601, TLS 1.3, AES-256, RFC 5322 |
+| **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1, ISO/IEC 33063:2015, ISO/IEC/IEEE 15289:2019, ISO 8601, TLS 1.3, AES-256, RFC 5322, MDGDM, DDSA |
 | **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu  |
 
 > Notis Penggunaan Dalaman: Semua skema dan jadual adalah untuk sistem dalaman
