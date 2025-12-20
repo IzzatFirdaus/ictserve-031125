@@ -204,7 +204,7 @@ This consolidated implementation plan combines all frontend development tasks ac
 
 ### 4.4 Layout and Navigation Components
 
-- [x] 4.4.1 Build layout foundation components
+- [x] 4.4.1 Build layout foundation components ✓
   - Create header.blade.php with responsive navigation ✓
   - Implement navbar.blade.php with role-based menu items ✓
   - Build sidebar.blade.php for admin interfaces ✓
@@ -215,7 +215,25 @@ This consolidated implementation plan combines all frontend development tasks ac
   - Create responsive/breakpoint-indicator.blade.php for development ✓
   - _Requirements: 5.4, 15.1, 15.2_
 
-- [ ]* 4.4.2 Write property test for component accessibility
+- [x] 4.4.2 Build portal layout system ✓
+  - Create portal/layouts/app.blade.php with unified layout structure ✓
+  - Implement portal/components/header.blade.php with MOTAC branding ✓
+  - Build portal/components/navbar.blade.php with authenticated navigation ✓
+  - Create portal/components/sidebar.blade.php with role-based menu ✓
+  - Implement portal/components/footer.blade.php with government compliance ✓
+  - Add portal/components/breadcrumb.blade.php for navigation context ✓
+  - Create portal/components/accessibility-menu.blade.php for WCAG compliance ✓
+  - Build portal/partials/flash-messages.blade.php for user feedback ✓
+  - _Requirements: 5.4, 7.3, 9.1_
+
+- [x] 4.4.3 Write feature tests for portal layout components ✓
+  - Created PortalLayoutComponentsTest.php with core region validation ✓
+  - Tests portal layout renders header, navbar, sidebar, footer, main content ✓
+  - Tests data rights pages render with proper layout structure ✓
+  - Tests breadcrumb integration and accessibility features ✓
+  - **Validates: Requirements 5.4, 7.3, 9.1**
+
+- [ ]* 4.4.4 Write property test for component accessibility
   - **Property 4: Component WCAG 2.2 AA Compliance**
   - **Validates: Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6**
 
@@ -922,6 +940,42 @@ This consolidated implementation plan combines all frontend development tasks ac
 3. ✅ Phase 16 Integration Testing - 23 tests, 45 assertions passing
 4. ✅ WCAG 2.2 AA Compliance Testing - All accessibility tests passing
 5. ✅ Phase 17 Final Validation - 23 tests, 67 assertions passing
+
+---
+
+---
+
+## Phase 18: Portal Layout System Implementation ✅
+
+### 18.1 Portal Layout Architecture
+
+- [x] 18.1.1 Create comprehensive portal layout structure ✅
+  - Implemented portal/layouts/app.blade.php with unified layout ✅
+  - Added WCAG 2.2 AA compliant landmark structure (header, nav, main, aside, footer) ✅
+  - Integrated theme switcher with FOUT prevention ✅
+  - Added responsive design with mobile-first approach ✅
+  - _Requirements: 19.1, 19.3, 19.5_
+
+- [x] 18.1.2 Build portal navigation components ✅
+  - Created portal/components/header.blade.php with MOTAC branding ✅
+  - Implemented portal/components/navbar.blade.php with role-based navigation ✅
+  - Built portal/components/sidebar.blade.php with collapsible design ✅
+  - Added portal/components/breadcrumb.blade.php with ARIA landmarks ✅
+  - _Requirements: 19.2, 19.4, 19.6_
+
+- [x] 18.1.3 Implement accessibility and compliance features ✅
+  - Added portal/components/accessibility-menu.blade.php for WCAG features ✅
+  - Created portal/partials/flash-messages.blade.php with ARIA live regions ✅
+  - Implemented portal/components/footer.blade.php with government compliance ✅
+  - Built portal/data-rights/ pages for PDPA 2010 compliance ✅
+  - _Requirements: 19.4, 19.7, 19.8_
+
+- [x] 18.1.4 Write comprehensive tests for portal layout ✅
+  - Created PortalLayoutComponentsTest.php with core region validation ✅
+  - Tests portal layout renders all required components ✅
+  - Tests data rights pages integration ✅
+  - Validates WCAG landmark structure and accessibility ✅
+  - **Property 26: Portal Layout System Compliance validated**
 
 ---
 

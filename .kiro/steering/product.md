@@ -4,9 +4,9 @@ inclusion: always
 
 # ICTServe Product Guidelines
 
-**ICTServe v3.6.0** - Internal True Hybrid Service Platform for BPM MOTAC  
+**ICTServe v3.6.1** - Internal True Hybrid Service Platform for BPM MOTAC  
 **Architecture**: Guest Forms + Authenticated Dashboard + Admin Panel (Filament)  
-**Language**: Bahasa Melayu sahaja (language switcher disabled in v3.6.0)  
+**Language**: Bahasa Melayu sahaja (language switcher disabled in v3.6.1)  
 **Status**: Active Production
 
 ## Product Architecture Principles
@@ -74,7 +74,7 @@ inclusion: always
 **Models**: `LoanApplication`, `LoanItem`, `LoanTransaction`  
 **Key Features**:
 
-- Real-time availability checking via Livewire 3.7
+- Real-time availability checking via Livewire 3.7.3
 - Token-based approval system for Grade 41+ officers
 - Asset lifecycle management with condition reporting
 - Cross-module integration (damaged returns → helpdesk tickets)
@@ -136,7 +136,7 @@ inclusion: always
 
 ### User Interface Standards
 
-**Language**: Bahasa Melayu sahaja (English disabled in v3.6.0)  
+**Language**: Bahasa Melayu sahaja (English disabled in v3.6.1)  
 **Accessibility**: WCAG 2.2 AA compliance mandatory  
 **Responsive Design**: Mobile-first approach with Tailwind CSS  
 **Real-Time Updates**: Laravel Reverb WebSocket integration
@@ -172,10 +172,10 @@ inclusion: always
 
 ### Technology Stack Requirements
 
-**Backend**: Laravel 12.40.1, PHP 8.2.12 with strict typing  
-**Frontend**: Livewire 3.7, Volt 1.10, Tailwind 4.1 (@theme config)  
-**Admin Panel**: Filament 4.1.10 with role-based access control  
-**Real-Time**: Laravel Reverb 1.6.2 + Echo for WebSocket communication  
+**Backend**: Laravel 12.43.1, PHP 8.2.12 with strict typing  
+**Frontend**: Livewire 3.7.3, Volt 1.10.1, Tailwind 4.1.18 (@theme config)  
+**Admin Panel**: Filament 4.3.1 with role-based access control  
+**Real-Time**: Laravel Reverb 1.6.3 + Echo for WebSocket communication  
 **Database**: MySQL 8.0 with nullable `user_id` foreign keys for hybrid architecture  
 **AI Services**: Ollama (local LLM) + AWS Bedrock (Claude models, Nova, Titan)  
 **AI Infrastructure**: Redis (caching), Laravel Horizon (queue), Laravel Pulse (monitoring)
