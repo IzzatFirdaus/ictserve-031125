@@ -56,24 +56,24 @@
     </section>
 
     {{-- Enhanced Main Content (D12 §7.4 Grid System, D14 §7.5 Shadow System) --}}
-    <section id="main-content" class="py-12 md:py-16 bg-gray-50 dark:bg-gray-800 theme-transition"
+    <section id="main-content" class="py-12 md:py-16 bg-slate-50 dark:bg-slate-800 theme-transition"
         aria-labelledby="faq-heading">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="faq-heading" class="sr-only">{{ __('Soalan Lazim') }}</h2>
 
             {{-- Enhanced Search Box (D13 §5.6, WCAG 2.2 AA) --}}
             <div class="mb-8">
-                <label for="faq-search" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                <label for="faq-search" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                     {{ __('Cari Soalan') }}
                 </label>
                 <div class="relative">
-                    <x-heroicon-o-magnifying-glass class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+                    <x-heroicon-o-magnifying-glass class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"
                         aria-hidden="true" />
                     <input type="search" id="faq-search" placeholder="{{ __('Taip untuk mencari...') }}"
-                        class="block w-full min-h-11 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 pl-10 pr-4 py-3 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm transition-colors duration-200"
+                        class="block w-full min-h-11 rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400 pl-10 pr-4 py-3 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm transition-colors duration-200"
                         aria-describedby="faq-search-hint" />
                 </div>
-                <p id="faq-search-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <p id="faq-search-hint" class="mt-1 text-xs text-slate-500 dark:text-slate-400">
                     {{ __('Contoh: tiket, pinjaman, status') }}
                 </p>
             </div>
@@ -83,20 +83,20 @@
                 {{-- Enhanced Helpdesk FAQ (D03-FR-004, D12 §6.4) --}}
                 <section aria-labelledby="helpdesk-faq-heading">
                     <div
-                        class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
-                        <div class="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                        class="bg-white dark:bg-slate-900 rounded-lg shadow-card dark:shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden theme-transition">
+                        <div class="p-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
                                     aria-hidden="true">
                                     <x-heroicon-o-computer-desktop class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <h3 id="helpdesk-faq-heading"
-                                    class="text-xl font-heading font-semibold text-gray-900 dark:text-gray-100">
+                                    class="text-xl font-heading font-semibold text-slate-900 dark:text-slate-100">
                                     {{ __('Perkhidmatan Helpdesk') }}
                                 </h3>
                             </div>
                         </div>
-                        <div class="divide-y divide-gray-200 dark:divide-gray-700" x-data="{ openItem: null }">
+                        <div class="divide-y divide-slate-200 dark:divide-slate-700" x-data="{ openItem: null }">
                             {{-- FAQ Item 1 --}}
                             <div class="faq-item">
                                 <h4>

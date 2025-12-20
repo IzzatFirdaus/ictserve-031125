@@ -50,40 +50,40 @@
     </section>
 
     {{-- Main Content --}}
-    <section id="main-content" class="py-12 md:py-16 bg-gray-50" aria-labelledby="privacy-heading">
+    <section id="main-content" class="py-12 md:py-16 bg-slate-50" aria-labelledby="privacy-heading">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <h2 id="privacy-heading" class="sr-only">{{ __('Maklumat Dasar Privasi') }}</h2>
 
             {{-- Introduction Section --}}
-            <article class="bg-white rounded-lg shadow-card border border-gray-200 p-6 md:p-8">
-                <h2 class="text-2xl font-heading font-bold text-gray-900 mb-4">
+            <article class="bg-white rounded-lg shadow-card border border-slate-200 p-6 md:p-8">
+                <h2 class="text-2xl font-heading font-bold text-slate-900 mb-4">
                     {{ __('Pengenalan') }}
                 </h2>
-                <p class="text-gray-700 leading-relaxed mb-4">
+                <p class="text-slate-700 leading-relaxed mb-4">
                     {{ __('Bahagian Pengurusan Maklumat (BPM), Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) komited untuk melindungi privasi dan data peribadi anda. Dasar privasi ini menerangkan bagaimana kami mengumpul, menggunakan, mendedahkan dan melindungi maklumat peribadi anda melalui sistem ICTServe.') }}
                 </p>
-                <p class="text-gray-700 leading-relaxed">
+                <p class="text-slate-700 leading-relaxed">
                     {{ __('Dasar ini disediakan selaras dengan Akta Perlindungan Data Peribadi 2010 (PDPA 2010) dan peraturan-peraturan berkaitan.') }}
                 </p>
             </article>
 
             {{-- PDPA 2010 Compliance Section --}}
-            <article class="bg-white rounded-lg shadow-card border border-gray-200 p-6 md:p-8">
+            <article class="bg-white rounded-lg shadow-card border border-slate-200 p-6 md:p-8">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="h-12 w-12 bg-primary-50 rounded-full flex items-center justify-center shrink-0"
                         aria-hidden="true">
                         <x-heroicon-o-shield-check class="h-6 w-6 text-primary-600" />
                     </div>
-                    <h2 class="text-2xl font-heading font-bold text-gray-900">
+                    <h2 class="text-2xl font-heading font-bold text-slate-900">
                         {{ __('Pematuhan PDPA 2010') }}
                         <span class="sr-only">Personal Data Protection Act 2010 Compliance</span>
                     </h2>
                 </div>
-                <p class="text-gray-700 leading-relaxed mb-4">
+                <p class="text-slate-700 leading-relaxed mb-4">
                     {{ __('Kami mematuhi tujuh prinsip perlindungan data peribadi seperti yang ditetapkan dalam PDPA 2010:') }}
                     <span class="sr-only">Personal Data Protection</span>
                 </p>
-                <ol class="space-y-3 text-gray-700" role="list">
+                <ol class="space-y-3 text-slate-700" role="list">
                     <li class="flex items-start gap-3">
                         <span
                             class="flex items-center justify-center h-6 w-6 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold shrink-0">1</span>

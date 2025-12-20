@@ -7,20 +7,38 @@
     last-updated: 2025-12-06
 --}}
 
-<x-layouts.portal>
-    <x-slot name="header">
-        <div class="flex items-center gap-4">
-            <a href="{{ route('staff.data-rights.index') }}"
-                class="inline-flex items-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                aria-label="{{ __('common.back') }}">
-                <x-heroicon-o-arrow-left class="h-5 w-5" />
-            </a>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                {{ __('portal.data_rights.consent_history') }}
-            </h2>
-        </div>
-    </x-slot>
+@php
+    $breadcrumbs = [
+        [
+            'label' => __('common.dashboard'),
+            'url' => Route::has('staff.dashboard') ? route('staff.dashboard') : '#',
+        ],
+        [
+            'label' => __('portal.data_rights.title'),
+            'url' => Route::has('staff.data-rights.index') ? route('staff.data-rights.index') : '#',
+        ],
+        [
+            'label' => __('portal.data_rights.consent_history'),
+        ],
+    ];
+@endphp
 
+@extends('portal.layouts.app')
+
+@section('header')
+    <div class="flex items-center gap-4">
+        <a href="{{ route('staff.data-rights.index') }}"
+            class="inline-flex items-center text-slate-400 hover:text-slate-200"
+            aria-label="{{ __('common.back') }}">
+            <x-heroicon-o-arrow-left class="h-5 w-5" />
+        </a>
+        <h2 class="text-xl font-semibold leading-tight text-slate-100">
+            {{ __('portal.data_rights.consent_history') }}
+        </h2>
+    </div>
+@endsection
+
+@section('content')
     <div class="py-12">
         <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
             {{-- Page Description --}}
@@ -214,4 +232,4 @@
             </div>
         </div>
     </div>
-</x-layouts.portal>
+@endsection

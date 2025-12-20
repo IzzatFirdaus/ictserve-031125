@@ -50,16 +50,16 @@
     </section>
 
     {{-- Main Content --}}
-    <section id="main-content" class="py-12 md:py-16 bg-slate-50 dark:bg-gray-800 theme-transition" aria-labelledby="accessibility-heading">
+    <section id="main-content" class="py-12 md:py-16 bg-slate-50 dark:bg-slate-800 theme-transition" aria-labelledby="accessibility-heading">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <h2 id="accessibility-heading" class="sr-only">{{ __('Maklumat Kebolehcapaian') }}</h2>
 
             {{-- Commitment Section --}}
-            <article class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 md:p-8 theme-transition">
-                <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-gray-100 mb-4">
+            <article class="bg-white dark:bg-slate-900 rounded-lg shadow-card dark:shadow-list border border-slate-200 dark:border-slate-700 p-6 md:p-8 theme-transition">
+                <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-slate-100 mb-4">
                     {{ __('Komitmen Kami') }}
                 </h2>
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
                     {{ __('Bahagian Pengurusan Maklumat (BPM) MOTAC komited untuk memastikan laman web ICTServe boleh diakses oleh semua pengguna, termasuk mereka yang mempunyai keperluan khas. Kami berusaha untuk mematuhi piawaian kebolehcapaian antarabangsa dan tempatan.') }}
                 </p>
             </article>
@@ -75,29 +75,29 @@
 
                 <div class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4 md:gap-6">
                     {{-- WCAG 2.2 AA --}}
-                    <div class="col-span-4 bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 theme-transition">
+                    <div class="col-span-4 bg-white dark:bg-slate-900 rounded-lg shadow-card dark:shadow-list border border-slate-200 dark:border-slate-700 p-6 theme-transition">
                         <div class="flex items-start gap-4">
                             <div class="h-12 w-12 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
                                 aria-hidden="true">
                                 <x-heroicon-o-check-badge class="h-6 w-6 text-primary-600 dark:text-primary-400" />
                             </div>
                             <div>
-                                <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 mb-2">WCAG 2.2 Level AA</h3>
-                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100 mb-2">WCAG 2.2 Level AA</h3>
+                                <p class="text-sm text-slate-700 dark:text-slate-300">
                                     {{ __('Garis Panduan Kebolehcapaian Kandungan Web versi 2.2 pada tahap AA.') }}</p>
                             </div>
                         </div>
                     </div>
 
                     {{-- ISO 9241 --}}
-                    <div class="col-span-4 bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 theme-transition">
+                    <div class="col-span-4 bg-white dark:bg-slate-900 rounded-lg shadow-card dark:shadow-list border border-slate-200 dark:border-slate-700 p-6 theme-transition">
                         <div class="flex items-start gap-4">
                             <div class="h-12 w-12 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
                                 aria-hidden="true">
                                 <x-heroicon-o-check-badge class="h-6 w-6 text-primary-600 dark:text-primary-400" />
                             </div>
                             <div>
-                                <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 mb-2">ISO 9241</h3>
+                                <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100 mb-2">ISO 9241</h3>
                                 <p class="text-sm text-gray-700 dark:text-gray-300">
                                     {{ __('Piawaian ergonomik untuk interaksi manusia-sistem.') }}</p>
                             </div>
