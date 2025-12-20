@@ -30,14 +30,14 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                               | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding, Enhanced UX. Penyelarasan dengan D00-D06 v3.5.0. | Pasukan BPM |
 | 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah pelan integrasi AI (Ollama server, AWS Bedrock, model routing, RAG pipeline). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture.                                                                                                                                                                            | Pasukan BPM |
 | 3.4.0 | 30 November 2025   | Hybrid Architecture v3.4.0: Restore LDAP/SSO integration sebagai optional authentication untuk staff. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                                               | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan penuh Guest-First: hapus semua rujukan LDAP/SSO/User Sync. Hanya admin/superuser authenticate.                                                                                                                                                                                                                                             | Pasukan BPM |
 | 3.2.0 | 29 November 2025 | Hapus LDAP/SSO; klarifikasi Guest-First (staf guna guest forms tanpa authentication)                                                                                                                                                                                                                                                                    | Pasukan BPM |
-| 2.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.40.1, Filament 4.1.10, Livewire 3.7.0, Tailwind 4.1.17                                                                                                                                                                                                                                                                  | Pasukan BPM |
-| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.40.1, Laravel Reverb 1.6.2 untuk real-time                                                                                                                                                                                                                                                                      | Pasukan BPM |
+| 2.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.43.1, Filament 4.3.1, Livewire 3.7.3, Tailwind 4.1.18                                                                                                                                                                                                                                                                  | Pasukan BPM |
+| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.43.1, Laravel Reverb 1.6.3 untuk real-time                                                                                                                                                                                                                                                                      | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                                                                                  | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal pelan integrasi sistem                                                                                                                                                                                                                                                                                                                       | Pasukan BPM |
 
@@ -128,14 +128,14 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 - Setiap modul (Helpdesk, Asset Loan, Inventory, dll) dibangunkan sebagai komponen
   berasingan dengan API dalaman (Laravel service layer).
 - Menggunakan Eloquent ORM untuk hubungan model (One-to-Many, Many-to-Many).
-- Filament 4.1.10 digunakan untuk panel pentadbiran dengan integrasi modul bersepadu.
+- Filament 4.3.1 digunakan untuk panel pentadbiran dengan integrasi modul bersepadu.
 
 ### 5.2. Data Mapping & Consistency
 
 - Field utama seperti `asset_id`, `user_id`, `status`, dan `timestamp` mesti selaras
   di semua modul.
 - Foreign key constraint dan policy validation pada peringkat database dan aplikasi.
-- Livewire 3.7.1 memastikan konsistensi data real-time antara frontend dan backend.
+- Livewire 3.7.3 memastikan konsistensi data real-time antara frontend dan backend.
 
 ### 5.3. Interface & API Integration
 
@@ -162,26 +162,27 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 
 | Komponen             | Teknologi         | Versi   | Fungsi                                    |
 | -------------------- | ----------------- | ------- | ----------------------------------------- |
-| Framework            | Laravel           | 12.42.0 | Backend application framework             |
-| Admin Panel          | Filament          | 4.1.10  | CRUD interfaces, dashboard                |
-| Reactive UI          | Livewire          | 3.7.0   | Server-driven UI components               |
+| Framework            | Laravel           | 12.43.1 | Backend application framework             |
+| Admin Panel          | Filament          | 4.3.1   | CRUD interfaces, dashboard                |
+| Reactive UI          | Livewire          | 3.7.3   | Server-driven UI components               |
 | Single-file Livewire | Volt              | 1.10.1  | Single-file Livewire components           |
-| WebSocket Server     | Laravel Reverb    | 1.6.2   | Real-time communication                   |
+| WebSocket Server     | Laravel Reverb    | 1.6.3   | Real-time communication                   |
 | WebSocket Client     | Laravel Echo      | 2.2.6   | Client-side WebSocket integration         |
-| CSS Framework        | Tailwind CSS      | 4.1.17  | Utility-first styling                     |
+| CSS Framework        | Tailwind CSS      | 4.1.18  | Utility-first styling                     |
 | Database             | MySQL             | 8.x     | Production database                       |
 | Queue                | Redis             | 7.x     | Job queue & caching                       |
-| Testing              | PHPUnit           | 11.5.44 | Unit & integration testing                |
+| Testing              | PHPUnit           | 11.5.46 | Unit & integration testing                |
 | E2E Testing          | Playwright        | 1.56.1  | Browser automation testing                |
-| Static Analysis      | Larastan          | 3.8.0   | PHP static analysis                       |
+| Static Analysis      | Larastan          | 3.8.1   | PHP static analysis                       |
 | Code Style           | Laravel Pint      | 1.26.0  | PSR-12 code formatting                    |
 | Permissions          | Spatie Permission | 6.23    | Role-based access control                 |
 | Audit (Compliance)   | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)         |
 | Audit (Operations)   | Activity Log      | 4.x     | User activity logging (spatie)            |
-| Performance Monitor  | Laravel Pulse     | 1.x     | Performance metrics & server health       |
+| Performance Monitor  | Laravel Pulse     | 1.4.7   | Performance metrics & server health       |
 | API Authentication   | Laravel Sanctum   | 4.x     | Token-based API authentication            |
 | OAuth SSO            | Laravel Socialite | 5.x     | Google Workspace SSO (optional)           |
 | Debugging            | Laravel Telescope | 5.x     | System monitoring (superuser only)        |
+| Queue Management     | Laravel Horizon   | 5.41.0  | Redis queue dashboard & monitoring        |
 
 ---
 
@@ -223,7 +224,7 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 
 ### 8.2. Alat Ujian
 
-- PHPUnit 11.5.44 untuk unit dan feature tests.
+- PHPUnit 11.5.46 untuk unit dan feature tests.
 - Livewire testing utilities untuk komponen Livewire.
 - Playwright untuk E2E browser testing.
 - Laravel Dusk untuk browser automation testing.

@@ -30,7 +30,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                               | Penulis     |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0, Filament 4.3.1. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal panduan gaya UI/UX                                                                                                                                                                                                           | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                  | Pasukan BPM |
 | 2.1.0 | 19 Oktober 2025  | Tambah Language Switcher row in §9.5 Component-Specific Accessibility table with cross-references                                                                                                                                       | Pasukan BPM |
@@ -73,14 +73,14 @@ konsistensi, ketercapaian (accessibility), dan kualiti mengikut piawaian
 
 | Komponen           | Versi   | Fungsi                              |
 | ------------------ | ------- | ----------------------------------- |
-| **Tailwind CSS**   | 4.1.17  | Utility-first CSS framework         |
-| **Livewire**       | 3.7.0   | Server-driven UI components         |
+| **Tailwind CSS**   | 4.1.18  | Utility-first CSS framework         |
+| **Livewire**       | 3.7.3   | Server-driven UI components         |
 | **Livewire Volt**  | 1.10.1  | Single-file Livewire components     |
 | **Alpine.js**      | 3.x     | Lightweight JavaScript framework    |
-| **Filament**       | 4.1.10  | Admin panel framework               |
+| **Filament**       | 4.3.1   | Admin panel framework               |
 | **Laravel Echo**   | 2.2.6   | WebSocket client                    |
-| **Laravel Reverb** | 1.6.2   | WebSocket server (real-time)        |
-| **Laravel Pulse**  | 1.3.0   | Performance monitoring dashboard    |
+| **Laravel Reverb** | 1.6.3   | WebSocket server (real-time)        |
+| **Laravel Pulse**  | 1.4.7   | Performance monitoring dashboard    |
 | **Vite**           | 7.0.7   | Frontend build tool                 |
 
 ---

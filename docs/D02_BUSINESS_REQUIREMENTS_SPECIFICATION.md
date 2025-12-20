@@ -29,14 +29,14 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. **Cloud Hybrid AI Integration:** Tambah keperluan perniagaan AI (§6.7) untuk D18 Cloud Hybrid Architecture. Kemaskini objektif terukur dengan AI automation targets. Tambah stakeholder AI Services dan Data Residency Officer. Cross-reference D18 v1.0.1. | Pasukan Pembangunan BPM |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0, Filament 4.3.1. **Cloud Hybrid AI Integration:** Tambah keperluan perniagaan AI (§6.7) untuk D18 Cloud Hybrid Architecture. Kemaskini objektif terukur dengan AI automation targets. Tambah stakeholder AI Services dan Data Residency Officer. Cross-reference D18 v1.0.1. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini keperluan UI dwibahasa→UI Bahasa Melayu sahaja. Language switcher dilumpuhkan. Email notifications→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                                                              | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Laravel Socialite (Google SSO optional), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: FR-001 ubah 'Portal (login pilihan)', tambah FR-050 'Staff boleh akses sebagai tetamu atau pengguna berdaftar'. Penyelarasan dengan D00/D04 v3.4.0.                                                                                                  | Pasukan Pembangunan BPM |
 | 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus rujukan 'Portal Intranet (Login)' untuk staf, ganti dengan 'Guest Form'. Penyelarasan dengan D00/D04/D05 v3.3.0.                                                                                                                      | Pasukan Pembangunan BPM |
 | 3.2.1 | 29 November 2025 | Penjajaran kepada seni bina "Guest-First": Staf/Pengguna Dalaman menggunakan borang tetamu (tanpa log masuk). Authentication terhad kepada admin/superuser sahaja. Penyelarasan dengan D00 v3.2.1 dan D04 v3.2.1.                                                         | Pasukan Pembangunan BPM |
-| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D01 v3.2.0.                                                 | Pasukan Pembangunan BPM |
-| 3.1.0 | 29 November 2025 | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Pematuhan WCAG 2.2 AA dan MyGOV Digital Service Standards v2.1.0.          | Pasukan Pembangunan BPM |
+| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.43.1, PHP 8.2.12, Livewire 3.7.3, Filament 4.3.1, PHPUnit 11.5.46, Larastan 3.8.1, Laravel Pint 1.26.0). Penyelarasan dengan D00-D01 v3.2.0.                                                 | Pasukan Pembangunan BPM |
+| 3.1.0 | 29 November 2025 | Kemaskini kepada teknologi semasa: Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.18, Laravel Reverb 1.6.3, Laravel Echo 2.2.6, PHPUnit 11.5.46. Pematuhan WCAG 2.2 AA dan MyGOV Digital Service Standards v2.1.0.          | Pasukan Pembangunan BPM |
 | 3.0.0 | 31 Oktober 2025  | Penjajaran penuh kepada seni bina dalaman (internal-only): portal staf MOTAC dengan login, keperluan kelulusan berperingkat dalam sistem, dan pematuhan WCAG 2.2 AA.                                                                                                      | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                    | Pasukan BPM             |
 | 1.0.0 | September 2025   | Versi awal dokumen keperluan perniagaan                                                                                                                                                                                                                                   | Pasukan BPM             |
@@ -68,13 +68,13 @@
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-Dokumen ini mentakrifkan keperluan perniagaan bagi sistem ICTServe yang digunakan secara dalaman (internal-only) oleh warga kerja MOTAC. Ia menetapkan matlamat, skop, keperluan fungsional dan bukan fungsional, serta kriteria kejayaan yang memacu pembangunan modul Helpdesk & Asset Loan, dan menggariskan tanggungjawab peranan (staf, pegawai kelulusan, admin, super admin) melalui portal dan panel Filament 4.1.10. Sistem dibina menggunakan Laravel 12.42.0, Livewire 3.7.1, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.3 untuk komunikasi masa nyata.
+Dokumen ini mentakrifkan keperluan perniagaan bagi sistem ICTServe yang digunakan secara dalaman (internal-only) oleh warga kerja MOTAC. Ia menetapkan matlamat, skop, keperluan fungsional dan bukan fungsional, serta kriteria kejayaan yang memacu pembangunan modul Helpdesk & Asset Loan, dan menggariskan tanggungjawab peranan (staf, pegawai kelulusan, admin, super admin) melalui portal dan panel Filament 4.3.1. Sistem dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.18, dan Laravel Reverb 1.6.3 untuk komunikasi masa nyata.
 
 ---
 
 ## 2. LATAR BELAKANG (Background)
 
-Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis. Analisis semula aliran kerja dan laporan pematuhan v2.1.0 mengesahkan bahawa model tersebut tidak lagi relevan. Sistem kini memfokuskan borang tetamu terbuka yang mematuhi WCAG 2.2 AA, Core Web Vitals, dan standard MyGOV Digital Service. Semua operasi dalaman dihadkan kepada dua peranan pentadbir yang log masuk ke panel Filament 4.1.10. Teknologi semasa termasuk Laravel 12.42.0 dengan Livewire 3.7.1 untuk komponen interaktif, Volt 1.10.1 untuk single-file components, Alpine.js 3 untuk interaktiviti frontend, Tailwind CSS 4.1.17 untuk styling, dan Laravel Reverb 1.6.3 untuk WebSocket real-time.
+Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis. Analisis semula aliran kerja dan laporan pematuhan v2.1.0 mengesahkan bahawa model tersebut tidak lagi relevan. Sistem kini memfokuskan borang tetamu terbuka yang mematuhi WCAG 2.2 AA, Core Web Vitals, dan standard MyGOV Digital Service. Semua operasi dalaman dihadkan kepada dua peranan pentadbir yang log masuk ke panel Filament 4.3.1. Teknologi semasa termasuk Laravel 12.43.1 dengan Livewire 3.7.3 untuk komponen interaktif, Volt 1.10.1 untuk single-file components, Alpine.js 3 untuk interaktiviti frontend, Tailwind CSS 4.1.18 untuk styling, dan Laravel Reverb 1.6.3 untuk WebSocket real-time.
 
 ---
 
@@ -90,7 +90,7 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 
 ## 3.1. GAMBARAN KESELURUHAN PROJEK (Project Overview)
 
-Bahagian Pengurusan Maklumat (BPM) MOTAC bertanggungjawab mengurus perkhidmatan ICT untuk kakitangan dalaman. Sistem ICTServe v3.5.0 menyediakan platform bersepadu untuk:
+Bahagian Pengurusan Maklumat (BPM) MOTAC bertanggungjawab mengurus perkhidmatan ICT untuk kakitangan dalaman. Sistem ICTServe v3.6.1 menyediakan platform bersepadu untuk:
 
 ```text
 +---------------------------------------------------------------------+
@@ -206,9 +206,9 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 | LUARAN: Google Workspace (SSO) | Email Gateway | External APIs (Future)  |
 +-------------------------------------------------------------------------+
 |                           TEKNOLOGI                                     |
-| Laravel 12.42.0 | PHP 8.2.12 | MySQL 8.0 | Redis 7.0 | Livewire 3.7.1    |
-| Filament 4.1.10 | Laravel Reverb 1.6.3 | Laravel Pulse 1.4.6              |
-| Laravel Sanctum 4.2.1 | Laravel Socialite 5.24.0 | Tailwind CSS 4.1.17          |
+| Laravel 12.43.1 | PHP 8.2.12 | MySQL 8.0 | Redis 7.0 | Livewire 3.7.3    |
+| Filament 4.3.1 | Laravel Reverb 1.6.3 | Laravel Pulse 1.4.7              |
+| Laravel Sanctum 4.2.1 | Laravel Socialite 5.24.0 | Tailwind CSS 4.1.18          |
 +-------------------------------------------------------------------------+
 ```
 
@@ -272,9 +272,9 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 | Guest (Token)         | Borang tetamu tanpa log masuk       | Staf boleh gunakan borang tetamu. Data disimpan dalam submitter*\*/applicant*\* columns.                                                          |
 | Staff (Auth)          | Portal (login pilihan)              | Staf boleh log masuk untuk Dashboard/Profile. Auto-fill borang dengan user_id (nullable FK).                                                      |
 | Pegawai Kelulusan     | E-mel dengan pautan bertanda tangan | Menilai permohonan melalui token e-mel. Tanpa log masuk ke sistem.                                                                                |
-| Admin                 | Panel Filament 4.1.10               | Mengurus tiket, aset, notifikasi, laporan, dan konfigurasi operasi harian.                                                                        |
+| Admin                 | Panel Filament 4.3.1                | Mengurus tiket, aset, notifikasi, laporan, dan konfigurasi operasi harian.                                                                        |
 | Self-Registered Staff | Portal (login selepas pendaftaran)  | Staf mendaftar dengan @motac.gov.my, pengesahan e-mel, akses Dashboard/Profile.                                                                   |
-| Superuser             | Panel Filament 4.1.10               | Mengurus kawalan pentadbiran, audit, integrasi, tetapan keselamatan, kelulusan konfigurasi, dan akses penuh Laravel Telescope. **Tiada sekatan.** |
+| Superuser             | Panel Filament 4.3.1                | Mengurus kawalan pentadbiran, audit, integrasi, tetapan keselamatan, kelulusan konfigurasi, dan akses penuh Laravel Telescope. **Tiada sekatan.** |
 
 ---
 
@@ -330,7 +330,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 ### 6.1. Helpdesk Ticketing Module (Hybrid Access)
 
 - **Borang Aduan Hybrid:**  
-  Staf boleh log masuk (auto-fill dari user profile) atau gunakan borang tetamu. Livewire 3.7.1 + Volt 1.10.1 dengan validasi masa nyata. Medan: nama, e-mel, telefon, bahagian, gred, kategori, deskripsi, lampiran. Auth::check() logic untuk auto-fill. Interface menggunakan Alpine.js 3 dan Tailwind CSS 4.1.17.
+  Staf boleh log masuk (auto-fill dari user profile) atau gunakan borang tetamu. Livewire 3.7.3 + Volt 1.10.1 dengan validasi masa nyata. Medan: nama, e-mel, telefon, bahagian, gred, kategori, deskripsi, lampiran. Auth::check() logic untuk auto-fill. Interface menggunakan Alpine.js 3 dan Tailwind CSS 4.1.18.
 - **Pengurusan Kategori & SLA:**  
   Sistem menandakan keutamaan berdasarkan kategori/SLA. `admin` boleh mengubah suai templat kategori dan pautan bantuan (rujuk D04 §4.1).
 - **Automasi Notifikasi:**  
@@ -338,12 +338,12 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 - **Audit & Tindak Lanjut:**  
   Semua interaksi (komen, ubah status) dicap masa. Pengguna boleh memuat naik bukti lanjutan melalui pautan selamat; Filament menyatukan komunikasi.
 - **Pelaporan:**  
-  Dashboard Filament 4.1.10 menyediakan laporan kategori, trend, SLA, dan statistik backlog untuk pengurusan BPM. Widget interaktif dibina menggunakan Livewire 3.7.1 dengan kemaskini masa nyata.
+  Dashboard Filament 4.3.1 menyediakan laporan kategori, trend, SLA, dan statistik backlog untuk pengurusan BPM. Widget interaktif dibina menggunakan Livewire 3.7.3 dengan kemaskini masa nyata.
 
 ### 6.2. ICT Asset Loan Module (Hybrid Access)
 
 - **Borang Permohonan Hybrid:**  
-  Staf boleh log masuk (auto-fill) atau gunakan borang tetamu. Livewire 3.7.1 + Volt 1.10.1 untuk pilih aset, tempoh, lokasi, tujuan. Auth::check() logic untuk auto-fill. Sistem memeriksa konflik tempahan dan ketersediaan aset secara masa nyata dengan Alpine.js 3.
+  Staf boleh log masuk (auto-fill) atau gunakan borang tetamu. Livewire 3.7.3 + Volt 1.10.1 untuk pilih aset, tempoh, lokasi, tujuan. Auth::check() logic untuk auto-fill. Sistem memeriksa konflik tempahan dan ketersediaan aset secara masa nyata dengan Alpine.js 3.
 - **Workflow Kelulusan Berpautan E-mel:**
   1. Permohonan berjaya dihantar menjana `loan_application` dengan kod rujukan dan nullable `user_id` (jika logged in).
   2. Sistem mengenal pasti pegawai Gred 41 berkaitan (rujuk kamus bahagian) dan menggunakan peranan dalaman untuk kelulusan.
@@ -352,7 +352,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
   5. Pautan membuka halaman kelulusan dalam portal dalaman yang memaparkan ringkasan permohonan; pegawai memilih keputusan, memasukkan catatan (optional), dan mengesahkan.
   6. Keputusan dicap masa. Pengguna (jika logged in) dan `admin` menerima pemberitahuan automatik.
 - **Pengeluaran & Pemulangan Aset:**  
-  `admin` melaksanakan check-out/in melalui Filament 4.1.10, merekod pegawai BPM yang menyerahkan/menerima, dan menandai kerosakan. Interface menggunakan Livewire 3.7.1 untuk operasi real-time.
+  `admin` melaksanakan check-out/in melalui Filament 4.3.1, merekod pegawai BPM yang menyerahkan/menerima, dan menandai kerosakan. Interface menggunakan Livewire 3.7.3 untuk operasi real-time.
 - **Audit & Laporan:**  
   `loan_transactions`, `loan_audits`, dan `loan_approvals` menyimpan jejak lengkap. Laporan penggunaan aset, kerosakan, dan overdue dijana secara berkala.
 
@@ -365,7 +365,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 ### 6.4. Pemantauan Prestasi Aplikasi (Laravel Pulse)
 
 - **Dashboard Prestasi Masa Nyata:**  
-  `admin` dan `superuser` boleh mengakses dashboard Laravel Pulse 1.4.6 di `/pulse` untuk memantau prestasi aplikasi secara proaktif. Dashboard memaparkan query database yang perlahan (>500ms), prestasi queue job, corak permintaan pengguna, dan metrik kesihatan pelayan.
+  `admin` dan `superuser` boleh mengakses dashboard Laravel Pulse 1.4.7 di `/pulse` untuk memantau prestasi aplikasi secara proaktif. Dashboard memaparkan query database yang perlahan (>500ms), prestasi queue job, corak permintaan pengguna, dan metrik kesihatan pelayan.
 - **Pengesanan Isu Proaktif:**  
   Sistem menjejaki masa tindak balas, penggunaan memori, kadar cache hit, dan pola kegagalan queue. Apabila ambang prestasi melebihi had, sistem menghantar amaran melalui saluran notifikasi yang dikonfigurasi.
 - **Pengurusan Data:**  

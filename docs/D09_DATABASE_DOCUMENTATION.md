@@ -30,11 +30,11 @@
 
 | Versi | Tarikh           | Perubahan | Penulis |
 | ----- | ---------------- | --------- | ------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot Ollama-Bedrock v1.0.0. Tambah jadual AI: `faqs`, `documents`, `document_chunks`, `embeddings`, `message_logs`, `bedrock_conversations`, `auto_reply_templates`, `auto_reply_drafts`. Multi-model intelligence, streaming responses, web-augmented responses, conversation management. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot Ollama-Bedrock v1.0.0. Tambah jadual AI: `faqs`, `documents`, `document_chunks`, `embeddings`, `message_logs`, `bedrock_conversations`, `auto_reply_templates`, `auto_reply_drafts`. Multi-model intelligence, streaming responses, web-augmented responses, conversation management. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D08 v3.5.0. Tambah jadual `loan_transaction_accessories`, `personal_access_tokens`, `pulse_*`. Tambah medan `google_id`, `form_reference_code`, `responsible_officer_*`. Laravel Pulse, Sanctum API, Google SSO. | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Restored nullable user_id FK. Added staff role to users. | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Hybrid data model: users table extended for Staff profiles | Pasukan BPM |
-| 3.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.40.1, Filament 4.1.10, MySQL 8.0 | Pasukan BPM |
+| 3.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.43.1, Filament 4.3.1, MySQL 8.0 | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi pangkalan data | Pasukan BPM |
 
@@ -70,15 +70,16 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 | -------------------- | ----------------- | ------- | ----------------------------------------- |
 | RDBMS                | MySQL             | 8.x     | Production database                       |
 | Development DB       | SQLite            | 3.x     | Development/testing database              |
-| ORM                  | Eloquent          | 12.42.0 | Laravel ORM                               |
-| Migrations           | Laravel           | 12.42.0 | Schema version control                    |
+| ORM                  | Eloquent          | 12.43.1 | Laravel ORM                               |
+| Migrations           | Laravel           | 12.43.1 | Schema version control                    |
 | Caching              | Redis             | 7.x     | Query caching                             |
 | Audit (Compliance)   | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)         |
 | Audit (Operations)   | Activity Log      | 4.x     | User activity logging (spatie)            |
-| Performance Monitor  | Laravel Pulse     | 1.4.6   | Performance metrics & server health       |
+| Performance Monitor  | Laravel Pulse     | 1.4.7   | Performance metrics & server health       |
 | API Authentication   | Laravel Sanctum   | 4.2.1   | Token-based API authentication            |
 | Permissions          | Spatie Permission | 6.23    | Role-based access control                 |
 | Debugging            | Laravel Telescope | 5.x     | System monitoring (superuser only)        |
+| Queue Management     | Laravel Horizon   | 5.41.0  | Redis queue monitoring & management       |
 | **AI Local (Ollama)**| Ollama Server     | Latest  | Local LLM untuk FAQ Bot (D18 v1.0.0)     |
 | **AI Cloud (Bedrock)**| AWS Bedrock      | Latest  | Claude models untuk complex reasoning     |
 | **Vector Search**    | MySQL JSON        | 8.x     | Embedding storage dan semantic search     |
