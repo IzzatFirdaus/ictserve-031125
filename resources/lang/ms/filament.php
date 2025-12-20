@@ -1,19 +1,28 @@
 <?php
 
+// ICTServe v3.6.1 - Bahasa Melayu Sahaja
+// Rujukan: D15_LANGUAGE_MS_EN.md
+
+declare(strict_types=1);
+
 return [
     'navigation' => [
         'operations' => 'Operasi',
         'inventory' => 'Inventori',
         'management' => 'Pengurusan',
         'system' => 'Sistem',
+        'reports' => 'Laporan & Analitik',
+        'ollama_ai' => 'Ollama AI',
         'asset_management' => 'Pengurusan Aset',
         'helpdesk_management' => 'Meja Bantuan',
         'loan_management' => 'Pinjaman Aset',
         'reference_data' => 'Data Rujukan',
         'system_management' => 'Pengurusan Sistem',
         'user_management' => 'Pengurusan Pengguna',
-        'reports' => 'Laporan & Analitik',
         'go_to_portal' => 'Pergi ke Portal',
+        'brand_name' => 'ICTServe Admin',
+        'dashboard' => 'Papan Pemuka',
+        'home' => 'Laman Utama',
     ],
 
     'labels' => [
@@ -37,6 +46,19 @@ return [
         'category' => 'Kategori',
         'approval_method' => 'Kaedah Kelulusan',
         'submission_type_filter' => 'Jenis Penghantaran',
+        // Asset-specific labels
+        'tag' => 'Tag Aset',
+        'name' => 'Nama',
+        'brand' => 'Jenama',
+        'model' => 'Model',
+        'serial_number' => 'No. Siri',
+        'condition' => 'Keadaan',
+        'location' => 'Lokasi',
+        'purchase_date' => 'Tarikh Pembelian',
+        'current_value' => 'Nilai Semasa',
+        'next_maintenance_date' => 'Tarikh Penyelenggaraan Seterusnya',
+        'warranty_expiry' => 'Tamat Tempoh Waranti',
+        'age' => 'Umur',
     ],
 
     'status' => [
@@ -48,6 +70,15 @@ return [
         'not_submitted' => 'Belum Dihantar',
         'applicant_is_responsible' => 'Pemohon Bertanggungjawab',
         'different_officer' => 'Pegawai Lain: :name',
+        // Maintenance status
+        'no_maintenance_schedule' => 'Tiada jadual penyelenggaraan',
+        'overdue_maintenance' => 'Penyelenggaraan lewat :days hari',
+        'due_today' => 'Dijadualkan hari ini',
+        'due_in_days' => 'Dijadualkan dalam :days hari',
+        // Warranty status
+        'no_warranty' => 'Tiada waranti',
+        'warranty_expired' => 'Waranti telah tamat',
+        'warranty_expires_in' => 'Waranti tamat :time',
     ],
 
     'tooltips' => [
@@ -57,6 +88,11 @@ return [
         'approval_not_submitted' => 'Belum dihantar untuk kelulusan',
         'applicant_responsible' => 'Pemohon bertanggungjawab',
         'different_responsible_officer' => 'Pegawai lain bertanggungjawab',
+        // Maintenance tooltips
+        'maintenance_next' => 'Penyelenggaraan seterusnya: :date (:status)',
+        // Warranty tooltips
+        'warranty_expired_on' => 'Waranti tamat pada :date',
+        'warranty_expires_on' => 'Waranti tamat pada :date (:time)',
     ],
 
     'date_filters' => [
@@ -86,6 +122,12 @@ return [
         'authenticated_submission' => 'Pengguna Berdaftar',
         'email_approval' => 'E-mel',
         'portal_approval' => 'Portal',
+        // Asset-specific filters
+        'needs_maintenance' => 'Perlu Penyelenggaraan',
+        'maintenance_indicator' => 'Penyelenggaraan Diperlukan',
+        'available' => 'Tersedia',
+        'in_use' => 'Sedang Digunakan',
+        'warranty_expiring' => 'Waranti Hampir Tamat',
     ],
 
     'actions' => [
@@ -101,16 +143,21 @@ return [
         'export_excel' => 'Eksport Excel',
         'export_report' => 'Eksport Laporan',
         'reason' => 'Sebab',
-        'toggle_theme' => 'Tukar Tema',
-        'switch_to_light_mode' => 'Tukar ke Mod Cerah',
-        'switch_to_dark_mode' => 'Tukar ke Mod Gelap',
-        'view' => 'Lihat',
-        'edit' => 'Kemaskini',
-        'delete_selected' => 'Padam Dipilih',
-        'restore_selected' => 'Pulih Dipilih',
-        'export_data' => 'Eksport Data',
-        'process_issuance' => 'Proses Pengeluaran',
-        'process_return' => 'Proses Pemulangan',
+        // Asset-specific actions
+        'mark_maintenance' => 'Tandai Penyelenggaraan',
+        'update_status' => 'Kemaskini Status',
+        'update_condition' => 'Kemaskini Keadaan',
+        'update_location' => 'Kemaskini Lokasi',
+        'new_location' => 'Lokasi Baru',
+        'export' => 'Eksport',
+    ],
+
+    'notifications' => [
+        'status_updated' => 'Status Dikemaskini',
+        'condition_updated' => 'Keadaan Dikemaskini',
+        'location_updated' => 'Lokasi Dikemaskini',
+        'assets_updated' => ':count aset telah dikemaskini',
+        'assets_updated_simple' => 'Lokasi aset telah dikemaskini',
     ],
 
     'announcements' => [
