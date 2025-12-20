@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 38505-1 (Governance of Data)
+**Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 38505-1 (Governance of Data), RFC 5322, ISO 8601, TLS 1.3, AES-256
 
 ---
 
