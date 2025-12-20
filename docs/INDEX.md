@@ -56,7 +56,7 @@ Dokumentasi kanonik keperluan, reka bentuk, dan piawaian:
 | [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md) | Reka bentuk visual, tipografi, warna |
 | [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Piawaian bahasa (Bahasa Melayu sahaja v3.6.0+) |
 | [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md) | Konfigurasi broadcasting & WebSocket |
-| [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) | Pengurusan queue (Redis; Horizon tidak dipasang) |
+| [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) | Pengurusan queue (Redis; Horizon v5.41.0 dipasang) |
 | [D18_AI_CHATBOT_OLLAMA_BEDROCK.md](D18_AI_CHATBOT_OLLAMA_BEDROCK.md) | Seni bina AI Chatbot Cloud Hybrid (Ollama-Bedrock) |
 
 ### 📦 Dokumentasi Pakej Laravel

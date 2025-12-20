@@ -32,9 +32,9 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis     |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Vite 7.0.7, Tailwind CSS 4.1.17, Playwright 1.57.0. **Cloud Hybrid AI Integration**: Integrasi D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock) dengan model routing pintar, streaming responses, web-augmented responses, conversation management. **AI Packages**: cloudstudio/ollama-laravel 1.1+, aws/aws-sdk-php 3.363+. Penyelarasan penuh dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Volt 1.10.1, Filament 4.3.1, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Vite 7.0.7, Tailwind CSS 4.1.18, Playwright 1.57.0, Laravel Horizon 5.41.0. **Cloud Hybrid AI Integration**: Integrasi D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock) dengan model routing pintar, streaming responses, web-augmented responses, conversation management. **AI Packages**: cloudstudio/ollama-laravel 1.1+, aws/aws-sdk-php 3.363+. Penyelarasan penuh dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.6.0 | 8 Disember 2025  | **Bahasa Melayu sahaja untuk antara muka pengguna**: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Penyelarasan dengan D00-D18 v3.6.0. | Pasukan BPM |
-| 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0, Laravel Sanctum v4.0, Laravel Socialite v5.x. Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases. Penyelarasan penuh dengan D00-D17 v3.5.0.                                                                     | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.4.7, Laravel Sanctum v4.0, Laravel Socialite v5.x. Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases. Penyelarasan penuh dengan D00-D17 v3.5.0.                                                                     | Pasukan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences.                                     | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus staff/approver dari RBAC                                                                                                                                                                                                                                        | Pasukan BPM |
 | 3.2.0 | 29 November 2025 | Hapus staff/approver roles; klarifikasi Guest-First architecture                                                                                                                                                                                                                                    | Pasukan BPM |
@@ -107,17 +107,17 @@ sahaja dan integrasi Cloud Hybrid AI Architecture (Ollama + AWS Bedrock).
 
 | Komponen               | Teknologi         | Versi                |
 | ---------------------- | ----------------- | -------------------- |
-| Backend Framework      | Laravel           | 12.42.0              |
+| Backend Framework      | Laravel           | 12.43.1              |
 | PHP Runtime            | PHP               | 8.2.12               |
-| Admin Panel            | Filament          | 4.1.10               |
-| Frontend Components    | Livewire          | 3.7.1                |
+| Admin Panel            | Filament          | 4.3.1                |
+| Frontend Components    | Livewire          | 3.7.3                |
 | Single-File Components | Livewire Volt     | 1.10.1               |
-| CSS Framework          | Tailwind CSS      | 4.1.17               |
+| CSS Framework          | Tailwind CSS      | 4.1.18               |
 | Build Tool             | Vite              | 7.0.7                |
 | WebSocket Server       | Laravel Reverb    | 1.6.3                |
 | WebSocket Client       | Laravel Echo      | 2.2.6                |
-| Queue Processing       | Laravel Queue     | Redis (tanpa Horizon) |
-| Performance Monitor    | Laravel Pulse     | 1.4.6                |
+| Queue Processing       | Laravel Queue + Horizon | Redis + Horizon v5.41.0 |
+| Performance Monitor    | Laravel Pulse     | 1.4.7                |
 | API Authentication     | Laravel Sanctum   | 4.2.1                |
 | OAuth SSO (Opsyen)     | Laravel Socialite | 5.24.0               |
 | AI Integration (Local) | Ollama Laravel    | 1.1+                 |
@@ -318,21 +318,22 @@ ICTServe menggunakan corak seni bina berlapis (Layered Architecture) dengan prin
 graph TB
     subgraph "Frontend Stack"
         Blade[Templat Blade]
-        Livewire[Livewire 3.7.1]
+        Livewire[Livewire 3.7.3]
         Volt[Volt 1.10.1]
         Alpine[Alpine.js 3.x]
-        Tailwind[Tailwind CSS 4.1.17]
+        Tailwind[Tailwind CSS 4.1.18]
         Vite[Vite 7.0.7]
     end
 
     subgraph "Backend Stack"
-        Laravel[Laravel 12.42.0]
+        Laravel[Laravel 12.43.1]
         PHP[PHP 8.2.12]
-        Filament[Filament 4.1.10]
+        Filament[Filament 4.3.1]
         Reverb[Laravel Reverb 1.6.3]
         Queue[Laravel Queue (Redis)]
-        Pulse[Laravel Pulse 1.4.6]
+        Pulse[Laravel Pulse 1.4.7]
         MCP[Laravel MCP 0.3.4]
+        Horizon[Laravel Horizon 5.41.0]
     end
 
     subgraph "AI Integration"
@@ -382,18 +383,18 @@ graph TB
 
 | Kategori       | Teknologi         | Versi                | Tujuan Utama                            |
 | -------------- | ----------------- | -------------------- | --------------------------------------- |
-| Backend        | Laravel           | 12.42.0              | Rangka kerja utama aplikasi             |
+| Backend        | Laravel           | 12.43.1              | Rangka kerja utama aplikasi             |
 | Backend        | PHP               | 8.2.12               | Bahasa pengaturcaraan pelayan           |
-| Backend        | Filament          | 4.1.10               | Panel pentadbir dan pembina UI          |
-| Frontend       | Livewire          | 3.7.1                | Komponen UI yang dinamik dan reaktif    |
+| Backend        | Filament          | 4.3.1                | Panel pentadbir dan pembina UI          |
+| Frontend       | Livewire          | 3.7.3                | Komponen UI yang dinamik dan reaktif    |
 | Frontend       | Livewire Volt     | 1.10.1               | Single-file Livewire components         |
 | Frontend       | Alpine.js         | 3.x                  | Rangka kerja JavaScript yang ringan     |
 | Frontend       | Tailwind CSS      | 4.1.17               | Rangka kerja CSS utility-first          |
 | Frontend       | Vite              | 7.0.7                | Alat binaan untuk aset frontend         |
 | Real-time      | Laravel Reverb    | 1.6.3                | WebSocket server untuk ciri masa nyata  |
 | Real-time      | Laravel Echo      | 2.2.6                | WebSocket client                        |
-| Queue          | Laravel Queue     | Redis (tanpa Horizon) | Pemprosesan job latar belakang          |
-| Monitoring     | Laravel Pulse     | 1.4.6                | Performance monitoring dashboard        |
+| Queue          | Laravel Queue + Horizon | Redis + Horizon v5.41.0 | Pemprosesan job latar belakang          |
+| Monitoring     | Laravel Pulse     | 1.4.7                | Performance monitoring dashboard        |
 | Monitoring     | Laravel Telescope | 5.x                  | Debugging & monitoring (superuser)      |
 | API            | Laravel Sanctum   | 4.2.1                | Token-based API authentication          |
 | OAuth          | Laravel Socialite | 5.24.0               | Google Workspace SSO (opsyen)           |
@@ -820,7 +821,7 @@ erDiagram
 | ----------------- | ------------------------------------------- | --------------- | ---------- |
 | Laravel Pulse     | Performance monitoring dashboard masa nyata | admin/superuser | D11 §9     |
 | Laravel Telescope | Debugging dan monitoring terperinci         | superuser       | D11 §10    |
-| Laravel Queue (Redis) | Pemprosesan job + failed jobs (Horizon tidak dipasang) | admin/superuser | D17        |
+| Laravel Queue (Redis) + Horizon | Pemprosesan job + failed jobs (Horizon v5.41.0 dipasang) | admin/superuser | D17        |
 
 ### Laravel Pulse Metrics
 
@@ -879,7 +880,7 @@ erDiagram
 | **Telescope**            | Laravel debugging dan monitoring tool untuk superuser                       |
 | **Sanctum**              | Laravel API token authentication system                                     |
 | **Socialite**            | Laravel OAuth 2.0 library untuk Google Workspace SSO                        |
-| **Horizon**              | Dashboard queue (opsyenal). Tidak dipasang dalam repo v3.6.1 (diganti dengan Laravel Pulse + Failed Jobs) |
+| **Horizon**              | Dashboard queue Laravel untuk pemantauan Redis queue. **Dipasang v5.41.0** dalam repo v3.6.1 untuk pengurusan queue yang komprehensif |
 | **RBAC**                 | Role-Based Access Control - kawalan akses berasaskan peranan                |
 | **SLA**                  | Service Level Agreement - perjanjian tahap perkhidmatan                     |
 | **WCAG**                 | Web Content Accessibility Guidelines - panduan aksesibiliti web             |
@@ -894,12 +895,12 @@ erDiagram
 | Teknologi         | Versi   | Tujuan                                |
 | ----------------- | ------- | ------------------------------------- |
 | PHP               | 8.2.12  | Backend programming language          |
-| Laravel           | 12.42.0 | Web application framework             |
-| Livewire          | 3.7.1   | Reactive components                   |
+| Laravel           | 12.43.1 | Web application framework             |
+| Livewire          | 3.7.3   | Reactive components                   |
 | Volt              | 1.10.1  | Single-file components                |
-| Filament          | 4.1.10  | Admin panel                           |
+| Filament          | 4.3.1   | Admin panel                           |
 | Alpine.js         | 3       | Lightweight JavaScript framework      |
-| Tailwind CSS      | 4.1.17  | Utility-first CSS framework           |
+| Tailwind CSS      | 4.1.18  | Utility-first CSS framework           |
 | Vite              | 7.0.7   | Asset bundler/build tool              |
 | Nginx             | 1.24    | Reverse proxy / web server            |
 | Redis             | 7.0     | Queue, cache, broadcasting backend    |

@@ -72,7 +72,7 @@ Dokumen ini menyediakan definisi komprehensif untuk semua istilah, akronim, dan 
 | Google Workspace SSO                          | Single Sign-On menggunakan akaun Google Workspace @motac.gov.my melalui Laravel Socialite (opsyen)                             | Teknikal - Autentikasi      |
 | HA                                            | High Availability - Ketersediaan Tinggi untuk memastikan sistem beroperasi dengan masa henti minimum                           | Teknikal - Infrastruktur    |
 | Helpdesk                                      | Sistem sokongan teknikal untuk menangani aduan dan permintaan bantuan pengguna                                                 | Modul Sistem                |
-| Horizon                                       | Dashboard Laravel untuk pemantauan queue (opsyenal). **Tidak dipasang** dalam repo v3.6.1; pemantauan queue menggunakan Laravel Pulse + Filament Failed Jobs/Email Logs | Teknikal - Queue Management |
+| Horizon                                       | Dashboard Laravel untuk pemantauan queue Redis. **Dipasang v5.41.0** dalam repo v3.6.1 untuk pengurusan queue yang komprehensif | Teknikal - Queue Management |
 | HRMIS                                         | Human Resource Management Information System - Sistem maklumat pengurusan sumber manusia MOTAC                                 | Sistem Luaran               |
 | ICT                                           | Information and Communication Technology - Teknologi Maklumat dan Komunikasi                                                   | Am                          |
 | Idempotency                                   | Sifat operasi yang memastikan pelaksanaan berulang menghasilkan hasil yang sama tanpa kesan sampingan berganda                 | Teknikal - API              |
@@ -179,7 +179,7 @@ Dokumen ini menyediakan definisi komprehensif untuk semua istilah, akronim, dan 
 > - **Approvers** tidak memerlukan akaun sistem - kelulusan melalui pautan e-mel yang ditandatangani
 > - **Admin/Superuser** sahaja yang memerlukan pengurusan akaun manual oleh pentadbir
 > - **Superuser** mempunyai akses penuh ke Laravel Telescope dan Laravel Pulse
-> - **Admin** mempunyai akses ke Laravel Pulse; pemantauan queue melalui Failed Jobs/Email Logs (Filament). Laravel Horizon tidak dipasang dalam repo v3.6.1.
+> - **Admin** mempunyai akses ke Laravel Pulse dan Laravel Horizon v5.41.0 untuk pemantauan queue yang komprehensif.
 > - **Bahasa Melayu sahaja** - penukar bahasa dilumpuhkan dalam v3.6.0
 > - **AI Chatbot** - Cloud Hybrid AI Architecture (Ollama + AWS Bedrock) tersedia untuk semua pengguna (D18)
 
@@ -268,7 +268,7 @@ Glosari ini digunakan merentas semua dokumentasi sistem. Untuk konteks lengkap p
 | D14 | [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md)                                     | Panduan Gaya UI/UX                                |
 | D15 | [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md)                                           | Panduan Lokalisasi Bahasa (Bahasa Melayu sahaja)  |
 | D16 | [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md)                                   | Dokumentasi Setup Broadcasting & WebSocket        |
-| D17 | [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md)                       | Dokumentasi Pengurusan Queue (Redis; Horizon tidak dipasang) |
+| D17 | [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md)                       | Dokumentasi Pengurusan Queue (Redis; Horizon v5.41.0 dipasang) |
 | D18 | [D18_AI_CHATBOT_OLLAMA_BEDROCK.md](D18_AI_CHATBOT_OLLAMA_BEDROCK.md)                     | Dokumentasi AI Chatbot Cloud Hybrid (Ollama-Bedrock) |
 
 ### Dokumentasi Sokongan
