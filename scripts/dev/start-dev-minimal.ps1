@@ -1,5 +1,5 @@
 # ICTServe v3.6.0 Development Environment Startup Script - Minimal Version
-# Laravel 12.42.0 + Filament 4.1.10 + Livewire 3.7.1 + Tailwind 4.1.17
+# Laravel 12.43.1 + Filament 4.3.1 + Livewire 3.7.3 + Tailwind 4.1.18
 
 param(
     [switch]$SkipChecks,
@@ -11,7 +11,7 @@ param(
 
 Write-Host "ICTServe v3.6.0 Development Environment" -ForegroundColor Cyan
 Write-Host "=======================================" -ForegroundColor Cyan
-Write-Host "Laravel 12.42.0 | PHP 8.2.12 | Filament 4.1.10" -ForegroundColor Gray
+Write-Host "Laravel 12.43.1 | PHP 8.2.12 | Filament 4.3.1" -ForegroundColor Gray
 Write-Host "Profile: $Profile" -ForegroundColor Gray
 Write-Host ""
 
@@ -129,7 +129,7 @@ Start-Sleep -Seconds 1
 
 # 2. Vite Development Server
 Write-Host "[2/2] Vite Development Server" -ForegroundColor Yellow
-Start-Service -Title 'Vite Dev Server (127.0.0.1:5173)' -Command "npm run dev" -Color "Green" -Description "Tailwind 4.1.17, Livewire 3.7.1, Hot Module Replacement" -Priority 2
+Start-Service -Title 'Vite Dev Server (127.0.0.1:5173)' -Command "npm run dev" -Color "Green" -Description "Tailwind 4.1.18, Livewire 3.7.3, Hot Module Replacement" -Priority 2
 Check-Port -Port 5173 -Attempts 15 -DelaySeconds 1 -ServiceName 'Vite Dev Server'
 Start-Sleep -Seconds 1
 
