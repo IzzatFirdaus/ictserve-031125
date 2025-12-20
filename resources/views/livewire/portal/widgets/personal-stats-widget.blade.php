@@ -25,7 +25,7 @@
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {{-- Open Tickets Stat --}}
         @if($config['show_tickets'])
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-200 hover:border-primary-400 transition-colors">
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-slate-200 hover:border-primary-400 transition-colors">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
@@ -35,14 +35,14 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">
+                                <dt class="text-sm font-medium text-slate-600 truncate">
                                     {{ __('dashboard.open_tickets') }}
                                 </dt>
                                 <dd class="flex items-baseline">
-                                    <div class="text-2xl font-semibold text-gray-900" wire:loading.remove wire:target="refresh">
+                                    <div class="text-2xl font-semibold text-slate-900" wire:loading.remove wire:target="refresh">
                                         {{ $this->openTicketsCount }}
                                     </div>
-                                    <div wire:loading wire:target="refresh" class="text-sm text-gray-500">
+                                    <div wire:loading wire:target="refresh" class="text-sm text-slate-500">
                                         <svg class="animate-spin h-5 w-5 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-5 py-3">
+                <div class="bg-slate-50 px-5 py-3">
                     <a href="{{ route('staff.tickets.index') }}" class="text-sm font-medium text-primary-600 hover:text-primary-900 transition-colors">
                         {{ __('dashboard.view_all') }}
                         <span aria-hidden="true"> &rarr;</span>
@@ -64,7 +64,7 @@
 
         {{-- Pending Loans Stat --}}
         @if($config['show_loans'])
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-200 hover:border-success-400 transition-colors">
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-slate-200 hover:border-success-400 transition-colors">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
@@ -74,14 +74,14 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">
+                                <dt class="text-sm font-medium text-slate-600 truncate">
                                     {{ __('dashboard.pending_loans') }}
                                 </dt>
                                 <dd class="flex items-baseline">
-                                    <div class="text-2xl font-semibold text-gray-900" wire:loading.remove wire:target="refresh">
+                                    <div class="text-2xl font-semibold text-slate-900" wire:loading.remove wire:target="refresh">
                                         {{ $this->pendingLoansCount }}
                                     </div>
-                                    <div wire:loading wire:target="refresh" class="text-sm text-gray-500">
+                                    <div wire:loading wire:target="refresh" class="text-sm text-slate-500">
                                         <svg class="animate-spin h-5 w-5 text-success-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -92,7 +92,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-5 py-3">
+                <div class="bg-slate-50 px-5 py-3">
                     <a href="{{ route('staff.loans.index') }}" class="text-sm font-medium text-success-600 hover:text-success-900 transition-colors">
                         {{ __('dashboard.view_all') }}
                         <span aria-hidden="true"> &rarr;</span>
@@ -103,7 +103,7 @@
 
         {{-- Pending Approvals Stat (Grade 41+ only) --}}
         @if($config['show_approvals'] && $this->pendingApprovalsCount > 0)
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-200 hover:border-warning-400 transition-colors">
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-slate-200 hover:border-warning-400 transition-colors">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
@@ -113,14 +113,14 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">
+                                <dt class="text-sm font-medium text-slate-600 truncate">
                                     {{ __('dashboard.pending_approvals') }}
                                 </dt>
                                 <dd class="flex items-baseline">
-                                    <div class="text-2xl font-semibold text-gray-900" wire:loading.remove wire:target="refresh">
+                                    <div class="text-2xl font-semibold text-slate-900" wire:loading.remove wire:target="refresh">
                                         {{ $this->pendingApprovalsCount }}
                                     </div>
-                                    <div wire:loading wire:target="refresh" class="text-sm text-gray-500">
+                                    <div wire:loading wire:target="refresh" class="text-sm text-slate-500">
                                         <svg class="animate-spin h-5 w-5 text-warning-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-5 py-3">
+                <div class="bg-slate-50 px-5 py-3">
                     <a href="{{ route('staff.approvals.index') }}" class="text-sm font-medium text-warning-600 hover:text-warning-900 transition-colors">
                         {{ __('dashboard.view_all') }}
                         <span aria-hidden="true"> &rarr;</span>
@@ -142,7 +142,7 @@
 
         {{-- Overdue Items Stat --}}
         @if($config['show_overdue'] && $this->overdueItemsCount > 0)
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-200 hover:border-danger-400 transition-colors">
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-slate-200 hover:border-danger-400 transition-colors">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
@@ -152,14 +152,14 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">
+                                <dt class="text-sm font-medium text-slate-600 truncate">
                                     {{ __('dashboard.overdue_items') }}
                                 </dt>
                                 <dd class="flex items-baseline">
-                                    <div class="text-2xl font-semibold text-gray-900" wire:loading.remove wire:target="refresh">
+                                    <div class="text-2xl font-semibold text-slate-900" wire:loading.remove wire:target="refresh">
                                         {{ $this->overdueItemsCount }}
                                     </div>
-                                    <div wire:loading wire:target="refresh" class="text-sm text-gray-500">
+                                    <div wire:loading wire:target="refresh" class="text-sm text-slate-500">
                                         <svg class="animate-spin h-5 w-5 text-danger-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -170,7 +170,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-5 py-3">
+                <div class="bg-slate-50 px-5 py-3">
                     <a href="{{ route('staff.loans.index', ['filter' => 'overdue']) }}" class="text-sm font-medium text-danger-600 hover:text-danger-900 transition-colors">
                         {{ __('dashboard.view_all') }}
                         <span aria-hidden="true"> &rarr;</span>

@@ -11,7 +11,7 @@
 <div class="relative" x-data="{ open: $wire.entangle('showDropdown') }">
     {{-- Notification Bell Button --}}
     <button @click="open = !open" type="button"
-        class="relative rounded-full bg-slate-900/70 p-2 text-slate-300 hover:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        class="relative rounded-full bg-slate-900/70 p-2 text-slate-300 hover:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
         aria-label="{{ __('Notifikasi') }}" aria-expanded="false" aria-haspopup="true">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
