@@ -6,13 +6,27 @@
     last-updated: 2025-11-06
 --}}
 
-<x-layouts.portal>
-    <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            {{ __('portal.data_rights.title') }}
-        </h2>
-    </x-slot>
+@php
+    $breadcrumbs = [
+        [
+            'label' => __('common.dashboard'),
+            'url' => Route::has('staff.dashboard') ? route('staff.dashboard') : '#',
+        ],
+        [
+            'label' => __('portal.data_rights.title'),
+        ],
+    ];
+@endphp
 
+@extends('portal.layouts.app')
+
+@section('header')
+    <h2 class="text-xl font-semibold leading-tight text-slate-100">
+        {{ __('portal.data_rights.title') }}
+    </h2>
+@endsection
+
+@section('content')
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
@@ -140,4 +154,4 @@
             </div>
         </div>
     </div>
-</x-layouts.portal>
+@endsection
