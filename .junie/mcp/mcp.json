@@ -90,9 +90,9 @@
             ]
         },
         "laravel-boost": {
-            "command": "C:\\xampp\\php\\php.exe",
+            "command": "C:\\Users\\exatf\\tools\\php-8.4.11\\php.exe",
             "args": [
-                "C:\\laragon\\www\\ictserve-031125\\artisan",
+                "C:\\XAMPP\\htdocs\\ictserve-031125\\artisan",
                 "boost:mcp"
             ]
         },
@@ -114,12 +114,12 @@
             ]
         },
         "herd": {
-            "command": "C:\\xampp\\php\\php.exe",
+            "command": "C:\\Users\\exatf\\tools\\php-8.4.11\\php.exe",
             "args": [
-                "C:/Users/izzatfirdaus/.config/herd/bin/herd-mcp.phar"
+                "C:/Users/exatf/.config/herd/bin/herd-mcp.phar"
             ],
             "env": {
-                "SITE_PATH": "C:\\laragon\\www\\ictserve-031125"
+                "SITE_PATH": "C:\\XAMPP\\htdocs\\ictserve-031125"
             }
         }
     }
