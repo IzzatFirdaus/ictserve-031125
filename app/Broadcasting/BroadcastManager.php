@@ -19,11 +19,9 @@ final class BroadcastManager extends BaseBroadcastManager
 
     public function driver($name = null): Broadcaster
     {
+        /** @var Broadcaster $broadcaster */
         $broadcaster = parent::driver($name);
-
-        if ($broadcaster instanceof Broadcaster) {
-            $this->channelRegistrar->register($broadcaster);
-        }
+        $this->channelRegistrar->register($broadcaster);
 
         return $broadcaster;
     }

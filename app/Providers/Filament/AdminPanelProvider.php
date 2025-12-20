@@ -180,26 +180,27 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::hex('#198754'),   // MyGOV Green - 4.9:1 contrast ratio
                 'warning' => Color::hex('#ff8c00'),   // MyGOV Orange - 4.5:1 contrast ratio
                 'danger' => Color::hex('#b50c0c'),    // MyGOV Red - 8.2:1 contrast ratio
-                'gray' => Color::hex('#6b7280'),      // Neutral Gray - 4.5:1 contrast ratio
+                'gray' => Color::hex('#64748b'),      // Slate - Matching MyDS
+                'info' => Color::hex('#3b82f6'),      // Blue - 4.5:1 contrast ratio
             ])
             // Branding Configuration (D12 §5.1 MOTAC Branding)
-            ->brandName(__('filament::navigation.brand_name'))
+            ->brandName(__('filament.navigation.brand_name'))
             ->brandLogo(asset('images/motac-logo.png'))
             ->brandLogoHeight('2.5rem')
             ->darkModeBrandLogo(asset('images/motac-logo-dark.png'))
             ->favicon(asset('favicon.ico'))
             // Navigation Groups (D12 §6.1 Navigation Structure - Bahasa Melayu)
             ->navigationGroups([
-                NavigationGroup::make(__('filament::navigation.operations'))
+                NavigationGroup::make(__('filament.navigation.operations'))
                     ->icon('heroicon-o-briefcase')
                     ->collapsed(false),
-                NavigationGroup::make(__('filament::navigation.management'))
+                NavigationGroup::make(__('filament.navigation.management'))
                     ->icon('heroicon-o-users')
                     ->collapsed(false),
-                NavigationGroup::make(__('filament::navigation.system'))
+                NavigationGroup::make(__('filament.navigation.system'))
                     ->icon('heroicon-o-cog-6-tooth')
                     ->collapsed(true),
-                NavigationGroup::make(__('filament::navigation.reports'))
+                NavigationGroup::make(__('filament.navigation.reports'))
                     ->icon('heroicon-o-chart-bar')
                     ->collapsed(true),
             ])
