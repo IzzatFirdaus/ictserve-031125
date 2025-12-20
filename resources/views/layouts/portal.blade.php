@@ -42,7 +42,7 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 theme-transition">
+<body class="font-sans antialiased bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 theme-transition">
     <x-navigation.skip-links />
     {{-- ARIA Live Regions for Screen Readers (WCAG 2.2 SC 4.1.3) --}}
     <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-announcements" role="status"></div>
@@ -52,7 +52,7 @@
     {{-- ARIA Live Region for Echo Real-Time Updates (Requirements 6.1, 6.2) --}}
     <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-live-notifications" role="status"></div>
 
-    <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 theme-transition">
+    <div class="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900 theme-transition">
         <livewire:navigation.portal-navigation />
 
         <main id="main-content" role="main" tabindex="-1" class="flex-1 py-6 focus:outline-none">
@@ -70,10 +70,10 @@
             </div>
         </main>
 
-        <footer class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 theme-transition"
+        <footer class="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 theme-transition"
             role="contentinfo">
             <div
-                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-gray-600 dark:text-gray-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-600 dark:text-slate-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <p>&copy; {{ now()->year }} {{ e(__('footer.ministry_name')) }}.
                     {{ e(__('footer.all_rights_reserved')) }}.
                 </p>

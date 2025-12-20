@@ -40,7 +40,7 @@
     @livewireStyles
 </head>
 
-<body class="font-sans text-gray-900 dark:text-gray-100 antialiased bg-gray-50 dark:bg-gray-900 theme-transition">
+<body class="font-sans text-slate-900 dark:text-slate-100 antialiased bg-slate-50 dark:bg-slate-900 theme-transition">
     {{-- Skip Link for Accessibility (WCAG 2.4.1) --}}
     <a href="#main-content"
         class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2">
@@ -49,7 +49,7 @@
 
     <div class="min-h-screen flex flex-col">
         {{-- Header --}}
-        <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     {{-- Logo & Title --}}
@@ -57,7 +57,7 @@
                         <a href="/"
                             class="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-1">
                             <x-application-logo class="w-10 h-10" />
-                            <span class="text-xl font-bold text-gray-900 dark:text-white hidden sm:block">
+                            <span class="text-xl font-bold text-slate-900 dark:text-white hidden sm:block">
                                 {{ config('app.name', 'ICTServe') }}
                             </span>
                         </a>
@@ -71,7 +71,7 @@
                         {{-- Auth Links --}}
                         @auth
                             <a href="{{ route('dashboard') }}"
-                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg">
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg">
                                 Dashboard
                             </a>
                         @else
@@ -94,7 +94,7 @@
 
         {{-- Footer --}}
         <footer
-            class="py-4 text-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
+            class="py-4 text-center text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700">
             <p>&copy; {{ date('Y') }} {{ __('common.motac_full_name') }}. {{ __('common.all_rights_reserved') }}</p>
         </footer>
     </div>
