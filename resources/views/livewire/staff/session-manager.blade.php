@@ -1,14 +1,14 @@
 <x-ui.card>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold text-gray-100">
+        <h2 class="text-xl font-semibold text-slate-100">
             {{ __('Browser Sessions') }}
         </h2>
-        <p class="mt-1 text-sm text-gray-300">
+        <p class="mt-1 text-sm text-slate-300">
             {{ __('Manage and log out your active sessions on other browsers and devices.') }}
         </p>
     </x-slot>
 
-    <div class="max-w-xl text-sm text-gray-600 dark:text-gray-300">
+    <div class="max-w-xl text-sm text-slate-600 dark:text-slate-300">
         {{ __('If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.') }}
     </div>
 
@@ -19,19 +19,19 @@
                 <div class="flex items-center">
                     <div>
                         @if ($session->agent->is_desktop)
-                            <x-heroicon-o-computer-desktop class="w-8 h-8 text-gray-500 dark:text-gray-400" />
+                            <x-heroicon-o-computer-desktop class="w-8 h-8 text-slate-500 dark:text-slate-400" />
                         @else
-                            <x-heroicon-o-device-phone-mobile class="w-8 h-8 text-gray-500 dark:text-gray-400" />
+                            <x-heroicon-o-device-phone-mobile class="w-8 h-8 text-slate-500 dark:text-slate-400" />
                         @endif
                     </div>
 
                     <div class="ml-3">
-                        <div class="text-sm text-gray-600 dark:text-gray-400">
+                        <div class="text-sm text-slate-600 dark:text-slate-400">
                             {{ $session->agent->platform ? $session->agent->platform : 'Unknown' }} - {{ $session->agent->browser ? $session->agent->browser : 'Unknown' }}
                         </div>
 
                         <div>
-                            <div class="text-xs text-gray-500 dark:text-gray-400">
+                            <div class="text-xs text-slate-500 dark:text-slate-400">
                                 {{ $session->ip_address }},
 
                                 @if ($session->is_current_device)
