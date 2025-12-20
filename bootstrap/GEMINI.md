@@ -22,7 +22,8 @@ The `bootstrap` directory contains files that bootstrap the Laravel application.
 ## Laravel 12 Structure
 
 Laravel 12 introduced a streamlined application structure:
-- No `app/Http/Kernel.php` - use `bootstrap/app.php` instead
-- No `app/Console/Kernel.php` - use `bootstrap/app.php` or `routes/console.php`
-- Commands in `app/Console/Commands/` are automatically registered
-- Service providers in `app/Providers/` are auto-discovered unless manually added to `bootstrap/providers.php`
+
+* No `app/Http/Kernel.php` - use `bootstrap/app.php` instead
+* No `app/Console/Kernel.php` - use `bootstrap/app.php` or `routes/console.php`
+* Commands in `app/Console/Commands/` are automatically registered
+* Service providers in `app/Providers/` are auto-discovered unless manually added to `bootstrap/providers.php`
