@@ -8,7 +8,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025 |
 | **Status** | Aktif - Sedia untuk Pelaksanaan |
 | **Klasifikasi** | Terhad - Dalaman BPM MOTAC |
-| **Pematuhi** | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, WCAG 2.2 AA, OWASP ASVS L2, PDPA 2010, MyGOV Digital Service Standards v2.1.0 |
+| **Pematuhi** | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, WCAG 2.2 AA, OWASP ASVS L2, PDPA 2010, MyGOV Digital Service Standards v2.1.0, Format Inference Profile (AWS Bedrock), OWASP Transport Security, TLS 1.3, AES-256 |
 | **Bahasa** | Bahasa Melayu sahaja (D15 v3.6.0+) |
 
 > **Notis Penggunaan Dalaman**: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam (internal use only).
