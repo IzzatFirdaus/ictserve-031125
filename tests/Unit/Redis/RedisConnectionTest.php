@@ -4,23 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Redis;
 
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Redis;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Exception;
 
 /**
  * Redis Connection Unit Tests
- * 
+ *
  * Tests Redis connection functionality, timeout handling, and database separation
  * for ICTServe v3.6.1 Laragon optimization.
- * 
- * @covers Redis connection establishment
- * @covers Database separation validation
- * @covers Connection timeout handling
- * @covers Predis client functionality
  */
 class RedisConnectionTest extends TestCase
 {
@@ -29,9 +24,9 @@ class RedisConnectionTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Skip tests if Redis is not available
-        if (!$this->isRedisAvailable()) {
+        if (! $this->isRedisAvailable()) {
             $this->markTestSkipped('Redis is not available for testing');
         }
     }
@@ -41,9 +36,9 @@ class RedisConnectionTest extends TestCase
     {
         // Test basic Redis connection
         $connection = Redis::connection();
-        
+
         $this->assertNotNull($connection);
-        
+
         // Test ping command
         $response = $connection->ping();
         $this->assertEquals('PONG', $response);
@@ -54,7 +49,7 @@ class RedisConnectionTest extends TestCase
     {
         // Verify that Predis client is configured
         $this->assertEquals('predis', config('database.redis.client'));
-        
+
         // Test that connection uses Predis
         $connection = Redis::connection();
         $this->assertInstanceOf(\Predis\Client::class, $connection);
@@ -66,7 +61,7 @@ class RedisConnectionTest extends TestCase
         // Verify Redis host configuration for Laragon
         $this->assertEquals('127.0.0.1', config('database.redis.default.host'));
         $this->assertEquals('6379', config('database.redis.default.port'));
-        
+
         // Test actual connection
         $connection = Redis::connection();
         $response = $connection->ping();
@@ -79,21 +74,21 @@ class RedisConnectionTest extends TestCase
     {
         // Test connection to specific Redis database
         $connection = Redis::connection($connectionName);
-        
+
         $this->assertNotNull($connection);
-        
+
         // Verify database number
         $this->assertEquals($expectedDatabase, config("database.redis.{$connectionName}.database"));
-        
+
         // Test basic operation
-        $testKey = "test_key_{$connectionName}_" . time();
+        $testKey = "test_key_{$connectionName}_".time();
         $testValue = "test_value_{$connectionName}";
-        
+
         $connection->set($testKey, $testValue);
         $retrievedValue = $connection->get($testKey);
-        
+
         $this->assertEquals($testValue, $retrievedValue);
-        
+
         // Cleanup
         $connection->del($testKey);
     }
@@ -103,12 +98,12 @@ class RedisConnectionTest extends TestCase
     {
         // Test connection timeout handling
         $this->expectNotToPerformAssertions();
-        
+
         try {
             $connection = Redis::connection();
             $connection->ping();
         } catch (Exception $e) {
-            $this->fail('Redis connection should not timeout with proper configuration: ' . $e->getMessage());
+            $this->fail('Redis connection should not timeout with proper configuration: '.$e->getMessage());
         }
     }
 
@@ -117,23 +112,23 @@ class RedisConnectionTest extends TestCase
     {
         $connections = ['default', 'cache', 'sessions', 'queues', 'reverb', 'pulse', 'horizon'];
         $usedDatabases = [];
-        
+
         foreach ($connections as $connectionName) {
             $database = config("database.redis.{$connectionName}.database");
-            
+
             // Ensure database is configured
             $this->assertNotNull($database, "Database not configured for {$connectionName} connection");
-            
+
             // Ensure no database conflicts
             $this->assertNotContains(
-                $database, 
-                $usedDatabases, 
+                $database,
+                $usedDatabases,
                 "Database {$database} is used by multiple connections"
             );
-            
+
             $usedDatabases[] = $database;
         }
-        
+
         // Verify expected database allocation
         $expectedDatabases = [
             'default' => '0',
@@ -144,12 +139,12 @@ class RedisConnectionTest extends TestCase
             'pulse' => '5',
             'horizon' => '6',
         ];
-        
+
         foreach ($expectedDatabases as $connection => $expectedDb) {
             $actualDb = config("database.redis.{$connection}.database");
             $this->assertEquals(
-                $expectedDb, 
-                $actualDb, 
+                $expectedDb,
+                $actualDb,
                 "Expected {$connection} to use database {$expectedDb}, got {$actualDb}"
             );
         }
@@ -159,24 +154,24 @@ class RedisConnectionTest extends TestCase
     public function it_can_perform_basic_redis_operations(): void
     {
         $connection = Redis::connection();
-        $testKey = 'test_basic_operations_' . time();
-        
+        $testKey = 'test_basic_operations_'.time();
+
         // Test SET operation
         $result = $connection->set($testKey, 'test_value');
         $this->assertTrue($result);
-        
+
         // Test GET operation
         $value = $connection->get($testKey);
         $this->assertEquals('test_value', $value);
-        
+
         // Test EXISTS operation
         $exists = $connection->exists($testKey);
         $this->assertEquals(1, $exists);
-        
+
         // Test DEL operation
         $deleted = $connection->del($testKey);
         $this->assertEquals(1, $deleted);
-        
+
         // Verify deletion
         $value = $connection->get($testKey);
         $this->assertNull($value);
@@ -186,7 +181,7 @@ class RedisConnectionTest extends TestCase
     public function it_handles_redis_errors_gracefully(): void
     {
         $connection = Redis::connection();
-        
+
         // Test invalid command handling
         try {
             $connection->eval('invalid lua script', 0);
@@ -201,17 +196,17 @@ class RedisConnectionTest extends TestCase
     {
         $expectedPrefix = config('database.redis.options.prefix');
         $this->assertNotEmpty($expectedPrefix, 'Redis prefix should be configured');
-        
+
         // Test that prefix is applied
         $connection = Redis::connection();
-        $testKey = 'prefix_test_' . time();
-        
+        $testKey = 'prefix_test_'.time();
+
         $connection->set($testKey, 'test_value');
-        
+
         // The key should exist with prefix
         $exists = $connection->exists($testKey);
         $this->assertEquals(1, $exists);
-        
+
         // Cleanup
         $connection->del($testKey);
     }
@@ -220,16 +215,16 @@ class RedisConnectionTest extends TestCase
     public function it_validates_connection_parameters(): void
     {
         $defaultConfig = config('database.redis.default');
-        
+
         // Validate required parameters
         $this->assertArrayHasKey('host', $defaultConfig);
         $this->assertArrayHasKey('port', $defaultConfig);
         $this->assertArrayHasKey('database', $defaultConfig);
-        
+
         // Validate Laragon-specific settings
         $this->assertEquals('127.0.0.1', $defaultConfig['host']);
         $this->assertEquals('6379', $defaultConfig['port']);
-        
+
         // Validate timeout settings
         $this->assertArrayHasKey('read_timeout', $defaultConfig);
         $this->assertGreaterThan(0, $defaultConfig['read_timeout']);
@@ -259,6 +254,7 @@ class RedisConnectionTest extends TestCase
         try {
             $connection = Redis::connection();
             $connection->ping();
+
             return true;
         } catch (Exception $e) {
             return false;
@@ -271,13 +267,13 @@ class RedisConnectionTest extends TestCase
         try {
             $connection = Redis::connection();
             $keys = $connection->keys('test_*');
-            if (!empty($keys)) {
+            if (! empty($keys)) {
                 $connection->del($keys);
             }
         } catch (Exception $e) {
             // Ignore cleanup errors
         }
-        
+
         parent::tearDown();
     }
 }
