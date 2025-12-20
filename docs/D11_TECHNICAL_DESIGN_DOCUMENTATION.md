@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** IEEE 1016, ISO/IEC/IEEE 2651x series, ISO 9001, ISO/IEC/IEEE 12207
+**Standard Rujukan:** IEEE 1016:2009 (Huraian Reka Bentuk Perisian), ISO/IEC/IEEE 2651x series, ISO 9001, ISO/IEC/IEEE 12207, OWASP Transport Security, TLS 1.3, AES-256
 
 ---
 

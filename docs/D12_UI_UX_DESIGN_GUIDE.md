@@ -8,7 +8,7 @@
 | **Tarikh Kemaskini** | 14 Disember 2025 |
 | **Status** | Aktif - Sedia untuk Pelaksanaan |
 | **Klasifikasi** | Terhad - Dalaman BPM MOTAC |
-| **Pematuhi** | WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 42010 |
+| **Pematuhi** | WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 42010, ISO 9241-210, MDGDM, DDSA |
 | **Bahasa** | Bahasa Melayu sahaja (D15 v3.6.0) |
 
 > **Notis Penggunaan Dalaman**: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam (internal use only).

@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207
+**Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207, OWASP Transport Security, IEEE 1016:2009
 
 ---
 
