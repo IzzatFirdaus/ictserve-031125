@@ -45,6 +45,7 @@ lang/
 ## Usage Examples
 
 ### In PHP/Controllers
+
 ```php
 // Simple translation
 $message = __('messages.welcome');
@@ -57,6 +58,7 @@ $message = trans_choice('messages.apples', $count);
 ```
 
 ### In Blade Templates
+
 ```blade
 <!-- Simple translation -->
 <h1>{{ __('messages.welcome') }}</h1>
@@ -77,6 +79,7 @@ Translation strings can be made available to JavaScript using Laravel's built-in
 ## Translation File Structure
 
 ### PHP Array Files
+
 ```php
 <?php
 
@@ -88,6 +91,7 @@ return [
 ```
 
 ### JSON Files
+
 ```json
 {
     "Save": "Simpan",
@@ -110,6 +114,7 @@ return [
 ## Filament Localization
 
 Filament provides its own translation files. To customize Filament translations:
+
 1. Publish Filament translations: `php artisan vendor:publish --tag=filament-translations`
 2. Modify the published files in `lang/vendor/filament/`
 3. Ensure Filament respects the application locale via middleware
