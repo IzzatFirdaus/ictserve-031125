@@ -33,14 +33,14 @@
         x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="tour-title"
         aria-describedby="tour-description" role="dialog" aria-modal="true">
         {{-- Backdrop --}}
-        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
         {{-- Tour Tooltip --}}
         <div class="flex min-h-screen items-center justify-center p-4">
             <div class="relative w-full max-w-md transform overflow-hidden rounded-lg bg-white shadow-xl transition-all"
                 role="document">
                 {{-- Progress Bar --}}
-                <div class="h-2 w-full bg-gray-200" role="progressbar" aria-valuenow="{{ $progressPercentage }}"
+                <div class="h-2 w-full bg-slate-200" role="progressbar" aria-valuenow="{{ $progressPercentage }}"
                     aria-valuemin="0" aria-valuemax="100"
                     aria-label="{{ __('portal.tour.progress_label', ['current' => $currentStep + 1, 'total' => $totalSteps]) }}">
                     <div class="h-full bg-primary-600 transition-all duration-300"
@@ -75,7 +75,7 @@
                                     @else
                                         {{-- Upcoming Step --}}
                                         <span
-                                            class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white text-sm font-medium text-gray-500"
+                                            class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-slate-300 bg-white text-sm font-medium text-slate-500"
                                             aria-label="{{ __('portal.tour.upcoming_step', ['step' => $i + 1]) }}">
                                             {{ $i + 1 }}
                                         </span>
@@ -83,7 +83,7 @@
 
                                     {{-- Connector Line (except for last item) --}}
                                     @if ($i < $totalSteps - 1)
-                                        <div class="ml-2 h-0.5 w-4 {{ $i < $currentStep ? 'bg-primary-600' : 'bg-gray-300' }}"
+                                        <div class="ml-2 h-0.5 w-4 {{ $i < $currentStep ? 'bg-primary-600' : 'bg-slate-300' }}"
                                             aria-hidden="true"></div>
                                     @endif
                                 </li>
@@ -106,12 +106,12 @@
                     </div>
 
                     {{-- Step Title --}}
-                    <h3 id="tour-title" class="mb-2 text-center text-xl font-semibold text-gray-900">
+                    <h3 id="tour-title" class="mb-2 text-center text-xl font-semibold text-slate-900">
                         {{ $currentStepData['title'] ?? __('portal.tour.welcome') }}
                     </h3>
 
                     {{-- Step Description --}}
-                    <p id="tour-description" class="mb-6 text-center text-gray-600">
+                    <p id="tour-description" class="mb-6 text-center text-slate-600">
                         {{ $currentStepData['description'] ?? __('portal.tour.welcome_description') }}
                     </p>
 
@@ -128,7 +128,7 @@
                     <div class="flex items-center justify-between gap-4">
                         {{-- Skip Button --}}
                         <button type="button" wire:click="skipTour"
-                            class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2"
+                            class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2"
                             aria-label="{{ __('portal.tour.skip') }}">
                             {{ __('portal.tour.skip') }}
                         </button>
@@ -137,7 +137,7 @@
                             {{-- Previous Button --}}
                             @if ($currentStep > 0)
                                 <button type="button" wire:click="previousStep"
-                                    class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2"
+                                    class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2"
                                     aria-label="{{ __('portal.tour.previous') }}">
                                     <x-heroicon-o-arrow-left class="mr-2 h-4 w-4" />
                                     {{ __('portal.tour.previous') }}
@@ -160,8 +160,8 @@
                 </div>
 
                 {{-- Keyboard Navigation Hint --}}
-                <div class="border-t border-gray-200 bg-gray-50 px-6 py-3">
-                    <p class="text-xs text-gray-500 text-center">
+                <div class="border-t border-slate-200 bg-slate-50 px-6 py-3">
+                    <p class="text-xs text-slate-500 text-center">
                         <x-heroicon-o-information-circle class="inline h-4 w-4" />
                         {{ __('portal.tour.keyboard_hint') }}
                     </p>

@@ -13,42 +13,42 @@
 --}}
 
 @php
-    $sectionCardClasses = 'rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40';
+    $sectionCardClasses = 'rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40';
 @endphp
 
-<div class="min-h-screen bg-gray-50 dark:bg-slate-950 py-12 theme-transition">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 theme-transition">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Skip Links --}}
         <x-navigation.skip-links />
 
         {{-- Header --}}
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-slate-100 mb-2">
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                 {{ __('loans.submit_application') }}
             </h1>
-            <p class="text-lg text-gray-600 dark:text-slate-300">
+            <p class="text-lg text-slate-600 dark:text-slate-300">
                 {{ __('loans.submit_application_description') }}
             </p>
         </div>
 
         {{-- Context Banner --}}
-        <div class="mb-8 rounded-2xl border border-gray-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-5 shadow-xl shadow-slate-950/30">
+        <div class="mb-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-5 shadow-xl shadow-slate-950/30">
             <div class="flex flex-col gap-2">
                 <div class="inline-flex items-center gap-2 rounded-full bg-primary-50 dark:bg-primary-900/40 px-3 py-1 text-sm font-semibold text-primary-800 dark:text-primary-100">
                     <span aria-hidden="true" class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-primary-300 dark:border-primary-200 text-xs">i</span>
                     <span>{{ __('loans.wizard_progress') }}</span>
                 </div>
-                <p class="text-sm text-gray-700 dark:text-slate-200">
+                <p class="text-sm text-slate-700 dark:text-slate-200">
                     {{ __('loans.submit_application_description') }}
                 </p>
-                <p class="text-xs text-gray-500 dark:text-slate-400">
+                <p class="text-xs text-slate-500 dark:text-slate-400">
                     {{ __('loans.next_steps') }}: {{ __('loans.next_step_1') }}
                 </p>
             </div>
         </div>
 
         {{-- Progress Indicator --}}
-        <div class="mb-8 rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40" role="progressbar" aria-valuenow="{{ $currentStep }}" aria-valuemin="1"
+        <div class="mb-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40" role="progressbar" aria-valuenow="{{ $currentStep }}" aria-valuemin="1"
             aria-valuemax="{{ $totalSteps }}" aria-label="{{ __('loans.wizard_progress') }}">
             <div class="flex items-center justify-between">
                 @for ($step = 1; $step <= $totalSteps; $step++)
@@ -60,7 +60,7 @@
                                         @class([
                                             'flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-slate-950/30',
                                             'bg-primary-600 border-primary-400/70 text-white ring-2 ring-primary-400/40' => $step <= $currentStep,
-                                            'bg-gray-100 dark:bg-slate-900/60 border-gray-300 dark:border-slate-700 text-gray-400 dark:text-slate-400' => $step > $currentStep,
+                                            'bg-slate-100 dark:bg-slate-900/60 border-slate-300 dark:border-slate-700 text-slate-400 dark:text-slate-400' => $step > $currentStep,
                                         ])
                                         aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
                                         {{ $step > $currentStep ? 'disabled' : '' }}>
@@ -69,11 +69,11 @@
                                 </div>
                                 @if ($step < $totalSteps)
                                     <div class="flex-1 mx-4">
-                                        <div class="h-1.5 rounded-full transition-colors {{ $step < $currentStep ? 'bg-primary-600' : 'bg-gray-200 dark:bg-slate-800' }}"></div>
+                                        <div class="h-1.5 rounded-full transition-colors {{ $step < $currentStep ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-800' }}"></div>
                                     </div>
                                 @endif
                             </div>
-                            <p class="mt-3 text-xs font-medium text-gray-600 dark:text-slate-300">
+                            <p class="mt-3 text-xs font-medium text-slate-600 dark:text-slate-300">
                                 {{ __('loans.step_' . $step . '_label') }}
                             </p>
                         </div>
@@ -136,7 +136,7 @@
                 {{-- Step 2: Asset Selection --}}
                 @if ($currentStep === 2)
                     <section class="{{ $sectionCardClasses }} space-y-6" role="region" aria-label="{{ __('loans.step_2_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-slate-100 mb-4">
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
                             {{ __('loans.step_2_title') }}
                         </h2>
 
@@ -147,27 +147,27 @@
                         <div class="space-y-4" role="list" aria-label="{{ __('loans.available_assets') }}">
                             @forelse ($this->availableAssets as $asset)
                                 <div role="listitem"
-                                    class="border rounded-lg p-4 hover:border-primary-600 transition-colors {{ in_array($asset->id, $selected_assets) ? 'border-primary-600 bg-primary-50' : 'border-gray-300 dark:border-slate-700' }}">
+                                    class="border rounded-lg p-4 hover:border-primary-600 transition-colors {{ in_array($asset->id, $selected_assets) ? 'border-primary-600 bg-primary-50' : 'border-slate-300 dark:border-slate-700' }}">
                                     <label class="flex items-start cursor-pointer">
                                         <input type="checkbox" wire:click="toggleAsset({{ $asset->id }})"
                                             {{ in_array($asset->id, $selected_assets) ? 'checked' : '' }}
-                                            class="mt-1 h-5 w-5 text-primary-600 border-gray-300 dark:border-slate-700 rounded focus:ring-primary-600"
+                                            class="mt-1 h-5 w-5 text-primary-600 border-slate-300 dark:border-slate-700 rounded focus:ring-primary-600"
                                             aria-label="{{ __('loans.select_asset', ['name' => $asset->name]) }}" />
                                         <div class="ml-3 flex-1">
-                                            <div class="font-semibold text-gray-900 dark:text-slate-100">{{ $asset->name }}</div>
-                                            <div class="text-sm text-gray-600 dark:text-slate-300">{{ $asset->asset_tag }}</div>
+                                            <div class="font-semibold text-slate-900 dark:text-slate-100">{{ $asset->name }}</div>
+                                            <div class="text-sm text-slate-600 dark:text-slate-300">{{ $asset->asset_tag }}</div>
                                             @if ($asset->description)
-                                                <div class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ $asset->description }}</div>
+                                                <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ $asset->description }}</div>
                                             @endif
                                             @if ($asset->category)
-                                                <div class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ $asset->category->name }}
+                                                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ $asset->category->name }}
                                                 </div>
                                             @endif
                                         </div>
                                     </label>
                                 </div>
                             @empty
-                                <p class="text-gray-500 dark:text-slate-400 text-center py-8">{{ __('loans.no_assets_found') }}</p>
+                                <p class="text-slate-500 dark:text-slate-400 text-center py-8">{{ __('loans.no_assets_found') }}</p>
                             @endforelse
                         </div>
 
@@ -189,7 +189,7 @@
                 {{-- Step 3: Loan Period --}}
                 @if ($currentStep === 3)
                     <section class="{{ $sectionCardClasses }} space-y-6" role="region" aria-label="{{ __('loans.step_3_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-slate-100 mb-4">
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
                             {{ __('loans.step_3_title') }}
                         </h2>
 
@@ -241,25 +241,25 @@
                             </svg>
                         </div>
 
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-slate-100">
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">
                             {{ __('loans.application_submitted') }}
                         </h2>
 
                         <div class="bg-success-50 border border-success-200 dark:bg-success-900/30 dark:border-success-600 rounded-lg p-6">
-                            <p class="text-sm text-gray-600 dark:text-slate-300 mb-2">{{ __('loans.application_number') }}</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 mb-2">{{ __('loans.application_number') }}</p>
                             <p class="text-3xl font-bold text-success-600 dark:text-success-300">{{ $applicationNumber }}</p>
                         </div>
 
                         <div class="bg-info-50 border border-info-200 dark:bg-info-900/30 dark:border-info-700 rounded-lg p-4 text-left">
                             <h3 class="font-semibold text-info-900 dark:text-info-100 mb-2">{{ __('loans.next_steps') }}</h3>
-                            <ol class="list-decimal list-inside space-y-2 text-sm text-gray-700 dark:text-slate-200">
+                            <ol class="list-decimal list-inside space-y-2 text-sm text-slate-700 dark:text-slate-200">
                                 <li>{{ __('loans.next_step_1') }}</li>
                                 <li>{{ __('loans.next_step_2') }}</li>
                                 <li>{{ __('loans.next_step_3') }}</li>
                             </ol>
                         </div>
 
-                        <p class="text-gray-600 dark:text-slate-300">
+                        <p class="text-slate-600 dark:text-slate-300">
                             {{ __('loans.confirmation_email_sent') }}
                         </p>
 
@@ -304,11 +304,11 @@
         </x-ui.card>
 
         {{-- Help / Contact Panel --}}
-        <div class="mt-8 rounded-2xl border border-gray-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30">
+        <div class="mt-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30">
             <div class="flex flex-col gap-3">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-slate-100">{{ __('loans.help_card_title') }}</h3>
-                <p class="text-sm text-gray-700 dark:text-slate-200">{{ __('loans.help_card_description') }}</p>
-                <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-700 dark:text-slate-200">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100">{{ __('loans.help_card_title') }}</h3>
+                <p class="text-sm text-slate-700 dark:text-slate-200">{{ __('loans.help_card_description') }}</p>
+                <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700 dark:text-slate-200">
                     <div class="flex items-center justify-between gap-2">
                         <dt class="font-medium">{{ __('loans.help_card_email') }}</dt>
                         <dd>

@@ -1,8 +1,8 @@
 <div class="space-y-6">
     <header class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-            <h1 class="text-2xl font-semibold text-gray-900">{{ __('Kelulusan Pinjaman Aset') }}</h1>
-            <p class="text-gray-600">
+            <h1 class="text-2xl font-semibold text-slate-900">{{ __('Kelulusan Pinjaman Aset') }}</h1>
+            <p class="text-slate-600">
                 {{ __('Semak dan luluskan permohonan pinjaman aset yang menunggu tindakan anda.') }}
             </p>
         </div>

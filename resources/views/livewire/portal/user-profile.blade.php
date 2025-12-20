@@ -62,14 +62,14 @@ new class extends Component
 
 ?>
 
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-6 px-4 sm:px-6 lg:px-8 theme-transition">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-6 px-4 sm:px-6 lg:px-8 theme-transition">
     <main id="main-content" class="max-w-2xl mx-auto" tabindex="-1">
         <!-- Page Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-heading font-semibold text-gray-900 dark:text-white">
+            <h1 class="text-3xl font-heading font-semibold text-slate-900 dark:text-white">
                 {{ __('profile.edit_title') }}
             </h1>
-            <p class="mt-2 text-gray-600 dark:text-gray-400">
+            <p class="mt-2 text-slate-600 dark:text-slate-400">
                 {{ __('profile.edit_subtitle') }}
             </p>
         </div>
@@ -91,11 +91,11 @@ new class extends Component
         @endif
 
         <!-- Form Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-card overflow-hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-card overflow-hidden">
             <form wire:submit="save" class="p-6 sm:p-8">
                 <!-- Name Field -->
                 <div class="mb-6">
-                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    <label for="name" class="block text-sm font-medium text-slate-900 dark:text-white mb-2">
                         {{ __('profile.name') }}
                         <span class="text-danger-600" aria-hidden="true">*</span>
                     </label>
@@ -103,8 +103,8 @@ new class extends Component
                         type="text"
                         id="name"
                         wire:model.live.debounce.300ms="name"
-                        class="form-input block w-full rounded-lg border border-gray-300 dark:border-gray-600
-                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                        class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
+                               bg-white dark:bg-slate-700 text-slate-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                min-h-11 px-4 py-2 transition-colors duration-200"
@@ -121,7 +121,7 @@ new class extends Component
 
                 <!-- Email Field -->
                 <div class="mb-6">
-                    <label for="email" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    <label for="email" class="block text-sm font-medium text-slate-900 dark:text-white mb-2">
                         {{ __('profile.email') }}
                         <span class="text-danger-600" aria-hidden="true">*</span>
                     </label>
@@ -129,8 +129,8 @@ new class extends Component
                         type="email"
                         id="email"
                         wire:model.live.debounce.300ms="email"
-                        class="form-input block w-full rounded-lg border border-gray-300 dark:border-gray-600
-                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                        class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
+                               bg-white dark:bg-slate-700 text-slate-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                min-h-11 px-4 py-2 transition-colors duration-200"
@@ -138,7 +138,7 @@ new class extends Component
                         aria-describedby="email-error email-help"
                         autocomplete="email"
                     />
-                    <p id="email-help" class="mt-1 text-xs text-gray-600 dark:text-gray-400">
+                    <p id="email-help" class="mt-1 text-xs text-slate-600 dark:text-slate-400">
                         {{ __('profile.email_help') }}
                     </p>
                     @error('email')
@@ -150,22 +150,22 @@ new class extends Component
 
                 <!-- Phone Field -->
                 <div class="mb-6">
-                    <label for="phone" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    <label for="phone" class="block text-sm font-medium text-slate-900 dark:text-white mb-2">
                         {{ __('profile.phone') }}
                     </label>
                     <input
                         type="tel"
                         id="phone"
                         wire:model.live.debounce.300ms="phone"
-                        class="form-input block w-full rounded-lg border border-gray-300 dark:border-gray-600
-                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                        class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
+                               bg-white dark:bg-slate-700 text-slate-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                min-h-11 px-4 py-2 transition-colors duration-200"
                         aria-describedby="phone-error phone-help"
                         autocomplete="tel"
                     />
-                    <p id="phone-help" class="mt-1 text-xs text-gray-600 dark:text-gray-400">
+                    <p id="phone-help" class="mt-1 text-xs text-slate-600 dark:text-slate-400">
                         {{ __('profile.phone_help') }}
                     </p>
                     @error('phone')
@@ -177,15 +177,15 @@ new class extends Component
 
                 <!-- Department Field -->
                 <div class="mb-8">
-                    <label for="department" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    <label for="department" class="block text-sm font-medium text-slate-900 dark:text-white mb-2">
                         {{ __('profile.department') }}
                     </label>
                     <input
                         type="text"
                         id="department"
                         wire:model.live.debounce.300ms="department"
-                        class="form-input block w-full rounded-lg border border-gray-300 dark:border-gray-600
-                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                        class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
+                               bg-white dark:bg-slate-700 text-slate-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                min-h-11 px-4 py-2 transition-colors duration-200"
@@ -217,9 +217,9 @@ new class extends Component
 
                     <a href="{{ route('dashboard') }}"
                        class="btn-secondary min-h-11 px-6 py-3 rounded-lg shadow-button
-                              bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white
-                              hover:bg-gray-300 dark:hover:bg-gray-600
-                              focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:outline-none
+                              bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white
+                              hover:bg-slate-300 dark:hover:bg-slate-600
+                              focus-visible:ring-3 focus-visible:ring-slate-500 focus-visible:outline-none
                               transition-colors duration-200 font-medium inline-flex items-center justify-center"
                        wire:navigate>
                         {{ __('common.cancel') }}
