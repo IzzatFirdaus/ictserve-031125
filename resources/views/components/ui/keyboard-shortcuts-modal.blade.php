@@ -53,7 +53,7 @@
             x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            class="relative transform overflow-hidden rounded-(--radius-l) bg-white dark:bg-gray-800 px-4 pb-4 pt-5 text-left shadow-dropdown transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
+            class="relative transform overflow-hidden rounded-(--radius-l) bg-white dark:bg-slate-800 px-4 pb-4 pt-5 text-left shadow-dropdown transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
             @click.stop>
             {{-- Header --}}
             <div class="flex items-start justify-between mb-4">
@@ -63,14 +63,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
                     </div>
-                    <h3 id="keyboard-shortcuts-title" class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    <h3 id="keyboard-shortcuts-title" class="text-lg font-semibold text-slate-900 dark:text-slate-100">
                         {{ __('portal.keyboard_shortcuts.title') }}
                     </h3>
                 </div>
                 <button
                     type="button"
                     @click="open = false"
-                    class="rounded-(--radius-s) bg-white dark:bg-gray-800 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
+                    class="rounded-(--radius-s) bg-white dark:bg-slate-800 text-slate-400 hover:text-slate-500 dark:hover:text-slate-300 focus:outline-none"
                     aria-label="{{ __('portal.close') }}">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -79,7 +79,7 @@
             </div>
 
             {{-- Description --}}
-            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
                 {{ __('portal.keyboard_shortcuts.description') }}
             </p>
 
@@ -87,7 +87,7 @@
             <div class="space-y-3" role="list" aria-label="{{ __('portal.keyboard_shortcuts.list_label') }}">
                 {{-- Navigation Shortcuts --}}
                 <div class="mb-4">
-                    <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
                         {{ __('portal.keyboard_shortcuts.navigation') }}
                     </h4>
                     <div class="space-y-2">
@@ -100,7 +100,7 @@
 
                 {{-- Action Shortcuts --}}
                 <div class="mb-4">
-                    <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
                         {{ __('portal.keyboard_shortcuts.actions') }}
                     </h4>
                     <div class="space-y-2">
@@ -111,7 +111,7 @@
 
                 {{-- General Shortcuts --}}
                 <div>
-                    <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
                         {{ __('portal.keyboard_shortcuts.general') }}
                     </h4>
                     <div class="space-y-2">
@@ -122,8 +122,8 @@
             </div>
 
             {{-- Footer Note --}}
-            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <p class="text-xs text-gray-500 dark:text-gray-400">
+            <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <p class="text-xs text-slate-500 dark:text-slate-400">
                     <svg class="inline-block h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
