@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 38505-1 (Governance of Data), RFC 5322, ISO 8601, TLS 1.3, AES-256
+**Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 38505-1 (Governance of Data), RFC 5322, ISO 8601, TLS 1.3, AES-256, PDPA 2010
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
-| **Pematuhi**         | ISO 8000, ISO/IEC 38505-1                 |
+| **Pematuhi**         | ISO 8000, ISO/IEC 38505-1, PDPA 2010                 |
 | **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 > Notis Penggunaan Dalaman: Spesifikasi ini adalah untuk migrasi data dalaman MOTAC; pastikan pematuhan PDPA.
