@@ -39,6 +39,10 @@ use Illuminate\Validation\ValidationException;
 
 class Login extends BaseLogin
 {
+    protected string $view = 'filament.pages.auth.login';
+
+    protected static string $layout = 'components.layouts.passthrough';
+
     /**
      * The MOTAC email domain for username-to-email conversion
      */

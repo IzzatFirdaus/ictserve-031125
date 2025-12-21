@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
  */
 class ResolutionTimeChart extends ChartWidget
 {
-    protected ?string $heading = 'Average Resolution Time by Category (Hours)';
+    protected ?string $heading = 'Purata Masa Penyelesaian mengikut Kategori (Jam)';
 
     // Allow this chart to be placed side-by-side with other widgets
     protected int|string|array $columnSpan = [
@@ -51,7 +51,7 @@ class ResolutionTimeChart extends ChartWidget
 
             $average = count($hours) > 0 ? round(array_sum($hours) / count($hours), 1) : 0;
             $firstTicket = $group->first();
-            $categoryName = $firstTicket && $firstTicket->category ? $firstTicket->category->name : 'Unknown';
+            $categoryName = $firstTicket && $firstTicket->category ? $firstTicket->category->name : 'Tidak Diketahui';
             $data[] = [
                 'category' => $categoryName,
                 'avg_hours' => $average,
@@ -61,7 +61,7 @@ class ResolutionTimeChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Average Hours',
+                    'label' => 'Purata Jam',
                     'data' => array_column($data, 'avg_hours'),
                     'backgroundColor' => [
                         'rgba(34, 197, 94, 0.8)',

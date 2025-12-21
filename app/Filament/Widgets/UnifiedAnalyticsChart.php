@@ -15,7 +15,11 @@ class UnifiedAnalyticsChart extends ChartWidget
 
     protected ?string $heading = 'Analitik Bulanan (6 Bulan Terakhir)';
 
-    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = [
+        'default' => 1,
+        'md' => 1,
+        'lg' => 1,
+    ];
 
     protected function getType(): string
     {

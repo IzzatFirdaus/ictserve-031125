@@ -52,7 +52,7 @@ class DataExportCenter extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Reports';
+        return __('filament.navigation.reports');
     }
 
     public static function getNavigationSort(): ?int

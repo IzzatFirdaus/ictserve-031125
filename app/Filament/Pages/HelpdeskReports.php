@@ -51,7 +51,7 @@ class HelpdeskReports extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Helpdesk';
+        return __('filament.navigation.helpdesk_management');
     }
 
     public static function getNavigationSort(): ?int

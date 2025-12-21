@@ -38,7 +38,7 @@ class ApiTokenResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedKey;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Security';
+    protected static string|UnitEnum|null $navigationGroup = 'Keselamatan';
 
     protected static ?int $navigationSort = 5;
 

@@ -48,7 +48,7 @@ class AlertConfiguration extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.alert_configuration.group');
+        return __('filament.navigation.system');
     }
 
     public static function getNavigationSort(): ?int

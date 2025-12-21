@@ -16,7 +16,7 @@ use Filament\Widgets\ChartWidget;
  */
 class TicketVolumeChart extends ChartWidget
 {
-    protected ?string $heading = 'Ticket Volume (Last 30 Days)';
+    protected ?string $heading = 'Volum Tiket (30 Hari Terakhir)';
 
     // Make the chart responsive so it can sit side-by-side with other charts
     // on wide screens but remain full width on mobile/tablet.
@@ -35,7 +35,7 @@ class TicketVolumeChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Tickets Created',
+                    'label' => 'Tiket Dicipta',
                     'data' => $trends['data'],
                     'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
                     'borderColor' => 'rgb(59, 130, 246)',

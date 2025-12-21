@@ -45,7 +45,7 @@ class LoanApprovalQueueWidget extends BaseWidget
     protected function getTableQuery(): Builder
     {
         return LoanApplication::query()
-            ->with(['user', 'user.department', 'division', 'loanItems.asset'])
+            ->with(['user', 'user.division', 'division', 'loanItems.asset'])
             ->whereIn('status', [
                 LoanStatus::UNDER_REVIEW,
                 LoanStatus::PENDING_INFO,
@@ -64,7 +64,7 @@ class LoanApprovalQueueWidget extends BaseWidget
                 ->searchable(),
             Tables\Columns\TextColumn::make('applicant_name')
                 ->label(__('widgets.applicant'))
-                ->description(fn (LoanApplication $record): ?string => $record->user?->department?->name ?? $record->division?->name_ms)
+                ->description(fn (LoanApplication $record): ?string => $record->user?->division?->name ?? $record->division?->name_ms)
                 ->searchable(),
             Tables\Columns\TextColumn::make('asset_summary')
                 ->label(__('widgets.asset_type'))

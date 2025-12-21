@@ -29,7 +29,7 @@ class ReportTemplates extends Page
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Reports & Analytics';
+        return __('filament.navigation.reports');
     }
 
     public static function shouldRegisterNavigation(): bool

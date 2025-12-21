@@ -18,7 +18,7 @@ class PerformanceMonitoring extends Dashboard
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 5;
 
@@ -36,7 +36,7 @@ class PerformanceMonitoring extends Dashboard
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.performance_monitoring.group');
+        return __('filament.navigation.system');
     }
 
     public function getWidgets(): array

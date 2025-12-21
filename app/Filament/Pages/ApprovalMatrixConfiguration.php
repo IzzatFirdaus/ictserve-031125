@@ -37,7 +37,7 @@ class ApprovalMatrixConfiguration extends Page
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 1;
 
@@ -67,7 +67,7 @@ class ApprovalMatrixConfiguration extends Page
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.approval_matrix.group');
+        return __('filament.navigation.system_management');
     }
 
     public function getTitle(): string

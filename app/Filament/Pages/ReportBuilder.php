@@ -75,7 +75,7 @@ class ReportBuilder extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.report_builder.group');
+        return __('filament.navigation.reports');
     }
 
     public function getTitle(): string
