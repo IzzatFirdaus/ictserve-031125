@@ -3,7 +3,6 @@
 // ICTServe v3.6.1 - Bahasa Melayu Sahaja
 // Rujukan: D15_LANGUAGE_MS_EN.md
 
-
 declare(strict_types=1);
 
 return [
@@ -14,15 +13,15 @@ return [
     ],
 
     'notification_center' => [
-        'title' => 'Pusat Notifikasi',
-        'label' => 'Notifikasi',
-        'group' => 'Sistem',
+        'title' => 'Pusat Pemberitahuan',
+        'label' => 'Pusat Pemberitahuan',
+        'group' => 'Pusat Pemberitahuan',
     ],
 
     'notification_preferences' => [
-        'title' => 'Keutamaan Notifikasi',
-        'label' => 'Keutamaan Notifikasi',
-        'group' => 'Tetapan Pengguna',
+        'title' => 'Keutamaan Pemberitahuan',
+        'label' => 'Keutamaan Pemberitahuan',
+        'group' => 'Keutamaan Pemberitahuan',
     ],
 
     'pdpa_dashboard' => [
@@ -50,9 +49,39 @@ return [
     ],
 
     'filter_presets' => [
-        'title' => 'Preset Penapis',
-        'label' => 'Preset Penapis',
-        'group' => 'Tetapan Pengguna',
+        'title' => 'Pratetap Penapis',
+        'label' => 'Pratetap Penapis',
+        'group' => 'Pratetap Penapis',
+    ],
+
+    'data_visualization' => [
+        'title' => 'Visualisasi Data',
+        'label' => 'Visualisasi Data',
+        'group' => 'Laporan & Analitik',
+    ],
+
+    'data_visualization' => [
+        'title' => 'Visualisasi Data',
+        'label' => 'Visualisasi Data',
+        'group' => 'Laporan & Analitik',
+    ],
+
+    'report_templates' => [
+        'title' => 'Template Laporan',
+        'label' => 'Template Laporan',
+        'group' => 'Laporan & Analitik',
+    ],
+
+    'data_export_center' => [
+        'title' => 'Pusat Eksport Data',
+        'label' => 'Pusat Eksport Data',
+        'group' => 'Laporan & Analitik',
+    ],
+
+    'unified_analytics' => [
+        'title' => 'Analitik Terpadu',
+        'label' => 'Analitik Terpadu',
+        'group' => 'Laporan & Analitik',
     ],
 
     'email_queue' => [
@@ -173,7 +202,7 @@ return [
     'alert_configuration' => [
         'title' => 'Konfigurasi Sistem Amaran',
         'label' => 'Konfigurasi Amaran',
-        'group' => 'System',
+        'group' => 'Sistem',
         'sections' => [
             'tickets' => 'Konfigurasi Amaran Tiket',
             'tickets_desc' => 'Tetapkan had dan konfigurasi untuk amaran tiket helpdesk',
