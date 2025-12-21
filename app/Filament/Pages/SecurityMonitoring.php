@@ -11,6 +11,7 @@ use Filament\Pages\Page;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 /**
  * Security Monitoring Page
@@ -36,7 +37,7 @@ class SecurityMonitoring extends Page
 
     protected string $view = 'filament.pages.security-monitoring';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'System Configuration';
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 11;
 
@@ -101,7 +102,15 @@ class SecurityMonitoring extends Page
      */
     public static function getNavigationLabel(): string
     {
-        return 'Security Monitoring';
+        return __('admin_pages.security_monitoring.label');
+    }
+
+    /**
+     * Get the navigation group
+     */
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation.system');
     }
 
     /**

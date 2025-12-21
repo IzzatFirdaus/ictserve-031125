@@ -31,7 +31,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 4;
 
@@ -65,7 +65,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.email_templates.group');
+        return __('filament.navigation.system_management');
     }
 
     protected function getForms(): array

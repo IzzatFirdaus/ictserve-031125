@@ -42,7 +42,7 @@ class UnifiedAnalyticsDashboard extends Page
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Reports';
+        return __('filament.navigation.reports');
     }
 
     public static function getNavigationSort(): ?int

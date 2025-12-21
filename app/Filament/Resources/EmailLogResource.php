@@ -37,7 +37,7 @@ class EmailLogResource extends Resource
 {
     protected static ?string $model = EmailLog::class;
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
     protected static ?string $cluster = System::class;
 

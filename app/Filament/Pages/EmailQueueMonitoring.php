@@ -27,7 +27,7 @@ class EmailQueueMonitoring extends Page
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 2;
 
@@ -65,7 +65,7 @@ class EmailQueueMonitoring extends Page
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.email_queue.group');
+        return __('filament.navigation.system_management');
     }
 
     protected function getHeaderActions(): array

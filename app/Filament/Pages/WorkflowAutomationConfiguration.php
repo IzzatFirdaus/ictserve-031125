@@ -31,7 +31,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 3;
 
@@ -57,7 +57,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.workflow_automation.group');
+        return __('filament.navigation.system');
     }
 
     protected function getForms(): array
