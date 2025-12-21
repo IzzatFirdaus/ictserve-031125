@@ -33,17 +33,18 @@ if (reverbAppKey && reverbHost) {
 		authorizer: (channel) => {
 			return {
 				authorize: (socketId, callback) => {
-					window.axios.post('/broadcasting/auth', {
-						socket_id: socketId,
-						channel_name: channel.name
-					})
-					.then(response => {
-						callback(null, response.data);
-					})
-					.catch(error => {
-						callback(error);
-					});
-				}
+					window.axios
+						.post("/broadcasting/auth", {
+							socket_id: socketId,
+							channel_name: channel.name,
+						})
+						.then((response) => {
+							callback(null, response.data);
+						})
+						.catch((error) => {
+							callback(error);
+						});
+				},
 			};
 		},
 	});
@@ -528,3 +529,91 @@ function showAINotification(type, message, data = {}) {
 
 // Export AI notification function
 window.showAINotification = showAINotification;
+
+/**
+ * Widget Real-Time Broadcasting Integration - v3.6.1
+ *
+ * Initialize widget real-time updates for dashboard widgets including
+ * performance metrics, system statistics, and user-specific data.
+ * Integrates with WidgetRealtimeManager service and provides fallback polling.
+ *
+ * @see resources/js/widget-realtime.js - Widget real-time manager
+ * @see app/Services/WidgetRealtimeManager.php - Backend service
+ * @requirements R8 (Real-time Updates), R19 (Real-Time Widget Updates)
+ */
+
+/**
+ * Initialize widget broadcasting for authenticated users
+ * Called from dashboard pages and admin panel
+ */
+window.initWidgetBroadcasting = function (userRole, userId) {
+	if (!window.Echo) {
+		console.warn(
+			"Widget Broadcasting: Echo not initialized, using polling fallback"
+		);
+		return;
+	}
+
+	const allowedRoles = ["staff", "admin", "superuser"];
+	const adminRoles = ["admin", "superuser"];
+
+	if (!allowedRoles.includes(userRole)) {
+		console.warn(
+			"Widget Broadcasting: User role not authorized for widget updates"
+		);
+		return;
+	}
+
+	// User-specific widget channel for personal dashboard
+	if (userId) {
+		window.Echo.private(`dashboard.widgets.${userId}`).listen(
+			".WidgetDataUpdated",
+			(data) => {
+				console.log("Widget Update (User Channel):", data);
+				window.dispatchEvent(
+					new CustomEvent("widget:update:user", { detail: data })
+				);
+			}
+		);
+
+		console.log(`Widget Broadcasting: Subscribed to user channel ${userId}`);
+	}
+
+	// Global widget channel for admin users
+	if (adminRoles.includes(userRole)) {
+		window.Echo.private("dashboard.widgets.global").listen(
+			".WidgetDataUpdated",
+			(data) => {
+				console.log("Widget Update (Global Channel):", data);
+				window.dispatchEvent(
+					new CustomEvent("widget:update:global", { detail: data })
+				);
+			}
+		);
+
+		console.log("Widget Broadcasting: Subscribed to global admin channel");
+	}
+
+	// Widget-specific channels are handled by the WidgetRealtimeManager
+	// This provides the foundation for targeted widget updates
+};
+
+/**
+ * Auto-initialize widget broadcasting if user data is available
+ */
+document.addEventListener("DOMContentLoaded", function () {
+	// Try to get user data from meta tags
+	const userIdMeta = document.querySelector('meta[name="user-id"]');
+	const userRoleMeta = document.querySelector('meta[name="user-role"]');
+
+	if (userIdMeta && userRoleMeta) {
+		const userId = userIdMeta.getAttribute("content");
+		const userRole = userRoleMeta.getAttribute("content");
+
+		if (userId && userRole) {
+			// Initialize both AI and Widget broadcasting
+			window.initAIBroadcasting?.(userRole);
+			window.initWidgetBroadcasting?.(userRole, userId);
+		}
+	}
+});

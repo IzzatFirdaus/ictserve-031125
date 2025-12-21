@@ -11,6 +11,7 @@ return [
     App\Providers\PulseServiceProvider::class,
     App\Providers\RecaptchaServiceProvider::class,
     App\Providers\VoltServiceProvider::class,
+    App\Providers\WidgetServiceProvider::class,
     Laravel\Sanctum\SanctumServiceProvider::class,
     Spatie\Activitylog\ActivitylogServiceProvider::class,
 ];

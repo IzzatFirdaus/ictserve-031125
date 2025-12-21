@@ -72,8 +72,9 @@
     68 => 'App\\Providers\\PulseServiceProvider',
     69 => 'App\\Providers\\RecaptchaServiceProvider',
     70 => 'App\\Providers\\VoltServiceProvider',
-    71 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    72 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    71 => 'App\\Providers\\WidgetServiceProvider',
+    72 => 'Laravel\\Sanctum\\SanctumServiceProvider',
+    73 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
   ),
   'eager' => 
   array (
@@ -131,8 +132,9 @@
     51 => 'App\\Providers\\PulseServiceProvider',
     52 => 'App\\Providers\\RecaptchaServiceProvider',
     53 => 'App\\Providers\\VoltServiceProvider',
-    54 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    55 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    54 => 'App\\Providers\\WidgetServiceProvider',
+    55 => 'Laravel\\Sanctum\\SanctumServiceProvider',
+    56 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
   ),
   'deferred' => 
   array (
