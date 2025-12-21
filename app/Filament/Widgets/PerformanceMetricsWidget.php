@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Services\PerformanceMonitoringService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -23,10 +24,28 @@ use Illuminate\Support\HtmlString;
  */
 class PerformanceMetricsWidget extends BaseWidget
 {
+    use WidgetMetadata;
+
     /**
      * Widget sort order on dashboard
      */
     protected static ?int $sort = 10;
+
+    /**
+     * Widget roles - restricted access
+     */
+    public static function getWidgetRoles(): array
+    {
+        return ['admin', 'superuser'];
+    }
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D03 §8.2 Performance monitoring requirements, D04 §3.2 Dashboard widgets';
+    }
 
     /**
      * Polling interval for real-time updates (5 minutes)

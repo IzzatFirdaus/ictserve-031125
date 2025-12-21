@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Enums\LoanStatus;
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\LoanApplication;
 use Carbon\Carbon;
 use Filament\Actions\Action;
@@ -33,6 +34,8 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class LoanApprovalQueueWidget extends BaseWidget
 {
+    use WidgetMetadata;
+
     protected ?string $pollingInterval = '300s';
 
     protected int|string|array $columnSpan = 'full';
@@ -53,6 +56,14 @@ class LoanApprovalQueueWidget extends BaseWidget
             ])
             ->orderByDesc('created_at')
             ->limit(10);
+    }
+
+    /**
+     * Get widget documentation reference.
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D03 SRS-AST-002';
     }
 
     protected function getTableColumns(): array

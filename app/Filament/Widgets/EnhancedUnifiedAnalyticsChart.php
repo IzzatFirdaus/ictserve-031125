@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Services\UnifiedAnalyticsService;
 use Filament\Widgets\ChartWidget;
 
@@ -17,6 +18,16 @@ use Filament\Widgets\ChartWidget;
  */
 class EnhancedUnifiedAnalyticsChart extends ChartWidget
 {
+    use WidgetMetadata;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 WCAG 2.2 AA compliance';
+    }
+
     protected ?string $pollingInterval = '300s';
 
     protected ?string $heading = 'Analitik Terpadu - Trend 6 Bulan';

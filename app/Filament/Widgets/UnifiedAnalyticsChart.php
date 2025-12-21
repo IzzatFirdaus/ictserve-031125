@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use Filament\Widgets\ChartWidget;
@@ -11,6 +12,16 @@ use Illuminate\Support\Carbon;
 
 class UnifiedAnalyticsChart extends ChartWidget
 {
+    use WidgetMetadata;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 WCAG 2.2 AA compliance';
+    }
+
     protected ?string $pollingInterval = '300s';
 
     protected ?string $heading = 'Analitik Bulanan (6 Bulan Terakhir)';

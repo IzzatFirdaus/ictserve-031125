@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\HelpdeskTicket;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -30,7 +31,17 @@ use Livewire\Attributes\On;
  */
 class HelpdeskStatsOverview extends StatsOverviewWidget
 {
+    use WidgetMetadata;
+
     protected static ?int $sort = 1;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D03 SRS-ADM-003';
+    }
 
     protected static bool $isLazy = false; // Critical widget - load immediately
 

@@ -4,12 +4,23 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Services\EmailQueueMonitoringService;
 use Filament\Widgets\ChartWidget;
 
 class EmailQueueTrendsWidget extends ChartWidget
 {
+    use WidgetMetadata;
+
     protected static ?int $sort = 2;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D11 §9 Queue management';
+    }
 
     public function getHeading(): ?string
     {
