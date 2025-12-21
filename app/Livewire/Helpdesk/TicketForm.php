@@ -9,8 +9,10 @@ use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
 use App\Models\User;
 use App\Traits\CitizenCentricDesign;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
@@ -279,7 +281,7 @@ class TicketForm extends Component
                     'to_step' => $this->currentStep,
                 ]);
             }
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             // Provide clear validation feedback
             $this->provideFeedback(
                 __('helpdesk.please_fix_errors'),
@@ -482,7 +484,7 @@ class TicketForm extends Component
                 'priority' => $this->priority,
                 'has_attachments' => ! empty($this->attachments),
             ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             $this->rollbackOptimisticState(__('helpdesk.validation_errors'));
 
             // Provide actionable validation feedback
@@ -509,11 +511,12 @@ class TicketForm extends Component
                 'is_authenticated' => $this->isAuthenticated,
                 'user_id' => $this->userId,
                 'optimistic_ticket' => $this->optimisticTicketNumber,
+                'error_class' => \get_class($e),
             ]);
 
             // Track submission failure for improvement
             $this->trackUserInteraction('ticket_submission_failed', [
-                'error_type' => get_class($e),
+                'error_type' => \get_class($e),
                 'error_message' => $e->getMessage(),
             ]);
         } finally {
@@ -741,7 +744,7 @@ class TicketForm extends Component
     // RENDER
     // ========================================
 
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.helpdesk.ticket-form');
     }
