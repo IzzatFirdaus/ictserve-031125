@@ -9,7 +9,7 @@ use Livewire\Form;
 
 /**
  * Component name: Loan Application Form
- * Description: Optimized Livewire form object for asset loan application with validation rules and bilingual support
+ * Description: Optimized Livewire form object for asset loan application with validation rules in Bahasa Melayu (v3.6.0)
  *
  * @author Pasukan BPM MOTAC
  *
@@ -17,14 +17,17 @@ use Livewire\Form;
  * @trace D04 §6.3 (Asset Loan System)
  * @trace D10 §7 (Component Documentation)
  * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D15 (Bahasa Melayu sahaja v3.6.0)
  *
  * @requirements 1.4, 1.5, 11.5, 15.1, 15.2, 21.4
  *
  * @wcag-level AA
  *
- * @version 1.0.0
+ * @version 3.6.0
  *
  * @created 2025-11-03
+ *
+ * @updated 2025-12-21 (Bahasa Melayu sahaja)
  */
 class LoanApplicationForm extends Form
 {
@@ -59,45 +62,45 @@ class LoanApplicationForm extends Form
     public ?string $end_date = null;
 
     /**
-     * Get validation messages with bilingual support
+     * Get validation messages in Bahasa Melayu (v3.6.0)
      *
      * @return array<string, string>
      */
     public function messages(): array
     {
         return [
-            'name.required' => __('loans.name_required'),
-            'email.required' => __('loans.email_required'),
-            'email.email' => __('loans.email_invalid'),
-            'phone.required' => __('loans.phone_required'),
-            'division_id.required' => __('loans.division_required'),
-            'grade_id.required' => __('loans.grade_required'),
-            'asset_id.required' => __('loans.asset_required'),
-            'purpose.required' => __('loans.purpose_required'),
-            'purpose.min' => __('loans.purpose_min'),
-            'purpose.max' => __('loans.purpose_max'),
-            'start_date.required' => __('loans.start_date_required'),
-            'start_date.after' => __('loans.start_date_after'),
-            'end_date.required' => __('loans.end_date_required'),
-            'end_date.after' => __('loans.end_date_after'),
+            'name.required' => 'Nama penuh diperlukan.',
+            'email.required' => 'Alamat e-mel diperlukan.',
+            'email.email' => 'Format alamat e-mel tidak sah.',
+            'phone.required' => 'Nombor telefon diperlukan.',
+            'division_id.required' => 'Bahagian diperlukan.',
+            'grade_id.required' => 'Gred diperlukan.',
+            'asset_id.required' => 'Aset diperlukan.',
+            'purpose.required' => 'Tujuan pinjaman diperlukan.',
+            'purpose.min' => 'Tujuan pinjaman mestilah sekurang-kurangnya 10 aksara.',
+            'purpose.max' => 'Tujuan pinjaman tidak boleh melebihi 1000 aksara.',
+            'start_date.required' => 'Tarikh mula diperlukan.',
+            'start_date.after' => 'Tarikh mula mestilah selepas hari ini.',
+            'end_date.required' => 'Tarikh tamat diperlukan.',
+            'end_date.after' => 'Tarikh tamat mestilah selepas tarikh mula.',
         ];
     }
 
     /**
-     * Get validation attributes with bilingual support
+     * Get validation attributes in Bahasa Melayu (v3.6.0)
      *
      * @return array<string, string>
      */
     public function validationAttributes(): array
     {
         return [
-            'name' => __('loans.full_name'),
-            'email' => __('loans.email_address'),
-            'phone' => __('loans.phone_number'),
-            'staff_id' => __('loans.staff_id'),
-            'division_id' => __('loans.division'),
-            'grade_id' => __('loans.grade'),
-            'asset_id' => __('loans.asset'),
+            'name' => 'Nama Penuh',
+            'email' => 'Alamat E-mel',
+            'phone' => 'Nombor Telefon',
+            'staff_id' => 'ID Staf',
+            'division_id' => 'Bahagian',
+            'grade_id' => 'Gred',
+            'asset_id' => 'Aset',
             'purpose' => __('loans.purpose'),
             'start_date' => __('loans.start_date'),
             'end_date' => __('loans.end_date'),
