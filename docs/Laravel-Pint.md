@@ -245,6 +245,16 @@ chmod +x .git/hooks/pre-commit
 vendor/bin/pint --dirty
 ```
 
+### Windows Note
+
+If `vendor/bin/pint` opens in another app on Windows, run it via PHP instead:
+
+```bash
+php vendor/bin/pint --dirty
+```
+
+You can also add a Windows shim at `vendor/bin/pint.bat` to allow `vendor/bin/pint --dirty`.
+
 ## CI/CD Integration
 
 ### GitHub Actions
