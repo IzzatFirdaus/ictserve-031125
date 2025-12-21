@@ -97,3 +97,22 @@ desktop.ini
 
 # Test artifacts and temp views
 /storage/framework/views_testing/
+
+# IDE helpers and cache
+.ide-helpers/
+.intelephense/
+_ide_helper.php
+_ide_helper_models.php
+
+# Backup files
+*.bak
+
+# Docker build artifacts
+docker/php-fpm/
+
+# Bootstrap cache
+bootstrap/cache/filament/
+
+# Development tools
+pint.bat
+stubs/
