@@ -46,7 +46,7 @@ class RecentTicketsTable extends TableWidget
         return $table
             ->query(
                 HelpdeskTicket::query()
-                    ->with(['user', 'user.department', 'category', 'assignedUser', 'relatedAsset'])
+                    ->with(['user', 'user.division', 'category', 'assignedUser', 'relatedAsset'])
                     ->latest()
                     ->limit(10)
             )
@@ -72,7 +72,7 @@ class RecentTicketsTable extends TableWidget
 
                 TextColumn::make('user.name')
                     ->label(__('widgets.reported_by'))
-                    ->description(fn (HelpdeskTicket $record): ?string => $record->user?->department?->name)
+                    ->description(fn (HelpdeskTicket $record): ?string => $record->user?->division?->name)
                     ->placeholder($this->getGuestPlaceholder()),
 
                 TextColumn::make('category.name_ms')

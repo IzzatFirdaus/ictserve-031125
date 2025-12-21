@@ -21,7 +21,6 @@ use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
-use function collect;
 use function trans;
 
 /**
@@ -44,7 +43,7 @@ class SLAThresholdManagement extends Page implements HasForms
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 2;
 

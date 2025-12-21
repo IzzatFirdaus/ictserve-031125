@@ -32,7 +32,7 @@ class NotificationCenter extends Page
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 3;
 
@@ -71,7 +71,7 @@ class NotificationCenter extends Page
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.notification_center.group');
+        return __('filament.navigation.system');
     }
 
     public function getTitle(): string|Htmlable
@@ -83,30 +83,30 @@ class NotificationCenter extends Page
     {
         return [
             Action::make('mark_all_read')
-                ->label('Mark All as Read')
+                ->label('Tandai Semua Dibaca')
                 ->icon('heroicon-o-check')
                 ->color('success')
                 ->action('markAllAsRead')
                 ->visible(fn () => $this->unreadCount > 0),
 
             Action::make('clear_all')
-                ->label('Clear All')
+                ->label('Kosongkan Semua')
                 ->icon('heroicon-o-trash')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->modalHeading('Clear All Notifications')
-                ->modalDescription('Are you sure you want to clear all notifications? This action cannot be undone.')
+                ->modalHeading('Kosongkan Semua Pemberitahuan')
+                ->modalDescription('Adakah anda pasti mahu mengosongkan semua pemberitahuan? Tindakan ini tidak boleh dibuat asal.')
                 ->action('clearAllNotifications'),
 
             Action::make('notification_preferences')
-                ->label('Preferences')
+                ->label('Keutamaan')
                 ->icon('heroicon-o-cog-6-tooth')
                 ->color('gray')
                 ->url('/admin/notification-preferences')
                 ->openUrlInNewTab(false),
 
             Action::make('refresh')
-                ->label('Refresh')
+                ->label('Muat Semula')
                 ->icon('heroicon-o-arrow-path')
                 ->color('info')
                 ->action('loadNotifications')
@@ -147,7 +147,7 @@ class NotificationCenter extends Page
             return [
                 'id' => $notification->id,
                 'type' => $this->getNotificationType($notification->type),
-                'title' => $data['title'] ?? 'Notification',
+                'title' => $data['title'] ?? 'Pemberitahuan',
                 'message' => $data['message'] ?? '',
                 'icon' => $this->getNotificationIcon($notification->type),
                 'color' => $this->getNotificationColor($notification->type),
@@ -219,7 +219,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        Notification::make()->title('Notification marked as read.')->success()->send();
+        Notification::make()->title('Pemberitahuan ditandai sebagai dibaca.')->success()->send();
     }
 
     public function markAsUnread(string $notificationId): void
@@ -231,7 +231,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        Notification::make()->title('Notification marked as unread.')->success()->send();
+        Notification::make()->title('Pemberitahuan ditandai sebagai belum dibaca.')->success()->send();
     }
 
     public function markAllAsRead(): void
@@ -251,7 +251,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        Notification::make()->title('All notifications marked as read.')->success()->send();
+        Notification::make()->title('Semua pemberitahuan ditandai sebagai dibaca.')->success()->send();
     }
 
     public function deleteNotification(string $notificationId): void
@@ -263,7 +263,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        Notification::make()->title('Notification deleted.')->success()->send();
+        Notification::make()->title('Pemberitahuan dipadam.')->success()->send();
     }
 
     public function clearAllNotifications(): void
@@ -282,7 +282,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        Notification::make()->title('All notifications cleared.')->success()->send();
+        Notification::make()->title('Semua pemberitahuan dikosongkan.')->success()->send();
     }
 
     public function handleNotificationAction(string $notificationId, ?string $actionUrl = null): void
@@ -298,14 +298,14 @@ class NotificationCenter extends Page
     private function getNotificationType(string $type): string
     {
         $typeMap = [
-            'App\\Notifications\\HelpdeskTicketAssigned' => 'Ticket Assigned',
-            'App\\Notifications\\HelpdeskTicketStatusChanged' => 'Ticket Status Changed',
-            'App\\Notifications\\LoanApplicationApproved' => 'Loan Approved',
-            'App\\Notifications\\LoanApplicationRejected' => 'Loan Rejected',
-            'App\\Notifications\\AssetOverdue' => 'Asset Overdue',
-            'App\\Notifications\\SecurityIncident' => 'Security Alert',
-            'App\\Notifications\\SystemMaintenance' => 'System Maintenance',
-            'App\\Notifications\\SLABreach' => 'SLA Breach',
+            'App\\Notifications\\HelpdeskTicketAssigned' => 'Tiket Ditugaskan',
+            'App\\Notifications\\HelpdeskTicketStatusChanged' => 'Status Tiket Berubah',
+            'App\\Notifications\\LoanApplicationApproved' => 'Pinjaman Diluluskan',
+            'App\\Notifications\\LoanApplicationRejected' => 'Pinjaman Ditolak',
+            'App\\Notifications\\AssetOverdue' => 'Aset Tertunggak',
+            'App\\Notifications\\SecurityIncident' => 'Amaran Keselamatan',
+            'App\\Notifications\\SystemMaintenance' => 'Penyelenggaraan Sistem',
+            'App\\Notifications\\SLABreach' => 'Pelanggaran SLA',
         ];
 
         return $typeMap[$type] ?? class_basename($type);

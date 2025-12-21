@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
  */
 class LoanAnalyticsWidget extends ChartWidget
 {
-    protected ?string $heading = 'Loan Applications Trend';
+    protected ?string $heading = 'Trend Permohonan Pinjaman';
 
     protected static ?int $sort = 2;
 
@@ -43,7 +43,7 @@ class LoanAnalyticsWidget extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Applications',
+                    'label' => 'Permohonan',
                     'data' => $months->map(fn ($m) => $data[now()->parse($m)->format('Y-m')] ?? 0)->values(),
                     'borderColor' => '#3b82f6',
                     'backgroundColor' => 'rgba(59, 130, 246, 0.1)',

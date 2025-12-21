@@ -48,7 +48,7 @@ class BedrockRoutingConfiguration extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.bedrock_routing.group');
+        return __('filament.navigation.ollama_ai');
     }
 
     public static function canAccess(): bool

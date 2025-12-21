@@ -31,7 +31,7 @@ class PulseDashboard extends Page
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBar;
 
-    protected static string|UnitEnum|null $navigationGroup = 'System';
+    protected static string|UnitEnum|null $navigationGroup = 'Sistem';
 
     protected static ?int $navigationSort = 10;
 
