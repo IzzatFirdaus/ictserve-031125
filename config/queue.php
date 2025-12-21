@@ -8,8 +8,9 @@ $redisSupported = static function (): bool {
 
 $defaultQueueConnection = env('QUEUE_CONNECTION', 'database');
 
+// For WSL Horizon setup, we'll use Redis when available
 if ($defaultQueueConnection === 'redis' && ! $redisSupported()) {
-    $defaultQueueConnection = 'sync';
+    $defaultQueueConnection = 'database'; // Fall back to database instead of sync
 }
 
 return [

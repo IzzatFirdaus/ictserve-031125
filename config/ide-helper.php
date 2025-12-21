@@ -197,6 +197,7 @@ return [
     */
     'ignored_facades' => [
         'PDF', // Ignore PDF facade to avoid conflict with Pdf
+        'Pdf', // Ignore Pdf facade to avoid conflict with PDF
     ],
 
     'magic' => [],
