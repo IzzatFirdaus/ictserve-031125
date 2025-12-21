@@ -9,10 +9,12 @@ use App\Enums\LoanStatus;
 use App\Filament\Pages\UnifiedAnalyticsDashboard;
 use App\Filament\Widgets\AssetUtilizationWidget;
 use App\Filament\Widgets\LoanApprovalQueueWidget;
+use App\Filament\Widgets\RecentTicketsTable;
 use App\Filament\Widgets\UnifiedDashboardOverview;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\Division;
+use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -267,6 +269,36 @@ class DashboardWidgetTest extends TestCase
         $widget->assertSuccessful()
             ->assertSee($highPriorityApp->application_number)
             ->assertSee($normalPriorityApp->application_number);
+    }
+
+    // ========================================
+    // Recent Tickets Widget Tests
+    // ========================================
+
+    #[Test]
+    public function recent_tickets_table_displays_user_division(): void
+    {
+        $division = Division::factory()->create([
+            'name_ms' => 'Bahagian ICT',
+            'name_en' => 'ICT Division',
+        ]);
+
+        $user = User::factory()->create([
+            'division_id' => $division->id,
+        ]);
+
+        HelpdeskTicket::factory()->create([
+            'user_id' => $user->id,
+            'division_id' => $division->id,
+            'status' => 'open',
+        ]);
+
+        $this->actingAs($this->admin);
+
+        Livewire::test(RecentTicketsTable::class)
+            ->assertSuccessful()
+            ->assertSee($user->name)
+            ->assertSee($division->name);
     }
 
     // ========================================
