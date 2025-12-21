@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Services\HorizonMonitoringService;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Cache;
@@ -18,11 +19,29 @@ use Illuminate\Support\Facades\Cache;
  */
 class HorizonHealthWidget extends Widget
 {
+    use WidgetMetadata;
+
     protected string $view = 'filament.widgets.horizon-health-widget';
 
     protected int|string|array $columnSpan = 'full';
 
     protected static ?int $sort = 10;
+
+    /**
+     * Widget roles - restricted access
+     */
+    public static function getWidgetRoles(): array
+    {
+        return ['admin', 'superuser'];
+    }
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D11 §9 Laravel Horizon integration, D04 §3.2 Dashboard widgets';
+    }
 
     /**
      * Get widget data with caching

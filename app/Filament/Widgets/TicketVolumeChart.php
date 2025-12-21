@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Services\HelpdeskReportService;
 use Filament\Widgets\ChartWidget;
 
@@ -16,6 +17,16 @@ use Filament\Widgets\ChartWidget;
  */
 class TicketVolumeChart extends ChartWidget
 {
+    use WidgetMetadata;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 WCAG 2.2 AA compliance';
+    }
+
     protected ?string $heading = 'Volum Tiket (30 Hari Terakhir)';
 
     // Make the chart responsive so it can sit side-by-side with other charts

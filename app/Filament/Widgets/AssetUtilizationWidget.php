@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Enums\AssetStatus;
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\Asset;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +19,19 @@ use Illuminate\Support\Facades\DB;
  */
 class AssetUtilizationWidget extends ChartWidget
 {
+    use WidgetMetadata;
+
     protected ?string $heading = 'Asset Status Distribution';
 
     protected static ?int $sort = 3;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 WCAG 2.2 AA compliance';
+    }
 
     // Render side-by-side with other widgets on large viewports
     protected int|string|array $columnSpan = [

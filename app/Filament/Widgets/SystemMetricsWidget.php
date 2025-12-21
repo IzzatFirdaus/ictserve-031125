@@ -4,12 +4,31 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Services\PerformanceMonitoringService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class SystemMetricsWidget extends BaseWidget
 {
+    use WidgetMetadata;
+
+    /**
+     * Widget roles - restricted access
+     */
+    public static function getWidgetRoles(): array
+    {
+        return ['superuser'];
+    }
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D03 §8.2 Performance monitoring requirements, D04 §3.2 Dashboard widgets';
+    }
+
     protected function getStats(): array
     {
         $service = app(PerformanceMonitoringService::class);
