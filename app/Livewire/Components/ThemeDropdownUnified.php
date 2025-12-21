@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Components;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 /**
@@ -26,9 +27,9 @@ class ThemeDropdownUnified extends Component
 
     public function mount(): void
     {
-        // Theme is managed client-side via localStorage
-        // Server-side state is for initial render only
-        $this->theme = 'light'; // Immutable default per v3.6.0
+        // Use default light theme (no window.ICTServeTheme dependency)
+        // Client-side will sync from localStorage via Alpine.js
+        $this->theme = 'light'; // Default per ICTServe v3.6.0
     }
 
     public function setTheme(string $theme): void
@@ -40,7 +41,7 @@ class ThemeDropdownUnified extends Component
         $this->dispatch('theme-changed', ['theme' => $this->theme]);
     }
 
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.components.theme-dropdown-unified');
     }

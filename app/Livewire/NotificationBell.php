@@ -33,6 +33,9 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
@@ -177,16 +180,16 @@ class NotificationBell extends Component
         // Dispatch toast notification for user feedback
         $data = $event['notification'] ?? $event;
 
-        if (! is_array($data)) {
+        if (! \is_array($data)) {
             $data = (array) $data;
         }
 
         /** @var array<string, mixed> $data */
         $rawTitle = $data['title'] ?? null;
-        $title = is_scalar($rawTitle) ? (string) $rawTitle : (string) __('notifications.new_notification');
+        $title = \is_scalar($rawTitle) ? (string) $rawTitle : (string) __('notifications.new_notification');
 
         $rawType = $data['type'] ?? 'general';
-        $typeStr = is_scalar($rawType) ? (string) $rawType : 'general';
+        $typeStr = \is_scalar($rawType) ? (string) $rawType : 'general';
         $type = $this->mapNotificationType($typeStr);
 
         $this->dispatch('toast', message: $title, type: $type === 'system' ? 'info' : 'success');
@@ -223,9 +226,9 @@ class NotificationBell extends Component
     public function handleAccountLinked(array $event): void
     {
         $rawCount = $event['linked_submissions'] ?? 0;
-        $linkedCount = is_numeric($rawCount) ? (int) $rawCount : 0;
+        $linkedCount = \is_numeric($rawCount) ? (int) $rawCount : 0;
 
-        $message = sprintf(
+        $message = \sprintf(
             (string) __('notifications.submissions_linked'),
             $linkedCount
         );
@@ -247,8 +250,8 @@ class NotificationBell extends Component
     public function handleApiTokenCreated(array $event): void
     {
         $rawName = $event['token_name'] ?? 'Unknown';
-        $tokenName = is_scalar($rawName) ? (string) $rawName : 'Unknown';
-        $message = sprintf((string) __('notifications.api_token_created'), $tokenName);
+        $tokenName = \is_scalar($rawName) ? (string) $rawName : 'Unknown';
+        $message = \sprintf((string) __('notifications.api_token_created'), $tokenName);
 
         $this->dispatch('toast', message: $message, type: 'success');
         $this->loadNotifications();
@@ -267,9 +270,9 @@ class NotificationBell extends Component
     public function handleGoogleSsoLinked(array $event): void
     {
         $rawEmail = $event['google_email'] ?? (string) __('notifications.google_account');
-        $googleEmail = is_scalar($rawEmail) ? (string) $rawEmail : '';
+        $googleEmail = \is_scalar($rawEmail) ? (string) $rawEmail : '';
 
-        $message = sprintf((string) __('notifications.google_sso_linked'), $googleEmail);
+        $message = \sprintf((string) __('notifications.google_sso_linked'), $googleEmail);
 
         $this->dispatch('toast', message: $message, type: 'success');
         $this->loadNotifications();
@@ -314,11 +317,11 @@ class NotificationBell extends Component
                     'id' => $notification->id,
                     'type' => $type,
                     'category' => $category,
-                    'title' => isset($data['title']) && is_scalar($data['title']) ? (string) $data['title'] : (string) __('notifications.untitled'),
-                    'message' => isset($data['message']) ? $data['message'] : '',
-                    'created_at' => \Carbon\Carbon::parse($notification->created_at)->diffForHumans(),
+                    'title' => isset($data['title']) && \is_scalar($data['title']) ? (string) $data['title'] : (string) __('notifications.untitled'),
+                    'message' => $data['message'] ?? '',
+                    'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
                     'created_at_raw' => $notification->created_at,
-                    'url' => isset($data['url']) ? $data['url'] : null,
+                    'url' => $data['url'] ?? null,
                     'icon' => (string) $this->getIconForType($type),
                     'iconBg' => (string) $this->getIconBgForType($type),
                 ];
@@ -331,7 +334,7 @@ class NotificationBell extends Component
         // Group by category
         // Cast to array to ensure type safety.
         // PHPStan complains because groupBy returns collection of collections, which toArray converts recursively.
-        $categorized = collect($notifications)
+        $categorized = \collect($notifications)
             ->groupBy('category')
             ->map(fn ($group) => $group->toArray())
             ->toArray();
@@ -412,11 +415,9 @@ class NotificationBell extends Component
             return $this->recentNotifications;
         }
 
-        return array_filter(
+        return \array_filter(
             $this->recentNotifications,
-            function ($n) {
-                return isset($n['category']) && $n['category'] === $this->activeCategory;
-            }
+            fn ($n) => isset($n['category']) && $n['category'] === $this->activeCategory
         );
     }
 
@@ -475,7 +476,7 @@ class NotificationBell extends Component
     /**
      * Render the component.
      */
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.notification-bell', [
             'filteredNotifications' => $this->getFilteredNotifications(),
