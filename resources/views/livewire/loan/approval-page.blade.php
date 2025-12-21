@@ -527,7 +527,7 @@ $loanDuration = computed(function () {
                             {{-- Approve Button --}}
                             <button type="button" wire:click="approve" wire:loading.attr="disabled"
                                 wire:target="approve" @if ($isProcessing) disabled @endif
-                                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-success-600 hover:bg-success-700 disabled:bg-success-400 text-white font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-success-300 dark:focus-visible:ring-success-800"
+                                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-success-600 hover:bg-success-700 disabled:bg-success-400 text-white font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-success-300 dark:focus-visible:ring-3 focus-visible:ring-success-800"
                                 aria-label="{{ __('loan.approval.approve_button') }}">
                                 <span wire:loading.remove wire:target="approve" class="flex items-center">
                                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -553,7 +553,7 @@ $loanDuration = computed(function () {
                             {{-- Reject Button --}}
                             <button type="button" wire:click="reject" wire:loading.attr="disabled"
                                 wire:target="reject" @if ($isProcessing) disabled @endif
-                                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-danger-600 hover:bg-danger-700 disabled:bg-danger-400 text-white font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-300 dark:focus-visible:ring-danger-800"
+                                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-danger-600 hover:bg-danger-700 disabled:bg-danger-400 text-white font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-300 dark:focus-visible:ring-3 focus-visible:ring-danger-800"
                                 aria-label="{{ __('loan.approval.reject_button') }}">
                                 <span wire:loading.remove wire:target="reject" class="flex items-center">
                                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2"

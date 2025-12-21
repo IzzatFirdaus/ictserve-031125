@@ -102,7 +102,7 @@
                 {{ __('Livewire Integration') }}
             </h2>
 
-            <div class="bg-blue-50 rounded-lg p-6 space-y-4">
+            <div class="bg-primary-50 rounded-lg p-6 space-y-4">
                 <h3 class="font-medium text-gray-900">
                     {{ __('Interactive Examples') }}
                 </h3>
@@ -138,7 +138,7 @@
                 {{ __('WCAG 2.2 AA Compliance') }}
             </h2>
 
-            <div class="bg-green-50 rounded-lg p-6 space-y-4">
+            <div class="bg-success-50 rounded-lg p-6 space-y-4">
                 <h3 class="font-medium text-gray-900">
                     {{ __('Accessibility Features') }}
                 </h3>

@@ -280,7 +280,7 @@ new #[Layout('layouts.guest')] class extends Component
                 </div>
 
                 {{-- Password Requirements Checklist (MyDS Card - D13 §2.7) --}}
-                <div id="password-requirements" class="mt-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-md border border-slate-200 dark:border-slate-600">
+                <div id="password-requirements" class="mt-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
                     <p class="text-sm font-medium font-body text-slate-700 dark:text-slate-300 mb-3">{{ __('auth.password_requirements') }}:</p>
                     <ul class="space-y-2 text-sm font-body">
                         <li class="flex items-center gap-2 {{ $passwordChecks['length'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
@@ -373,14 +373,14 @@ new #[Layout('layouts.guest')] class extends Component
 
         {{-- Form Actions (MyDS Touch Targets - D13 §2.7) --}}
         <div class="flex items-center justify-between mt-8 pt-4">
-            <a class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 underline rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800 min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
+            <a class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 underline rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800 min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
                href="{{ route('login') }}"
                wire:navigate>
                 {{ __('auth.already_registered') }}
             </a>
 
             <button type="submit"
-                class="min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 rounded-lg shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
+                class="min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 rounded-lg shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
                 @if($isSubmitting) disabled @endif>
                 @if($isSubmitting)
                     <span class="flex items-center gap-2">

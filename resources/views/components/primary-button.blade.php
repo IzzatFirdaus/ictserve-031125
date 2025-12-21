@@ -13,6 +13,6 @@
  */
 --}}
 <button
-    {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center px-4 py-2 bg-slate-800 dark:bg-slate-200 border border-transparent rounded-lg font-semibold text-xs text-white dark:text-slate-800 uppercase tracking-widest hover:bg-slate-700 dark:hover:bg-white focus:bg-slate-700 dark:focus:bg-white active:bg-slate-900 dark:active:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 transition ease-in-out duration-150']) }}>
+    {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center justify-center min-h-11 min-w-11 px-4 py-2 bg-primary-600 border border-transparent rounded-lg font-semibold text-sm text-white shadow-button hover:bg-primary-700 focus-visible:bg-primary-700 active:bg-primary-800 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200']) }}>
     {{ $slot }}
 </button>

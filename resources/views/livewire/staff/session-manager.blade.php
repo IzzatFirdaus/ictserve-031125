@@ -48,7 +48,7 @@
     @endif
 
     <div class="flex items-center mt-5">
-        <x-primary-button wire:click="logoutOtherBrowserSessions" wire:loading.attr="disabled" wire:confirm="Are you sure you want to log out of your other browser sessions?" class="min-h-11 focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500">
+        <x-primary-button wire:click="logoutOtherBrowserSessions" wire:loading.attr="disabled" wire:confirm="Are you sure you want to log out of your other browser sessions?" class="min-h-11 focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500">
             {{ __('Log Out Other Browser Sessions') }}
         </x-primary-button>
 

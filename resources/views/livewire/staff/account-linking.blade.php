@@ -80,7 +80,7 @@
                 <label for="searchEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ __('account_linking.email_label') }}
                 </label>
-                <div class="mt-1 flex rounded-md shadow-sm">
+                <div class="mt-1 flex rounded-lg shadow-sm">
                     <input
                         type="email"
                         id="searchEmail"
@@ -112,7 +112,7 @@
                     {{ __('account_linking.email_help') }}
                 </p>
                 @error('searchEmail')
-                    <p class="mt-1 text-sm text-red-600 dark:text-red-400" role="alert">{{ $message }}</p>
+                    <p class="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">{{ $message }}</p>
                 @enderror
             </div>
         </form>
@@ -198,14 +198,14 @@
                                 <div class="flex items-center gap-2">
                                     {{-- Type Badge --}}
                                     @if ($submission['type'] === 'ticket')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-info-100 text-info-800 dark:bg-info-900/30 dark:text-info-300">
                                             <svg class="mr-1 h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 013.5 2h9A1.5 1.5 0 0114 3.5v11.75A2.75 2.75 0 0016.75 18h-12A2.75 2.75 0 012 15.25V3.5zm3.75 7a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5zm0 3a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5zM5 5.75A.75.75 0 015.75 5h4.5a.75.75 0 01.75.75v2.5a.75.75 0 01-.75.75h-4.5A.75.75 0 015 8.25v-2.5z" clip-rule="evenodd" />
                                             </svg>
                                             {{ __('account_linking.type_ticket') }}
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/30 dark:text-primary-300">
                                             <svg class="mr-1 h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path d="M1 4.25a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0119 4.25v11.5A2.25 2.25 0 0116.75 18H3.25A2.25 2.25 0 011 15.75V4.25zM3.25 3.5a.75.75 0 00-.75.75v.5h15v-.5a.75.75 0 00-.75-.75H3.25zM2.5 6.5v9.25c0 .414.336.75.75.75h13.5a.75.75 0 00.75-.75V6.5h-15z" />
                                             </svg>
@@ -252,7 +252,7 @@
                         <button
                             type="button"
                             wire:click="resetSearch"
-                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 min-h-11"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                         >
                             {{ __('common.cancel') }}
                         </button>
@@ -262,7 +262,7 @@
                             wire:loading.attr="disabled"
                             wire:target="linkSubmissions"
                             @disabled($this->selectedCount === 0)
-                            class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-primary-600 border border-transparent rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-h-11"
+                            class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-primary-600 border border-transparent rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-h-11"
                             aria-label="{{ __('account_linking.link_button') }}"
                         >
                             <span wire:loading.remove wire:target="linkSubmissions">
@@ -296,7 +296,7 @@
                 <button
                     type="button"
                     wire:click="resetSearch"
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-200 min-h-11"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-200 min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                     {{ __('account_linking.try_different_email') }}
                 </button>
@@ -306,7 +306,7 @@
 
     {{-- Back to Dashboard Link --}}
     <div class="mt-6 text-center">
-        <a href="{{ route('dashboard') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+        <a href="{{ route('dashboard') }}" class="inline-flex min-h-11 items-center rounded-lg px-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
             ← {{ __('account_linking.back_to_dashboard') }}
         </a>
     </div>

@@ -138,7 +138,7 @@ new #[Layout('layouts.guest')] class extends Component {
         <div class="flex items-center justify-between pt-2">
             <label for="remember" class="inline-flex items-center cursor-pointer min-h-11 py-2 group">
                 <input wire:model="form.remember" id="remember" type="checkbox"
-                    class="w-4 h-4 rounded-sm border-slate-300 dark:border-slate-600 text-primary-600 shadow-sm focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 dark:focus:ring-offset-slate-800 transition-colors duration-200"
+                    class="w-4 h-4 rounded-sm border-slate-300 dark:border-slate-600 text-primary-600 shadow-sm focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800 transition-colors duration-200"
                     name="remember">
                 <span class="ms-3 text-sm text-slate-600 dark:text-slate-400 font-body group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors duration-200">{{ __('auth.remember_me') }}</span>
             </label>

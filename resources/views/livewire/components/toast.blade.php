@@ -89,7 +89,7 @@
             {{-- Dismiss Button - 44×44px touch target per D12 §4.1 --}}
             <button type="button"
                 @click="show = false; setTimeout(() => $wire.dismissToast('{{ $toast['id'] }}'), 300)"
-                class="shrink-0 inline-flex items-center justify-center min-w-11 min-h-11 -m-2 rounded-lg text-current opacity-60 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-current transition-opacity"
+                class="shrink-0 inline-flex items-center justify-center min-w-11 min-h-11 -m-2 rounded-lg text-current opacity-60 hover:opacity-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-current transition-opacity"
                 aria-label="{{ __('Dismiss notification') }}">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path

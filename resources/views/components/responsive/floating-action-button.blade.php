@@ -53,10 +53,10 @@
 
     $colorClasses = match ($color) {
         'secondary' => 'bg-secondary-600 hover:bg-secondary-700 focus-visible:ring-secondary-500 text-white',
-        'success' => 'bg-success-600 hover:bg-success-700 focus-visible:ring-success-500 text-white',
-        'warning' => 'bg-warning-600 hover:bg-warning-700 focus-visible:ring-warning-500 text-white',
-        'danger' => 'bg-danger-600 hover:bg-danger-700 focus-visible:ring-danger-500 text-white',
-        default => 'bg-primary-600 hover:bg-primary-700 focus-visible:ring-primary-500 text-white',
+        'success' => 'bg-success-600 hover:bg-success-700 focus-visible:ring-3 focus-visible:ring-success-500 text-white',
+        'warning' => 'bg-warning-600 hover:bg-warning-700 focus-visible:ring-3 focus-visible:ring-warning-500 text-white',
+        'danger' => 'bg-danger-600 hover:bg-danger-700 focus-visible:ring-3 focus-visible:ring-danger-500 text-white',
+        default => 'bg-primary-600 hover:bg-primary-700 focus-visible:ring-3 focus-visible:ring-primary-500 text-white',
     };
 
     $visibilityClass = $showOnDesktop ? '' : 'md:hidden';

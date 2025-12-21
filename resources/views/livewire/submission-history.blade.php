@@ -41,7 +41,7 @@ last-updated: 2025-12-15
 				{{-- Helpdesk Tab --}}
 				<button id="helpdesk-tab" wire:click="switchTab('helpdesk')" type="button" role="tab"
 					aria-selected="{{ $activeTab === 'helpdesk' ? 'true' : 'false' }}" aria-controls="helpdesk-panel"
-				class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'helpdesk' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300' }}">
+				class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'helpdesk' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300' }}">
 					<x-heroicon-s-bell class="-ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
 					{{ __('portal.history_helpdesk_tab') }}
 				</button>
@@ -49,7 +49,7 @@ last-updated: 2025-12-15
 				{{-- Loans Tab --}}
 				<button id="loans-tab" wire:click="switchTab('loans')" type="button" role="tab"
 				aria-selected="{{ $activeTab === 'loans' ? 'true' : 'false' }}" aria-controls="loans-panel"
-				class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'loans' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300' }}">
+				class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'loans' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300' }}">
 					<x-heroicon-s-document class="-ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
 					{{ __('portal.history_loans_tab') }}
 				</button>
@@ -147,7 +147,7 @@ last-updated: 2025-12-15
 				<div class="flex items-center space-x-3">
 					@if($this->hasActiveFilters)
 					<button wire:click="clearFilters" type="button"
-						class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-w-11 min-h-11"
+						class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-w-11 min-h-11"
 						aria-label="{{ __('portal.clear_filters') }}">
 						<x-heroicon-o-x-mark class="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
 						{{ __('portal.clear_filters') }}
@@ -155,7 +155,7 @@ last-updated: 2025-12-15
 					@endif
 
 					<button wire:click="openSaveSearchModal" type="button"
-						class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-w-11 min-h-11"
+						class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-w-11 min-h-11"
 						aria-label="{{ __('portal.save_search_aria') }}">
 						<x-heroicon-o-arrow-down-tray class="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
 						{{ __('portal.save_search') }}
@@ -166,7 +166,7 @@ last-updated: 2025-12-15
 				@if(count($this->savedSearches) > 0)
 				<div class="relative inline-block text-left" x-data="{ open: false }" x-cloak>
 				<button @click="open = !open" type="button"
-					class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-w-11 min-h-11"
+					class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-w-11 min-h-11"
 					aria-haspopup="true" :aria-expanded="open" aria-label="{{ __('portal.saved_searches_aria') }}">
 					<x-heroicon-o-bookmark class="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
 					{{ __('portal.saved_searches') }} ({{ count($this->savedSearches) }})
@@ -177,7 +177,7 @@ last-updated: 2025-12-15
 						x-transition:leave="transition ease-in duration-75"
 						x-transition:leave-start="transform opacity-100 scale-100"
 						x-transition:leave-end="transform opacity-0 scale-95"
-						class="origin-top-right absolute right-0 mt-2 w-72 rounded-lg shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 dark:divide-gray-700 focus:outline-none z-10"
+						class="origin-top-right absolute right-0 mt-2 w-72 rounded-lg shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black/5 divide-y divide-gray-100 dark:divide-gray-700 focus:outline-none z-10"
 						role="menu" aria-orientation="vertical" style="display: none;">
 						@foreach($this->savedSearches as $search)
 						<div wire:key="saved-search-{{ $search['id'] }}" class="py-1">
@@ -234,7 +234,7 @@ last-updated: 2025-12-15
 			@if(!$this->hasActiveFilters)
 			<div class="mt-6">
 				<a href="{{ $activeTab === 'helpdesk' ? route('helpdesk.create') : route('loans.create') }}"
-					class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-w-11 min-h-11">
+					class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 min-w-11 min-h-11">
 					<x-heroicon-o-plus class="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
 					{{ $activeTab === 'helpdesk' ? __('portal.create_helpdesk_ticket') : __('portal.create_loan_application') }}
 				</a>
@@ -458,7 +458,7 @@ last-updated: 2025-12-15
 	@if($showSaveSearchModal)
 	<div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 		<div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-			<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"
+			<div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"
 				wire:click="closeSaveSearchModal"></div>
 			<span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 			<div
@@ -494,11 +494,11 @@ last-updated: 2025-12-15
 				</div>
 				<div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
 					<button wire:click="saveSearch" type="button"
-						class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 sm:ml-3 sm:w-auto sm:text-sm min-w-11 min-h-11">
+						class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 sm:ml-3 sm:w-auto sm:text-sm min-w-11 min-h-11">
 						{{ __('portal.save') }}
 					</button>
 					<button wire:click="closeSaveSearchModal" type="button"
-						class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm min-w-11 min-h-11">
+						class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-gray-900 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm min-w-11 min-h-11">
 						{{ __('portal.cancel') }}
 					</button>
 				</div>
@@ -507,3 +507,4 @@ last-updated: 2025-12-15
 	</div>
 	@endif
 </div>
+

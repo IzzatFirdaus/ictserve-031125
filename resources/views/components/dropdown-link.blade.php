@@ -13,4 +13,4 @@
  */
 --}}
 <a
-    {{ $attributes->merge(['class' => 'block w-full px-4 py-2 min-h-11 text-start text-sm leading-5 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 focus:bg-gray-100 dark:focus:bg-gray-700 transition-colors duration-200', 'role' => 'menuitem']) }}>{{ $slot }}</a>
+    {{ $attributes->merge(['class' => 'block w-full px-4 py-2 min-h-11 text-start text-sm leading-5 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 focus:bg-gray-100 dark:focus:bg-gray-700 transition-colors duration-200', 'role' => 'menuitem']) }}>{{ $slot }}</a>

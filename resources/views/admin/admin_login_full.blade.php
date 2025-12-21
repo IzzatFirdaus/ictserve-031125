@@ -43,12 +43,12 @@
                         </label>
                         <div class="mt-2">
                             <input id="email" name="email" type="email" autocomplete="email" required
-                                class="block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+                                class="block w-full min-h-11 rounded-lg border-0 px-3 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 sm:text-sm sm:leading-6"
                                 placeholder="nama@motac.gov.my"
                                 aria-describedby="email-error">
                         </div>
                         @error('email')
-                        <p class="mt-2 text-sm text-red-600" id="email-error">{{ $message }}</p>
+                        <p class="mt-2 text-sm text-danger-600" id="email-error">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -59,10 +59,10 @@
                         </label>
                         <div class="mt-2">
                             <input id="password" name="password" type="password" autocomplete="current-password" required
-                                class="block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6">
+                                class="block w-full min-h-11 rounded-lg border-0 px-3 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 sm:text-sm sm:leading-6">
                         </div>
                         @error('password')
-                        <p class="mt-2 text-sm text-red-600" id="password-error">{{ $message }}</p>
+                        <p class="mt-2 text-sm text-danger-600" id="password-error">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -70,14 +70,15 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <input id="remember-me" name="remember" type="checkbox"
-                                class="h-4 w-4 rounded border-slate-300 text-primary-500 focus:ring-primary-500">
+                                class="h-4 w-4 rounded border-slate-300 text-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <label for="remember-me" class="ml-3 block text-sm leading-6 text-slate-900">
                                 Ingat saya
                             </label>
                         </div>
 
                         <div class="text-sm leading-6">
-                            <a href="#" class="font-semibold text-primary-500 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-sm">
+                            <a href="#"
+                                class="inline-flex items-center min-h-11 px-2 font-semibold text-primary-500 hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded-lg">
                                 Lupa kata laluan?
                             </a>
                         </div>
@@ -86,7 +87,7 @@
                     <!-- Submit Button -->
                     <div>
                         <button type="submit"
-                            class="flex w-full justify-center rounded-md bg-primary-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 transition duration-150 ease-in-out">
+                            class="flex w-full min-h-11 justify-center rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 transition duration-150 ease-in-out">
                             Log Masuk
                         </button>
                     </div>
@@ -107,7 +108,7 @@
 
                     <div class="mt-6 grid gap-4">
                         <a href="#"
-                            class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:outline-offset-0">
+                            class="flex w-full min-h-11 items-center justify-center gap-3 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:outline-offset-0">
                             <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
                             </svg>

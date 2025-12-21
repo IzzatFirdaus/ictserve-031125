@@ -26,7 +26,7 @@
         <div 
             x-show="open" 
             x-transition
-            class="absolute z-50 mt-1 w-full bg-white dark:bg-slate-800 shadow-lg max-h-96 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+            class="absolute z-50 mt-1 w-full bg-white dark:bg-slate-800 shadow-lg max-h-96 rounded-lg py-1 text-base ring-1 ring-black/5 overflow-auto focus:outline-none sm:text-sm"
         >
             @foreach ($results as $result)
                 <a href="{{ $result['url'] }}" class="block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition duration-150 ease-in-out">
@@ -64,3 +64,4 @@
         </div>
     @endif
 </div>
+

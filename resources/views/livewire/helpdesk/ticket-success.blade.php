@@ -30,7 +30,7 @@
                         {{ __('helpdesk.can_claim_ticket_message') }}
                     </p>
                     <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                        class="mt-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-warning-600 hover:bg-warning-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-warning-500 dark:focus-visible:ring-offset-slate-900 min-h-11 min-w-11">
+                        class="mt-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-warning-600 hover:bg-warning-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-warning-500 dark:focus-visible:ring-offset-slate-900 min-h-11 min-w-11">
                         {{ __('helpdesk.view_my_tickets') }}
                     </a>
                 </div>
@@ -39,17 +39,17 @@
             <!-- Action Buttons -->
             <div class="mt-8 space-y-3">
                 <a href="{{ route('helpdesk.track', ['ticketNumber' => $ticketNumber]) }}"
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-900 min-h-11">
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-900 min-h-11">
                     {{ __('helpdesk.track_ticket') }}
                 </a>
 
                 <a href="{{ route('helpdesk.create') }}"
-                    class="w-full flex justify-center py-2 px-4 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-900 min-h-11">
+                    class="w-full flex justify-center py-2 px-4 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-900 min-h-11">
                     {{ __('helpdesk.submit_another_ticket') }}
                 </a>
 
                 <a href="{{ route('welcome') }}"
-                    class="w-full flex justify-center py-2 px-4 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-900 rounded-lg">
+                    class="w-full flex justify-center py-2 px-4 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-900 rounded-lg">
                     {{ __('common.back_to_home') }}
                 </a>
             </div>

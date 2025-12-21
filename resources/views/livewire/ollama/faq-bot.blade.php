@@ -146,7 +146,7 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
                 <button type="button" wire:click="switchProvider('ollama')"
-                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md transition-all min-h-11 {{ $aiProvider === 'ollama' ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400' }}"
+                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-all min-h-11 {{ $aiProvider === 'ollama' ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400' }}"
                     aria-label="Tukar ke Ollama Tempatan">
                     {{-- Ollama Local AI Icon --}}
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -158,7 +158,7 @@
                     Ollama
                 </button>
                 <button type="button" wire:click="switchProvider('bedrock')"
-                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md transition-all min-h-11 {{ $aiProvider === 'bedrock' ? 'bg-white dark:bg-slate-700 text-warning-600 dark:text-warning-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-warning-500 dark:hover:text-warning-400' }}"
+                    class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-all min-h-11 {{ $aiProvider === 'bedrock' ? 'bg-white dark:bg-slate-700 text-warning-600 dark:text-warning-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-warning-500 dark:hover:text-warning-400' }}"
                     aria-label="Tukar ke AWS Bedrock">
                     {{-- AWS Smile Icon (Compact) --}}
                     <svg class="w-4 h-4" viewBox="0 0 304 182" fill="currentColor" aria-hidden="true">
@@ -174,7 +174,7 @@
             {{-- Bedrock Model Selector (Compact) --}}
             @if ($aiProvider === 'bedrock')
                 <select wire:model.live="bedrockModel"
-                    class="text-xs bg-slate-100 dark:bg-slate-800 border-0 rounded-lg py-2.5 px-3 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-primary-500 min-h-11">
+                    class="text-xs bg-slate-100 dark:bg-slate-800 border-0 rounded-lg py-2.5 px-3 text-slate-700 dark:text-slate-300 focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11">
                     <optgroup label="Claude">
                         <option value="haiku">Haiku (Pantas)</option>
                         <option value="sonnet">Sonnet (Seimbang)</option>
@@ -198,7 +198,7 @@
             <div class="flex-1 relative">
                 <input type="text" id="faq-chat-input" wire:model.live="query" placeholder="Taip soalan anda..."
                     maxlength="500" autocomplete="off" @disabled($isLoading)
-                    class="w-full min-h-11 px-4 py-3 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50" />
+                    class="w-full min-h-11 px-4 py-3 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50" />
             </div>
             <button type="submit" @disabled($isLoading || empty(trim($query ?? '')))
                 class="inline-flex items-center justify-center min-h-11 min-w-11 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed">

@@ -42,7 +42,7 @@
 
             {{-- Form Subtitle --}}
             @if($subtitle)
-                <p class="text-sm text-blue-200 mt-1 truncate">
+                <p class="text-sm text-primary-200 mt-1 truncate">
                     {{ $subtitle }}
                 </p>
             @endif

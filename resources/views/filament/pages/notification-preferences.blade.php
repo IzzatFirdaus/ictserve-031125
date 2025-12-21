@@ -3,7 +3,7 @@
         {{-- Page Description --}}
         <div class="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700 rounded-lg p-4">
             <div class="flex">
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                     <x-heroicon-o-information-circle class="w-5 h-5 text-primary-400" />
                 </div>
                 <div class="ml-3">
@@ -158,7 +158,7 @@
             </div>
             <div class="mt-4 p-4 bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700 rounded-lg">
                 <div class="flex">
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                         <x-heroicon-o-exclamation-triangle class="w-5 h-5 text-warning-400" />
                     </div>
                     <div class="ml-3">
@@ -172,3 +172,4 @@
         </div>
     </div>
 </x-filament-panels::page>
+

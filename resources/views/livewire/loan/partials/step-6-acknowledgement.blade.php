@@ -30,7 +30,7 @@
             <input
                 type="checkbox"
                 wire:model.live="termsAcknowledged"
-                class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2"
+                class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 required
             >
             <span class="ml-3 text-sm text-gray-700">
@@ -38,21 +38,21 @@
             </span>
         </label>
         @error('termsAcknowledged')
-            <p class="text-sm text-red-600">{{ $message }}</p>
+            <p class="text-sm text-danger-600">{{ $message }}</p>
         @enderror
     </div>
 
     {{-- PDPA Acknowledgement --}}
-    <div class="rounded-lg border border-blue-200 bg-blue-50 p-4 space-y-4">
+    <div class="rounded-lg border border-primary-200 bg-primary-50 p-4 space-y-4">
         <h3 class="text-sm font-semibold text-gray-900">{{ __('loan.form.pdpa_notice') }}</h3>
         
         <p class="text-sm text-gray-600">{{ __('loan.form.pdpa_statement') }}</p>
 
-        <label class="flex items-start cursor-pointer pt-4 border-t border-blue-200">
+        <label class="flex items-start cursor-pointer pt-4 border-t border-primary-200">
             <input
                 type="checkbox"
                 wire:model.live="pdpaAcknowledged"
-                class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2"
+                class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 required
             >
             <span class="ml-3 text-sm text-gray-700">
@@ -60,7 +60,7 @@
             </span>
         </label>
         @error('pdpaAcknowledged')
-            <p class="text-sm text-red-600">{{ $message }}</p>
+            <p class="text-sm text-danger-600">{{ $message }}</p>
         @enderror
     </div>
 
@@ -72,7 +72,7 @@
         {{-- Approver Search --}}
         <div class="relative">
             <label for="approverSearch" class="block text-sm font-medium text-gray-700 mb-1">
-                {{ __('loan.fields.search_approver') }} <span class="text-red-500">*</span>
+                {{ __('loan.fields.search_approver') }} <span class="text-danger-500">*</span>
             </label>
             <input
                 type="text"
@@ -105,7 +105,7 @@
 
         {{-- Selected Approver Display --}}
         @if ($this->selectedApprover)
-            <div class="rounded-lg border border-green-200 bg-green-50 p-4">
+            <div class="rounded-lg border border-success-200 bg-success-50 p-4">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-900">{{ $this->selectedApprover->name }}</p>
@@ -128,7 +128,7 @@
         @endif
 
         @error('approverId')
-            <p class="text-sm text-red-600">{{ $message }}</p>
+            <p class="text-sm text-danger-600">{{ $message }}</p>
         @enderror
     </div>
 
@@ -150,7 +150,7 @@
             </div>
             <div>
                 <label for="applicantSignature" class="block text-sm font-medium text-gray-700 mb-1">
-                    {{ __('loan.fields.applicant_signature_name') }} <span class="text-red-500">*</span>
+                    {{ __('loan.fields.applicant_signature_name') }} <span class="text-danger-500">*</span>
                 </label>
                 <input
                     type="text"
@@ -158,14 +158,14 @@
                     wire:model.live.debounce.300ms="applicantSignature"
                     @class([
                         'block w-full rounded-lg shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm',
-                        'border-red-300' => $errorBag->has('applicantSignature'),
+                        'border-danger-300' => $errorBag->has('applicantSignature'),
                         'border-gray-300' => ! $errorBag->has('applicantSignature'),
                     ])
                     placeholder="{{ __('loan.placeholders.signature_name') }}"
                     required
                 >
                 @error('applicantSignature')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <p class="mt-1 text-sm text-danger-600">{{ $message }}</p>
                 @enderror
             </div>
         </div>

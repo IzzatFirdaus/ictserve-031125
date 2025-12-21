@@ -89,7 +89,7 @@
     {{-- Collapse Toggle Button --}}
     <div class="flex items-center justify-end p-4 border-b border-gray-200 dark:border-gray-700">
         <button type="button" @click="collapsed = !collapsed"
-            class="p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 flex items-center justify-center transition-all"
+            class="p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 flex items-center justify-center transition-all"
             :aria-label="collapsed ? '{{ __('common.expand_sidebar') }}' : '{{ __('common.collapse_sidebar') }}'">
             <svg class="h-6 w-6 transition-transform" :class="{ 'rotate-180': collapsed }" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor">
@@ -111,7 +111,7 @@
                       {{ request()->routeIs($item['route'])
                           ? 'bg-motac-blue dark:bg-primary-600 text-white'
                           : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-motac-blue dark:hover:text-primary-400' }}
-                      focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
+                      focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                 :class="{ 'justify-center': collapsed }"
                 aria-current="{{ request()->routeIs($item['route']) ? 'page' : 'false' }}">
 
@@ -212,7 +212,7 @@
 <div x-data="{ open: false }" @keydown.escape.window="open = false" class="lg:hidden">
     {{-- Mobile Menu Button --}}
     <button type="button" @click="open = true"
-        class="fixed bottom-4 right-4 z-40 p-3 bg-motac-blue dark:bg-primary-600 text-white rounded-full shadow-lg hover:bg-motac-blue-dark dark:hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-14 min-w-14 flex items-center justify-center"
+        class="fixed bottom-4 right-4 z-40 p-3 bg-motac-blue dark:bg-primary-600 text-white rounded-full shadow-lg hover:bg-motac-blue-dark dark:hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-14 min-w-14 flex items-center justify-center"
         aria-label="{{ __('common.open_navigation_menu') }}">
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -236,7 +236,7 @@
         <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
             <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('common.menu') }}</span>
             <button type="button" @click="open = false"
-                class="p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 flex items-center justify-center"
+                class="p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 flex items-center justify-center"
                 aria-label="{{ __('common.close_menu') }}">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -256,7 +256,7 @@
                           {{ request()->routeIs($item['route'])
                               ? 'bg-motac-blue dark:bg-primary-600 text-white'
                               : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-motac-blue dark:hover:text-primary-400' }}
-                          focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
+                          focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     aria-current="{{ request()->routeIs($item['route']) ? 'page' : 'false' }}">
 
                     {{-- Icon (same as desktop) --}}

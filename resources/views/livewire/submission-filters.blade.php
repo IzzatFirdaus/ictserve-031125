@@ -26,7 +26,7 @@
             <button
                 type="button"
                 wire:click="clearFilters"
-                class="inline-flex items-center px-4 py-2 min-h-11 min-w-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 transition-colors duration-200"
+                class="inline-flex items-center px-4 py-2 min-h-11 min-w-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 transition-colors duration-200"
                 aria-label="{{ __('portal.clear_all_filters') }}"
             >
                 <x-heroicon-o-x-mark class="w-4 h-4 mr-2" aria-hidden="true" />
@@ -49,7 +49,7 @@
                     type="button"
                     @click="open = !open"
                     @click.away="open = false"
-                    class="w-full inline-flex items-center justify-between px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500"
+                    class="w-full inline-flex items-center justify-between px-4 py-2 min-h-11 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500"
                     aria-haspopup="listbox"
                     aria-expanded="false"
                     :aria-expanded="open"
@@ -73,7 +73,7 @@
                     x-transition:leave="transition ease-in duration-75"
                     x-transition:leave-start="transform opacity-100 scale-100"
                     x-transition:leave-end="transform opacity-0 scale-95"
-                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 shadow-lg max-h-60 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 shadow-lg max-h-60 rounded-lg py-1 text-base ring-1 ring-black/5 overflow-auto focus:outline-none sm:text-sm"
                     role="listbox"
                     style="display: none;"
                 >
@@ -267,7 +267,7 @@
         <button
             type="button"
             wire:click="applyFilters"
-            class="w-full inline-flex items-center justify-center px-6 py-3 min-h-11 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 transition-colors duration-200"
+            class="w-full inline-flex items-center justify-center px-6 py-3 min-h-11 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 transition-colors duration-200"
             aria-label="{{ __('portal.apply_filters') }}"
         >
             <x-heroicon-o-funnel class="w-5 h-5 mr-2" aria-hidden="true" />
@@ -276,10 +276,11 @@
     </div>
 
     {{-- Loading Overlay --}}
-    <div wire:loading wire:target="applyFilters,clearFilters,toggleStatus,selectAllStatuses,deselectAllStatuses" class="absolute inset-0 bg-white dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 flex items-center justify-center rounded-lg">
+    <div wire:loading wire:target="applyFilters,clearFilters,toggleStatus,selectAllStatuses,deselectAllStatuses" class="absolute inset-0 bg-white/75 dark:bg-gray-800/75 flex items-center justify-center rounded-lg">
         <div class="flex flex-col items-center">
             <x-heroicon-o-arrow-path class="animate-spin h-10 w-10 text-primary-600" aria-hidden="true" />
             <span class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ __('portal.applying_filters') }}</span>
         </div>
     </div>
 </div>
+

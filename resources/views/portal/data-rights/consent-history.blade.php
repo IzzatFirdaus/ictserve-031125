@@ -28,7 +28,7 @@
 @section('header')
     <div class="flex items-center gap-4">
         <a href="{{ route('staff.data-rights.index') }}"
-            class="inline-flex items-center text-slate-400 hover:text-slate-200"
+            class="inline-flex min-h-11 items-center text-slate-400 hover:text-slate-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded"
             aria-label="{{ __('common.back') }}">
             <x-heroicon-o-arrow-left class="h-5 w-5" />
         </a>
@@ -82,13 +82,13 @@
                                                     @endphp
                                                     @if ($granted)
                                                         <span
-                                                            class="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 ring-8 ring-white dark:bg-green-900/30 dark:ring-gray-800">
-                                                            <x-heroicon-o-check class="h-5 w-5 text-green-600 dark:text-green-400" aria-hidden="true" />
+                                                            class="flex h-8 w-8 items-center justify-center rounded-full bg-success-100 ring-8 ring-white dark:bg-success-900/30 dark:ring-gray-800">
+                                                            <x-heroicon-o-check class="h-5 w-5 text-success-600 dark:text-success-400" aria-hidden="true" />
                                                         </span>
                                                     @else
                                                         <span
-                                                            class="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 ring-8 ring-white dark:bg-red-900/30 dark:ring-gray-800">
-                                                            <x-heroicon-o-x-mark class="h-5 w-5 text-red-600 dark:text-red-400" aria-hidden="true" />
+                                                            class="flex h-8 w-8 items-center justify-center rounded-full bg-danger-100 ring-8 ring-white dark:bg-danger-900/30 dark:ring-gray-800">
+                                                            <x-heroicon-o-x-mark class="h-5 w-5 text-danger-600 dark:text-danger-400" aria-hidden="true" />
                                                         </span>
                                                     @endif
                                                 </div>
@@ -105,7 +105,7 @@
                                                                 {{ __("portal.data_rights.consent_types.{$consentType}") }}
                                                             </span>
                                                             <span
-                                                                class="ml-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {{ $granted ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' }}">
+                                                                class="ml-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {{ $granted ? 'bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-400' : 'bg-danger-100 text-danger-800 dark:bg-danger-900/30 dark:text-danger-400' }}">
                                                                 {{ $granted ? __('portal.data_rights.granted') : __('portal.data_rights.withdrawn') }}
                                                             </span>
                                                         </p>
@@ -170,7 +170,7 @@
                                 <input type="hidden" name="consent_type" value="data_processing">
                                 <input type="hidden" name="granted" value="1">
                                 <span
-                                    class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                    class="inline-flex items-center rounded-full bg-success-100 px-3 py-1 text-sm font-medium text-success-800 dark:bg-success-900/30 dark:text-success-400">
                                     {{ __('portal.data_rights.required') }}
                                 </span>
                             </form>
@@ -192,11 +192,11 @@
                                 @csrf
                                 <input type="hidden" name="consent_type" value="marketing">
                                 <button type="submit" name="granted" value="1"
-                                    class="inline-flex items-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                    class="inline-flex min-h-11 items-center rounded-lg bg-success-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-success-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-success-500 focus-visible:ring-offset-2">
                                     {{ __('portal.data_rights.grant') }}
                                 </button>
                                 <button type="submit" name="granted" value="0"
-                                    class="inline-flex items-center rounded-md bg-gray-200 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
+                                    class="inline-flex min-h-11 items-center rounded-lg bg-gray-200 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:ring-offset-2 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
                                     {{ __('portal.data_rights.withdraw') }}
                                 </button>
                             </form>
@@ -218,11 +218,11 @@
                                 @csrf
                                 <input type="hidden" name="consent_type" value="analytics">
                                 <button type="submit" name="granted" value="1"
-                                    class="inline-flex items-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                    class="inline-flex min-h-11 items-center rounded-lg bg-success-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-success-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-success-500 focus-visible:ring-offset-2">
                                     {{ __('portal.data_rights.grant') }}
                                 </button>
                                 <button type="submit" name="granted" value="0"
-                                    class="inline-flex items-center rounded-md bg-gray-200 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
+                                    class="inline-flex min-h-11 items-center rounded-lg bg-gray-200 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:ring-offset-2 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
                                     {{ __('portal.data_rights.withdraw') }}
                                 </button>
                             </form>

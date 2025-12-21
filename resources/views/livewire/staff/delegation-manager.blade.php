@@ -213,7 +213,7 @@
                     @endforeach
                 </x-form.select>
                 @error('delegated_approver_id')
-                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -222,13 +222,13 @@
                 <div>
                     <x-form.input wire:model="start_date" type="date" :label="__('delegation.start_date')" :min="now()->format('Y-m-d')" required />
                     @error('start_date')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                     @enderror
                 </div>
                 <div>
                     <x-form.input wire:model="end_date" type="date" :label="__('delegation.end_date')" :min="$start_date" required />
                     @error('end_date')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
@@ -237,7 +237,7 @@
             <div>
                 <x-form.textarea wire:model="reason" :label="__('delegation.reason')" :placeholder="__('delegation.reason_placeholder')" rows="3" required />
                 @error('reason')
-                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                 @enderror
                 <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     {{ __('delegation.reason_help') }}

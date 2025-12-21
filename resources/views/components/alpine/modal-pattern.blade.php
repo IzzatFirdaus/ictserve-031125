@@ -27,7 +27,7 @@
     >
         {{-- Backdrop --}}
         <div
-            class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+            class="fixed inset-0 bg-black/50 transition-opacity"
             @click="show = false"
         ></div>
 
@@ -72,3 +72,4 @@ Usage Notes:
 - aria-labelledby="modal-title" - Link to title
 - @click.stop - Prevent backdrop click from closing
 --}}
+

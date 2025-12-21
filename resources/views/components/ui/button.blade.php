@@ -28,14 +28,14 @@ $baseClasses =
 
 // Variants using MyDS semantic colors (D13 §2.2)
 $variants = [
-'primary' => 'bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-500 focus-visible:ring-primary-500',
+'primary' => 'bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500',
 'secondary' =>
-'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-600 dark:hover:bg-slate-700 focus-visible:ring-slate-500',
-'success' => 'bg-success-500 text-white hover:bg-success-600 focus-visible:ring-success-500',
-'warning' => 'bg-warning-500 text-white hover:bg-warning-600 focus-visible:ring-warning-500',
-'danger' => 'bg-danger-500 text-white hover:bg-danger-600 focus-visible:ring-danger-500',
+'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-600 dark:hover:bg-slate-700 focus-visible:ring-3 focus-visible:ring-slate-500',
+'success' => 'bg-success-500 text-white hover:bg-success-600 focus-visible:ring-3 focus-visible:ring-success-500',
+'warning' => 'bg-warning-500 text-white hover:bg-warning-600 focus-visible:ring-3 focus-visible:ring-warning-500',
+'danger' => 'bg-danger-500 text-white hover:bg-danger-600 focus-visible:ring-3 focus-visible:ring-danger-500',
 'ghost' =>
-'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 focus-visible:ring-slate-500',
+'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 focus-visible:ring-3 focus-visible:ring-slate-500',
 ];
 
 // Sizes with 44px minimum touch target (D12 §4.1, WCAG 2.5.8)

@@ -27,7 +27,7 @@
         x-transition
         role="menu"
         aria-orientation="vertical"
-        class="absolute right-0 mt-2 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+        class="absolute right-0 mt-2 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black/5"
     >
         <div class="py-1">
             <a href="#" role="menuitem" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 min-h-11 flex items-center">Item 1</a>
@@ -47,3 +47,4 @@ Usage Notes:
 - :aria-expanded="open" - Dynamic ARIA state
 - role="menu" - Semantic menu role
 --}}
+

@@ -81,7 +81,7 @@ new class extends Component
             </div>
 
             <div class="mt-6 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')" class="min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-slate-500 dark:focus-visible:ring-slate-400">
+                <x-secondary-button x-on:click="$dispatch('close')" class="min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-slate-500 dark:focus-visible:ring-3 focus-visible:ring-slate-400">
                     {{ __('common.cancel') }}
                 </x-secondary-button>
 

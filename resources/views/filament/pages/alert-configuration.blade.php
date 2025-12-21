@@ -123,7 +123,7 @@
                 // For now, we'll show a placeholder message
                 recentAlertsContainer.innerHTML = `
                     <div class="flex items-center p-3 bg-success-50 dark:bg-success-900/20 rounded-lg border border-success-200 dark:border-success-800">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <svg class="w-5 h-5 text-success-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                             </svg>
@@ -143,3 +143,4 @@
         @endpush
     </div>
 </x-filament-panels::page>
+

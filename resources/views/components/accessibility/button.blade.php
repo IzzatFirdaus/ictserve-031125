@@ -38,13 +38,13 @@
 
     // Variant styles with WCAG AA compliant contrast ratios
     $variants = [
-        'primary' => 'bg-primary-500 text-white hover:bg-primary-600 focus-visible:ring-primary-500',
+        'primary' => 'bg-primary-500 text-white hover:bg-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500',
         'secondary' =>
-            'bg-white text-gray-700 border-2 border-gray-300 hover:bg-gray-50 focus-visible:ring-primary-500',
-        'success' => 'bg-success-500 text-white hover:bg-success-600 focus-visible:ring-success-500',
-        'warning' => 'bg-warning-600 text-white hover:bg-warning-700 focus-visible:ring-warning-600',
-        'danger' => 'bg-danger-500 text-white hover:bg-danger-600 focus-visible:ring-danger-500',
-        'ghost' => 'bg-transparent text-gray-700 hover:bg-gray-100 focus-visible:ring-primary-500',
+            'bg-white text-gray-700 border-2 border-gray-300 hover:bg-gray-50 focus-visible:ring-3 focus-visible:ring-primary-500',
+        'success' => 'bg-success-500 text-white hover:bg-success-600 focus-visible:ring-3 focus-visible:ring-success-500',
+        'warning' => 'bg-warning-600 text-white hover:bg-warning-700 focus-visible:ring-3 focus-visible:ring-warning-600',
+        'danger' => 'bg-danger-500 text-white hover:bg-danger-600 focus-visible:ring-3 focus-visible:ring-danger-500',
+        'ghost' => 'bg-transparent text-gray-700 hover:bg-gray-100 focus-visible:ring-3 focus-visible:ring-primary-500',
     ];
 
     // Size styles - all meet 44px minimum touch target

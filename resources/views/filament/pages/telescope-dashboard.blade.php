@@ -42,7 +42,7 @@
             </div>
             <div class="mt-4">
                 <a href="{{ route('telescope') }}/requests" target="_blank"
-                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_telescope_requests') }} →
                 </a>
             </div>
@@ -69,7 +69,7 @@
             </div>
             <div class="mt-4">
                 <a href="{{ route('telescope') }}/exceptions" target="_blank"
-                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_telescope_exceptions') }} →
                 </a>
             </div>
@@ -96,7 +96,7 @@
             </div>
             <div class="mt-4">
                 <a href="{{ route('telescope') }}/queries" target="_blank"
-                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_telescope_queries') }} →
                 </a>
             </div>
@@ -123,7 +123,7 @@
             </div>
             <div class="mt-4">
                 <a href="{{ route('telescope') }}/mail" target="_blank"
-                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_telescope_mail') }} →
                 </a>
             </div>
@@ -150,7 +150,7 @@
             </div>
             <div class="mt-4">
                 <a href="{{ route('telescope') }}/jobs" target="_blank"
-                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_telescope_jobs') }} →
                 </a>
             </div>
@@ -177,7 +177,7 @@
             </div>
             <div class="mt-4">
                 <a href="{{ route('telescope') }}/logs" target="_blank"
-                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                    class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_telescope_logs') }} →
                 </a>
             </div>

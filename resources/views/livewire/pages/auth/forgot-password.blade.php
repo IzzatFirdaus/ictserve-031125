@@ -88,7 +88,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         {{-- Submit Button (MyDS Touch Targets - D13 §2.7) --}}
         <div class="flex items-center justify-between pt-2">
-            <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800 rounded-lg min-h-11 inline-flex items-center px-2 font-body theme-transition"
+            <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800 rounded-lg min-h-11 inline-flex items-center px-2 font-body theme-transition"
                 href="{{ route('login') }}" wire:navigate>
                 {{ __('auth.back_to_login') }}
             </a>
