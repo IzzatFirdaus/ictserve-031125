@@ -115,10 +115,10 @@ sudo bash /mnt/c/laragon/www/ictserve-031125/scripts/dev/install-wsl-redis.sh
 ```
 
 Notes:
+
 - The installer supports Ubuntu (apt) and will fail for unsupported package managers — see the script for extension. If you're using a different distro, install Redis manually.
 - If `systemd` is not enabled, the installer will still attempt to start Redis using `service` or `redis-server --daemonize yes`, but autostart will not be configured; enable systemd to get proper autostart (see earlier section).
 - If you prefer Laragon-managed Redis, stop Laragon's Redis service via the Laragon UI or leave WSL Redis on a non-standard port to avoid conflicts.
-
 
 ### Manual Install (Step-by-Step)
 
@@ -442,7 +442,6 @@ redis-cli --version
 
 Note: The project's dev/start scripts (PowerShell / Git Bash / Batch) detect `wsl.exe`, `systemctl`, and `redis-cli` presence before trying to start WSL Redis, so they will gracefully fallback to check Laragon Redis when systemctl/redis-cli are missing. The `start-dev` helpers will also offer to run the repository WSL Redis installer (`npm run wsl-redis-setup`) when WSL is present but Redis is not installed.
 
-
 **Cause**: No eviction policy configured.
 
 **Solution**:
@@ -500,7 +499,8 @@ For production, use `appendfsync everysec` (default) or `always`.
 
 ```env
 # WSL Ubuntu Redis 7.0.15 connection
-REDIS_CLIENT=phpredis
+# CRITICAL: Use Predis for cross-platform compatibility
+REDIS_CLIENT=predis
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 REDIS_PASSWORD=null          # Set if password configured in redis.conf
@@ -510,6 +510,23 @@ REDIS_DATABASE=0
 CACHE_STORE=redis
 SESSION_DRIVER=redis
 QUEUE_CONNECTION=redis
+```
+
+### Why Predis for ICTServe?
+
+**CRITICAL**: ICTServe uses **Predis** as the Redis client instead of phpredis for the following reasons:
+
+1. **Cross-Platform Compatibility**: Works on both Windows and Linux without C extensions
+2. **WSL Integration**: Better compatibility with WSL Redis from Windows Laravel
+3. **No Extension Required**: Pure PHP implementation, no compilation needed
+4. **Horizon Compatibility**: Resolves Redis client conflicts in hybrid environments
+5. **Development Consistency**: Same client works across all development environments
+
+**Installation**:
+
+```bash
+# Predis is included with Laravel by default
+composer require predis/predis  # If not already installed
 ```
 
 ### ⚠️ CRITICAL PRE-FLIGHT CHECKLIST
@@ -537,7 +554,15 @@ Before running your Laravel app, verify:
    # Expected: TcpTestSucceeded = True
    ```
 
-If all three checks pass, Laravel will automatically use WSL Redis for cache, sessions, and queues.
+4. **Predis client is configured**
+
+   ```bash
+   # Check .env files for consistent Redis client
+   grep -r "REDIS_CLIENT" .env*
+   # All files should show: REDIS_CLIENT=predis
+   ```
+
+If all four checks pass, Laravel will automatically use WSL Redis with Predis for cache, sessions, and queues.
 
 ### Test Redis Connection
 
@@ -554,6 +579,34 @@ php artisan tinker
 php artisan cache:forget test         # Delete a key
 php artisan queue:work                # Process queued jobs
 php artisan horizon                   # Dashboard (if installed)
+```
+
+### Laravel Horizon Integration
+
+**CRITICAL**: Laravel Horizon requires the `pcntl` and `posix` PHP extensions which are not available on Windows. Use WSL for Horizon:
+
+```bash
+# Start Horizon in WSL (requires PHP 8.2+ with pcntl/posix)
+wsl.exe -e php8.2 /mnt/c/path/to/ictserve/artisan horizon
+
+# Check Horizon status
+wsl.exe -e php8.2 /mnt/c/path/to/ictserve/artisan horizon:status
+```
+
+**Complete Horizon Setup**: See [docs/horizon/HORIZON_WSL_SETUP.md](../horizon/HORIZON_WSL_SETUP.md) for:
+
+- PHP 8.2 installation in WSL with required extensions
+- Redis client configuration (Predis vs phpredis)
+- Queue supervisor configuration
+- Production deployment with Supervisor
+- Troubleshooting common issues
+
+**Key Configuration for Horizon**:
+
+```env
+# Ensure consistent Redis client across all .env files
+REDIS_CLIENT=predis
+QUEUE_CONNECTION=redis
 ```
 
 ---

@@ -1,14 +1,15 @@
 # Updated Files List - MyDS v2025.2 Compliance
 
 **Version**: 1.0.0  
-**Last Updated**: 2025-12-17  
-**Total Files**: 75+
+**Last Updated**: 2025-12-20  
+**Total Files**: 140+
 
-## Core Components (6 files)
+## Core Components (7 files)
 
 ### `resources/views/components/`
 
 - [x] `alert.blade.php`
+- [x] `activity-item.blade.php`
 - [x] `danger-button.blade.php`
 - [x] `modal.blade.php`
 - [x] `primary-button.blade.php`
@@ -26,7 +27,7 @@
 - [x] `textarea.blade.php`
 - [x] `toggle.blade.php`
 
-## UI Components (5 files)
+## UI Components (6 files)
 
 ### `resources/views/components/ui/`
 
@@ -35,6 +36,15 @@
 - [x] `card.blade.php`
 - [x] `dropdown-item.blade.php`
 - [x] `modal.blade.php`
+- [x] `user-info-card.blade.php`
+
+## Accessibility Components (3 files)
+
+### `resources/views/components/accessibility/`
+
+- [x] `button.blade.php`
+- [x] `input.blade.php`
+- [x] `skip-links.blade.php`
 
 ## Layouts (2 files)
 
@@ -62,7 +72,7 @@
 - [x] `update-password-form.blade.php`
 - [x] `update-profile-information-form.blade.php`
 
-## Filament Admin Pages (5 files)
+## Filament Admin Pages (25+ files)
 
 ### `resources/views/filament/pages/`
 
@@ -71,6 +81,21 @@
 - [x] `auth/login.blade.php`
 - [x] `notification-center.blade.php`
 - [x] `unified-search.blade.php`
+- [x] `helpdesk-reports.blade.php`
+- [x] `superuser-configuration.blade.php`
+- [x] `unified-audit-log.blade.php`
+- [x] `data-visualization.blade.php`
+- [x] `report-templates.blade.php`
+- [x] `alert-configuration.blade.php`
+- [x] `data-export-center.blade.php`
+- [x] `email-queue-monitoring.blade.php`
+- [x] `filter-presets.blade.php`
+- [x] `security-monitoring.blade.php`
+- [x] `sla-threshold-management.blade.php`
+- [x] `two-factor-authentication.blade.php`
+- [x] `telescope-dashboard.blade.php`
+- [x] `asset-availability-calendar.blade.php`
+- [x] Additional Filament pages updated (see `docs/frontend/00-myds-compliance-guide.md`)
 
 ## Helpdesk Module (3 files)
 
@@ -183,13 +208,14 @@
 
 | Category | Files | Status |
 |----------|-------|--------|
-| Core Components | 6 | ✅ Complete |
+| Core Components | 7 | ✅ Complete |
 | Form Components | 6 | ✅ Complete |
-| UI Components | 5 | ✅ Complete |
+| UI Components | 6 | ✅ Complete |
+| Accessibility Components | 3 | ✅ Complete |
 | Layouts | 2 | ✅ Complete |
 | Authentication | 6 | ✅ Complete |
 | Profile | 3 | ✅ Complete |
-| Filament Admin | 5 | ✅ Complete |
+| Filament Admin | 25+ | ✅ Complete |
 | Helpdesk Module | 3 | ✅ Complete |
 | Loan Module | 7 | ✅ Complete |
 | Staff Portal | 10 | ✅ Complete |
@@ -197,7 +223,7 @@
 | Livewire Components | 9 | ✅ Complete |
 | Auth Pages | 5 | ✅ Complete |
 | Navigation & Shared | 10 | ✅ Complete |
-| **Total** | **105+** | **✅ Complete** |
+| **Total** | **140+** | **✅ Complete** |
 
 ## Changes Applied
 
@@ -208,6 +234,7 @@
 - ✅ Focus indicators: `focus-visible:ring-3`
 - ✅ Semantic colors: `primary`, `success`, `warning`, `danger`, `info`
 - ✅ Consistent spacing and alignment
+- ✅ Tailwind v4 utilities: opacity shortcuts (`bg-*/`), `ring-black/5`, `shrink-0`
 
 ---
 

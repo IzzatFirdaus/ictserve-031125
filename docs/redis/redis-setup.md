@@ -51,7 +51,7 @@ Redis is required when the app uses `QUEUE_CONNECTION=redis`, `SESSION_DRIVER=re
 - WSL systemd enabled (required for service autostart)
 - **If using Laragon**: Laragon's bundled Redis **DISABLED** in Laragon UI (critical to avoid port 6379 conflicts)
 - **If using XAMPP**: Ensure no bundled Redis is running on port 6379
-- **phpredis extension** installed in PHP (Laragon includes this; XAMPP may require manual installation)
+- **Predis package** installed via Composer (recommended for cross-platform compatibility)
 
 See [docs/laragon/SETUP.md](../laragon/SETUP.md) for complete setup instructions.
 
@@ -161,7 +161,7 @@ Test-NetConnection -ComputerName 127.0.0.1 -Port 6379
 Ensure `.env` has:
 
 ```dotenv
-REDIS_CLIENT=phpredis
+REDIS_CLIENT=predis
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 REDIS_PASSWORD=null
@@ -171,24 +171,26 @@ SESSION_DRIVER=redis
 QUEUE_CONNECTION=redis
 ```
 
-**Verify phpredis extension is installed**:
+**CRITICAL**: Use `REDIS_CLIENT=predis` for cross-platform compatibility. The Predis library is pure PHP and works on all platforms (Windows, Linux, macOS) without requiring PHP extensions.
+
+**Verify Predis package is installed**:
 
 ```powershell
-# For Laragon or XAMPP
-php -m | Select-String redis
-# Should output: redis
+# Check if Predis is installed via Composer
+composer show predis/predis
+# Should show: predis/predis v2.x.x
 
-# Check detailed info
-php -i | Select-String "redis"
+# If missing, install Predis
+composer require predis/predis
 ```
 
-**If phpredis is missing (XAMPP users)**:
+**Why Predis over phpredis for ICTServe**:
 
-1. Download `php_redis.dll` for your PHP version from [PECL](https://pecl.php.net/package/redis)
-2. Copy to `C:\xampp\php\ext\` (or XAMPP's PHP extensions folder)
-3. Edit `php.ini` and add: `extension=redis`
-4. Restart Apache/XAMPP
-5. Verify: `php -m | Select-String redis`
+- ✅ **Cross-platform**: Works on Windows, Linux, macOS without PHP extensions
+- ✅ **No compilation**: Pure PHP library, no need to compile or install extensions
+- ✅ **Consistent behavior**: Same functionality across all development environments
+- ✅ **Easy installation**: Just `composer require predis/predis`
+- ✅ **Laravel compatible**: Fully supported by Laravel's Redis implementation
 
 **Test connection**:
 
@@ -213,9 +215,10 @@ php artisan config:show app.key
 
 **Installation Requirements**:
 
-- PHP 8.2+ with phpredis extension
-- Composer for dependency management
+- PHP 8.2+ with curl and json extensions
+- Composer for dependency management  
 - XAMPP or Laragon with Apache
+- **Note**: phpRedisAdmin tool itself uses phpredis internally, but your Laravel application should use Predis for better cross-platform compatibility
 
 **Quick Setup**:
 
@@ -245,11 +248,12 @@ Start-Process "http://localhost/redis/phpRedisAdmin/"
 **📖 Complete Guide**: See [PHPREDISADMIN_SETUP.md](PHPREDISADMIN_SETUP.md) for:
 
 - Detailed installation steps
-- Configuration options
+- Configuration options  
 - Usage guide with screenshots
 - Troubleshooting common issues
 - Security best practices
 - Alternative Redis GUI tools
+- **Important**: Clarification on phpredis vs Predis usage (phpRedisAdmin tool uses phpredis, but Laravel should use Predis)
 
 **Official Repository**: <https://github.com/erikdubbelboer/phpRedisAdmin>
 
@@ -595,8 +599,26 @@ tail -f storage/logs/laravel.log
 
 ### Incompatibilities with Predis vs phpredis
 
-- This repo uses `REDIS_CLIENT=phpredis` (preferred).
-- Some libraries allow both; `phpredis` is recommended and installed in the Dockerfile.
+- **Laravel Application**: Use `REDIS_CLIENT=predis` (recommended for ICTServe)
+  - Cross-platform compatibility (Windows, Linux, macOS)
+  - No PHP extension compilation required
+  - Pure PHP library installed via Composer
+  - Consistent behavior across all environments
+
+- **phpRedisAdmin Tool**: Uses phpredis extension internally
+  - The web management tool requires phpredis PHP extension
+  - This is separate from your Laravel application's Redis client
+  - Both can coexist: Laravel uses Predis, phpRedisAdmin uses phpredis
+
+**Configuration Summary**:
+
+```dotenv
+# In your Laravel .env file (recommended):
+REDIS_CLIENT=predis
+
+# phpRedisAdmin will use phpredis extension automatically
+# No conflict between the two approaches
+```
 
 ---
 

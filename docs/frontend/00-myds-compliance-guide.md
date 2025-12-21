@@ -1,7 +1,7 @@
 # MyDS v2025.2 Compliance Guide
 
 **Version**: 1.0.0  
-**Last Updated**: 2025-12-17  
+**Last Updated**: 2025-12-20  
 **Status**: Active  
 **Applies To**: All frontend components, forms, and UI elements
 
@@ -82,6 +82,7 @@ This guide documents the implementation of **Malaysia Government Design System (
 ### Core Components (`resources/views/components/`)
 
 - [x] `alert.blade.php`
+- [x] `activity-item.blade.php`
 - [x] `danger-button.blade.php`
 - [x] `modal.blade.php`
 - [x] `primary-button.blade.php`
@@ -104,6 +105,13 @@ This guide documents the implementation of **Malaysia Government Design System (
 - [x] `card.blade.php`
 - [x] `dropdown-item.blade.php`
 - [x] `modal.blade.php`
+- [x] `user-info-card.blade.php`
+
+### Accessibility Components (`resources/views/components/accessibility/`)
+
+- [x] `button.blade.php`
+- [x] `input.blade.php`
+- [x] `skip-links.blade.php`
 
 ### Layouts (`resources/views/layouts/`)
 
@@ -166,15 +174,16 @@ This guide documents the implementation of **Malaysia Government Design System (
 
 - [x] `internal-comments.blade.php` - Semantic tokens applied
 - [x] `notification-preferences.blade.php` - Semantic tokens applied
-- [ ] `notification-center.blade.php` - Audit pending
-- [ ] `notification-bell.blade.php` - Audit pending
-- [ ] `user-profile.blade.php` - Audit pending
-- [ ] `help-center.blade.php` - Audit pending
-- [ ] `support-message.blade.php` - Audit pending
-- [ ] `welcome-tour.blade.php` - Audit pending
-- [ ] `dashboard/` subdirectory - Audit pending
-- [ ] `help/` subdirectory - Audit pending
-- [ ] `widgets/` subdirectory - Audit pending
+- [x] `notification-center.blade.php` - Already compliant
+- [x] `notification-bell.blade.php` - Already compliant
+- [x] `user-profile.blade.php` - Remediated (gray→slate)
+- [x] `help-center.blade.php` - Already compliant
+- [x] `support-message.blade.php` - Remediated (gray→slate, rounded-lg)
+- [x] `welcome-tour.blade.php` - Remediated (gray→slate)
+- [x] `dashboard/statistics-cards.blade.php` - Remediated (gray→slate, rounded-lg)
+- [x] `help/help-center.blade.php` - Remediated (gray→slate)
+- [x] `help/welcome-tour.blade.php` - Remediated (gray→slate, rounded-lg)
+- [x] `widgets/personal-stats-widget.blade.php` - Remediated (gray→slate)
 
 ### Livewire Components (`resources/views/livewire/components/`)
 
@@ -259,6 +268,7 @@ This guide documents the implementation of **Malaysia Government Design System (
 - [x] No CSS compilation warnings ✅
 - [x] Tailwind purge working correctly ✅
 - [x] `vendor/bin/pint --dirty` executed for code style ✅
+- [ ] `php artisan test tests/Feature/Livewire/Status/StatusCheckerTest.php` (blocked: test DB schema not in sync; missing `loan_items` table / migration conflicts) ⚠️
 - [x] Duplicate directory cleanup (`filament/filament/pages/` removed) ✅
 - [x] File line-ending fixes (approval matrix, workflow config) ✅
 
@@ -292,6 +302,7 @@ This guide documents the implementation of **Malaysia Government Design System (
 
 - **Touch Targets**: Increased from `h-10` (40px) to `min-h-11` (44px)
 - **Focus Rings**: Enhanced from `ring-2` to `ring-3` for better visibility
+- **Tailwind v4 Utilities**: Replaced deprecated opacity utilities (`bg-*/`, `ring-black/5`) and `flex-shrink-0` → `shrink-0`
 
 ## Common Patterns
 
