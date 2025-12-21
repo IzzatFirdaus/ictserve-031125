@@ -73,6 +73,30 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
+     * Test that resolved ticket notes use MyDS success styling.
+     *
+     * @requirements 2.1
+     */
+    #[Test]
+    public function resolved_ticket_uses_success_styling_for_notes(): void
+    {
+        $ticket = HelpdeskTicket::factory()->create([
+            'status' => 'resolved',
+            'description' => 'Isu telah diselesaikan.',
+            'resolution_notes' => 'Sistem telah dimulakan semula.',
+        ]);
+
+        $token = $this->tokenService->generateStatusToken($ticket);
+
+        Livewire::test(StatusChecker::class)
+            ->set('token', $token)
+            ->set('type', 'ticket')
+            ->call('checkStatus')
+            ->assertSeeHtml('bg-success-50')
+            ->assertSee(__('status.resolution_notes'));
+    }
+
+    /**
      * Test that a valid loan token returns the loan details.
      *
      * @requirements 2.1
