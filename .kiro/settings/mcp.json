@@ -40,9 +40,9 @@
       "command": "php",
       "args": [
         "artisan",
-        "mcp:start",
-        "laravel-boost"
+        "boost:mcp"
       ],
+      "cwd": "C:\\XAMPP\\htdocs\\ictserve-031125",
       "env": {
         "APP_ENV": "local"
       },
@@ -73,6 +73,7 @@
         "mcp:start",
         "ictserve"
       ],
+      "cwd": "C:\\XAMPP\\htdocs\\ictserve-031125",
       "env": {
         "APP_ENV": "local"
       },
@@ -106,7 +107,15 @@
         "fill",
         "evaluate_script",
         "take_screenshot",
-        "list_pages"
+        "list_pages",
+        "new_page",
+        "list_console_messages",
+        "list_console_messages",
+        "list_console_messages",
+        "list_console_messages",
+        "list_console_messages",
+        "list_console_messages",
+        "wait_for"
       ]
     },
     "playwright": {
@@ -125,7 +134,8 @@
         "browser_close",
         "browser_take_screenshot",
         "browser_run_code",
-        "browser_wait_for"
+        "browser_wait_for",
+        "browser_fill_form"
       ]
     },
     "context7": {
