@@ -8,6 +8,7 @@ import "./keyboard-navigation";
 import "./performance-monitor";
 import "./script-loader";
 
+// Theme preference application function (used by event listeners)
 function applyThemePreference(theme) {
 	const normalized = theme === "dark" ? "dark" : "light";
 	const root = document.documentElement;
@@ -15,7 +16,7 @@ function applyThemePreference(theme) {
 	try {
 		localStorage.setItem("theme", normalized);
 	} catch (error) {
-		// Ignore
+		// Ignore localStorage errors (private browsing, etc.)
 	}
 
 	if (normalized === "dark") {
