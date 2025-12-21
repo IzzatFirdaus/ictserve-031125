@@ -176,3 +176,74 @@ Broadcast::channel('ai-approvals', function (User $user): bool {
     // Approver (Grade 41+), Admin, and Superuser can receive approval notifications
     return $user->canApprove();
 });
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard Widget Broadcasting Channels - v3.6.1 Real-Time Updates
+|--------------------------------------------------------------------------
+|
+| Channels for real-time dashboard widget updates including performance
+| metrics, system statistics, and user-specific dashboard data.
+| Integrates with WidgetRealtimeManager for rate limiting and caching.
+|
+| @see app/Services/WidgetRealtimeManager.php - Widget broadcasting service
+| @see Requirements R8 (Real-time Updates), R19 (Real-Time Widget Updates)
+| @trace D03 SRS-FR-008, D04 §5.3 - Real-time dashboard requirements
+|
+*/
+
+/**
+ * User-specific widget channel for personal dashboard updates
+ *
+ * @see Requirements R8, R19 - Real-time widget updates
+ * @see D16 Broadcasting Setup v3.6.1
+ */
+Broadcast::channel('dashboard.widgets.{userId}', function (User $user, string $userId): bool {
+    // Users can only access their own widget channel
+    return (int) $user->id === (int) $userId;
+});
+
+/**
+ * Global widget channel for admin/system-wide updates
+ *
+ * @see Requirements R8, R19 - Admin dashboard real-time updates
+ * @see D00 Four-tier role system v3.6.1
+ */
+Broadcast::channel('dashboard.widgets.global', function (User $user): bool {
+    // Only admin and superuser can access global widget updates
+    return $user->hasAdminAccess();
+});
+
+/**
+ * Widget-specific channel for targeted updates
+ *
+ * @see Requirements R8, R19 - Widget-specific real-time updates
+ * @see app/Services/WidgetRegistry.php - Widget authorization
+ */
+Broadcast::channel('dashboard.widgets.{widgetId}', function (User $user, string $widgetId): bool {
+    // Check if user has access to this specific widget
+    // This integrates with the WidgetRegistry system from Task 2.1
+
+    // For now, allow access based on role hierarchy
+    // More granular widget-level permissions can be added later
+    if ($user->hasRole(['admin', 'superuser'])) {
+        return true;
+    }
+
+    // Staff users can access non-admin widgets
+    // AI widgets are restricted to admin/superuser (handled in widget logic)
+    $adminOnlyWidgets = [
+        'ai_performance_widget',
+        'ai_cost_widget',
+        'ai_health_widget',
+        'system_metrics_widget',
+        'audit_log_widget',
+    ];
+
+    if (in_array($widgetId, $adminOnlyWidgets)) {
+        return false;
+    }
+
+    // Staff can access general widgets
+    return $user->hasRole(['staff', 'admin', 'superuser']);
+});

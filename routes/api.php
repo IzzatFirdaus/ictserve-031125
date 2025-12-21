@@ -132,6 +132,29 @@ Route::post('/analytics/web-vitals', [WebVitalsController::class, 'store'])
     ->name('api.analytics.web-vitals')
     ->middleware('throttle:300,1'); // 300 requests per minute (high frequency metrics)
 
+// Widget Polling API - Real-Time Dashboard Updates (v3.6.1)
+Route::middleware(['auth:web'])->prefix('widgets')->name('api.widgets.')->group(function () {
+    // Fallback polling endpoint for widget data
+    Route::post('/polling-data', [\App\Http\Controllers\Api\WidgetPollingController::class, 'getPollingData'])
+        ->name('polling-data')
+        ->middleware('throttle:120,1'); // 120 requests per minute (2 per second)
+
+    // Single widget polling endpoint
+    Route::get('/{widgetId}/data', [\App\Http\Controllers\Api\WidgetPollingController::class, 'getSingleWidgetData'])
+        ->name('single-data')
+        ->middleware('throttle:180,1'); // 180 requests per minute (3 per second)
+
+    // Broadcasting statistics (admin only)
+    Route::get('/broadcasting/stats', [\App\Http\Controllers\Api\WidgetPollingController::class, 'getBroadcastingStats'])
+        ->name('broadcasting-stats')
+        ->middleware('throttle:60,1'); // 60 requests per minute
+
+    // Health check for widget polling service
+    Route::get('/health', [\App\Http\Controllers\Api\WidgetPollingController::class, 'healthCheck'])
+        ->name('health')
+        ->middleware('throttle:60,1'); // 60 requests per minute
+});
+
 // Health Check Endpoints (public - for load balancers and monitoring)
 // trace: D03-SRS-AI-009, D18-§6.1 (AI Health Monitoring)
 Route::prefix('health')->name('api.health.')->group(function () {
