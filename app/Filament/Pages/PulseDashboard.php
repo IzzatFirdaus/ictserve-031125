@@ -6,72 +6,104 @@ namespace App\Filament\Pages;
 
 use BackedEnum;
 use Filament\Pages\Page;
-use Filament\Support\Icons\Heroicon;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
 
 /**
- * Laravel Pulse Monitoring Dashboard (Filament Integration)
+ * Pulse Dashboard Page
  *
- * Provides access to Laravel Pulse performance monitoring for admin and superuser roles.
+ * Provides integrated access to Laravel Pulse performance monitoring
+ * dashboard within the Filament admin panel.
  *
- * @author Pasukan BPM MOTAC
+ * Features:
+ * - Embedded Laravel Pulse dashboard
+ * - Role-based access control (admin and superuser only)
+ * - Seamless integration with Filament navigation
+ * - WCAG 2.2 AA compliant iframe implementation
+ * - Responsive design with proper viewport handling
  *
- * @trace D03-NFR-003 (Performance Monitoring)
- * @trace D16 (Broadcasting Setup)
- * @trace Requirements 4.1, 4.2, 14.1, 14.2, 16.1, 16.2, 16.3, 16.4, 16.5
+ * @trace Requirements: R9 (Laravel Pulse Integration), R18 (Pulse Dashboard Integration)
  *
- * @version 3.6.0
+ * @see D04 §3.2 Dashboard widgets
+ * @see D17 Queue Management - Laravel Pulse integration
  *
- * @created 2025-12-07
- *
- * @updated 2025-12-16
+ * @version 3.6.1
  */
 class PulseDashboard extends Page
 {
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBar;
-
-    protected static string|UnitEnum|null $navigationGroup = 'Sistem';
-
-    protected static ?int $navigationSort = 10;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chart-bar-square';
 
     protected string $view = 'filament.pages.pulse-dashboard';
 
-    public static function getNavigationLabel(): string
-    {
-        return __('admin.pulse_dashboard');
-    }
+    protected static string|UnitEnum|null $navigationGroup = null;
 
-    public function getTitle(): string
-    {
-        return __('admin.pulse_dashboard_title');
-    }
+    protected static ?int $navigationSort = 10;
 
-    public function getHeading(): string
+    /**
+     * Get the page title in Bahasa Melayu
+     */
+    public function getTitle(): string|Htmlable
     {
-        return __('admin.pulse_monitoring');
+        return 'Dashboard Prestasi (Pulse)';
     }
 
     /**
-     * Check if user can access Pulse dashboard.
-     *
-     * Per Requirements 4.1, 4.2: Admin and superuser roles can access Pulse
+     * Get the navigation label in Bahasa Melayu
+     */
+    public static function getNavigationLabel(): string
+    {
+        return 'Dashboard Prestasi';
+    }
+
+    /**
+     * Check if user can access this page (admin and superuser only)
      */
     public static function canAccess(): bool
     {
-        if (! Auth::check()) {
+        $user = auth()->user();
+
+        if (! $user) {
             return false;
         }
 
-        $user = Auth::user();
-
-        // Admin and superuser roles can access Pulse dashboard
-        return $user->isAdmin() || $user->isSuperuser();
+        return $user->hasRole(['admin', 'superuser']);
     }
 
-    public function mount(): void
+    /**
+     * Get the navigation group in Bahasa Melayu
+     */
+    public static function getNavigationGroup(): ?string
     {
-        // Check authorization
-        abort_unless(static::canAccess(), 403);
+        return 'Pemantauan Sistem';
+    }
+
+    /**
+     * Get the Pulse URL for embedding
+     */
+    public function getPulseUrl(): string
+    {
+        $baseUrl = config('app.url');
+        $pulsePath = config('pulse.path', 'pulse');
+
+        return rtrim($baseUrl, '/').'/'.ltrim($pulsePath, '/');
+    }
+
+    /**
+     * Check if Pulse is enabled
+     */
+    public function isPulseEnabled(): bool
+    {
+        return config('pulse.enabled', true);
+    }
+
+    /**
+     * Get page data for the view
+     */
+    protected function getViewData(): array
+    {
+        return [
+            'pulseUrl' => $this->getPulseUrl(),
+            'isPulseEnabled' => $this->isPulseEnabled(),
+        ];
     }
 }
