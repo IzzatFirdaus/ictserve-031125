@@ -23,6 +23,76 @@ return [
         'brand_name' => 'ICTServe Admin',
         'dashboard' => 'Papan Pemuka',
         'home' => 'Laman Utama',
+        // Additional navigation groups
+        'system_configuration' => 'Konfigurasi Sistem',
+        'email_management' => 'Pengurusan Email',
+        'security' => 'Keselamatan',
+        'compliance' => 'Pematuhan',
+        'user_settings' => 'Tetapan Pengguna',
+        'notification_center' => 'Pusat Pemberitahuan',
+        'notification_preferences' => 'Keutamaan Pemberitahuan',
+        'filter_presets' => 'Pratetap Penapis',
+    ],
+
+    // Admin Pages Navigation Groups - v3.6.1 Bahasa Melayu sahaja
+    'admin_pages' => [
+        'filter_presets' => [
+            'group' => 'Sistem',
+        ],
+        'notification_center' => [
+            'group' => 'Sistem',
+        ],
+        'notification_preferences' => [
+            'group' => 'Sistem',
+        ],
+        'email_templates' => [
+            'group' => 'Pengurusan Email',
+        ],
+        'email_queue' => [
+            'group' => 'Pengurusan Email',
+        ],
+        'security_monitoring' => [
+            'group' => 'Keselamatan',
+        ],
+        'two_factor_auth' => [
+            'group' => 'Keselamatan',
+        ],
+        'accessibility_compliance' => [
+            'group' => 'Pematuhan',
+        ],
+        'pdpa_dashboard' => [
+            'group' => 'Pematuhan',
+        ],
+        'performance_monitoring' => [
+            'group' => 'Sistem',
+        ],
+        'unified_search' => [
+            'group' => 'Sistem',
+        ],
+        'report_builder' => [
+            'group' => 'Laporan & Analitik',
+        ],
+        'data_visualization' => [
+            'group' => 'Laporan & Analitik',
+        ],
+        'unified_analytics' => [
+            'group' => 'Laporan & Analitik',
+        ],
+        'workflow_automation' => [
+            'group' => 'Konfigurasi Sistem',
+        ],
+        'approval_matrix' => [
+            'group' => 'Konfigurasi Sistem',
+        ],
+        'alert_configuration' => [
+            'group' => 'Sistem',
+        ],
+        'bilingual_management' => [
+            'group' => 'Konfigurasi Sistem',
+        ],
+        'bedrock_routing' => [
+            'group' => 'Ollama AI',
+        ],
     ],
 
     'labels' => [
