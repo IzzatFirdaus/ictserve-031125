@@ -1,143 +1,155 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: ictserve-app:latest
-    container_name: ictserve-app
-    restart: unless-stopped
-    working_dir: /var/www/html
-    volumes:
-      - ./:/var/www/html:cached
-    expose:
-      - "9000"
-    depends_on:
-      - db
-      - redis
-    env_file: ./.env.docker
-    environment:
-      DB_CONNECTION: mysql
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_DATABASE: ictserve
-      DB_USERNAME: laravel
-      DB_PASSWORD: secret
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      # npm configuration for www-data user
-      NPM_CONFIG_CACHE: /var/www/.npm-cache
-      NPM_CONFIG_PREFIX: /var/www/.npm-global
-      NPM_CONFIG_FUND: false
-      NPM_CONFIG_AUDIT: false
-    entrypoint: ["/usr/local/bin/docker-entrypoint.sh"]
-    command: ["php-fpm"]
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                INSTALL_DEV: "false" # Production build by default
+        image: ictserve-app:latest
+        container_name: ictserve-app
+        restart: unless-stopped
+        working_dir: /var/www/html
+        volumes:
+            # Mount source code but exclude vendor to avoid conflicts
+            - ./:/var/www/html:cached
+            - /var/www/html/vendor # Anonymous volume for vendor directory
+            - /var/www/html/node_modules # Anonymous volume for node_modules
+        expose:
+            - "9000"
+        depends_on:
+            - db
+            - redis
+        env_file: ./.env.docker
+        environment:
+            DB_CONNECTION: mysql
+            DB_HOST: db
+            DB_PORT: 3306
+            DB_DATABASE: ictserve
+            DB_USERNAME: laravel
+            DB_PASSWORD: secret
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            # npm configuration for www-data user
+            NPM_CONFIG_CACHE: /var/www/.npm-cache
+            NPM_CONFIG_PREFIX: /var/www/.npm-global
+            NPM_CONFIG_FUND: false
+            NPM_CONFIG_AUDIT: false
+        entrypoint: ["/usr/local/bin/docker-entrypoint.sh"]
+        command: ["php-fpm"]
 
-  nginx:
-    image: nginx:alpine
-    container_name: ictserve-nginx
-    restart: unless-stopped
-    ports:
-      - "8000:80"
-    volumes:
-      - ./:/var/www/html:cached
-      - ./docker/nginx/prod.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - app
+    nginx:
+        image: nginx:alpine
+        container_name: ictserve-nginx
+        restart: unless-stopped
+        ports:
+            - "8000:80"
+        volumes:
+            - ./:/var/www/html:cached
+            - ./docker/nginx/prod.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app
 
-  reverb:
-    image: ictserve-app:latest
-    container_name: ictserve-reverb
-    restart: unless-stopped
-    working_dir: /var/www/html
-    volumes:
-      - ./:/var/www/html:cached
-    ports:
-      - "8080:8080"
-    env_file: ./.env.docker
-    depends_on:
-      - redis
-      - app
-    command: ["php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080", "--no-interaction"]
+    reverb:
+        image: ictserve-app:latest
+        container_name: ictserve-reverb
+        restart: unless-stopped
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html:cached
+            - /var/www/html/vendor # Anonymous volume for vendor directory
+        ports:
+            - "8080:8080"
+        env_file: ./.env.docker
+        depends_on:
+            - redis
+            - app
+        command:
+            [
+                "php",
+                "artisan",
+                "reverb:start",
+                "--host=0.0.0.0",
+                "--port=8080",
+                "--no-interaction",
+            ]
 
-  db:
-    image: mysql:8.0
-    container_name: ictserve-db
-    restart: unless-stopped
-    volumes:
-      - dbdata:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: ictserve
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: secret
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-psecret"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+    db:
+        image: mysql:8.0
+        container_name: ictserve-db
+        restart: unless-stopped
+        volumes:
+            - dbdata:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: ictserve
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: secret
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-psecret"]
+            interval: 10s
+            timeout: 5s
+            retries: 10
 
-  mcp-memory:
-    build:
-      context: ./docker
-      dockerfile: Dockerfile.mcp-memory
-    image: ictserve-mcp-memory:latest
-    container_name: ictserve-mcp-memory
-    restart: unless-stopped
-    volumes:
-      - ./storage/mcp:/data
-    stdin_open: true
-    tty: true
+    mcp-memory:
+        build:
+            context: ./docker
+            dockerfile: Dockerfile.mcp-memory
+        image: ictserve-mcp-memory:latest
+        container_name: ictserve-mcp-memory
+        restart: unless-stopped
+        volumes:
+            - ./storage/mcp:/data
+        stdin_open: true
+        tty: true
 
-  mcp-sequential-thinking:
-    build:
-      context: ./docker
-      dockerfile: Dockerfile.mcp-sequential-thinking
-    image: ictserve-mcp-sequential-thinking:latest
-    container_name: ictserve-mcp-sequential-thinking
-    restart: unless-stopped
-    environment:
-      - DISABLE_THOUGHT_LOGGING=false
-    stdin_open: true
-    tty: true
+    mcp-sequential-thinking:
+        build:
+            context: ./docker
+            dockerfile: Dockerfile.mcp-sequential-thinking
+        image: ictserve-mcp-sequential-thinking:latest
+        container_name: ictserve-mcp-sequential-thinking
+        restart: unless-stopped
+        environment:
+            - DISABLE_THOUGHT_LOGGING=false
+        stdin_open: true
+        tty: true
 
-  mcp-playwright:
-    build:
-      context: ./docker
-      dockerfile: Dockerfile.mcp-playwright
-    image: ictserve-mcp-playwright:latest
-    container_name: ictserve-mcp-playwright
-    restart: unless-stopped
-    stdin_open: true
-    tty: true
-    shm_size: 2gb
+    mcp-playwright:
+        build:
+            context: ./docker
+            dockerfile: Dockerfile.mcp-playwright
+        image: ictserve-mcp-playwright:latest
+        container_name: ictserve-mcp-playwright
+        restart: unless-stopped
+        stdin_open: true
+        tty: true
+        shm_size: 2gb
 
-  mcp-chrome-devtools:
-    build:
-      context: ./docker
-      dockerfile: Dockerfile.mcp-chrome-devtools
-    image: ictserve-mcp-chrome-devtools:latest
-    container_name: ictserve-mcp-chrome-devtools
-    restart: unless-stopped
-    stdin_open: true
-    tty: true
+    mcp-chrome-devtools:
+        build:
+            context: ./docker
+            dockerfile: Dockerfile.mcp-chrome-devtools
+        image: ictserve-mcp-chrome-devtools:latest
+        container_name: ictserve-mcp-chrome-devtools
+        restart: unless-stopped
+        stdin_open: true
+        tty: true
 
-  redis:
-    image: redis:7
-    container_name: ictserve-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+    redis:
+        image: redis:7
+        container_name: ictserve-redis
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        volumes:
+            - redis-data:/data
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
 
 volumes:
-  dbdata:
-  redis-data:
-
-
+    dbdata:
+    redis-data:
