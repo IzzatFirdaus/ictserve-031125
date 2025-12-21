@@ -21,7 +21,7 @@
     <x-accessibility.aria-live />
 
     @if (session('impersonator_id'))
-        <div class="bg-red-600 text-white px-4 py-2 text-center text-sm font-bold relative z-50">
+        <div class="bg-danger-600 text-white px-4 py-2 text-center text-sm font-bold relative z-50">
             @php
                 $impersonatedName = auth()->user()?->name ?? null;
                 if (is_array($impersonatedName)) {
@@ -33,7 +33,7 @@
             @endphp
             {{ __('You are currently impersonating :name', ['name' => $impersonatedName]) }}
             <a href="{{ route('impersonate.stop') }}"
-                class="ml-4 underline hover:text-red-100">{{ __('Stop Impersonating') }}</a>
+                class="ml-4 underline hover:text-danger-100">{{ __('Stop Impersonating') }}</a>
         </div>
     @endif
 

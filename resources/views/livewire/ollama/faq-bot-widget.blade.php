@@ -13,7 +13,7 @@
 
     {{-- Widget Toggle Button (Always Visible) --}}
     <button wire:click="toggleWidget" x-ref="toggleButton"
-        class="flex items-center justify-center w-14 h-14 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg transition-all duration-200 focus:ring-4 focus:ring-primary-500 focus:ring-offset-2 min-h-11 min-w-11"
+        class="flex items-center justify-center w-14 h-14 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg transition-all duration-200 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11 min-w-11"
         :class="{ 'scale-110': isOpen }" aria-label="{{ __('ollama.widget.toggle_button', [], 'ms') }}"
         aria-expanded="false" x-bind:aria-expanded="isOpen" type="button" wire:loading.attr="disabled"
         wire:loading.class="opacity-75">
@@ -59,7 +59,7 @@
                 {{-- Minimize Button --}}
                 {{-- WCAG 2.5.8: Touch target minimum 44×44px (min-h-11 min-w-11) --}}
                 <button wire:click="minimizeWidget"
-                    class="p-2 hover:bg-primary-500 rounded transition-colors min-h-11 min-w-11 flex items-center justify-center"
+                    class="p-2 hover:bg-primary-500 rounded transition-colors min-h-11 min-w-11 flex items-center justify-center focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
                     aria-label="{{ __('ollama.widget.minimize', [], 'ms') }}" type="button">
                     <x-heroicon-o-minus class="w-4 h-4" aria-hidden="true" />
                 </button>
@@ -67,7 +67,7 @@
                 {{-- Close Button --}}
                 {{-- WCAG 2.5.8: Touch target minimum 44×44px (min-h-11 min-w-11) --}}
                 <button wire:click="closeWidget"
-                    class="p-2 hover:bg-primary-500 rounded transition-colors min-h-11 min-w-11 flex items-center justify-center"
+                    class="p-2 hover:bg-primary-500 rounded transition-colors min-h-11 min-w-11 flex items-center justify-center focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
                     aria-label="{{ __('ollama.widget.close', [], 'ms') }}" type="button">
                     <x-heroicon-o-x-mark class="w-4 h-4" aria-hidden="true" />
                 </button>
@@ -151,12 +151,12 @@
                         </label>
                         <input type="text" id="widget-query" wire:model="query" wire:keydown.enter="submitQuery"
                             placeholder="{{ __('ollama.widget.query_placeholder', [], 'ms') }}"
-                            class="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 min-h-11"
+                            class="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:border-primary-500 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 min-h-11"
                             maxlength="500" {{ $isLoading ? 'disabled' : '' }} aria-describedby="widget-query-help" data-initial-focus>
 
                         {{-- Send Button --}}
                         <button type="submit"
-                            class="px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-400 text-white rounded-md transition-colors focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-11 min-w-11 flex items-center justify-center"
+                            class="px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-400 text-white rounded-lg transition-colors focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11 min-w-11 flex items-center justify-center"
                             {{ $isLoading ? 'disabled' : '' }}
                             aria-label="{{ __('ollama.widget.send_button', [], 'ms') }}">
                             @if ($isLoading)
@@ -175,13 +175,13 @@
                     {{-- Action Buttons --}}
                     <div class="flex justify-between items-center pt-2">
                         <button type="button" wire:click="clearConversation"
-                            class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 underline focus:ring-2 focus:ring-primary-500 rounded px-1 py-1 inline-flex items-center gap-1">
+                            class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 underline focus-visible:ring-3 focus-visible:ring-primary-500 rounded px-1 py-1 inline-flex items-center gap-1">
                             <x-heroicon-o-trash class="w-3 h-3" aria-hidden="true" />
                             {{ __('ollama.widget.clear_conversation', [], 'ms') }}
                         </button>
 
                         <button type="button" wire:click="openFullBot"
-                            class="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:ring-2 focus:ring-primary-500 rounded px-1 py-1 inline-flex items-center gap-1">
+                            class="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus-visible:ring-3 focus-visible:ring-primary-500 rounded px-1 py-1 inline-flex items-center gap-1">
                             <x-heroicon-o-arrow-top-right-on-square class="w-3 h-3" aria-hidden="true" />
                             {{ __('ollama.widget.open_full_bot', [], 'ms') }}
                         </button>
@@ -193,7 +193,7 @@
         {{-- Minimized State --}}
         <div x-show="isMinimized" class="p-4 bg-slate-50 dark:bg-slate-900">
             <button wire:click="restoreWidget"
-                class="w-full text-left text-sm text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 focus:ring-2 focus:ring-primary-500 rounded px-2 py-1 inline-flex items-center gap-2">
+                class="w-full text-left text-sm text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 focus-visible:ring-3 focus-visible:ring-primary-500 rounded px-2 py-1 inline-flex items-center gap-2">
                 <x-heroicon-o-chevron-up class="w-4 h-4" aria-hidden="true" />
                 {{ __('ollama.widget.click_to_restore', [], 'ms') }}
             </button>

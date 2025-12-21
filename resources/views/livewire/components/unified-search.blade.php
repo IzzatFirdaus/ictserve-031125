@@ -30,7 +30,7 @@
                 wire:keydown.arrow-up.prevent="moveUp" wire:keydown.arrow-down.prevent="moveDown"
                 wire:keydown.enter.prevent="handleEnter" wire:keydown.escape="handleEscape" wire:focus="openDropdown"
                 @click.away="$wire.closeDropdown()"
-                class="block w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder-slate-500 transition-colors duration-200 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder-slate-400 dark:focus:border-primary-400 dark:focus:ring-primary-400/20"
+                class="block w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder-slate-500 transition-colors duration-200 focus:border-primary-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder-slate-400 dark:focus:border-primary-400 dark:focus-visible:ring-3 focus-visible:ring-primary-400/20"
                 placeholder="{{ $placeholder }}" autocomplete="off" role="combobox"
                 aria-expanded="{{ $isOpen ? 'true' : 'false' }}" aria-controls="search-suggestions"
                 aria-autocomplete="list"
@@ -68,7 +68,7 @@
                         class="flex cursor-pointer items-center gap-3 px-4 py-2.5 transition-colors duration-150 {{ $selectedIndex === $index ? 'bg-primary-50 dark:bg-primary-900/20' : 'hover:bg-slate-50 dark:hover:bg-slate-700/50' }}">
                         {{-- Type Icon --}}
                         <span
-                            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{ $suggestion['type'] === 'ticket' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' }}">
+                            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{ $suggestion['type'] === 'ticket' ? 'bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400' : 'bg-success-100 text-success-600 dark:bg-success-900/30 dark:text-success-400' }}">
                             @if ($suggestion['type'] === 'ticket')
                                 <x-heroicon-o-ticket class="h-4 w-4" aria-hidden="true" />
                             @else
@@ -146,14 +146,14 @@
                         <div class="mt-3 flex items-center gap-4">
                             <label class="flex cursor-pointer items-center gap-2">
                                 <input type="checkbox" wire:model.live="includeTickets"
-                                    class="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-700">
+                                    class="h-4 w-4 rounded border-slate-300 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 dark:border-slate-600 dark:bg-slate-700">
                                 <span class="text-sm text-slate-700 dark:text-slate-300">
                                     {{ __('common.search.include_tickets') }}
                                 </span>
                             </label>
                             <label class="flex cursor-pointer items-center gap-2">
                                 <input type="checkbox" wire:model.live="includeLoans"
-                                    class="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-700">
+                                    class="h-4 w-4 rounded border-slate-300 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 dark:border-slate-600 dark:bg-slate-700">
                                 <span class="text-sm text-slate-700 dark:text-slate-300">
                                     {{ __('common.search.include_loans') }}
                                 </span>
@@ -201,7 +201,7 @@
                                     <div>
                                         <h3
                                             class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white">
-                                            <x-heroicon-o-ticket class="h-4 w-4 text-blue-600 dark:text-blue-400"
+                                            <x-heroicon-o-ticket class="h-4 w-4 text-primary-600 dark:text-primary-400"
                                                 aria-hidden="true" />
                                             {{ __('common.search.tickets') }}
                                             ({{ $this->results['tickets']->count() }})
@@ -224,7 +224,7 @@
                                                                 </p>
                                                             </div>
                                                             <span
-                                                                class="shrink-0 rounded-full px-2 py-1 text-xs font-medium {{ $ticket->status === 'open' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : ($ticket->status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300') }}">
+                                                                class="shrink-0 rounded-full px-2 py-1 text-xs font-medium {{ $ticket->status === 'open' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400' : ($ticket->status === 'resolved' ? 'bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300') }}">
                                                                 {{ ucfirst($ticket->status) }}
                                                             </span>
                                                         </div>
@@ -241,7 +241,7 @@
                                         <h3
                                             class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white">
                                             <x-heroicon-o-clipboard-document-list
-                                                class="h-4 w-4 text-green-600 dark:text-green-400"
+                                                class="h-4 w-4 text-success-600 dark:text-success-400"
                                                 aria-hidden="true" />
                                             {{ __('common.search.loans') }} ({{ $this->results['loans']->count() }})
                                         </h3>
@@ -268,8 +268,8 @@
                                                                     ? $loan->status->label()
                                                                     : ucfirst($statusValue);
                                                                 $statusClass = match ($statusValue) {
-                                                                    'approved' => 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-                                                                    'pending' => 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+                                                                    'approved' => 'bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400',
+                                                                    'pending' => 'bg-warning-100 text-warning-700 dark:bg-warning-900/30 dark:text-warning-400',
                                                                     default => 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300',
                                                                 };
                                                             @endphp

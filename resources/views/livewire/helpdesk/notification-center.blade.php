@@ -11,7 +11,7 @@
 <div class="relative" x-data="{ open: $wire.entangle('showDropdown') }">
     {{-- Notification Bell Button --}}
     <button @click="open = !open" type="button"
-        class="relative rounded-full bg-slate-900/70 p-2 text-slate-300 hover:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+        class="relative rounded-full bg-slate-900/70 p-2 text-slate-300 hover:text-slate-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         aria-label="{{ __('Notifikasi') }}" aria-expanded="false" aria-haspopup="true">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -32,7 +32,7 @@
         x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
-        class="absolute right-0 z-50 mt-2 w-96 origin-top-right rounded-lg bg-slate-900/70 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="absolute right-0 z-50 mt-2 w-96 origin-top-right rounded-lg bg-slate-900/70 shadow-lg ring-1 ring-black/5 focus:outline-none"
         role="menu" aria-orientation="vertical" aria-labelledby="notification-menu" style="display: none;">
         {{-- Header --}}
         <div class="border-b border-slate-800 px-4 py-3">
@@ -184,3 +184,4 @@
         }
     </script>
 @endscript
+

@@ -33,7 +33,7 @@
                 <div class="flex flex-wrap gap-3">
                     @foreach ($this->quickActions as $action)
                         <a href="{{ route($action['route']) }}"
-                            class="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-button transition-colors duration-200 hover:bg-slate-800 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 min-h-11"
+                            class="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-button transition-colors duration-200 hover:bg-slate-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 min-h-11"
                             aria-label="{{ $action['label'] }}">
                             <x-dynamic-component :component="$action['icon']" class="h-5 w-5" aria-hidden="true" />
                             <span>{{ $action['label'] }}</span>
@@ -145,7 +145,7 @@
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-slate-200">
                                 <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                    class="text-slate-200 hover:text-primary-400 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                    class="text-slate-200 hover:text-primary-400 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded">
                                     {{ $ticket->ticket_number }}
                                 </a>
                             </p>
@@ -176,7 +176,7 @@
             @if ($recentActivity->isNotEmpty())
                 <div class="mt-4 text-center">
                     <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                        class="text-sm font-medium text-primary-300 hover:text-primary-400 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                        class="text-sm font-medium text-primary-300 hover:text-primary-400 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded">
                         {{ __('common.view_all_activities') }} &rarr;
                     </a>
                 </div>
@@ -190,7 +190,7 @@
             <div class="mb-4 flex items-center justify-between">
                 <h2 class="text-lg font-heading font-semibold text-slate-100">{{ __('common.recent_tickets') }}</h2>
                 <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                    class="text-sm font-medium text-primary-300 hover:text-primary-400 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                    class="text-sm font-medium text-primary-300 hover:text-primary-400 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded">
                     {{ __('common.view_all') }} &rarr;
                 </a>
             </div>
@@ -222,7 +222,7 @@
                             <tr class="hover:bg-slate-800/90 transition-colors duration-200">
                                 <td class="px-4 py-4 text-sm text-slate-100">
                                     <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                        class="font-medium text-primary-300 hover:text-primary-400 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                        class="font-medium text-primary-300 hover:text-primary-400 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded">
                                         {{ $ticket->ticket_number }}
                                     </a>
                                     <p class="mt-1 text-xs text-slate-400">

@@ -19,7 +19,7 @@
         </div>
         <div class="flex items-center gap-2">
             <a href="{{ route('tickets.create') }}"
-                class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-button transition-colors duration-200 hover:bg-primary-500 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11">
+                class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-button transition-colors duration-200 hover:bg-primary-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 min-h-11">
                 <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -119,7 +119,7 @@
                     </x-form.select>
 
                     <button wire:click="$set('sortDirection', '{{ $sortDirection === 'asc' ? 'desc' : 'asc' }}')"
-                        class="inline-flex items-center rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm font-medium text-slate-300 shadow-button transition-colors duration-200 hover:bg-slate-700 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11"
+                        class="inline-flex items-center rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm font-medium text-slate-300 shadow-button transition-colors duration-200 hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 min-h-11"
                         aria-label="{{ $sortDirection === 'asc' ? __('Susun menurun') : __('Susun menaik') }}">
                         @if ($sortDirection === 'asc')
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -196,7 +196,7 @@
                                 <td class="px-4 py-4 text-sm text-slate-100">
                                     <div class="font-medium">
                                         <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                            class="text-primary-400 hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 rounded">
+                                            class="text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded">
                                             {{ $ticket->ticket_number }}
                                         </a>
                                     </div>
@@ -241,7 +241,7 @@
                                         </x-ui.button>
                                     @else
                                         <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                            class="text-primary-400 hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 rounded"
+                                            class="text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded"
                                             aria-label="{{ __('Lihat butiran tiket :number', ['number' => $ticket->ticket_number]) }}">
                                             {{ __('Butiran') }}
                                         </a>

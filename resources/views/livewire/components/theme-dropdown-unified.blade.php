@@ -21,9 +21,11 @@
     open: false,
     theme: '{{ $currentTheme }}',
     init() {
-        // Sync with global theme API
-        if (window.ICTServeTheme) {
-            this.theme = window.ICTServeTheme.get();
+        // Get theme from localStorage or default to light
+        try {
+            this.theme = localStorage.getItem('theme') || 'light';
+        } catch (error) {
+            this.theme = 'light';
         }
 
         // Listen for theme changes from other components
@@ -50,8 +52,8 @@
         class="flex items-center justify-center w-11 h-11 rounded-lg 
                text-slate-600 dark:text-slate-300 
                hover:bg-slate-100 dark:hover:bg-slate-700 
-               focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 
-               dark:focus:ring-offset-slate-800 
+               focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 
+               dark:focus-visible:ring-offset-slate-800 
                transition-colors duration-200"
         :class="{ 'bg-slate-100 dark:bg-slate-700': open }"
         :aria-label="'{{ __('Pilihan tema') }} - ' + (theme === 'dark' ? '{{ __('Gelap') }}' : '{{ __('Terang') }}')"
@@ -60,7 +62,8 @@
         {{-- Sun icon (shown in dark mode to switch to light) --}}
         <svg x-show="theme === 'dark'" x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 scale-75" x-transition:enter-end="opacity-100 scale-100"
-            class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            class="w-5 h-5 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
@@ -81,7 +84,7 @@
         x-transition:leave-end="opacity-0 scale-95" @click.outside="open = false" @keydown.escape.window="open = false"
         class="absolute right-0 mt-2 w-40 origin-top-right rounded-lg 
                bg-white dark:bg-slate-800 
-               shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-slate-700 
+               shadow-lg ring-1 ring-black/5 dark:ring-slate-700 
                focus:outline-none z-50"
         role="listbox" aria-label="{{ __('Pilih tema') }}">
         <div class="py-1">
@@ -145,9 +148,12 @@
                 if (window.Livewire) {
                     Livewire.on('theme-changed', function(data) {
                         const theme = data?.theme || data?.[0]?.theme || 'light';
-                        if (window.ICTServeTheme) {
-                            window.ICTServeTheme.set(theme);
-                        }
+                        // Dispatch to app.js event listeners (no window.ICTServeTheme)
+                        window.dispatchEvent(new CustomEvent('theme-changed', {
+                            detail: {
+                                theme: theme
+                            }
+                        }));
                     });
                 }
             });

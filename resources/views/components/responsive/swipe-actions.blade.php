@@ -142,7 +142,7 @@
                     x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                     x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 scale-100"
                     x-transition:leave-end="opacity-0 scale-95" @click.outside="menuOpen = false"
-                    class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10"
+                    class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg ring-1 ring-black/5 z-10"
                     role="menu" x-cloak>
                     <div class="py-1">
                         {{ $menuActions ?? '' }}
@@ -161,3 +161,4 @@
         }
     }
 </style>
+

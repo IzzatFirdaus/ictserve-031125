@@ -88,14 +88,14 @@
         x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95" @click.outside="close()"
-        class="absolute z-50 mt-1 w-full rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-800 dark:ring-gray-700"
+        class="absolute z-50 mt-1 w-full rounded-lg bg-white shadow-lg ring-1 ring-black/5 dark:bg-gray-800 dark:ring-gray-700"
         style="max-height: {{ $maxHeight }};">
         {{-- Search Input --}}
         <div class="p-2 border-b border-gray-200 dark:border-gray-700">
             <input type="text" x-model="searchQuery" x-ref="searchInput" @keydown.escape="close()"
                 @keydown.arrow-down.prevent="focusNextOption()" @keydown.arrow-up.prevent="focusPreviousOption()"
                 @keydown.enter.prevent="selectFocusedOption()" :placeholder="searchPlaceholder"
-                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white min-h-11"
+                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white min-h-11"
                 aria-label="{{ __('Search options') }}" />
         </div>
 
@@ -152,3 +152,4 @@
 </div>
 
 {{-- Alpine.js searchableSelect component is globally registered in resources/js/alpine-components.js --}}
+

@@ -73,7 +73,7 @@
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
             <a href="{{ route('loan.guest.apply') }}"
-                class="flex min-h-11 items-center gap-3 rounded-lg border border-slate-800/80 bg-slate-900/70 p-4 text-slate-100 shadow-lg shadow-slate-950/40 transition hover:bg-slate-900/60 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-950"
+                class="flex min-h-11 items-center gap-3 rounded-lg border border-slate-800/80 bg-slate-900/70 p-4 text-slate-100 shadow-lg shadow-slate-950/40 transition hover:bg-slate-900/60 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                 aria-label="{{ __('loan.dashboard.new_application') }}">
                 <svg class="h-8 w-8 text-primary-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -85,7 +85,7 @@
             </a>
 
             <a href="{{ route('loan.history') }}"
-                class="flex min-h-11 items-center gap-3 rounded-lg border border-slate-800/80 bg-slate-900/70 p-4 text-slate-100 shadow-lg shadow-slate-950/40 transition hover:bg-slate-900/60 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-950"
+                class="flex min-h-11 items-center gap-3 rounded-lg border border-slate-800/80 bg-slate-900/70 p-4 text-slate-100 shadow-lg shadow-slate-950/40 transition hover:bg-slate-900/60 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                 aria-label="{{ __('loan.dashboard.view_history') }}">
                 <svg class="h-8 w-8 text-success-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -97,7 +97,7 @@
             </a>
 
             <a href="{{ route('loans.assets.available') }}"
-                class="flex min-h-11 items-center gap-3 rounded-lg border border-slate-800/80 bg-slate-900/70 p-4 text-slate-100 shadow-lg shadow-slate-950/40 transition hover:bg-slate-900/60 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-950"
+                class="flex min-h-11 items-center gap-3 rounded-lg border border-slate-800/80 bg-slate-900/70 p-4 text-slate-100 shadow-lg shadow-slate-950/40 transition hover:bg-slate-900/60 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                 aria-label="{{ __('loan.dashboard.browse_assets') }}">
                 <svg class="h-8 w-8 text-primary-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />

@@ -69,7 +69,7 @@
                                     <div class="shrink-0">
                                         <button type="button" wire:click="goToStep({{ $step }})"
                                             @class([
-                                                'flex items-center justify-center w-12 h-12 rounded-full border transition-colors duration-200 min-h-11 min-w-11 text-base font-semibold shadow-button focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800',
+                                                'flex items-center justify-center w-12 h-12 rounded-full border transition-colors duration-200 min-h-11 min-w-11 text-base font-semibold shadow-button focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800',
                                                 'bg-primary-600 border-primary-400/70 text-white ring-2 ring-primary-400/40' =>
                                                     $step <= $currentStep,
                                                 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-400 dark:text-slate-500' =>
@@ -260,7 +260,7 @@
                                         <label class="flex items-start space-x-3 cursor-pointer">
                                             <input type="checkbox" name="declaration_accepted"
                                                 wire:model.live="declaration_accepted"
-                                                class="mt-1 h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
+                                                class="mt-1 h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
                                                 required aria-describedby="declaration-help" />
                                             <span class="text-sm text-slate-700 dark:text-slate-300">
                                                 Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di
@@ -281,7 +281,7 @@
                                     <div class="pt-4">
                                         <label class="flex items-start space-x-3 cursor-pointer">
                                             <input type="checkbox" name="terms_accepted" wire:model.live="terms_accepted"
-                                                class="mt-1 h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
+                                                class="mt-1 h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
                                                 required aria-describedby="terms-help" />
                                             <span class="text-sm text-slate-700 dark:text-slate-300">
                                                 {!! __('helpdesk.terms_of_service', ['privacy_url' => route('privacy-policy')]) !!}
@@ -424,7 +424,7 @@
                                                 class="text-sm text-slate-700 dark:text-slate-300">{{ $attachment->getClientOriginalName() }}</span>
                                             <button type="button"
                                                 wire:click="$set('attachments.{{ $index }}', null)"
-                                                class="text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300 min-h-11 min-w-11 flex items-center justify-center focus:outline-none focus:ring-3 focus:ring-danger-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 rounded transition-colors duration-200"
+                                                class="text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300 min-h-11 min-w-11 flex items-center justify-center focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800 rounded transition-colors duration-200"
                                                 aria-label="{{ __('helpdesk.remove_file', ['name' => $attachment->getClientOriginalName()]) }}">
                                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor" aria-hidden="true">

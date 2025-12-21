@@ -24,7 +24,7 @@
                    wire:model.live.debounce.300ms="search"
                    class="block w-full pl-10 pr-12 py-3 border border-slate-300 dark:border-slate-600
                           rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white
-                          focus:ring-2 focus:ring-primary-500 focus:border-transparent
+                          focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-transparent
                           placeholder-slate-400 dark:placeholder-slate-500"
                    placeholder="{{ __('portal.help.center.search_placeholder') }}" />
 

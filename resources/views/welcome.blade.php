@@ -84,10 +84,10 @@
                             <div class="flex gap-2">
                                 <input type="text" name="reference"
                                     placeholder="{{ __('Cari No. Rujukan (HD-2024-001234)') }}"
-                                    class="flex-1 px-4 py-3 rounded-lg border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-white/60 focus:border-white focus:ring-2 focus:ring-white focus:bg-white/20 transition-all min-h-12"
+                                    class="flex-1 px-4 py-3 rounded-lg border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-white/60 focus:border-white focus-visible:ring-3 focus-visible:ring-white focus:bg-white/20 transition-all min-h-12"
                                     aria-label="{{ __('No. Rujukan') }}">
                                 <button type="submit"
-                                    class="px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-slate-50 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-12 flex items-center gap-2">
+                                    class="px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-slate-50 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 min-h-12 flex items-center gap-2">
                                     <x-heroicon-s-magnifying-glass class="h-5 w-5" aria-hidden="true" />
                                     <span class="hidden sm:inline">{{ __('Cari') }}</span>
                                 </button>
@@ -190,7 +190,8 @@
                                         {{ __('Contoh: HD-2024-001234 atau LA-2024-005678') }}</p>
                                 </div>
                             </div>
-                            <div class="p-6 bg-slate-50 dark:bg-slate-700/50 border-t border-slate-200 dark:border-slate-600">
+                            <div
+                                class="p-6 bg-slate-50 dark:bg-slate-700/50 border-t border-slate-200 dark:border-slate-600">
                                 <button type="submit"
                                     class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-white hover:bg-slate-50 dark:bg-slate-600 dark:hover:bg-slate-500 text-primary-600 dark:text-white border-2 border-primary-600 dark:border-slate-500 text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                     <x-heroicon-s-magnifying-glass class="h-5 w-5 mr-2"
@@ -231,7 +232,8 @@
                                 x-bind:class="{ 'rotate-180': openFaq === 1 }" aria-hidden="true" />
                         </button>
                         <div x-show="openFaq === 1" x-collapse x-cloak id="faq-answer-1">
-                            <div class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
+                            <div
+                                class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
                                 <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                     {{ __('Anda boleh membuat aduan ICT dengan mengklik butang "Buat Aduan" di halaman utama. Isi borang dengan maklumat lengkap mengenai masalah yang dihadapi. Tiket aduan akan dijana dan anda akan menerima nombor rujukan melalui emel dalam masa 60 saat.') }}
                                 </p>
@@ -253,7 +255,8 @@
                                 x-bind:class="{ 'rotate-180': openFaq === 2 }" aria-hidden="true" />
                         </button>
                         <div x-show="openFaq === 2" x-collapse x-cloak id="faq-answer-2">
-                            <div class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
+                            <div
+                                class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
                                 <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                     {{ __('Klik butang "Mohon Pinjaman" dan lengkapkan borang permohonan dengan maklumat peminjam, tarikh pinjaman, dan jenis aset yang diperlukan. Permohonan anda akan dihantar kepada pegawai kelulusan (Gred 41 ke atas) untuk kelulusan. Anda akan menerima emel pengesahan dalam masa 60 saat.') }}
                                 </p>
@@ -275,7 +278,8 @@
                                 x-bind:class="{ 'rotate-180': openFaq === 3 }" aria-hidden="true" />
                         </button>
                         <div x-show="openFaq === 3" x-collapse x-cloak id="faq-answer-3">
-                            <div class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
+                            <div
+                                class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
                                 <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                     {{ __('Anda boleh menyemak status dengan memasukkan nombor rujukan (contoh: HD-2024-001234 untuk tiket atau LA-2024-005678 untuk pinjaman) di bahagian "Semak Status" di halaman utama. Anda juga boleh menggunakan pautan penjejakan yang dihantar melalui emel.') }}
                                 </p>
@@ -297,7 +301,8 @@
                                 x-bind:class="{ 'rotate-180': openFaq === 4 }" aria-hidden="true" />
                         </button>
                         <div x-show="openFaq === 4" x-collapse x-cloak id="faq-answer-4">
-                            <div class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
+                            <div
+                                class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
                                 <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                     {{ __('Permohonan pinjaman aset memerlukan kelulusan daripada pegawai Gred 41 ke atas. Pegawai kelulusan boleh meluluskan melalui pautan emel (tanpa log masuk) atau melalui portal (dengan log masuk). Masa kelulusan bergantung kepada ketersediaan pegawai kelulusan, tetapi sistem akan menghantar peringatan automatik selepas 48 jam jika tiada tindakan diambil.') }}
                                 </p>
@@ -319,7 +324,8 @@
                                 x-bind:class="{ 'rotate-180': openFaq === 5 }" aria-hidden="true" />
                         </button>
                         <div x-show="openFaq === 5" x-collapse x-cloak id="faq-answer-5">
-                            <div class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
+                            <div
+                                class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
                                 <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                     {{ __('Selepas menggunakan aset, anda perlu memulangkan aset kepada admin ICT dalam keadaan baik. Admin akan memeriksa keadaan aset dan merekodkan pemulangan dalam sistem. Jika aset rosak, tiket penyelenggaraan automatik akan dibuat dalam masa 5 saat untuk tindakan pembaikan.') }}
                                 </p>
@@ -341,7 +347,8 @@
                                 x-bind:class="{ 'rotate-180': openFaq === 6 }" aria-hidden="true" />
                         </button>
                         <div x-show="openFaq === 6" x-collapse x-cloak id="faq-answer-6">
-                            <div class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
+                            <div
+                                class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600">
                                 <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
                                     {{ __('Untuk bantuan teknikal atau pertanyaan mengenai sistem, anda boleh menghubungi Bahagian PengurusanMaklumat (BPM) MOTAC melalui emel di ictserve@motac.gov.my atau telefon di 03-XXXX XXXX (waktu pejabat: 8:00 AM - 5:00 PM, Isnin - Jumaat). Anda juga boleh membuat tiket aduan melalui sistem untuk bantuan teknikal.') }}
                                 </p>
@@ -377,7 +384,7 @@
                                     x-text="modalTitle">
                                 </h3>
                                 <button @click="showLoginModal = false"
-                                    class="text-white/80 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded-lg p-1 min-h-11 min-w-11 flex items-center justify-center"
+                                    class="text-white/80 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded-lg p-1 min-h-11 min-w-11 flex items-center justify-center"
                                     aria-label="{{ __('Tutup') }}">
                                     <x-heroicon-s-x-mark class="h-6 w-6" aria-hidden="true" />
                                 </button>
@@ -435,7 +442,7 @@
 
                             {{-- Yes Button (Login) --}}
                             <a :href="loginRoute"
-                                class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 min-h-11 min-w-30">
+                                class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11 min-w-30">
                                 <x-heroicon-o-arrow-right-on-rectangle class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('Ya') }}
                                 <span class="text-xs ml-2 text-white/80">({{ __('Log Masuk') }})</span>

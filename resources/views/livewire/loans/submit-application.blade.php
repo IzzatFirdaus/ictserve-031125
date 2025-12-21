@@ -151,7 +151,7 @@
                                     <label class="flex items-start cursor-pointer">
                                         <input type="checkbox" wire:click="toggleAsset({{ $asset->id }})"
                                             {{ in_array($asset->id, $selected_assets) ? 'checked' : '' }}
-                                            class="mt-1 h-5 w-5 text-primary-600 border-slate-300 dark:border-slate-700 rounded focus:ring-primary-600"
+                                            class="mt-1 h-5 w-5 text-primary-600 border-slate-300 dark:border-slate-700 rounded focus-visible:ring-3 focus-visible:ring-primary-600"
                                             aria-label="{{ __('loans.select_asset', ['name' => $asset->name]) }}" />
                                         <div class="ml-3 flex-1">
                                             <div class="font-semibold text-slate-900 dark:text-slate-100">{{ $asset->name }}</div>

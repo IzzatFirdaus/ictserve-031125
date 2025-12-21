@@ -31,7 +31,7 @@
                     {{ number_format($openTickets) }}
                 </p>
                 <a href="{{ route('staff.tickets.index') }}"
-                    class="mt-3 inline-flex items-center text-xs text-blue-400 hover:text-blue-300 transition-colors min-h-11">
+                    class="mt-3 inline-flex items-center text-xs text-primary-400 hover:text-primary-300 transition-colors min-h-11">
                     {{ __('staff.dashboard.view_all') }}
                     <x-heroicon-o-chevron-right class="ml-1 w-3 h-3" aria-hidden="true" />
                 </a>
@@ -46,7 +46,7 @@
                     {{ number_format($activeLoans) }}
                 </p>
                 <a href="{{ route('staff.loans.index') }}"
-                    class="mt-3 inline-flex items-center text-xs text-blue-400 hover:text-blue-300 transition-colors min-h-11">
+                    class="mt-3 inline-flex items-center text-xs text-primary-400 hover:text-primary-300 transition-colors min-h-11">
                     {{ __('staff.dashboard.view_all') }}
                     <x-heroicon-o-chevron-right class="ml-1 w-3 h-3" aria-hidden="true" />
                 </a>
@@ -61,7 +61,7 @@
                     {{ number_format($pendingApprovals) }}
                 </p>
                 <a href="{{ route('staff.loans.index', ['status' => 'pending']) }}"
-                    class="mt-3 inline-flex items-center text-xs text-amber-400 hover:text-amber-300 transition-colors min-h-11">
+                    class="mt-3 inline-flex items-center text-xs text-warning-400 hover:text-warning-300 transition-colors min-h-11">
                     {{ __('staff.dashboard.view_all') }}
                     <x-heroicon-o-chevron-right class="ml-1 w-3 h-3" aria-hidden="true" />
                 </a>
@@ -75,7 +75,7 @@
                 <p class="mt-2 text-3xl font-semibold text-slate-100">
                     {{ number_format($resolvedThisMonth) }}
                 </p>
-                <div class="mt-3 text-xs text-green-400">
+                <div class="mt-3 text-xs text-success-400">
                     {{ __('staff.dashboard.current_month') }}
                 </div>
             </x-ui.card>
@@ -103,7 +103,7 @@
                                     </h3>
                                     <span
                                         class="text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap
-                                            {{ $ticket->status === 'resolved' ? 'bg-green-500/20 text-green-300' : 'bg-blue-500/20 text-blue-200' }}">
+                                            {{ $ticket->status === 'resolved' ? 'bg-success-500/20 text-success-300' : 'bg-primary-500/20 text-primary-200' }}">
                                         {{ ucfirst($ticket->status) }}
                                     </span>
                                 </div>
@@ -120,7 +120,7 @@
                     </ul>
                     <div class="mt-4 pt-4 border-t border-slate-800">
                         <a href="{{ route('staff.tickets.index') }}"
-                            class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center justify-center min-h-11">
+                            class="text-sm text-primary-400 hover:text-primary-300 transition-colors flex items-center justify-center min-h-11">
                             {{ __('staff.dashboard.view_all_tickets') }}
                             <x-heroicon-o-chevron-right class="ml-1 w-4 h-4" aria-hidden="true" />
                         </a>
@@ -149,7 +149,7 @@
                                     </h3>
                                     <span
                                         class="text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap
-                                            {{ $application->status === \App\Enums\LoanStatus::APPROVED ? 'bg-green-500/20 text-green-300' : 'bg-amber-500/20 text-amber-300' }}">
+                                            {{ $application->status === \App\Enums\LoanStatus::APPROVED ? 'bg-success-500/20 text-success-300' : 'bg-warning-500/20 text-warning-300' }}">
                                         {{ $application->status->label() }}
                                     </span>
                                 </div>
@@ -169,7 +169,7 @@
                     </ul>
                     <div class="mt-4 pt-4 border-t border-slate-800">
                         <a href="{{ route('staff.loans.index') }}"
-                            class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center justify-center min-h-11">
+                            class="text-sm text-primary-400 hover:text-primary-300 transition-colors flex items-center justify-center min-h-11">
                             {{ __('staff.dashboard.view_all_loans') }}
                             <x-heroicon-o-chevron-right class="ml-1 w-4 h-4" aria-hidden="true" />
                         </a>

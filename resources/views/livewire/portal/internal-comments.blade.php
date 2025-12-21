@@ -73,7 +73,7 @@
 
         <div class="flex justify-between items-center mt-2">
             <span class="text-sm text-gray-500">{{ 1000 - strlen($newComment) }} characters remaining</span>
-            @error('newComment') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+            @error('newComment') <span class="text-danger-600 text-sm">{{ $message }}</span> @enderror
         </div>
 
         <button type="submit" class="mt-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">

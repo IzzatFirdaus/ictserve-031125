@@ -4,12 +4,12 @@
     <div class="flex items-center gap-6">
         <label class="inline-flex items-center gap-2 min-h-11 cursor-pointer">
             <input type="radio" wire:model="exportFormat" value="csv"
-                class="form-radio text-primary-600 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-offset-2 dark:bg-gray-700 dark:border-gray-600" />
+                class="form-radio text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-3 focus-visible:ring-offset-2 dark:bg-gray-700 dark:border-gray-600" />
             <span class="text-gray-700 dark:text-gray-300">CSV</span>
         </label>
         <label class="inline-flex items-center gap-2 min-h-11 cursor-pointer">
             <input type="radio" wire:model="exportFormat" value="pdf"
-                class="form-radio text-primary-600 focus:ring-primary-500 focus-visible:ring-3 focus-visible:ring-offset-2 dark:bg-gray-700 dark:border-gray-600" />
+                class="form-radio text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-3 focus-visible:ring-offset-2 dark:bg-gray-700 dark:border-gray-600" />
             <span class="text-gray-700 dark:text-gray-300">PDF</span>
         </label>
     </div>

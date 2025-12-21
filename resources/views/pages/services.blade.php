@@ -30,11 +30,11 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded px-1">
+                            class="text-primary-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded px-1">
                             {{ __('Utama') }}
                         </a>
                     </li>
-                    <li aria-hidden="true" class="text-blue-200">
+                    <li aria-hidden="true" class="text-primary-200">
                         <x-heroicon-s-chevron-right class="h-4 w-4" />
                     </li>
                     <li>
@@ -49,7 +49,7 @@
             <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
                 {{ __('Perkhidmatan ICT') }}
             </h1>
-            <p class="text-lg md:text-xl text-blue-100 max-w-2xl leading-relaxed">
+            <p class="text-lg md:text-xl text-primary-100 max-w-2xl leading-relaxed">
                 {{ __('Pilih perkhidmatan yang anda perlukan daripada senarai di bawah.') }}
             </p>
         </div>
@@ -293,19 +293,19 @@
                 <h2 id="cta-heading" class="text-2xl md:text-3xl font-heading font-bold mb-4">
                     {{ __('Perlukan Bantuan?') }}
                 </h2>
-                <p class="text-lg text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+                <p class="text-lg text-primary-100 mb-8 max-w-2xl mx-auto leading-relaxed">
                     {{ __('Pasukan sokongan ICT BPM sedia membantu anda. Hubungi kami untuk sebarang pertanyaan.') }}
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     @if ($helpdeskRouteName)
                         <a href="{{ route($helpdeskRouteName) }}"
-                            class="inline-flex items-center min-h-11 px-6 py-3 text-base font-semibold bg-white text-primary-600 rounded-lg hover:bg-blue-50 focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 focus:outline-none transition-colors duration-200">
+                            class="inline-flex items-center min-h-11 px-6 py-3 text-base font-semibold bg-white text-primary-600 rounded-lg hover:bg-primary-50 focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 focus:outline-none transition-colors duration-200">
                             <x-heroicon-s-ticket class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('Buat Aduan') }}
                         </a>
                     @endif
                     <a href="{{ route('contact') }}"
-                        class="inline-flex items-center min-h-11 px-6 py-3 text-base font-semibold text-white border-2 border-white rounded-lg hover:bg-white/10 focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 focus:outline-none transition-colors duration-200">
+                        class="inline-flex items-center min-h-11 px-6 py-3 text-base font-semibold text-white border-2 border-white rounded-lg hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 focus:outline-none transition-colors duration-200">
                         <x-heroicon-s-phone class="h-5 w-5 mr-2" aria-hidden="true" />
                         {{ __('Hubungi Kami') }}
                     </a>

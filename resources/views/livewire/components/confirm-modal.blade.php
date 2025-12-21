@@ -129,12 +129,12 @@ on([
                         {{-- Icon based on variant --}}
                         <div @class([
                             'shrink-0 flex items-center justify-center w-12 h-12 rounded-full',
-                            'bg-blue-100 dark:bg-blue-900/30' => $variant === 'info',
+                            'bg-primary-100 dark:bg-primary-900/30' => $variant === 'info',
                             'bg-warning-100 dark:bg-warning-900/30' => $variant === 'warning',
                             'bg-danger-100 dark:bg-danger-900/30' => $variant === 'danger',
                         ])>
                             @if ($variant === 'info')
-                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" xmlns="http://www.w3.org/2000/svg"
+                                <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
@@ -168,7 +168,7 @@ on([
 
                         {{-- Close Button --}}
                         <button type="button" wire:click="close"
-                            class="shrink-0 p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            class="shrink-0 p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500"
                             aria-label="Tutup">
                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor">
@@ -182,17 +182,17 @@ on([
                 {{-- Modal Actions --}}
                 <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3">
                     <button type="button" wire:click="close"
-                        class="px-4 py-2 min-h-11 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+                        class="px-4 py-2 min-h-11 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors"
                         :disabled="$wire.isProcessing">
                         {{ $cancelText }}
                     </button>
                     <button type="button" wire:click="confirm" wire:loading.attr="disabled"
                         @class([
-                            'px-4 py-2 min-h-11 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
-                            'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500' => $variant === 'info',
-                            'bg-warning-600 hover:bg-warning-700 focus:ring-warning-500' =>
+                            'px-4 py-2 min-h-11 text-white rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
+                            'bg-primary-600 hover:bg-primary-700 focus-visible:ring-3 focus-visible:ring-primary-500' => $variant === 'info',
+                            'bg-warning-600 hover:bg-warning-700 focus-visible:ring-3 focus-visible:ring-warning-500' =>
                                 $variant === 'warning',
-                            'bg-danger-600 hover:bg-danger-700 focus:ring-danger-500' =>
+                            'bg-danger-600 hover:bg-danger-700 focus-visible:ring-3 focus-visible:ring-danger-500' =>
                                 $variant === 'danger',
                         ]) :disabled="$wire.isProcessing">
                         <span wire:loading.remove wire:target="confirm">

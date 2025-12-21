@@ -43,7 +43,7 @@ $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-ca
                     <td class="px-4 py-4">
                         <select
                             wire:model.live="selectedAssets.{{ $index }}.category_id"
-                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus:ring-offset-gray-900 text-sm">
+                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 text-sm">
                             <option value="">{{ __('loan.placeholders.select_equipment') }}</option>
                             @foreach ($this->assetCategories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -59,7 +59,7 @@ $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-ca
                             wire:model.live="selectedAssets.{{ $index }}.quantity"
                             min="1"
                             max="10"
-                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus:ring-offset-gray-900 text-sm">
+                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 text-sm">
                         @error("selectedAssets.{$index}.quantity")
                         <p class="mt-1 text-xs text-danger-600">{{ $message }}</p>
                         @enderror
@@ -69,7 +69,7 @@ $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-ca
                             type="text"
                             wire:model.live.debounce.300ms="selectedAssets.{{ $index }}.notes"
                             placeholder="{{ __('loan.placeholders.notes') }}"
-                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus:ring-offset-gray-900 text-sm">
+                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 text-sm">
                     </td>
                     <td class="px-4 py-4">
                         @if (isset($assetAvailability[$index]))

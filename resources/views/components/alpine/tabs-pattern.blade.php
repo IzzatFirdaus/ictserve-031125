@@ -15,7 +15,7 @@
             :aria-selected="activeTab === 'overview'"
             role="tab"
             :class="{
-                'border-amber-500 text-amber-600 dark:text-amber-400': activeTab === 'overview',
+                'border-warning-500 text-warning-600 dark:text-warning-400': activeTab === 'overview',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300': activeTab !== 'overview'
             }"
             class="min-h-11 px-4 py-2 border-b-2 font-medium text-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
@@ -27,7 +27,7 @@
             :aria-selected="activeTab === 'details'"
             role="tab"
             :class="{
-                'border-amber-500 text-amber-600 dark:text-amber-400': activeTab === 'details',
+                'border-warning-500 text-warning-600 dark:text-warning-400': activeTab === 'details',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300': activeTab !== 'details'
             }"
             class="min-h-11 px-4 py-2 border-b-2 font-medium text-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
@@ -39,7 +39,7 @@
             :aria-selected="activeTab === 'settings'"
             role="tab"
             :class="{
-                'border-amber-500 text-amber-600 dark:text-amber-400': activeTab === 'settings',
+                'border-warning-500 text-warning-600 dark:text-warning-400': activeTab === 'settings',
                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300': activeTab !== 'settings'
             }"
             class="min-h-11 px-4 py-2 border-b-2 font-medium text-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"

@@ -24,11 +24,11 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded px-1">
+                            class="text-primary-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded px-1">
                             {{ __('Utama') }}
                         </a>
                     </li>
-                    <li aria-hidden="true" class="text-blue-200">
+                    <li aria-hidden="true" class="text-primary-200">
                         <x-heroicon-s-chevron-right class="h-4 w-4" />
                     </li>
                     <li>
@@ -43,7 +43,7 @@
             <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
                 {{ __('Dasar Privasi') }}
             </h1>
-            <p class="text-lg md:text-xl text-blue-100 max-w-2xl leading-relaxed">
+            <p class="text-lg md:text-xl text-primary-100 max-w-2xl leading-relaxed">
                 {{ __('Kemas kini terakhir') }}: {{ now()->format('d F Y') }}
             </p>
         </div>
@@ -349,38 +349,38 @@
                 <h2 class="text-2xl font-heading font-bold mb-4">
                     {{ __('Hubungi Kami') }}
                 </h2>
-                <p class="text-blue-100 mb-6 leading-relaxed">
+                <p class="text-primary-100 mb-6 leading-relaxed">
                     {{ __('Untuk sebarang pertanyaan mengenai dasar privasi ini atau untuk melaksanakan hak subjek data anda, sila hubungi:') }}
                 </p>
 
                 <div class="grid grid-cols-4 md:grid-cols-8 gap-4 md:gap-6 mb-6">
                     <div class="col-span-4 flex items-start gap-3">
-                        <x-heroicon-o-user class="h-6 w-6 text-blue-200 shrink-0 mt-0.5" aria-hidden="true" />
+                        <x-heroicon-o-user class="h-6 w-6 text-primary-200 shrink-0 mt-0.5" aria-hidden="true" />
                         <div>
                             <h3 class="font-semibold text-white mb-1">{{ __('Pegawai Perlindungan Data') }}</h3>
-                            <p class="text-blue-100">Bahagian Pengurusan Maklumat</p>
-                            <p class="text-blue-100">MOTAC</p>
+                            <p class="text-primary-100">Bahagian Pengurusan Maklumat</p>
+                            <p class="text-primary-100">MOTAC</p>
                         </div>
                     </div>
 
                     <div class="col-span-4 space-y-3">
                         <div class="flex items-start gap-3">
-                            <x-heroicon-o-envelope class="h-6 w-6 text-blue-200 shrink-0 mt-0.5" aria-hidden="true" />
+                            <x-heroicon-o-envelope class="h-6 w-6 text-primary-200 shrink-0 mt-0.5" aria-hidden="true" />
                             <div>
                                 <h3 class="font-semibold text-white mb-1">{{ __('E-mel') }}</h3>
                                 <a href="mailto:pdpa@motac.gov.my"
-                                    class="text-blue-100 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded">
+                                    class="text-primary-100 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded">
                                     pdpa@motac.gov.my
                                 </a>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-3">
-                            <x-heroicon-o-phone class="h-6 w-6 text-blue-200 shrink-0 mt-0.5" aria-hidden="true" />
+                            <x-heroicon-o-phone class="h-6 w-6 text-primary-200 shrink-0 mt-0.5" aria-hidden="true" />
                             <div>
                                 <h3 class="font-semibold text-white mb-1">{{ __('Telefon') }}</h3>
                                 <a href="tel:+60388917000"
-                                    class="text-blue-100 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded">
+                                    class="text-primary-100 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded">
                                     +603-8891 7000
                                 </a>
                             </div>
@@ -388,7 +388,7 @@
                     </div>
                 </div>
 
-                <p class="text-sm text-blue-200">
+                <p class="text-sm text-primary-200">
                     {{ __('Kami akan membalas dalam masa 21 hari bekerja seperti yang ditetapkan oleh PDPA 2010.') }}
                 </p>
             </article>

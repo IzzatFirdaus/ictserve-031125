@@ -33,7 +33,7 @@
         x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="tour-title"
         aria-describedby="tour-description" role="dialog" aria-modal="true">
         {{-- Backdrop --}}
-        <div class="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="fixed inset-0 bg-slate-900/75 transition-opacity" aria-hidden="true"></div>
 
         {{-- Tour Tooltip --}}
         <div class="flex min-h-screen items-center justify-center p-4">
@@ -57,7 +57,7 @@
                                     @if ($i < $currentStep)
                                         {{-- Completed Step --}}
                                         <button type="button" wire:click="goToStep({{ $i }})"
-                                            class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-white transition-all duration-200 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2"
+                                            class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-white transition-all duration-200 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                                             aria-label="{{ __('portal.tour.go_to_step', ['step' => $i + 1]) }} ({{ __('portal.tour.completed') }})"
                                             aria-current="false">
                                             <x-heroicon-s-check class="h-4 w-4" aria-hidden="true" />
@@ -128,7 +128,7 @@
                     <div class="flex items-center justify-between gap-4">
                         {{-- Skip Button --}}
                         <button type="button" wire:click="skipTour"
-                            class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2"
+                            class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                             aria-label="{{ __('portal.tour.skip') }}">
                             {{ __('portal.tour.skip') }}
                         </button>
@@ -137,7 +137,7 @@
                             {{-- Previous Button --}}
                             @if ($currentStep > 0)
                                 <button type="button" wire:click="previousStep"
-                                    class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2"
+                                    class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                                     aria-label="{{ __('portal.tour.previous') }}">
                                     <x-heroicon-o-arrow-left class="mr-2 h-4 w-4" />
                                     {{ __('portal.tour.previous') }}
@@ -146,7 +146,7 @@
 
                             {{-- Next/Finish Button --}}
                             <button type="button" wire:click="nextStep"
-                                class="inline-flex items-center rounded-lg border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2"
+                                class="inline-flex items-center rounded-lg border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                                 aria-label="{{ $currentStep < $totalSteps - 1 ? __('portal.tour.next') : __('portal.tour.finish') }}">
                                 {{ $currentStep < $totalSteps - 1 ? __('portal.tour.next') : __('portal.tour.finish') }}
                                 @if ($currentStep < $totalSteps - 1)
@@ -197,3 +197,4 @@
         </script>
     @endscript
 @endif
+

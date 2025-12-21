@@ -30,11 +30,11 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded-md px-2 py-1 min-h-11">
+                            class="text-primary-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded-lg px-2 py-1 min-h-11">
                             {{ __('Utama') }}
                         </a>
                     </li>
-                    <li aria-hidden="true" class="text-blue-200">
+                    <li aria-hidden="true" class="text-primary-200">
                         <x-heroicon-s-chevron-right class="h-4 w-4" />
                     </li>
                     <li>
@@ -49,7 +49,7 @@
             <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
                 {{ __('Soalan Lazim (FAQ)') }}
             </h1>
-            <p class="text-lg md:text-xl text-blue-100 dark:text-blue-50 max-w-2xl leading-relaxed">
+            <p class="text-lg md:text-xl text-primary-100 dark:text-primary-50 max-w-2xl leading-relaxed">
                 {{ __('Cari jawapan kepada soalan-soalan lazim mengenai perkhidmatan ICT kami.') }}
             </p>
         </div>
@@ -70,7 +70,7 @@
                     <x-heroicon-o-magnifying-glass class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"
                         aria-hidden="true" />
                     <input type="search" id="faq-search" placeholder="{{ __('Taip untuk mencari...') }}"
-                        class="block w-full min-h-11 rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400 pl-10 pr-4 py-3 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm transition-colors duration-200"
+                        class="block w-full min-h-11 rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400 pl-10 pr-4 py-3 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm transition-colors duration-200"
                         aria-describedby="faq-search-hint" />
                 </div>
                 <p id="faq-search-hint" class="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -101,7 +101,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 1 ? null : 1" :aria-expanded="openItem === 1"
                                         aria-controls="faq-helpdesk-1">
                                         <span>{{ __('Bagaimana untuk menghantar tiket helpdesk?') }}</span>
@@ -129,7 +129,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 2 ? null : 2" :aria-expanded="openItem === 2"
                                         aria-controls="faq-helpdesk-2">
                                         <span>{{ __('Bagaimana untuk menyemak status tiket?') }}</span>
@@ -149,7 +149,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 3 ? null : 3" :aria-expanded="openItem === 3"
                                         aria-controls="faq-helpdesk-3">
                                         <span>{{ __('Apakah masa respons untuk tiket?') }}</span>
@@ -195,7 +195,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 1 ? null : 1" :aria-expanded="openItem === 1"
                                         aria-controls="faq-loan-1">
                                         <span>{{ __('Apakah tempoh notis minimum untuk pinjaman aset?') }}</span>
@@ -218,7 +218,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 2 ? null : 2" :aria-expanded="openItem === 2"
                                         aria-controls="faq-loan-2">
                                         <span>{{ __('Siapa yang boleh meluluskan permohonan pinjaman saya?') }}</span>
@@ -238,7 +238,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 3 ? null : 3" :aria-expanded="openItem === 3"
                                         aria-controls="faq-loan-3">
                                         <span>{{ __('Bolehkah saya memohon bagi pihak orang lain?') }}</span>
@@ -279,7 +279,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 1 ? null : 1" :aria-expanded="openItem === 1"
                                         aria-controls="faq-general-1">
                                         <span>{{ __('Adakah saya perlu membuat akaun?') }}</span>
@@ -299,7 +299,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 2 ? null : 2" :aria-expanded="openItem === 2"
                                         aria-controls="faq-general-2">
                                         <span>{{ __('Adakah sistem ini tersedia 24/7?') }}</span>
@@ -398,11 +398,11 @@
                     <h3 class="text-xl font-heading font-semibold mb-3">
                         {{ __('Masih ada soalan?') }}
                     </h3>
-                    <p class="text-blue-100 dark:text-blue-50 mb-6">
+                    <p class="text-primary-100 dark:text-primary-50 mb-6">
                         {{ __('Hubungi pasukan sokongan kami untuk bantuan lanjut.') }}
                     </p>
                     <a href="{{ route('contact') }}"
-                        class="inline-flex items-center min-h-11 px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 transition-colors duration-200">
+                        class="inline-flex items-center min-h-11 px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 transition-colors duration-200">
                         <x-heroicon-s-chat-bubble-left-right class="h-5 w-5 mr-2" aria-hidden="true" />
                         {{ __('Hubungi Kami') }}
                     </a>

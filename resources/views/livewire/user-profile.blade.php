@@ -187,10 +187,11 @@
 
     {{-- Loading Overlay --}}
     <div wire:loading wire:target="updateProfile,removeAvatar"
-        class="fixed inset-0 bg-slate-900 bg-opacity-50 flex items-center justify-center z-50">
+        class="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50">
         <div class="bg-white dark:bg-slate-800 rounded-lg p-6 flex flex-col items-center">
             <x-heroicon-o-arrow-path class="animate-spin h-10 w-10 text-primary-600" />
             <span class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ __('portal.saving') }}</span>
         </div>
     </div>
 </div>
+

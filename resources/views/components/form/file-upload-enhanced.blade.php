@@ -338,7 +338,7 @@
                             </div>
                         </div>
                         <button type="button" @click="removeFile(index)"
-                            class="ml-4 p-2 min-h-11 min-w-11 flex items-center justify-center text-gray-400 hover:text-danger-600 dark:hover:text-danger-400 focus:outline-none focus:ring-3 focus:ring-danger-500 focus:ring-offset-2 rounded-lg transition-colors"
+                            class="ml-4 p-2 min-h-11 min-w-11 flex items-center justify-center text-gray-400 hover:text-danger-600 dark:hover:text-danger-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 rounded-lg transition-colors"
                             :aria-label="'{{ __('Remove') }} ' + file.name">
                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor" aria-hidden="true">

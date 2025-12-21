@@ -12,7 +12,7 @@
         </h2>
         @if($activityType !== 'all' || $dateFrom || $dateTo || $search)
             <button wire:click="clearFilters"
-                    class="px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-slate-300 dark:focus-visible:ring-slate-600 min-h-11 min-w-11"
+                    class="px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-slate-300 dark:focus-visible:ring-3 focus-visible:ring-slate-600 min-h-11 min-w-11"
                     aria-label="{{ __('staff.recent_activity.clear_filters_aria') }}">
                 <span class="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -34,7 +34,7 @@
                 </label>
                 <select wire:model.live="activityType"
                         id="activityType"
-                        class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 min-h-11">
+                        class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
                     @foreach($availableActivityTypes as $value => $label)
                         <option wire:key="activity-type-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
                     @endforeach
@@ -49,7 +49,7 @@
                 <input type="date"
                        wire:model.live="dateFrom"
                        id="dateFrom"
-                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 min-h-11">
+                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
             </div>
 
             {{-- Date To Filter --}}
@@ -60,7 +60,7 @@
                 <input type="date"
                        wire:model.live="dateTo"
                        id="dateTo"
-                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 min-h-11">
+                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
             </div>
 
             {{-- Search Filter --}}
@@ -72,7 +72,7 @@
                        wire:model.live.debounce.300ms="search"
                        id="search"
                        placeholder="{{ __('staff.recent_activity.filters.search_placeholder') }}"
-                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 min-h-11">
+                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
             </div>
         </div>
     </div>

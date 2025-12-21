@@ -275,14 +275,14 @@
                 {{-- Action Buttons --}}
                 <div class="flex flex-wrap gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <a href="{{ url('/horizon') }}" target="_blank"
-                        class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                        class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800"
                         aria-label="Buka dashboard Laravel Horizon dalam tab baharu">
                         <x-heroicon-o-arrow-top-right-on-square class="h-4 w-4 mr-2" />
                         Buka Dashboard Horizon
                     </a>
 
                     <button type="button" onclick="window.location.reload()"
-                        class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                        class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800"
                         aria-label="Muat semula widget untuk data terkini">
                         <x-heroicon-o-arrow-path class="h-4 w-4 mr-2" />
                         Muat Semula

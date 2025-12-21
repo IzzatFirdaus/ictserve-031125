@@ -26,7 +26,7 @@
                 {{ __('staff.search.global_search') }}
             </h2>
             <button wire:click="toggleAdvancedFilters"
-                class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2"
+                class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 aria-expanded="{{ $showAdvancedFilters ? 'true' : 'false' }}" aria-controls="advanced-filters">
                 <x-heroicon-o-adjustments-horizontal class="w-4 h-4 mr-2" />
                 {{ __('staff.search.advanced_filters') }}
@@ -104,7 +104,7 @@
                             @if ($this->searchHistory->count() > 0)
                                 <button wire:click="clearSearchHistory"
                                     wire:confirm="{{ __('staff.search.confirm_clear_history') }}"
-                                    class="text-xs text-gray-500 hover:text-red-600">
+                                    class="text-xs text-gray-500 hover:text-danger-600">
                                     {{ __('staff.search.clear_history') }}
                                 </button>
                             @endif
@@ -153,7 +153,7 @@
                                         </button>
                                         <button wire:click="deleteSavedSearch({{ $savedItem->id }})"
                                             wire:confirm="{{ __('staff.search.confirm_delete_saved') }}"
-                                            class="p-2 text-gray-400 hover:text-red-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-red-500 rounded-lg"
+                                            class="p-2 text-gray-400 hover:text-danger-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 rounded-lg"
                                             aria-label="{{ __('staff.search.delete_saved_search') }}">
                                             <x-heroicon-o-trash class="w-4 h-4" />
                                         </button>
@@ -225,13 +225,13 @@
                 {{-- Filter Actions --}}
                 <div class="mt-4 flex items-center justify-between">
                     <button wire:click="clearFilters"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2">
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <x-heroicon-o-arrow-path class="w-4 h-4 mr-2" />
                         {{ __('staff.search.clear_filters') }}
                     </button>
                     @if ($results && $results->total() > 0)
                         <button wire:click="exportResults"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-arrow-down-tray class="w-4 h-4 mr-2" />
                             {{ __('staff.search.export_results') }}
                         </button>
@@ -321,7 +321,7 @@
                                 {{-- Action Button --}}
                                 <div class="ml-4 shrink-0">
                                     <a href="{{ $result['url'] }}"
-                                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-primary-700 bg-primary-100 border border-transparent rounded-lg hover:bg-primary-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2">
+                                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-primary-700 bg-primary-100 border border-transparent rounded-lg hover:bg-primary-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                         {{ __('staff.search.view_details') }}
                                         <x-heroicon-o-chevron-right class="ml-2 w-4 h-4" />
                                     </a>
@@ -343,7 +343,7 @@
                     <p class="mt-2 text-sm text-gray-600">{{ __('staff.search.no_results_description') }}</p>
                     <div class="mt-6">
                         <button wire:click="clearFilters"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-primary-700 bg-primary-100 border border-transparent rounded-lg hover:bg-primary-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-primary-700 bg-primary-100 border border-transparent rounded-lg hover:bg-primary-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             {{ __('staff.search.clear_and_try_again') }}
                         </button>
                     </div>
@@ -366,7 +366,7 @@
     @endif
 
     {{-- Loading Indicator --}}
-    <div wire:loading.delay class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-25">
+    <div wire:loading.delay class="fixed inset-0 z-50 flex items-center justify-center bg-black/25">
         <div class="bg-white rounded-lg p-6 shadow-xl">
             <div class="flex items-center space-x-3">
                 <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-600"></div>
@@ -381,7 +381,7 @@
             aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 {{-- Background overlay --}}
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                <div class="fixed inset-0 bg-gray-500/75 transition-opacity"
                     wire:click="$set('showSaveModal', false)"></div>
 
                 {{-- Modal panel --}}
@@ -411,7 +411,7 @@
                             class="block w-full border-gray-300 rounded-lg shadow-sm focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-primary-500"
                             placeholder="{{ __('staff.search.search_name_placeholder') }}" autofocus>
 
-                        <div class="mt-3 p-3 bg-gray-50 rounded-md">
+                        <div class="mt-3 p-3 bg-gray-50 rounded-lg">
                             <p class="text-xs text-gray-500 mb-1">{{ __('staff.search.search_query') }}:</p>
                             <p class="text-sm font-medium text-gray-900">{{ $search }}</p>
                             @if ($module !== 'all' || $status !== 'all' || $dateFrom || $dateTo)
@@ -448,11 +448,11 @@
 
                     <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
                         <button wire:click="saveCurrentSearch" type="button"
-                            class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 sm:col-start-2 sm:text-sm">
+                            class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 sm:col-start-2 sm:text-sm">
                             {{ __('staff.search.save') }}
                         </button>
                         <button wire:click="$set('showSaveModal', false)" type="button"
-                            class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 sm:mt-0 sm:col-start-1 sm:text-sm">
+                            class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 sm:mt-0 sm:col-start-1 sm:text-sm">
                             {{ __('staff.search.cancel') }}
                         </button>
                     </div>
@@ -461,3 +461,4 @@
         </div>
     @endif
 </div>
+

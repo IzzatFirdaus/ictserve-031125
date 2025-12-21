@@ -76,7 +76,7 @@
                             {{ __('common.search') }}
                         </label>
                         <input wire:model.live.debounce.300ms="search" type="text" id="search"
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm"
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm"
                             placeholder="{{ $activeTab === 'tickets' ? __('common.search_tickets') : __('common.search_loans') }}"
                             aria-label="{{ __('common.search') }}">
                     </div>
@@ -87,7 +87,7 @@
                             {{ __('common.status') }}
                         </label>
                         <select wire:model.live="statusFilter" id="status-filter"
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm">
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm">
                             @if ($activeTab === 'tickets')
                                 @foreach ($this->ticketStatusOptions as $value => $label)
                                     <option wire:key="ticket-status-{{ $value }}" value="{{ $value }}">
@@ -108,7 +108,7 @@
                             {{ __('common.from_date') }}
                         </label>
                         <input wire:model.live="dateFrom" type="date" id="date-from"
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm">
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm">
                     </div>
                 </div>
 
@@ -118,18 +118,18 @@
                             {{ __('common.to_date') }}
                         </label>
                         <input wire:model.live="dateTo" type="date" id="date-to"
-                            class="block w-full max-w-xs min-h-11 px-3 py-2.5 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm">
+                            class="block w-full max-w-xs min-h-11 px-3 py-2.5 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:text-gray-100 sm:text-sm">
                     </div>
                     <div class="ml-4 flex items-center gap-2">
                         <button wire:click="resetFilters" type="button"
-                            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md shadow-button text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200">
+                            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg shadow-button text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200">
                             <x-heroicon-o-arrow-path class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('common.reset_filters') }}
                         </button>
                         {{-- Export CSV Button --}}
                         <button wire:click="{{ $activeTab === 'tickets' ? 'exportTicketsCSV' : 'exportLoansCSV' }}"
                             type="button"
-                            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md shadow-button text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200">
+                            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg shadow-button text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200">
                             <x-heroicon-o-arrow-down-tray class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('common.export_csv') }}
                         </button>
@@ -137,7 +137,7 @@
                         <button type="button"
                             data-export-pdf-url="{{ route('portal.submissions.export-pdf', ['type' => $activeTab]) }}"
                             x-on:click="window.open($el.dataset.exportPdfUrl, '_blank')"
-                            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-md shadow-button text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200">
+                            class="inline-flex items-center min-h-11 min-w-11 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg shadow-button text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200">
                             <x-heroicon-o-printer class="h-5 w-5 mr-2" aria-hidden="true" />
                             {{ __('common.print_pdf') }}
                         </button>
@@ -154,19 +154,19 @@
                                 {{ $this->selectedCount }} {{ __('common.items_selected') }}
                             </span>
                             <button wire:click="clearSelection" type="button"
-                                class="text-sm text-motac-blue hover:text-motac-blue-dark underline focus:outline-none focus:ring-2 focus:ring-motac-blue">
+                                class="text-sm text-motac-blue hover:text-motac-blue-dark underline focus:outline-none focus-visible:ring-3 focus-visible:ring-motac-blue">
                                 {{ __('common.clear_selection') }}
                             </button>
                         </div>
                         <div class="flex items-center gap-2">
                             <button wire:click="bulkExportCSV" type="button"
-                                class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-md text-sm font-medium text-motac-blue bg-white hover:bg-motac-blue-light focus:outline-none focus:ring-2 focus:ring-motac-blue">
+                                class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-lg text-sm font-medium text-motac-blue bg-white hover:bg-motac-blue-light focus:outline-none focus-visible:ring-3 focus-visible:ring-motac-blue">
                                 <x-heroicon-o-arrow-down-tray class="h-4 w-4 mr-1.5" aria-hidden="true" />
                                 {{ __('common.export_selected') }}
                             </button>
                             @if ($activeTab === 'tickets')
                                 <button wire:click="bulkMarkAsRead" type="button"
-                                    class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-md text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus:ring-2 focus:ring-motac-blue">
+                                    class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-lg text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus-visible:ring-3 focus-visible:ring-motac-blue">
                                     <x-heroicon-o-check class="h-4 w-4 mr-1.5" aria-hidden="true" />
                                     {{ __('common.mark_as_read') }}
                                 </button>
@@ -194,13 +194,13 @@
                                     <tr>
                                         <th scope="col" class="px-4 py-3 w-12">
                                             <input wire:model.live="selectAllTickets" type="checkbox"
-                                                class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                                class="h-4 w-4 text-motac-blue border-gray-300 rounded focus-visible:ring-motac-blue"
                                                 aria-label="{{ __('common.select_all') }}">
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             <button wire:click="sortBy('ticket_number')" type="button"
-                                                class="group inline-flex items-center focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2"
+                                                class="group inline-flex items-center focus:outline-none focus-visible:ring-3 focus-visible:ring-motac-blue focus-visible:ring-offset-2"
                                                 aria-sort="{{ $sortField === 'ticket_number' ? ($sortDirection === 'asc' ? 'ascending' : 'descending') : 'none' }}">
                                                 {{ __('common.ticket_number') }}
                                                 @if ($sortField === 'ticket_number')
@@ -227,7 +227,7 @@
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             <button wire:click="sortBy('created_at')" type="button"
-                                                class="group inline-flex items-center focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2"
+                                                class="group inline-flex items-center focus:outline-none focus-visible:ring-3 focus-visible:ring-motac-blue focus-visible:ring-offset-2"
                                                 aria-sort="{{ $sortField === 'created_at' ? ($sortDirection === 'asc' ? 'ascending' : 'descending') : 'none' }}">
                                                 {{ __('common.created_date') }}
                                                 @if ($sortField === 'created_at')
@@ -252,7 +252,7 @@
                                             <td class="px-4 py-4 w-12">
                                                 <input wire:model.live="selectedTickets" type="checkbox"
                                                     value="{{ $ticket->id }}"
-                                                    class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                                    class="h-4 w-4 text-motac-blue border-gray-300 rounded focus-visible:ring-motac-blue"
                                                     aria-label="{{ __('common.select_item', ['item' => $ticket->ticket_number]) }}">
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -272,7 +272,7 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                                    class="text-motac-blue hover:text-motac-blue-dark focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2">
+                                                    class="text-motac-blue hover:text-motac-blue-dark focus:outline-none focus-visible:ring-3 focus-visible:ring-motac-blue focus-visible:ring-offset-2">
                                                     {{ __('common.view_details') }}
                                                 </a>
                                             </td>
@@ -303,7 +303,7 @@
                         {{-- Select All Loans Checkbox --}}
                         <div class="mb-4 flex items-center gap-2">
                             <input wire:model.live="selectAllLoans" type="checkbox"
-                                class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                class="h-4 w-4 text-motac-blue border-gray-300 rounded focus-visible:ring-motac-blue"
                                 aria-label="{{ __('common.select_all') }}">
                             <span class="text-sm text-gray-600">{{ __('common.select_all') }}</span>
                         </div>
@@ -317,7 +317,7 @@
                                     <div class="absolute top-4 left-4">
                                         <input wire:model.live="selectedLoans" type="checkbox"
                                             value="{{ $loan->id }}"
-                                            class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                            class="h-4 w-4 text-motac-blue border-gray-300 rounded focus-visible:ring-motac-blue"
                                             aria-label="{{ __('common.select_item', ['item' => $loan->application_number]) }}">
                                     </div>
                                     <div class="p-6 pl-10">
@@ -380,7 +380,7 @@
                                         {{-- View Details Button --}}
                                         <div class="mt-6">
                                             <a href="{{ route('loan.show', $loan) }}"
-                                                class="block w-full text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-11">
+                                                class="block w-full text-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus-visible:ring-3 focus-visible:ring-motac-blue focus-visible:ring-offset-2 min-h-11">
                                                 {{ __('common.view_details') }}
                                             </a>
                                         </div>
@@ -401,7 +401,7 @@
 
     {{-- Loading State --}}
     <div wire:loading wire:target="switchTab,resetFilters,sortBy"
-        class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+        class="fixed inset-0 bg-gray-500/75 flex items-center justify-center z-50">
         <div class="bg-white rounded-lg p-6 shadow-xl">
             <div class="flex items-center space-x-3">
                 <x-heroicon-o-arrow-path class="animate-spin h-5 w-5 text-motac-blue" />
@@ -410,3 +410,4 @@
         </div>
     </div>
 </div>
+

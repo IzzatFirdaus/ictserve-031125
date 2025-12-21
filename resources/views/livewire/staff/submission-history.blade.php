@@ -66,7 +66,7 @@ new class extends Component
                         placeholder="{{ __('history.search_placeholder') }}"
                         class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
                                bg-white dark:bg-slate-700 text-slate-900 dark:text-white
-                               shadow-sm focus:border-primary-500 focus:ring-primary-500
+                               shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                min-h-11 px-4 py-2 pl-10 transition-colors duration-200"
                         aria-label="{{ __('history.search') }}"
@@ -80,7 +80,7 @@ new class extends Component
                     wire:model.live="perPage"
                     class="form-select rounded-lg border border-slate-300 dark:border-slate-600
                            bg-white dark:bg-slate-700 text-slate-900 dark:text-white
-                           shadow-sm focus:border-primary-500 focus:ring-primary-500
+                           shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500
                            focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                            min-h-11 px-3 py-2 transition-colors duration-200"
                     aria-label="{{ __('history.items_per_page') }}">
