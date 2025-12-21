@@ -7,9 +7,10 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        INSTALL_DEV: "true"
+        INSTALL_DEV: "true" # Install dev dependencies for development
     volumes:
-      - ./:/var/www/html:cached
+      - ./:/var/www/html/cached
+      - /var/www/html/vendor # Anonymous volume for vendor directory
       - node_modules:/var/www/html/node_modules
       - npm_cache:/var/www/.npm-cache
     environment:
@@ -17,9 +18,7 @@ services:
       - APP_DEBUG=true
       - VITE_DEV_SERVER_HOST=0.0.0.0
       - VITE_DEV_SERVER_PORT=5173
-    ports:
-      - "5173:5173"  # Vite dev server
-    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+    command: ["php-fpm"] # Use PHP-FPM instead of artisan serve
 
   # Vite development server for hot reloading
   vite:
@@ -28,15 +27,16 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./:/var/www/html:cached
+      - /var/www/html/vendor # Anonymous volume for vendor directory
       - node_modules:/var/www/html/node_modules
       - npm_cache:/var/www/.npm-cache
     ports:
-      - "5173:5173"
+      - "5173:5173" # Default Vite port
     environment:
       - NODE_ENV=development
       - VITE_DEV_SERVER_HOST=0.0.0.0
       - VITE_DEV_SERVER_PORT=5173
-    user: "82:82"  # www-data user
+    user: "82:82" # www-data user
     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
     depends_on:
       - app
