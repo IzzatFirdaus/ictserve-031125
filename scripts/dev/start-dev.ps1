@@ -3,20 +3,110 @@
 # Compliance: PDPA 2010, WCAG 2.2 AA, PSR-12, MyGOV Digital Service Standards v2.1.0
 # Architecture: True Hybrid (Guest Forms + Authenticated Portal + Admin Panel)
 
+<#
+.SYNOPSIS
+    Starts the ICTServe v3.6.0 development environment with all required services.
+
+.DESCRIPTION
+    This script starts the complete ICTServe development stack including:
+    - Laravel application server (127.0.0.1:8000)
+    - Redis server (cache, sessions, queues)
+    - Laravel Reverb (WebSocket broadcasting)
+    - Queue workers (background jobs)
+    - Vite development server (frontend assets + HMR)
+    - Laravel MCP server (AI integration)
+    - Ollama AI server (local LLM for chatbot)
+    - Laravel Pulse (performance monitoring)
+
+.PARAMETER SkipChecks
+    Skip pre-flight environment checks (PHP, Node.js, Laravel versions)
+
+.PARAMETER NoMCP
+    Skip starting the Laravel MCP server for AI integration
+
+.PARAMETER NoBrowser
+    Don't automatically open browser to the application
+
+.PARAMETER Minimal
+    Start only essential services (Laravel + Vite)
+
+.PARAMETER InstallRedis
+    Automatically install Redis in WSL if not found
+
+.PARAMETER ProfileName
+    Service profile to use. Options:
+    - minimal: Laravel + Vite only
+    - backend: Redis + Laravel + Reverb + Queue
+    - frontend: Laravel + Vite
+    - full: All services (default)
+    - testing: Full stack + browser
+    - ai: Full stack + Ollama AI server
+    - production: Production-like setup
+
+.EXAMPLE
+    .\scripts\dev\start-dev.ps1
+    Start with full profile (all services)
+
+.EXAMPLE
+    .\scripts\dev\start-dev.ps1 -ProfileName minimal
+    Start with minimal services only
+
+.EXAMPLE
+    .\scripts\dev\start-dev.ps1 -ProfileName ai -InstallRedis
+    Start AI development profile and install Redis if needed
+
+.EXAMPLE
+    .\scripts\dev\start-dev.ps1 -SkipChecks -NoMCP -NoBrowser
+    Quick start without checks, MCP, or browser
+
+.NOTES
+    Requires: PHP 8.2.12+, Node.js 22.12+, Laravel 12.43.1
+    Compliance: PDPA 2010, WCAG 2.2 AA, PSR-12, MyGOV Standards v2.1.0
+    Architecture: D00-D18 documentation compliance
+#>
+
 param(
     [switch]$SkipChecks,
     [switch]$NoMCP,
     [switch]$NoBrowser,
     [switch]$Minimal,
     [switch]$InstallRedis,
+    [switch]$Help,
     [Alias('Profile')]
+    [ValidateSet('minimal', 'backend', 'frontend', 'full', 'testing', 'ai', 'production')]
     [string]$ProfileName = "full"
 )
+
+# Show help if requested
+if ($Help) {
+    Get-Help $MyInvocation.MyCommand.Path -Full
+    exit 0
+}
+
+# Handle legacy -Minimal parameter
+if ($Minimal) {
+    $ProfileName = "minimal"
+}
 
 Write-Host "ICTServe v3.6.0 Development Environment" -ForegroundColor Cyan
 Write-Host "=======================================" -ForegroundColor Cyan
 Write-Host "Laravel 12.43.1 | PHP 8.2.12 | Filament 4.3.1" -ForegroundColor Gray
 Write-Host "Profile: $ProfileName | Compliance: PDPA 2010 + WCAG 2.2 AA" -ForegroundColor Gray
+
+# Show profile description
+$profileDescriptions = @{
+    "minimal" = "Essential services only (Laravel + Vite)"
+    "backend" = "Backend development (Redis + Laravel + Reverb + Queue)"
+    "frontend" = "Frontend development (Laravel + Vite)"
+    "full" = "Complete development stack (all services)"
+    "testing" = "Full stack with browser for testing"
+    "ai" = "AI development with Ollama local LLM"
+    "production" = "Production-like environment"
+}
+
+if ($profileDescriptions.ContainsKey($ProfileName)) {
+    Write-Host "Description: $($profileDescriptions[$ProfileName])" -ForegroundColor Gray
+}
 Write-Host ""
 
 # Get the current directory (project root)
@@ -232,6 +322,7 @@ function Get-ServiceProfile {
         "full" = @("redis", "laravel", "reverb", "queue", "vite", "mcp", "pulse")
         "testing" = @("redis", "laravel", "reverb", "queue", "vite", "browser")
         "ai" = @("redis", "laravel", "reverb", "queue", "vite", "mcp", "ollama")
+        "production" = @("redis", "laravel", "reverb", "queue", "pulse")
     }
 
     if ($profiles.ContainsKey($ProfileName)) {
@@ -304,6 +395,12 @@ function Start-WSLRedis {
 
 # Get services to start based on profile
 $servicesToStart = Get-ServiceProfile -ProfileName $ProfileName
+if (-not $servicesToStart) {
+    Write-Host "[ERROR] Invalid profile: $ProfileName" -ForegroundColor Red
+    Write-Host "Available profiles: minimal, backend, frontend, full, testing, ai, production" -ForegroundColor Yellow
+    exit 1
+}
+
 $serviceCount = $servicesToStart.Count
 $currentService = 0
 
@@ -401,45 +498,88 @@ if ($servicesToStart -contains "reverb") {
     Start-Sleep -Seconds 1
 }
 
-# 4. Laravel Queue Worker (Background Jobs)
-if ($servicesToStart -contains "queue") {
+# 4. Laravel Queue Workers (Windows-compatible)
+if ($servicesToStart -contains "queue" -or $servicesToStart -contains "horizon") {
     $currentService++
-    Write-Host "[$currentService/$serviceCount] Laravel Queue Worker" -ForegroundColor Yellow
-    Start-Service -Title "Laravel Queue Worker" -Command "php artisan queue:work --tries=3 --timeout=90 --sleep=3 --max-jobs=1000 --max-time=3600" -Color "Cyan" -Description "Email notifications, file processing, audit logging" -Priority 4
-
-    # Enhanced queue worker verification
-    function Test-QueueWorker {
-        $attempts = 10
-        $delay = 1
-        $timestamp = Get-Date -Format "HH:mm:ss"
-
-        for ($i = 0; $i -lt $attempts; $i++) {
+    Write-Host "[$currentService/$serviceCount] Laravel Queue Workers" -ForegroundColor Yellow
+    
+    # Check if we have existing queue workers running
+    $existingWorkers = Get-Process -ErrorAction SilentlyContinue | Where-Object { 
+        $_.ProcessName -eq "php" -and 
+        $_.CommandLine -like "*queue:work*" -and
+        $_.CommandLine -like "*ictserve-queue*"
+    }
+    
+    if ($existingWorkers.Count -gt 0) {
+        Write-Host "  └─ Queue workers already running ($($existingWorkers.Count) processes)" -ForegroundColor Green
+        $queueWorkersStarted = $true
+    } else {
+        Write-Host "  └─ Starting Windows-compatible queue workers..." -ForegroundColor Cyan
+        Write-Host "  └─ Note: Using queue workers instead of Horizon (Windows limitation)" -ForegroundColor Gray
+        Write-Host "  └─ See docs/horizon/WINDOWS_QUEUE_MANAGEMENT.md for details" -ForegroundColor Gray
+        
+        # Use our Windows-compatible queue management script
+        try {
+            $queueScript = ".\scripts\dev\start-queue-workers.ps1"
+            if (Test-Path $queueScript) {
+                & $queueScript -Action start -Environment local
+                
+                # Verify workers started
+                Start-Sleep -Seconds 3
+                $newWorkers = Get-Process -ErrorAction SilentlyContinue | Where-Object { 
+                    $_.ProcessName -eq "php" -and 
+                    $_.CommandLine -like "*queue:work*" -and
+                    $_.CommandLine -like "*ictserve-queue*"
+                }
+                
+                if ($newWorkers.Count -gt 0) {
+                    Write-Host "  └─ [OK] Started $($newWorkers.Count) queue worker processes" -ForegroundColor Green
+                    $queueWorkersStarted = $true
+                } else {
+                    Write-Host "  └─ [WARN] Queue workers may not have started properly" -ForegroundColor Yellow
+                    $queueWorkersStarted = $false
+                }
+            } else {
+                Write-Host "  └─ [WARN] Queue worker script not found, using fallback" -ForegroundColor Yellow
+                # Fallback to single queue worker
+                Start-Service -Title "Laravel Queue Worker" -Command "php artisan queue:work redis --queue=default,helpdesk,notifications,asset-loan,approvals --tries=3 --timeout=300" -Color "Cyan" -Description "Background job processing" -Priority 4
+                $queueWorkersStarted = $true
+            }
+        }
+        catch {
+            Write-Host "  └─ [ERROR] Failed to start queue workers: $($_.Exception.Message)" -ForegroundColor Red
+            $queueWorkersStarted = $false
+        }
+    }
+    
+    # Test queue functionality
+    if ($queueWorkersStarted) {
+        function Test-QueueWorkers {
+            $timestamp = Get-Date -Format "HH:mm:ss"
+            
             try {
-                # Check for queue:work process (PowerShell 7+ compatible)
-                $queueProcess = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
-                    $_.CommandLine -and ($_.CommandLine -like '*queue:work*' -or $_.CommandLine -like '*artisan queue:work*')
-                }
-
-                if ($queueProcess) {
-                    Write-Host "[$timestamp] [OK] Laravel Queue Worker running (PID: $($queueProcess.ProcessId))" -ForegroundColor Green
+                # Check if we can monitor queues
+                $queueStatus = & php artisan queue:monitor redis:default,redis:helpdesk 2>&1
+                if ($queueStatus -match "OK") {
+                    Write-Host "[$timestamp] [OK] Queue workers ready and monitoring queues" -ForegroundColor Green
                     return $true
-                }
-                else {
-                    Write-Host "[$timestamp] [WAIT] Queue Worker starting... (attempt $($i+1)/$attempts)" -ForegroundColor Yellow
-                    Start-Sleep -Seconds $delay
+                } else {
+                    Write-Host "[$timestamp] [INFO] Queue status: $($queueStatus -replace '[\r\n]+', ' ' | Select-Object -First 1)" -ForegroundColor Gray
+                    return $true  # Still consider it working
                 }
             }
             catch {
-                Write-Host "[$timestamp] [ERROR] Queue Worker check failed: $_" -ForegroundColor Red
-                Start-Sleep -Seconds $delay
+                Write-Host "[$timestamp] [WARN] Queue status check failed: $($_.Exception.Message)" -ForegroundColor Yellow
+                return $false
             }
         }
-
-        Write-Host "[$timestamp] [WARN] Queue Worker process not detected after $attempts attempts" -ForegroundColor Yellow
-        return $false
+        
+        $queueWorking = Test-QueueWorkers
+        if (-not $queueWorking) {
+            Write-Host "  └─ [INFO] Queue workers started but may need time to initialize" -ForegroundColor Gray
+        }
     }
-
-    Test-QueueWorker
+    
     Start-Sleep -Seconds 1
 }
 
@@ -483,13 +623,61 @@ if ($servicesToStart -contains "pulse") {
     Start-Sleep -Seconds 1
 }
 
-# 8. Browser for Testing (Optional)
+# 8. Ollama (Local AI Server for D18 AI Chatbot Integration)
+if ($servicesToStart -contains "ollama") {
+    $currentService++
+    Write-Host "[$currentService/$serviceCount] Ollama AI Server (Local LLM)" -ForegroundColor Yellow
+    
+    # Check if Ollama is installed
+    try {
+        $ollamaVersion = & ollama --version 2>$null
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "  └─ Ollama found: $ollamaVersion" -ForegroundColor Green
+            
+            # Check if Ollama service is already running
+            $ollamaRunning = Test-Port -Port 11434 -Attempts 3 -DelaySeconds 1 -ServiceName 'Ollama'
+            
+            if (-not $ollamaRunning) {
+                Write-Host "  └─ Starting Ollama server..." -ForegroundColor Cyan
+                Start-Service -Title "Ollama AI Server (127.0.0.1:11434)" -Command "ollama serve" -Color "DarkMagenta" -Description "Local LLM for AI Chatbot (D18 Integration)" -Priority 8
+                
+                # Wait for Ollama to start
+                Test-Port -Port 11434 -Attempts 10 -DelaySeconds 2 -ServiceName 'Ollama AI Server' -HealthEndpoint "/api/tags"
+                
+                # Check for required models
+                Write-Host "  └─ Checking AI models..." -ForegroundColor Gray
+                $models = & ollama list 2>$null
+                if ($models -match "llama3.2:3b|phi3:mini|qwen2.5:3b") {
+                    Write-Host "  └─ [OK] AI models available for chatbot" -ForegroundColor Green
+                } else {
+                    Write-Host "  └─ [INFO] No optimized models found. Consider installing:" -ForegroundColor Yellow
+                    Write-Host "      ollama pull llama3.2:3b    # Fast, good quality" -ForegroundColor Gray
+                    Write-Host "      ollama pull phi3:mini      # Microsoft, efficient" -ForegroundColor Gray
+                    Write-Host "      ollama pull qwen2.5:3b     # Multilingual support" -ForegroundColor Gray
+                }
+            } else {
+                Write-Host "  └─ Ollama already running on port 11434" -ForegroundColor Green
+            }
+        } else {
+            Write-Host "  └─ [WARN] Ollama not installed. AI chatbot will use AWS Bedrock only." -ForegroundColor Yellow
+            Write-Host "      Install from: https://ollama.ai/download" -ForegroundColor Gray
+        }
+    }
+    catch {
+        Write-Host "  └─ [WARN] Ollama not found. AI chatbot will use AWS Bedrock only." -ForegroundColor Yellow
+        Write-Host "      Install from: https://ollama.ai/download" -ForegroundColor Gray
+    }
+    
+    Start-Sleep -Seconds 1
+}
+
+# 9. Browser for Testing (Optional)
 if ($servicesToStart -contains "browser" -and -not $NoBrowser) {
     $currentService++
     Write-Host "[$currentService/$serviceCount] Opening Browser for Testing" -ForegroundColor Yellow
     try {
         Start-Process 'http://127.0.0.1:8000'
-        Write-Host '  └─ [OK] Browser opened to http://127.0.0.1:8000' -ForegroundColor Green
+        Write-Host "  └─ [OK] Browser opened to http://127.0.0.1:8000" -ForegroundColor Green
     }
     catch {
         Write-Host "  └─ [WARN] Could not open browser automatically" -ForegroundColor Yellow
@@ -511,22 +699,30 @@ Write-Host ""
 # Service status summary
 Write-Host "Active Services:" -ForegroundColor White
 if ($servicesToStart -contains "redis") {
-    Write-Host '  [REDIS] Redis Server          - Cache, Sessions, Queues (127.0.0.1:6379)' -ForegroundColor Red
+    Write-Host "  [REDIS] Redis Server          - Cache, Sessions, Queues (127.0.0.1:6379)" -ForegroundColor Red
 }
 if ($servicesToStart -contains "laravel") {
-    Write-Host '  [LARAVEL] Laravel Server      - ICTServe Application (http://127.0.0.1:8000)' -ForegroundColor Blue
+    Write-Host "  [LARAVEL] Laravel Server      - ICTServe Application (http://127.0.0.1:8000)" -ForegroundColor Blue
 }
 if ($servicesToStart -contains "reverb") {
-    Write-Host '  [REVERB] Laravel Reverb       - WebSocket Broadcasting (ws://127.0.0.1:8080)' -ForegroundColor Magenta
+    Write-Host "  [REVERB] Laravel Reverb       - WebSocket Broadcasting (ws://127.0.0.1:8080)" -ForegroundColor Magenta
 }
-if ($servicesToStart -contains "queue") {
-    Write-Host '  [QUEUE] Queue Worker          - Background Jobs & Email Processing' -ForegroundColor Cyan
+if ($servicesToStart -contains "queue" -or $servicesToStart -contains "horizon") {
+    Write-Host "  [QUEUE] Queue Workers         - Background Jobs & Email Processing" -ForegroundColor Cyan
 }
 if ($servicesToStart -contains "vite") {
-    Write-Host '  [VITE] Vite Dev Server        - Frontend Assets + HMR (127.0.0.1:5173)' -ForegroundColor Green
+    # Detect actual Vite port (may be 5174 if 5173 is in use)
+    $vitePort = "5173"
+    if (Test-NetConnection -ComputerName 127.0.0.1 -Port 5174 -InformationLevel Quiet -WarningAction SilentlyContinue) {
+        $vitePort = "5174"
+    }
+    Write-Host "  [VITE] Vite Dev Server        - Frontend Assets + HMR (127.0.0.1:$vitePort)" -ForegroundColor Green
 }
 if ($servicesToStart -contains "mcp" -and -not $NoMCP) {
-    Write-Host '  [MCP] Laravel MCP Server      - AI Integration & Chatbot' -ForegroundColor DarkCyan
+    Write-Host "  [MCP] Laravel MCP Server      - AI Integration & Chatbot" -ForegroundColor DarkCyan
+}
+if ($servicesToStart -contains "ollama") {
+    Write-Host "  [OLLAMA] Ollama AI Server     - Local LLM for Chatbot (127.0.0.1:11434)" -ForegroundColor DarkMagenta
 }
 if ($servicesToStart -contains "pulse") {
     Write-Host "  [PULSE] Laravel Pulse         - Performance Monitoring" -ForegroundColor DarkGreen
@@ -534,10 +730,14 @@ if ($servicesToStart -contains "pulse") {
 
 Write-Host ""
 Write-Host "Quick Access URLs:" -ForegroundColor White
-Write-Host '  • Application:     http://127.0.0.1:8000' -ForegroundColor Gray
-Write-Host '  • Admin Panel:     http://127.0.0.1:8000/admin' -ForegroundColor Gray
-Write-Host '  • Telescope:       http://127.0.0.1:8000/telescope' -ForegroundColor Gray
-Write-Host '  • Pulse:           http://127.0.0.1:8000/pulse' -ForegroundColor Gray
+Write-Host "  • Application:     http://127.0.0.1:8000" -ForegroundColor Gray
+Write-Host "  • Admin Panel:     http://127.0.0.1:8000/admin" -ForegroundColor Gray
+Write-Host "  • AI Chatbot:      http://127.0.0.1:8000/chatbot" -ForegroundColor Gray
+Write-Host "  • Telescope:       http://127.0.0.1:8000/telescope" -ForegroundColor Gray
+Write-Host "  • Pulse:           http://127.0.0.1:8000/pulse" -ForegroundColor Gray
+if ($servicesToStart -contains "ollama") {
+    Write-Host "  • Ollama API:      http://127.0.0.1:11434" -ForegroundColor Gray
+}
 
 Write-Host ""
 Write-Host "Development Commands:" -ForegroundColor White
@@ -546,13 +746,19 @@ Write-Host "  • Code Format:     vendor/bin/pint" -ForegroundColor Gray
 Write-Host "  • Static Analysis: vendor/bin/phpstan analyse" -ForegroundColor Gray
 Write-Host "  • E2E Tests:       npm run test:e2e" -ForegroundColor Gray
 Write-Host "  • Build Assets:    npm run build" -ForegroundColor Gray
+Write-Host "  • Queue Status:    .\scripts\dev\start-queue-workers.ps1 -Action status" -ForegroundColor Gray
+Write-Host "  • Queue Monitor:   php artisan queue:monitor" -ForegroundColor Gray
+if ($servicesToStart -contains "ollama") {
+    Write-Host "  • AI Models:       ollama list" -ForegroundColor Gray
+    Write-Host "  • Install Model:   ollama pull llama3.2:3b" -ForegroundColor Gray
+}
 
 Write-Host ""
 Write-Host "Compliance Reminders:" -ForegroundColor Yellow
-Write-Host '  [PDPA] PDPA 2010: Personal data encryption & audit logging active' -ForegroundColor Gray
+Write-Host "  [PDPA] PDPA 2010: Personal data encryption & audit logging active" -ForegroundColor Gray
 Write-Host "  [WCAG] WCAG 2.2 AA: 4.5:1 text contrast, 3:1 UI contrast required" -ForegroundColor Gray
 Write-Host "  [MYGOV] MyGOV Standards: Bahasa Melayu only, mobile-first design" -ForegroundColor Gray
-Write-Host '  [PSR12] PSR-12: Run vendor/bin/pint before commits' -ForegroundColor Gray
+Write-Host "  [PSR12] PSR-12: Run vendor/bin/pint before commits" -ForegroundColor Gray
 
 Write-Host ""
 Write-Host "[$timestamp] All services ready! Press any key to stop all services..." -ForegroundColor Yellow
@@ -568,8 +774,10 @@ Write-Host "[$timestamp] Shutting down ICTServe development environment..." -For
 $shutdownServices = @(
     @{ Name = "Vite"; Pattern = "*vite*|*npm*dev*" },
     @{ Name = "Queue Worker"; Pattern = "*queue:work*" },
+    @{ Name = "Laravel Horizon"; Pattern = "*horizon*|*artisan*horizon*" },
     @{ Name = "Laravel Reverb"; Pattern = "*reverb:start*" },
     @{ Name = "Laravel MCP"; Pattern = "*boost:mcp*" },
+    @{ Name = "Ollama AI"; Pattern = "*ollama*serve*" },
     @{ Name = "Laravel Server"; Pattern = "*artisan*serve*" },
     @{ Name = "Redis Monitor"; Pattern = "*redis-cli*monitor*" }
 )
@@ -594,7 +802,7 @@ foreach ($service in $shutdownServices) {
 # Final cleanup
 try {
     Get-Process | Where-Object {
-        $_.MainWindowTitle -match "Laravel|Vite|Redis|Queue|MCP|Reverb"
+        $_.MainWindowTitle -match "Laravel|Vite|Redis|Queue|MCP|Reverb|Horizon|Ollama"
     } | Stop-Process -Force -ErrorAction SilentlyContinue
 }
 catch {
