@@ -61,7 +61,7 @@ return [
 
     'prefix' => Env::get(
         'HORIZON_PREFIX',
-        Str::slug((string) Env::get('APP_NAME', 'ictserve'), '_') . '_horizon:'
+        Str::slug((string) Env::get('APP_NAME', 'ictserve'), '_').'_horizon:'
     ),
 
     /*
@@ -163,203 +163,131 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Queue Worker Configuration
+    | Environment-Specific Configuration
     |--------------------------------------------------------------------------
     | Requirement 23.2: Configure queue supervisors for ICTServe modules
     | Requirement 23.3: Job balancing with auto-scaling
     | Requirement 23.6: Retry policies with exponential backoff
     */
 
-    'defaults' => [
-        // Default supervisor configuration
-        'supervisor-default' => [
-            'connection' => 'redis',
-            'queue' => ['default'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
-            'maxProcesses' => 1,
-            'maxTime' => 0,
-            'maxJobs' => 0,
-            'memory' => 128,
-            'tries' => 3,
-            'timeout' => 60,
-            'nice' => 0,
-            'backoff' => [10, 30, 60], // Exponential backoff per Requirement 23.6
-        ],
-
-        // Helpdesk queue supervisor
-        'supervisor-helpdesk' => [
-            'connection' => 'redis',
-            'queue' => ['helpdesk', 'notifications'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
-            'minProcesses' => 1,
-            'maxProcesses' => 4,
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'memory' => 128,
-            'tries' => 3,
-            'timeout' => 300,
-            'nice' => 0,
-            'backoff' => [10, 30, 60],
-        ],
-
-        // Asset loan queue supervisor
-        'supervisor-asset-loan' => [
-            'connection' => 'redis',
-            'queue' => ['asset-loan', 'approvals'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'size',
-            'minProcesses' => 1,
-            'maxProcesses' => 4,
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'memory' => 128,
-            'tries' => 5,
-            'timeout' => 180,
-            'nice' => 0,
-            'backoff' => [10, 30, 60],
-        ],
-
-        // AI chatbot queue supervisor
-        'supervisor-ai' => [
-            'connection' => 'redis',
-            'queue' => ['ai-chatbot', 'document-processing'],
-            'balance' => 'simple',
-            'minProcesses' => 1,
-            'maxProcesses' => 2,
-            'memory' => 256, // Higher memory for AI operations
-            'tries' => 3,
-            'timeout' => 600, // AI operations may take longer
-            'nice' => 0,
-            'backoff' => [10, 30, 60],
-        ],
-
-        // Reports queue supervisor
-        'supervisor-reports' => [
-            'connection' => 'redis',
-            'queue' => ['reports', 'exports'],
-            'balance' => 'simple',
-            'minProcesses' => 1,
-            'maxProcesses' => 2,
-            'memory' => 256, // Higher memory for report generation
-            'tries' => 3,
-            'timeout' => 600,
-            'nice' => 0,
-            'backoff' => [10, 30, 60],
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Environment-Specific Configuration
-    |--------------------------------------------------------------------------
-    */
-
     'environments' => [
         'production' => [
             'supervisor-default' => [
-                'maxProcesses' => 3,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
-            ],
-            'supervisor-helpdesk' => [
-                'minProcesses' => 2,
-                'maxProcesses' => 8,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
-            ],
-            'supervisor-asset-loan' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 4,
-            ],
-            'supervisor-ai' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 4,
-            ],
-            'supervisor-reports' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 2,
-            ],
-        ],
-
-        'staging' => [
-            'supervisor-default' => [
-                'maxProcesses' => 2,
-            ],
-            'supervisor-helpdesk' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 4,
-            ],
-            'supervisor-asset-loan' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 2,
-            ],
-            'supervisor-ai' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 2,
-            ],
-            'supervisor-reports' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 1,
-            ],
-        ],
-
-        'local' => [
-            'supervisor-default' => [
-                'maxProcesses' => 3,
-            ],
-            'supervisor-helpdesk' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 3,
-            ],
-            'supervisor-asset-loan' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 2,
-            ],
-            'supervisor-ai' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 2,
-            ],
-            'supervisor-reports' => [
-                'minProcesses' => 1,
-                'maxProcesses' => 1,
-            ],
-        ],
-
-        // XAMPP Environment Configuration (Requirements 6.2, 6.5)
-        'xampp' => [
-            'supervisor-default' => [
                 'connection' => 'redis',
                 'queue' => ['default'],
-                'balance' => 'simple',
-                'maxProcesses' => 2,
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'maxProcesses' => 3,
+                'maxTime' => 0,
+                'maxJobs' => 0,
                 'memory' => 128,
                 'tries' => 3,
                 'timeout' => 60,
                 'nice' => 0,
+                'backoff' => [10, 30, 60],
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
             ],
             'supervisor-helpdesk' => [
                 'connection' => 'redis',
                 'queue' => ['helpdesk', 'notifications'],
                 'balance' => 'auto',
-                'minProcesses' => 1,
-                'maxProcesses' => 3,
+                'autoScalingStrategy' => 'time',
+                'minProcesses' => 2,
+                'maxProcesses' => 8,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
                 'memory' => 128,
                 'tries' => 3,
                 'timeout' => 300,
                 'nice' => 0,
+                'backoff' => [10, 30, 60],
             ],
             'supervisor-asset-loan' => [
                 'connection' => 'redis',
                 'queue' => ['asset-loan', 'approvals'],
-                'balance' => 'simple',
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'size',
                 'minProcesses' => 1,
-                'maxProcesses' => 2,
+                'maxProcesses' => 4,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
                 'memory' => 128,
                 'tries' => 5,
                 'timeout' => 180,
                 'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+            'supervisor-ai' => [
+                'connection' => 'redis',
+                'queue' => ['ai-chatbot', 'document-processing'],
+                'balance' => 'simple',
+                'minProcesses' => 1,
+                'maxProcesses' => 4,
+                'memory' => 256,
+                'tries' => 3,
+                'timeout' => 600,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+            'supervisor-reports' => [
+                'connection' => 'redis',
+                'queue' => ['reports', 'exports', 'digests'],
+                'balance' => 'simple',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'memory' => 256,
+                'tries' => 3,
+                'timeout' => 600,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+        ],
+
+        'staging' => [
+            'supervisor-default' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'maxProcesses' => 2,
+                'maxTime' => 0,
+                'maxJobs' => 0,
+                'memory' => 128,
+                'tries' => 3,
+                'timeout' => 60,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+            'supervisor-helpdesk' => [
+                'connection' => 'redis',
+                'queue' => ['helpdesk', 'notifications'],
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'minProcesses' => 1,
+                'maxProcesses' => 4,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+                'memory' => 128,
+                'tries' => 3,
+                'timeout' => 300,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+            'supervisor-asset-loan' => [
+                'connection' => 'redis',
+                'queue' => ['asset-loan', 'approvals'],
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'size',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+                'memory' => 128,
+                'tries' => 5,
+                'timeout' => 180,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
             ],
             'supervisor-ai' => [
                 'connection' => 'redis',
@@ -371,6 +299,7 @@ return [
                 'tries' => 3,
                 'timeout' => 600,
                 'nice' => 0,
+                'backoff' => [10, 30, 60],
             ],
             'supervisor-reports' => [
                 'connection' => 'redis',
@@ -382,6 +311,78 @@ return [
                 'tries' => 3,
                 'timeout' => 600,
                 'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+        ],
+
+        'local' => [
+            'supervisor-default' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'maxProcesses' => 3,
+                'maxTime' => 0,
+                'maxJobs' => 0,
+                'memory' => 128,
+                'tries' => 3,
+                'timeout' => 60,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+            'supervisor-helpdesk' => [
+                'connection' => 'redis',
+                'queue' => ['helpdesk', 'notifications'],
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'minProcesses' => 1,
+                'maxProcesses' => 3,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+                'memory' => 128,
+                'tries' => 3,
+                'timeout' => 300,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+            'supervisor-asset-loan' => [
+                'connection' => 'redis',
+                'queue' => ['asset-loan', 'approvals'],
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'size',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+                'memory' => 128,
+                'tries' => 5,
+                'timeout' => 180,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+            'supervisor-ai' => [
+                'connection' => 'redis',
+                'queue' => ['ai-chatbot', 'document-processing'],
+                'balance' => 'simple',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'memory' => 256,
+                'tries' => 3,
+                'timeout' => 600,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
+            ],
+            'supervisor-reports' => [
+                'connection' => 'redis',
+                'queue' => ['reports', 'exports'],
+                'balance' => 'simple',
+                'minProcesses' => 1,
+                'maxProcesses' => 1,
+                'memory' => 256,
+                'tries' => 3,
+                'timeout' => 600,
+                'nice' => 0,
+                'backoff' => [10, 30, 60],
             ],
         ],
     ],
