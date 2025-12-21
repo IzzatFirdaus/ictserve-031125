@@ -90,10 +90,10 @@
 .\scripts\dev\start-dev.ps1
 
 # Minimal profile (Laravel + Vite only)
-.\scripts\dev\start-dev.ps1 -Profile minimal
+.\scripts\dev\start-dev.ps1 -ProfileName minimal
 
 # Backend development
-.\scripts\dev\start-dev.ps1 -Profile backend
+.\scripts\dev\start-dev.ps1 -ProfileName backend
 
 # Skip environment checks if needed
 .\scripts\dev\start-dev.ps1 -SkipChecks

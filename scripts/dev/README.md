@@ -2,40 +2,59 @@
 
 ## Overview
 
-Enhanced development environment scripts for ICTServe v3.6.0 with Laravel 12.43.1, providing automated service management, WSL Redis integration, and comprehensive development tools.
+Enhanced development environment scripts for ICTServe v3.6.0 with Laravel 12.43.1, providing automated service management, WSL Redis integration, AI chatbot development support, and comprehensive development tools.
 
 ## Available Scripts
 
 ### 1. Enhanced Development Script (`start-dev.ps1`)
 
-**Full-featured development environment with service profiles and health monitoring.**
+**Full-featured development environment with service profiles, AI integration, and health monitoring.**
 
 ```bash
 # Full development environment (recommended)
 .\scripts\dev\start-dev.ps1
 
 # Service profiles
-.\scripts\dev\start-dev.ps1 -Profile minimal    # Laravel + Vite only
-.\scripts\dev\start-dev.ps1 -Profile backend    # Backend services only
-.\scripts\dev\start-dev.ps1 -Profile frontend   # Frontend development
-.\scripts\dev\start-dev.ps1 -Profile ai         # AI development with MCP
-.\scripts\dev\start-dev.ps1 -Profile testing    # Testing environment
+.\scripts\dev\start-dev.ps1 -ProfileName minimal    # Laravel + Vite only
+.\scripts\dev\start-dev.ps1 -ProfileName backend    # Backend services only
+.\scripts\dev\start-dev.ps1 -ProfileName frontend   # Frontend development
+.\scripts\dev\start-dev.ps1 -ProfileName full       # All services (default)
+.\scripts\dev\start-dev.ps1 -ProfileName testing    # Testing environment + browser
+.\scripts\dev\start-dev.ps1 -ProfileName ai         # AI development with Ollama + MCP
+.\scripts\dev\start-dev.ps1 -ProfileName production # Production-like setup
 
 # Options
 .\scripts\dev\start-dev.ps1 -SkipChecks        # Skip environment checks
 .\scripts\dev\start-dev.ps1 -NoMCP             # Disable MCP server
 .\scripts\dev\start-dev.ps1 -NoBrowser         # Don't auto-open browser
 .\scripts\dev\start-dev.ps1 -InstallRedis      # Auto-install WSL Redis
+.\scripts\dev\start-dev.ps1 -Help              # Show detailed help
+
+# Examples
+.\scripts\dev\start-dev.ps1 -ProfileName ai -InstallRedis
+.\scripts\dev\start-dev.ps1 -SkipChecks -NoMCP -NoBrowser
 ```
 
-**Features:**
+**New Features:**
 
-- ✅ Service profiles for different development needs
-- ✅ Enhanced WSL Redis detection and management
-- ✅ Health checks with retry logic
-- ✅ Comprehensive error handling
-- ✅ Performance monitoring and startup timing
-- ✅ Graceful shutdown sequence
+- ✅ **Ollama AI Server Integration** - Local LLM support for D18 AI Chatbot
+- ✅ **Enhanced Service Profiles** - 7 different development configurations
+- ✅ **Comprehensive Help System** - PowerShell help with examples
+- ✅ **Advanced Health Checks** - HTTP endpoint validation with retry logic
+- ✅ **Smart Error Recovery** - Automatic fallback and troubleshooting
+- ✅ **Performance Monitoring** - Startup timing and resource tracking
+- ✅ **Compliance Reminders** - PDPA 2010, WCAG 2.2 AA, PSR-12, MyGOV standards
+
+**Services Started:**
+
+- 🔴 **Redis Server** - Cache, Sessions, Queues (127.0.0.1:6379)
+- 🔵 **Laravel Server** - ICTServe Application (<http://127.0.0.1:8000>)
+- 🟣 **Laravel Reverb** - WebSocket Broadcasting (ws://127.0.0.1:8080)
+- 🔷 **Queue Workers** - Background Jobs & Email Processing
+- 🟢 **Vite Dev Server** - Frontend Assets + HMR (127.0.0.1:5173)
+- 🤖 **Laravel MCP Server** - AI Integration & Chatbot
+- 🧠 **Ollama AI Server** - Local LLM for Chatbot (127.0.0.1:11434)
+- 📊 **Laravel Pulse** - Performance Monitoring
 
 ### 2. Simple Development Script (`start-dev-simple.ps1`)
 
@@ -123,7 +142,10 @@ npm run dev:win              # Full development (PowerShell)
 npm run dev:win:simple       # Simple development
 npm run dev:win:minimal      # Minimal profile
 npm run dev:win:backend      # Backend profile
+npm run dev:win:frontend     # Frontend profile
 npm run dev:win:ai           # AI development profile
+npm run dev:win:testing      # Testing profile
+npm run dev:win:production   # Production-like profile
 
 # Utilities
 npm run dev:helpers          # Development helper commands
@@ -140,9 +162,10 @@ npm run test-dev-script      # Test development scripts
 | **minimal** | Laravel + Vite | Quick testing, minimal resources | ~30s |
 | **backend** | Redis + Laravel + Reverb + Queue | API development, backend testing | ~45s |
 | **frontend** | Laravel + Vite | UI/UX development | ~30s |
-| **full** | All services + MCP + Pulse | Complete development | ~60s |
+| **full** | All services + MCP + Pulse | Complete development (default) | ~60s |
 | **testing** | Full + Browser | E2E testing, QA validation | ~60s |
-| **ai** | Full + MCP + Ollama | AI chatbot development | ~75s |
+| **ai** | Full + MCP + Ollama | AI chatbot development (D18) | ~75s |
+| **production** | Redis + Laravel + Reverb + Queue + Pulse | Production-like environment | ~50s |
 
 ### Service Details
 
@@ -150,14 +173,22 @@ npm run test-dev-script      # Test development scripts
 
 - **Laravel Server**: Main application (127.0.0.1:8000)
 - **Vite Dev Server**: Frontend assets with HMR (127.0.0.1:5173)
-- **Queue Worker**: Background job processing
-- **Laravel Reverb**: WebSocket broadcasting (127.0.0.1:6001)
+- **Queue Workers**: Background job processing (Windows-compatible)
+- **Laravel Reverb**: WebSocket broadcasting (127.0.0.1:8080)
 
-#### Optional Services
+#### Enhanced Services
 
 - **Redis Server**: Cache, sessions, queues (127.0.0.1:6379)
 - **Laravel MCP Server**: AI integration and chatbot support
+- **Ollama AI Server**: Local LLM for AI chatbot (127.0.0.1:11434)
 - **Laravel Pulse**: Performance monitoring and metrics
+
+#### AI Development Services (Profile: ai)
+
+- **Ollama Server**: Local LLM inference engine
+- **Model Management**: Automatic model detection and recommendations
+- **MCP Integration**: Model Context Protocol for AI workflows
+- **Hybrid AI Architecture**: Local Ollama + AWS Bedrock cloud integration
 
 ## WSL Redis Integration
 
@@ -175,14 +206,62 @@ npm run test-dev-script      # Test development scripts
 - 🔧 Configuration optimization for Laravel
 - 🔧 Fallback to alternative Redis sources
 
-### Redis Management
+### AI Development Setup (Profile: ai)
+
+The AI development profile includes Ollama for local LLM inference, supporting the D18 AI Chatbot integration:
+
+#### Ollama Installation
 
 ```bash
-# Manual Redis commands (WSL)
-wsl.exe redis-server --daemonize yes    # Start Redis
-wsl.exe redis-cli ping                  # Test connection
-wsl.exe redis-cli shutdown              # Stop Redis
-wsl.exe redis-cli monitor               # Monitor commands
+# Download and install Ollama
+# Visit: https://ollama.ai/download
+
+# Verify installation
+ollama --version
+
+# Start Ollama server (automatic with ai profile)
+ollama serve
+```
+
+#### Recommended AI Models
+
+```bash
+# Fast, efficient models for development
+ollama pull llama3.2:3b      # Fast, good quality (3B parameters)
+ollama pull phi3:mini         # Microsoft, efficient (3.8B parameters)
+ollama pull qwen2.5:3b        # Multilingual support (3B parameters)
+
+# List installed models
+ollama list
+
+# Test model
+ollama run llama3.2:3b "Hello, how are you?"
+```
+
+#### AI Development URLs
+
+- **Application**: <http://127.0.0.1:8000>
+- **AI Chatbot**: <http://127.0.0.1:8000/chatbot>
+- **Ollama API**: <http://127.0.0.1:11434>
+- **MCP Server**: Available via Laravel Boost integration
+
+#### AI Development Commands
+
+```bash
+# Start AI development environment
+.\scripts\dev\start-dev.ps1 -ProfileName ai
+
+# Check AI models
+ollama list
+
+# Install recommended model
+ollama pull llama3.2:3b
+
+# Test Ollama API
+curl http://127.0.0.1:11434/api/tags
+
+# Monitor AI performance
+# Visit: http://127.0.0.1:8000/pulse
 ```
 
 ## Troubleshooting
