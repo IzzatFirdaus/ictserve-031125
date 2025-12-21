@@ -87,10 +87,10 @@ Overall: 7/8 tests passed (Database connection works via Laravel)
 .\scripts\dev\start-dev.ps1
 
 # Minimal (Laravel + Vite only)
-.\scripts\dev\start-dev.ps1 -Profile minimal
+.\scripts\dev\start-dev.ps1 -ProfileName minimal
 
 # Backend services only
-.\scripts\dev\start-dev.ps1 -Profile backend
+.\scripts\dev\start-dev.ps1 -ProfileName backend
 
 # Skip environment checks
 .\scripts\dev\start-dev.ps1 -SkipChecks
