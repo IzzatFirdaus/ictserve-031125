@@ -13,6 +13,10 @@ Complete installation and configuration guide for ICTServe Docker deployment.
 ## Quick Start
 
 ```powershell
+# NEW: Use the automated setup script (recommended)
+.\scripts\docker\setup-docker.ps1
+
+# OR: Manual setup (legacy)
 # Clone repository
 git clone https://github.com/IzzatFirdaus/ictserve-031125.git
 cd ictserve-031125
@@ -33,6 +37,8 @@ docker compose exec app php artisan make:filament-user
 # Access application
 start http://localhost:8000
 ```
+
+**⚠️ IMPORTANT**: The automated setup script addresses previous composer install issues. See [COMPOSER_ISSUES_FIXED.md](COMPOSER_ISSUES_FIXED.md) for details.
 
 ## Detailed Setup
 

@@ -1,6 +1,6 @@
 # Multi-stage build for ICTServe
 # Stage 1: Node.js build environment
-FROM node:24.12.0-alpine AS node-builder
+FROM node:22.14.0-alpine AS node-builder
 
 # Set working directory for Node.js build
 WORKDIR /app
@@ -27,8 +27,8 @@ RUN npm ci --prefer-offline --no-audit
 # Copy source files (as nodeuser)
 COPY --chown=nodeuser:nodeuser . .
 
-# Skip build in Docker - will be done at runtime after vendor is mounted
-# RUN npm run build
+# Build assets for production (will be copied to final stage if needed)
+RUN npm run build
 
 # Stage 2: PHP runtime environment
 FROM php:8.2.12-fpm-alpine
@@ -58,9 +58,14 @@ RUN apk add --no-cache --update \
     freetype-dev \
     shadow \
     sudo \
-    nodejs \
-    npm \
     $PHPIZE_DEPS
+
+# Install Node.js 18.x (compatible with Vite 6.x)
+# Use Alpine package manager for Node.js 18
+RUN apk add --no-cache nodejs npm
+
+# Verify Node.js installation
+RUN node --version && npm --version
 
 # Configure and install PHP extensions used by Laravel
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -73,6 +78,9 @@ RUN pecl install redis \
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Copy custom PHP-FPM configuration
+COPY docker/php-fpm/www.conf /usr/local/etc/php-fpm.d/zzz-ictserve.conf
 
 # Create application user and group matching www-data
 RUN addgroup -g 82 -S www-data || true && \
@@ -87,19 +95,27 @@ ARG INSTALL_DEV=false
 # Copy composer files and install dependencies early to leverage Docker cache
 COPY composer.json composer.lock ./
 
-# Install composer dependencies: with dev when INSTALL_DEV=true, otherwise without dev dependencies
-# NOTE: Dependency installation is done on the host during `composer install`
-# This Dockerfile expects vendor/ to already be present from the host mount
-RUN echo "Skipping composer install in Docker build - vendor should be mounted from host"
+# Install composer dependencies based on INSTALL_DEV flag
+# This ensures consistent dependencies within the container environment
+RUN if [ "$INSTALL_DEV" = "true" ]; then \
+        echo "Installing composer dependencies with dev packages..." && \
+        composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts; \
+    else \
+        echo "Installing composer dependencies without dev packages..." && \
+        composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts; \
+    fi
 
 # Copy application files
 COPY . .
 
-# Skip copying built assets - will be built at runtime
-# COPY --from=node-builder --chown=www-data:www-data /app/public/build ./public/build
+# Run composer scripts after copying application files
+RUN composer run-script post-autoload-dump --no-interaction || true
 
-# Generate optimized autoload params (avoid running post-install scripts during build)
-RUN composer dump-autoload --optimize --no-scripts || true
+# Ensure public/build directory exists for Vite
+RUN mkdir -p public/build && chown -R www-data:www-data public/build
+
+# Generate optimized autoload (dependencies are now installed)
+RUN composer dump-autoload --optimize --no-scripts
 
 # Configure npm for www-data user (for development mode)
 RUN mkdir -p /var/www/.npm-cache /var/www/.npm-global /var/www/html/node_modules && \

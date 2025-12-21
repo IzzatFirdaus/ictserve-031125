@@ -18,6 +18,7 @@ docker compose logs -f app
 ## Documentation
 
 - **[setup.md](setup.md)** - Complete installation and configuration
+- **[COMPOSER_ISSUES_FIXED.md](COMPOSER_ISSUES_FIXED.md)** - ✅ Composer install issues resolved
 - **[architecture.md](architecture.md)** - Container architecture and networking
 - **[troubleshooting.md](troubleshooting.md)** - Common issues and solutions
 - **[windows.md](windows.md)** - Windows-specific instructions
@@ -46,14 +47,17 @@ docker compose logs -f app
 ## Quick Links
 
 ### For Developers
+
 - **Setup**: [setup.md](setup.md) - Complete installation guide
 - **Windows**: [windows.md](windows.md) - Windows-specific instructions
 - **Specs**: [container-specs.md](container-specs.md) - Container details
 
 ### For DevOps
+
 - **Architecture**: [architecture.md](architecture.md) - Container design
 - **Troubleshooting**: [troubleshooting.md](troubleshooting.md) - Common issues
 - **Versions**: [container-versions.md](container-versions.md) - Software versions
 
 ### Legacy Documentation
+
 - **[legacy/](legacy/)** - Archived documentation (6 files)
