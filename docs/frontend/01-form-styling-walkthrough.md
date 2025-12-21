@@ -1,7 +1,7 @@
 # Form Styling Compliance Walkthrough
 
 **Version**: 1.0.0  
-**Last Updated**: 2025-12-17  
+**Last Updated**: 2025-12-20  
 **Status**: Complete  
 **Standards**: MyDS v2025.2, WCAG 2.2 AA
 
@@ -542,6 +542,11 @@ Link element computed height: 44px
 **Files Affected**: `critical-alerts.blade.php`, `quick-actions.blade.php`
 **Status**: ✅ Documented
 
+### Issue 6: Tailwind v4 Deprecated Utilities
+**Problem**: Deprecated opacity utilities and `flex-shrink-0` were still present
+**Solution**: Migrated to Tailwind v4 equivalents (`bg-*/`, `ring-black/5`, `shrink-0`)
+**Status**: ✅ Resolved
+
 ## Compliance Checklist
 
 ### WCAG 2.2 AA Requirements
@@ -564,52 +569,21 @@ Link element computed height: 44px
 
 ## Remaining Work
 
-### Staff & Portal Components (In Progress)
-
-#### Staff Directory (`resources/views/livewire/staff/`)
-
-- [ ] `authenticated-dashboard.blade.php` - Audit pending
-- [ ] `claim-submissions.blade.php` - Audit pending
-- [ ] `notification-center.blade.php` - Audit pending
-- [ ] `session-manager.blade.php` - Audit pending
-- [ ] `submission-history.blade.php` - Audit pending
-- [ ] `user-profile.blade.php` - Audit pending
-
-#### Portal Directory (`resources/views/livewire/portal/`)
-
-- [ ] `notification-center.blade.php` - Audit pending
-- [ ] `notification-bell.blade.php` - Audit pending
-- [ ] `user-profile.blade.php` - Audit pending
-- [ ] `help-center.blade.php` - Audit pending
-- [ ] `support-message.blade.php` - Audit pending
-- [ ] `welcome-tour.blade.php` - Audit pending
-- [ ] `dashboard/` subdirectory - Audit pending
-- [ ] `help/` subdirectory - Audit pending
-- [ ] `widgets/` subdirectory - Audit pending
-
-### Components & Pages (P2 Priority)
-
-#### Components Directory
-
-- [ ] `confirm-modal.blade.php`
-- [ ] `form-wizard.blade.php`
-- [ ] `progress-indicator.blade.php`
-
-#### Pages Directory
-
-- [ ] Structure check and audit
-
 ### Filament Admin (In Progress)
 
 - [ ] Complete remaining Filament pages (~11 files)
-- [ ] Review `resources/views/filament/resources/` directory
-- [ ] Review `resources/views/filament/auth/` directory
 
 ### Testing & Verification
 
+- [ ] Align test database schema and rerun `php artisan test tests/Feature/Livewire/Status/StatusCheckerTest.php`
 - [ ] Upgrade local PHP to 8.4+ for full application testing
 - [ ] Conduct user acceptance testing
 - [ ] Manual accessibility testing (recommended)
+- [ ] Browser testing (Chrome, Firefox, Safari, mobile)
+
+### Cleanup Decision
+
+- [ ] Decide whether to update `.bak` Blade backups to MyDS tokens or keep as historical snapshots
 
 ### Future Enhancements
 
@@ -630,6 +604,7 @@ Link element computed height: 44px
 | Date | Version | Changes | Author |
 |------|---------|---------|--------|
 | 2025-12-17 | 1.0.0 | Initial documentation | BPM MOTAC Team |
+| 2025-12-20 | 1.0.1 | Updated progress, Tailwind v4 utility cleanup, status checker refinements | BPM MOTAC Team |
 
 ---
 

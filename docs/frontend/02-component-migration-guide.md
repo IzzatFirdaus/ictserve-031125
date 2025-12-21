@@ -1,7 +1,7 @@
 # Component Migration Guide - MyDS v2025.2
 
 **Version**: 1.0.0  
-**Last Updated**: 2025-12-17  
+**Last Updated**: 2025-12-20  
 **Status**: Active
 
 ## Overview
@@ -310,16 +310,16 @@ Layout already compliant with MyDS v2025.2
 - [x] Update helpdesk module (9 files)
 - [x] Update loan module (9 files)
 - [x] Update staff portal (10 files - complete)
-- [x] Update portal components (2 files - partial: internal-comments, notification-preferences)
+- [x] Update portal components (12 files - complete)
 - [x] Update AI chat components (2 files)
 - [x] Update root-level components (10 files)
 - [x] Update pulse/status components (2 files)
+- [x] Tailwind v4 utility cleanup (opacity classes, ring opacity, shrink utilities)
 - [x] Update navigation components (verified compliant)
 - [x] Update errors/layouts (verified compliant)
 - [x] Update emails/pdf (verified compliant)
 - [x] Update livewire components directory (9 files)
 - [x] Update auth pages directory (5 files)
-- [ ] Complete remaining portal components (9 files pending)
 - [ ] Update pages directory (audit pending)
 
 ### Post-Migration
@@ -354,6 +354,15 @@ vendor/bin/pint --dirty
 
 **Expected**: PSR-12 compliance maintained
 **Result**: ✅ Passed
+
+#### Targeted PHPUnit Test
+
+```bash
+php artisan test tests/Feature/Livewire/Status/StatusCheckerTest.php
+```
+
+**Expected**: Status checker tests pass
+**Result**: ⚠️ Blocked by test DB schema mismatch (missing `loan_items` table / migration conflicts)
 
 #### Lint Test
 
