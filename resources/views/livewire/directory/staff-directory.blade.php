@@ -14,7 +14,7 @@
                 <ol class="flex items-center gap-2 text-sm text-primary-100">
                     <li>
                         <a href="/"
-                            class="hover:text-white focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 rounded transition-colors duration-200">
+                            class="hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-500 rounded transition-colors duration-200">
                             {{ __('navigation.home') }}
                         </a>
                     </li>
@@ -85,7 +85,7 @@
                                                 aria-hidden="true" />
                                             <dd>
                                                 <a href="mailto:{{ $contact['email'] }}"
-                                                    class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded transition-colors duration-200">
+                                                    class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 rounded transition-colors duration-200">
                                                     {{ $contact['email'] }}
                                                 </a>
                                             </dd>
@@ -97,7 +97,7 @@
                                                 aria-hidden="true" />
                                             <dd class="flex items-center gap-2">
                                                 <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contact['phone']) }}"
-                                                    class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded transition-colors duration-200">
+                                                    class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 rounded transition-colors duration-200">
                                                     {{ $contact['phone'] }}
                                                 </a>
                                                 <span
@@ -158,17 +158,17 @@
                         {{ __('directory.quick_links') }}</h2>
                     <nav aria-label="{{ __('directory.quick_links') }}" class="space-y-3">
                         <a href="{{ route('helpdesk.create') }}"
-                            class="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded min-h-11 py-2 transition-colors duration-200">
+                            class="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 rounded min-h-11 py-2 transition-colors duration-200">
                             <x-heroicon-o-ticket class="w-5 h-5 shrink-0" aria-hidden="true" />
                             {{ __('directory.submit_ticket') }}
                         </a>
                         <a href="{{ route('loan.wizard') }}"
-                            class="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded min-h-11 py-2 transition-colors duration-200">
+                            class="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 rounded min-h-11 py-2 transition-colors duration-200">
                             <x-heroicon-o-computer-desktop class="w-5 h-5 shrink-0" aria-hidden="true" />
                             {{ __('directory.apply_loan') }}
                         </a>
                         <a href="{{ route('status.check') }}"
-                            class="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded min-h-11 py-2 transition-colors duration-200">
+                            class="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 rounded min-h-11 py-2 transition-colors duration-200">
                             <x-heroicon-o-magnifying-glass class="w-5 h-5 shrink-0" aria-hidden="true" />
                             {{ __('directory.check_status') }}
                         </a>

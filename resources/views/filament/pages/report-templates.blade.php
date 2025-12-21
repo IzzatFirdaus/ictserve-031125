@@ -3,7 +3,7 @@
         <!-- Page Description -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <div class="flex items-center space-x-3 mb-4">
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                     <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
@@ -63,12 +63,12 @@
                                 };
                                 
                                 $buttonClass = match($template['color']) {
-                                    'primary' => 'bg-primary-600 hover:bg-primary-700 focus:ring-primary-500',
-                                    'success' => 'bg-success-600 hover:bg-success-700 focus:ring-success-500',
-                                    'warning' => 'bg-warning-600 hover:bg-warning-700 focus:ring-warning-500',
-                                    'danger' => 'bg-danger-600 hover:bg-danger-700 focus:ring-danger-500',
-                                    'info' => 'bg-info-600 hover:bg-info-700 focus:ring-info-500',
-                                    default => 'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500',
+                                    'primary' => 'bg-primary-600 hover:bg-primary-700 focus-visible:ring-3 focus-visible:ring-primary-500',
+                                    'success' => 'bg-success-600 hover:bg-success-700 focus-visible:ring-3 focus-visible:ring-success-500',
+                                    'warning' => 'bg-warning-600 hover:bg-warning-700 focus-visible:ring-3 focus-visible:ring-warning-500',
+                                    'danger' => 'bg-danger-600 hover:bg-danger-700 focus-visible:ring-3 focus-visible:ring-danger-500',
+                                    'info' => 'bg-info-600 hover:bg-info-700 focus-visible:ring-3 focus-visible:ring-info-500',
+                                    default => 'bg-gray-600 hover:bg-gray-700 focus-visible:ring-3 focus-visible:ring-gray-500',
                                 };
                             @endphp
                             
@@ -76,7 +76,7 @@
                                 wire:click="{{ $actionMethod }}"
                                 wire:loading.attr="disabled"
                                 wire:target="{{ $actionMethod }}"
-                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-4 font-medium rounded-lg text-white {{ $buttonClass }} focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 min-h-11"
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-4 font-medium rounded-lg text-white {{ $buttonClass }} focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 transition-colors duration-200 disabled:opacity-50 min-h-11"
                             >
                                 <span wire:loading.remove wire:target="{{ $actionMethod }}">
                                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@
                     </div>
                     <button 
                         wire:click="generateCustomTemplate"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 min-h-11"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-gray-500 transition-colors duration-200 min-h-11"
                     >
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -176,3 +176,4 @@
         });
     </script>
 </x-filament-panels::page>
+

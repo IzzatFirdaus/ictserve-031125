@@ -109,7 +109,7 @@
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1"
                 @keydown.escape.window="open = false"
-                class="absolute left-0 z-20 mt-2 w-56 origin-top-left rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                class="absolute left-0 z-20 mt-2 w-56 origin-top-left rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 focus:outline-none"
                 id="{{ $dropdownId }}-listbox" role="listbox" aria-labelledby="{{ $dropdownId }}-button" x-cloak>
                 <div class="py-1 max-h-60 overflow-auto">
                     @foreach ($filter['options'] ?? [] as $option)
@@ -149,3 +149,4 @@
         <span class="hidden sm:inline">{{ __('Clear') }}</span>
     </button>
 </div>
+

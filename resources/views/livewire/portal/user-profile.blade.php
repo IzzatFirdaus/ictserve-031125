@@ -105,7 +105,7 @@ new class extends Component
                         wire:model.live.debounce.300ms="name"
                         class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
                                bg-white dark:bg-slate-700 text-slate-900 dark:text-white
-                               shadow-sm focus:border-primary-500 focus:ring-primary-500
+                               shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                min-h-11 px-4 py-2 transition-colors duration-200"
                         aria-required="true"
@@ -131,7 +131,7 @@ new class extends Component
                         wire:model.live.debounce.300ms="email"
                         class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
                                bg-white dark:bg-slate-700 text-slate-900 dark:text-white
-                               shadow-sm focus:border-primary-500 focus:ring-primary-500
+                               shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                min-h-11 px-4 py-2 transition-colors duration-200"
                         aria-required="true"
@@ -159,7 +159,7 @@ new class extends Component
                         wire:model.live.debounce.300ms="phone"
                         class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
                                bg-white dark:bg-slate-700 text-slate-900 dark:text-white
-                               shadow-sm focus:border-primary-500 focus:ring-primary-500
+                               shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                min-h-11 px-4 py-2 transition-colors duration-200"
                         aria-describedby="phone-error phone-help"
@@ -186,7 +186,7 @@ new class extends Component
                         wire:model.live.debounce.300ms="department"
                         class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
                                bg-white dark:bg-slate-700 text-slate-900 dark:text-white
-                               shadow-sm focus:border-primary-500 focus:ring-primary-500
+                               shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500
                                focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
                                min-h-11 px-4 py-2 transition-colors duration-200"
                         aria-describedby="department-error"
@@ -229,11 +229,11 @@ new class extends Component
         </div>
 
         <!-- Additional Info -->
-        <div class="mt-8 bg-blue-50 dark:bg-blue-900 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
-            <h3 class="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
+        <div class="mt-8 bg-primary-50 dark:bg-primary-900 rounded-lg p-4 border border-primary-200 dark:border-primary-700">
+            <h3 class="text-sm font-medium text-primary-900 dark:text-primary-100 mb-2">
                 {{ __('profile.security_info') }}
             </h3>
-            <p class="text-sm text-blue-700 dark:text-blue-200">
+            <p class="text-sm text-primary-700 dark:text-primary-200">
                 {{ __('profile.security_message') }}
             </p>
         </div>

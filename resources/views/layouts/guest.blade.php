@@ -69,7 +69,7 @@
 <body class="font-sans text-slate-900 dark:text-slate-100 antialiased bg-slate-50 dark:bg-slate-900 theme-transition">
     {{-- Skip Link for Accessibility (WCAG 2.4.1) --}}
     <a href="#main-content"
-        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2">
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2">
         {{ __('common.skip_to_content') }}
     </a>
 
@@ -87,7 +87,7 @@
             {{-- Logo (MyDS Typography - D13 §2.4) --}}
             <div class="mb-12">
                 <a href="/" wire:navigate aria-label="{{ __('common.home') }}"
-                    class="flex flex-col items-center gap-6 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-4 min-h-11 min-w-11 transition-all duration-200 hover:scale-105">
+                    class="flex flex-col items-center gap-6 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg p-4 min-h-11 min-w-11 transition-all duration-200 hover:scale-105">
                     <x-application-logo
                         class="w-20 h-20 fill-current text-primary-600 dark:text-primary-400 transition-colors duration-200" />
                     <span
@@ -109,7 +109,7 @@
             <div class="mt-8 text-center text-sm text-slate-600 dark:text-slate-400 font-body">
                 <p>{{ __('auth.need_help') }}
                     <a href="{{ route('contact') }}"
-                        class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 rounded-lg min-h-11 inline-flex items-center px-2 transition-colors duration-200">
+                        class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg min-h-11 inline-flex items-center px-2 transition-colors duration-200">
                         {{ __('auth.contact_support') }}
                     </a>
                 </p>

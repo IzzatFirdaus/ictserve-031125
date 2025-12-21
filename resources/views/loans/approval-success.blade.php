@@ -39,8 +39,8 @@
 
             {{-- Success Icon --}}
             <div
-                class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 dark:bg-green-900/30 mb-6">
-                <x-heroicon-o-check-circle class="h-10 w-10 text-green-600 dark:text-green-400" aria-hidden="true" />
+                class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-success-100 dark:bg-success-900/30 mb-6">
+                <x-heroicon-o-check-circle class="h-10 w-10 text-success-600 dark:text-success-400" aria-hidden="true" />
             </div>
 
             {{-- Success Message --}}
@@ -55,7 +55,7 @@
             {{-- Action Buttons --}}
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ url('/') }}"
-                    class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-800">
+                    class="inline-flex min-h-11 items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     <x-heroicon-o-home class="w-5 h-5 mr-2" />
                     {{ __('common.back_to_home') }}
                 </a>

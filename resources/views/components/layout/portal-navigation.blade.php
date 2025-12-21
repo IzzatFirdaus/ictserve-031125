@@ -21,7 +21,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-8">
             <a href="{{ route('staff.dashboard') }}"
-                class="flex items-center gap-3 py-3 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 focus-visible:ring-offset-gray-900 rounded-lg"
+                class="flex items-center gap-3 py-3 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-gray-900 rounded-lg"
                 wire:navigate aria-label="{{ __('common.home') }}">
                 <x-application-logo class="h-8 w-auto text-gray-100" />
                 <span class="text-lg font-semibold hidden sm:block">{{ config('app.name', 'ICTServe') }}</span>
@@ -32,7 +32,7 @@
                 @foreach ($portalLinks as $link)
                     @continue(!Route::has($link['route']))
                     <a href="{{ route($link['route']) }}" wire:navigate
-                        class="px-4 py-3 border-b-2 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 focus-visible:ring-offset-gray-900 min-h-11 {{ request()->routeIs($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-gray-300 hover:text-white hover:border-gray-500' }}"
+                        class="px-4 py-3 border-b-2 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-gray-900 min-h-11 {{ request()->routeIs($link['route']) ? 'border-primary-500 text-white font-semibold' : 'border-transparent text-gray-300 hover:text-white hover:border-gray-500' }}"
                         @if (request()->routeIs($link['route'])) aria-current="page" @endif>
                         {{ $link['label'] }}
                     </a>

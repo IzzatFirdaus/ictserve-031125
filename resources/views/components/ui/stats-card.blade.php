@@ -90,8 +90,8 @@ $neutralColors = [
 
 // Success colors for zero count on danger type (good state - no overdue items)
 $zeroSuccessColors = [
-'bg' => 'bg-green-100 dark:bg-green-900/30',
-'text' => 'text-green-500 dark:text-green-400',
+'bg' => 'bg-success-100 dark:bg-success-900/30',
+'text' => 'text-success-500 dark:text-success-400',
 ];
 
 // Determine which colors to use

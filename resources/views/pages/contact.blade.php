@@ -24,11 +24,11 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-white focus-visible:ring-offset-primary-600 rounded px-1">
+                            class="text-primary-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-white focus-visible:ring-offset-primary-600 rounded px-1">
                             {{ __('Utama') }}
                         </a>
                     </li>
-                    <li aria-hidden="true" class="text-blue-200">
+                    <li aria-hidden="true" class="text-primary-200">
                         <x-heroicon-s-chevron-right class="h-4 w-4" />
                     </li>
                     <li>
@@ -43,7 +43,7 @@
             <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
                 {{ __('Hubungi Kami') }}
             </h1>
-            <p class="text-lg md:text-xl text-blue-100 max-w-2xl leading-relaxed">
+            <p class="text-lg md:text-xl text-primary-100 max-w-2xl leading-relaxed">
                 {{ __('Hubungi pasukan sokongan ICT BPM untuk sebarang pertanyaan atau bantuan.') }}
             </p>
         </div>
@@ -110,7 +110,7 @@
                                     <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('E-mel') }}</dt>
                                     <dd>
                                         <a href="mailto:helpdesk@motac.gov.my"
-                                            class="text-primary-600 hover:text-primary-700 font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 rounded">
+                                            class="text-primary-600 hover:text-primary-700 font-semibold focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded">
                                             helpdesk@motac.gov.my
                                         </a>
                                     </dd>
@@ -212,7 +212,7 @@
 
                         @if ($loanRoute)
                             <a href="{{ route($loanRoute) }}"
-                                class="col-span-4 group bg-white dark:bg-gray-900 rounded-lg shadow-card hover:shadow-dropdown dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 focus:outline-none focus:ring-3 focus:ring-success focus:ring-offset-2">
+                                class="col-span-4 group bg-white dark:bg-gray-900 rounded-lg shadow-card hover:shadow-dropdown dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-success focus-visible:ring-offset-2">
                                 <div class="flex items-center justify-between mb-3">
                                     <h4
                                         class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 group-hover:text-success dark:group-hover:text-success-400 transition-colors">

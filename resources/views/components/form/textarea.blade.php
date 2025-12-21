@@ -60,7 +60,7 @@ null;
                     'transition-colors duration-200 ' .
                     'dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 ' .
                     ($hasError
-                        ? 'border-danger-500 text-danger-900 placeholder-danger-300 focus-visible:ring-danger-500'
+                        ? 'border-danger-500 text-danger-900 placeholder-danger-300 focus-visible:ring-3 focus-visible:ring-danger-500'
                         : '') .
                     ($disabled ? ' opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-700' : ''),
             ]) }}>{{ $slot }}</textarea>

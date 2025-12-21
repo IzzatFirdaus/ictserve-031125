@@ -55,7 +55,7 @@
                         <button 
                             wire:click="applyQuickFilter({{ json_encode($filter['filters']) }})"
                             class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-{{ $filter['color'] }}-100 dark:bg-{{ $filter['color'] }}-900/20 flex items-center justify-center mr-3">
+                            <div class="shrink-0 w-10 h-10 rounded-lg bg-{{ $filter['color'] }}-100 dark:bg-{{ $filter['color'] }}-900/20 flex items-center justify-center mr-3">
                                 <x-dynamic-component :component="$filter['icon']" class="w-5 h-5 text-{{ $filter['color'] }}-600 dark:text-{{ $filter['color'] }}-400" />
                             </div>
                             <div class="text-left">
@@ -172,3 +172,4 @@
         </div>
     </div>
 </x-filament-panels::page>
+

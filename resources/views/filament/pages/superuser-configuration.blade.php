@@ -255,19 +255,19 @@
                                     class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center shrink-0">
                                     @switch($change->log_name)
                                         @case('sla_configuration')
-                                            <x-heroicon-o-clock class="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                            <x-heroicon-o-clock class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                         @break
 
                                         @case('approval_matrix')
-                                            <x-heroicon-o-user-group class="w-4 h-4 text-green-600 dark:text-green-400" />
+                                            <x-heroicon-o-user-group class="w-4 h-4 text-success-600 dark:text-success-400" />
                                         @break
 
                                         @case('email_templates')
-                                            <x-heroicon-o-envelope class="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                            <x-heroicon-o-envelope class="w-4 h-4 text-info-600 dark:text-info-400" />
                                         @break
 
                                         @case('token_regeneration')
-                                            <x-heroicon-o-key class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                                            <x-heroicon-o-key class="w-4 h-4 text-warning-600 dark:text-warning-400" />
                                         @break
 
                                         @default
@@ -298,7 +298,7 @@
         {{-- Configuration Guidelines --}}
         <x-filament::card>
             <div class="flex items-start gap-3 mb-4">
-                <x-heroicon-o-information-circle class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                <x-heroicon-o-information-circle class="w-5 h-5 text-primary-600 dark:text-primary-400 shrink-0 mt-0.5" />
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     {{ __('superuser_config.guidelines.title') }}
                 </h3>

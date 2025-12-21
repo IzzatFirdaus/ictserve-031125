@@ -25,7 +25,7 @@
                      const position = '{{ $stepData['position'] ?? 'bottom' }}';
 
                      // Highlight target element
-                     target.classList.add('ring-4', 'ring-primary-500', 'ring-offset-2');
+                     target.classList.add('ring-3', 'ring-primary-500', 'ring-offset-2');
                      target.style.position = 'relative';
                      target.style.zIndex = '60';
 
@@ -51,8 +51,8 @@
                  }
              },
              clearHighlight() {
-                 document.querySelectorAll('.ring-4').forEach(el => {
-                     el.classList.remove('ring-4', 'ring-primary-500', 'ring-offset-2');
+                 document.querySelectorAll('.ring-3').forEach(el => {
+                     el.classList.remove('ring-3', 'ring-primary-500', 'ring-offset-2');
                      el.style.position = '';
                      el.style.zIndex = '';
                  });
@@ -96,7 +96,7 @@
                 </div>
                 <button wire:click="skipTour"
                         type="button"
-                        class="text-slate-400 hover:text-slate-500 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-1"
+                        class="text-slate-400 hover:text-slate-500 dark:hover:text-slate-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg p-1"
                         aria-label="{{ __('portal.help.tour.skip') }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -117,7 +117,7 @@
                         <button wire:click="goToStep({{ $i }})"
                                 type="button"
                                 class="w-2.5 h-2.5 rounded-full transition-all duration-200
-                                       focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                                       focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2
                                        {{ $currentStep === $i
                                           ? 'bg-primary-600 w-8'
                                           : ($currentStep > $i
@@ -137,7 +137,7 @@
                                 type="button"
                                 class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300
                                        hover:text-slate-900 dark:hover:text-white
-                                       focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg
+                                       focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg
                                        transition-colors duration-200">
                             {{ __('portal.help.tour.previous') }}
                         </button>
@@ -148,7 +148,7 @@
                                 type="button"
                                 class="px-4 py-2 text-sm font-medium text-white bg-primary-600
                                        hover:bg-primary-700 active:bg-primary-800
-                                       focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                                       focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2
                                        rounded-lg shadow-sm transition-colors duration-200">
                             {{ __('portal.help.tour.next') }}
                         </button>
@@ -157,7 +157,7 @@
                                 type="button"
                                 class="px-4 py-2 text-sm font-medium text-white bg-success-600
                                        hover:bg-success-700 active:bg-success-800
-                                       focus:outline-none focus:ring-2 focus:ring-success-500 focus:ring-offset-2
+                                       focus:outline-none focus-visible:ring-3 focus-visible:ring-success-500 focus-visible:ring-offset-2
                                        rounded-lg shadow-sm transition-colors duration-200">
                             {{ __('portal.help.tour.finish') }}
                         </button>

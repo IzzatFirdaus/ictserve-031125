@@ -53,7 +53,7 @@
                     <tr>
                         <td class="px-4 py-4 text-sm text-slate-100">
                             <div class="font-medium">
-                                <a href="{{ route('loan.authenticated.show', $application) }}" class="text-blue-400 hover:text-blue-300">
+                                <a href="{{ route('loan.authenticated.show', $application) }}" class="text-primary-400 hover:text-primary-300">
                                     {{ $application->application_number }}
                                 </a>
                             </div>
@@ -91,7 +91,7 @@
                                 </div>
                             @else
                                 <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
-                                    {{ $application->status === \App\Enums\LoanStatus::APPROVED ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-800' : 'bg-rose-900/30 text-rose-400 border border-rose-800' }}">
+                                    {{ $application->status === \App\Enums\LoanStatus::APPROVED ? 'bg-success-900/30 text-success-400 border border-success-800' : 'bg-danger-900/30 text-danger-400 border border-danger-800' }}">
                                     {{ $application->status->label() }}
                                 </span>
                             @endif
@@ -126,10 +126,10 @@
                     <label class="block text-sm font-medium text-slate-300 mb-1">{{ __('Catatan (Pilihan)') }}</label>
                     <textarea
                         wire:model="remarks"
-                        class="w-full rounded-md bg-slate-800 border-slate-700 text-slate-100 focus:border-blue-500 focus:ring-blue-500"
+                        class="w-full min-h-11 rounded-lg bg-slate-800 border-slate-700 text-slate-100 focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         rows="3"
                     ></textarea>
-                    @error('remarks') <span class="text-xs text-red-400">{{ $message }}</span> @enderror
+                    @error('remarks') <span class="text-xs text-danger-400">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="flex justify-end gap-3">
@@ -158,11 +158,11 @@
                     <label class="block text-sm font-medium text-slate-300 mb-1">{{ __('Sebab Penolakan (Wajib)') }}</label>
                     <textarea
                         wire:model="remarks"
-                        class="w-full rounded-md bg-slate-800 border-slate-700 text-slate-100 focus:border-blue-500 focus:ring-blue-500"
+                        class="w-full min-h-11 rounded-lg bg-slate-800 border-slate-700 text-slate-100 focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         rows="3"
                         required
                     ></textarea>
-                    @error('remarks') <span class="text-xs text-red-400">{{ $message }}</span> @enderror
+                    @error('remarks') <span class="text-xs text-danger-400">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="flex justify-end gap-3">

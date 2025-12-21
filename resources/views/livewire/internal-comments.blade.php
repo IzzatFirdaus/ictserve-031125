@@ -29,7 +29,7 @@
                     wire:model="newCommentContent"
                     id="new-comment"
                     rows="4"
-                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus-visible:ring-3 focus:ring-primary-600 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     placeholder="{{ __('internal_comments.comment_placeholder') }}"
                     required
                 ></textarea>

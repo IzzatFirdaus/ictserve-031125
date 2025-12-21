@@ -92,8 +92,8 @@ $inputClasses =
 'focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 ' .
 'dark:bg-gray-800 dark:text-white ' .
 ($hasError
-? 'border-danger-500 text-danger-900 placeholder-danger-400 focus-visible:ring-danger-500 dark:border-danger-400 dark:text-danger-100'
-: 'border-gray-300 focus-visible:ring-primary-500 dark:border-gray-600');
+? 'border-danger-500 text-danger-900 placeholder-danger-400 focus-visible:ring-3 focus-visible:ring-danger-500 dark:border-danger-400 dark:text-danger-100'
+: 'border-gray-300 focus-visible:ring-3 focus-visible:ring-primary-500 dark:border-gray-600');
 @endphp
 
 <div {{ $attributes->only('class')->merge(['class' => 'w-full']) }}>

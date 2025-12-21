@@ -42,7 +42,7 @@
             color: #ffffff;
             padding: 12px 24px;
             text-decoration: none;
-            border-radius: 6px; /* rounded-md */
+            border-radius: 6px; /* rounded-lg */
             font-weight: bold;
             margin-top: 20px;
         }

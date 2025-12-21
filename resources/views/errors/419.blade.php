@@ -72,13 +72,13 @@
             {{-- Action Buttons --}}
             <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
                 <a href="{{ route('login') }}"
-                    class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                    n-o-arrow-right-on-rectangle class="mr-2 h-5 w-5" aria-hidden="true" />
+                    class="inline-flex min-h-11 items-center justify-center rounded-lg border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                    <x-heroicon-o-arrow-right-on-rectangle class="mr-2 h-5 w-5" aria-hidden="true" />
                     {{ __('portal.errors.login_now') }}
                 </a>
 
                 <button onclick="window.location.reload()"
-                    class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    class="inline-flex min-h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     <x-heroicon-o-arrow-path class="mr-2 h-5 w-5" aria-hidden="true" />
                     {{ __('portal.errors.refresh_page') }}
                 </button>
@@ -128,7 +128,7 @@
                 <p class="text-sm text-gray-500">
                     {{ __('portal.errors.session_help_text') }}
                     <a href="{{ route('contact') }}"
-                        class="font-medium text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                        class="inline-flex min-h-11 items-center font-medium text-primary-600 hover:text-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                         {{ __('portal.errors.contact_support') }}
                     </a>
                 </p>

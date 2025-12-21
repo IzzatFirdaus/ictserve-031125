@@ -4,7 +4,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div class="flex items-center">
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                         <x-heroicon-o-bell class="w-8 h-8 text-primary-600" />
                     </div>
                     <div class="ml-4">
@@ -18,7 +18,7 @@
 
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div class="flex items-center">
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                         <x-heroicon-o-envelope class="w-8 h-8 text-danger-600" />
                     </div>
                     <div class="ml-4">
@@ -32,7 +32,7 @@
 
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div class="flex items-center">
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                         <x-heroicon-o-calendar class="w-8 h-8 text-success-600" />
                     </div>
                     <div class="ml-4">
@@ -46,7 +46,7 @@
 
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div class="flex items-center">
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                         <x-heroicon-o-chart-bar class="w-8 h-8 text-secondary-600" />
                     </div>
                     <div class="ml-4">
@@ -102,7 +102,7 @@
                     <div class="p-6 {{ !$notification['is_read'] ? 'bg-primary-50 dark:bg-primary-900/20' : '' }}">
                         <div class="flex items-start space-x-4">
                             {{-- Notification Icon --}}
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <div class="w-10 h-10 rounded-full flex items-center justify-center
                                     {{ $notification['color'] === 'success' ? 'bg-success-100 text-success-600' : 
                                        ($notification['color'] === 'danger' ? 'bg-danger-100 text-danger-600' : 
@@ -213,7 +213,7 @@
                 <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
                     <button
                         wire:click="loadMoreNotifications"
-                        class="w-full text-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 min-h-11"
+                        class="w-full text-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                     >
                         Load More Notifications
                     </button>
@@ -231,3 +231,4 @@
         });
     </script>
 </x-filament-panels::page>
+

@@ -58,7 +58,7 @@
                     {{-- Step button/indicator --}}
                     <button type="button" wire:click="goToStep({{ $stepNumber }})"
                         @if (!$canNavigate) disabled @endif
-                        class="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg p-2 -m-2 transition-colors duration-200
+                        class="flex items-center gap-2 group focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg p-2 -m-2 transition-colors duration-200
                             {{ $canNavigate ? 'cursor-pointer' : 'cursor-not-allowed opacity-60' }}"
                         aria-label="{{ __('Step :number: :title', ['number' => $stepNumber, 'title' => $step['title']]) }}{{ $isCompleted ? ' - ' . __('Completed') : '' }}{{ $isCurrent ? ' - ' . __('Current step') : '' }}">
                         {{-- Step circle --}}
@@ -153,7 +153,7 @@
     <div class="mt-8 flex items-center justify-between gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
         {{-- Previous button --}}
         <button type="button" wire:click="previousStep" @if ($this->isFirstStep()) disabled @endif
-            class="inline-flex items-center gap-2 px-4 py-2.5 min-h-11 text-sm font-medium rounded-lg border transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2
+            class="inline-flex items-center gap-2 px-4 py-2.5 min-h-11 text-sm font-medium rounded-lg border transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2
                 {{ $this->isFirstStep()
                     ? 'border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed'
                     : 'border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700' }}"
@@ -179,7 +179,7 @@
 
             @if (!isset($submitButton))
                 <button type="submit" wire:loading.attr="disabled"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 min-h-11 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                    class="inline-flex items-center gap-2 px-6 py-2.5 min-h-11 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                     <span wire:loading.remove>{{ __('Submit') }}</span>
                     <span wire:loading class="inline-flex items-center gap-2">
                         <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -196,7 +196,7 @@
             @endif
         @else
             <button type="button" wire:click="nextStep" wire:loading.attr="disabled"
-                class="inline-flex items-center gap-2 px-6 py-2.5 min-h-11 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="inline-flex items-center gap-2 px-6 py-2.5 min-h-11 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="{{ __('Go to next step') }}">
                 <span>{{ __('Next') }}</span>
                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"

@@ -38,7 +38,7 @@
         <div class="flex items-center gap-8">
             {{-- Logo/Branding --}}
             <a href="{{ route('staff.dashboard') }}"
-                class="flex items-center gap-3 py-3 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-blue-500 focus:ring-offset-slate-900 rounded-lg transition-colors duration-150"
+                class="flex items-center gap-3 py-3 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900 rounded-lg transition-colors duration-150"
                 wire:navigate aria-label="{{ __('common.site_home') }}">
                 <x-application-logo class="h-8 w-auto text-slate-100" />
                 <span class="text-lg font-semibold hidden sm:block">{{ config('app.name', 'ICTServe') }}</span>
@@ -53,7 +53,7 @@
                             rel="noopener noreferrer"
                         @else
                             wire:navigate @endif
-                        class="px-4 py-3 border-b-2 min-h-11 flex items-center transition-colors duration-150 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-blue-500 focus:ring-offset-slate-900 rounded-lg {{ $this->isCurrentRoute($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
+                        class="px-4 py-3 border-b-2 min-h-11 flex items-center transition-colors duration-150 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900 rounded-lg {{ $this->isCurrentRoute($link['route']) ? 'border-primary-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
                         @if ($this->isCurrentRoute($link['route'])) aria-current="page" @endif>
                         {{ $link['label'] }}
                         @if (isset($link['external']) && $link['external'])
@@ -79,7 +79,7 @@
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
                     <button
-                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-colors duration-150 min-h-11"
+                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 transition-colors duration-150 min-h-11"
                         aria-haspopup="menu"
                         aria-label="{{ __('staff.nav.user_menu') }}: ' . ($user?->name ?? __('common.user')) }}">
                         <span>{{ $user?->name ?? __('staff.nav.user_menu') }}</span>
@@ -115,7 +115,7 @@
 
         {{-- Mobile Menu Toggle Button --}}
         <button type="button"
-            class="w-full px-4 py-3 flex items-center justify-between text-sm font-medium text-slate-200 bg-slate-900 hover:bg-slate-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus:ring-inset transition-colors duration-150 min-h-11"
+            class="w-full px-4 py-3 flex items-center justify-between text-sm font-medium text-slate-200 bg-slate-900 hover:bg-slate-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-inset transition-colors duration-150 min-h-11"
             @click="mobileMenuOpen = !mobileMenuOpen" :aria-expanded="mobileMenuOpen.toString()"
             aria-controls="mobile-menu" aria-label="{{ __('staff.nav.toggle_menu') }}">
             <span>{{ __('staff.nav.menu') }}</span>
@@ -141,7 +141,7 @@
                     @else
                         wire:navigate @endif
                     @click="mobileMenuOpen = false"
-                    class="flex px-4 py-4 text-sm min-h-11 items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150 {{ $this->isCurrentRoute($link['route']) ? 'text-white bg-slate-800 font-semibold' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+                    class="flex px-4 py-4 text-sm min-h-11 items-center focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 transition-colors duration-150 {{ $this->isCurrentRoute($link['route']) ? 'text-white bg-slate-800 font-semibold' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
                     @if ($this->isCurrentRoute($link['route'])) aria-current="page" @endif>
                     {{ $link['label'] }}
                     @if (isset($link['external']) && $link['external'])
@@ -158,7 +158,7 @@
 
             {{-- Profile Link --}}
             <a href="{{ route('staff.profile') }}" wire:navigate @click="mobileMenuOpen = false"
-                class="flex px-4 py-4 text-sm min-h-11 items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
+                class="flex px-4 py-4 text-sm min-h-11 items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 transition-colors duration-150">
                 {{ __('staff.nav.profile') }}
             </a>
 
@@ -166,7 +166,7 @@
             <form method="POST" action="{{ route('logout') }}" class="border-t border-slate-800">
                 @csrf
                 <button type="submit"
-                    class="w-full text-left px-4 py-4 text-sm min-h-11 flex items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
+                    class="w-full text-left px-4 py-4 text-sm min-h-11 flex items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 transition-colors duration-150">
                     {{ __('staff.nav.logout') }}
                 </button>
             </form>

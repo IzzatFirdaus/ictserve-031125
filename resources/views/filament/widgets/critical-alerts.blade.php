@@ -20,7 +20,7 @@
                     @foreach ($alerts as $alert)
                         <a href="{{ $alert['url'] }}" data-testid="critical-alert-item"
                             data-alert-type="{{ $alert['type'] }}"
-                            class="flex items-center gap-4 p-4 rounded-lg border border-{{ $alert['color'] }}-200 dark:border-{{ $alert['color'] }}-700 bg-{{ $alert['color'] }}-50 dark:bg-{{ $alert['color'] }}-900/20 hover:bg-{{ $alert['color'] }}-100 dark:hover:bg-{{ $alert['color'] }}-900/30 transition focus:outline-none focus:ring-2 focus:ring-{{ $alert['color'] }}-500 focus:ring-offset-2"
+                            class="flex items-center gap-4 p-4 rounded-lg border border-{{ $alert['color'] }}-200 dark:border-{{ $alert['color'] }}-700 bg-{{ $alert['color'] }}-50 dark:bg-{{ $alert['color'] }}-900/20 hover:bg-{{ $alert['color'] }}-100 dark:hover:bg-{{ $alert['color'] }}-900/30 transition focus:outline-none focus-visible:ring-3 focus-visible:ring-{{ $alert['color'] }}-500 focus-visible:ring-offset-2"
                             aria-label="{{ $alert['title'] }}: {{ $alert['count'] }} {{ $alert['message'] }}">
                             <div class="shrink-0">
                                 <x-filament::icon :icon="$alert['icon']" class="w-6 h-6 text-{{ $alert['color'] }}-600" />

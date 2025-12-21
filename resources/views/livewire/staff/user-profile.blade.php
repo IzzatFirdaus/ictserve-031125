@@ -208,7 +208,7 @@
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('email')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-lg">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -225,7 +225,7 @@
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('staff_id')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-lg">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -242,7 +242,7 @@
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('grade')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-lg">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -259,7 +259,7 @@
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('division')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-lg">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -276,7 +276,7 @@
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('position')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-lg">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -378,7 +378,7 @@
                         <label class="flex items-center space-x-3 cursor-pointer">
                             <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
                                 value="immediate" name="email_frequency"
-                                class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-slate-900">
+                                class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900">
                             <span
                                 class="text-sm text-slate-300">{{ __('profile.email_immediate') ?: 'Immediate' }}</span>
                             <span
@@ -387,7 +387,7 @@
                         <label class="flex items-center space-x-3 cursor-pointer">
                             <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
                                 value="daily" name="email_frequency"
-                                class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-slate-900">
+                                class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900">
                             <span
                                 class="text-sm text-slate-300">{{ __('profile.email_daily') ?: 'Daily Digest' }}</span>
                             <span
@@ -396,7 +396,7 @@
                         <label class="flex items-center space-x-3 cursor-pointer">
                             <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
                                 value="weekly" name="email_frequency"
-                                class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus:ring-offset-slate-900">
+                                class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900">
                             <span
                                 class="text-sm text-slate-300">{{ __('profile.email_weekly') ?: 'Weekly Digest' }}</span>
                             <span

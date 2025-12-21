@@ -1,5 +1,5 @@
 <div class="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-md focus:shadow-button focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 skip-to-content">{{ __('common.skip_to_content') }}</a>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:shadow-button focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 skip-to-content">{{ __('common.skip_to_content') }}</a>
     <main id="main-content" role="main">
     <div class="bg-white dark:bg-gray-800 shadow-card border border-gray-200 dark:border-gray-700 sm:rounded-lg overflow-hidden theme-transition">
         <div class="px-4 py-5 sm:px-6">
@@ -17,12 +17,12 @@
                     <label for="applicationNumber" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         {{ __('loan.fields.application_number') }}
                     </label>
-                    <div class="mt-1 flex rounded-md shadow-sm gap-2">
+                    <div class="mt-1 flex rounded-lg shadow-sm gap-2">
                         <input type="text" wire:model="applicationNumber" id="applicationNumber" 
                             aria-required="true"
                             class="flex-1 min-w-0 block w-full px-3 py-2 rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm transition-colors min-h-11"
                             placeholder="e.g. LA-20231125-0001">
-                        <button type="submit" aria-label="{{ __('loan.actions.track') }}" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 min-h-11 min-w-11 transition-all">
+                        <button type="submit" aria-label="{{ __('loan.actions.track') }}" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11 min-w-11 transition-all">
                             {{ __('loan.actions.track') }}
                         </button>
                     </div>

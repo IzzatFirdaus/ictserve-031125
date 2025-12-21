@@ -43,7 +43,7 @@
 <body class="font-sans text-slate-900 dark:text-slate-100 antialiased bg-slate-50 dark:bg-slate-900 theme-transition">
     {{-- Skip Link for Accessibility (WCAG 2.4.1) --}}
     <a href="#main-content"
-        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2">
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2">
         {{ __('common.skip_to_content') }}
     </a>
 
@@ -55,7 +55,7 @@
                     {{-- Logo & Title --}}
                     <div class="flex items-center gap-4">
                         <a href="/"
-                            class="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-1">
+                            class="flex items-center gap-3 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg p-1">
                             <x-application-logo class="w-10 h-10" />
                             <span class="text-xl font-bold text-slate-900 dark:text-white hidden sm:block">
                                 {{ config('app.name', 'ICTServe') }}
@@ -71,12 +71,12 @@
                         {{-- Auth Links --}}
                         @auth
                             <a href="{{ route('dashboard') }}"
-                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg">
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg">
                                 Dashboard
                             </a>
                         @else
                             <a href="{{ route('login') }}"
-                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg transition-colors">
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg transition-colors">
                                 Log Masuk
                             </a>
                         @endauth

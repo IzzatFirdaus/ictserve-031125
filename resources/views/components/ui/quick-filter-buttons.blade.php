@@ -23,7 +23,7 @@
                            {{ $appliedFilterId === $filter['id']
                                ? 'bg-primary-100 text-primary-700 border-2 border-primary-400 shadow-sm dark:bg-primary-900/50 dark:text-primary-300 dark:border-primary-600'
                                : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:border-slate-400 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-700' }}
-                           focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500
+                           focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500
                            touch-target"
         title="{{ $filter['description'] ?? __('Apply filter: :name', ['name' => $filter['name']]) }}"
         aria-pressed="{{ $appliedFilterId === $filter['id'] ? 'true' : 'false' }}">
@@ -54,7 +54,7 @@
                            text-gray-500 hover:text-gray-700 hover:bg-gray-100
                            dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
                            rounded-lg transition-colors duration-150
-                           focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
+                           focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-gray-500"
         aria-label="{{ __('Clear applied filter') }}">
         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
             aria-hidden="true">

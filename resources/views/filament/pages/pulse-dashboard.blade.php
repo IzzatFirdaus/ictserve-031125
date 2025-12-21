@@ -41,7 +41,7 @@
             <div class="mt-4">
                 <a href="{{ route('pulse') }}" 
                    target="_blank"
-                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_pulse_usage') }} →
                 </a>
             </div>
@@ -67,7 +67,7 @@
             <div class="mt-4">
                 <a href="{{ route('pulse') }}" 
                    target="_blank"
-                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_pulse_queues') }} →
                 </a>
             </div>
@@ -93,7 +93,7 @@
             <div class="mt-4">
                 <a href="{{ route('pulse') }}" 
                    target="_blank"
-                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_pulse_cache') }} →
                 </a>
             </div>
@@ -119,7 +119,7 @@
             <div class="mt-4">
                 <a href="{{ route('pulse') }}" 
                    target="_blank"
-                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_pulse_queries') }} →
                 </a>
             </div>
@@ -145,7 +145,7 @@
             <div class="mt-4">
                 <a href="{{ route('pulse') }}" 
                    target="_blank"
-                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_pulse_requests') }} →
                 </a>
             </div>
@@ -171,7 +171,7 @@
             <div class="mt-4">
                 <a href="{{ route('pulse') }}" 
                    target="_blank"
-                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                   class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('admin.view_pulse_exceptions') }} →
                 </a>
             </div>

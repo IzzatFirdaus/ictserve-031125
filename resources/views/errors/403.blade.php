@@ -65,26 +65,26 @@
                 @auth
                     {{-- Authenticated User Actions --}}
                     <a href="{{ route('dashboard') }}"
-                        class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="inline-flex min-h-11 items-center justify-center rounded-lg border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <x-heroicon-o-home class="mr-2 h-5 w-5" aria-hidden="true" />
                         {{ __('portal.errors.back_to_dashboard') }}
                     </a>
                 @else
                     {{-- Guest User Actions --}}
                     <a href="{{ route('login') }}"
-                        class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="inline-flex min-h-11 items-center justify-center rounded-lg border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <x-heroicon-o-arrow-right-on-rectangle class="mr-2 h-5 w-5" aria-hidden="true" />
                         Log Masuk untuk Meneruskan
                     </a>
                     <a href="/"
-                        class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="inline-flex min-h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <x-heroicon-o-home class="mr-2 h-5 w-5" aria-hidden="true" />
                         Kembali ke Laman Utama
                     </a>
                 @endauth
 
                 <a href="/helpdesk/create"
-                    class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    class="inline-flex min-h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     <x-heroicon-o-chat-bubble-left-right class="mr-2 h-5 w-5" aria-hidden="true" />
                     Hubungi Sokongan
                 </a>
@@ -114,7 +114,7 @@
                     </div>
 
                     {{-- Current User Info --}}
-                    <div class="mt-4 rounded-md bg-gray-50 p-3">
+                    <div class="mt-4 rounded-lg bg-gray-50 p-3">
                         <p class="text-xs text-gray-500">
                             {{ __('portal.errors.logged_in_as') }}
                             <span class="font-medium text-gray-700">{{ auth()->user()->name }}</span>
@@ -138,12 +138,12 @@
                     </div>
 
                     {{-- Registration Option --}}
-                    <div class="mt-4 flex items-center justify-between rounded-md bg-primary-50 p-3">
+                    <div class="mt-4 flex items-center justify-between rounded-lg bg-primary-50 p-3">
                         <p class="text-sm text-primary-700">
                             {{ __('portal.errors.no_account_yet') }}
                         </p>
                         <a href="{{ route('register') }}"
-                            class="text-sm font-medium text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                            class="inline-flex min-h-11 items-center text-sm font-medium text-primary-600 hover:text-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                             {{ __('portal.errors.register_now') }}
                         </a>
                     </div>
@@ -155,7 +155,7 @@
                 <p class="text-sm text-gray-500">
                     {{ __('portal.errors.still_need_help') }}
                     <a href="mailto:{{ config('mail.from.address', 'ict@motac.gov.my') }}"
-                        class="font-medium text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                        class="inline-flex min-h-11 items-center font-medium text-primary-600 hover:text-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                         {{ config('mail.from.address', 'ict@motac.gov.my') }}
                     </a>
                 </p>

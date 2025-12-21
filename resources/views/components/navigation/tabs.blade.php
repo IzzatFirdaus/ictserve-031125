@@ -30,8 +30,8 @@
                 aria-controls="panel-{{ $tab['id'] }}"
                 wire:click="$set('activeTab', '{{ $tab['id'] }}')"
                 @class([
-                    'group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 min-h-11',
-                    'border-blue-500 text-blue-600 dark:text-blue-400' => $activeTab === $tab['id'],
+                    'group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11',
+                    'border-primary-500 text-primary-600 dark:text-primary-400' => $activeTab === $tab['id'],
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300' => $activeTab !== $tab['id']
                 ])
             >
@@ -61,7 +61,7 @@
                 @if(isset($tab['badge']) && $tab['badge'] > 0)
                     <span @class([
                         'ml-2 py-0.5 px-2 rounded-full text-xs font-medium',
-                        'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300' => $activeTab === $tab['id'],
+                        'bg-primary-100 text-primary-600 dark:bg-primary-900 dark:text-primary-300' => $activeTab === $tab['id'],
                         'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300' => $activeTab !== $tab['id']
                     ])>
                         {{ $tab['badge'] }}

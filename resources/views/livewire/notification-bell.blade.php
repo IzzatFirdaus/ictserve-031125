@@ -93,7 +93,7 @@
             @foreach ($categories as $key => $label)
                 <button wire:click="setCategory('{{ $key }}')" type="button" role="tab"
                     :aria-selected="activeCategory === '{{ $key }}'"
-                    class="px-3 py-2.5 text-xs font-medium rounded-md whitespace-nowrap transition-all duration-150 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11
+                    class="px-3 py-2.5 text-xs font-medium rounded-lg whitespace-nowrap transition-all duration-150 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11
                                {{ $activeCategory === $key
                                    ? 'bg-primary-600 dark:bg-primary-600 text-white shadow-sm'
                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white' }}">
@@ -170,7 +170,7 @@
         {{-- Footer --}}
         <div class="px-4 py-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
             <a href="{{ route('staff.notifications') }}"
-                class="block text-center text-sm font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-md py-2 transition-colors"
+                class="block text-center text-sm font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg py-2 transition-colors"
                 aria-label="{{ __('notifications.view_all') }}">
                 {{ __('notifications.view_all') }}
             </a>

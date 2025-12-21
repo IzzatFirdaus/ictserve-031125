@@ -62,7 +62,7 @@
         <nav class="flex space-x-4" aria-label="{{ __('Audit Log Tabs') }}">
             <button
                 wire:click="setTab('all')"
-                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 {{ $activeTab === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
+                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $activeTab === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
                 aria-current="{{ $activeTab === 'all' ? 'page' : 'false' }}"
             >
                 <x-heroicon-o-squares-2x2 class="w-4 h-4 inline-block mr-1" />
@@ -71,7 +71,7 @@
 
             <button
                 wire:click="setTab('compliance')"
-                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 {{ $activeTab === 'compliance' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
+                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $activeTab === 'compliance' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
                 aria-current="{{ $activeTab === 'compliance' ? 'page' : 'false' }}"
             >
                 <x-heroicon-o-shield-check class="w-4 h-4 inline-block mr-1" />
@@ -83,7 +83,7 @@
 
             <button
                 wire:click="setTab('activity')"
-                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 {{ $activeTab === 'activity' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
+                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $activeTab === 'activity' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
                 aria-current="{{ $activeTab === 'activity' ? 'page' : 'false' }}"
             >
                 <x-heroicon-o-clipboard-document-list class="w-4 h-4 inline-block mr-1" />

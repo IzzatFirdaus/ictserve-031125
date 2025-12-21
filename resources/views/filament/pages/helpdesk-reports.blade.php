@@ -22,7 +22,7 @@
                         type="date"
                         id="start_date"
                         wire:model="data.start_date"
-                        class="fi-input block w-full rounded-lg border-none bg-white shadow-sm ring-1 ring-gray-950/10 transition duration-75 placeholder:text-gray-400 focus:ring-2 focus:ring-primary-600 disabled:bg-gray-50 disabled:text-gray-500 dark:bg-white/5 dark:text-white dark:ring-white/20 dark:placeholder:text-gray-500 dark:focus:ring-primary-500 disabled:dark:bg-transparent disabled:dark:ring-white/10 sm:text-sm sm:leading-6"
+                        class="fi-input block w-full rounded-lg border-none bg-white shadow-sm ring-1 ring-gray-950/10 transition duration-75 placeholder:text-gray-400 focus-visible:ring-3 focus-visible:ring-primary-600 disabled:bg-gray-50 disabled:text-gray-500 dark:bg-white/5 dark:text-white dark:ring-white/20 dark:placeholder:text-gray-500 dark:focus-visible:ring-3 focus-visible:ring-primary-500 disabled:dark:bg-transparent disabled:dark:ring-white/10 sm:text-sm sm:leading-6"
                     >
                 </div>
 
@@ -37,7 +37,7 @@
                         type="date"
                         id="end_date"
                         wire:model="data.end_date"
-                        class="fi-input block w-full rounded-lg border-none bg-white shadow-sm ring-1 ring-gray-950/10 transition duration-75 placeholder:text-gray-400 focus:ring-2 focus:ring-primary-600 disabled:bg-gray-50 disabled:text-gray-500 dark:bg-white/5 dark:text-white dark:ring-white/20 dark:placeholder:text-gray-500 dark:focus:ring-primary-500 disabled:dark:bg-transparent disabled:dark:ring-white/10 sm:text-sm sm:leading-6"
+                        class="fi-input block w-full rounded-lg border-none bg-white shadow-sm ring-1 ring-gray-950/10 transition duration-75 placeholder:text-gray-400 focus-visible:ring-3 focus-visible:ring-primary-600 disabled:bg-gray-50 disabled:text-gray-500 dark:bg-white/5 dark:text-white dark:ring-white/20 dark:placeholder:text-gray-500 dark:focus-visible:ring-3 focus-visible:ring-primary-500 disabled:dark:bg-transparent disabled:dark:ring-white/10 sm:text-sm sm:leading-6"
                     >
                 </div>
             </div>

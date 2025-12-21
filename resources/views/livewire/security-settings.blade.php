@@ -221,7 +221,7 @@
     </div>
 
     {{-- Loading Overlay --}}
-    <div wire:loading wire:target="changePassword" class="fixed inset-0 bg-slate-900 bg-opacity-50 flex items-center justify-center z-50">
+    <div wire:loading wire:target="changePassword" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50">
         <div class="bg-white dark:bg-slate-800 rounded-lg p-6 flex flex-col items-center">
             <svg class="animate-spin h-10 w-10 text-primary-600" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -231,3 +231,4 @@
         </div>
     </div>
 </div>
+

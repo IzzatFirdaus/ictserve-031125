@@ -22,7 +22,7 @@
 
     @auth
         <a href="{{ url('/dashboard') }}"
-            class="rounded-m px-4 py-2.5 min-h-11 flex items-center text-sm font-medium text-gray-700 dark:text-gray-200
+            class="rounded-lg px-4 py-2.5 min-h-11 flex items-center text-sm font-medium text-gray-700 dark:text-gray-200
                    bg-white/80 dark:bg-gray-800/80 shadow-button
                    ring-1 ring-gray-200 dark:ring-gray-700
                    transition-colors duration-200
@@ -32,7 +32,7 @@
         </a>
     @else
         <a href="{{ route('login') }}"
-            class="rounded-m px-4 py-2.5 min-h-11 flex items-center text-sm font-medium text-gray-700 dark:text-gray-200
+            class="rounded-lg px-4 py-2.5 min-h-11 flex items-center text-sm font-medium text-gray-700 dark:text-gray-200
                    bg-white/80 dark:bg-gray-800/80 shadow-button
                    ring-1 ring-gray-200 dark:ring-gray-700
                    transition-colors duration-200
@@ -43,7 +43,7 @@
 
         @if (Route::has('register'))
             <a href="{{ route('register') }}"
-                class="rounded-m px-4 py-2.5 min-h-11 flex items-center text-sm font-medium text-white
+                class="rounded-lg px-4 py-2.5 min-h-11 flex items-center text-sm font-medium text-white
                        bg-primary-600 shadow-button
                        transition-colors duration-200
                        hover:bg-primary-700

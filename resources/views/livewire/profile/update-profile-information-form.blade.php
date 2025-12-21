@@ -104,7 +104,7 @@ new class extends Component
                     <p class="text-sm mt-2 text-slate-600 dark:text-slate-400">
                         {{ __('auth.email_unverified') }}
 
-                        <button wire:click.prevent="sendVerification" class="underline text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800">
+                        <button wire:click.prevent="sendVerification" class="underline text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800">
                             {{ __('auth.resend_verification') }}
                         </button>
                     </p>

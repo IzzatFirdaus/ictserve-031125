@@ -114,8 +114,8 @@
             {{ $attributes->except('class') }}
             class="block w-full min-h-12 px-4 py-3 text-base text-gray-900 dark:text-white bg-white dark:bg-gray-800 border rounded-lg transition-colors duration-200
                 {{ $hasError
-                    ? 'border-danger-500 focus:border-danger-500 focus-visible:ring-danger-500'
-                    : 'border-gray-300 dark:border-gray-600 focus:border-primary-500 focus-visible:ring-primary-500' }}
+                    ? 'border-danger-500 focus:border-danger-500 focus-visible:ring-3 focus-visible:ring-danger-500'
+                    : 'border-gray-300 dark:border-gray-600 focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500' }}
                 {{ $disabled ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed opacity-60' : '' }}
                 {{ $showClear ? 'pr-12' : '' }}
                 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2">

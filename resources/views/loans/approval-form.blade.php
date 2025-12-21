@@ -113,12 +113,12 @@
                             class="block text-sm font-medium text-gray-700 mb-2">
                             {{ $action === 'approve' ? __('asset_loan.approval.comments_label') : __('asset_loan.approval.reason_label') }}
                             @if ($action === 'decline')
-                                <span class="text-red-600" aria-label="{{ __('common.required') }}">*</span>
+                                <span class="text-danger-600" aria-label="{{ __('common.required') }}">*</span>
                             @endif
                         </label>
                         <textarea id="{{ $action === 'approve' ? 'comments' : 'reason' }}"
                             name="{{ $action === 'approve' ? 'comments' : 'reason' }}" rows="4"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            class="w-full min-h-11 px-4 py-3 border border-gray-300 rounded-lg focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:border-primary-500 transition-colors"
                             placeholder="{{ $action === 'approve' ? __('asset_loan.approval.comments_placeholder') : __('asset_loan.approval.reason_placeholder') }}"
                             aria-describedby="{{ $action === 'approve' ? 'comments-help' : 'reason-help' }}"
                             @if ($action === 'decline') required aria-required="true" @endif>{{ old($action === 'approve' ? 'comments' : 'reason') }}</textarea>
@@ -127,7 +127,7 @@
                             {{ $action === 'approve' ? __('asset_loan.approval.comments_help') : __('asset_loan.approval.reason_help') }}
                         </p>
                         @error($action === 'approve' ? 'comments' : 'reason')
-                            <p class="mt-2 text-sm text-red-600" role="alert">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-danger-600" role="alert">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -135,28 +135,28 @@
                     <div class="flex flex-col sm:flex-row gap-4">
                         @if ($action === 'approve')
                             <button type="submit"
-                                class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-green-300 transition-colors"
+                                class="flex-1 min-h-11 bg-success-600 hover:bg-success-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-success-500 focus-visible:ring-offset-2 transition-colors"
                                 aria-label="{{ __('asset_loan.approval.confirm_approve_button') }}">
                                 ✔️ {{ __('asset_loan.approval.confirm_approve_button') }}
                             </button>
                         @else
                             <button type="submit"
-                                class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-red-300 transition-colors"
+                                class="flex-1 min-h-11 bg-danger-600 hover:bg-danger-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 transition-colors"
                                 aria-label="{{ __('asset_loan.approval.confirm_decline_button') }}">
                                 ❌ {{ __('asset_loan.approval.confirm_decline_button') }}
                             </button>
                         @endif
 
                         <a href="{{ url('/') }}"
-                            class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg text-center focus:outline-none focus:ring-4 focus:ring-gray-300 transition-colors"
+                            class="flex-1 min-h-11 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg text-center focus:outline-none focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:ring-offset-2 transition-colors"
                             aria-label="{{ __('common.cancel') }}">
                             {{ __('common.cancel') }}
                         </a>
                     </div>
 
                     {{-- Security Notice --}}
-                    <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg" role="note">
-                        <p class="text-sm text-blue-800">
+                    <div class="mt-6 p-4 bg-primary-50 border border-primary-200 rounded-lg" role="note">
+                        <p class="text-sm text-primary-800">
                             <strong>{{ __('asset_loan.approval.security_notice_title') }}:</strong>
                             {{ __('asset_loan.approval.security_notice_text') }}
                         </p>

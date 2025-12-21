@@ -48,7 +48,7 @@
 
 <div {{ $attributes->merge(['class' => 'bg-white dark:bg-slate-800 rounded-lg shadow p-6']) }}>
     <div class="flex items-center">
-        <div class="flex-shrink-0 {{ $colorClasses[$color] ?? $colorClasses['blue'] }} rounded-lg p-3">
+        <div class="shrink-0 {{ $colorClasses[$color] ?? $colorClasses['blue'] }} rounded-lg p-3">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 {!! $iconSvgs[$icon] ?? $iconSvgs['inbox'] !!}
             </svg>
@@ -73,3 +73,4 @@
         </div>
     </div>
 </div>
+

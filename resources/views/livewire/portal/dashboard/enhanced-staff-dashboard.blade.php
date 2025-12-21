@@ -1,7 +1,7 @@
 <div class="py-6" wire:poll.60s="refreshData">
     {{-- Skip Links for Accessibility --}}
     <a href="#main-content"
-        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-m z-50">
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-lg z-50">
         Langkau ke kandungan utama
     </a>
 
@@ -43,7 +43,7 @@
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-700 px-5 py-3">
                         <a href="{{ route('staff.tickets.index') }}"
-                            class="text-sm font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                            class="text-sm font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                             Lihat semua tiket
                             <span aria-hidden="true"> &rarr;</span>
                         </a>
@@ -73,7 +73,7 @@
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-700 px-5 py-3">
                         <a href="{{ route('staff.loans.index') }}"
-                            class="text-sm font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                            class="text-sm font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                             Lihat semua pinjaman
                             <span aria-hidden="true"> &rarr;</span>
                         </a>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-700 px-5 py-3">
                         <a href="{{ route('staff.loans.active') }}"
-                            class="text-sm font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                            class="text-sm font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                             Lihat pinjaman aktif
                             <span aria-hidden="true"> &rarr;</span>
                         </a>
@@ -134,7 +134,7 @@
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700 px-5 py-3">
                             <a href="{{ route('staff.approvals.index') }}"
-                                class="text-sm font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                                class="text-sm font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                                 Lihat kelulusan
                                 <span aria-hidden="true"> &rarr;</span>
                             </a>
@@ -227,7 +227,7 @@
                                         </div>
                                         <div class="shrink-0">
                                             <a href="{{ $action['url'] }}"
-                                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-m text-primary-700 bg-primary-50 hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-h-11 min-w-11">
+                                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-primary-700 bg-primary-50 hover:bg-primary-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11 min-w-11">
                                                 Lihat
                                             </a>
                                         </div>
@@ -250,7 +250,7 @@
                         <div class="flex space-x-2" role="group" aria-label="Penapis aktiviti">
                             @foreach ($filterOptions as $key => $label)
                                 <button wire:click="setActivityFilter('{{ $key }}')" type="button"
-                                    class="px-3 py-1.5 text-xs font-medium rounded-m min-h-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 {{ $activityFilter === $key ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300' }}"
+                                    class="px-3 py-1.5 text-xs font-medium rounded-lg min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 {{ $activityFilter === $key ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300' }}"
                                     aria-pressed="{{ $activityFilter === $key ? 'true' : 'false' }}">
                                     {{ $label }}
                                 </button>
@@ -270,7 +270,7 @@
                             @foreach ($this->filteredActivity as $activity)
                                 <li class="py-3">
                                     <a href="{{ $activity['url'] }}"
-                                        class="flex items-center space-x-4 hover:bg-gray-50 dark:hover:bg-gray-700 -mx-2 px-2 py-2 rounded-m focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                        class="flex items-center space-x-4 hover:bg-gray-50 dark:hover:bg-gray-700 -mx-2 px-2 py-2 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500">
                                         <div class="shrink-0">
                                             @if ($activity['type'] === 'ticket')
                                                 <x-heroicon-o-ticket class="h-5 w-5 text-primary-500"
@@ -306,7 +306,7 @@
             <h2 id="quick-actions-heading" class="sr-only">Tindakan Pantas</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <a href="{{ route('helpdesk.create') }}"
-                    class="relative group bg-white dark:bg-gray-800 p-6 shadow-card rounded-l hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    class="relative group bg-white dark:bg-gray-800 p-6 shadow-card rounded-l hover:shadow-lg transition-shadow focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     <div>
                         <span
                             class="rounded-l inline-flex p-3 bg-primary-50 text-primary-700 dark:bg-primary-900 dark:text-primary-300 ring-4 ring-white dark:ring-gray-800">
@@ -328,7 +328,7 @@
                 </a>
 
                 <a href="{{ route('loans.create') }}"
-                    class="relative group bg-white dark:bg-gray-800 p-6 shadow-card rounded-l hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    class="relative group bg-white dark:bg-gray-800 p-6 shadow-card rounded-l hover:shadow-lg transition-shadow focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     <div>
                         <span
                             class="rounded-l inline-flex p-3 bg-success-50 text-success-700 dark:bg-success-900 dark:text-success-300 ring-4 ring-white dark:ring-gray-800">
@@ -350,7 +350,7 @@
                 </a>
 
                 <a href="{{ route('status.check') }}"
-                    class="relative group bg-white dark:bg-gray-800 p-6 shadow-card rounded-l hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    class="relative group bg-white dark:bg-gray-800 p-6 shadow-card rounded-l hover:shadow-lg transition-shadow focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     <div>
                         <span
                             class="rounded-l inline-flex p-3 bg-info-50 text-info-700 dark:bg-info-900 dark:text-info-300 ring-4 ring-white dark:ring-gray-800">
@@ -372,7 +372,7 @@
                 </a>
 
                 <a href="{{ route('staff.profile') }}"
-                    class="relative group bg-white dark:bg-gray-800 p-6 shadow-card rounded-l hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    class="relative group bg-white dark:bg-gray-800 p-6 shadow-card rounded-l hover:shadow-lg transition-shadow focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     <div>
                         <span
                             class="rounded-l inline-flex p-3 bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-gray-300 ring-4 ring-white dark:ring-gray-800">
