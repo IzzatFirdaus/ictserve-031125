@@ -48,13 +48,29 @@ npm run dev:win
 .\scripts\dev\start-dev.ps1
 
 # Minimal (Laravel + Vite only)
-.\scripts\dev\start-dev.ps1 -Profile minimal
+.\scripts\dev\start-dev.ps1 -ProfileName minimal
 
 # Backend development
-.\scripts\dev\start-dev.ps1 -Profile backend
+.\scripts\dev\start-dev.ps1 -ProfileName backend
 
-# AI development (includes MCP)
-.\scripts\dev\start-dev.ps1 -Profile ai
+# Frontend development
+.\scripts\dev\start-dev.ps1 -ProfileName frontend
+
+# AI development with Ollama (D18 AI Chatbot)
+.\scripts\dev\start-dev.ps1 -ProfileName ai
+
+# Testing environment with browser
+.\scripts\dev\start-dev.ps1 -ProfileName testing
+
+# Production-like environment
+.\scripts\dev\start-dev.ps1 -ProfileName production
+
+# Options
+.\scripts\dev\start-dev.ps1 -SkipChecks        # Skip environment checks
+.\scripts\dev\start-dev.ps1 -NoMCP             # Disable MCP server
+.\scripts\dev\start-dev.ps1 -NoBrowser         # Don't open browser
+.\scripts\dev\start-dev.ps1 -InstallRedis      # Auto-install WSL Redis
+.\scripts\dev\start-dev.ps1 -Help              # Show detailed help
 ```
 
 ### Quick Access URLs
@@ -63,6 +79,9 @@ npm run dev:win
 - **Admin Panel**: <http://127.0.0.1:8000/admin>
 - **Helpdesk**: <http://127.0.0.1:8000/helpdesk/create>
 - **Asset Loan**: <http://127.0.0.1:8000/loan/create>
+- **AI Chatbot**: <http://127.0.0.1:8000/chatbot> (D18 Integration)
+- **Laravel Pulse**: <http://127.0.0.1:8000/pulse> (Performance Monitoring)
+- **Ollama API**: <http://127.0.0.1:11434> (AI Profile Only)
 
 ---
 
@@ -128,16 +147,29 @@ php artisan migrate --seed
 
 #### 4. Redis Setup (Optional but Recommended)
 
+**CRITICAL**: ICTServe uses **Predis** as the Redis client for cross-platform compatibility.
+
 ```bash
-# WSL Redis (recommended)
+# WSL Redis (recommended for Horizon support)
 wsl.exe
 sudo apt update && sudo apt install redis-server
 sudo systemctl enable redis-server && sudo systemctl start redis-server
 redis-cli ping  # Should return PONG
 
-# Or use Laragon/XAMPP Redis
+# Configure Predis client in .env
+REDIS_CLIENT=predis
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+
+# Or use Laragon/XAMPP Redis (limited Horizon support)
 # Or skip Redis (will use file-based cache/sessions)
 ```
+
+**Laravel Horizon (Queue Management)**:
+
+- **Requires WSL**: Horizon needs `pcntl`/`posix` extensions (not available on Windows)
+- **Complete Setup Guide**: [docs/horizon/HORIZON_WSL_SETUP.md](docs/horizon/HORIZON_WSL_SETUP.md)
+- **Key Requirement**: Use `REDIS_CLIENT=predis` in all `.env` files
 
 ---
 
@@ -148,31 +180,78 @@ redis-cli ping  # Should return PONG
 #### Recommended: Enhanced Development Script
 
 ```bash
-# Start all services with health checks
+# Start all services with health checks and AI integration
 .\scripts\dev\start-dev.ps1
 
 # Available profiles:
-.\scripts\dev\start-dev.ps1 -Profile minimal    # Laravel + Vite only
-.\scripts\dev\start-dev.ps1 -Profile backend    # Backend services only
-.\scripts\dev\start-dev.ps1 -Profile frontend   # Frontend development
-.\scripts\dev\start-dev.ps1 -Profile ai         # AI development with MCP
-.\scripts\dev\start-dev.ps1 -Profile testing    # Testing environment
+.\scripts\dev\start-dev.ps1 -ProfileName minimal      # Laravel + Vite only
+.\scripts\dev\start-dev.ps1 -ProfileName backend      # Backend services only
+.\scripts\dev\start-dev.ps1 -ProfileName frontend     # Frontend development
+.\scripts\dev\start-dev.ps1 -ProfileName full         # All services (default)
+.\scripts\dev\start-dev.ps1 -ProfileName ai           # AI development with Ollama + MCP
+.\scripts\dev\start-dev.ps1 -ProfileName testing      # Testing environment + browser
+.\scripts\dev\start-dev.ps1 -ProfileName production   # Production-like setup
 
 # Options:
 .\scripts\dev\start-dev.ps1 -SkipChecks        # Skip environment checks
 .\scripts\dev\start-dev.ps1 -NoMCP             # Disable MCP server
 .\scripts\dev\start-dev.ps1 -NoBrowser         # Don't open browser
+.\scripts\dev\start-dev.ps1 -InstallRedis      # Auto-install WSL Redis
+.\scripts\dev\start-dev.ps1 -Help              # Show comprehensive help
+
+# Examples:
+.\scripts\dev\start-dev.ps1 -ProfileName ai -InstallRedis
+.\scripts\dev\start-dev.ps1 -SkipChecks -NoMCP -NoBrowser
 ```
 
 **Services Started:**
 
 - 🔴 Redis Server (Cache, Sessions, Queues)
 - 🔵 Laravel Server (<http://127.0.0.1:8000>)
-- 🟣 Laravel Reverb (WebSocket - ws://127.0.0.1:6001)
-- 🔷 Queue Worker (Background Jobs)
+- 🟣 Laravel Reverb (WebSocket - ws://127.0.0.1:8080)
+- 🔷 **Queue Workers** (Background Jobs) *Windows-compatible*
 - 🟢 Vite Dev Server (HMR - 127.0.0.1:5173)
 - 🤖 Laravel MCP Server (AI Integration)
+- 🧠 **Ollama AI Server** (Local LLM - 127.0.0.1:11434) *AI Profile Only*
 - 📊 Laravel Pulse (Performance Monitoring)
+
+**New Features:**
+
+- ✅ **Ollama AI Integration** - Local LLM support for D18 AI Chatbot
+- ✅ **Enhanced Service Profiles** - 7 different development configurations
+- ✅ **Comprehensive Help System** - PowerShell help with examples (`-Help`)
+- ✅ **Advanced Health Checks** - HTTP endpoint validation with retry logic
+- ✅ **Smart WSL Redis Management** - Auto-detection and installation
+- ✅ **Windows Queue Workers** - Compatible alternative to Horizon
+
+**AI Development Profile (ai):**
+
+The AI profile includes Ollama for local LLM inference, supporting the D18 AI Chatbot integration:
+
+```bash
+# Start AI development environment
+.\scripts\dev\start-dev.ps1 -ProfileName ai
+
+# Install Ollama (if not already installed)
+# Visit: https://ollama.ai/download
+
+# Install recommended AI models
+ollama pull llama3.2:3b      # Fast, good quality (3B parameters)
+ollama pull phi3:mini         # Microsoft, efficient (3.8B parameters)
+ollama pull qwen2.5:3b        # Multilingual support (3B parameters)
+
+# Test AI integration
+curl http://127.0.0.1:11434/api/tags
+```
+
+**Horizon Integration:**
+
+- **Automatic Detection**: Scripts detect Redis availability and Horizon installation
+- **Smart Fallback**: Uses Windows-compatible queue workers when Horizon unavailable
+- **Dashboard Access**: <http://127.0.0.1:8000/horizon> (when Horizon is running)
+- **Cross-Platform**: Works on PowerShell, Bash, and Batch environments
+
+**📖 For detailed script documentation, see [scripts/dev/README.md](scripts/dev/README.md)**
 
 #### Alternative: Individual Services
 
@@ -195,8 +274,12 @@ npm run dev                  # Vite dev server
 npm run dev:win              # Full development environment
 npm run dev:win:minimal      # Minimal profile
 npm run dev:win:backend      # Backend profile
-npm run dev:win:ai           # AI development profile
+npm run dev:win:frontend     # Frontend profile
+npm run dev:win:ai           # AI development profile (with Ollama)
+npm run dev:win:testing      # Testing profile
+npm run dev:win:production   # Production-like profile
 npm run dev:helpers          # Development helper commands
+npm run wsl-redis-setup      # WSL Redis setup
 ```
 
 ### Service Status & Management
@@ -270,6 +353,13 @@ php artisan view:cache            # Cache views
 composer boost                    # Start MCP server
 php artisan boost:install         # Install Boost assets
 php artisan boost:update          # Update guidelines
+
+# AI Development (D18 Integration)
+ollama --version                  # Check Ollama installation
+ollama list                       # List installed AI models
+ollama pull llama3.2:3b          # Install recommended model
+ollama serve                      # Start Ollama server (manual)
+curl http://127.0.0.1:11434/api/tags  # Test Ollama API
 ```
 
 #### NPM Scripts
@@ -292,8 +382,12 @@ npm run playwright:install       # Install Playwright browsers
 npm run dev:win                  # Full development (Windows)
 npm run dev:win:minimal          # Minimal development
 npm run dev:win:backend          # Backend development
-npm run dev:win:ai               # AI development
+npm run dev:win:frontend         # Frontend development
+npm run dev:win:ai               # AI development with Ollama
+npm run dev:win:testing          # Testing environment
+npm run dev:win:production       # Production-like setup
 npm run dev:helpers              # Development helpers
+npm run wsl-redis-setup          # WSL Redis setup
 ```
 
 ### Recommended Development Flow
@@ -561,6 +655,113 @@ Password: password
 # Staff Account
 Email: staff@motac.gov.my
 Password: password
+```
+
+---
+
+## AI Development Setup (D18 Integration)
+
+### Ollama Local LLM Integration
+
+ICTServe v3.6.0 includes AI chatbot capabilities with hybrid architecture (local Ollama + AWS Bedrock cloud).
+
+#### Quick AI Setup
+
+```bash
+# 1. Install Ollama
+# Download from: https://ollama.ai/download
+
+# 2. Start AI development environment
+.\scripts\dev\start-dev.ps1 -ProfileName ai
+
+# 3. Install recommended models
+ollama pull llama3.2:3b      # Fast, good quality (3B parameters)
+ollama pull phi3:mini         # Microsoft, efficient (3.8B parameters)
+ollama pull qwen2.5:3b        # Multilingual support (3B parameters)
+
+# 4. Test AI integration
+curl http://127.0.0.1:11434/api/tags
+```
+
+#### AI Development URLs
+
+- **AI Chatbot Interface**: <http://127.0.0.1:8000/chatbot>
+- **Ollama API**: <http://127.0.0.1:11434>
+- **MCP Server**: Available via Laravel Boost integration
+- **Performance Monitoring**: <http://127.0.0.1:8000/pulse>
+
+#### AI Model Recommendations
+
+| Model | Size | Use Case | Performance |
+|-------|------|----------|-------------|
+| **llama3.2:3b** | 3B params | General chat, fast responses | ⭐⭐⭐⭐⭐ |
+| **phi3:mini** | 3.8B params | Microsoft, efficient | ⭐⭐⭐⭐ |
+| **qwen2.5:3b** | 3B params | Multilingual, Bahasa Melayu | ⭐⭐⭐⭐ |
+
+#### AI Development Commands
+
+```bash
+# Check Ollama status
+ollama --version
+ollama list
+
+# Install models
+ollama pull llama3.2:3b
+ollama pull phi3:mini
+
+# Test model locally
+ollama run llama3.2:3b "Hello, how are you?"
+
+# Start Ollama server (if not auto-started)
+ollama serve
+
+# Test API endpoints
+curl http://127.0.0.1:11434/api/tags
+curl -X POST http://127.0.0.1:11434/api/generate -d '{"model":"llama3.2:3b","prompt":"Hello"}'
+
+# Monitor AI performance
+# Visit: http://127.0.0.1:8000/pulse
+```
+
+#### Hybrid AI Architecture
+
+ICTServe uses a hybrid approach:
+
+- **Local Ollama**: Fast responses, privacy, offline capability
+- **AWS Bedrock**: Advanced models (Claude, Nova, Titan) for complex queries
+- **Smart Routing**: Automatically chooses best model for each query
+- **Fallback System**: Cloud backup when local models unavailable
+
+#### Troubleshooting AI Setup
+
+**Ollama Not Found:**
+
+```bash
+# Install Ollama from https://ollama.ai/download
+# Or check if it's in PATH
+ollama --version
+```
+
+**Models Not Loading:**
+
+```bash
+# Check available models
+ollama list
+
+# Pull required models
+ollama pull llama3.2:3b
+
+# Check disk space (models are 2-4GB each)
+```
+
+**API Connection Issues:**
+
+```bash
+# Check if Ollama server is running
+curl http://127.0.0.1:11434/api/tags
+
+# Start server manually if needed
+ollama serve
 ```
 
 ---
@@ -841,10 +1042,11 @@ DB_DATABASE=ictserve
 DB_USERNAME=root
 DB_PASSWORD=
 
-# Cache & Queue
+# Cache & Queue (CRITICAL: Use Predis for compatibility)
 CACHE_STORE=redis
 QUEUE_CONNECTION=redis
 SESSION_DRIVER=redis
+REDIS_CLIENT=predis
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 
@@ -974,6 +1176,9 @@ vendor/bin/phpstan analyse
 - **Software Design**: [docs/D04_SOFTWARE_DESIGN_DOCUMENT.md](docs/D04_SOFTWARE_DESIGN_DOCUMENT.md)
 - **Database Documentation**: [docs/D09_DATABASE_DOCUMENTATION.md](docs/D09_DATABASE_DOCUMENTATION.md)
 - **UI/UX Design Guide**: [docs/D12_UI_UX_DESIGN_GUIDE.md](docs/D12_UI_UX_DESIGN_GUIDE.md)
+- **Laravel Horizon WSL Setup**: [docs/horizon/HORIZON_WSL_SETUP.md](docs/horizon/HORIZON_WSL_SETUP.md)
+- **Redis WSL Setup**: [docs/redis/WSL_SETUP.md](docs/redis/WSL_SETUP.md)
+- **Redis Laragon Setup**: [docs/redis/LARAGON_REDIS_SETUP.md](docs/redis/LARAGON_REDIS_SETUP.md)
 
 ### External Links
 
@@ -1160,11 +1365,21 @@ wsl.exe --user root systemctl start redis-server
 # Check Redis status
 wsl.exe --user root systemctl status redis-server
 
+# CRITICAL: Ensure Predis client is configured
+grep -r "REDIS_CLIENT" .env*
+# All files should show: REDIS_CLIENT=predis
+
 # Alternative: Use file-based cache (edit .env)
 CACHE_STORE=file
 QUEUE_CONNECTION=database
 SESSION_DRIVER=file
 ```
+
+**Laravel Horizon Issues**:
+
+- **Missing pcntl/posix**: Use WSL for Horizon (see [docs/horizon/HORIZON_WSL_SETUP.md](docs/horizon/HORIZON_WSL_SETUP.md))
+- **Redis client conflicts**: Ensure `REDIS_CLIENT=predis` in all `.env` files
+- **Jobs not processing**: Check queue supervisor configuration in `config/horizon.php`
 
 #### Permission Issues (Windows)
 
@@ -1249,10 +1464,18 @@ MAIL_ENCRYPTION=tls
 CACHE_STORE=redis
 QUEUE_CONNECTION=redis
 SESSION_DRIVER=redis
+REDIS_CLIENT=predis
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 REDIS_PASSWORD=null
 ```
+
+**Why Predis?**
+
+- **Cross-platform compatibility**: Works on Windows and Linux
+- **No extensions required**: Pure PHP implementation
+- **Horizon compatibility**: Resolves Redis client conflicts
+- **WSL integration**: Better compatibility with WSL Redis
 
 #### WebSocket (Reverb)
 

@@ -11,7 +11,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - php - 8.4.11
 - filament/filament (FILAMENT) - v4
 - laravel/framework (LARAVEL) - v12
-- laravel/horizon (HORIZON) - v5
 - laravel/mcp (MCP) - v0
 - laravel/prompts (PROMPTS) - v0
 - laravel/pulse (PULSE) - v1
@@ -22,6 +21,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - livewire/volt (VOLT) - v1
 - larastan/larastan (LARASTAN) - v3
 - laravel/breeze (BREEZE) - v2
+- laravel/horizon (HORIZON) - v5
 - laravel/pint (PINT) - v1
 - laravel/telescope (TELESCOPE) - v5
 - phpunit/phpunit (PHPUNIT) - v11

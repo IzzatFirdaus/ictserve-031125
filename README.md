@@ -12,6 +12,8 @@ Dokumentasi lengkap untuk sistem ICTServe - Platform Pengurusan ICT BPM MOTAC.
 
 - **[Docker Documentation](docker/README.md)** - Ringkasan dan mula pantas
   - [Setup Guide](docker/SETUP.md) - Pemasangan lengkap
+  - **[Composer Issues Fixed](docker/COMPOSER_ISSUES_FIXED.md)** - ✅ Isu composer diselesaikan
+  - [Quick Reference](docker/QUICK_REFERENCE.md) - Rujukan pantas
   - [Architecture](docker/ARCHITECTURE.md) - Reka bentuk kontena
   - [Troubleshooting](docker/TROUBLESHOOTING.md) - Isu lazim
   - [Windows Guide](docker/WINDOWS.md) - Arahan khusus Windows
