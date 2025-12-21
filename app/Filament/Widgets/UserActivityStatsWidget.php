@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -26,7 +27,25 @@ use Illuminate\Support\Facades\Auth;
  */
 class UserActivityStatsWidget extends BaseWidget
 {
+    use WidgetMetadata;
+
     protected static ?int $sort = 2;
+
+    /**
+     * Widget roles - restricted access
+     */
+    public static function getWidgetRoles(): array
+    {
+        return ['superuser'];
+    }
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D09 Database Documentation - Dual Audit System';
+    }
 
     /**
      * Widget is only visible to superusers.

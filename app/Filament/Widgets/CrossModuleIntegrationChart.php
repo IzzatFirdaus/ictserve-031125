@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\Asset;
 use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
@@ -25,9 +26,19 @@ use Illuminate\Support\Facades\Cache;
  */
 class CrossModuleIntegrationChart extends ChartWidget
 {
+    use WidgetMetadata;
+
     protected ?string $heading = 'Integrasi Silang Modul';
 
     protected static ?int $sort = 3;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 WCAG 2.2 AA compliance';
+    }
 
     protected ?string $maxHeight = '300px';
 

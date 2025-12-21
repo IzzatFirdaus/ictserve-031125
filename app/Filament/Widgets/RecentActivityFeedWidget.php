@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use Filament\Tables\Columns\TextColumn;
@@ -29,6 +30,8 @@ use Livewire\Attributes\On;
  */
 class RecentActivityFeedWidget extends BaseWidget
 {
+    use WidgetMetadata;
+
     protected static bool $isLazy = true; // Non-critical - lazy load
 
     protected int|string|array $columnSpan = 'full';
@@ -39,6 +42,14 @@ class RecentActivityFeedWidget extends BaseWidget
      * Sort order - display at bottom of dashboard
      */
     protected static ?int $sort = 100;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D16 Broadcasting Setup - Laravel Reverb integration';
+    }
 
     /**
      * Listen for new ticket creation via Laravel Reverb WebSocket

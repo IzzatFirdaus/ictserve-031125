@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Filament\Traits\CacheableWidget;
+use App\Filament\Traits\WidgetMetadata;
 use App\Services\EnhancedUnifiedDashboardService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -35,6 +36,7 @@ use Illuminate\Support\Facades\Auth;
 class EnhancedRealTimeDashboardWidget extends BaseWidget
 {
     use CacheableWidget;
+    use WidgetMetadata;
 
     protected function getCacheTtl(): int
     {
@@ -49,6 +51,14 @@ class EnhancedRealTimeDashboardWidget extends BaseWidget
     protected int|string|array $columnSpan = 'full';
 
     protected static ?int $sort = -20;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D16 Broadcasting Setup - Laravel Reverb integration';
+    }
 
     /**
      * @return array<int, Stat>
