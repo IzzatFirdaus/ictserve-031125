@@ -354,7 +354,7 @@ if (app()->environment('local')) {
         $factory = \App\Models\LoanApplication::factory();
         $loan = $factory->create(['status' => \App\Enums\LoanStatus::IN_USE]);
 
-        event(new \App\Events\StatusUpdated($loan, 'in_use', 'returned', 1));
+        event(new \App\Events\StatusUpdated($loan, 'in_use', 'returned'));
 
         return response()->json(['ok' => true, 'loan_id' => $loan->id]);
     })->name('reverb.test');
