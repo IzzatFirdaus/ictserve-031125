@@ -8,16 +8,36 @@ Complete Docker deployment guide for ICTServe application with nginx, PHP-FPM, M
 # Build and start all services
 docker compose up -d
 
+<<<<<<< HEAD
+=======
+# Initialize application with Alpine.js
+docker compose exec app npm install
+docker compose exec app composer install --dev
+docker compose exec app npm run build
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+docker compose exec app php artisan config:cache
+
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
 # Check status
 docker compose ps
 
 # View logs
 docker compose logs -f app
+<<<<<<< HEAD
+=======
+
+# Access application: http://localhost:8000
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
 ```
 
 ## Documentation
 
 - **[setup.md](setup.md)** - Complete installation and configuration
+<<<<<<< HEAD
+=======
+- **[alpine-setup.md](alpine-setup.md)** - ✅ Alpine.js integration and troubleshooting
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
 - **[COMPOSER_ISSUES_FIXED.md](COMPOSER_ISSUES_FIXED.md)** - ✅ Composer install issues resolved
 - **[architecture.md](architecture.md)** - Container architecture and networking
 - **[troubleshooting.md](troubleshooting.md)** - Common issues and solutions
@@ -49,6 +69,10 @@ docker compose logs -f app
 ### For Developers
 
 - **Setup**: [setup.md](setup.md) - Complete installation guide
+<<<<<<< HEAD
+=======
+- **Alpine.js**: [alpine-setup.md](alpine-setup.md) - Frontend interactivity setup
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
 - **Windows**: [windows.md](windows.md) - Windows-specific instructions
 - **Specs**: [container-specs.md](container-specs.md) - Container details
 

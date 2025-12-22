@@ -245,10 +245,20 @@ class SetupXamppEnvironment extends Command
 
     /**
      * Check XAMPP installation
+<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkXamppInstallation(): array
+=======
+     */
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkXamppInstallation(): array
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $xamppPath = 'C:\xampp';
 
@@ -268,10 +278,20 @@ class SetupXamppEnvironment extends Command
 
     /**
      * Check XAMPP MySQL
+<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkXamppMySQL(): array
+=======
+     */
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkXamppMySQL(): array
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $mysqlPath = 'C:\xampp\mysql\bin\mysqld.exe';
 
@@ -291,10 +311,20 @@ class SetupXamppEnvironment extends Command
 
     /**
      * Check XAMPP Apache
+<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkXamppApache(): array
+=======
+     */
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkXamppApache(): array
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $apachePath = 'C:\xampp\apache\bin\httpd.exe';
 
@@ -314,10 +344,20 @@ class SetupXamppEnvironment extends Command
 
     /**
      * Check WSL availability
+<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkWSLAvailability(): array
+=======
+     */
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkWSLAvailability(): array
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         if (PHP_OS_FAMILY !== 'Windows') {
             return [
@@ -337,10 +377,20 @@ class SetupXamppEnvironment extends Command
 
     /**
      * Check WSL Redis
+<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkWSLRedis(): array
+=======
+     */
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkWSLRedis(): array
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         if (PHP_OS_FAMILY !== 'Windows') {
             return [
@@ -359,10 +409,20 @@ class SetupXamppEnvironment extends Command
 
     /**
      * Check PowerShell scripts
+<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkPowerShellScripts(): array
+=======
+     */
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkPowerShellScripts(): array
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $scripts = [
             'scripts/xampp/manage-xampp.ps1',
@@ -385,10 +445,20 @@ class SetupXamppEnvironment extends Command
 
     /**
      * Check configuration files
+<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkConfigurationFiles(): array
+=======
+     */
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkConfigurationFiles(): array
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $xamppEnvExists = File::exists(base_path('.env.xampp'));
 

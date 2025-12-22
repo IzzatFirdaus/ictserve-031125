@@ -39,9 +39,13 @@ trait CacheableWidget
      */
     protected function getCacheTtl(): int
     {
+<<<<<<< HEAD
         $ttl = config('performance.cache.widget_ttl', 300); // 5 minutes default
 
         return is_int($ttl) ? $ttl : 300;
+=======
+        return config('performance.cache.widget_ttl', 300); // 5 minutes default
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     }
 
     /**
@@ -94,7 +98,11 @@ trait CacheableWidget
         $key = $this->getCacheKey($suffix);
         $ttl = $this->getCacheTtl();
 
+<<<<<<< HEAD
         return Cache::remember($key, $ttl, \Closure::fromCallable($callback));
+=======
+        return Cache::remember($key, $ttl, $callback);
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     }
 
     /**

@@ -47,19 +47,9 @@
 				"get_absolute_url"
 			]
 		},
-		"ictserve": {
-			"command": "php",
-			"args": ["artisan", "mcp:start", "ictserve"],
-			"cwd": "C:\\XAMPP\\htdocs\\ictserve-031125",
-			"env": {
-				"APP_ENV": "local"
-			},
-			"disabled": false,
-			"autoApprove": ["query-helpdesk-tickets", "check-asset-status"]
-		},
 		"fetch": {
 			"command": "uvx",
-			"args": ["mcp-server-fetch"],
+			"args": ["--native-tls", "mcp-server-fetch"],
 			"disabled": false,
 			"autoApprove": ["fetch"]
 		},
@@ -73,7 +63,10 @@
 				"click",
 				"fill",
 				"evaluate_script",
-				"take_screenshot"
+				"take_screenshot",
+				"list_pages",
+				"list_network_requests",
+				"get_console_message"
 			]
 		},
 		"playwright": {
@@ -86,66 +79,27 @@
 				"browser_snapshot",
 				"browser_fill",
 				"browser_evaluate",
-				"browser_close",
-				"browser_take_screenshot"
+				"browser_take_screenshot",
+				"browser_wait_for",
+				"browser_select_option"
 			]
 		},
-		"context7": {
+		"git": {
 			"command": "npx",
-			"args": ["-y", "@upstash/context7-mcp"],
-			"env": {
-				"CONTEXT7_API_KEY": "$env:CONTEXT7_API_KEY"
-			},
-			"disabled": true,
-			"autoApprove": ["resolve-library-id", "get-library-docs"]
-		},
-		"deepl": {
-			"command": "npx",
-			"args": ["-y", "deepl-mcp-server"],
-			"env": {
-				"DEEPL_API_KEY": "$env:DEEPL_API_KEY"
-			},
-			"disabled": true,
-			"autoApprove": [
-				"get-source-languages",
-				"get-target-languages",
-				"translate-text",
-				"rephrase-text"
-			]
-		},
-		"firecrawl": {
-			"command": "npx",
-			"args": ["-y", "firecrawl-mcp"],
-			"env": {
-				"FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
-			},
-			"disabled": true,
-			"autoApprove": []
-		},
-		"github": {
-			"command": "npx",
-			"args": ["-y", "@modelcontextprotocol/server-github"],
-			"env": {
-				"GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
-			},
+			"args": ["-y", "@modelcontextprotocol/server-git"],
 			"disabled": false,
 			"autoApprove": [
-				"create_or_update_file",
-				"get_file_contents",
-				"get_repository",
-				"list_repositories",
-				"search_repositories"
+				"git_status",
+				"git_log_or_diff",
+				"git_branch",
+				"git_add_or_commit",
+				"git_blame",
+				"git_stash"
 			]
 		},
-		"gitkraken": {
-			"command": "gk",
-			"args": ["mcp"],
-			"disabled": true,
-			"autoApprove": []
-		},
-		"herd": {
-			"command": "php",
-			"args": ["C:/Users/exatf/.config/herd/bin/herd-mcp.phar"],
+		"filesystem": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-filesystem"],
 			"env": {
 				"SITE_PATH": "C:\\XAMPP\\htdocs\\ictserve-031125"
 			}
