@@ -174,28 +174,17 @@ class SyncMemoryMarkdown extends Command
         $contents = preg_replace('/^\xEF\xBB\xBF/', '', $contents);
 
         // Detect common encodings (UTF-8, UTF-16LE, UTF-16BE). If not UTF-8, attempt conversion.
-<<<<<<< HEAD
-        $encoding = mb_detect_encoding($contents, ['UTF-8', 'UTF-16LE', 'UTF-16BE', 'ISO-8859-1'], true);
-
-        if ($encoding !== false && $encoding !== 'UTF-8') {
-            $converted = mb_convert_encoding($contents, 'UTF-8', $encoding);
-=======
         $encoding = mb_detect_encoding($contents ?? '', ['UTF-8', 'UTF-16LE', 'UTF-16BE', 'ISO-8859-1'], true);
 
         if ($encoding !== false && $encoding !== 'UTF-8') {
             $converted = mb_convert_encoding($contents ?? '', 'UTF-8', $encoding);
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
             if ($converted !== false) {
                 $contents = $converted;
             }
         }
 
         // Ensure valid UTF-8
-<<<<<<< HEAD
-        $validated = mb_convert_encoding($contents, 'UTF-8', 'UTF-8');
-=======
         $validated = mb_convert_encoding($contents ?? '', 'UTF-8', 'UTF-8');
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
         if ($validated !== false) {
             $contents = $validated;
         }
