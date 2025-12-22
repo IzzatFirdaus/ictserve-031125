@@ -74,7 +74,12 @@ class AutoReplyDraftCreated implements ShouldBroadcast
         return sprintf('Draf balasan automatik baharu untuk %s #%d', $type, $draft->replyable_id);
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-approvals'),
@@ -86,7 +91,12 @@ class AutoReplyDraftCreated implements ShouldBroadcast
         return 'AutoReplyDraftCreated';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'draftId' => $this->draftId,

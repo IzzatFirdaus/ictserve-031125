@@ -109,7 +109,12 @@ class AIPerformanceAlert implements ShouldBroadcastNow
         };
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-alerts'),
@@ -121,7 +126,12 @@ class AIPerformanceAlert implements ShouldBroadcastNow
         return 'AIPerformanceAlert';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'alertType' => $this->alertType,

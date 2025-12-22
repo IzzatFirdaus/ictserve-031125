@@ -51,7 +51,12 @@ class SecurityMonitoringService
      *
      * @return array<string, mixed>
      */
-    public function getDashboardStats(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getDashboardStats(): array
     {
         /** @var array<string, mixed> $stats */
         $stats = Cache::remember('security_dashboard_stats', self::CACHE_DURATION, function (): array {
@@ -378,7 +383,12 @@ class SecurityMonitoringService
      *
      * @return array<string, array>
      */
-    public function getBlockedIPs(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getBlockedIPs(): array
     {
         return Cache::get('blocked_ips', []);
     }
@@ -413,7 +423,12 @@ class SecurityMonitoringService
      *
      * @return array<int, array>
      */
-    public function getAlerts(bool $unacknowledgedOnly = false): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAlerts(bool $unacknowledgedOnly = false): array
     {
         $alerts = Cache::get('security_alerts', []);
 
@@ -721,7 +736,12 @@ class SecurityMonitoringService
      *
      * @return array<string, mixed> Scan results
      */
-    public function runSecurityScan(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function runSecurityScan(): array
     {
         $scanTime = Carbon::now();
         Cache::put('last_security_scan_time', $scanTime->toISOString(), 86400);
@@ -777,7 +797,12 @@ class SecurityMonitoringService
      *
      * @return array<string, mixed>
      */
-    public function getSecurityStatistics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSecurityStatistics(): array
     {
         return [
             'total_failed_logins' => $this->getFailedLoginsCount(720), // 30 days

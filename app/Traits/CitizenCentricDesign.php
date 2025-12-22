@@ -65,7 +65,12 @@ trait CitizenCentricDesign
      * @param  string  $helpText  The help text content
      * @param  string  $helpType  Type of help (tooltip, modal, inline)
      */
-    protected function provideContextualHelp(string $fieldName, string $helpText, string $helpType = 'tooltip'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function provideContextualHelp(string $fieldName, string $helpText, string $helpType = 'tooltip'): array
     {
         return [
             'field' => $fieldName,
@@ -81,7 +86,12 @@ trait CitizenCentricDesign
      * @param  array  $items  Items to chunk
      * @param  int  $chunkSize  Size of each chunk (default: 5-7 items per Miller's Law)
      */
-    protected function chunkInformation(array $items, int $chunkSize = 7): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function chunkInformation(array $items, int $chunkSize = 7): array
     {
         return array_chunk($items, $chunkSize);
     }
@@ -155,7 +165,12 @@ trait CitizenCentricDesign
      * @param  array  $conditions  Conditions to determine field visibility
      * @return array Filtered fields
      */
-    protected function showRelevantFields(array $allFields, array $conditions): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function showRelevantFields(array $allFields, array $conditions): array
     {
         return array_filter($allFields, function ($field) use ($conditions) {
             if (! isset($field['condition'])) {
@@ -174,7 +189,12 @@ trait CitizenCentricDesign
      * @param  array  $rules  Validation rules
      * @return array Validation result
      */
-    protected function provideInlineValidation(string $field, mixed $value, array $rules): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function provideInlineValidation(string $field, mixed $value, array $rules): array
     {
         try {
             $validator = validator([$field => $value], [$field => $rules]);
