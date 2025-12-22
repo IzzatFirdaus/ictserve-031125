@@ -72,7 +72,8 @@ class CrossModuleIntegrationSeeder extends Seeder
 
         if (! $helpdeskTicket) {
             // Create a new ticket if none exists
-            $category = DB::table('ticket_categories')->where('code', 'MAINTENANCE')->first();
+            /** @var object{id: int}|null $category */
+        $category = DB::table('ticket_categories')->where('code', 'MAINTENANCE')->first();
 
             $helpdeskTicket = HelpdeskTicket::firstOrCreate(
                 ['ticket_number' => HelpdeskTicket::generateTicketNumber()],

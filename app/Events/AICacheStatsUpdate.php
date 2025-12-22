@@ -28,6 +28,9 @@ class AICacheStatsUpdate implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
+    /**
+     * @var array<string, mixed>
+     */
     public array $stats;
 
     public string $timestamp;
@@ -75,12 +78,10 @@ private function sanitizeStats(array $stats): array
         return array_intersect_key($stats, array_flip($allowedKeys));
     }
 
-    
-
-/**
- * @return array<string, mixed>
- */
-public function broadcastOn(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-performance'),
@@ -92,12 +93,10 @@ public function broadcastOn(): array
         return 'AICacheStatsUpdate';
     }
 
-    
-
-/**
- * @return array<string, mixed>
- */
-public function broadcastWith(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function broadcastWith(): array
     {
         return [
             'stats' => $this->stats,
