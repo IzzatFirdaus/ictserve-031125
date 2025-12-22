@@ -27,7 +27,12 @@ class FilterPresetService
     /**
      * @return array<string, mixed>
      */
-    public function saveFilterPreset(mixed $user, string $resource, string $name, array $filters, bool $isDefault = false): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function saveFilterPreset(mixed $user, string $resource, string $name, array $filters, bool $isDefault = false): array
     {
         $payload = [
             'filters' => $filters,
@@ -39,12 +44,22 @@ class FilterPresetService
         return $payload;
     }
 
-    public function getPresets(string $resource): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getPresets(string $resource): array
     {
         return Cache::get("filter_presets:{$resource}", []);
     }
 
-    public function getUserPresets(mixed $user, string $resource): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getUserPresets(mixed $user, string $resource): array
     {
         return $this->getPresets($resource);
     }
@@ -68,7 +83,12 @@ class FilterPresetService
     /**
      * @return array<string, mixed>
      */
-    public function generateQuickFilter(string $label, array $filters): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateQuickFilter(string $label, array $filters): array
     {
         return [
             'label' => $label,
@@ -79,7 +99,12 @@ class FilterPresetService
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function getQuickFilters(string $resource): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getQuickFilters(string $resource): array
     {
         return [
             $this->generateQuickFilter('Open High Priority Tickets', [

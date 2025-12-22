@@ -143,7 +143,12 @@ class CrossModuleIntegrationService
     /**
      * Get unified asset history (loans + helpdesk tickets)
      */
-    public function getUnifiedAssetHistory(int $assetId): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getUnifiedAssetHistory(int $assetId): array
     {
         $asset = Asset::with([
             'loanItems.loanApplication',
@@ -248,7 +253,12 @@ class CrossModuleIntegrationService
     /**
      * Get maintenance statistics for asset
      */
-    public function getAssetMaintenanceStats(int $assetId): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAssetMaintenanceStats(int $assetId): array
     {
         $tickets = HelpdeskTicket::where('asset_id', $assetId)
             ->where('category_id', $this->getMaintenanceCategoryId())
@@ -433,7 +443,12 @@ class CrossModuleIntegrationService
      * @param  int  $assetId  Asset ID
      * @return array Comprehensive asset lifecycle report
      */
-    public function getAssetLifecycleReport(int $assetId): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAssetLifecycleReport(int $assetId): array
     {
         $asset = Asset::with([
             'loanItems.loanApplication',
@@ -657,7 +672,12 @@ class CrossModuleIntegrationService
      *
      * @see D03-FR-016.4 Unified search
      */
-    public function unifiedSearch(string $query): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function unifiedSearch(string $query): array
     {
         $results = [
             'loan_applications' => [],
@@ -750,7 +770,12 @@ class CrossModuleIntegrationService
      * @see D03-FR-004.1 Unified dashboard
      * @see D03-FR-013.1 Analytics integration
      */
-    public function getUnifiedAnalytics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getUnifiedAnalytics(): array
     {
         return [
             'loan_metrics' => [
@@ -858,7 +883,12 @@ class CrossModuleIntegrationService
      * @param  LoanApplication  $loanApplication  Loan application
      * @return array Results with success and failed counts
      */
-    public function bulkLinkTicketsToLoan($tickets, LoanApplication $loanApplication): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function bulkLinkTicketsToLoan($tickets, LoanApplication $loanApplication): array
     {
         $success = 0;
         $failed = 0;
@@ -902,7 +932,12 @@ class CrossModuleIntegrationService
      *
      * @return array Statistics about cross-module integrations
      */
-    public function getIntegrationStatistics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getIntegrationStatistics(): array
     {
         return [
             'total_integrations' => CrossModuleIntegration::count(),

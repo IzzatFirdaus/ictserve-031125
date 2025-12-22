@@ -22,7 +22,12 @@ class ApprovalMatrixService
 
     private const CACHE_KEY = 'approval_matrix_config';
 
-    public function getApprovalMatrix(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getApprovalMatrix(): array
     {
         return Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
             return $this->loadDefaultMatrix();
@@ -45,7 +50,12 @@ class ApprovalMatrixService
         ]);
     }
 
-    public function getApproversForLoan(array $loanData): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getApproversForLoan(array $loanData): array
     {
         $matrix = $this->getApprovalMatrix();
         $approvers = [];
@@ -99,7 +109,12 @@ class ApprovalMatrixService
         return true;
     }
 
-    protected function getApproversFromRule(array $rule): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function getApproversFromRule(array $rule): array
     {
         $approvers = [];
 
@@ -192,7 +207,12 @@ class ApprovalMatrixService
         }
     }
 
-    protected function loadDefaultMatrix(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function loadDefaultMatrix(): array
     {
         return [
             'version' => '1.0',
@@ -268,7 +288,12 @@ class ApprovalMatrixService
         ];
     }
 
-    public function getApprovalLevels(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getApprovalLevels(): array
     {
         return [
             1 => [
@@ -289,7 +314,12 @@ class ApprovalMatrixService
         ];
     }
 
-    public function getAvailableRoles(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableRoles(): array
     {
         return [
             'admin' => 'Pentadbir',
@@ -297,7 +327,12 @@ class ApprovalMatrixService
         ];
     }
 
-    public function getAvailableGrades(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableGrades(): array
     {
         return [
             1 => 'Gred 1-10',
@@ -309,7 +344,12 @@ class ApprovalMatrixService
         ];
     }
 
-    public function testApprovalMatrix(array $testData): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function testApprovalMatrix(array $testData): array
     {
         $results = [];
 
@@ -347,7 +387,12 @@ class ApprovalMatrixService
         Cache::forget(self::CACHE_KEY);
     }
 
-    public function exportMatrix(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function exportMatrix(): array
     {
         return [
             'matrix' => $this->getApprovalMatrix(),
@@ -383,7 +428,12 @@ class ApprovalMatrixService
      *
      * @throws \RuntimeException When no suitable approver found
      */
-    public function determineApprover(string $applicantGrade, float $assetValue): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function determineApprover(string $applicantGrade, float $assetValue): array
     {
         $applicantGradeLevel = (int) $applicantGrade;
         $requiredApproverGrade = $this->getRequiredApproverGrade($applicantGradeLevel, $assetValue);

@@ -246,7 +246,12 @@ class SetupXamppEnvironment extends Command
     /**
      * Check XAMPP installation
      */
-    private function checkXamppInstallation(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkXamppInstallation(): array
     {
         $xamppPath = 'C:\xampp';
 
@@ -267,7 +272,12 @@ class SetupXamppEnvironment extends Command
     /**
      * Check XAMPP MySQL
      */
-    private function checkXamppMySQL(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkXamppMySQL(): array
     {
         $mysqlPath = 'C:\xampp\mysql\bin\mysqld.exe';
 
@@ -288,7 +298,12 @@ class SetupXamppEnvironment extends Command
     /**
      * Check XAMPP Apache
      */
-    private function checkXamppApache(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkXamppApache(): array
     {
         $apachePath = 'C:\xampp\apache\bin\httpd.exe';
 
@@ -309,7 +324,12 @@ class SetupXamppEnvironment extends Command
     /**
      * Check WSL availability
      */
-    private function checkWSLAvailability(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkWSLAvailability(): array
     {
         if (PHP_OS_FAMILY !== 'Windows') {
             return [
@@ -330,7 +350,12 @@ class SetupXamppEnvironment extends Command
     /**
      * Check WSL Redis
      */
-    private function checkWSLRedis(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkWSLRedis(): array
     {
         if (PHP_OS_FAMILY !== 'Windows') {
             return [
@@ -350,7 +375,12 @@ class SetupXamppEnvironment extends Command
     /**
      * Check PowerShell scripts
      */
-    private function checkPowerShellScripts(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkPowerShellScripts(): array
     {
         $scripts = [
             'scripts/xampp/manage-xampp.ps1',
@@ -374,7 +404,12 @@ class SetupXamppEnvironment extends Command
     /**
      * Check configuration files
      */
-    private function checkConfigurationFiles(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkConfigurationFiles(): array
     {
         $xamppEnvExists = File::exists(base_path('.env.xampp'));
 

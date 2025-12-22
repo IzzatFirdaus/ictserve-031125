@@ -21,7 +21,12 @@ class SLAThresholdService
 
     private const CACHE_KEY = 'sla_thresholds_config';
 
-    public function getSLAThresholds(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSLAThresholds(): array
     {
         return Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
             return $this->loadDefaultThresholds();
@@ -44,7 +49,12 @@ class SLAThresholdService
         ]);
     }
 
-    public function getSLAForTicket(string $priority, string $category = 'general'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSLAForTicket(string $priority, string $category = 'general'): array
     {
         $thresholds = $this->getSLAThresholds();
         $categoryConfig = $thresholds['categories'][$category] ?? $thresholds['categories']['general'];
@@ -58,7 +68,12 @@ class SLAThresholdService
         ];
     }
 
-    public function calculateSLADeadlines(string $priority, string $category = 'general', ?\Carbon\Carbon $startTime = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function calculateSLADeadlines(string $priority, string $category = 'general', ?\Carbon\Carbon $startTime = null): array
     {
         $startTime = $startTime ?? now();
         $sla = $this->getSLAForTicket($priority, $category);
@@ -81,7 +96,12 @@ class SLAThresholdService
         ];
     }
 
-    public function checkSLABreach(\Carbon\Carbon $startTime, string $priority, string $category = 'general'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkSLABreach(\Carbon\Carbon $startTime, string $priority, string $category = 'general'): array
     {
         $deadlines = $this->calculateSLADeadlines($priority, $category, $startTime);
         $now = now();
@@ -126,7 +146,12 @@ class SLAThresholdService
         return 'low';
     }
 
-    public function getSLACompliance(array $tickets): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSLACompliance(array $tickets): array
     {
         $total = count($tickets);
         $responseCompliant = 0;
@@ -192,7 +217,12 @@ class SLAThresholdService
         }
     }
 
-    protected function loadDefaultThresholds(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function loadDefaultThresholds(): array
     {
         return [
             'version' => '1.0',
@@ -311,7 +341,12 @@ class SLAThresholdService
         ];
     }
 
-    public function getAvailableCategories(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableCategories(): array
     {
         $thresholds = $this->getSLAThresholds();
         $categories = [];
@@ -323,7 +358,12 @@ class SLAThresholdService
         return $categories;
     }
 
-    public function getAvailablePriorities(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailablePriorities(): array
     {
         return [
             'low' => 'Rendah',
@@ -338,7 +378,12 @@ class SLAThresholdService
         Cache::forget(self::CACHE_KEY);
     }
 
-    public function exportThresholds(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function exportThresholds(): array
     {
         return [
             'thresholds' => $this->getSLAThresholds(),
