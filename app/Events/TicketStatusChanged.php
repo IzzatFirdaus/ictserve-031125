@@ -52,7 +52,12 @@ class TicketStatusChanged implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         $channels = [
             // Public channel for all helpdesk updates
@@ -79,7 +84,12 @@ class TicketStatusChanged implements ShouldBroadcast
      *
      * @return array<string, mixed>
      */
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'ticket_id' => $this->ticket->id,

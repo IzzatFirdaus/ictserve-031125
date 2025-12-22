@@ -40,7 +40,12 @@ class ImageOptimizationService
      *
      * @return array{original: string, webp: string|null, thumbnail: string|null, sizes: array}
      */
-    public function optimizeImage(UploadedFile $file, string $directory = 'attachments'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function optimizeImage(UploadedFile $file, string $directory = 'attachments'): array
     {
         if (! $this->isImage($file)) {
             throw new \InvalidArgumentException('File must be an image');
@@ -154,7 +159,12 @@ class ImageOptimizationService
     /**
      * @return array<string, string>
      */
-    protected function generateResponsiveSizes($sourceImage, string $basePath): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function generateResponsiveSizes($sourceImage, string $basePath): array
     {
         $sizes = [];
 
@@ -270,7 +280,12 @@ class ImageOptimizationService
     /**
      * @return array{src: string, srcset: string, sizes: string, loading: string, fetchpriority: string}
      */
-    public function getImageAttributes(array $optimizedPaths, bool $isPriority = false): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getImageAttributes(array $optimizedPaths, bool $isPriority = false): array
     {
         $attributes = [
             'loading' => $isPriority ? 'eager' : 'lazy',

@@ -91,7 +91,12 @@ class AIProcessingStarted implements ShouldBroadcast
     /**
      * Sanitize metadata to remove PII
      */
-    private function sanitizeMetadata(array $metadata): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function sanitizeMetadata(array $metadata): array
     {
         $sanitized = [];
         $allowedKeys = [
@@ -118,7 +123,12 @@ class AIProcessingStarted implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-status'),
@@ -138,7 +148,12 @@ class AIProcessingStarted implements ShouldBroadcast
      *
      * @return array<string, mixed>
      */
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'operationType' => $this->operationType,

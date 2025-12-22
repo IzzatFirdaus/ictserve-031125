@@ -46,7 +46,12 @@ class AIPerformanceUpdate implements ShouldBroadcast
     /**
      * Sanitize metrics to only include allowed keys.
      */
-    private function sanitizeMetrics(array $metrics): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function sanitizeMetrics(array $metrics): array
     {
         $allowedKeys = [
             'response_time_p50',
@@ -62,7 +67,12 @@ class AIPerformanceUpdate implements ShouldBroadcast
         return array_intersect_key($metrics, array_flip($allowedKeys));
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-performance'),
@@ -74,7 +84,12 @@ class AIPerformanceUpdate implements ShouldBroadcast
         return 'AIPerformanceUpdate';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'metrics' => $this->metrics,

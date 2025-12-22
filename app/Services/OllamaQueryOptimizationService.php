@@ -76,7 +76,12 @@ class OllamaQueryOptimizationService
      * @param  array<float>  $queryEmbedding
      * @return array<int, array<string, mixed>>
      */
-    protected function performFaqSimilaritySearch(array $queryEmbedding, int $limit): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function performFaqSimilaritySearch(array $queryEmbedding, int $limit): array
     {
         $faqs = Faq::query()
             ->select(['id', 'question', 'answer', 'tags', 'match_score'])
@@ -303,7 +308,12 @@ class OllamaQueryOptimizationService
      *
      * @return array<string, mixed>
      */
-    public function getQueryMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getQueryMetrics(): array
     {
         $metrics = Cache::get('ollama:query_metrics', []);
 
@@ -358,7 +368,12 @@ class OllamaQueryOptimizationService
      * Optimumkan indeks untuk carian vektor
      * Optimize indices for vector search
      */
-    public function optimizeIndices(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function optimizeIndices(): array
     {
         $results = [
             'success' => true,

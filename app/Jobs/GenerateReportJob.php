@@ -102,7 +102,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Generate report based on type
      */
-    private function generateReport(ReportService $reportService): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function generateReport(ReportService $reportService): array
     {
         return match ($this->reportType) {
             'daily' => $reportService->generateDailyReport($this->parameters),
@@ -302,7 +307,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Get default recipients for automated reports
      */
-    private function getDefaultRecipients(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getDefaultRecipients(): array
     {
         $admins = User::whereIn('role', ['admin', 'superuser'])
             ->pluck('email')
@@ -381,7 +391,12 @@ class GenerateReportJob implements ShouldQueue
      *
      * @return array<string>
      */
-    public function tags(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function tags(): array
     {
         $tags = [
             'reports',

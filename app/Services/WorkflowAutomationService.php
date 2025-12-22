@@ -34,7 +34,12 @@ class WorkflowAutomationService
      * @param  array<int, array<string, mixed>>  $sampleData
      * @return array<int, array<string, mixed>>
      */
-    public function testRule(WorkflowRule $rule, array $sampleData): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function testRule(WorkflowRule $rule, array $sampleData): array
     {
         $results = [];
 
@@ -50,7 +55,12 @@ class WorkflowAutomationService
         return $results;
     }
 
-    public function getAvailableConditions(string $module): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableConditions(string $module): array
     {
         $conditions = [
             'helpdesk' => [
@@ -76,7 +86,12 @@ class WorkflowAutomationService
         return $conditions[$module] ?? [];
     }
 
-    public function getAvailableActions(string $module): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableActions(string $module): array
     {
         return [
             'send_email' => [

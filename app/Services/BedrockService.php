@@ -35,7 +35,12 @@ class BedrockService
     /**
      * @param  array<string, mixed>  $context
      */
-    public function invoke(string $prompt, int $maxTokens = 1000, ?string $modelId = null, array $context = []): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function invoke(string $prompt, int $maxTokens = 1000, ?string $modelId = null, array $context = []): array
     {
         $requestId = is_string($context['request_id'] ?? null) ? (string) $context['request_id'] : (string) Str::uuid();
         $startedAt = microtime(true);

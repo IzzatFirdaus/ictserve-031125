@@ -160,7 +160,12 @@ class HelpdeskPerformanceMonitor
      *
      * @return array{average: float, p95: float, measurements_count: int, threshold: float, threshold_met: bool}
      */
-    public function getCoreWebVitalsStats(string $metric, string $page): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getCoreWebVitalsStats(string $metric, string $page): array
     {
         $cacheKey = "cwv.{$metric}.{$page}";
         $measurements = Cache::get($cacheKey, []);
@@ -199,7 +204,12 @@ class HelpdeskPerformanceMonitor
      *
      * @return array{average_queue_time: float, sla_compliance_rate: float, total_emails: int}
      */
-    public function getEmailQueueStats(string $emailType): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getEmailQueueStats(string $emailType): array
     {
         $cacheKey = "email_queue.{$emailType}";
         $measurements = Cache::get($cacheKey, []);
@@ -227,7 +237,12 @@ class HelpdeskPerformanceMonitor
      *
      * @return array{total_slow_queries: int, average_execution_time: float, slowest_query: array|null}
      */
-    public function getSlowQueriesStats(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSlowQueriesStats(): array
     {
         $cacheKey = 'slow_queries.helpdesk';
         $slowQueries = Cache::get($cacheKey, []);
@@ -255,7 +270,12 @@ class HelpdeskPerformanceMonitor
      *
      * @return array{average_render_time: float, p95_render_time: float, measurements_count: int}
      */
-    public function getComponentRenderStats(string $component): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getComponentRenderStats(string $component): array
     {
         $cacheKey = "component_render.{$component}";
         $measurements = Cache::get($cacheKey, []);
@@ -287,7 +307,12 @@ class HelpdeskPerformanceMonitor
      *
      * @return array{core_web_vitals: array, email_queue: array, database: array, components: array}
      */
-    public function getPerformanceDashboard(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getPerformanceDashboard(): array
     {
         return [
             'core_web_vitals' => [
@@ -381,7 +406,12 @@ class HelpdeskPerformanceMonitor
      *
      * @return array<int, array>
      */
-    public function getRecentAlerts(int $limit = 10): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getRecentAlerts(int $limit = 10): array
     {
         $alertKey = 'performance_alerts.helpdesk';
         $alerts = Cache::get($alertKey, []);

@@ -106,7 +106,12 @@ class AIErrorOccurred implements ShouldBroadcastNow
         );
     }
 
-    private function sanitizeContext(array $context): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function sanitizeContext(array $context): array
     {
         $sanitized = [];
         $allowedKeys = [
@@ -126,7 +131,12 @@ class AIErrorOccurred implements ShouldBroadcastNow
         return $sanitized;
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-alerts'),
@@ -138,7 +148,12 @@ class AIErrorOccurred implements ShouldBroadcastNow
         return 'AIErrorOccurred';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'errorType' => $this->errorType,

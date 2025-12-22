@@ -179,7 +179,12 @@ class JobMonitoringService
      * @param  int  $hours  Bilangan jam untuk dikira
      * @return array<string, mixed>
      */
-    public function getJobStatistics(int $hours = 24): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getJobStatistics(int $hours = 24): array
     {
         $stats = [
             'running' => $this->getCounter('running_jobs'),
@@ -222,7 +227,12 @@ class JobMonitoringService
      * @param  int  $limit  Had bilangan rekod
      * @return array<int, array<string, mixed>>
      */
-    public function getFailedJobs(int $limit = 50): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getFailedJobs(int $limit = 50): array
     {
         try {
             return DB::table('failed_jobs')
@@ -581,7 +591,12 @@ class JobMonitoringService
      *
      * @return array<string, mixed>
      */
-    public function getQueueHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getQueueHealth(): array
     {
         $stats = $this->getJobStatistics(24);
         $failedJobs = $this->getFailedJobs(10);

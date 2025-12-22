@@ -53,7 +53,12 @@ class WidgetDataUpdated implements ShouldBroadcast
      *
      * @return array<int, Channel>
      */
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         $channels = [];
 
@@ -86,7 +91,12 @@ class WidgetDataUpdated implements ShouldBroadcast
      *
      * @return array<string, mixed> Broadcast payload
      */
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'widget_id' => $this->widgetId,
@@ -128,7 +138,12 @@ class WidgetDataUpdated implements ShouldBroadcast
      *
      * @return array<int, string> Job tags
      */
-    public function tags(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function tags(): array
     {
         $tags = [
             'widget-broadcast',
