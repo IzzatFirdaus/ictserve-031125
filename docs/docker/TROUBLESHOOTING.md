@@ -149,6 +149,66 @@ docker compose up -d app
 docker compose exec app npm --version
 ```
 
+<<<<<<< HEAD
+=======
+### Alpine.js Not Available / Frontend Interactivity Missing
+
+**Symptom**: Alpine.js components not working, `Alpine is not defined` errors in browser console
+
+**Cause**: Missing npm dependencies or Alpine.js not properly bundled with Livewire
+
+**Solution**: Install dependencies and rebuild assets
+
+```bash
+# Install npm dependencies
+docker compose exec app npm install
+
+# Install dev dependencies (required for Horizon, Breeze service providers)
+docker compose exec app composer install --dev
+
+# Build assets with Alpine.js
+docker compose exec app npm run build
+
+# Clear Laravel caches
+docker compose exec app php artisan config:clear
+docker compose exec app php artisan config:cache
+
+# Restart containers
+docker compose restart app nginx
+```
+
+**Verification**: Check that Alpine.js is working by opening browser dev tools and testing:
+
+```javascript
+// Should return Alpine object
+window.Alpine
+```
+
+**Note**: Alpine.js is manually bundled from Livewire in `resources/js/bootstrap.js` and requires `@livewireScriptConfig` in the layout instead of `@livewireScripts`.
+
+### Service Provider Not Found Errors
+
+**Symptom**: `Class "Laravel\Horizon\HorizonServiceProvider" not found` or similar service provider errors
+
+**Cause**: Dev dependencies not installed in production container
+
+**Solution**: Install dev dependencies
+
+```bash
+# Install all dependencies including dev packages
+docker compose exec app composer install --dev
+
+# Clear and cache configuration
+docker compose exec app php artisan config:clear
+docker compose exec app php artisan config:cache
+
+# Restart app container
+docker compose restart app
+```
+
+**Note**: Some ICTServe service providers (Horizon, Telescope) require dev packages to be installed even in Docker production mode.
+
+>>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
 ## MCP Service Issues
 
 ### MCP Container Not Starting

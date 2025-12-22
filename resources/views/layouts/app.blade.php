@@ -92,8 +92,20 @@
         <x-layout.footer />
     </div>
 
-    {{-- Livewire Scripts --}}
-    @livewireScripts
+    {{-- Livewire Script Configuration (Manual Bundling) --}}
+    @livewireScriptConfig
+
+    {{-- Pusher Beams Initialization --}}
+    <script>
+        const beamsClient = new PusherPushNotifications.Client({
+            instanceId: '5ada3262-8b9f-44f7-a07b-3b9003bc291f',
+        });
+
+        beamsClient.start()
+            .then(() => beamsClient.addDeviceInterest('hello'))
+            .then(() => console.log('Successfully registered and subscribed!'))
+            .catch(console.error);
+    </script>
 
     {{-- Pusher Beams Initialization --}}
     <script>

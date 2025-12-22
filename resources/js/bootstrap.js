@@ -4,6 +4,22 @@ window.axios = axios;
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
+ * Alpine.js Configuration
+ *
+ * Import Alpine.js from Livewire bundle for manual control over initialization.
+ * This allows us to register custom Alpine components and plugins before starting.
+ *
+ * @trace D03-FR-011 (Frontend Interactivity), D13 §3.2 (Alpine.js Integration)
+ */
+import {
+	Livewire,
+	Alpine,
+} from "../../vendor/livewire/livewire/dist/livewire.esm";
+
+// Make Alpine available globally for components
+window.Alpine = Alpine;
+
+/**
  * Laravel Echo Configuration
  *
  * Echo allows you to easily build real-time event-driven applications.
@@ -617,3 +633,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	}
 });
+
+/**
+ * Start Livewire
+ *
+ * Initialize Livewire after all Alpine components and Echo configuration is complete.
+ * This ensures proper order of initialization for all frontend components.
+ */
+Livewire.start();

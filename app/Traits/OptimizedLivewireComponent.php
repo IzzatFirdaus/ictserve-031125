@@ -214,7 +214,7 @@ trait OptimizedLivewireComponent
      */
     protected function getOptimizedCount(Builder $query, string $cacheKey = 'count'): int
     {
-        $count = $this->getCachedComponentData($cacheKey, fn () => $query->count(), 60); // Cache count for 1 minute
+        $count = $this->getCachedComponentData($cacheKey, $query->count(...), 60); // Cache count for 1 minute
 
         if (! \is_int($count)) {
             throw new \UnexpectedValueException('Cached count must be an integer.');
