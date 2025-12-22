@@ -6,6 +6,16 @@
 .env.production
 .env.local
 .env.nova
+
+# Environment files with potential secrets (never commit these)
+.env.xampp
+.env.workspace
+.env.testing
+.env.staging
+.env.docker
+.env.laragon
+.env.generated.*
+.env.*.local
 .phpactor.json
 .phpunit.result.cache
 /.fleet
