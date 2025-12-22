@@ -176,7 +176,7 @@ class WidgetLayoutManager
         if ($visible) {
             $layout['hidden_widgets'] = array_filter(
                 $layout['hidden_widgets'] ?? [],
-                fn($class) => $class !== $widgetClass
+                fn ($class) => $class !== $widgetClass
             );
         } else {
             $layout['hidden_widgets'][] = $widgetClass;
