@@ -256,3 +256,305 @@ $wire.on('copy-to-clipboard', (event) => {
             </div>
         </div>
     </div>
+    <!-- Export Modal -->
+    <div x-show="showExportModal" x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 overflow-y-auto" role="dialog"
+        aria-modal="true" aria-labelledby="export-modal-title">
+
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
+                @click="$wire.closeModal('export')"></div>
+
+            <div
+                class="inline-block w-full max-w-2xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg dark:bg-gray-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 id="export-modal-title" class="text-lg font-medium text-gray-900 dark:text-white">
+                        Export Konfigurasi Widget
+                    </h3>
+                    <button type="button" @click="$wire.closeModal('export')"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md p-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Salin data JSON di bawah untuk menyimpan konfigurasi widget semasa anda:
+                    </p>
+
+                    <textarea readonly
+                        class="w-full h-64 p-3 text-sm font-mono bg-gray-50 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        wire:model="exportData" aria-label="Data export konfigurasi widget"></textarea>
+
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" @click="$wire.copyExportData()"
+                            class="px-4 py-2 text-sm font-medium text-primary-600 bg-primary-50 border border-primary-200 rounded-md hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-primary-900 dark:text-primary-300 dark:border-primary-700 dark:hover:bg-primary-800">
+                            Salin ke Clipboard
+                        </button>
+                        <button type="button" @click="$wire.closeModal('export')"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-600 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-500">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div x-show="showImportModal" x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 overflow-y-auto" role="dialog"
+        aria-modal="true" aria-labelledby="import-modal-title">
+
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
+                @click="$wire.closeModal('import')"></div>
+
+            <div
+                class="inline-block w-full max-w-2xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg dark:bg-gray-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 id="import-modal-title" class="text-lg font-medium text-gray-900 dark:text-white">
+                        Import Konfigurasi Widget
+                    </h3>
+                    <button type="button" @click="$wire.closeModal('import')"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md p-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <form wire:submit.prevent="importLayout" class="space-y-4">
+                    <div>
+                        <label for="import-data"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Data JSON Konfigurasi
+                        </label>
+                        <textarea id="import-data" wire:model="importData"
+                            class="w-full h-64 p-3 text-sm font-mono bg-gray-50 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            placeholder="Tampal data JSON konfigurasi di sini..." aria-describedby="import-help"></textarea>
+                        <p id="import-help" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            Tampal data JSON yang telah di-export sebelum ini.
+                        </p>
+                    </div>
+
+                    @error('import')
+                        <div class="text-sm text-red-600 dark:text-red-400" role="alert">
+                            {{ $message }}
+                        </div>
+                    @enderror
+
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" @click="$wire.closeModal('import')"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-600 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-500">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            Import Konfigurasi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div x-show="showResetConfirmation" x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 overflow-y-auto" role="dialog"
+        aria-modal="true" aria-labelledby="reset-modal-title">
+
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
+                @click="$wire.closeModal('reset')"></div>
+
+            <div
+                class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg dark:bg-gray-800">
+                <div class="flex items-center mb-4">
+                    <div class="flex-shrink-0">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h3 id="reset-modal-title" class="text-lg font-medium text-gray-900 dark:text-white">
+                            Kembalikan ke Tetapan Asal
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Adakah anda pasti ingin mengembalikan susun atur widget kepada tetapan asal?
+                        Semua penyesuaian yang telah dibuat akan hilang.
+                    </p>
+                </div>
+
+                <div class="flex justify-end space-x-3">
+                    <button type="button" @click="$wire.closeModal('reset')"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-600 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-500">
+                        Batal
+                    </button>
+                    <button type="button" @click="$wire.resetToDefault()"
+                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                        Ya, Kembalikan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Messages -->
+    @if ($errors->any())
+        <div class="fixed bottom-4 left-4 z-50 max-w-sm">
+            @foreach ($errors->all() as $error)
+                <div class="mb-2 p-4 bg-red-50 border border-red-200 rounded-md shadow-lg dark:bg-red-900 dark:border-red-700"
+                    role="alert">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-800 dark:text-red-200">{{ $error }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+</div>
+@push('scripts')
+    <script>
+        function initializeWidgetSorting() {
+            // Initialize SortableJS for each category
+            document.querySelectorAll('.sortable-container').forEach(container => {
+                if (container.sortableInstance) {
+                    container.sortableInstance.destroy();
+                }
+
+                container.sortableInstance = new Sortable(container, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    chosenClass: 'sortable-chosen',
+                    dragClass: 'sortable-drag',
+                    handle: '.sortable-item',
+                    onEnd: function(evt) {
+                        const category = evt.to.dataset.category;
+                        const widgetOrder = Array.from(evt.to.children).map(item =>
+                            item.dataset.widget
+                        );
+
+                        // Dispatch Livewire event
+                        Livewire.dispatch('widget-order-updated', {
+                            category: category,
+                            widgetOrder: widgetOrder
+                        });
+                    }
+                });
+            });
+        }
+
+        // Keyboard navigation for sortable items
+        function handleKeyboardMove(event) {
+            const item = event.target;
+            const container = item.parentElement;
+            const items = Array.from(container.children);
+            const currentIndex = items.indexOf(item);
+
+            let newIndex = currentIndex;
+
+            if (event.key === 'ArrowUp' || (event.key === 'Enter' && event.shiftKey)) {
+                newIndex = Math.max(0, currentIndex - 1);
+            } else if (event.key === 'ArrowDown' || event.key === 'Enter') {
+                newIndex = Math.min(items.length - 1, currentIndex + 1);
+            }
+
+            if (newIndex !== currentIndex) {
+                // Move the item
+                if (newIndex < currentIndex) {
+                    container.insertBefore(item, items[newIndex]);
+                } else {
+                    container.insertBefore(item, items[newIndex].nextSibling);
+                }
+
+                // Focus the moved item
+                item.focus();
+
+                // Update the order
+                const category = container.dataset.category;
+                const widgetOrder = Array.from(container.children).map(child =>
+                    child.dataset.widget
+                );
+
+                Livewire.dispatch('widget-order-updated', {
+                    category: category,
+                    widgetOrder: widgetOrder
+                });
+            }
+        }
+
+        // Load SortableJS if not already loaded
+        if (!window.Sortable) {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js';
+            script.onload = function() {
+                initializeWidgetSorting();
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+
+    <style>
+        .sortable-ghost {
+            opacity: 0.4;
+        }
+
+        .sortable-chosen {
+            transform: scale(1.02);
+        }
+
+        .sortable-drag {
+            transform: rotate(2deg);
+        }
+
+        .sortable-item:focus {
+            outline: 2px solid theme('colors.primary.500');
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .sortable-item {
+                border-width: 2px;
+            }
+
+            .sortable-item:focus {
+                outline-width: 3px;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            .sortable-container * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+@endpush
