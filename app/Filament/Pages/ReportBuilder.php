@@ -281,12 +281,11 @@ class ReportBuilder extends Page implements HasForms
     /**
      * @param  array<string, mixed>|null  $state
      */
-    
 
-/**
- * @param array<string, mixed> $state
- */
-private function fillForm(?array $state = null): void
+    /**
+     * @param  array<string, mixed>  $state
+     */
+    private function fillForm(?array $state = null): void
     {
         if (is_object($this->form) && method_exists($this->form, 'fill')) {
             $this->form->fill($state ?? []);

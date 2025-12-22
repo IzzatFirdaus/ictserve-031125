@@ -33,12 +33,10 @@ class EmailQueueMonitoring extends Page
 
     protected string $view = 'filament.pages.email-queue-monitoring';
 
-    
-
-/**
- * @return array<string, mixed>
- */
-protected function getHeaderWidgets(): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getHeaderWidgets(): array
     {
         return [
             \App\Filament\Widgets\EmailQueueStatsWidget::class,
@@ -73,12 +71,10 @@ protected function getHeaderWidgets(): array
         return __('filament.navigation.system_management');
     }
 
-    
-
-/**
- * @return array<string, mixed>
- */
-protected function getHeaderActions(): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getHeaderActions(): array
     {
         return [
             Action::make('refresh')
