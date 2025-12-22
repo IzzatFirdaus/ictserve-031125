@@ -6,6 +6,12 @@
 .env.production
 .env.local
 .env.nova
+.env.laragon
+.env.workspace
+.env.docker
+.env.testing
+.env.staging
+.env.xampp
 .phpactor.json
 .phpunit.result.cache
 /.fleet
