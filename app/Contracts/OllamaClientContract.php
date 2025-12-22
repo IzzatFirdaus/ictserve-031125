@@ -35,30 +35,21 @@ interface OllamaClientContract
      *                                         - top_p?: float (nucleus sampling, 0.0-1.0)
      *                                         - max_tokens?: int (token maksimum untuk respons)
      * @return array<string, mixed> Respons yang mengandungi:
-     *               - response: string (teks yang dijana)
-     *               - model: string (model yang digunakan)
-     *               - created_at: string (masa penciptaan)
-     *               - done: bool (status selesai)
-     *               - total_duration?: int (masa pemprosesan dalam nanosaat)
-     *               - load_duration?: int (masa pemuatan model)
-     *               - prompt_eval_count?: int (bilangan token prompt)
-     *               - eval_count?: int (bilangan token respons)
+     *                              - response: string (teks yang dijana)
+     *                              - model: string (model yang digunakan)
+     *                              - created_at: string (masa penciptaan)
+     *                              - done: bool (status selesai)
+     *                              - total_duration?: int (masa pemprosesan dalam nanosaat)
+     *                              - load_duration?: int (masa pemuatan model)
+     *                              - prompt_eval_count?: int (bilangan token prompt)
+     *                              - eval_count?: int (bilangan token respons)
      *
      * @throws \Illuminate\Http\Client\ConnectionException Jika sambungan gagal
      * @throws \Illuminate\Http\Client\RequestException Jika permintaan HTTP gagal
      * @throws \App\Exceptions\OllamaModelNotFoundException Jika model tidak dijumpai
      * @throws \App\Exceptions\OllamaTimeoutException Jika permintaan timeout
      */
-<<<<<<< HEAD
     public function generate(array $payload): array;
-=======
-    
-
-/**
- * @param array<string, mixed> $payload
- */
-public function generate(array $payload): array;
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
 
     /**
      * Menjana vector embeddings untuk teks
@@ -69,9 +60,9 @@ public function generate(array $payload): array;
      * @param  string  $text  Teks untuk dijadikan embedding (maksimum 8192 aksara)
      * @param  string|null  $model  Model untuk embedding (lalai: model konfigurasi)
      * @return array<string, mixed> Respons yang mengandungi:
-     *               - embedding: array (vektor float dengan dimensi bergantung model)
-     *               - model: string (model yang digunakan)
-     *               - total_duration?: int (masa pemprosesan)
+     *                              - embedding: array (vektor float dengan dimensi bergantung model)
+     *                              - model: string (model yang digunakan)
+     *                              - total_duration?: int (masa pemprosesan)
      *
      * @throws \InvalidArgumentException Jika teks kosong atau terlalu panjang
      * @throws \Illuminate\Http\Client\ConnectionException Jika sambungan gagal
@@ -98,25 +89,16 @@ public function generate(array $payload): array;
      *                                         - max_tokens?: int (token maksimum)
      *                                         - stream?: bool (streaming respons)
      * @return array<string, mixed> Respons chat yang mengandungi:
-     *               - message: array (mesej respons dengan role dan content)
-     *               - model: string (model yang digunakan)
-     *               - created_at: string (masa penciptaan)
-     *               - done: bool (status selesai)
-     *               - total_duration?: int (masa pemprosesan)
+     *                              - message: array (mesej respons dengan role dan content)
+     *                              - model: string (model yang digunakan)
+     *                              - created_at: string (masa penciptaan)
+     *                              - done: bool (status selesai)
+     *                              - total_duration?: int (masa pemprosesan)
      *
      * @throws \InvalidArgumentException Jika format mesej tidak sah
      * @throws \Illuminate\Http\Client\ConnectionException Jika sambungan gagal
      */
-<<<<<<< HEAD
     public function chat(array $messages, array $options = []): array;
-=======
-    
-
-/**
- * @param array<string, mixed> $options
- */
-public function chat(array $messages, array $options = []): array;
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
 
     /**
      * Mendapatkan senarai model yang tersedia
@@ -125,17 +107,17 @@ public function chat(array $messages, array $options = []): array;
      * pada pelayan Ollama untuk digunakan.
      *
      * @return array<string, mixed> Senarai model yang mengandungi:
-     *               - models: array (senarai model dengan maklumat)
-     *               [
-     *               [
-     *               'name' => 'llama3.1',
-     *               'modified_at' => '2024-01-01T00:00:00Z',
-     *               'size' => 4661224676,
-     *               'digest' => 'sha256:...',
-     *               'details' => [...]
-     *               ],
-     *               ...
-     *               ]
+     *                              - models: array (senarai model dengan maklumat)
+     *                              [
+     *                              [
+     *                              'name' => 'llama3.1',
+     *                              'modified_at' => '2024-01-01T00:00:00Z',
+     *                              'size' => 4661224676,
+     *                              'digest' => 'sha256:...',
+     *                              'details' => [...]
+     *                              ],
+     *                              ...
+     *                              ]
      *
      * @throws \Illuminate\Http\Client\ConnectionException Jika sambungan gagal
      */
@@ -172,16 +154,7 @@ public function chat(array $messages, array $options = []): array;
      * @param  array<string, mixed>  $response  Respons untuk disimpan
      * @param  int  $ttl  Masa hidup cache dalam saat
      */
-<<<<<<< HEAD
     public function cacheResponse(string $cacheKey, array $response, int $ttl): void;
-=======
-    
-
-/**
- * @param array<string, mixed> $response
- */
-public function cacheResponse(string $cacheKey, array $response, int $ttl): void;
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
 
     /**
      * Membersihkan cache berdasarkan tag
@@ -192,16 +165,7 @@ public function cacheResponse(string $cacheKey, array $response, int $ttl): void
      * @param  string|array<int, string>  $tags  Tag atau array tag untuk dibersihkan
      * @return bool True jika berjaya, false sebaliknya
      */
-<<<<<<< HEAD
     public function clearCache(string|array $tags): bool;
-=======
-    
-
-/**
- * @param array<string, mixed> $tags
- */
-public function clearCache(string|array $tags): bool;
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
 
     /**
      * Mendapatkan statistik prestasi
@@ -210,11 +174,11 @@ public function clearCache(string|array $tags): bool;
      * dan analisis penggunaan sistem AI.
      *
      * @return array<string, mixed> Statistik yang mengandungi:
-     *               - total_requests: int (jumlah permintaan)
-     *               - average_response_time: float (masa respons purata)
-     *               - cache_hit_rate: float (kadar hit cache)
-     *               - error_rate: float (kadar ralat)
-     *               - last_health_check: string (masa pemeriksaan kesihatan terakhir)
+     *                              - total_requests: int (jumlah permintaan)
+     *                              - average_response_time: float (masa respons purata)
+     *                              - cache_hit_rate: float (kadar hit cache)
+     *                              - error_rate: float (kadar ralat)
+     *                              - last_health_check: string (masa pemeriksaan kesihatan terakhir)
      */
     public function getPerformanceStats(): array;
 

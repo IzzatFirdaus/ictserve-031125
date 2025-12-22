@@ -28,12 +28,6 @@ class AICacheStatsUpdate implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
-<<<<<<< HEAD
-    /**
-     * @var array<string, mixed>
-     */
-=======
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     public array $stats;
 
     public string $timestamp;
@@ -43,12 +37,7 @@ class AICacheStatsUpdate implements ShouldBroadcast
      *
      * @param  array<string, mixed>  $stats  Statistik cache AI
      */
-    
-
-/**
- * @param array<string, mixed> $stats
- */
-public function __construct(array $stats)
+    public function __construct(array $stats)
     {
         $this->stats = $this->sanitizeStats($stats);
         $this->timestamp = now()->timezone('Asia/Kuala_Lumpur')->format('Y-m-d H:i:s');
@@ -60,12 +49,7 @@ public function __construct(array $stats)
      * @param  array<string, mixed>  $stats
      * @return array<string, mixed>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function sanitizeStats(array $stats): array
+    private function sanitizeStats(array $stats): array
     {
         $allowedKeys = [
             'hit_rate',
@@ -81,19 +65,10 @@ private function sanitizeStats(array $stats): array
         return array_intersect_key($stats, array_flip($allowedKeys));
     }
 
-<<<<<<< HEAD
     /**
      * @return array<string, mixed>
      */
     public function broadcastOn(): array
-=======
-    
-
-/**
- * @return array<string, mixed>
- */
-public function broadcastOn(): array
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         return [
             new PrivateChannel('ai-performance'),
@@ -105,19 +80,10 @@ public function broadcastOn(): array
         return 'AICacheStatsUpdate';
     }
 
-<<<<<<< HEAD
     /**
      * @return array<string, mixed>
      */
     public function broadcastWith(): array
-=======
-    
-
-/**
- * @return array<string, mixed>
- */
-public function broadcastWith(): array
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         return [
             'stats' => $this->stats,
