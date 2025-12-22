@@ -28,12 +28,10 @@ class CreateApiToken extends CreateRecord
         return __('admin.create_token');
     }
 
-    
-
-/**
- * @param array<string, mixed> $data
- */
-protected function mutateFormDataBeforeCreate(array $data): array
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Ensure token is created for current user
         $data['tokenable_type'] = 'App\\Models\\User';

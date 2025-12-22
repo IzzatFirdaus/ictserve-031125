@@ -22,12 +22,10 @@ class CreateAutoReplyTemplate extends CreateRecord
         return __('ollama.template.create_title');
     }
 
-    
-
-/**
- * @param array<string, mixed> $data
- */
-protected function mutateFormDataBeforeCreate(array $data): array
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['created_by'] = Auth::id();
 

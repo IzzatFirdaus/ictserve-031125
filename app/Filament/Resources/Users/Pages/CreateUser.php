@@ -38,12 +38,11 @@ class CreateUser extends CreateRecord
      * Mutate form data before creating the user.
      * Generates temporary password with complexity requirements.
      */
-    
 
-/**
- * @param array<string, mixed> $data
- */
-protected function mutateFormDataBeforeCreate(array $data): array
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Generate temporary password with complexity requirements
         // 12 characters: uppercase, lowercase, numbers, symbols
