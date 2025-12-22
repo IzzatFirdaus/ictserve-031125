@@ -1,13 +1,17 @@
 {
   "mcpServers": {
     "memory": {
-      "command": "npx",
+      "command": "docker",
       "args": [
-        "-y",
-        "@modelcontextprotocol/server-memory"
+        "compose",
+        "exec",
+        "-T",
+        "mcp-memory",
+        "node",
+        "/app/dist/index.js"
       ],
       "env": {
-        "MEMORY_FILE_PATH": "./storage/mcp/memory.jsonl"
+        "MEMORY_FILE_PATH": "/data/memory.jsonl"
       },
       "disabled": false,
       "autoApprove": [
@@ -23,10 +27,14 @@
       ]
     },
     "sequentialthinking": {
-      "command": "npx",
+      "command": "docker",
       "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
+        "compose",
+        "exec",
+        "-T",
+        "mcp-sequential-thinking",
+        "node",
+        "/app/dist/index.js"
       ],
       "env": {
         "NODE_OPTIONS": "--max-old-space-size=4096"
@@ -37,8 +45,13 @@
       ]
     },
     "laravel-boost": {
-      "command": "php",
+      "command": "docker",
       "args": [
+        "compose",
+        "exec",
+        "-T",
+        "app",
+        "php",
         "artisan",
         "boost:mcp"
       ],
@@ -66,8 +79,13 @@
       ]
     },
     "ictserve": {
-      "command": "php",
+      "command": "docker",
       "args": [
+        "compose",
+        "exec",
+        "-T",
+        "app",
+        "php",
         "artisan",
         "mcp:start",
         "ictserve"
@@ -93,10 +111,14 @@
       ]
     },
     "chrome-devtools": {
-      "command": "npx",
+      "command": "docker",
       "args": [
-        "-y",
-        "chrome-devtools-mcp@latest"
+        "compose",
+        "exec",
+        "-T",
+        "mcp-chrome-devtools",
+        "node",
+        "/app/dist/index.js"
       ],
       "disabled": false,
       "autoApprove": [
@@ -114,10 +136,14 @@
       ]
     },
     "playwright": {
-      "command": "npx",
+      "command": "docker",
       "args": [
-        "-y",
-        "@playwright/mcp@latest"
+        "compose",
+        "exec",
+        "-T",
+        "mcp-playwright",
+        "node",
+        "/app/dist/index.js"
       ],
       "disabled": false,
       "autoApprove": [

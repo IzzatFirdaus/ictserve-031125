@@ -6,7 +6,7 @@ $redisSupported = static function (): bool {
     return extension_loaded('redis') || class_exists(\Predis\Client::class);
 };
 
-$defaultQueueConnection = env('QUEUE_CONNECTION', 'database');
+$defaultQueueConnection = env('QUEUE_CONNECTION', 'redis');
 
 // For WSL Horizon setup, we'll use Redis when available
 if ($defaultQueueConnection === 'redis' && ! $redisSupported()) {
@@ -82,6 +82,15 @@ return [
             'connection' => env('REDIS_QUEUE_CONNECTION', 'default'),
             'queue' => env('REDIS_QUEUE', 'default'),
             'retry_after' => (int) env('REDIS_QUEUE_RETRY_AFTER', 90),
+            'block_for' => null,
+            'after_commit' => false,
+        ],
+
+        'broadcast' => [
+            'driver' => 'redis',
+            'connection' => env('REDIS_BROADCAST_CONNECTION', 'default'),
+            'queue' => env('REDIS_BROADCAST_QUEUE', 'broadcast'),
+            'retry_after' => (int) env('REDIS_BROADCAST_RETRY_AFTER', 60),
             'block_for' => null,
             'after_commit' => false,
         ],

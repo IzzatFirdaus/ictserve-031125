@@ -124,17 +124,12 @@ class ReverbIntegrationTest extends TestCase
         $user = User::factory()->create(['role' => 'staff']);
 
         // Test user channel authorization
-        $this->actingAs($user);
-
-        $response = $this->post('/broadcasting/auth', [
-            'socket_id' => '123.456',
-            'channel_name' => "private-user.{$user->id}",
-        ]);
-
-        if ($response->status() !== 200) {
-            dump('Response status: ' . $response->status());
-            dump('Response content: ' . $response->getContent());
-        }
+        $response = $this->actingAs($user)
+            ->withSession(['_token' => 'test-token'])
+            ->post('/broadcasting/auth', [
+                'socket_id' => '123.456',
+                'channel_name' => "private-user.{$user->id}",
+            ]);
 
         $response->assertOk();
     }

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Events;
 
+use App\Events\Concerns\BroadcastsToHybridChannels;
 use App\Models\User;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -16,39 +15,50 @@ use Illuminate\Queue\SerializesModels;
 /**
  * Notification Created Event
  *
- * Broadcasts real-time notifications to authenticated users via Laravel Echo.
- * Sent to private user channels for secure notification delivery.
+ * Broadcasts real-time notifications to users via Laravel Echo.
+ * Uses hybrid channel strategy: authenticated users get private-user.{id} channels,
+ * guests get UUID-based channels for their submissions.
  *
- * @see .kiro/specs/staff-dashboard-profile/design.md - Real-Time Notifications
- * @see .kiro/specs/staff-dashboard-profile/requirements.md - Requirements 6.1, 6.2
+ * @see .kiro/specs/realtime-notifications-broadcasting/design.md - Dual Channel Strategy
+ * @see .kiro/specs/realtime-notifications-broadcasting/requirements.md - Requirements 1.2, 4.1, 4.2, 4.3, 4.4
  */
 class NotificationCreated implements ShouldBroadcast
 {
+    use BroadcastsToHybridChannels;
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance
      */
     public function __construct(
-        public User $user,
-        public DatabaseNotification $notification
+        public ?User $user,
+        public DatabaseNotification $notification,
+        public ?string $guestChannelUuid = null,
+        public ?string $guestChannelType = null
     ) {}
 
     /**
-     * Get the channels the event should broadcast on
-     *
-     * @return array<int, Channel>
+     * Get the authenticated user ID for channel routing
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-public function broadcastOn(): array
+    protected function getAuthenticatedUserId(): ?int
     {
-        return [
-            new PrivateChannel("user.{$this->user->id}"),
-        ];
+        return $this->user?->id;
+    }
+
+    /**
+     * Get the guest channel UUID for channel routing
+     */
+    protected function getGuestChannelUuid(): ?string
+    {
+        return $this->guestChannelUuid;
+    }
+
+    /**
+     * Get the guest channel type for channel naming
+     */
+    protected function getGuestChannelType(): string
+    {
+        return $this->guestChannelType ?? 'notification';
     }
 
     /**
@@ -62,21 +72,38 @@ public function broadcastOn(): array
     /**
      * Get the data to broadcast
      *
+     * Excludes PII and credentials from payload as per security requirements.
+     *
      * @return array<string, mixed>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-public function broadcastWith(): array
+    public function broadcastWith(): array
     {
         return [
             'id' => $this->notification->id,
             'type' => $this->notification->type,
-            'data' => $this->notification->data,
+            'message' => $this->notification->data['message'] ?? '',
+            'data' => $this->sanitizeNotificationData($this->notification->data),
             'created_at' => $this->notification->created_at?->toISOString() ?? now()->toISOString(),
             'read_at' => $this->notification->read_at?->toISOString(),
         ];
+    }
+
+    /**
+     * Sanitize notification data to exclude PII
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    private function sanitizeNotificationData(array $data): array
+    {
+        // Remove PII fields from notification data
+        $piiFields = ['email', 'phone', 'ic_number', 'password', 'api_key', 'token', 'staff_id'];
+
+        $sanitized = $data;
+        foreach ($piiFields as $field) {
+            unset($sanitized[$field]);
+        }
+
+        return $sanitized;
     }
 }
