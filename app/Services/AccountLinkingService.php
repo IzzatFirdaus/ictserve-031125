@@ -85,7 +85,12 @@ class AccountLinkingService implements AccountLinkingServiceInterface
      *
      * @throws \Illuminate\Database\QueryException If transaction fails
      */
-    public function linkSubmissions(User $user, array $submissionIds): int
+    
+
+/**
+ * @param array<string, mixed> $submissionIds
+ */
+public function linkSubmissions(User $user, array $submissionIds): int
     {
         if (empty($submissionIds)) {
             return 0;
@@ -156,7 +161,12 @@ class AccountLinkingService implements AccountLinkingServiceInterface
      * @param  array<int, array{type: string, id: int}>  $submissionIds
      * @return array<string>
      */
-    private function getSubmissionTypesFromIds(array $submissionIds): array
+    
+
+/**
+ * @param array<string, mixed> $submissionIds
+ */
+private function getSubmissionTypesFromIds(array $submissionIds): array
     {
         $types = [];
         foreach ($submissionIds as $submission) {
@@ -364,7 +374,12 @@ class AccountLinkingService implements AccountLinkingServiceInterface
      * @param  int  $linkedCount  Number of submissions linked
      * @param  array<int, array{type: string, id: int}>  $submissions  The submissions that were linked
      */
-    private function logLinkingActivity(User $user, int $linkedCount, array $submissions): void
+    
+
+/**
+ * @param array<string, mixed> $submissions
+ */
+private function logLinkingActivity(User $user, int $linkedCount, array $submissions): void
     {
         activity('account_linking')
             ->performedOn($user)

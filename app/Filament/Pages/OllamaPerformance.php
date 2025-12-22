@@ -68,7 +68,12 @@ class OllamaPerformance extends Page
      *
      * @return array<string, mixed>
      */
-    public function getPerformanceStats(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getPerformanceStats(): array
     {
         return Cache::remember('ollama_performance_stats', 60, function () {
             $stats = [];
@@ -145,7 +150,12 @@ class OllamaPerformance extends Page
      *
      * @return array<string, mixed>
      */
-    public function getSystemHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSystemHealth(): array
     {
         $health = [
             'ollama_status' => 'unknown',

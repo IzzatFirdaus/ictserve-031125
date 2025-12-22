@@ -26,7 +26,12 @@ class AccessibilityComplianceService
     /**
      * Validate color contrast ratio
      */
-    public function validateColorContrast(string $foreground, string $background, float $requiredRatio = 4.5): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function validateColorContrast(string $foreground, string $background, float $requiredRatio = 4.5): array
     {
         $ratio = $this->calculateContrastRatio($foreground, $background);
 
@@ -71,7 +76,12 @@ class AccessibilityComplianceService
     /**
      * Validate all MOTAC colors against white background
      */
-    public function validateMOTACColors(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function validateMOTACColors(): array
     {
         $results = [];
 
@@ -95,7 +105,12 @@ class AccessibilityComplianceService
     /**
      * Verify keyboard navigation requirements
      */
-    public function verifyKeyboardNavigation(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function verifyKeyboardNavigation(): array
     {
         return [
             'focus_indicators' => true,
@@ -108,7 +123,12 @@ class AccessibilityComplianceService
     /**
      * Verify ARIA attributes
      */
-    public function verifyARIAAttributes(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function verifyARIAAttributes(): array
     {
         return [
             'landmarks' => true,
@@ -121,7 +141,12 @@ class AccessibilityComplianceService
     /**
      * Verify form accessibility
      */
-    public function verifyFormAccessibility(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function verifyFormAccessibility(): array
     {
         return [
             'labels' => true,
@@ -134,7 +159,12 @@ class AccessibilityComplianceService
     /**
      * Get comprehensive accessibility report
      */
-    public function getAccessibilityReport(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAccessibilityReport(): array
     {
         return [
             'colors' => $this->validateMOTACColors(),
@@ -149,7 +179,12 @@ class AccessibilityComplianceService
     /**
      * Audit accessibility compliance
      */
-    public function auditAccessibility(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function auditAccessibility(): array
     {
         return [
             'color_contrast' => [
@@ -178,7 +213,12 @@ class AccessibilityComplianceService
     /**
      * Get compliant color palette
      */
-    public function getCompliantColorPalette(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getCompliantColorPalette(): array
     {
         return self::COLORS;
     }
@@ -186,7 +226,12 @@ class AccessibilityComplianceService
     /**
      * Generate focus styles
      */
-    public function generateFocusStyles(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateFocusStyles(): array
     {
         return [
             'css' => 'outline: 2px solid #0056b3; outline-offset: 2px;',
@@ -199,7 +244,12 @@ class AccessibilityComplianceService
     /**
      * Generate ARIA attributes
      */
-    public function generateAriaAttributes(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateAriaAttributes(): array
     {
         return [
             'labels' => [
@@ -223,7 +273,12 @@ class AccessibilityComplianceService
     /**
      * Validate keyboard navigation
      */
-    public function validateKeyboardNavigation(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function validateKeyboardNavigation(): array
     {
         return [
             'tab_order' => [
@@ -252,7 +307,12 @@ class AccessibilityComplianceService
     /**
      * Generate screen reader content
      */
-    public function generateScreenReaderContent(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateScreenReaderContent(): array
     {
         return [
             'landmarks' => [

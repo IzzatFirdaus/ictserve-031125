@@ -285,7 +285,12 @@ class UpdateWidgetMetadataCommand extends Command
         return $fileName;
     }
 
-    private function displaySummary(array $results, bool $isDryRun): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function displaySummary(array $results, bool $isDryRun): void
     {
         $this->newLine();
         $this->info('📊 Update Summary:');

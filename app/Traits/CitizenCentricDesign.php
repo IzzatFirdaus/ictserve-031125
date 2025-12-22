@@ -65,7 +65,12 @@ trait CitizenCentricDesign
      * @param  string  $helpText  The help text content
      * @param  string  $helpType  Type of help (tooltip, modal, inline)
      */
-    protected function provideContextualHelp(string $fieldName, string $helpText, string $helpType = 'tooltip'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function provideContextualHelp(string $fieldName, string $helpText, string $helpType = 'tooltip'): array
     {
         return [
             'field' => $fieldName,
@@ -78,10 +83,15 @@ trait CitizenCentricDesign
     /**
      * Reduce cognitive load by chunking information
      *
-     * @param  array  $items  Items to chunk
+     * @param  array<string, mixed>  $items  Items to chunk
      * @param  int  $chunkSize  Size of each chunk (default: 5-7 items per Miller's Law)
      */
-    protected function chunkInformation(array $items, int $chunkSize = 7): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function chunkInformation(array $items, int $chunkSize = 7): array
     {
         return array_chunk($items, $chunkSize);
     }
@@ -92,7 +102,12 @@ trait CitizenCentricDesign
      * @param  string  $currentLocation  Current page/section
      * @param  array  $breadcrumbs  Breadcrumb trail
      */
-    protected function provideNavigationCues(string $currentLocation, array $breadcrumbs = []): void
+    
+
+/**
+ * @param array<string, mixed> $breadcrumbs
+ */
+protected function provideNavigationCues(string $currentLocation, array $breadcrumbs = []): void
     {
         $this->dispatch('navigation-update', [
             'current' => $currentLocation,
@@ -139,7 +154,12 @@ trait CitizenCentricDesign
      * @param  string  $message  Success message
      * @param  array  $nextSteps  Array of next available actions
      */
-    protected function provideSuccessConfirmation(string $message, array $nextSteps = []): void
+    
+
+/**
+ * @param array<string, mixed> $nextSteps
+ */
+protected function provideSuccessConfirmation(string $message, array $nextSteps = []): void
     {
         $this->dispatch('success-confirmation', [
             'message' => $message,
@@ -152,10 +172,15 @@ trait CitizenCentricDesign
      * Simplify complex forms by showing only relevant fields
      *
      * @param  array  $allFields  All available fields
-     * @param  array  $conditions  Conditions to determine field visibility
+     * @param  array<string, mixed>  $conditions  Conditions to determine field visibility
      * @return array Filtered fields
      */
-    protected function showRelevantFields(array $allFields, array $conditions): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function showRelevantFields(array $allFields, array $conditions): array
     {
         return array_filter($allFields, function ($field) use ($conditions) {
             if (! isset($field['condition'])) {
@@ -171,10 +196,15 @@ trait CitizenCentricDesign
      *
      * @param  string  $field  Field name
      * @param  mixed  $value  Field value
-     * @param  array  $rules  Validation rules
+     * @param  array<string, mixed>  $rules  Validation rules
      * @return array Validation result
      */
-    protected function provideInlineValidation(string $field, mixed $value, array $rules): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function provideInlineValidation(string $field, mixed $value, array $rules): array
     {
         try {
             $validator = validator([$field => $value], [$field => $rules]);
@@ -206,7 +236,12 @@ trait CitizenCentricDesign
      * @param  string  $action  User action
      * @param  array  $metadata  Additional metadata
      */
-    protected function trackUserInteraction(string $action, array $metadata = []): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+protected function trackUserInteraction(string $action, array $metadata = []): void
     {
         // Log user interaction for analytics and improvement
         logger()->info('User interaction tracked', [

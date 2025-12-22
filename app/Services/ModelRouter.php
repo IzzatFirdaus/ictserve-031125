@@ -67,9 +67,18 @@ class ModelRouter
      * Tentukan laluan untuk penjanaan teks (Bedrock/Ollama) berdasarkan prompt.
      *
      * @param  array{session_id?: string|null, user_id?: int|null, is_malaysia_resident?: bool|null, operation_type?: string|null, data_classification?: string|null, has_cloud_consent?: bool|null}  $context
+      * @param array<string, mixed> $context
+
      * @return array{provider: 'bedrock'|'ollama', model_id?: string|null, model_key?: string|null, reason: string}
      */
-    public function routeTextGeneration(string $prompt, array $context = []): array
+    
+
+/**
+  * @param array<string, mixed> $context
+
+ * @return array<string, mixed>
+ */
+public function routeTextGeneration(string $prompt, array $context = []): array
     {
         $configService = app(BedrockRoutingConfigurationService::class);
         $bedrockConfig = $configService->getConfiguration();
@@ -213,9 +222,18 @@ class ModelRouter
      * Select provider and model tier by task with config-aware fallbacks and caching.
      *
      * @param  array{query?: string, force_model_tier?: string|null}  $context
+      * @param array<string, mixed> $context
+
      * @return array{provider: string, model_tier: string|null, model_id?: string|null, reason: string, cost_estimate: float}
      */
-    public function selectModel(string $task, array $context = []): array
+    
+
+/**
+  * @param array<string, mixed> $context
+
+ * @return array<string, mixed>
+ */
+public function selectModel(string $task, array $context = []): array
     {
         $query = is_string($context['query'] ?? null) ? (string) $context['query'] : '';
         $bedrockConfig = config('bedrock', []);
@@ -319,7 +337,12 @@ class ModelRouter
      *
      * @param  array{query?: string}  $context
      */
-    public function analyzeComplexity(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function analyzeComplexity(array $context): string
     {
         $q = is_string($context['query'] ?? null) ? (string) $context['query'] : '';
         if ($q === '') {
@@ -378,7 +401,12 @@ class ModelRouter
      *
      * @param  array{query?: string, max_tokens?: int}  $context
      */
-    public function estimateRequestCost(string $modelTier, array $context): float
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function estimateRequestCost(string $modelTier, array $context): float
     {
         $pricing = [
             self::MODEL_HAIKU => ['prompt' => 0.00025, 'completion' => 0.0005],
@@ -401,7 +429,12 @@ class ModelRouter
      *
      * @return array{total_requests:int, successful_requests:int, success_rate:float, by_model:array}
      */
-    public function getRoutingStatistics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getRoutingStatistics(): array
     {
         try {
             $total = (int) BedrockUsageLog::count();
@@ -454,7 +487,12 @@ class ModelRouter
      *
      * @return array{bedrock_enabled:bool, rate_limits:array, models:array, model_costs:array, task_types:array}
      */
-    public function getRoutingConfig(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getRoutingConfig(): array
     {
         $cfg = config('bedrock', []);
 
@@ -495,7 +533,12 @@ class ModelRouter
     /**
      * @param  array{has_cloud_consent?: bool|null}  $context
      */
-    private function hasCloudConsent(array $context): bool
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function hasCloudConsent(array $context): bool
     {
         return ($context['has_cloud_consent'] ?? false) === true;
     }
@@ -503,7 +546,12 @@ class ModelRouter
     /**
      * @param  array<string, mixed>  $bedrockConfig
      */
-    private function isBudgetHardStopped(array $bedrockConfig): bool
+    
+
+/**
+ * @param array<string, mixed> $bedrockConfig
+ */
+private function isBudgetHardStopped(array $bedrockConfig): bool
     {
         $budgets = is_array($bedrockConfig['budgets'] ?? null) ? $bedrockConfig['budgets'] : [];
 
@@ -531,7 +579,12 @@ class ModelRouter
     /**
      * @param  array<string, mixed>  $bedrockConfig
      */
-    private function resolveBedrockModelId(string $modelKey, array $bedrockConfig): string
+    
+
+/**
+ * @param array<string, mixed> $bedrockConfig
+ */
+private function resolveBedrockModelId(string $modelKey, array $bedrockConfig): string
     {
         $models = is_array($bedrockConfig['models'] ?? null) ? $bedrockConfig['models'] : [];
 
@@ -547,7 +600,12 @@ class ModelRouter
      * @param  array<string, mixed>  $bedrockConfig
      * @param  array<string, mixed>  $context
      */
-    private function chooseBedrockModelKey(string $prompt, array $bedrockConfig = [], array $context = []): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function chooseBedrockModelKey(string $prompt, array $bedrockConfig = [], array $context = []): string
     {
         $text = $this->safeStrtolower($prompt);
         $length = $this->safeStrlen($prompt);
@@ -602,7 +660,12 @@ class ModelRouter
     /**
      * @param  array<string, mixed>  $bedrockConfig
      */
-    private function getCachedModelKey(string $prompt, array $bedrockConfig, array $context = []): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function getCachedModelKey(string $prompt, array $bedrockConfig, array $context = []): string
     {
         $routing = is_array($bedrockConfig['routing'] ?? null) ? $bedrockConfig['routing'] : [];
         $ttl = (int) ($routing['cache_ttl_seconds'] ?? 3600);
@@ -630,7 +693,12 @@ class ModelRouter
      *
      * @param  array{session_id?: string|null, user_id?: int|null}  $context
      */
-    private function isRateLimited(string $modelKey, array $context, array $bedrockConfig): bool
+    
+
+/**
+ * @param array<string, mixed> $bedrockConfig
+ */
+private function isRateLimited(string $modelKey, array $context, array $bedrockConfig): bool
     {
         $rateLimits = is_array($bedrockConfig['rate_limits'] ?? null) ? $bedrockConfig['rate_limits'] : [];
 

@@ -98,7 +98,12 @@ class UpgradeColorPaletteCommand extends Command
      *
      * @phpstan-param CategoryResult|AllResult $result
      */
-    private function displayResults(array $result, bool $isDryRun): void
+    
+
+/**
+ * @param array<string, mixed> $result
+ */
+private function displayResults(array $result, bool $isDryRun): void
     {
         $this->newLine();
 

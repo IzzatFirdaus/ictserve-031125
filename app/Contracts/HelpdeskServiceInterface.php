@@ -25,7 +25,12 @@ interface HelpdeskServiceInterface
      * @param  array<string, mixed>  $data  Ticket data
      * @return HelpdeskTicket The created ticket
      */
-    public function createTicket(array $data): HelpdeskTicket;
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createTicket(array $data): HelpdeskTicket;
 
     /**
      * Update ticket status with required comment

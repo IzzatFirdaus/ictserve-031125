@@ -80,7 +80,12 @@ class EncryptionService
     /**
      * Validate encryption configuration
      */
-    public function validateEncryptionConfig(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function validateEncryptionConfig(): array
     {
         $results = [
             'cipher' => config('app.cipher'),
@@ -115,7 +120,12 @@ class EncryptionService
     /**
      * Encrypt array data for database storage
      */
-    public function encryptArray(array $data): string
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function encryptArray(array $data): string
     {
         return $this->encryptSensitiveData(json_encode($data));
     }
@@ -123,7 +133,12 @@ class EncryptionService
     /**
      * Decrypt array data from database
      */
-    public function decryptArray(string $encryptedData): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function decryptArray(string $encryptedData): array
     {
         $decrypted = $this->decryptSensitiveData($encryptedData);
 
@@ -133,7 +148,14 @@ class EncryptionService
     /**
      * Sanitize sensitive data for logging
      */
-    public function sanitizeForLogging(array $data, array $sensitiveFields = []): array
+    
+
+/**
+  * @param array<string, mixed> $sensitiveFields
+
+ * @return array<string, mixed>
+ */
+public function sanitizeForLogging(array $data, array $sensitiveFields = []): array
     {
         $defaultSensitiveFields = [
             'password',
@@ -162,7 +184,12 @@ class EncryptionService
     /**
      * Generate secure approval token with expiration
      */
-    public function generateApprovalToken(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateApprovalToken(): array
     {
         return [
             'token' => $this->generateSecureToken(),
@@ -216,7 +243,12 @@ class EncryptionService
     /**
      * Validate system security configuration
      */
-    public function validateSecurityConfig(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function validateSecurityConfig(): array
     {
         return [
             'encryption' => $this->validateEncryptionConfig(),

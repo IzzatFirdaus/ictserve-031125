@@ -281,7 +281,12 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
     /**
      * @param  array<string, mixed>|null  $state
      */
-    private function fillForm(?array $state = null): void
+    
+
+/**
+ * @param array<string, mixed> $state
+ */
+private function fillForm(?array $state = null): void
     {
         if (property_exists($this, 'form') && is_object($this->form) && method_exists($this->form, 'fill')) {
             $this->form->fill($state ?? []);

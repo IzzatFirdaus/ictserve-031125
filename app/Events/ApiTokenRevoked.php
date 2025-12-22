@@ -43,7 +43,12 @@ class ApiTokenRevoked implements ShouldBroadcast
      *
      * @return array<int, Channel>
      */
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel("user.{$this->user->id}"),
@@ -63,7 +68,12 @@ class ApiTokenRevoked implements ShouldBroadcast
      *
      * @return array<string, mixed>
      */
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'token_id' => $this->tokenId,

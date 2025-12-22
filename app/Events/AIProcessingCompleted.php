@@ -49,7 +49,12 @@ class AIProcessingCompleted implements ShouldBroadcast
      * @param  float  $processingTime  Masa pemprosesan dalam saat
      * @param  string|null  $requestId  X-Request-ID untuk audit trail
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $result
+ */
+public function __construct(
         string $operationType,
         array $result = [],
         float $processingTime = 0.0,
@@ -75,7 +80,14 @@ class AIProcessingCompleted implements ShouldBroadcast
         };
     }
 
-    private function sanitizeResult(array $result): array
+    
+
+/**
+  * @param array<string, mixed> $result
+
+ * @return array<string, mixed>
+ */
+private function sanitizeResult(array $result): array
     {
         $sanitized = [];
         $allowedKeys = [
@@ -98,7 +110,12 @@ class AIProcessingCompleted implements ShouldBroadcast
         return $sanitized;
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-status'),
@@ -110,7 +127,12 @@ class AIProcessingCompleted implements ShouldBroadcast
         return 'AIProcessingCompleted';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'operationType' => $this->operationType,

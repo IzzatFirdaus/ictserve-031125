@@ -48,7 +48,12 @@ class GlobalSearchService
      * @param  array<string, mixed>  $filters
      * @return array<string, array>
      */
-    public function search(string $query, array $resourceTypes = [], array $filters = []): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function search(string $query, array $resourceTypes = [], array $filters = []): array
     {
         $cacheKey = $this->generateCacheKey($query, $resourceTypes, $filters);
 
@@ -83,7 +88,12 @@ class GlobalSearchService
      *
      * @param  array<string, mixed>  $filters
      */
-    private function searchTickets(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchTickets(string $query, array $filters): Collection
     {
         $queryBuilder = HelpdeskTicket::query()
             ->with(['user', 'assignedTo', 'division'])
@@ -138,7 +148,12 @@ class GlobalSearchService
      *
      * @param  array<string, mixed>  $filters
      */
-    private function searchLoans(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchLoans(string $query, array $filters): Collection
     {
         $queryBuilder = LoanApplication::query()
             ->with(['applicant', 'loanItems.asset'])
@@ -188,7 +203,12 @@ class GlobalSearchService
      *
      * @param  array<string, mixed>  $filters
      */
-    private function searchAssets(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchAssets(string $query, array $filters): Collection
     {
         $queryBuilder = Asset::query()
             ->with(['category'])
@@ -238,7 +258,12 @@ class GlobalSearchService
      *
      * @param  array<string, mixed>  $filters
      */
-    private function searchUsers(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchUsers(string $query, array $filters): Collection
     {
         $queryBuilder = User::query()
             ->with(['division', 'grade', 'roles'])
@@ -287,7 +312,12 @@ class GlobalSearchService
      *
      * @param  array<string>  $fields
      */
-    private function calculateRelevance(string $query, array $fields): float
+    
+
+/**
+ * @param array<string, mixed> $fields
+ */
+private function calculateRelevance(string $query, array $fields): float
     {
         $score = 0.0;
         $query = strtolower($query);
@@ -322,7 +352,12 @@ class GlobalSearchService
      * @param  array<string, Collection>  $results
      * @return array<string, array>
      */
-    private function sortByRelevance(array $results, string $query): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function sortByRelevance(array $results, string $query): array
     {
         $sorted = [];
 
@@ -339,7 +374,12 @@ class GlobalSearchService
      * @param  array<string>  $resourceTypes
      * @param  array<string, mixed>  $filters
      */
-    private function generateCacheKey(string $query, array $resourceTypes, array $filters): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function generateCacheKey(string $query, array $resourceTypes, array $filters): string
     {
         return 'global_search:'.md5($query.json_encode($resourceTypes).json_encode($filters));
     }
@@ -357,7 +397,12 @@ class GlobalSearchService
      *
      * @return array<int, string>
      */
-    public function getSuggestions(string $query, int $limit = 5): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSuggestions(string $query, int $limit = 5): array
     {
         $suggestions = [];
 

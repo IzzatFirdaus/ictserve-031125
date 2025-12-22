@@ -44,7 +44,12 @@ class LoanNotificationService
     /**
      * @param  array{email: string, name?: string|null}  $approver
      */
-    public function sendApprovalRequest(LoanApplication $application, array $approver, string $token): void
+    
+
+/**
+ * @param array<string, mixed> $approver
+ */
+public function sendApprovalRequest(LoanApplication $application, array $approver, string $token): void
     {
         $this->dispatcher->queue(
             (new LoanApprovalRequest($application, $token))->onQueue('emails'),

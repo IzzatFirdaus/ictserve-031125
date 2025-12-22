@@ -83,7 +83,12 @@ class AIServiceRestored implements ShouldBroadcast
         );
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-alerts'),
@@ -95,7 +100,12 @@ class AIServiceRestored implements ShouldBroadcast
         return 'AIServiceRestored';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'previousTier' => $this->previousTier,

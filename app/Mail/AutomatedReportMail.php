@@ -24,7 +24,12 @@ class AutomatedReportMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $attachmentFiles
+ */
+public function __construct(
         public array $reportData,
         public array $attachmentFiles,
         public string $frequency

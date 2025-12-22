@@ -79,7 +79,12 @@ class SavedFilters extends Component
     /**
      * Initialize component
      */
-    public function mount(string $context = '', array $currentFilters = []): void
+    
+
+/**
+ * @param array<string, mixed> $currentFilters
+ */
+public function mount(string $context = '', array $currentFilters = []): void
     {
         $this->context = $context;
         $this->currentFilters = $currentFilters;
@@ -257,7 +262,12 @@ class SavedFilters extends Component
      * Update current filters from parent component
      */
     #[On('update-current-filters')]
-    public function updateCurrentFilters(array $filters): void
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function updateCurrentFilters(array $filters): void
     {
         $this->currentFilters = $filters;
 

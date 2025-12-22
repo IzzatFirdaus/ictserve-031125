@@ -68,7 +68,12 @@ class EmailTemplateManagement extends Page implements HasForms
         return __('filament.navigation.system_management');
     }
 
-    protected function getForms(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function getForms(): array
     {
         return [
             'form' => Schema::make($this)
@@ -140,7 +145,12 @@ class EmailTemplateManagement extends Page implements HasForms
         ];
     }
 
-    protected function getHeaderActions(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function getHeaderActions(): array
     {
         return [
             Action::make('save')
@@ -261,7 +271,12 @@ class EmailTemplateManagement extends Page implements HasForms
     /**
      * @return array<string, array<int, array<string, mixed>>>
      */
-    public function getExistingTemplates(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getExistingTemplates(): array
     {
         /** @var array<string, array<int, array<string, mixed>>> $templates */
         $templates = EmailTemplate::orderBy('category')
@@ -309,7 +324,12 @@ class EmailTemplateManagement extends Page implements HasForms
     /**
      * @return array<string, mixed>
      */
-    private function getFormState(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getFormState(): array
     {
         if (property_exists($this, 'form') && is_object($this->form) && method_exists($this->form, 'getState')) {
             $state = $this->form->getState();
@@ -323,7 +343,12 @@ class EmailTemplateManagement extends Page implements HasForms
     /**
      * @param  array<string, mixed>|null  $state
      */
-    private function fillForm(?array $state = null): void
+    
+
+/**
+ * @param array<string, mixed> $state
+ */
+private function fillForm(?array $state = null): void
     {
         if (property_exists($this, 'form') && is_object($this->form) && method_exists($this->form, 'fill')) {
             $this->form->fill($state ?? []);

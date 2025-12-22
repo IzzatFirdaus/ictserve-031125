@@ -38,7 +38,12 @@ class AssetTransactionService
      *
      * @param  array  $data  ['condition_before', 'accessories', 'notes']
      */
-    public function checkOutAsset(
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function checkOutAsset(
         LoanApplication $application,
         Asset $asset,
         User $processedBy,
@@ -98,7 +103,12 @@ class AssetTransactionService
      *
      * @param  array  $data  ['condition_after', 'accessories', 'damage_report', 'notes']
      */
-    public function checkInAsset(
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function checkInAsset(
         LoanApplication $application,
         Asset $asset,
         User $processedBy,

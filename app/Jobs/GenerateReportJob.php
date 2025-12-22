@@ -49,7 +49,12 @@ class GenerateReportJob implements ShouldQueue
      * @param  array<string, mixed>  $parameters
      * @param  array<string>  $recipients
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $recipients
+ */
+public function __construct(
         public string $reportType,
         public array $parameters = [],
         public array $recipients = [],
@@ -102,7 +107,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Generate report based on type
      */
-    private function generateReport(ReportService $reportService): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function generateReport(ReportService $reportService): array
     {
         return match ($this->reportType) {
             'daily' => $reportService->generateDailyReport($this->parameters),
@@ -120,7 +130,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Save report to file
      */
-    private function saveReportFile(array $reportData): string
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function saveReportFile(array $reportData): string
     {
         $timestamp = now()->format('Y-m-d_H-i-s');
         $filename = "{$this->reportType}_report_{$timestamp}";
@@ -156,7 +171,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Save CSV report
      */
-    private function saveCsvReport(string $filename, array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function saveCsvReport(string $filename, array $reportData): void
     {
         $path = storage_path('app/reports/'.$filename);
 
@@ -183,7 +203,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Save JSON report
      */
-    private function saveJsonReport(string $filename, array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function saveJsonReport(string $filename, array $reportData): void
     {
         $path = storage_path('app/reports/'.$filename);
 
@@ -198,7 +223,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Save Excel report (placeholder - would need PhpSpreadsheet)
      */
-    private function saveExcelReport(string $filename, array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function saveExcelReport(string $filename, array $reportData): void
     {
         // For now, save as CSV with .xlsx extension
         // In production, implement with PhpSpreadsheet
@@ -208,7 +238,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Save PDF report (placeholder - would need DOMPDF or similar)
      */
-    private function savePdfReport(string $filename, array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function savePdfReport(string $filename, array $reportData): void
     {
         // For now, save as JSON with .pdf extension
         // In production, implement with DOMPDF or similar
@@ -218,7 +253,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Deliver report to recipients
      */
-    private function deliverReport(string $filename, array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function deliverReport(string $filename, array $reportData): void
     {
         $filePath = storage_path('app/reports/'.$filename);
 
@@ -243,7 +283,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Send report via email
      */
-    private function sendReportEmail(string $recipient, string $filename, string $filePath, array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function sendReportEmail(string $recipient, string $filename, string $filePath, array $reportData): void
     {
         $subject = $this->getReportSubject();
         $summary = $this->generateReportSummary($reportData);
@@ -282,7 +327,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Generate report summary for email body
      */
-    private function generateReportSummary(array $reportData): string
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function generateReportSummary(array $reportData): string
     {
         $summary = "Laporan {$this->reportType} ICTServe telah dijana.\n\n";
 
@@ -302,7 +352,12 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Get default recipients for automated reports
      */
-    private function getDefaultRecipients(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getDefaultRecipients(): array
     {
         $admins = User::whereIn('role', ['admin', 'superuser'])
             ->pluck('email')
@@ -381,7 +436,12 @@ class GenerateReportJob implements ShouldQueue
      *
      * @return array<string>
      */
-    public function tags(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function tags(): array
     {
         $tags = [
             'reports',
@@ -402,17 +462,32 @@ class GenerateReportJob implements ShouldQueue
     /**
      * Static factory methods for common report types
      */
-    public static function daily(array $parameters = [], array $recipients = []): self
+    
+
+/**
+ * @param array<string, mixed> $recipients
+ */
+public static function daily(array $parameters = [], array $recipients = []): self
     {
         return new self('daily', $parameters, $recipients);
     }
 
-    public static function weekly(array $parameters = [], array $recipients = []): self
+    
+
+/**
+ * @param array<string, mixed> $recipients
+ */
+public static function weekly(array $parameters = [], array $recipients = []): self
     {
         return new self('weekly', $parameters, $recipients);
     }
 
-    public static function monthly(array $parameters = [], array $recipients = []): self
+    
+
+/**
+ * @param array<string, mixed> $recipients
+ */
+public static function monthly(array $parameters = [], array $recipients = []): self
     {
         return new self('monthly', $parameters, $recipients);
     }

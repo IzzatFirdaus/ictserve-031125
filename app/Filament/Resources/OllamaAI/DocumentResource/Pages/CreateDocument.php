@@ -37,7 +37,12 @@ class CreateDocument extends CreateRecord
     /**
      * Handle document creation via DocumentService to ensure storage & metadata are consistent.
      */
-    protected function handleRecordCreation(array $data): Model
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+protected function handleRecordCreation(array $data): Model
     {
         /** @var TemporaryUploadedFile|null $file */
         $file = $this->form->getState()['file_upload'] ?? null;

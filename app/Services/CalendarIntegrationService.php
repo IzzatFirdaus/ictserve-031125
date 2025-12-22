@@ -42,7 +42,12 @@ class CalendarIntegrationService
      *
      * @throws \Exception If calendar API is unavailable
      */
-    public function createLoanBookingEvent(LoanApplication $loanApplication): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function createLoanBookingEvent(LoanApplication $loanApplication): array
     {
         if (! $this->enabled) {
             Log::info('Calendar integration is disabled');
@@ -88,7 +93,12 @@ class CalendarIntegrationService
      * @param  LoanApplication  $loanApplication  Loan application
      * @return array Updated event details
      */
-    public function updateLoanBookingEvent(LoanApplication $loanApplication): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function updateLoanBookingEvent(LoanApplication $loanApplication): array
     {
         if (! $this->enabled || ! $loanApplication->calendar_event_id) {
             return ['status' => 'skipped'];
@@ -208,10 +218,15 @@ class CalendarIntegrationService
      *
      * @param  Carbon  $startDate  Start date
      * @param  Carbon  $endDate  End date
-     * @param  array  $assetIds  Asset IDs to check
+     * @param  array<string, mixed>  $assetIds  Asset IDs to check
      * @return array Conflict details
      */
-    public function checkBookingConflicts(Carbon $startDate, Carbon $endDate, array $assetIds): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkBookingConflicts(Carbon $startDate, Carbon $endDate, array $assetIds): array
     {
         $conflicts = [];
 
@@ -265,7 +280,12 @@ class CalendarIntegrationService
      * @param  Carbon  $endDate  End date
      * @return array Available alternative assets
      */
-    public function getAlternativeAssets(int $categoryId, Carbon $startDate, Carbon $endDate): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAlternativeAssets(int $categoryId, Carbon $startDate, Carbon $endDate): array
     {
         $availableAssets = Asset::where('category_id', $categoryId)
             ->where('status', 'available')
@@ -301,7 +321,12 @@ class CalendarIntegrationService
      * @param  LoanApplication  $loanApplication  Loan application
      * @return array Event data
      */
-    private function prepareLoanEventData(LoanApplication $loanApplication): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function prepareLoanEventData(LoanApplication $loanApplication): array
     {
         $assets = $loanApplication->loanItems->map(fn ($item) => $item->asset->name)->join(', ');
 
@@ -349,10 +374,15 @@ class CalendarIntegrationService
     /**
      * Create Outlook calendar event
      *
-     * @param  array  $eventData  Event data
+     * @param  array<string, mixed>  $eventData  Event data
      * @return array Created event
      */
-    private function createOutlookEvent(array $eventData): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function createOutlookEvent(array $eventData): array
     {
         $accessToken = $this->getOutlookAccessToken();
 
@@ -370,10 +400,15 @@ class CalendarIntegrationService
      * Update Outlook calendar event
      *
      * @param  string  $eventId  Event ID
-     * @param  array  $eventData  Event data
+     * @param  array<string, mixed>  $eventData  Event data
      * @return array Updated event
      */
-    private function updateOutlookEvent(string $eventId, array $eventData): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function updateOutlookEvent(string $eventId, array $eventData): array
     {
         $accessToken = $this->getOutlookAccessToken();
 
@@ -418,10 +453,15 @@ class CalendarIntegrationService
     /**
      * Create Google Calendar event
      *
-     * @param  array  $eventData  Event data
+     * @param  array<string, mixed>  $eventData  Event data
      * @return array Created event
      */
-    private function createGoogleEvent(array $eventData): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function createGoogleEvent(array $eventData): array
     {
         $accessToken = $this->getGoogleAccessToken();
 
@@ -461,10 +501,15 @@ class CalendarIntegrationService
      * Update Google Calendar event
      *
      * @param  string  $eventId  Event ID
-     * @param  array  $eventData  Event data
+     * @param  array<string, mixed>  $eventData  Event data
      * @return array Updated event
      */
-    private function updateGoogleEvent(string $eventId, array $eventData): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function updateGoogleEvent(string $eventId, array $eventData): array
     {
         $accessToken = $this->getGoogleAccessToken();
 

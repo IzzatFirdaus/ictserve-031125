@@ -195,7 +195,12 @@ class SLATrackingService
      *
      * @return array<string, int|float>
      */
-    public function getComplianceStats(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getComplianceStats(): array
     {
         $total = HelpdeskTicket::query()
             ->whereNotNull('sla_resolution_due_at')

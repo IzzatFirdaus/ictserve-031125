@@ -45,7 +45,12 @@ class HrmisIntegrationService
      *
      * @throws \Exception If HRMIS API is unavailable or returns error
      */
-    public function syncUserProfile(string $staffId): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function syncUserProfile(string $staffId): array
     {
         $cacheKey = "hrmis_user_{$staffId}";
 
@@ -88,7 +93,12 @@ class HrmisIntegrationService
      * @param  string  $staffId  Staff ID
      * @return array Organizational data (department, division, grade, etc.)
      */
-    public function getUserOrganizationalData(string $staffId): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getUserOrganizationalData(string $staffId): array
     {
         $cacheKey = "hrmis_org_{$staffId}";
 
@@ -152,7 +162,12 @@ class HrmisIntegrationService
      * @param  float  $assetValue  Total asset value
      * @return array Approver details
      */
-    public function determineApprover(string $staffId, float $assetValue): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function determineApprover(string $staffId, float $assetValue): array
     {
         $orgData = $this->getUserOrganizationalData($staffId);
         $applicantGrade = $orgData['grade'] ?? null;
@@ -198,7 +213,12 @@ class HrmisIntegrationService
      * @param  int|null  $departmentId  Department ID
      * @return array Approver details
      */
-    private function findApproverByGrade(string $requiredGrade, ?int $departmentId): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function findApproverByGrade(string $requiredGrade, ?int $departmentId): array
     {
         $cacheKey = "hrmis_approver_{$requiredGrade}_{$departmentId}";
 
@@ -243,7 +263,12 @@ class HrmisIntegrationService
      *
      * @return array Department and division data
      */
-    public function syncOrganizationalStructure(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function syncOrganizationalStructure(): array
     {
         $cacheKey = 'hrmis_org_structure';
 
@@ -335,7 +360,12 @@ class HrmisIntegrationService
      *
      * @return array Health status information
      */
-    public function checkHealthStatus(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkHealthStatus(): array
     {
         try {
             $healthCheckTimeout = config('services.hrmis.health_check_timeout', 5);

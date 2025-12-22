@@ -37,7 +37,12 @@ class AICacheStatsUpdate implements ShouldBroadcast
      *
      * @param  array<string, mixed>  $stats  Statistik cache AI
      */
-    public function __construct(array $stats)
+    
+
+/**
+ * @param array<string, mixed> $stats
+ */
+public function __construct(array $stats)
     {
         $this->stats = $this->sanitizeStats($stats);
         $this->timestamp = now()->timezone('Asia/Kuala_Lumpur')->format('Y-m-d H:i:s');
@@ -49,7 +54,12 @@ class AICacheStatsUpdate implements ShouldBroadcast
      * @param  array<string, mixed>  $stats
      * @return array<string, mixed>
      */
-    private function sanitizeStats(array $stats): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function sanitizeStats(array $stats): array
     {
         $allowedKeys = [
             'hit_rate',
@@ -65,7 +75,12 @@ class AICacheStatsUpdate implements ShouldBroadcast
         return array_intersect_key($stats, array_flip($allowedKeys));
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-performance'),
@@ -77,7 +92,12 @@ class AICacheStatsUpdate implements ShouldBroadcast
         return 'AICacheStatsUpdate';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'stats' => $this->stats,

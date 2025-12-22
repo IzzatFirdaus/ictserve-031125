@@ -37,7 +37,12 @@ class LoanApplicationService
      *
      * @throws \Exception
      */
-    public function createHybridApplication(array $data, ?User $user = null): LoanApplication
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createHybridApplication(array $data, ?User $user = null): LoanApplication
     {
         DB::beginTransaction();
 
@@ -114,7 +119,12 @@ class LoanApplicationService
      *
      * @param  array  $items  Array of asset IDs or asset data
      */
-    private function createLoanItems(LoanApplication $application, array $items): void
+    
+
+/**
+ * @param array<string, mixed> $items
+ */
+private function createLoanItems(LoanApplication $application, array $items): void
     {
         foreach ($items as $item) {
             // Handle both asset_id format and equipment_type format

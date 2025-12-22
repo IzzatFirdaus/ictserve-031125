@@ -33,7 +33,12 @@ class SubmissionService
      * @param  string  $type  'tickets' or 'loans'
      * @param  array<string, mixed>  $filters
      */
-    public function getUserSubmissions(User $user, string $type, array $filters = []): LengthAwarePaginator
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function getUserSubmissions(User $user, string $type, array $filters = []): LengthAwarePaginator
     {
         $query = $type === 'tickets'
             ? HelpdeskTicket::where('user_id', $user->id)
@@ -80,7 +85,12 @@ class SubmissionService
      *
      * @param  array<string, mixed>  $filters
      */
-    private function applyFilters(Builder $query, array $filters): Builder
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function applyFilters(Builder $query, array $filters): Builder
     {
         // Status filter (multi-select)
         if (isset($filters['status']) && is_array($filters['status'])) {
@@ -195,7 +205,12 @@ class SubmissionService
      * @param  array<string, mixed>  $filters
      * @return LengthAwarePaginator<int, HelpdeskTicket|LoanApplication>
      */
-    public function getSubmissionHistory(User $user, array $filters, int $perPage = 20): LengthAwarePaginator
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function getSubmissionHistory(User $user, array $filters, int $perPage = 20): LengthAwarePaginator
     {
         $type = $filters['type'] ?? 'helpdesk';
 
@@ -267,7 +282,12 @@ class SubmissionService
      *
      * @param  array<string, mixed>  $filters
      */
-    public function saveSearch(User $user, string $name, string $type, array $filters): \App\Models\SavedSearch
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function saveSearch(User $user, string $name, string $type, array $filters): \App\Models\SavedSearch
     {
         return \App\Models\SavedSearch::create([
             'user_id' => $user->id,

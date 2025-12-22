@@ -27,7 +27,12 @@ class ReportExportService
      * @param  array<string, mixed>  $options
      * @return array<string, string>
      */
-    public function generateReportFiles(array $reportData, array $options = []): array
+    
+
+/**
+ * @param array<string, mixed> $options
+ */
+public function generateReportFiles(array $reportData, array $options = []): array
     {
         $formats = is_array($options['formats'] ?? null) ? $options['formats'] : ['pdf'];
         $recipient = is_object($options['recipient'] ?? null) ? $options['recipient'] : null;
@@ -73,7 +78,12 @@ class ReportExportService
      *
      * @param  array<string, mixed>  $data
      */
-    public function exportUnifiedAnalyticsCSV(array $data): string
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function exportUnifiedAnalyticsCSV(array $data): string
     {
         $csv = $this->createCSVHeader();
 
@@ -141,7 +151,12 @@ class ReportExportService
      *
      * @param  array<string, mixed>  $reportData
      */
-    private function generateCSV(array $reportData): string
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function generateCSV(array $reportData): string
     {
         return $this->exportUnifiedAnalyticsCSV($reportData);
     }
@@ -151,7 +166,12 @@ class ReportExportService
      *
      * @param  array<string, mixed>  $reportData
      */
-    private function generatePDF(array $reportData): string
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function generatePDF(array $reportData): string
     {
         // For now, return a simple text-based PDF content
         // In a real implementation, you would use a PDF library like DomPDF or TCPDF
@@ -168,7 +188,12 @@ class ReportExportService
      *
      * @param  array<string, mixed>  $reportData
      */
-    private function generateExcel(array $reportData): string
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function generateExcel(array $reportData): string
     {
         // For now, return CSV format which Excel can open
         // In a real implementation, you would use PhpSpreadsheet
@@ -181,7 +206,12 @@ class ReportExportService
      *
      * @param  array<string, mixed>  $reportData
      */
-    private function generateTextReport(array $reportData): string
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function generateTextReport(array $reportData): string
     {
         $report = [];
 
@@ -274,7 +304,12 @@ class ReportExportService
      *
      * @param  array<string, mixed>  $data
      */
-    private function arrayToCSV(array $data): string
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+private function arrayToCSV(array $data): string
     {
         $csv = '';
         foreach ($data as $key => $value) {
@@ -289,7 +324,12 @@ class ReportExportService
      *
      * @param  array<string, mixed>  $reportData
      */
-    private function generateFilename(array $reportData, string $format, ?object $recipient = null): string
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function generateFilename(array $reportData, string $format, ?object $recipient = null): string
     {
         $info = is_array($reportData['report_info'] ?? null) ? $reportData['report_info'] : [];
         $timestamp = now()->format('Ymd_His');

@@ -44,7 +44,12 @@ class ConfigurableAlertService
      *
      * @return array<string, mixed>
      */
-    public function checkAllAlerts(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkAllAlerts(): array
     {
         $results = [];
         $config = $this->getAlertConfiguration();
@@ -77,7 +82,12 @@ class ConfigurableAlertService
      *
      * @return array<string, mixed>
      */
-    public function checkOverdueTickets(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkOverdueTickets(): array
     {
         $config = $this->getAlertConfiguration();
         $threshold = (int) ($config['overdue_tickets_threshold'] ?? 5);
@@ -110,7 +120,12 @@ class ConfigurableAlertService
     /**
      * Check for overdue loans and send alerts
      */
-    public function checkOverdueLoans(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkOverdueLoans(): array
     {
         $config = $this->getAlertConfiguration();
         $threshold = $config['overdue_loans_threshold'];
@@ -142,7 +157,12 @@ class ConfigurableAlertService
     /**
      * Check for approval delays and send alerts
      */
-    public function checkApprovalDelays(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkApprovalDelays(): array
     {
         $config = $this->getAlertConfiguration();
         $thresholdHours = $config['approval_delay_hours'];
@@ -176,7 +196,12 @@ class ConfigurableAlertService
     /**
      * Check for critical asset shortages and send alerts
      */
-    public function checkAssetShortages(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkAssetShortages(): array
     {
         $config = $this->getAlertConfiguration();
         $thresholdPercentage = $config['critical_asset_shortage_percentage'];
@@ -212,7 +237,12 @@ class ConfigurableAlertService
      *
      * @return array<string, mixed>
      */
-    public function checkSystemHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkSystemHealth(): array
     {
         $config = $this->getAlertConfiguration();
         $threshold = (int) ($config['system_health_threshold'] ?? 70);
@@ -252,7 +282,12 @@ class ConfigurableAlertService
      *
      * @param  array<string, mixed>  $alertData
      */
-    private function sendAlert(array $alertData): void
+    
+
+/**
+ * @param array<string, mixed> $alertData
+ */
+private function sendAlert(array $alertData): void
     {
         $config = $this->getAlertConfiguration();
         $alertType = is_string($alertData['type'] ?? null) ? $alertData['type'] : 'unknown';
@@ -315,7 +350,12 @@ class ConfigurableAlertService
      *
      * @return array<string, mixed>
      */
-    public function getAlertConfiguration(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAlertConfiguration(): array
     {
         $cached = Cache::remember(self::CACHE_PREFIX.'config', 3600, function () {
             // In a real implementation, this would come from a database table
@@ -339,7 +379,12 @@ class ConfigurableAlertService
      *
      * @param  array<string, mixed>  $config
      */
-    public function updateAlertConfiguration(array $config): void
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function updateAlertConfiguration(array $config): void
     {
         // Merge with existing configuration to preserve unmodified values
         $currentConfig = $this->getAlertConfiguration();
@@ -443,7 +488,12 @@ class ConfigurableAlertService
      *
      * @param  array<string, mixed>  $alertData
      */
-    private function getAlertTitle(array $alertData): string
+    
+
+/**
+ * @param array<string, mixed> $alertData
+ */
+private function getAlertTitle(array $alertData): string
     {
         $type = is_string($alertData['type'] ?? null) ? $alertData['type'] : 'unknown';
 
@@ -517,7 +567,12 @@ class ConfigurableAlertService
      *
      * @return array<int, array<string, mixed>>
      */
-    private function getDelayedApprovalsDetails(int $thresholdHours): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getDelayedApprovalsDetails(int $thresholdHours): array
     {
         return \App\Models\LoanApplication::where('status', 'under_review')
             ->where('created_at', '<', now()->subHours($thresholdHours))
@@ -543,7 +598,12 @@ class ConfigurableAlertService
      *
      * @return array<int, array<string, mixed>>
      */
-    private function getAssetShortageDetails(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getAssetShortageDetails(): array
     {
         return \App\Models\Asset::selectRaw('
                 category_id,
@@ -572,7 +632,12 @@ class ConfigurableAlertService
      * @param  array<string, mixed>  $metrics
      * @return array<string, mixed>
      */
-    private function getSystemHealthDetails(array $metrics): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getSystemHealthDetails(array $metrics): array
     {
         $helpdeskMetrics = is_array($metrics['helpdesk'] ?? null) ? $metrics['helpdesk'] : [];
         $loanMetrics = is_array($metrics['loans'] ?? null) ? $metrics['loans'] : [];

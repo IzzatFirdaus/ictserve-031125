@@ -70,7 +70,12 @@ class EmailNotificationService
      * @param  array<int, int>  $emailIds
      * @return array<string, int>
      */
-    public function bulkRetryEmails(array $emailIds): array
+    
+
+/**
+ * @param array<string, mixed> $emailIds
+ */
+public function bulkRetryEmails(array $emailIds): array
     {
         return [
             'success' => count($emailIds),

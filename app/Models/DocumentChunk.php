@@ -103,7 +103,12 @@ class DocumentChunk extends Model
     /**
      * Kira persamaan cosine dengan embedding lain
      */
-    public function cosineSimilarity(array $otherEmbedding): float
+    
+
+/**
+ * @param array<string, mixed> $otherEmbedding
+ */
+public function cosineSimilarity(array $otherEmbedding): float
     {
         if (empty($this->embedding) || empty($otherEmbedding)) {
             return 0.0;

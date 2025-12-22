@@ -216,7 +216,12 @@ class FaqController extends Controller
     /**
      * Format respons berjaya
      */
-    private function successResponse(array $data, int $status = 200): JsonResponse
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+private function successResponse(array $data, int $status = 200): JsonResponse
     {
         return response()->json([
             'success' => true,

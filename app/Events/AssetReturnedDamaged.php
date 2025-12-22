@@ -43,7 +43,12 @@ class AssetReturnedDamaged implements ShouldBroadcast
      *
      * @return array<int, Channel>
      */
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         // Broadcast to the asset-specific private channel so staff and
         // authorized users monitoring this asset get notified.
@@ -65,7 +70,12 @@ class AssetReturnedDamaged implements ShouldBroadcast
      *
      * @return array<string, mixed>
      */
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'transaction_id' => $this->transaction->id,

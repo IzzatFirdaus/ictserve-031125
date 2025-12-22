@@ -67,7 +67,12 @@ class RegistrationService implements RegistrationServiceInterface
      *
      * @throws InvalidEmailDomainException If email is not @motac.gov.my
      */
-    public function register(array $data): User
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function register(array $data): User
     {
         // Validate email domain
         if (! $this->validateEmailDomain($data['email'])) {

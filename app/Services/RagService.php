@@ -82,7 +82,7 @@ class RagService
      * @param  string|null  $sessionId  ID sesi untuk konteks perbualan
      * @param  int|null  $userId  ID pengguna (nullable untuk tetamu)
      * @param  string|null  $email  Email tetamu untuk claiming feature
-     * @return array Respons yang mengandungi jawapan, sumber, dan metadata
+     * @return array<string, mixed> Respons yang mengandungi jawapan, sumber, dan metadata
      */
     public function processQuery(
         string $query,
@@ -141,7 +141,7 @@ class RagService
                         'sources' => array_map(fn ($item) => [
                             'type' => $item['type'],
                             'source' => $item['source'],
-                            'similarity' => round($item['similarity'], 3),
+                            'similarity' => round((float) ($item['similarity'] ?? 0), 3),
                         ], $relevantContext),
                         'confidence' => $this->calculateConfidence($relevantContext),
                     ];
@@ -217,6 +217,8 @@ class RagService
 
     /**
      * Dapatkan konteks perbualan dari cache atau database
+     * 
+     * @return array<string, mixed>
      */
     private function getConversationContext(?string $sessionId, ?int $userId): array
     {
@@ -252,7 +254,12 @@ class RagService
      * @param  array<int, float>  $queryEmbedding
      * @return array<int, array<string, mixed>>
      */
-    private function retrieveRelevantContext(array $queryEmbedding, string $query): array
+    
+
+/**
+ * @param array<string, mixed> $queryEmbedding
+ */
+private function retrieveRelevantContext(array $queryEmbedding, string $query): array
     {
         // 1. Cari FAQ yang berkaitan (tidak bergantung pada embedding)
         $relevantFaqs = $this->searchRelevantFaqs($queryEmbedding, $query);
@@ -286,7 +293,12 @@ class RagService
      * @param  string  $searchQuery  Query teks untuk carian
      * @return array<int, array<string, mixed>>
      */
-    private function searchRelevantFaqs(array $queryEmbedding, string $searchQuery): array
+    
+
+/**
+ * @param array<string, mixed> $queryEmbedding
+ */
+private function searchRelevantFaqs(array $queryEmbedding, string $searchQuery): array
     {
         // Note: $queryEmbedding reserved untuk future embedding-based FAQ search
         // Buat masa ini, FAQ model tidak mempunyai embedding field
@@ -326,8 +338,16 @@ class RagService
 
     /**
      * Cari document chunks yang berkaitan
+     * 
+     * @param array<int, float> $queryEmbedding
+     * @return array<int, array<string, mixed>>
      */
-    private function searchRelevantDocuments(array $queryEmbedding): array
+    
+
+/**
+ * @param array<string, mixed> $queryEmbedding
+ */
+private function searchRelevantDocuments(array $queryEmbedding): array
     {
         $chunks = [];
 
@@ -379,7 +399,12 @@ class RagService
      * @param  array<int, array<string, mixed>>  $context
      * @param  array<int, array<string, mixed>>  $conversationHistory
      */
-    private function constructPrompt(string $query, array $context, array $conversationHistory): string
+    
+
+/**
+ * @param array<string, mixed> $conversationHistory
+ */
+private function constructPrompt(string $query, array $context, array $conversationHistory): string
     {
         $systemPrompt = 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. Jawab dalam Bahasa Melayu sahaja dengan format teks biasa yang mudah dibaca (JANGAN gunakan markdown, bullet points, atau formatting khas).
 
@@ -418,6 +443,8 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
 
     /**
      * Jana respons menggunakan LLM
+     * 
+     * @return array<string, mixed>
      */
     private function generateResponse(string $prompt, ?string $sessionId = null, ?int $userId = null): array
     {
@@ -466,7 +493,12 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
      * @param  array<int, array<string, mixed>>  $context
      * @return array<string, mixed>
      */
-    private function postProcessResponse(array $response, array $context): array
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function postProcessResponse(array $response, array $context): array
     {
         $answer = $response['response'] ?? '';
 
@@ -493,7 +525,12 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
     /**
      * Kira confidence score berdasarkan kualiti konteks
      */
-    private function calculateConfidence(array $context): float
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function calculateConfidence(array $context): float
     {
         if (empty($context)) {
             return 0.0;
@@ -511,7 +548,12 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
      *
      * @param  array<string, mixed>  $response
      */
-    private function saveConversationContext(
+    
+
+/**
+ * @param array<string, mixed> $response
+ */
+private function saveConversationContext(
         ?string $sessionId,
         ?int $userId,
         ?string $email,
@@ -550,7 +592,12 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
     /**
      * Simpan guest conversation untuk claiming feature
      */
-    private function saveGuestConversation(string $sessionId, string $email, array $context): void
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function saveGuestConversation(string $sessionId, string $email, array $context): void
     {
         GuestConversation::updateOrCreate(
             ['session_id' => $sessionId],
@@ -565,7 +612,12 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
     /**
      * Log operasi untuk audit trail
      */
-    private function logOperation(
+    
+
+/**
+ * @param array<string, mixed> $response
+ */
+private function logOperation(
         string $requestId,
         string $query,
         array $response,
@@ -722,6 +774,8 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
 
     /**
      * Dapatkan sejarah perbualan untuk pengguna
+     * 
+     * @return array<int, array<string, mixed>>
      */
     public function getConversationHistory(string $sessionId, ?int $userId = null): array
     {
@@ -749,7 +803,12 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
      * @param  array<int, array<string, mixed>>  $conversationContext  Konteks perbualan sedia ada (reserved untuk future use)
      * @return array<string, mixed> Respons AI
      */
-    public function query(string $userQuery, array $conversationContext = []): array
+    
+
+/**
+ * @param array<string, mixed> $conversationContext
+ */
+public function query(string $userQuery, array $conversationContext = []): array
     {
         // Note: $conversationContext reserved untuk future direct context injection
         // Buat masa ini, konteks diuruskan secara dalaman melalui session

@@ -32,7 +32,12 @@ class HorizonMonitoringService
      *
      * Requirement 23.5: Automated alerting for queue issues
      */
-    public function checkHealthAndAlert(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkHealthAndAlert(): array
     {
         $healthStatus = [
             'supervisors' => $this->checkSupervisors(),
@@ -53,7 +58,12 @@ class HorizonMonitoringService
     /**
      * Check supervisor health
      */
-    private function checkSupervisors(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkSupervisors(): array
     {
         $supervisors = collect($this->supervisors->all());
         $unhealthy = $supervisors->filter(fn ($supervisor) => ! $supervisor->isRunning());
@@ -74,7 +84,12 @@ class HorizonMonitoringService
      *
      * Requirement 23.5: Long wait times exceeding 60 seconds
      */
-    private function checkQueueWaitTimes(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkQueueWaitTimes(): array
     {
         return [
             'healthy' => true,
@@ -87,7 +102,12 @@ class HorizonMonitoringService
      *
      * Requirement 23.5: Failed job accumulation exceeding 10 jobs
      */
-    private function checkFailedJobs(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkFailedJobs(): array
     {
         $failedJobs = $this->jobs->countRecentlyFailed();
         $threshold = 10;
@@ -103,7 +123,12 @@ class HorizonMonitoringService
     /**
      * Check worker process health
      */
-    private function checkWorkerProcesses(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkWorkerProcesses(): array
     {
         $supervisors = collect($this->supervisors->all());
         $totalProcesses = $supervisors->sum(fn ($supervisor) => $supervisor->processes->count());
@@ -124,7 +149,12 @@ class HorizonMonitoringService
     /**
      * Send health alert to administrators
      */
-    private function sendHealthAlert(array $issues): void
+    
+
+/**
+ * @param array<string, mixed> $issues
+ */
+private function sendHealthAlert(array $issues): void
     {
         // Implement cooldown to prevent spam
         $cacheKey = 'horizon_health_alert_sent';
@@ -164,7 +194,12 @@ class HorizonMonitoringService
     /**
      * Format health alert message
      */
-    private function formatHealthAlert(array $issues): string
+    
+
+/**
+ * @param array<string, mixed> $issues
+ */
+private function formatHealthAlert(array $issues): string
     {
         $message = "AMARAN: Isu kesihatan sistem Horizon ICTServe dikesan.\n\n";
 
@@ -207,7 +242,12 @@ class HorizonMonitoringService
      *
      * Requirement 23.8: Integration with Laravel Pulse
      */
-    public function getMetricsForPulse(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getMetricsForPulse(): array
     {
         return [
             'queue_wait_times' => $this->getQueueWaitTimes(),
@@ -220,7 +260,12 @@ class HorizonMonitoringService
     /**
      * Get queue wait times for all configured queues
      */
-    private function getQueueWaitTimes(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getQueueWaitTimes(): array
     {
         return [];
     }
@@ -228,7 +273,12 @@ class HorizonMonitoringService
     /**
      * Get job throughput metrics
      */
-    private function getJobThroughput(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getJobThroughput(): array
     {
         return [
             'jobs_per_minute' => $this->metrics->jobsProcessedPerMinute(),
@@ -240,7 +290,12 @@ class HorizonMonitoringService
     /**
      * Get failed job rate
      */
-    private function getFailedJobRate(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getFailedJobRate(): array
     {
         $recentJobs = $this->jobs->countRecent();
         $failedJobs = $this->jobs->countRecentlyFailed();
@@ -255,7 +310,12 @@ class HorizonMonitoringService
     /**
      * Get supervisor status summary
      */
-    private function getSupervisorStatus(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getSupervisorStatus(): array
     {
         $supervisors = collect($this->supervisors->all());
 
@@ -287,7 +347,12 @@ class HorizonMonitoringService
     /**
      * Get queue statistics for dashboard
      */
-    public function getQueueStatistics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getQueueStatistics(): array
     {
         $queues = ['default', 'helpdesk', 'notifications', 'asset-loan', 'approvals', 'ai-chatbot', 'reports'];
         $statistics = [];

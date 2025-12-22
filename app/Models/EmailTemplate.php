@@ -124,17 +124,32 @@ class EmailTemplate extends Model implements Auditable
         return $query->where('locale', $locale);
     }
 
-    public function renderSubject(array $data = []): string
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function renderSubject(array $data = []): string
     {
         return $this->replaceVariables($this->subject, $data);
     }
 
-    public function renderBody(array $data = []): string
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function renderBody(array $data = []): string
     {
         return $this->replaceVariables($this->body_html, $data);
     }
 
-    private function replaceVariables(string $content, array $data): string
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+private function replaceVariables(string $content, array $data): string
     {
         foreach ($data as $key => $value) {
             $content = str_replace("{{{$key}}}", (string) $value, $content);
