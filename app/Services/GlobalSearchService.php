@@ -88,7 +88,12 @@ public function search(string $query, array $resourceTypes = [], array $filters 
      *
      * @param  array<string, mixed>  $filters
      */
-    private function searchTickets(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchTickets(string $query, array $filters): Collection
     {
         $queryBuilder = HelpdeskTicket::query()
             ->with(['user', 'assignedTo', 'division'])
@@ -143,7 +148,12 @@ public function search(string $query, array $resourceTypes = [], array $filters 
      *
      * @param  array<string, mixed>  $filters
      */
-    private function searchLoans(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchLoans(string $query, array $filters): Collection
     {
         $queryBuilder = LoanApplication::query()
             ->with(['applicant', 'loanItems.asset'])
@@ -193,7 +203,12 @@ public function search(string $query, array $resourceTypes = [], array $filters 
      *
      * @param  array<string, mixed>  $filters
      */
-    private function searchAssets(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchAssets(string $query, array $filters): Collection
     {
         $queryBuilder = Asset::query()
             ->with(['category'])
@@ -243,7 +258,12 @@ public function search(string $query, array $resourceTypes = [], array $filters 
      *
      * @param  array<string, mixed>  $filters
      */
-    private function searchUsers(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchUsers(string $query, array $filters): Collection
     {
         $queryBuilder = User::query()
             ->with(['division', 'grade', 'roles'])
@@ -292,7 +312,12 @@ public function search(string $query, array $resourceTypes = [], array $filters 
      *
      * @param  array<string>  $fields
      */
-    private function calculateRelevance(string $query, array $fields): float
+    
+
+/**
+ * @param array<string, mixed> $fields
+ */
+private function calculateRelevance(string $query, array $fields): float
     {
         $score = 0.0;
         $query = strtolower($query);
@@ -349,7 +374,12 @@ private function sortByRelevance(array $results, string $query): array
      * @param  array<string>  $resourceTypes
      * @param  array<string, mixed>  $filters
      */
-    private function generateCacheKey(string $query, array $resourceTypes, array $filters): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function generateCacheKey(string $query, array $resourceTypes, array $filters): string
     {
         return 'global_search:'.md5($query.json_encode($resourceTypes).json_encode($filters));
     }

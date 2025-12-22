@@ -52,7 +52,12 @@ class LoanIssuedMail extends Mailable implements ShouldQueue
         );
     }
 
-    private function formatAccessories(array $accessories): string
+    
+
+/**
+ * @param array<string, mixed> $accessories
+ */
+private function formatAccessories(array $accessories): string
     {
         if (empty($accessories)) {
             return 'Tiada aksesori';

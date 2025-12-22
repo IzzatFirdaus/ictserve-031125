@@ -32,7 +32,12 @@ class AccountLinked implements ShouldBroadcast
      * @param int $linkedSubmissionsCount Number of submissions linked
      * @param array<string> $submissionTypes Types of submissions linked (helpdesk, loan)
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $submissionTypes
+ */
+public function __construct(
         public User $user,
         public int $linkedSubmissionsCount,
         public array $submissionTypes

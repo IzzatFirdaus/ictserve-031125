@@ -46,7 +46,12 @@ class ProcessNotificationDigest implements ShouldQueue
      *                                        - user_id: int (optional, process single user)
      *                                        - force: bool (optional, send even if no notifications)
      */
-    public function __construct(private array $payload)
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+public function __construct(private array $payload)
     {
         $this->onQueue('digests');
     }

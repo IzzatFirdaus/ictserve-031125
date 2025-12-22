@@ -36,7 +36,12 @@ class SecurityIncidentMail extends Mailable implements ShouldQueue
     /**
      * Create a new message instance.
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $incidentData
+ */
+public function __construct(
         public array $incidentData,
         public User $recipient
     ) {

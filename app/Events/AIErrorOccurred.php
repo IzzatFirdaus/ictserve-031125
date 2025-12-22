@@ -51,7 +51,12 @@ class AIErrorOccurred implements ShouldBroadcastNow
      * @param  array  $context  Konteks tambahan (sanitized)
      * @param  string|null  $requestId  X-Request-ID untuk audit trail
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function __construct(
         string $errorType,
         string $message,
         string $severity = 'medium',
@@ -109,6 +114,8 @@ class AIErrorOccurred implements ShouldBroadcastNow
     
 
 /**
+  * @param array<string, mixed> $context
+
  * @return array<string, mixed>
  */
 private function sanitizeContext(array $context): array

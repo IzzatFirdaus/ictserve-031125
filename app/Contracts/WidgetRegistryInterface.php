@@ -22,7 +22,12 @@ interface WidgetRegistryInterface
      * @param  string  $widgetClass  Fully qualified widget class name
      * @param  array  $config  Widget configuration (category, sort_order, roles, etc.)
      */
-    public function register(string $widgetClass, array $config = []): void;
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function register(string $widgetClass, array $config = []): void;
 
     /**
      * Remove a widget from the registry

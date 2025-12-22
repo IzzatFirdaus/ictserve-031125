@@ -282,7 +282,12 @@ public function checkSystemHealth(): array
      *
      * @param  array<string, mixed>  $alertData
      */
-    private function sendAlert(array $alertData): void
+    
+
+/**
+ * @param array<string, mixed> $alertData
+ */
+private function sendAlert(array $alertData): void
     {
         $config = $this->getAlertConfiguration();
         $alertType = is_string($alertData['type'] ?? null) ? $alertData['type'] : 'unknown';
@@ -374,7 +379,12 @@ public function getAlertConfiguration(): array
      *
      * @param  array<string, mixed>  $config
      */
-    public function updateAlertConfiguration(array $config): void
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function updateAlertConfiguration(array $config): void
     {
         // Merge with existing configuration to preserve unmodified values
         $currentConfig = $this->getAlertConfiguration();
@@ -478,7 +488,12 @@ public function getAlertConfiguration(): array
      *
      * @param  array<string, mixed>  $alertData
      */
-    private function getAlertTitle(array $alertData): string
+    
+
+/**
+ * @param array<string, mixed> $alertData
+ */
+private function getAlertTitle(array $alertData): string
     {
         $type = is_string($alertData['type'] ?? null) ? $alertData['type'] : 'unknown';
 

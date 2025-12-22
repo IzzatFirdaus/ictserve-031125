@@ -83,7 +83,12 @@ class AICostWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $costMetrics
      */
-    private function createDailyCostStat(array $costMetrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $costMetrics
+ */
+private function createDailyCostStat(array $costMetrics): Stat
     {
         $dailyCost = $costMetrics['daily_cost_usd'] ?? 0;
         $yesterdayCost = $costMetrics['yesterday_cost_usd'] ?? 0;
@@ -116,7 +121,12 @@ class AICostWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $costMetrics
      */
-    private function createMonthlyCostStat(array $costMetrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $costMetrics
+ */
+private function createMonthlyCostStat(array $costMetrics): Stat
     {
         $monthlyCost = $costMetrics['monthly_cost_usd'] ?? 0;
         $estimatedMonthlyCost = $costMetrics['estimated_monthly_cost'] ?? 0;
@@ -148,7 +158,12 @@ class AICostWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $costMetrics
      */
-    private function createCostTrendStat(array $costMetrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $costMetrics
+ */
+private function createCostTrendStat(array $costMetrics): Stat
     {
         $trendPercent = $costMetrics['cost_trend_percent'] ?? 0;
         $dailyCost = $costMetrics['daily_cost_usd'] ?? 0;
@@ -193,7 +208,12 @@ class AICostWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $costMetrics
      */
-    private function createOptimizationStat(array $costMetrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $costMetrics
+ */
+private function createOptimizationStat(array $costMetrics): Stat
     {
         $recommendations = $costMetrics['recommendations'] ?? [];
         $recommendationCount = count($recommendations);

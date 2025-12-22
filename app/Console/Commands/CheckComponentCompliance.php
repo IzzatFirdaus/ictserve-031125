@@ -152,7 +152,12 @@ class CheckComponentCompliance extends Command
      *     by_type: array<string, array{count: int, average_compliance: float|int|null}>
      * }  $statistics
      */
-    protected function displayStatistics(array $statistics): void
+    
+
+/**
+ * @param array<string, mixed> $statistics
+ */
+protected function displayStatistics(array $statistics): void
     {
         $this->newLine();
         $this->info('📈 Compliance Statistics:');
@@ -189,7 +194,12 @@ class CheckComponentCompliance extends Command
      *
      * @param  array<int, ComplianceResult>  $results
      */
-    protected function displayResults(array $results, int $minScore): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+protected function displayResults(array $results, int $minScore): void
     {
         $this->newLine();
         $this->info('🔍 Detailed Results:');
@@ -217,7 +227,12 @@ class CheckComponentCompliance extends Command
      *
      * @param  ComplianceResult  $result
      */
-    protected function displayComponentResult(array $result): void
+    
+
+/**
+ * @param array<string, mixed> $result
+ */
+protected function displayComponentResult(array $result): void
     {
         $this->newLine();
 
@@ -271,7 +286,12 @@ class CheckComponentCompliance extends Command
      *
      * @param  array{statistics: array<string, mixed>, results: array<int, array<string, mixed>>, generated_at: string}  $report
      */
-    protected function exportReport(array $report, string $format): void
+    
+
+/**
+ * @param array<string, mixed> $report
+ */
+protected function exportReport(array $report, string $format): void
     {
         /** @var array{statistics: array<string, mixed>, results: array<int, ComplianceResult>, generated_at: string} $report */
         $filename = storage_path('app/compliance-report-'.date('Y-m-d-His').".{$format}");
@@ -291,7 +311,12 @@ class CheckComponentCompliance extends Command
      *
      * @param  array<string, mixed>  $report
      */
-    protected function exportHtml(array $report, string $filename): void
+    
+
+/**
+ * @param array<string, mixed> $report
+ */
+protected function exportHtml(array $report, string $filename): void
     {
         $payload = json_encode($report, JSON_PRETTY_PRINT) ?: '';
         $html = '<!doctype html><html><body><pre>'.htmlspecialchars($payload, ENT_QUOTES).'</pre></body></html>';
@@ -303,7 +328,12 @@ class CheckComponentCompliance extends Command
      *
      * @param  array{statistics: array<string, mixed>, results: array<int, ComplianceResult>, generated_at: string}  $report
      */
-    protected function exportCsv(array $report, string $filename): void
+    
+
+/**
+ * @param array<string, mixed> $report
+ */
+protected function exportCsv(array $report, string $filename): void
     {
         $csv = fopen($filename, 'w');
         if ($csv === false) {

@@ -46,7 +46,12 @@ class WidgetLazyLoader
      * @param  array  $config  Widget configuration
      * @return bool True if should be lazy loaded
      */
-    public function shouldLazyLoad(string $widgetClass, array $config = []): bool
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function shouldLazyLoad(string $widgetClass, array $config = []): bool
     {
         // Never lazy load critical header widgets
         $category = $config['category'] ?? $this->detectCategory($widgetClass);
@@ -71,7 +76,12 @@ class WidgetLazyLoader
      * @param  array  $config  Widget configuration
      * @return int Priority (1 = highest, 3 = lowest)
      */
-    public function getLazyLoadPriority(string $widgetClass, array $config = []): int
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function getLazyLoadPriority(string $widgetClass, array $config = []): int
     {
         $category = $config['category'] ?? $this->detectCategory($widgetClass);
 
@@ -85,7 +95,12 @@ class WidgetLazyLoader
      * @param  array  $config  Widget configuration
      * @return string HTML placeholder
      */
-    public function createLazyLoadComponent(string $widgetClass, array $config = []): string
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function createLazyLoadComponent(string $widgetClass, array $config = []): string
     {
         $priority = $this->getLazyLoadPriority($widgetClass, $config);
         $placeholder = $this->getPlaceholderContent($widgetClass, $config);
@@ -107,7 +122,12 @@ class WidgetLazyLoader
      * @param  array  $config  Widget configuration
      * @return array Placeholder configuration
      */
-    public function getPlaceholderContent(string $widgetClass, array $config = []): array
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function getPlaceholderContent(string $widgetClass, array $config = []): array
     {
         $category = $config['category'] ?? $this->detectCategory($widgetClass);
         $displayName = $this->getWidgetDisplayName($widgetClass);

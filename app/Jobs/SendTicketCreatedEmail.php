@@ -31,7 +31,12 @@ class SendTicketCreatedEmail implements ShouldQueue
     /**
      * @param  array<string,mixed>  $payload  Data originally stored on EmailLog->data
      */
-    public function __construct(private array $payload) {}
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+public function __construct(private array $payload) {}
 
     public function handle(): void
     {

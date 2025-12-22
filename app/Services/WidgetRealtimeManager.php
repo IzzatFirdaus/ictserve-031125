@@ -62,7 +62,12 @@ class WidgetRealtimeManager
      * @param  int|null  $refreshInterval  Custom refresh interval in seconds
      * @return bool Success status
      */
-    public function broadcastWidgetUpdate(
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function broadcastWidgetUpdate(
         string $widgetId,
         string $widgetType,
         array $data,
@@ -134,7 +139,12 @@ class WidgetRealtimeManager
      * @param  int|null  $refreshInterval  Custom refresh interval
      * @return bool Success status
      */
-    public function broadcastToUser(
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function broadcastToUser(
         int $userId,
         string $widgetId,
         string $widgetType,
@@ -159,7 +169,12 @@ class WidgetRealtimeManager
      * @param  int|null  $refreshInterval  Custom refresh interval
      * @return bool Success status
      */
-    public function broadcastToAdmins(
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function broadcastToAdmins(
         string $widgetId,
         string $widgetType,
         array $data,
@@ -241,7 +256,12 @@ class WidgetRealtimeManager
      * @param  int|null  $userId  User ID for authorization
      * @return array Widget data for polling
      */
-    public function getFallbackPollingData(array $widgetIds, ?int $userId = null): array
+    
+
+/**
+ * @param array<string, mixed> $widgetIds
+ */
+public function getFallbackPollingData(array $widgetIds, ?int $userId = null): array
     {
         $pollingData = [];
 
@@ -332,7 +352,12 @@ class WidgetRealtimeManager
      * @param  array  $newData  New widget data
      * @return bool Whether data has changed
      */
-    private function hasDataChanged(string $widgetId, array $newData): bool
+    
+
+/**
+ * @param array<string, mixed> $newData
+ */
+private function hasDataChanged(string $widgetId, array $newData): bool
     {
         $cacheKey = "widget_data:{$widgetId}";
         $cachedData = $this->cache->get($cacheKey);
@@ -354,7 +379,12 @@ class WidgetRealtimeManager
      * @param  string  $widgetId  Widget identifier
      * @param  array  $data  Widget data
      */
-    private function cacheWidgetData(string $widgetId, array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+private function cacheWidgetData(string $widgetId, array $data): void
     {
         $cacheKey = "widget_data:{$widgetId}";
         $this->cache->put($cacheKey, $data, self::WIDGET_CACHE_TTL);

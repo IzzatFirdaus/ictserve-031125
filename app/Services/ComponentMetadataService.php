@@ -88,7 +88,12 @@ EOT;
      *
      * @phpstan-return MetadataPayload
      */
-    public function generateMetadata(array $component): array
+    
+
+/**
+ * @param array<string, mixed> $component
+ */
+public function generateMetadata(array $component): array
     {
         $componentMetadata = $component['metadata'] ?? [];
         if (! is_array($componentMetadata)) {
@@ -153,7 +158,12 @@ EOT;
      * @param  array<int, ComponentInventoryItem|array<string, mixed>>  $components
      * @return array{success: int, skipped: int, failed: int, errors: array<int, string>}
      */
-    public function batchAddMetadata(array $components): array
+    
+
+/**
+ * @param array<string, mixed> $components
+ */
+public function batchAddMetadata(array $components): array
     {
         $results = [
             'success' => 0,
@@ -196,7 +206,12 @@ EOT;
      *
      * @param  array<string, mixed>  $metadata
      */
-    public function addMetadata(string $path, array $metadata): bool
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function addMetadata(string $path, array $metadata): bool
     {
         if (! File::exists($path)) {
             return false;
@@ -229,7 +244,12 @@ EOT;
      *
      * @param  array<string, mixed>  $metadata
      */
-    private function generateMetadataHeader(array $metadata): string
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+private function generateMetadataHeader(array $metadata): string
     {
         $category = is_string($metadata['category'] ?? null) ? $metadata['category'] : 'Component';
         $name = is_string($metadata['name'] ?? null) ? $metadata['name'] : 'Unknown';
@@ -288,7 +308,12 @@ EOT;
      * @param  array<string, mixed>  $defaultMetadata
      * @return array{success: bool, category: string, processed: int, skipped: int, total: int, message?: string}
      */
-    public function addMetadataToCategory(string $category, array $defaultMetadata = []): array
+    
+
+/**
+ * @param array<string, mixed> $defaultMetadata
+ */
+public function addMetadataToCategory(string $category, array $defaultMetadata = []): array
     {
         $categoryPath = resource_path("views/components/{$category}");
 
@@ -456,7 +481,12 @@ EOT;
      *
      * @param  array<string, mixed>  $updates
      */
-    public function updateMetadata(string $path, array $updates): bool
+    
+
+/**
+ * @param array<string, mixed> $updates
+ */
+public function updateMetadata(string $path, array $updates): bool
     {
         if (! File::exists($path)) {
             return false;

@@ -51,7 +51,12 @@ class AuditExportService
      * @param  array<string, mixed>  $filters
      * @return string File path
      */
-    public function exportToCSV(array $filters = []): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function exportToCSV(array $filters = []): string
     {
         $query = $this->buildQuery($filters);
         $filename = $this->generateFilename('csv');
@@ -105,7 +110,12 @@ class AuditExportService
      *
      * @param  array<string, mixed>  $filters
      */
-    public function exportAuditLogs(string $format = 'csv', ?string $dateFrom = null, ?string $dateTo = null, array $eventTypes = []): string
+    
+
+/**
+ * @param array<string, mixed> $eventTypes
+ */
+public function exportAuditLogs(string $format = 'csv', ?string $dateFrom = null, ?string $dateTo = null, array $eventTypes = []): string
     {
         $filters = array_filter([
             'created_from' => $dateFrom,
@@ -152,7 +162,12 @@ class AuditExportService
      * @param  array<string, mixed>  $filters
      * @return string File path
      */
-    public function exportToJSON(array $filters = []): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function exportToJSON(array $filters = []): string
     {
         $query = $this->buildQuery($filters);
         $filename = $this->generateFilename('json');
@@ -206,7 +221,12 @@ class AuditExportService
      * @param  array<string, mixed>  $filters
      * @return string File path
      */
-    public function exportToExcel(array $filters = []): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function exportToExcel(array $filters = []): string
     {
         // For now, use CSV format as Excel-compatible
         // In production, use a library like PhpSpreadsheet
@@ -225,7 +245,12 @@ class AuditExportService
      * @param  array<string, mixed>  $filters
      * @return string File path
      */
-    public function exportToPDF(array $filters = []): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function exportToPDF(array $filters = []): string
     {
         $query = $this->buildQuery($filters);
         $filename = $this->generateFilename('pdf');
@@ -247,7 +272,12 @@ class AuditExportService
      * @param  array<string, mixed>  $filters
      * @return Builder<Audit>
      */
-    private function buildQuery(array $filters): Builder
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function buildQuery(array $filters): Builder
     {
         $query = Audit::query()->with('user');
 
@@ -295,7 +325,12 @@ class AuditExportService
      *
      * @param  array<string, mixed>  $filters
      */
-    private function generatePDFHTML(Builder $query, array $filters): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function generatePDFHTML(Builder $query, array $filters): string
     {
         $audits = $query->limit(1000)->get(); // Limit for PDF
         $totalRecords = $query->count();

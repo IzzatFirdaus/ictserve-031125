@@ -262,7 +262,12 @@ public function invoke(string $prompt, int $maxTokens = 1000, ?string $modelId =
     /**
      * @param  array<string, mixed>  $context
      */
-    private function logUsage(
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function logUsage(
         string $requestId,
         string $modelId,
         int $inputTokens,

@@ -12,7 +12,12 @@ class CreateHelpdeskTicket extends CreateRecord
 {
     protected static string $resource = HelpdeskTicketResource::class;
 
-    protected function handleRecordCreation(array $data): HelpdeskTicket
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+protected function handleRecordCreation(array $data): HelpdeskTicket
     {
         /** @var HelpdeskTicket $ticket */
         $ticket = static::getModel()::create($data);

@@ -64,7 +64,12 @@ class AIBroadcastingService
     /**
      * Broadcast AI processing started event.
      */
-    public function broadcastProcessingStarted(
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function broadcastProcessingStarted(
         string $operationType,
         array $metadata = [],
         ?string $requestId = null
@@ -91,7 +96,12 @@ class AIBroadcastingService
     /**
      * Broadcast AI processing completed event.
      */
-    public function broadcastProcessingCompleted(
+    
+
+/**
+ * @param array<string, mixed> $result
+ */
+public function broadcastProcessingCompleted(
         string $operationType,
         array $result = [],
         float $processingTime = 0.0,
@@ -124,7 +134,12 @@ class AIBroadcastingService
     /**
      * Broadcast AI error event.
      */
-    public function broadcastError(
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function broadcastError(
         string $errorType,
         string $message,
         string $severity = 'medium',
@@ -167,7 +182,12 @@ class AIBroadcastingService
     /**
      * Broadcast performance alert.
      */
-    public function broadcastPerformanceAlert(
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+public function broadcastPerformanceAlert(
         string $alertType,
         array $metrics = [],
         ?string $requestId = null
@@ -266,7 +286,12 @@ class AIBroadcastingService
     /**
      * Broadcast real-time performance metrics.
      */
-    public function broadcastPerformanceMetrics(array $metrics): void
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+public function broadcastPerformanceMetrics(array $metrics): void
     {
         try {
             event(new AIPerformanceUpdate($metrics));
@@ -280,7 +305,12 @@ class AIBroadcastingService
     /**
      * Broadcast cache statistics.
      */
-    public function broadcastCacheStats(array $stats): void
+    
+
+/**
+ * @param array<string, mixed> $stats
+ */
+public function broadcastCacheStats(array $stats): void
     {
         try {
             event(new AICacheStatsUpdate($stats));
@@ -301,7 +331,12 @@ class AIBroadcastingService
     /**
      * Broadcast resource usage.
      */
-    public function broadcastResourceUsage(array $usage): void
+    
+
+/**
+ * @param array<string, mixed> $usage
+ */
+public function broadcastResourceUsage(array $usage): void
     {
         try {
             event(new AIResourceUsageUpdate($usage, $this->currentDegradationTier));

@@ -26,7 +26,12 @@ class WidgetDeduplicator
      * @param  array  $widgets  Array of widget configurations
      * @return array Array of duplicate information
      */
-    public function detectDuplicates(array $widgets): array
+    
+
+/**
+ * @param array<string, mixed> $widgets
+ */
+public function detectDuplicates(array $widgets): array
     {
         $duplicates = [];
         $seen = [];
@@ -64,7 +69,12 @@ class WidgetDeduplicator
      * @param  array  $widgets  Array of widget configurations
      * @return array Array with duplicates removed
      */
-    public function removeDuplicates(array $widgets): array
+    
+
+/**
+ * @param array<string, mixed> $widgets
+ */
+public function removeDuplicates(array $widgets): array
     {
         $duplicates = $this->detectDuplicates($widgets);
         $filtered = $widgets;
@@ -88,7 +98,12 @@ class WidgetDeduplicator
      * @param  array  $config  Widget configuration
      * @return string MD5 hash signature
      */
-    private function generateWidgetSignature(string $widgetClass, array $config): string
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+private function generateWidgetSignature(string $widgetClass, array $config): string
     {
         $signatureData = [
             'class' => $widgetClass,
@@ -105,7 +120,12 @@ class WidgetDeduplicator
      * @param  array  $widgets  Array of widget configurations
      * @return array Statistics about duplicates
      */
-    public function getStatistics(array $widgets): array
+    
+
+/**
+ * @param array<string, mixed> $widgets
+ */
+public function getStatistics(array $widgets): array
     {
         $duplicates = $this->detectDuplicates($widgets);
 
@@ -128,7 +148,12 @@ class WidgetDeduplicator
      * @param  array  $existingWidgets  Existing widget configurations
      * @return bool True if widget is unique
      */
-    public function isUnique(string $widgetClass, array $config, array $existingWidgets): bool
+    
+
+/**
+ * @param array<string, mixed> $existingWidgets
+ */
+public function isUnique(string $widgetClass, array $config, array $existingWidgets): bool
     {
         $signature = $this->generateWidgetSignature($widgetClass, $config);
 

@@ -119,7 +119,7 @@ public function generateEmbedding(string $text, ?string $model = null): array
     /**
      * Jana embeddings untuk multiple texts secara batch
      *
-     * @param  array  $texts  Array teks untuk dijadikan embeddings
+     * @param  array<string, mixed>  $texts  Array teks untuk dijadikan embeddings
      * @param  string|null  $model  Model untuk digunakan (opsyen)
      * @return array Array embeddings dengan indeks yang sama
      */
@@ -171,7 +171,12 @@ public function generateBatchEmbeddings(array $texts, ?string $model = null): ar
      * @param  array  $embedding2  Embedding kedua
      * @return float Skor similarity (0.0 - 1.0)
      */
-    public function cosineSimilarity(array $embedding1, array $embedding2): float
+    
+
+/**
+ * @param array<string, mixed> $embedding2
+ */
+public function cosineSimilarity(array $embedding1, array $embedding2): float
     {
         if (empty($embedding1) || empty($embedding2)) {
             return 0.0;
@@ -203,7 +208,7 @@ public function generateBatchEmbeddings(array $texts, ?string $model = null): ar
      * Cari embeddings yang paling serupa dari koleksi
      *
      * @param  array  $queryEmbedding  Embedding query
-     * @param  array  $candidateEmbeddings  Array embeddings calon
+     * @param  array<string, mixed>  $candidateEmbeddings  Array embeddings calon
      * @param  float  $threshold  Threshold minimum similarity
      * @param  int  $limit  Bilangan maksimum hasil
      * @return array Array hasil dengan indeks dan skor similarity
@@ -367,7 +372,12 @@ public function getCacheStats(): array
      * @param  string|null  $model  Model untuk digunakan
      * @return int Bilangan embeddings yang berjaya di-precompute
      */
-    public function precomputeEmbeddings(array $texts, ?string $model = null): int
+    
+
+/**
+ * @param array<string, mixed> $texts
+ */
+public function precomputeEmbeddings(array $texts, ?string $model = null): int
     {
         $successCount = 0;
 

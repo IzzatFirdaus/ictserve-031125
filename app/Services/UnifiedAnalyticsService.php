@@ -274,7 +274,12 @@ private function calculateSummaryMetrics(array $helpdesk, array $loans, array $a
      * @param  array<string, mixed>  $loans
      * @param  array<string, mixed>  $assets
      */
-    private function calculateSystemHealth(array $helpdesk, array $loans, array $assets): float
+    
+
+/**
+ * @param array<string, mixed> $assets
+ */
+private function calculateSystemHealth(array $helpdesk, array $loans, array $assets): float
     {
         $helpdeskHealth = min(100, $helpdesk['resolution_rate']);
         $loanHealth = min(100, $loans['approval_rate']);

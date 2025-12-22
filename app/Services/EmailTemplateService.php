@@ -25,6 +25,8 @@ class EmailTemplateService
     
 
 /**
+  * @param array<string, mixed> $data
+
  * @return array<string, mixed>
  */
 public function renderTemplate(string $category, array $data, string $locale = 'ms'): array
@@ -54,6 +56,8 @@ public function renderTemplate(string $category, array $data, string $locale = '
     
 
 /**
+  * @param array<string, mixed> $sampleData
+
  * @return array<string, mixed>
  */
 public function previewTemplate(EmailTemplate $template, array $sampleData = []): array

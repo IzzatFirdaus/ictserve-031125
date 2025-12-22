@@ -53,6 +53,8 @@ class AIResourceUsageUpdate implements ShouldBroadcast
     
 
 /**
+  * @param array<string, mixed> $usage
+
  * @return array<string, mixed>
  */
 private function sanitizeUsage(array $usage): array

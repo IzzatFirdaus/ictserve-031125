@@ -72,7 +72,12 @@ trait ErrorPrevention
      * @param  string  $action  Action identifier
      * @param  array  $consequences  List of consequences
      */
-    protected function warnIrreversibleAction(string $action, array $consequences): void
+    
+
+/**
+ * @param array<string, mixed> $consequences
+ */
+protected function warnIrreversibleAction(string $action, array $consequences): void
     {
         $this->dispatch('irreversible-warning', [
             'action' => $action,
@@ -89,7 +94,12 @@ trait ErrorPrevention
      * @param  array  $requirements  Requirements that must be met
      * @return bool Whether action can proceed
      */
-    protected function validateBeforeDestruction(string $action, array $requirements): bool
+    
+
+/**
+ * @param array<string, mixed> $requirements
+ */
+protected function validateBeforeDestruction(string $action, array $requirements): bool
     {
         foreach ($requirements as $requirement => $condition) {
             if (! $condition) {
@@ -128,7 +138,12 @@ trait ErrorPrevention
      * @param  string  $action  Action being performed
      * @param  array  $impacts  List of impacts
      */
-    protected function showActionConsequences(string $action, array $impacts): void
+    
+
+/**
+ * @param array<string, mixed> $impacts
+ */
+protected function showActionConsequences(string $action, array $impacts): void
     {
         $this->dispatch('show-consequences', [
             'action' => $action,

@@ -149,7 +149,12 @@ private function checkWorkerProcesses(): array
     /**
      * Send health alert to administrators
      */
-    private function sendHealthAlert(array $issues): void
+    
+
+/**
+ * @param array<string, mixed> $issues
+ */
+private function sendHealthAlert(array $issues): void
     {
         // Implement cooldown to prevent spam
         $cacheKey = 'horizon_health_alert_sent';
@@ -189,7 +194,12 @@ private function checkWorkerProcesses(): array
     /**
      * Format health alert message
      */
-    private function formatHealthAlert(array $issues): string
+    
+
+/**
+ * @param array<string, mixed> $issues
+ */
+private function formatHealthAlert(array $issues): string
     {
         $message = "AMARAN: Isu kesihatan sistem Horizon ICTServe dikesan.\n\n";
 

@@ -49,7 +49,12 @@ class RetryFailedEmail implements ShouldQueue
      * @param  string  $mailableClass  The mailable class to recreate
      * @param  array<string, mixed>  $mailableData  Data to reconstruct mailable
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $mailableData
+ */
+public function __construct(
         public EmailLog $emailLog,
         public string $mailableClass,
         public array $mailableData = []

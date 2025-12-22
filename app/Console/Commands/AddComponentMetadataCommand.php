@@ -137,7 +137,12 @@ class AddComponentMetadataCommand extends Command
      *     by_category?: array<string, array{success: bool, category: string, processed: int, skipped: int, total: int}>
      * }  $result
      */
-    private function displayResults(array $result): void
+    
+
+/**
+ * @param array<string, mixed> $result
+ */
+private function displayResults(array $result): void
     {
         $this->newLine();
 

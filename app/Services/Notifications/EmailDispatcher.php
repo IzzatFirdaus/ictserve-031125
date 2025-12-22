@@ -41,7 +41,12 @@ class EmailDispatcher
      * @param  bool  $preferenceBypassed  Whether user preference was overridden
      * @return EmailLog The created email log entry
      */
-    public function queue(
+    
+
+/**
+ * @param array<string, mixed> $channels
+ */
+public function queue(
         Mailable $mailable,
         string $recipientEmail,
         ?string $recipientName = null,
@@ -137,7 +142,12 @@ class EmailDispatcher
      * @param  Mailable  $mailable  The mailable instance
      * @param  array  $meta  Additional metadata
      */
-    private function scheduleRetry(EmailLog $log, Mailable $mailable, array $meta): void
+    
+
+/**
+ * @param array<string, mixed> $meta
+ */
+private function scheduleRetry(EmailLog $log, Mailable $mailable, array $meta): void
     {
         try {
             // Extract constructor args if available (for mailable recreation)

@@ -295,6 +295,8 @@ public function getResolutionTimeTrendsData(Carbon $startDate, Carbon $endDate):
     
 
 /**
+  * @param array<string, mixed> $chartData
+
  * @return array<string, mixed>
  */
 public function exportChart(array $chartData, string $format = 'png'): array
@@ -380,6 +382,8 @@ private function getAssetUtilizationDrilldown(Collection $chartData): array
     
 
 /**
+  * @param array<string, mixed> $chartData
+
  * @return array<string, mixed>
  */
 private function getSlaComplianceDrilldown(array $chartData): array

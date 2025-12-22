@@ -78,7 +78,12 @@ class GenerateMonthlyReports extends Command
      *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
      * }  $reportData
      */
-    private function displayMonthlyReportSummary(array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function displayMonthlyReportSummary(array $reportData): void
     {
         $helpdesk = $reportData['helpdesk_stats'];
         $loan = $reportData['loan_stats'];
@@ -105,7 +110,12 @@ class GenerateMonthlyReports extends Command
      *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
      * }  $reportData
      */
-    private function displayMonthlyInsights(array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function displayMonthlyInsights(array $reportData): void
     {
         $this->newLine();
         $this->info('=== KEY MONTHLY INSIGHTS ===');
@@ -122,7 +132,12 @@ class GenerateMonthlyReports extends Command
      *     asset_stats: array{most_requested: array<int, array{name: string, asset_code: string, request_count: int}>}
      * }  $reportData
      */
-    private function displayRecommendations(array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function displayRecommendations(array $reportData): void
     {
         $assets = $reportData['asset_stats']['most_requested'];
 

@@ -52,7 +52,12 @@ class AuditHashingService
      * @param  array  $data  Data untuk dihash
      * @return string Hash SHA-256
      */
-    public function generateHash(array $data): string
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function generateHash(array $data): string
     {
         // Susun kunci untuk konsistensi
         ksort($data);
@@ -69,7 +74,7 @@ class AuditHashingService
     /**
      * Jana hash dengan rantaian (chain of custody)
      *
-     * @param  array  $data  Data untuk dihash
+     * @param  array<string, mixed>  $data  Data untuk dihash
      * @param  string|null  $previousHash  Hash entri sebelumnya
      * @return array Hash dan previous_hash
      */
@@ -182,7 +187,12 @@ public function verifyAuditChain(int $limit = 1000): array
      * @param  array  $data  Data log
      * @return MessageLog Entri log yang dicipta
      */
-    public function createHashedLogEntry(array $data): MessageLog
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createHashedLogEntry(array $data): MessageLog
     {
         // Dapatkan hash terakhir untuk rantaian
         $lastLog = MessageLog::orderBy('id', 'desc')->first();
@@ -225,7 +235,12 @@ public function verifyAuditChain(int $limit = 1000): array
     /**
      * Trigger amaran pengubahsuaian
      */
-    private function triggerTamperingAlert(array $results): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function triggerTamperingAlert(array $results): void
     {
         if (! $this->config['alert_on_tampering']) {
             return;
@@ -252,7 +267,12 @@ public function verifyAuditChain(int $limit = 1000): array
     /**
      * Log hasil pengesahan
      */
-    private function logVerificationResult(array $results): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function logVerificationResult(array $results): void
     {
         $level = $results['invalid_entries'] > 0 ? 'warning' : 'info';
 

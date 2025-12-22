@@ -183,7 +183,12 @@ class AssetAvailabilityCalendar extends Component
      * Handle an Echo broadcast for asset returned damaged.
      * Will refresh calendar data for the current asset or globally.
      */
-    public function handleEchoAssetReturnedDamaged(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleEchoAssetReturnedDamaged(array $event): void
     {
         // Only react if this component is showing that specific asset
         if ($this->assetId !== null && ($event['asset_id'] ?? null) !== $this->assetId) {

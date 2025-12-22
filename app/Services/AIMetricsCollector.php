@@ -252,7 +252,12 @@ class AIMetricsCollector
      * @param  array<string, mixed>  $bedrockStats
      * @return array<string, mixed>
      */
-    private function calculateCombinedStats(array $ollamaStats, array $bedrockStats): array
+    
+
+/**
+ * @param array<string, mixed> $bedrockStats
+ */
+private function calculateCombinedStats(array $ollamaStats, array $bedrockStats): array
     {
         $totalRequests = $ollamaStats['total_requests_24h'] + $bedrockStats['total_requests_24h'];
 
@@ -441,7 +446,12 @@ class AIMetricsCollector
      * @param  array<string, mixed>  $ollamaHealth
      * @param  array<string, mixed>  $bedrockHealth
      */
-    private function determineOverallHealth(array $ollamaHealth, array $bedrockHealth): string
+    
+
+/**
+ * @param array<string, mixed> $bedrockHealth
+ */
+private function determineOverallHealth(array $ollamaHealth, array $bedrockHealth): string
     {
         $statuses = [$ollamaHealth['status'], $bedrockHealth['status']];
 

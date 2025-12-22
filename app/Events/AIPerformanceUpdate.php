@@ -49,6 +49,8 @@ class AIPerformanceUpdate implements ShouldBroadcast
     
 
 /**
+  * @param array<string, mixed> $metrics
+
  * @return array<string, mixed>
  */
 private function sanitizeMetrics(array $metrics): array

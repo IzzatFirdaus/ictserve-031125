@@ -51,7 +51,12 @@ class SendTicketNotification implements ShouldQueue
      *                                        - old_status: string (optional, for status_updated)
      *                                        - new_status: string (optional, for status_updated)
      */
-    public function __construct(private array $payload)
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+public function __construct(private array $payload)
     {
         $this->onQueue('notifications');
     }

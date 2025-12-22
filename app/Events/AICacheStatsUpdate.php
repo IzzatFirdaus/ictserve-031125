@@ -37,7 +37,12 @@ class AICacheStatsUpdate implements ShouldBroadcast
      *
      * @param  array<string, mixed>  $stats  Statistik cache AI
      */
-    public function __construct(array $stats)
+    
+
+/**
+ * @param array<string, mixed> $stats
+ */
+public function __construct(array $stats)
     {
         $this->stats = $this->sanitizeStats($stats);
         $this->timestamp = now()->timezone('Asia/Kuala_Lumpur')->format('Y-m-d H:i:s');

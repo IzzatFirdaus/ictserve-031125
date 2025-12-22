@@ -106,7 +106,12 @@ class SystemHealthWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $metrics
      */
-    private function buildCpuStat(array $metrics, string $serverName): Stat
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+private function buildCpuStat(array $metrics, string $serverName): Stat
     {
         $cpuPercent = $metrics['cpu_percent'] ?? 0;
         $color = $this->getStatusColor('cpu', $cpuPercent);
@@ -128,7 +133,12 @@ class SystemHealthWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $metrics
      */
-    private function buildMemoryStat(array $metrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+private function buildMemoryStat(array $metrics): Stat
     {
         $memoryPercent = $metrics['memory_percent'] ?? 0;
         $memoryUsedMb = $metrics['memory_used_mb'] ?? 0;
@@ -157,7 +167,12 @@ class SystemHealthWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $metrics
      */
-    private function buildDiskStat(array $metrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+private function buildDiskStat(array $metrics): Stat
     {
         $diskPercent = $metrics['disk_percent'] ?? 0;
         $diskUsedGb = $metrics['disk_used_gb'] ?? 0;

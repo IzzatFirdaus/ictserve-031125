@@ -59,7 +59,12 @@ interface AccessoryTrackingServiceInterface
      * @see Requirements 26.2 - Allow marking accessories as included/not included
      * @see Requirements 26.6 - Store accessory data in loan_transaction_accessories
      */
-    public function recordCheckoutAccessories(LoanTransaction $transaction, array $accessories): void;
+    
+
+/**
+ * @param array<string, mixed> $accessories
+ */
+public function recordCheckoutAccessories(LoanTransaction $transaction, array $accessories): void;
 
     /**
      * Record accessories present at check-in
@@ -73,7 +78,12 @@ interface AccessoryTrackingServiceInterface
      * @see Requirements 26.4 - Pre-populate checklist from check-out data
      * @see Requirements 26.6 - Store accessory data in loan_transaction_accessories
      */
-    public function recordCheckinAccessories(LoanTransaction $transaction, array $accessories): void;
+    
+
+/**
+ * @param array<string, mixed> $accessories
+ */
+public function recordCheckinAccessories(LoanTransaction $transaction, array $accessories): void;
 
     /**
      * Get discrepancies between check-out and check-in accessories
@@ -121,7 +131,12 @@ interface AccessoryTrackingServiceInterface
      * @param  array<int, array{accessory_type: string, accessory_name?: string|null, present: bool, condition_notes?: string|null}>  $accessories
      * @return bool True if data is valid
      */
-    public function validateAccessoryData(array $accessories): bool;
+    
+
+/**
+ * @param array<string, mixed> $accessories
+ */
+public function validateAccessoryData(array $accessories): bool;
 
     /**
      * Check if any accessories have discrepancies
