@@ -3,6 +3,15 @@
 
 Write-Host "=== Rebuilding Docker with PHP 8.4 ===" -ForegroundColor Cyan
 
+# Ensure we're using Docker configuration
+Write-Host "`nEnsuring Docker configuration..." -ForegroundColor Yellow
+if (Test-Path ".env.docker") {
+    Copy-Item ".env.docker" ".env" -Force
+    Write-Host "Switched to Docker configuration (.env.docker → .env)" -ForegroundColor Green
+} else {
+    Write-Host "Using existing .env (should be Docker-configured)" -ForegroundColor Yellow
+}
+
 # Stop and remove containers
 Write-Host "`nStopping containers..." -ForegroundColor Yellow
 docker compose down -v

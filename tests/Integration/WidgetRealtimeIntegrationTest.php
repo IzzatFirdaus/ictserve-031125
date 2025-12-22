@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Services\WidgetRealtimeManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -21,11 +20,13 @@ use Tests\TestCase;
  *
  * @see app/Services/WidgetRealtimeManager.php
  * @see app/Http/Controllers/Api/WidgetPollingController.php
+ *
  * @trace D03 SRS-FR-008, D04 §5.3 - Real-time dashboard requirements
+ *
  * @requirements R8 (Real-time Updates), R19 (Real-Time Widget Updates)
  *
- * @package Tests\Integration
  * @version 3.6.1
+ *
  * @since 3.6.0
  */
 class WidgetRealtimeIntegrationTest extends TestCase
@@ -33,6 +34,7 @@ class WidgetRealtimeIntegrationTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private User $adminUser;
 
     protected function setUp(): void
@@ -72,9 +74,10 @@ class WidgetRealtimeIntegrationTest extends TestCase
 
         // Assert
         $this->assertTrue($result);
-        Event::assertDispatched(WidgetDataUpdated::class, function ($event) use ($widgetId, $this->user) {
-            return $event->widgetId === $widgetId && 
-                   $event->userId === $this->user->id;
+        $user = $this->user;
+        Event::assertDispatched(WidgetDataUpdated::class, function ($event) use ($widgetId, $user) {
+            return $event->widgetId === $widgetId &&
+                $event->userId === $user->id;
         });
     }
 
@@ -83,7 +86,7 @@ class WidgetRealtimeIntegrationTest extends TestCase
     {
         // Arrange
         $realtimeManager = app(WidgetRealtimeManager::class);
-        
+
         // Subscribe user to widget
         $widgetId = 'test_widget';
         $realtimeManager->subscribeUserToWidget($this->user->id, $widgetId);
@@ -124,7 +127,7 @@ class WidgetRealtimeIntegrationTest extends TestCase
     {
         // Arrange
         $realtimeManager = app(WidgetRealtimeManager::class);
-        
+
         $widgetId = 'single_widget';
         $realtimeManager->subscribeUserToWidget($this->user->id, $widgetId);
 
@@ -275,7 +278,7 @@ class WidgetRealtimeIntegrationTest extends TestCase
     public function it_limits_polling_request_size(): void
     {
         // Arrange - Create request with too many widgets
-        $widgetIds = array_map(fn($i) => "widget_{$i}", range(1, 25)); // 25 widgets (max is 20)
+        $widgetIds = array_map(fn ($i) => "widget_{$i}", range(1, 25)); // 25 widgets (max is 20)
 
         // Act
         $response = $this->actingAs($this->user)
@@ -317,14 +320,14 @@ class WidgetRealtimeIntegrationTest extends TestCase
     {
         // Arrange - Make many requests to trigger rate limiting
         $widgetId = 'rate_limit_test';
-        
+
         // Act - Make requests up to the limit
         for ($i = 0; $i < 120; $i++) {
             $response = $this->actingAs($this->user)
                 ->postJson('/api/widgets/polling-data', [
                     'widget_ids' => [$widgetId],
                 ]);
-            
+
             if ($response->status() === 429) {
                 // Rate limit hit
                 break;
@@ -340,7 +343,7 @@ class WidgetRealtimeIntegrationTest extends TestCase
     {
         // This test verifies that the broadcasting system is properly configured
         // In a real environment, this would test WebSocket connections
-        
+
         // Arrange
         Event::fake();
         $realtimeManager = app(WidgetRealtimeManager::class);
@@ -404,7 +407,7 @@ class WidgetRealtimeIntegrationTest extends TestCase
         // Arrange
         $realtimeManager = app(WidgetRealtimeManager::class);
         $widgetId = 'consistency_test_widget';
-        
+
         $realtimeManager->subscribeUserToWidget($this->user->id, $widgetId);
 
         // Act - Multiple updates with different data
@@ -425,10 +428,10 @@ class WidgetRealtimeIntegrationTest extends TestCase
 
         // Assert - Get final state via polling
         $pollingData = $realtimeManager->getFallbackPollingData([$widgetId], $this->user->id);
-        
+
         $this->assertArrayHasKey($widgetId, $pollingData);
         $finalData = $pollingData[$widgetId]['data'];
-        
+
         $this->assertEquals(3, $finalData['count']);
         $this->assertEquals('completed', $finalData['status']);
     }

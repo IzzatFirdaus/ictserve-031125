@@ -16,7 +16,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-memory",
-        "$env:MEMORY_FILE_PATH"
+        "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       ],
       "disabled": false,
       "autoApprove": [

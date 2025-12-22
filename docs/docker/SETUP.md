@@ -83,6 +83,12 @@ docker compose logs -f app
 ### 4. Initialize Application
 
 ```bash
+# Install npm dependencies (required for Alpine.js)
+docker compose exec app npm install
+
+# Install dev dependencies (required for Horizon, Breeze service providers)
+docker compose exec app composer install --dev
+
 # Generate app key
 docker compose exec app php artisan key:generate
 
@@ -92,14 +98,17 @@ docker compose exec app php artisan migrate
 # Seed database
 docker compose exec app php artisan db:seed
 
+# Build frontend assets with Alpine.js
+docker compose exec app npm run build
+
 # Create admin user
 docker compose exec app php artisan make:filament-user
 
-# Clear all caches
-docker compose exec app php artisan optimize:clear
-
-# Cache config and routes (production)
+# Clear and cache configuration
+docker compose exec app php artisan config:clear
 docker compose exec app php artisan config:cache
+
+# Cache routes and views (production)
 docker compose exec app php artisan route:cache
 docker compose exec app php artisan view:cache
 ```
@@ -178,6 +187,28 @@ See [windows.md](windows.md) for complete Windows guide.
 
 ## Frontend Development
 
+### Alpine.js Integration
+
+ICTServe uses Alpine.js for frontend interactivity, which is manually bundled from Livewire 3:
+
+- **Alpine.js Source**: Imported from `vendor/livewire/livewire/dist/livewire.esm`
+- **Configuration**: `resources/js/bootstrap.js` imports and starts Alpine.js
+- **Layout**: Uses `@livewireScriptConfig` instead of `@livewireScripts`
+- **Components**: Custom Alpine components in `resources/js/alpine-components.js`
+
+### Initial Setup
+
+```powershell
+# Install npm dependencies (includes Alpine.js via Livewire)
+docker compose exec app npm install
+
+# Install dev dependencies (required for service providers)
+docker compose exec app composer install --dev
+
+# Build assets
+docker compose exec app npm run build
+```
+
 ### Rebuild Container with Node.js
 
 If Node.js is not available in your container:
@@ -245,6 +276,11 @@ docker compose logs -f app
 docker compose exec app php artisan tinker
 >>> DB::connection()->getDatabaseName()
 # Expected: "ictserve"
+
+# Test Alpine.js availability (in browser console)
+# Navigate to http://localhost:8000 and open browser dev tools
+window.Alpine
+# Expected: Alpine.js object with methods
 ```
 
 ### Test MCP Services

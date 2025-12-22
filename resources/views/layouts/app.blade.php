@@ -74,7 +74,8 @@
                 tabindex="-1">
                 {{-- Page Header --}}
                 @if (isset($header))
-                    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700">
+                    <header
+                        class="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700">
                         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                             {{ $header }}
                         </div>
@@ -92,8 +93,8 @@
         <x-layout.footer />
     </div>
 
-    {{-- Livewire Scripts --}}
-    @livewireScripts
+    {{-- Livewire Script Configuration (Manual Bundling) --}}
+    @livewireScriptConfig
 
     {{-- Pusher Beams Initialization --}}
     <script>
