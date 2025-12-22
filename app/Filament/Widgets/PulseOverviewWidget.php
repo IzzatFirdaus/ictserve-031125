@@ -127,7 +127,8 @@ class PulseOverviewWidget extends BaseWidget
     protected function getAverageResponseTime(): float
     {
         try {
-            $entries = Pulse::aggregate('slow_request', 'avg', now()->subHour());
+            $interval = now()->diffAsCarbonInterval(now()->subHour());
+            $entries = Pulse::aggregate('slow_request', 'avg', $interval);
 
             return $entries->avg('avg') ?? 0.0;
         } catch (\Exception) {
@@ -141,7 +142,9 @@ class PulseOverviewWidget extends BaseWidget
     protected function getSlowQueriesCount(): int
     {
         try {
-            return Pulse::aggregate('slow_query', 'count', now()->subHour())->sum('count') ?? 0;
+            $interval = now()->diffAsCarbonInterval(now()->subHour());
+
+            return Pulse::aggregate('slow_query', 'count', $interval)->sum('count') ?? 0;
         } catch (\Exception) {
             return 0;
         }
@@ -153,8 +156,9 @@ class PulseOverviewWidget extends BaseWidget
     protected function getErrorRate(): float
     {
         try {
-            $totalRequests = Pulse::aggregate('user_request', 'count', now()->subHour())->sum('count') ?? 0;
-            $errorRequests = Pulse::aggregate('exception', 'count', now()->subHour())->sum('count') ?? 0;
+            $interval = now()->diffAsCarbonInterval(now()->subHour());
+            $totalRequests = Pulse::aggregate('user_request', 'count', $interval)->sum('count') ?? 0;
+            $errorRequests = Pulse::aggregate('exception', 'count', $interval)->sum('count') ?? 0;
 
             if ($totalRequests === 0) {
                 return 0.0;
@@ -172,8 +176,9 @@ class PulseOverviewWidget extends BaseWidget
     protected function getQueueHealth(): array
     {
         try {
-            $totalJobs = Pulse::aggregate('queue', 'count', now()->subHour())->sum('count') ?? 0;
-            $failedJobs = Pulse::aggregate('slow_job', 'count', now()->subHour())->sum('count') ?? 0;
+            $interval = now()->diffAsCarbonInterval(now()->subHour());
+            $totalJobs = Pulse::aggregate('queue', 'count', $interval)->sum('count') ?? 0;
+            $failedJobs = Pulse::aggregate('slow_job', 'count', $interval)->sum('count') ?? 0;
 
             if ($totalJobs === 0) {
                 return [

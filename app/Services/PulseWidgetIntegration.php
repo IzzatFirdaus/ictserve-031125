@@ -4,23 +4,26 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Laravel\Pulse\Facades\Pulse;
 
 /**
  * Pulse Widget Integration Service
  *
  * Provides centralized integration between Laravel Pulse metrics
- * and ICTServe dashboard widgets with performance optimization.
+ * and Filament dashboard widgets with caching and error handling.
  *
  * Features:
  * - Centralized Pulse data access with caching
- * - Performance threshold monitoring
- * - Alert generation for critical metrics
- * - Data aggregation and formatting
  * - Error handling and fallback values
+ * - Performance optimization with configurable TTL
+ * - Metric aggregation and calculation utilities
+ * - Alert threshold management
+ * - Integration with notification system
  *
- * @trace Requirements: R9 (Laravel Pulse Integration), R17 (Performance Standards)
+ * @trace Requirements: R9 (Laravel Pulse Integration), R18 (Pulse Dashboard Integration)
  *
  * @see D04 §3.2 Dashboard widgets
  * @see D17 Queue Management - Laravel Pulse integration
@@ -30,262 +33,391 @@ use Laravel\Pulse\Facades\Pulse;
 class PulseWidgetIntegration
 {
     /**
-     * Performance thresholds for alerting
+     * Default cache TTL for Pulse metrics (2 minutes)
      */
-    protected const THRESHOLDS = [
+    protected int $defaultCacheTtl = 120;
+
+    /**
+     * Performance thresholds for alerts
+     *
+     * @var array<string, array<string, float|int>>
+     */
+    protected array $thresholds = [
         'response_time' => [
-            'good' => 500,      // < 500ms
-            'warning' => 1000,  // 500ms - 1s
-            'critical' => 2000, // > 1s
+            'warning' => 500,  // 500ms
+            'critical' => 1000, // 1s
         ],
         'error_rate' => [
-            'good' => 1,        // < 1%
-            'warning' => 5,     // 1% - 5%
-            'critical' => 10,   // > 5%
+            'warning' => 1.0,   // 1%
+            'critical' => 5.0,  // 5%
         ],
         'slow_queries' => [
-            'good' => 0,        // No slow queries
-            'warning' => 5,     // 1-5 slow queries
-            'critical' => 10,   // > 5 slow queries
+            'warning' => 5,     // 5 queries
+            'critical' => 10,   // 10 queries
         ],
         'queue_failure_rate' => [
-            'good' => 0,        // No failures
-            'warning' => 5,     // < 5% failure rate
-            'critical' => 10,   // > 5% failure rate
+            'warning' => 2.0,   // 2%
+            'critical' => 5.0,  // 5%
         ],
     ];
 
     /**
-     * Cache TTL for Pulse data (2 minutes)
+     * Get performance metrics summary
+     *
+     * @return array<string, mixed>
      */
-    protected const CACHE_TTL = 120;
-
-    /**
-     * Get performance summary for dashboard widgets
-     */
-    public function getPerformanceSummary(string $period = '1 hour'): array
+    public function getPerformanceMetrics(string $period = '1 hour'): array
     {
-        $cacheKey = "pulse_performance_summary_{$period}";
+        $cacheKey = "pulse_performance_metrics_{$period}";
 
-        return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($period) {
+        /** @var array<string, mixed> $result */
+        $result = Cache::remember($cacheKey, $this->defaultCacheTtl, function () use ($period): array {
             $since = $this->parsePeriod($period);
 
             return [
-                'response_time' => $this->getResponseTimeMetrics($since),
-                'error_rate' => $this->getErrorRateMetrics($since),
-                'slow_queries' => $this->getSlowQueryMetrics($since),
-                'queue_health' => $this->getQueueHealthMetrics($since),
-                'server_health' => $this->getServerHealthMetrics($since),
-                'alerts' => $this->generateAlerts($since),
-                'timestamp' => now()->toISOString(),
+                'response_time' => $this->getAverageResponseTime($since),
+                'slow_queries' => $this->getSlowQueriesCount($since),
+                'error_rate' => $this->getErrorRate($since),
+                'queue_health' => $this->getQueueHealth($since),
+                'server_metrics' => $this->getServerMetrics($since),
+                'cache_performance' => $this->getCachePerformance($since),
             ];
         });
+
+        return $result;
     }
 
     /**
-     * Get response time metrics
+     * Get average response time with error handling
      */
-    protected function getResponseTimeMetrics(\DateTimeInterface $since): array
+    public function getAverageResponseTime(\DateTimeInterface $since): float
     {
         try {
-            // Use Pulse aggregate method instead of values
-            $entries = Pulse::aggregate('slow_request', 'avg', $since);
+            $interval = now()->diffAsCarbonInterval($since);
+            $entries = Pulse::aggregate('slow_request', 'avg', $interval);
 
-            if ($entries->isEmpty()) {
-                return [
-                    'average' => 0,
-                    'max' => 0,
-                    'min' => 0,
-                    'count' => 0,
-                    'status' => 'good',
-                ];
+            return $entries->avg('avg') ?? 0.0;
+        } catch (\Exception $e) {
+            Log::warning('Failed to get average response time from Pulse', [
+                'error' => $e->getMessage(),
+                'since' => $since->format('Y-m-d H:i:s'),
+            ]);
+
+            return 0.0;
+        }
+    }
+
+    /**
+     * Get slow queries count with error handling
+     */
+    public function getSlowQueriesCount(\DateTimeInterface $since): int
+    {
+        try {
+            $interval = now()->diffAsCarbonInterval($since);
+
+            return Pulse::aggregate('slow_query', 'count', $interval)->sum('count') ?? 0;
+        } catch (\Exception $e) {
+            Log::warning('Failed to get slow queries count from Pulse', [
+                'error' => $e->getMessage(),
+                'since' => $since->format('Y-m-d H:i:s'),
+            ]);
+
+            return 0;
+        }
+    }
+
+    /**
+     * Get error rate with error handling
+     */
+    public function getErrorRate(\DateTimeInterface $since): float
+    {
+        try {
+            $interval = now()->diffAsCarbonInterval($since);
+            $totalRequests = Pulse::aggregate('user_request', 'count', $interval)->sum('count') ?? 0;
+            $errorRequests = Pulse::aggregate('exception', 'count', $interval)->sum('count') ?? 0;
+
+            if ($totalRequests === 0) {
+                return 0.0;
             }
 
-            $average = $entries->avg('value') ?? 0;
-            $max = $entries->max('value') ?? 0;
-            $min = $entries->min('value') ?? 0;
-            $count = $entries->count();
-
-            return [
-                'average' => round($average, 2),
-                'max' => $max,
-                'min' => $min,
-                'count' => $count,
-                'status' => $this->getResponseTimeStatus($average),
-            ];
+            return ($errorRequests / $totalRequests) * 100;
         } catch (\Exception $e) {
-            \Log::warning('Failed to get response time metrics from Pulse', [
+            Log::warning('Failed to get error rate from Pulse', [
                 'error' => $e->getMessage(),
+                'since' => $since->format('Y-m-d H:i:s'),
             ]);
 
-            return [
-                'average' => 0,
-                'max' => 0,
-                'min' => 0,
-                'count' => 0,
-                'status' => 'unknown',
-            ];
-        }
-    }
-
-    /**
-     * Get error rate metrics
-     */
-    protected function getErrorRateMetrics(\DateTimeInterface $since): array
-    {
-        try {
-            $totalRequests = Pulse::aggregate('user_request', 'count', $since)->sum('count') ?? 0;
-            $errorRequests = Pulse::aggregate('exception', 'count', $since)->sum('count') ?? 0;
-
-            $errorRate = $totalRequests > 0 ? ($errorRequests / $totalRequests) * 100 : 0;
-
-            return [
-                'rate' => round($errorRate, 2),
-                'total_requests' => $totalRequests,
-                'error_requests' => $errorRequests,
-                'status' => $this->getErrorRateStatus($errorRate),
-            ];
-        } catch (\Exception $e) {
-            \Log::warning('Failed to get error rate metrics from Pulse', [
-                'error' => $e->getMessage(),
-            ]);
-
-            return [
-                'rate' => 0,
-                'total_requests' => 0,
-                'error_requests' => 0,
-                'status' => 'unknown',
-            ];
-        }
-    }
-
-    /**
-     * Get slow query metrics
-     */
-    protected function getSlowQueryMetrics(\DateTimeInterface $since): array
-    {
-        try {
-            $slowQueries = Pulse::aggregate('slow_query', ['count', 'avg'], $since);
-
-            $count = $slowQueries->sum('count') ?? 0;
-            $averageTime = $slowQueries->avg('avg') ?? 0;
-
-            return [
-                'count' => $count,
-                'average_time' => round($averageTime, 2),
-                'status' => $this->getSlowQueryStatus($count),
-            ];
-        } catch (\Exception $e) {
-            \Log::warning('Failed to get slow query metrics from Pulse', [
-                'error' => $e->getMessage(),
-            ]);
-
-            return [
-                'count' => 0,
-                'average_time' => 0,
-                'status' => 'unknown',
-            ];
+            return 0.0;
         }
     }
 
     /**
      * Get queue health metrics
+     *
+     * @return array<string, mixed>
      */
-    protected function getQueueHealthMetrics(\DateTimeInterface $since): array
+    public function getQueueHealth(\DateTimeInterface $since): array
     {
         try {
-            $totalJobs = Pulse::aggregate('queue', 'count', $since)->sum('count') ?? 0;
-            $failedJobs = Pulse::aggregate('slow_job', 'count', $since)->sum('count') ?? 0;
+            $interval = now()->diffAsCarbonInterval($since);
+            $totalJobs = Pulse::aggregate('queue', 'count', $interval)->sum('count') ?? 0;
+            $failedJobs = Pulse::aggregate('slow_job', 'count', $interval)->sum('count') ?? 0;
 
-            $failureRate = $totalJobs > 0 ? ($failedJobs / $totalJobs) * 100 : 0;
+            if ($totalJobs === 0) {
+                return [
+                    'status' => 'idle',
+                    'total_jobs' => 0,
+                    'failed_jobs' => 0,
+                    'failure_rate' => 0.0,
+                    'health_score' => 100,
+                ];
+            }
+
+            $failureRate = ($failedJobs / $totalJobs) * 100;
+            $healthScore = max(0, 100 - ($failureRate * 10)); // Reduce score by 10 points per 1% failure
 
             return [
+                'status' => $this->getQueueStatus($failureRate),
                 'total_jobs' => $totalJobs,
                 'failed_jobs' => $failedJobs,
-                'failure_rate' => round($failureRate, 2),
-                'status' => $this->getQueueHealthStatus($failureRate),
+                'failure_rate' => $failureRate,
+                'health_score' => $healthScore,
             ];
         } catch (\Exception $e) {
-            \Log::warning('Failed to get queue health metrics from Pulse', [
+            Log::warning('Failed to get queue health from Pulse', [
                 'error' => $e->getMessage(),
+                'since' => $since->format('Y-m-d H:i:s'),
             ]);
 
             return [
+                'status' => 'unknown',
                 'total_jobs' => 0,
                 'failed_jobs' => 0,
-                'failure_rate' => 0,
-                'status' => 'unknown',
+                'failure_rate' => 0.0,
+                'health_score' => 0,
             ];
         }
     }
 
     /**
-     * Get server health metrics
+     * Get server metrics
+     *
+     * @return array<string, float>
      */
-    protected function getServerHealthMetrics(\DateTimeInterface $since): array
+    public function getServerMetrics(\DateTimeInterface $since): array
     {
         try {
-            $serverMetrics = Pulse::aggregate('server', 'count', $since);
-
-            // Basic server health check
-            $isHealthy = $serverMetrics->isNotEmpty();
+            $interval = now()->diffAsCarbonInterval($since);
+            $serverEntries = Pulse::aggregate('server', 'avg', $interval);
 
             return [
-                'is_healthy' => $isHealthy,
-                'last_check' => $serverMetrics->max('timestamp'),
-                'status' => $isHealthy ? 'good' : 'critical',
+                'cpu_usage' => $serverEntries->where('type', 'cpu')->avg('avg') ?? 0.0,
+                'memory_usage' => $serverEntries->where('type', 'memory')->avg('avg') ?? 0.0,
+                'disk_usage' => $serverEntries->where('type', 'disk')->avg('avg') ?? 0.0,
             ];
         } catch (\Exception $e) {
-            \Log::warning('Failed to get server health metrics from Pulse', [
+            Log::warning('Failed to get server metrics from Pulse', [
                 'error' => $e->getMessage(),
+                'since' => $since->format('Y-m-d H:i:s'),
             ]);
 
             return [
-                'is_healthy' => false,
-                'last_check' => null,
-                'status' => 'unknown',
+                'cpu_usage' => 0.0,
+                'memory_usage' => 0.0,
+                'disk_usage' => 0.0,
             ];
         }
     }
 
     /**
-     * Generate alerts based on performance thresholds
+     * Get cache performance metrics
+     *
+     * @return array<string, int|float>
      */
-    protected function generateAlerts(\DateTimeInterface $since): array
+    public function getCachePerformance(\DateTimeInterface $since): array
     {
+        try {
+            $interval = now()->diffAsCarbonInterval($since);
+            $cacheEntries = Pulse::aggregate('cache', 'count', $interval);
+            $hits = $cacheEntries->where('type', 'hit')->sum('count') ?? 0;
+            $misses = $cacheEntries->where('type', 'miss')->sum('count') ?? 0;
+            $total = $hits + $misses;
+
+            $hitRate = $total > 0 ? ($hits / $total) * 100 : 0.0;
+
+            return [
+                'hits' => $hits,
+                'misses' => $misses,
+                'total' => $total,
+                'hit_rate' => $hitRate,
+            ];
+        } catch (\Exception $e) {
+            Log::warning('Failed to get cache performance from Pulse', [
+                'error' => $e->getMessage(),
+                'since' => $since->format('Y-m-d H:i:s'),
+            ]);
+
+            return [
+                'hits' => 0,
+                'misses' => 0,
+                'total' => 0,
+                'hit_rate' => 0.0,
+            ];
+        }
+    }
+
+    /**
+     * Get slow queries with details
+     *
+     * @return Collection<int, array<string, mixed>>
+     */
+    public function getSlowQueriesDetails(\DateTimeInterface $since, int $limit = 10): Collection
+    {
+        try {
+            $interval = now()->diffAsCarbonInterval($since);
+
+            // Note: Laravel Pulse doesn't have entries() method in current version
+            // This would need to be implemented using available Pulse methods
+            // For now, return empty collection as placeholder
+            return collect();
+        } catch (\Exception $e) {
+            Log::warning('Failed to get slow queries details from Pulse', [
+                'error' => $e->getMessage(),
+                'since' => $since->format('Y-m-d H:i:s'),
+            ]);
+
+            return collect();
+        }
+    }
+
+    /**
+     * Check if any metrics exceed alert thresholds
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function checkAlertThresholds(string $period = '1 hour'): array
+    {
+        $metrics = $this->getPerformanceMetrics($period);
         $alerts = [];
 
-        $responseTime = $this->getResponseTimeMetrics($since);
-        if ($responseTime['status'] === 'critical') {
+        // Check response time
+        if ($metrics['response_time'] >= $this->thresholds['response_time']['critical']) {
             $alerts[] = [
-                'type' => 'response_time',
-                'level' => 'critical',
-                'message' => 'Masa respons purata melebihi 2 saat',
-                'value' => $responseTime['average'],
+                'type' => 'critical',
+                'metric' => 'response_time',
+                'value' => $metrics['response_time'],
+                'threshold' => $this->thresholds['response_time']['critical'],
+                'message' => 'Masa respons melebihi had kritikal',
+            ];
+        } elseif ($metrics['response_time'] >= $this->thresholds['response_time']['warning']) {
+            $alerts[] = [
+                'type' => 'warning',
+                'metric' => 'response_time',
+                'value' => $metrics['response_time'],
+                'threshold' => $this->thresholds['response_time']['warning'],
+                'message' => 'Masa respons melebihi had amaran',
             ];
         }
 
-        $errorRate = $this->getErrorRateMetrics($since);
-        if ($errorRate['status'] === 'critical') {
+        // Check error rate
+        if ($metrics['error_rate'] >= $this->thresholds['error_rate']['critical']) {
             $alerts[] = [
-                'type' => 'error_rate',
-                'level' => 'critical',
-                'message' => 'Kadar ralat melebihi 10%',
-                'value' => $errorRate['rate'],
+                'type' => 'critical',
+                'metric' => 'error_rate',
+                'value' => $metrics['error_rate'],
+                'threshold' => $this->thresholds['error_rate']['critical'],
+                'message' => 'Kadar ralat melebihi had kritikal',
+            ];
+        } elseif ($metrics['error_rate'] >= $this->thresholds['error_rate']['warning']) {
+            $alerts[] = [
+                'type' => 'warning',
+                'metric' => 'error_rate',
+                'value' => $metrics['error_rate'],
+                'threshold' => $this->thresholds['error_rate']['warning'],
+                'message' => 'Kadar ralat melebihi had amaran',
             ];
         }
 
-        $slowQueries = $this->getSlowQueryMetrics($since);
-        if ($slowQueries['status'] === 'critical') {
+        // Check slow queries
+        if ($metrics['slow_queries'] >= $this->thresholds['slow_queries']['critical']) {
             $alerts[] = [
-                'type' => 'slow_queries',
-                'level' => 'critical',
+                'type' => 'critical',
+                'metric' => 'slow_queries',
+                'value' => $metrics['slow_queries'],
+                'threshold' => $this->thresholds['slow_queries']['critical'],
                 'message' => 'Terlalu banyak query perlahan',
-                'value' => $slowQueries['count'],
+            ];
+        } elseif ($metrics['slow_queries'] >= $this->thresholds['slow_queries']['warning']) {
+            $alerts[] = [
+                'type' => 'warning',
+                'metric' => 'slow_queries',
+                'value' => $metrics['slow_queries'],
+                'threshold' => $this->thresholds['slow_queries']['warning'],
+                'message' => 'Query perlahan melebihi had normal',
+            ];
+        }
+
+        // Check queue failure rate
+        $queueHealth = (array) $metrics['queue_health'];
+        $queueFailureRate = is_numeric($queueHealth['failure_rate'] ?? 0.0) ? (float) ($queueHealth['failure_rate'] ?? 0.0) : 0.0;
+        if ($queueFailureRate >= $this->thresholds['queue_failure_rate']['critical']) {
+            $alerts[] = [
+                'type' => 'critical',
+                'metric' => 'queue_failure_rate',
+                'value' => $queueFailureRate,
+                'threshold' => $this->thresholds['queue_failure_rate']['critical'],
+                'message' => 'Kadar kegagalan queue melebihi had kritikal',
+            ];
+        } elseif ($queueFailureRate >= $this->thresholds['queue_failure_rate']['warning']) {
+            $alerts[] = [
+                'type' => 'warning',
+                'metric' => 'queue_failure_rate',
+                'value' => $queueFailureRate,
+                'threshold' => $this->thresholds['queue_failure_rate']['warning'],
+                'message' => 'Kadar kegagalan queue melebihi had amaran',
             ];
         }
 
         return $alerts;
+    }
+
+    /**
+     * Get formatted metrics for display
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function getFormattedMetrics(string $period = '1 hour'): array
+    {
+        $metrics = $this->getPerformanceMetrics($period);
+
+        $responseTime = is_numeric($metrics['response_time']) ? (float) $metrics['response_time'] : 0.0;
+        $errorRate = is_numeric($metrics['error_rate']) ? (float) $metrics['error_rate'] : 0.0;
+        $slowQueries = is_numeric($metrics['slow_queries']) ? (int) $metrics['slow_queries'] : 0;
+        $queueHealth = is_array($metrics['queue_health']) ? $metrics['queue_health'] : [];
+        $queueFailureRate = is_numeric($queueHealth['failure_rate'] ?? 0.0) ? (float) ($queueHealth['failure_rate'] ?? 0.0) : 0.0;
+
+        return [
+            'response_time' => [
+                'value' => $this->formatResponseTime($responseTime),
+                'color' => $this->getResponseTimeColor($responseTime),
+                'raw' => $responseTime,
+            ],
+            'error_rate' => [
+                'value' => number_format($errorRate, 2).'%',
+                'color' => $this->getErrorRateColor($errorRate),
+                'raw' => $errorRate,
+            ],
+            'slow_queries' => [
+                'value' => number_format($slowQueries),
+                'color' => $this->getSlowQueriesColor($slowQueries),
+                'raw' => $slowQueries,
+            ],
+            'queue_health' => [
+                'value' => (string) ($queueHealth['status'] ?? 'unknown'),
+                'color' => $this->getQueueHealthColor($queueFailureRate),
+                'raw' => $queueHealth,
+            ],
+        ];
     }
 
     /**
@@ -298,6 +430,7 @@ class PulseWidgetIntegration
             '30 minutes' => now()->subMinutes(30),
             '1 hour' => now()->subHour(),
             '6 hours' => now()->subHours(6),
+            '12 hours' => now()->subHours(12),
             '24 hours' => now()->subDay(),
             '7 days' => now()->subWeek(),
             default => now()->subHour(),
@@ -305,15 +438,19 @@ class PulseWidgetIntegration
     }
 
     /**
-     * Get response time status based on thresholds
+     * Get queue status based on failure rate
      */
-    protected function getResponseTimeStatus(float $time): string
+    protected function getQueueStatus(float $failureRate): string
     {
-        if ($time < self::THRESHOLDS['response_time']['good']) {
+        if ($failureRate === 0.0) {
+            return 'healthy';
+        }
+
+        if ($failureRate < 2.0) {
             return 'good';
         }
 
-        if ($time < self::THRESHOLDS['response_time']['warning']) {
+        if ($failureRate < 5.0) {
             return 'warning';
         }
 
@@ -321,50 +458,110 @@ class PulseWidgetIntegration
     }
 
     /**
-     * Get error rate status based on thresholds
+     * Format response time for display
      */
-    protected function getErrorRateStatus(float $rate): string
+    protected function formatResponseTime(float $time): string
     {
-        if ($rate < self::THRESHOLDS['error_rate']['good']) {
-            return 'good';
+        if ($time < 1000) {
+            return number_format($time, 0).'ms';
         }
 
-        if ($rate < self::THRESHOLDS['error_rate']['warning']) {
-            return 'warning';
-        }
-
-        return 'critical';
+        return number_format($time / 1000, 2).'s';
     }
 
     /**
-     * Get slow query status based on thresholds
+     * Get color for response time based on thresholds
      */
-    protected function getSlowQueryStatus(int $count): string
+    protected function getResponseTimeColor(float $time): string
     {
-        if ($count <= self::THRESHOLDS['slow_queries']['good']) {
-            return 'good';
+        if ($time >= $this->thresholds['response_time']['critical']) {
+            return 'danger';
         }
 
-        if ($count <= self::THRESHOLDS['slow_queries']['warning']) {
+        if ($time >= $this->thresholds['response_time']['warning']) {
             return 'warning';
         }
 
-        return 'critical';
+        return 'success';
     }
 
     /**
-     * Get queue health status based on failure rate
+     * Get color for error rate based on thresholds
      */
-    protected function getQueueHealthStatus(float $failureRate): string
+    protected function getErrorRateColor(float $rate): string
     {
-        if ($failureRate <= self::THRESHOLDS['queue_failure_rate']['good']) {
-            return 'good';
+        if ($rate >= $this->thresholds['error_rate']['critical']) {
+            return 'danger';
         }
 
-        if ($failureRate <= self::THRESHOLDS['queue_failure_rate']['warning']) {
+        if ($rate >= $this->thresholds['error_rate']['warning']) {
             return 'warning';
         }
 
-        return 'critical';
+        return 'success';
+    }
+
+    /**
+     * Get color for slow queries based on thresholds
+     */
+    protected function getSlowQueriesColor(int $count): string
+    {
+        if ($count >= $this->thresholds['slow_queries']['critical']) {
+            return 'danger';
+        }
+
+        if ($count >= $this->thresholds['slow_queries']['warning']) {
+            return 'warning';
+        }
+
+        return 'success';
+    }
+
+    /**
+     * Get color for queue health based on failure rate
+     */
+    protected function getQueueHealthColor(float $failureRate): string
+    {
+        if ($failureRate >= $this->thresholds['queue_failure_rate']['critical']) {
+            return 'danger';
+        }
+
+        if ($failureRate >= $this->thresholds['queue_failure_rate']['warning']) {
+            return 'warning';
+        }
+
+        return 'success';
+    }
+
+    /**
+     * Get alert threshold configuration
+     *
+     * @return array<string, array<string, float|int>>
+     */
+    public function getThresholds(): array
+    {
+        return $this->thresholds;
+    }
+
+    /**
+     * Update alert thresholds
+     *
+     * @param  array<string, array<string, float|int>>  $thresholds
+     */
+    public function updateThresholds(array $thresholds): void
+    {
+        $this->thresholds = array_merge($this->thresholds, $thresholds);
+    }
+
+    /**
+     * Clear cached metrics
+     */
+    public function clearCache(): void
+    {
+        $periods = ['15 minutes', '30 minutes', '1 hour', '6 hours', '12 hours', '24 hours', '7 days'];
+
+        foreach ($periods as $period) {
+            Cache::forget("pulse_performance_metrics_{$period}");
+        }
     }
 }
