@@ -350,9 +350,8 @@ Route::view('/privacy-policy', 'pages.privacy-policy')->name('privacy-policy');
 // Development-only: quick endpoint to trigger a broadcast for testing Reverb
 if (app()->environment('local')) {
     Route::any('/reverb-test', function () {
-        /** @var \Database\Factories\LoanApplicationFactory $factory */
-        $factory = \App\Models\LoanApplication::factory();
-        $loan = $factory->create(['status' => \App\Enums\LoanStatus::IN_USE]);
+        /** @var \App\Models\LoanApplication $loan */
+        $loan = \App\Models\LoanApplication::factory()->create(['status' => \App\Enums\LoanStatus::IN_USE]);
 
         event(new \App\Events\StatusUpdated($loan, 'in_use', 'returned', 1));
 
