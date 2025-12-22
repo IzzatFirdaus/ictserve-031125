@@ -24,13 +24,13 @@ class AssetInfolist
                         TextEntry::make('status')
                             ->badge()
                             ->color(fn ($state) => is_object($state) && method_exists($state, 'color') ? $state->color() : 'primary')
-                            ->formatStateUsing(fn ($state) => $state instanceof BackedEnum
+                            ->formatStateUsing(fn ($state) => $state instanceof \BackedEnum
                                 ? ucfirst(str_replace('_', ' ', (string) $state->value))
                                 : ucfirst(str_replace('_', ' ', (string) $state))),
                         TextEntry::make('condition')
                             ->badge()
                             ->color(fn ($state) => is_object($state) && method_exists($state, 'color') ? $state->color() : 'secondary')
-                            ->formatStateUsing(fn ($state) => $state instanceof BackedEnum
+                            ->formatStateUsing(fn ($state) => $state instanceof \BackedEnum
                                 ? ucfirst(str_replace('_', ' ', (string) $state->value))
                                 : ucfirst(str_replace('_', ' ', (string) $state))),
                         TextEntry::make('location')->label('Lokasi'),
