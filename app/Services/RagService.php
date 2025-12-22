@@ -82,7 +82,7 @@ class RagService
      * @param  string|null  $sessionId  ID sesi untuk konteks perbualan
      * @param  int|null  $userId  ID pengguna (nullable untuk tetamu)
      * @param  string|null  $email  Email tetamu untuk claiming feature
-     * @return array Respons yang mengandungi jawapan, sumber, dan metadata
+     * @return array<string, mixed> Respons yang mengandungi jawapan, sumber, dan metadata
      */
     public function processQuery(
         string $query,
@@ -141,7 +141,7 @@ class RagService
                         'sources' => array_map(fn ($item) => [
                             'type' => $item['type'],
                             'source' => $item['source'],
-                            'similarity' => round($item['similarity'], 3),
+                            'similarity' => round((float) ($item['similarity'] ?? 0), 3),
                         ], $relevantContext),
                         'confidence' => $this->calculateConfidence($relevantContext),
                     ];
@@ -217,6 +217,8 @@ class RagService
 
     /**
      * Dapatkan konteks perbualan dari cache atau database
+     * 
+     * @return array<string, mixed>
      */
     private function getConversationContext(?string $sessionId, ?int $userId): array
     {
@@ -326,6 +328,9 @@ class RagService
 
     /**
      * Cari document chunks yang berkaitan
+     * 
+     * @param array<int, float> $queryEmbedding
+     * @return array<int, array<string, mixed>>
      */
     private function searchRelevantDocuments(array $queryEmbedding): array
     {
@@ -418,6 +423,8 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
 
     /**
      * Jana respons menggunakan LLM
+     * 
+     * @return array<string, mixed>
      */
     private function generateResponse(string $prompt, ?string $sessionId = null, ?int $userId = null): array
     {
@@ -722,6 +729,8 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
 
     /**
      * Dapatkan sejarah perbualan untuk pengguna
+     * 
+     * @return array<int, array<string, mixed>>
      */
     public function getConversationHistory(string $sessionId, ?int $userId = null): array
     {
