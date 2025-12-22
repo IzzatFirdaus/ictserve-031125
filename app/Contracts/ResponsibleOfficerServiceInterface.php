@@ -40,7 +40,12 @@ interface ResponsibleOfficerServiceInterface
      *
      * @see Requirements 25.4 - Responsible Officer data storage
      */
-    public function setResponsibleOfficer(LoanApplication $app, array $officerData): void;
+    
+
+/**
+ * @param array<string, mixed> $officerData
+ */
+public function setResponsibleOfficer(LoanApplication $app, array $officerData): void;
 
     /**
      * Copy Applicant data as Responsible Officer
@@ -125,7 +130,12 @@ interface ResponsibleOfficerServiceInterface
      * @param  array<string, mixed>  $officerData  The data to validate
      * @return bool True if data is valid
      */
-    public function validateResponsibleOfficerData(array $officerData): bool;
+    
+
+/**
+ * @param array<string, mixed> $officerData
+ */
+public function validateResponsibleOfficerData(array $officerData): bool;
 
     /**
      * Clear Responsible Officer data

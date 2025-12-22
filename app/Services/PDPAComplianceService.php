@@ -25,7 +25,12 @@ class PDPAComplianceService
     /**
      * Record user consent for data processing
      */
-    public function recordConsent(int $userId, string $consentType, array $metadata = []): object
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function recordConsent(int $userId, string $consentType, array $metadata = []): object
     {
         return (object) [
             'id' => 1,
@@ -155,7 +160,12 @@ public function getUserPersonalData(int $userId): array
     /**
      * Request data correction
      */
-    public function requestDataCorrection(int $userId, array $data): object
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function requestDataCorrection(int $userId, array $data): object
     {
         return (object) [
             'id' => 1,
@@ -172,7 +182,12 @@ public function getUserPersonalData(int $userId): array
     /**
      * Request data deletion
      */
-    public function requestDataDeletion(int $userId, array $data): object
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function requestDataDeletion(int $userId, array $data): object
     {
         return (object) [
             'id' => 1,
@@ -216,6 +231,8 @@ public function canDeleteUserData(int $userId): array
     
 
 /**
+  * @param array<string, mixed> $data
+
  * @return array<string, mixed>
  */
 public function sanitizePersonalData(array $data): array
@@ -236,7 +253,12 @@ public function sanitizePersonalData(array $data): array
     /**
      * Log data access
      */
-    public function logDataAccess(int $userId, string $purpose, array $metadata = []): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function logDataAccess(int $userId, string $purpose, array $metadata = []): void
     {
         // Log data access for audit purposes
     }
@@ -274,7 +296,12 @@ public function sanitizePersonalData(array $data): array
     /**
      * Report a data breach
      */
-    public function reportDataBreach(array $data): object
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function reportDataBreach(array $data): object
     {
         return (object) [
             'id' => 1,

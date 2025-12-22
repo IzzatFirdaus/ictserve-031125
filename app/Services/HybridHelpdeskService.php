@@ -22,7 +22,12 @@ class HybridHelpdeskService
     /**
      * Create a guest ticket submission
      */
-    public function createGuestTicket(array $data): HelpdeskTicket
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createGuestTicket(array $data): HelpdeskTicket
     {
         try {
             // Create the ticket with a temporary ticket number
@@ -182,7 +187,12 @@ class HybridHelpdeskService
      *
      * @trace Requirements 1.1, 1.2, 1.3, 4.2
      */
-    public function createAuthenticatedTicket(array $data, User $user): HelpdeskTicket
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createAuthenticatedTicket(array $data, User $user): HelpdeskTicket
     {
         try {
             // Create the ticket with a temporary ticket number
@@ -237,7 +247,12 @@ class HybridHelpdeskService
         }
     }
 
-    public function createTicket(array $data, ?User $user = null): HelpdeskTicket
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createTicket(array $data, ?User $user = null): HelpdeskTicket
     {
         return $user
             ? $this->createAuthenticatedTicket($data, $user)

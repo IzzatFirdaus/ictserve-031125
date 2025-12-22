@@ -49,7 +49,12 @@ class FuzzySearchService
      * @param  array<string, mixed>  $options  Search options
      * @return array{tickets: Collection<int, HelpdeskTicket>, loans: Collection<int, LoanApplication>, suggestions: array<int, string>, total: int}
      */
-    public function search(string $query, array $options = []): array
+    
+
+/**
+ * @param array<string, mixed> $options
+ */
+public function search(string $query, array $options = []): array
     {
         $query = trim($query);
 
@@ -413,7 +418,12 @@ class FuzzySearchService
      * @param  array<int, string|null>  $texts
      * @return array<int, string>
      */
-    protected function extractCommonTerms(array $texts): array
+    
+
+/**
+ * @param array<string, mixed> $texts
+ */
+protected function extractCommonTerms(array $texts): array
     {
         $wordCounts = [];
 

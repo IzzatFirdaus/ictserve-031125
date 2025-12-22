@@ -39,7 +39,12 @@ trait QueryOptimization
      * @param  array<int, string>  $relations
      * @return Builder<TModel>
      */
-    protected function withEagerLoading(Builder $query, array $relations): Builder
+    
+
+/**
+ * @param array<string, mixed> $relations
+ */
+protected function withEagerLoading(Builder $query, array $relations): Builder
     {
         if (! empty($relations)) {
             return $query->with($relations);
@@ -57,7 +62,12 @@ trait QueryOptimization
      * @param  array<int, string>  $columns
      * @return Builder<TModel>
      */
-    protected function withSelectOptimization(Builder $query, array $columns): Builder
+    
+
+/**
+ * @param array<string, mixed> $columns
+ */
+protected function withSelectOptimization(Builder $query, array $columns): Builder
     {
         if (! empty($columns) && $columns !== ['*']) {
             return $query->select($columns);
@@ -141,7 +151,12 @@ trait QueryOptimization
      *
      * @param  array<int, string>  $cacheKeys
      */
-    protected function invalidateMultipleQueryCaches(array $cacheKeys): void
+    
+
+/**
+ * @param array<string, mixed> $cacheKeys
+ */
+protected function invalidateMultipleQueryCaches(array $cacheKeys): void
     {
         foreach ($cacheKeys as $key) {
             Cache::forget($key);
@@ -158,7 +173,12 @@ trait QueryOptimization
      * @param  array<int, string>  $relations
      * @return Builder<TModel>
      */
-    protected function buildOptimizedQuery(
+    
+
+/**
+ * @param array<string, mixed> $relations
+ */
+protected function buildOptimizedQuery(
         Builder $query,
         array $columns = ['*'],
         array $relations = []

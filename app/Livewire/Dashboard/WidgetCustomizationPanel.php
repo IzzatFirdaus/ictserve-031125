@@ -93,7 +93,12 @@ class WidgetCustomizationPanel extends Component
      * Handle widget order update from drag-and-drop
      */
     #[On('widget-order-updated')]
-    public function handleWidgetOrderUpdate(string $category, array $widgetOrder): void
+    
+
+/**
+ * @param array<string, mixed> $widgetOrder
+ */
+public function handleWidgetOrderUpdate(string $category, array $widgetOrder): void
     {
         $user = Auth::user();
 

@@ -36,7 +36,12 @@ class CrossModuleIntegrationService
     /**
      * Create maintenance ticket for damaged asset
      */
-    public function createMaintenanceTicket(
+    
+
+/**
+ * @param array<string, mixed> $damageData
+ */
+public function createMaintenanceTicket(
         Asset $asset,
         LoanApplication $application,
         array $damageData
@@ -105,7 +110,12 @@ class CrossModuleIntegrationService
     /**
      * Build maintenance ticket description
      */
-    private function buildMaintenanceDescription(
+    
+
+/**
+ * @param array<string, mixed> $damageData
+ */
+private function buildMaintenanceDescription(
         Asset $asset,
         LoanApplication $application,
         array $damageData
@@ -349,7 +359,12 @@ public function getAssetMaintenanceStats(int $assetId): array
      * @param  int  $assetId  Asset ID
      * @param  array  $maintenanceData  Maintenance details
      */
-    public function scheduleMaintenance(int $assetId, array $maintenanceData): HelpdeskTicket
+    
+
+/**
+ * @param array<string, mixed> $maintenanceData
+ */
+public function scheduleMaintenance(int $assetId, array $maintenanceData): HelpdeskTicket
     {
         $asset = Asset::findOrFail($assetId);
 
@@ -403,7 +418,12 @@ public function getAssetMaintenanceStats(int $assetId): array
      * @param  int  $ticketId  Helpdesk ticket ID
      * @param  array  $completionData  Completion details
      */
-    public function completeMaintenanceTicket(int $ticketId, array $completionData): void
+    
+
+/**
+ * @param array<string, mixed> $completionData
+ */
+public function completeMaintenanceTicket(int $ticketId, array $completionData): void
     {
         $ticket = HelpdeskTicket::findOrFail($ticketId);
 
@@ -570,7 +590,12 @@ public function getAssetLifecycleReport(int $assetId): array
      * @see D03-FR-016.1 Automatic ticket creation
      * @see D03-FR-003.5 Damage reporting
      */
-    public function handleAssetReturn(LoanApplication $application, array $returnData): void
+    
+
+/**
+ * @param array<string, mixed> $returnData
+ */
+public function handleAssetReturn(LoanApplication $application, array $returnData): void
     {
         DB::beginTransaction();
 
@@ -730,7 +755,12 @@ public function unifiedSearch(string $query): array
      *
      * @see D03-FR-016.5 Maintenance completion
      */
-    public function handleMaintenanceCompletion(HelpdeskTicket $ticket, array $completionData): void
+    
+
+/**
+ * @param array<string, mixed> $completionData
+ */
+public function handleMaintenanceCompletion(HelpdeskTicket $ticket, array $completionData): void
     {
         if (! $ticket->asset_id) {
             throw new \Exception('Ticket is not associated with an asset');
@@ -816,7 +846,12 @@ public function getUnifiedAnalytics(): array
      * @param  array  $damageDetails  Damage details
      * @return HelpdeskTicket Created ticket
      */
-    public function createTicketForDamagedAsset(LoanApplication $loanApplication, array $damageDetails): HelpdeskTicket
+    
+
+/**
+ * @param array<string, mixed> $damageDetails
+ */
+public function createTicketForDamagedAsset(LoanApplication $loanApplication, array $damageDetails): HelpdeskTicket
     {
         // Get asset from loan application
         $asset = $loanApplication->loanItems()->first()?->asset;

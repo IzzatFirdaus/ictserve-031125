@@ -75,7 +75,12 @@ class GenerateWeeklyReports extends Command
      *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
      * }  $reportData
      */
-    private function displayWeeklyReportSummary(array $reportData): void
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+private function displayWeeklyReportSummary(array $reportData): void
     {
         $helpdesk = $reportData['helpdesk_stats'];
         $loan = $reportData['loan_stats'];

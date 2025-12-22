@@ -40,7 +40,12 @@ class WidgetDataUpdated implements ShouldBroadcast
      * @param  int|null  $userId  Target user ID (null for global broadcast)
      * @param  int|null  $refreshInterval  Custom refresh interval in seconds
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function __construct(
         public readonly string $widgetId,
         public readonly string $widgetType,
         public readonly array $data,

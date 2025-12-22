@@ -34,7 +34,12 @@ public function getApprovalMatrix(): array
         });
     }
 
-    public function updateApprovalMatrix(array $matrix): void
+    
+
+/**
+ * @param array<string, mixed> $matrix
+ */
+public function updateApprovalMatrix(array $matrix): void
     {
         // Validate matrix structure
         $this->validateMatrix($matrix);
@@ -53,6 +58,8 @@ public function getApprovalMatrix(): array
     
 
 /**
+  * @param array<string, mixed> $loanData
+
  * @return array<string, mixed>
  */
 public function getApproversForLoan(array $loanData): array
@@ -69,7 +76,12 @@ public function getApproversForLoan(array $loanData): array
         return array_unique($approvers, SORT_REGULAR);
     }
 
-    protected function matchesRule(array $rule, array $loanData): bool
+    
+
+/**
+ * @param array<string, mixed> $loanData
+ */
+protected function matchesRule(array $rule, array $loanData): bool
     {
         // Check asset value threshold
         if (isset($rule['asset_value_min']) && $loanData['total_value'] < $rule['asset_value_min']) {
@@ -112,6 +124,8 @@ public function getApproversForLoan(array $loanData): array
     
 
 /**
+  * @param array<string, mixed> $rule
+
  * @return array<string, mixed>
  */
 protected function getApproversFromRule(array $rule): array
@@ -175,7 +189,12 @@ protected function getApproversFromRule(array $rule): array
         return $approvers;
     }
 
-    protected function validateMatrix(array $matrix): void
+    
+
+/**
+ * @param array<string, mixed> $matrix
+ */
+protected function validateMatrix(array $matrix): void
     {
         if (! isset($matrix['rules']) || ! is_array($matrix['rules'])) {
             throw new \InvalidArgumentException('Approval matrix must contain rules array');
@@ -347,6 +366,8 @@ public function getAvailableGrades(): array
     
 
 /**
+  * @param array<string, mixed> $testData
+
  * @return array<string, mixed>
  */
 public function testApprovalMatrix(array $testData): array
@@ -367,7 +388,12 @@ public function testApprovalMatrix(array $testData): array
         return $results;
     }
 
-    protected function compareApprovers(array $expected, array $actual): bool
+    
+
+/**
+ * @param array<string, mixed> $actual
+ */
+protected function compareApprovers(array $expected, array $actual): bool
     {
         if (count($expected) !== count($actual)) {
             return false;
@@ -404,7 +430,12 @@ public function exportMatrix(): array
         ];
     }
 
-    public function importMatrix(array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function importMatrix(array $data): void
     {
         if (! isset($data['matrix'])) {
             throw new \InvalidArgumentException('Import data must contain matrix');

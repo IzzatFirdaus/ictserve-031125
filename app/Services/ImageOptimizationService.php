@@ -278,11 +278,15 @@ protected function generateResponsiveSizes($sourceImage, string $basePath): arra
     }
 
     /**
+      * @param array<string, mixed> $optimizedPaths
+
      * @return array{src: string, srcset: string, sizes: string, loading: string, fetchpriority: string}
      */
     
 
 /**
+  * @param array<string, mixed> $optimizedPaths
+
  * @return array<string, mixed>
  */
 public function getImageAttributes(array $optimizedPaths, bool $isPriority = false): array
@@ -309,7 +313,12 @@ public function getImageAttributes(array $optimizedPaths, bool $isPriority = fal
         return $attributes;
     }
 
-    public function deleteOptimizedImages(array $optimizedPaths): void
+    
+
+/**
+ * @param array<string, mixed> $optimizedPaths
+ */
+public function deleteOptimizedImages(array $optimizedPaths): void
     {
         $disk = Storage::disk('private');
 
@@ -326,7 +335,12 @@ public function getImageAttributes(array $optimizedPaths, bool $isPriority = fal
         }
     }
 
-    public function getThumbnailUrl(array $optimizedPaths): ?string
+    
+
+/**
+ * @param array<string, mixed> $optimizedPaths
+ */
+public function getThumbnailUrl(array $optimizedPaths): ?string
     {
         if (isset($optimizedPaths['thumbnail'])) {
             return Storage::disk('private')->url($optimizedPaths['thumbnail']);
@@ -335,7 +349,12 @@ public function getImageAttributes(array $optimizedPaths, bool $isPriority = fal
         return null;
     }
 
-    public function getOptimizedUrl(array $optimizedPaths): string
+    
+
+/**
+ * @param array<string, mixed> $optimizedPaths
+ */
+public function getOptimizedUrl(array $optimizedPaths): string
     {
         if (isset($optimizedPaths['webp'])) {
             return Storage::disk('private')->url($optimizedPaths['webp']);

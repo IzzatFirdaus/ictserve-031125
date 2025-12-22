@@ -25,11 +25,15 @@ class FilterPresetService
     }
 
     /**
+      * @param array<string, mixed> $filters
+
      * @return array<string, mixed>
      */
     
 
 /**
+  * @param array<string, mixed> $filters
+
  * @return array<string, mixed>
  */
 public function saveFilterPreset(mixed $user, string $resource, string $name, array $filters, bool $isDefault = false): array
@@ -71,7 +75,12 @@ public function getUserPresets(mixed $user, string $resource): array
         Cache::put("filter_presets:{$resource}", $presets, 86400);
     }
 
-    public function updatePreset(mixed $user, string $resource, string $name, array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function updatePreset(mixed $user, string $resource, string $name, array $data): void
     {
         $presets = $this->getPresets($resource);
         $existing = $presets[$name] ?? [];
@@ -81,11 +90,15 @@ public function getUserPresets(mixed $user, string $resource): array
     }
 
     /**
+      * @param array<string, mixed> $filters
+
      * @return array<string, mixed>
      */
     
 
 /**
+  * @param array<string, mixed> $filters
+
  * @return array<string, mixed>
  */
 public function generateQuickFilter(string $label, array $filters): array
@@ -114,7 +127,12 @@ public function getQuickFilters(string $resource): array
         ];
     }
 
-    public function generateFilterUrl(string $baseUrl, array $filters): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function generateFilterUrl(string $baseUrl, array $filters): string
     {
         if (empty($filters)) {
             return $baseUrl;
@@ -123,7 +141,12 @@ public function getQuickFilters(string $resource): array
         return $baseUrl.'?'.http_build_query($filters);
     }
 
-    public function generateUrl(string $resource, array $filters): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function generateUrl(string $resource, array $filters): string
     {
         return route("filament.admin.resources.{$resource}.index", $filters);
     }

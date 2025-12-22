@@ -85,7 +85,12 @@ class EnhancedStaffDashboard extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:TicketStatusUpdated')]
-    public function handleTicketUpdate(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleTicketUpdate(array $event): void
     {
         $this->invalidateComponentCache();
         unset($this->dashboardData);
@@ -101,7 +106,12 @@ class EnhancedStaffDashboard extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:LoanStatusUpdated')]
-    public function handleLoanUpdate(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleLoanUpdate(array $event): void
     {
         $this->invalidateComponentCache();
         unset($this->dashboardData);
@@ -117,7 +127,12 @@ class EnhancedStaffDashboard extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:notification')]
-    public function handleNotification(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleNotification(array $event): void
     {
         $this->refreshData();
     }

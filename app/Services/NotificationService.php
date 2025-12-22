@@ -52,7 +52,12 @@ class NotificationService
     /**
      * @param  array{email: string, name?: string|null}  $approver
      */
-    public function sendApprovalRequest(LoanApplication $application, array $approver, string $token): void
+    
+
+/**
+ * @param array<string, mixed> $approver
+ */
+public function sendApprovalRequest(LoanApplication $application, array $approver, string $token): void
     {
         $this->loanNotifications->sendApprovalRequest($application, $approver, $token);
     }

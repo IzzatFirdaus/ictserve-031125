@@ -49,7 +49,12 @@ interface OllamaClientContract
      * @throws \App\Exceptions\OllamaModelNotFoundException Jika model tidak dijumpai
      * @throws \App\Exceptions\OllamaTimeoutException Jika permintaan timeout
      */
-    public function generate(array $payload): array;
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+public function generate(array $payload): array;
 
     /**
      * Menjana vector embeddings untuk teks
@@ -98,7 +103,12 @@ interface OllamaClientContract
      * @throws \InvalidArgumentException Jika format mesej tidak sah
      * @throws \Illuminate\Http\Client\ConnectionException Jika sambungan gagal
      */
-    public function chat(array $messages, array $options = []): array;
+    
+
+/**
+ * @param array<string, mixed> $options
+ */
+public function chat(array $messages, array $options = []): array;
 
     /**
      * Mendapatkan senarai model yang tersedia
@@ -154,7 +164,12 @@ interface OllamaClientContract
      * @param  array<string, mixed>  $response  Respons untuk disimpan
      * @param  int  $ttl  Masa hidup cache dalam saat
      */
-    public function cacheResponse(string $cacheKey, array $response, int $ttl): void;
+    
+
+/**
+ * @param array<string, mixed> $response
+ */
+public function cacheResponse(string $cacheKey, array $response, int $ttl): void;
 
     /**
      * Membersihkan cache berdasarkan tag
@@ -165,7 +180,12 @@ interface OllamaClientContract
      * @param  string|array<int, string>  $tags  Tag atau array tag untuk dibersihkan
      * @return bool True jika berjaya, false sebaliknya
      */
-    public function clearCache(string|array $tags): bool;
+    
+
+/**
+ * @param array<string, mixed> $tags
+ */
+public function clearCache(string|array $tags): bool;
 
     /**
      * Mendapatkan statistik prestasi

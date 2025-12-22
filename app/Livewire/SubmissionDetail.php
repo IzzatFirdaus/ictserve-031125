@@ -325,7 +325,12 @@ class SubmissionDetail extends Component
      *   updated_at: ISO timestamp
      * }
      */
-    public function handleEchoStatusUpdate(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleEchoStatusUpdate(array $event): void
     {
         // Check if this update is for current submission
         $modelType = $event['model_type'] ?? null;

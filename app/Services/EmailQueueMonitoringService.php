@@ -64,7 +64,12 @@ class EmailQueueMonitoringService
     /**
      * @return array<string, int>
      */
-    public function bulkRetryFailedJobs(array $jobIds): array
+    
+
+/**
+ * @param array<string, mixed> $jobIds
+ */
+public function bulkRetryFailedJobs(array $jobIds): array
     {
         return [
             'success' => count($jobIds),

@@ -120,7 +120,12 @@ public function validateEncryptionConfig(): array
     /**
      * Encrypt array data for database storage
      */
-    public function encryptArray(array $data): string
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function encryptArray(array $data): string
     {
         return $this->encryptSensitiveData(json_encode($data));
     }
@@ -146,6 +151,8 @@ public function decryptArray(string $encryptedData): array
     
 
 /**
+  * @param array<string, mixed> $sensitiveFields
+
  * @return array<string, mixed>
  */
 public function sanitizeForLogging(array $data, array $sensitiveFields = []): array

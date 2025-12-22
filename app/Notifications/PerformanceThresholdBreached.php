@@ -24,7 +24,12 @@ class PerformanceThresholdBreached extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function __construct(
         public string $title,
         public string $message,
         public string $severity,

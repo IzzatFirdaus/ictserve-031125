@@ -19,7 +19,12 @@ class ScheduledReportMail extends Mailable implements ShouldQueue
 
     public array $mailMetadata;
 
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function __construct(
         public ReportSchedule $schedule,
         public string $filePath,
         array $metadata

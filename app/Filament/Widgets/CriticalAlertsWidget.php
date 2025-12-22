@@ -151,7 +151,12 @@ class CriticalAlertsWidget extends Widget
      *
      * @param  array<string, mixed>  $params
      */
-    protected function getHelpdeskIndexUrl(array $params = []): ?string
+    
+
+/**
+ * @param array<string, mixed> $params
+ */
+protected function getHelpdeskIndexUrl(array $params = []): ?string
     {
         if (Route::has('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')) {
             return route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index', $params);
@@ -169,7 +174,12 @@ class CriticalAlertsWidget extends Widget
      *
      * @param  array<string, mixed>  $params
      */
-    protected function getLoanApplicationIndexUrl(array $params = []): ?string
+    
+
+/**
+ * @param array<string, mixed> $params
+ */
+protected function getLoanApplicationIndexUrl(array $params = []): ?string
     {
         if (Route::has('filament.admin.operations.resources.loans.loan-applications.index')) {
             return route('filament.admin.operations.resources.loans.loan-applications.index', $params);

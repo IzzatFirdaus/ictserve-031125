@@ -33,7 +33,12 @@ interface LoanServiceInterface
      *
      * @throws \Exception If application creation fails
      */
-    public function createApplication(array $data, ?User $user = null): LoanApplication;
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createApplication(array $data, ?User $user = null): LoanApplication;
 
     /**
      * Check asset availability with conflict detection
@@ -49,7 +54,12 @@ interface LoanServiceInterface
      *
      * @see Requirements 3.2 Real-time availability checking
      */
-    public function checkAssetAvailability(
+    
+
+/**
+ * @param array<string, mixed> $assetIds
+ */
+public function checkAssetAvailability(
         array $assetIds,
         Carbon $startDate,
         Carbon $endDate,
@@ -94,7 +104,12 @@ interface LoanServiceInterface
      *
      * @see Requirements 6.1 Check-out transaction recording
      */
-    public function checkOut(
+    
+
+/**
+ * @param array<string, mixed> $transactionData
+ */
+public function checkOut(
         LoanApplication $application,
         User $admin,
         array $transactionData = []
@@ -119,7 +134,12 @@ interface LoanServiceInterface
      *
      * @see Requirements 6.2 Check-in status update
      */
-    public function checkIn(
+    
+
+/**
+ * @param array<string, mixed> $returnData
+ */
+public function checkIn(
         LoanApplication $application,
         User $admin,
         array $returnData = []
@@ -141,7 +161,12 @@ interface LoanServiceInterface
      *
      * @see Requirements 6.3 Automatic maintenance ticket on damage
      */
-    public function createMaintenanceTicket(
+    
+
+/**
+ * @param array<string, mixed> $damagePhotos
+ */
+public function createMaintenanceTicket(
         LoanApplication $application,
         Asset $asset,
         string $damageDescription,

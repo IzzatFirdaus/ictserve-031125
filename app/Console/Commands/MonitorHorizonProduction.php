@@ -211,7 +211,12 @@ class MonitorHorizonProduction extends Command
      *   summary: array{status: string, issue_count: int, warning_count: int}
      * }
      */
-    private function analyzeHealthStatus(array $data): array
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+private function analyzeHealthStatus(array $data): array
     {
         $issues = [];
         $warnings = [];
@@ -280,7 +285,12 @@ class MonitorHorizonProduction extends Command
      * } $healthStatus
      * @param  array{timestamp: string, environment: string, ...}  $monitoringData
      */
-    private function sendHealthAlerts(array $healthStatus, array $monitoringData): void
+    
+
+/**
+ * @param array<string, mixed> $monitoringData
+ */
+private function sendHealthAlerts(array $healthStatus, array $monitoringData): void
     {
         if (empty($healthStatus['issues'])) {
             return;
@@ -355,7 +365,12 @@ class MonitorHorizonProduction extends Command
      *   summary: array{status: string, issue_count: int, warning_count: int}
      * }  $healthStatus
      */
-    private function outputJson(array $monitoringData, array $healthStatus): void
+    
+
+/**
+ * @param array<string, mixed> $healthStatus
+ */
+private function outputJson(array $monitoringData, array $healthStatus): void
     {
         $output = [
             'monitoring_data' => $monitoringData,
@@ -394,7 +409,12 @@ class MonitorHorizonProduction extends Command
      *   summary: array{status: string}
      * }  $health
      */
-    private function outputConsole(array $data, array $health, bool $detailed): void
+    
+
+/**
+ * @param array<string, mixed> $health
+ */
+private function outputConsole(array $data, array $health, bool $detailed): void
     {
         // Overall status
         $status = $health['summary']['status'];
@@ -483,7 +503,12 @@ class MonitorHorizonProduction extends Command
      * } $healthStatus
      * @param  array{masters: array{running: int, total: int}, environment: string, ...}  $monitoringData
      */
-    private function logMonitoringResults(array $healthStatus, array $monitoringData): void
+    
+
+/**
+ * @param array<string, mixed> $monitoringData
+ */
+private function logMonitoringResults(array $healthStatus, array $monitoringData): void
     {
         $logLevel = $healthStatus['overall_healthy'] ? 'info' : 'warning';
 

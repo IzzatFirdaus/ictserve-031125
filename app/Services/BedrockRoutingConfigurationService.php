@@ -30,7 +30,12 @@ class BedrockRoutingConfigurationService
     /**
      * @param  array<string, mixed>  $config
      */
-    public function updateConfiguration(array $config): void
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function updateConfiguration(array $config): void
     {
         $merged = $this->mergeWithDefaults($config);
 
@@ -72,7 +77,12 @@ class BedrockRoutingConfigurationService
      * @param  array<string, mixed>  $config
      * @return array<string, mixed>
      */
-    private function mergeWithDefaults(array $config): array
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+private function mergeWithDefaults(array $config): array
     {
         $defaults = $this->getDefaultConfiguration();
 

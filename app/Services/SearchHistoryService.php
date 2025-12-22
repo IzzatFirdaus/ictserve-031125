@@ -34,7 +34,12 @@ class SearchHistoryService
      *
      * @param  array<string, mixed>  $filters
      */
-    public function recordSearch(string $query, array $filters = [], int $resultCount = 0): ?SavedSearch
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function recordSearch(string $query, array $filters = [], int $resultCount = 0): ?SavedSearch
     {
         $userId = Auth::id();
         if (! $userId || empty(trim($query))) {
@@ -85,7 +90,12 @@ class SearchHistoryService
      *
      * @param  array<string, mixed>  $filters
      */
-    public function saveSearch(string $name, string $query, array $filters = []): ?SavedSearch
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function saveSearch(string $name, string $query, array $filters = []): ?SavedSearch
     {
         $userId = Auth::id();
         if (! $userId || empty(trim($query)) || empty(trim($name))) {

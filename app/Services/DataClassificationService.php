@@ -10,7 +10,12 @@ class DataClassificationService
      * @param  array<string, mixed>  $context
      * @return array{classification: 'public'|'internal'|'confidential'|'restricted', allow_cloud: bool, requires_consent: bool, should_block: bool, reason: string}
      */
-    public function classify(string $text, array $context = []): array
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function classify(string $text, array $context = []): array
     {
         $requireConsentForInternal = true;
         $blockRestricted = true;

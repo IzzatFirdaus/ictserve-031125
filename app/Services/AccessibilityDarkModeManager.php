@@ -220,7 +220,12 @@ class AccessibilityDarkModeManager
      * @param  string  $theme  Theme name
      * @return array<int, array<string, string>> Recommendations
      */
-    private function generateAccessibilityRecommendations(array $issues, string $theme): array
+    
+
+/**
+ * @param array<string, mixed> $issues
+ */
+private function generateAccessibilityRecommendations(array $issues, string $theme): array
     {
         $recommendations = [];
 

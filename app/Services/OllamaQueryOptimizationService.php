@@ -50,7 +50,12 @@ class OllamaQueryOptimizationService
      * @param  array<float>  $queryEmbedding
      * @return \Illuminate\Support\Collection<int, Faq>
      */
-    public function searchFaqsBySimilarity(array $queryEmbedding, int $limit = 5): \Illuminate\Support\Collection
+    
+
+/**
+ * @param array<string, mixed> $queryEmbedding
+ */
+public function searchFaqsBySimilarity(array $queryEmbedding, int $limit = 5): \Illuminate\Support\Collection
     {
         $startTime = microtime(true);
         $cacheKey = 'faq_similarity:'.md5(json_encode($queryEmbedding));
@@ -116,7 +121,12 @@ protected function performFaqSimilaritySearch(array $queryEmbedding, int $limit)
      * @param  array<float>  $queryEmbedding
      * @return \Illuminate\Support\Collection<int, DocumentChunk>
      */
-    public function searchDocumentChunksBySimilarity(
+    
+
+/**
+ * @param array<string, mixed> $queryEmbedding
+ */
+public function searchDocumentChunksBySimilarity(
         array $queryEmbedding,
         int $limit = 5,
         ?int $documentId = null
@@ -185,7 +195,12 @@ protected function performFaqSimilaritySearch(array $queryEmbedding, int $limit)
      *
      * @return \Illuminate\Support\Collection<int, Faq>
      */
-    public function getFaqsWithRelations(array $ids): \Illuminate\Support\Collection
+    
+
+/**
+ * @param array<string, mixed> $ids
+ */
+public function getFaqsWithRelations(array $ids): \Illuminate\Support\Collection
     {
         $startTime = microtime(true);
 
@@ -226,7 +241,12 @@ protected function performFaqSimilaritySearch(array $queryEmbedding, int $limit)
      * @param  array<float>  $vectorA
      * @param  array<float>  $vectorB
      */
-    public function calculateCosineSimilarity(array $vectorA, array $vectorB): float
+    
+
+/**
+ * @param array<string, mixed> $vectorB
+ */
+public function calculateCosineSimilarity(array $vectorA, array $vectorB): float
     {
         if (count($vectorA) !== count($vectorB) || empty($vectorA)) {
             return 0.0;

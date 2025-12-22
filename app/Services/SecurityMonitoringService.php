@@ -398,7 +398,12 @@ public function getBlockedIPs(): array
      *
      * @param  array<string, mixed>  $metadata
      */
-    public function createAlert(string $type, string $message, string $severity = 'medium', array $metadata = []): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function createAlert(string $type, string $message, string $severity = 'medium', array $metadata = []): void
     {
         $alerts = Cache::get('security_alerts', []);
         $alerts[] = [
@@ -649,7 +654,12 @@ public function getAlerts(bool $unacknowledgedOnly = false): array
      * @param  array<string, mixed>  $metadata  Activity metadata
      * @param  \Illuminate\Http\Request  $request  HTTP request
      */
-    public function logSuspiciousActivity(string $activity, array $metadata, \Illuminate\Http\Request $request): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function logSuspiciousActivity(string $activity, array $metadata, \Illuminate\Http\Request $request): void
     {
         $ipAddress = $request->ip() ?? $request->server->get('REMOTE_ADDR', '0.0.0.0');
 
@@ -692,7 +702,12 @@ public function getAlerts(bool $unacknowledgedOnly = false): array
      * @param  string  $event  Event type
      * @param  array<string, mixed>  $metadata  Event metadata
      */
-    public function logSecurityEvent(string $event, array $metadata): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function logSecurityEvent(string $event, array $metadata): void
     {
         $severity = $metadata['severity'] ?? 'medium';
 

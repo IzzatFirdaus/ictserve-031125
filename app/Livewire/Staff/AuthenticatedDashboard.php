@@ -96,7 +96,12 @@ class AuthenticatedDashboard extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:TicketStatusUpdated')]
-    public function handleTicketUpdate(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleTicketUpdate(array $event): void
     {
         // Clear ticket-related caches
         $this->invalidateComponentCache();
@@ -115,7 +120,12 @@ class AuthenticatedDashboard extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:LoanStatusUpdated')]
-    public function handleLoanUpdate(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleLoanUpdate(array $event): void
     {
         // Clear loan-related caches
         $this->invalidateComponentCache();
@@ -134,7 +144,12 @@ class AuthenticatedDashboard extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:notification')]
-    public function handleNotification(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleNotification(array $event): void
     {
         // Refresh all data on notification
         $this->refreshData();

@@ -218,7 +218,7 @@ public function updateLoanBookingEvent(LoanApplication $loanApplication): array
      *
      * @param  Carbon  $startDate  Start date
      * @param  Carbon  $endDate  End date
-     * @param  array  $assetIds  Asset IDs to check
+     * @param  array<string, mixed>  $assetIds  Asset IDs to check
      * @return array Conflict details
      */
     
@@ -374,7 +374,7 @@ private function prepareLoanEventData(LoanApplication $loanApplication): array
     /**
      * Create Outlook calendar event
      *
-     * @param  array  $eventData  Event data
+     * @param  array<string, mixed>  $eventData  Event data
      * @return array Created event
      */
     
@@ -400,7 +400,7 @@ private function createOutlookEvent(array $eventData): array
      * Update Outlook calendar event
      *
      * @param  string  $eventId  Event ID
-     * @param  array  $eventData  Event data
+     * @param  array<string, mixed>  $eventData  Event data
      * @return array Updated event
      */
     
@@ -453,7 +453,7 @@ private function updateOutlookEvent(string $eventId, array $eventData): array
     /**
      * Create Google Calendar event
      *
-     * @param  array  $eventData  Event data
+     * @param  array<string, mixed>  $eventData  Event data
      * @return array Created event
      */
     
@@ -501,7 +501,7 @@ private function createGoogleEvent(array $eventData): array
      * Update Google Calendar event
      *
      * @param  string  $eventId  Event ID
-     * @param  array  $eventData  Event data
+     * @param  array<string, mixed>  $eventData  Event data
      * @return array Updated event
      */
     

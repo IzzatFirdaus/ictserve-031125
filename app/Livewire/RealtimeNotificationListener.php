@@ -69,7 +69,12 @@ class RealtimeNotificationListener extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:ticket.status.changed')]
-    public function handleTicketStatusChanged(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleTicketStatusChanged(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 
@@ -99,7 +104,12 @@ class RealtimeNotificationListener extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:loan.status.changed')]
-    public function handleLoanStatusChanged(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleLoanStatusChanged(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 
@@ -129,7 +139,12 @@ class RealtimeNotificationListener extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:notification.created')]
-    public function handleNotificationCreated(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleNotificationCreated(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 
@@ -153,7 +168,12 @@ class RealtimeNotificationListener extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:status.updated')]
-    public function handleStatusUpdated(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleStatusUpdated(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 
@@ -177,7 +197,12 @@ class RealtimeNotificationListener extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:comment.posted')]
-    public function handleCommentPosted(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleCommentPosted(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 

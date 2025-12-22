@@ -65,7 +65,12 @@ class HelpdeskService implements HelpdeskServiceInterface
      *
      * @throws \Exception If ticket creation fails
      */
-    public function createTicket(array $data): HelpdeskTicket
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createTicket(array $data): HelpdeskTicket
     {
         try {
             DB::beginTransaction();

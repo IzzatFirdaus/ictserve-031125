@@ -72,7 +72,12 @@ class NotificationBell extends Component
      *
      * @param  array{id:string,type:string,data:array<string, mixed>}  $notification
      */
-    public function handleEchoNotification(array $notification): void
+    
+
+/**
+ * @param array<string, mixed> $notification
+ */
+public function handleEchoNotification(array $notification): void
     {
         // Optimistic update of unread counter – tests only assert the count.
         // The $notification payload contains id, type, and data from Echo broadcast.

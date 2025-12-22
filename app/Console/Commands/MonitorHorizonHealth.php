@@ -82,7 +82,12 @@ class MonitorHorizonHealth extends Command
      *
      * @param  array<string, array{healthy: bool, total_supervisors?: int, unhealthy_supervisors?: int, details?: array<int, array{name: string, status: string}>, issues?: array<int, array{severity: string, queue: string, wait_time: float, threshold: float}>, failed_count?: int, threshold?: int, healthy_ratio?: float, active_processes?: int, total_processes?: int}>  $healthStatus
      */
-    private function displayHealthStatus(array $healthStatus): void
+    
+
+/**
+ * @param array<string, mixed> $healthStatus
+ */
+private function displayHealthStatus(array $healthStatus): void
     {
         $this->newLine();
         $this->info('Horizon Health Status Report');

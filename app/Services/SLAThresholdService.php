@@ -33,7 +33,12 @@ public function getSLAThresholds(): array
         });
     }
 
-    public function updateSLAThresholds(array $thresholds): void
+    
+
+/**
+ * @param array<string, mixed> $thresholds
+ */
+public function updateSLAThresholds(array $thresholds): void
     {
         // Validate thresholds
         $this->validateThresholds($thresholds);
@@ -149,6 +154,8 @@ public function checkSLABreach(\Carbon\Carbon $startTime, string $priority, stri
     
 
 /**
+  * @param array<string, mixed> $tickets
+
  * @return array<string, mixed>
  */
 public function getSLACompliance(array $tickets): array
@@ -182,7 +189,12 @@ public function getSLACompliance(array $tickets): array
         ];
     }
 
-    protected function validateThresholds(array $thresholds): void
+    
+
+/**
+ * @param array<string, mixed> $thresholds
+ */
+protected function validateThresholds(array $thresholds): void
     {
         if (! isset($thresholds['categories']) || ! is_array($thresholds['categories'])) {
             throw new \InvalidArgumentException('SLA thresholds must contain categories array');
@@ -392,7 +404,12 @@ public function exportThresholds(): array
         ];
     }
 
-    public function importThresholds(array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function importThresholds(array $data): void
     {
         if (! isset($data['thresholds'])) {
             throw new \InvalidArgumentException('Import data must contain thresholds');

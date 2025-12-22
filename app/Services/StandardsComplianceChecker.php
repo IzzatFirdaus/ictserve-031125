@@ -54,7 +54,12 @@ class StandardsComplianceChecker
      * @param  array<string, mixed>  $component
      * @return array<string, mixed>
      */
-    public function checkCompliance(array $component): array
+    
+
+/**
+ * @param array<string, mixed> $component
+ */
+public function checkCompliance(array $component): array
     {
         $content = $component['content'];
         $type = $component['type'];
@@ -444,7 +449,12 @@ class StandardsComplianceChecker
      *
      * @param  array<string, mixed>  $checks
      */
-    protected function determineSeverity(float $percentage, array $checks): string
+    
+
+/**
+ * @param array<string, mixed> $checks
+ */
+protected function determineSeverity(float $percentage, array $checks): string
     {
         // Critical if accessibility or traceability fails
         if (! $checks['accessibility']['passed'] || ! $checks['traceability']['passed']) {

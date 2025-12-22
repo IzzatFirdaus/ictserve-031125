@@ -83,7 +83,12 @@ class AIPerformanceWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $ollamaMetrics
      */
-    private function createOllamaPerformanceStat(array $ollamaMetrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $ollamaMetrics
+ */
+private function createOllamaPerformanceStat(array $ollamaMetrics): Stat
     {
         $responseTime = $ollamaMetrics['avg_response_time_ms'] ?? 0;
         $successRate = $ollamaMetrics['success_rate'] ?? 0;
@@ -123,7 +128,12 @@ class AIPerformanceWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $bedrockMetrics
      */
-    private function createBedrockPerformanceStat(array $bedrockMetrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $bedrockMetrics
+ */
+private function createBedrockPerformanceStat(array $bedrockMetrics): Stat
     {
         $responseTime = $bedrockMetrics['avg_response_time_ms'] ?? 0;
         $successRate = $bedrockMetrics['success_rate'] ?? 0;
@@ -164,7 +174,12 @@ class AIPerformanceWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $combinedMetrics
      */
-    private function createCombinedPerformanceStat(array $combinedMetrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $combinedMetrics
+ */
+private function createCombinedPerformanceStat(array $combinedMetrics): Stat
     {
         $responseTime = $combinedMetrics['avg_response_time_ms'] ?? 0;
         $successRate = $combinedMetrics['success_rate'] ?? 0;
@@ -194,7 +209,12 @@ class AIPerformanceWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $combinedMetrics
      */
-    private function createRequestVolumeStat(array $combinedMetrics): Stat
+    
+
+/**
+ * @param array<string, mixed> $combinedMetrics
+ */
+private function createRequestVolumeStat(array $combinedMetrics): Stat
     {
         $totalRequests = $combinedMetrics['total_requests_24h'] ?? 0;
         $requestsPerHour = round($totalRequests / 24, 1);
