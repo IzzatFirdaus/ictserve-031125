@@ -99,12 +99,11 @@ class PulseDashboard extends Page
     /**
      * Get page data for the view
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-protected function getViewData(): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getViewData(): array
     {
         return [
             'pulseUrl' => $this->getPulseUrl(),

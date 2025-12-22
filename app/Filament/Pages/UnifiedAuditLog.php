@@ -224,12 +224,11 @@ class UnifiedAuditLog extends Page implements HasTable
      *
      * @return array<Tables\Columns\Column>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-protected function getTableColumns(): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getTableColumns(): array
     {
         $baseColumns = [
             Tables\Columns\TextColumn::make('created_at')
@@ -342,12 +341,11 @@ protected function getTableColumns(): array
      *
      * @return array<Tables\Filters\BaseFilter>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-protected function getTableFilters(): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getTableFilters(): array
     {
         $filters = [
             Tables\Filters\Filter::make('date_range')
@@ -457,12 +455,11 @@ protected function getTableFilters(): array
      *
      * @return array<PageAction>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-protected function getHeaderActions(): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getHeaderActions(): array
     {
         return [
             PageAction::make('refresh')

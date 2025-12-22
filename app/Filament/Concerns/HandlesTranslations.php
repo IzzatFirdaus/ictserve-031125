@@ -8,8 +8,6 @@ trait HandlesTranslations
 {
     /**
      * Safely translate a key, returning the fallback when translation is not a string.
-     *
-     * @return string
      */
     protected static function trans(string $key, string $fallback = ''): string
     {
@@ -24,8 +22,6 @@ trait HandlesTranslations
 
     /**
      * Safely translate a key, returning null when translation is not a string.
-     *
-     * @return string|null
      */
     protected static function transOrNull(string $key): ?string
     {
