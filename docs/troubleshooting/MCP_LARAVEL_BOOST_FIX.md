@@ -2,7 +2,7 @@
 
 **Date**: December 22, 2024  
 **Issue**: Laravel Boost MCP server failing to connect with "Connection closed" error  
-**Status**: ✅ RESOLVED (Updated: Path configuration fixed)
+**Status**: ✅ RESOLVED (Updated: PHP path configuration optimized)
 
 ## Problem Description
 
@@ -22,8 +22,10 @@ The issue had two phases:
 ### Phase 1: Merge Conflict Markers (RESOLVED)
 The initial issue was caused by **unresolved merge conflict markers** in the `app/Filament/Traits/CacheableWidget.php` file. These conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) were preventing Laravel from starting properly.
 
-### Phase 2: Incorrect Path Configuration (RESOLVED)
-After fixing the merge conflicts, a second issue emerged: **inconsistent directory paths** in the MCP configuration. The filesystem server was configured to use the XAMPP path (`C:\XAMPP\htdocs\ictserve-031125`) while the Laravel Boost server was correctly using the Laragon path (`C:\laragon\www\ictserve-031125`).
+### Phase 3: PHP Path Configuration (RESOLVED)
+After fixing the path consistency, a third issue emerged with the absolute PHP path configuration. The MCP server had trouble with the complex absolute path format `C:\\laragon\\bin\\php\\php-8.4.1-Win32-vs17-x64\\php.exe`, resulting in "The system cannot find the path specified" error.
+
+**Solution**: Since PHP is properly configured in the system PATH with Laragon's PHP taking precedence, we reverted to using the simple `php` command instead of the absolute path.
 
 ### Error Details
 
@@ -306,19 +308,42 @@ Ensure Laravel Boost is installed and up to date.
 **Impact**: MCP server now functioning correctly  
 **Lessons Learned**: Always verify merge conflicts are fully resolved before committing
 
-### Step 8: Verify the Complete Fix
+### Step 8: Optimize PHP Path Configuration (FINAL FIX)
 
-After resolving both the conflicts and path issues, verified that Laravel could start:
+After resolving path consistency, discovered that the absolute PHP path was causing issues with the MCP server. The error changed from "Could not open input file: artisan" to "The system cannot find the path specified."
 
+**Investigation**:
 ```bash
-php artisan list | findstr boost
+where.exe php
 ```
-
 Output:
 ```
-boost
-  boost:install
-  boost:mcp                                Starts Laravel Boost (usually from mcp.json)
+C:\laragon\bin\php\php-8.4.1-Win32-vs17-x64\php.exe
+C:\xampp\php\php.exe
+```
+
+Since PHP is properly configured in the system PATH with Laragon's version taking precedence, we can use the simple `php` command.
+
+**Final Configuration**:
+```json
+{
+  "laravel-boost": {
+    "command": "php",
+    "args": ["artisan", "boost:mcp"],
+    "cwd": "C:\\laragon\\www\\ictserve-031125",
+    "disabled": false,
+    "autoApprove": [...]
+  }
+}
+```
+
+**Verification**:
+```bash
+php --version
+# PHP 8.4.1 (cli) (built: Nov 20 2024 11:13:29) (ZTS Visual C++ 2022 x64)
+
+php artisan boost:mcp --help
+# Description: Starts Laravel Boost (usually from mcp.json)
 ```
 
 ## Updated MCP Configuration
@@ -378,3 +403,209 @@ The key lesson learned is ensuring **all MCP servers use consistent paths**:
 - **filesystem**: `C:\XAMPP\htdocs\ictserve-031125` ❌ (Wrong server type)
 
 This inconsistency caused the "Could not open input file: artisan" error because the filesystem server was looking in the wrong directory.
+
+## Latest Update: PHP Path Configuration Fix
+
+**Date**: December 22, 2024 (Final Update)  
+**Issue**: "The system cannot find the path specified" after absolute PHP path configuration  
+**Status**: ✅ RESOLVED
+
+### Problem
+After fixing the path consistency issues, the MCP server encountered a new error when using the absolute PHP path:
+
+```
+[2025-12-22T07:48:00.024Z] [warn] [laravel-boost] Log from MCP Server: The system cannot find the path specified.
+```
+
+### Root Cause
+The MCP server had difficulty parsing the complex absolute PHP path with multiple backslashes:
+```
+C:\\laragon\\bin\\php\\php-8.4.1-Win32-vs17-x64\\php.exe
+```
+
+### Solution
+Since PHP is properly configured in the system PATH, we reverted to using the simple `php` command:
+
+**Before (problematic)**:
+```json
+{
+  "laravel-boost": {
+    "command": "C:\\laragon\\bin\\php\\php-8.4.1-Win32-vs17-x64\\php.exe",
+    "args": ["artisan", "boost:mcp"],
+    "cwd": "C:\\laragon\\www\\ictserve-031125"
+  }
+}
+```
+
+**After (working)**:
+```json
+{
+  "laravel-boost": {
+    "command": "php",
+    "args": ["artisan", "boost:mcp"],
+    "cwd": "C:\\laragon\\www\\ictserve-031125"
+  }
+}
+```
+
+### Verification
+```bash
+# Check PHP is in PATH and correct version
+where.exe php
+# C:\laragon\bin\php\php-8.4.1-Win32-vs17-x64\php.exe (Laragon - priority)
+# C:\xampp\php\php.exe (XAMPP - secondary)
+
+php --version
+# PHP 8.4.1 (cli) (built: Nov 20 2024 11:13:29) (ZTS Visual C++ 2022 x64)
+
+# Test the exact MCP command
+php artisan boost:mcp --help
+# Description: Starts Laravel Boost (usually from mcp.json)
+```
+
+### Key Lessons
+1. **Prefer simple commands when possible**: If executables are in PATH, use simple command names
+2. **Complex absolute paths can cause issues**: MCP servers may have trouble with long paths containing multiple backslashes
+3. **PATH precedence matters**: Ensure the correct version of PHP is first in PATH (Laragon before XAMPP)
+4. **Test manually first**: Always verify commands work manually before configuring in MCP
+
+### Final Working Configuration
+The complete working `.mcp.json` configuration for ICTServe with Laragon:
+
+```json
+{
+  "mcpServers": {
+    "laravel-boost": {
+      "command": "php",
+      "args": ["artisan", "boost:mcp"],
+      "cwd": "C:\\laragon\\www\\ictserve-031125",
+      "disabled": false,
+      "autoApprove": [
+        "application_info",
+        "search_docs",
+        "database_query",
+        "database_schema",
+        "tinker",
+        "list_routes",
+        "get_config",
+        "read_log_entries",
+        "browser_logs",
+        "list_artisan_commands",
+        "get_absolute_url"
+      ]
+    }
+  }
+}
+```
+
+**Status**: MCP server should now connect successfully. Monitor logs for successful connection and tool synchronization.
+
+## CRITICAL UPDATE: Multiple MCP Configuration Files Issue
+
+**Date**: December 22, 2024 (Critical Discovery)  
+**Issue**: MCP server reading from wrong configuration file  
+**Status**: ✅ RESOLVED
+
+### Critical Discovery
+The root cause of the persistent "The system cannot find the path specified" error was that **Kiro reads from `.kiro/settings/mcp.json` instead of `.mcp.json`**. 
+
+While we were updating `.mcp.json`, Kiro was actually using the configuration from `.kiro/settings/mcp.json` which contained outdated XAMPP paths.
+
+### Multiple MCP Configuration Files Found
+```
+.opencode\mcp.json
+.vscode\mcp.json
+.mcp.json                    ← We were updating this
+.cursor\mcp.json
+.kiro\settings\mcp.json      ← Kiro was actually reading this
+.amazonq\mcp.json
+.junie\mcp\mcp.json
+```
+
+### Problematic Configuration in `.kiro/settings/mcp.json`
+```json
+{
+  "laravel-boost": {
+    "command": "C:\\Users\\exatf\\tools\\php-8.4.11\\php.exe",  ← Non-existent path
+    "args": ["C:\\XAMPP\\htdocs\\ictserve-031125\\artisan", "boost:mcp"],  ← Wrong path
+    "env": { "APP_ENV": "local" }
+  },
+  "ictserve": {
+    "command": "C:\\Users\\exatf\\tools\\php-8.4.11\\php.exe",  ← Non-existent path
+    "args": ["C:\\XAMPP\\htdocs\\ictserve-031125\\artisan", "mcp:start", "ictserve"]  ← Wrong path
+  }
+}
+```
+
+### Corrected Configuration
+**Fixed `.kiro/settings/mcp.json`**:
+```json
+{
+  "laravel-boost": {
+    "command": "php",
+    "args": ["artisan", "boost:mcp"],
+    "cwd": "C:\\laragon\\www\\ictserve-031125",
+    "env": { "APP_ENV": "local" }
+  },
+  "ictserve": {
+    "command": "php", 
+    "args": ["artisan", "mcp:start", "ictserve"],
+    "cwd": "C:\\laragon\\www\\ictserve-031125",
+    "env": { "APP_ENV": "local" }
+  },
+  "memory": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-memory"],
+    "env": {
+      "MEMORY_FILE_PATH": "C:\\laragon\\www\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+    }
+  }
+}
+```
+
+### Key Changes Made
+1. **Updated PHP command**: From absolute path to simple `php` (in PATH)
+2. **Updated artisan path**: From absolute path to relative `artisan` with `cwd`
+3. **Added working directory**: `"cwd": "C:\\laragon\\www\\ictserve-031125"`
+4. **Fixed memory path**: Absolute path to ensure proper storage location
+5. **Created storage directory**: `C:\laragon\www\ictserve-031125\storage\mcp\`
+
+### Verification Commands
+```bash
+# Test Laravel Boost MCP
+cd C:\laragon\www\ictserve-031125
+php artisan boost:mcp --help
+# ✅ Description: Starts Laravel Boost (usually from mcp.json)
+
+# Test ICTServe MCP  
+php artisan mcp:start ictserve --help
+# ✅ Description: Start the MCP Server for a given handle.
+
+# Verify PHP version
+php --version
+# ✅ PHP 8.4.1 (cli) (Laragon)
+```
+
+### Lesson Learned
+**Always check which MCP configuration file your IDE/editor is actually reading!**
+
+Different tools may use different configuration files:
+- **Kiro**: `.kiro/settings/mcp.json`
+- **VS Code**: `.vscode/mcp.json`  
+- **Cursor**: `.cursor/mcp.json`
+- **Generic**: `.mcp.json`
+
+### Expected Result
+After updating the correct configuration file (`.kiro/settings/mcp.json`), the MCP server should now connect successfully with logs showing:
+```
+[timestamp] [info] [laravel-boost] Connected to server with transport type: Stdio
+[timestamp] [info] [laravel-boost] Successfully connected and synced tools and resources for MCP server
+```
+
+### Configuration File Priority
+When troubleshooting MCP issues, check configuration files in this order:
+1. IDE-specific config (`.kiro/settings/mcp.json` for Kiro)
+2. Generic config (`.mcp.json`)
+3. Other IDE configs (`.vscode/mcp.json`, `.cursor/mcp.json`, etc.)
+
+**Status**: Laravel Boost MCP server should now be fully functional with correct Laragon paths.

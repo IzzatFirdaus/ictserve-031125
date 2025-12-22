@@ -4,7 +4,7 @@
 			"command": "npx",
 			"args": ["-y", "@modelcontextprotocol/server-memory"],
 			"env": {
-				"MEMORY_FILE_PATH": "./storage/mcp/memory.jsonl"
+				"MEMORY_FILE_PATH": "C:\\laragon\\www\\ictserve-031125\\storage\\mcp\\memory.jsonl"
 			},
 			"disabled": false,
 			"autoApprove": [
@@ -29,8 +29,9 @@
 			"autoApprove": ["sequentialthinking"]
 		},
 		"laravel-boost": {
-			"command": "C:\\Users\\exatf\\tools\\php-8.4.11\\php.exe",
-			"args": ["C:\\XAMPP\\htdocs\\ictserve-031125\\artisan", "boost:mcp"],
+			"command": "php",
+			"args": ["artisan", "boost:mcp"],
+			"cwd": "C:\\laragon\\www\\ictserve-031125",
 			"env": {
 				"APP_ENV": "local"
 			},
@@ -55,12 +56,13 @@
 			]
 		},
 		"ictserve": {
-			"command": "C:\\Users\\exatf\\tools\\php-8.4.11\\php.exe",
+			"command": "php",
 			"args": [
-				"C:\\XAMPP\\htdocs\\ictserve-031125\\artisan",
+				"artisan",
 				"mcp:start",
 				"ictserve"
 			],
+			"cwd": "C:\\laragon\\www\\ictserve-031125",
 			"env": {
 				"APP_ENV": "local"
 			},
