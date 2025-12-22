@@ -48,7 +48,12 @@ class GlobalSearchService
      * @param  array<string, mixed>  $filters
      * @return array<string, array>
      */
-    public function search(string $query, array $resourceTypes = [], array $filters = []): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function search(string $query, array $resourceTypes = [], array $filters = []): array
     {
         $cacheKey = $this->generateCacheKey($query, $resourceTypes, $filters);
 
@@ -322,7 +327,12 @@ class GlobalSearchService
      * @param  array<string, Collection>  $results
      * @return array<string, array>
      */
-    private function sortByRelevance(array $results, string $query): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function sortByRelevance(array $results, string $query): array
     {
         $sorted = [];
 
@@ -357,7 +367,12 @@ class GlobalSearchService
      *
      * @return array<int, string>
      */
-    public function getSuggestions(string $query, int $limit = 5): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSuggestions(string $query, int $limit = 5): array
     {
         $suggestions = [];
 

@@ -37,7 +37,12 @@ class UnifiedAnalyticsService
      *
      * @return array<string, mixed>
      */
-    public function getDashboardMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getDashboardMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
         $cacheKey = $this->buildCacheKey('dashboard_metrics', $startDate, $endDate);
 
@@ -89,7 +94,12 @@ class UnifiedAnalyticsService
     /**
      * Get helpdesk-specific metrics
      */
-    private function getHelpdeskMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getHelpdeskMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
         $query = HelpdeskTicket::query();
 
@@ -131,7 +141,12 @@ class UnifiedAnalyticsService
     /**
      * Get loan-specific metrics
      */
-    private function getLoanMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getLoanMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
         $query = LoanApplication::query();
 
@@ -167,7 +182,12 @@ class UnifiedAnalyticsService
     /**
      * Get asset utilization metrics
      */
-    private function getAssetMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getAssetMetrics(): array
     {
         $total = Asset::count();
         $available = Asset::where('status', 'available')->count();
@@ -192,7 +212,12 @@ class UnifiedAnalyticsService
     /**
      * Get cross-module integration metrics
      */
-    private function getCrossModuleIntegrationMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getCrossModuleIntegrationMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
         $query = CrossModuleIntegration::query();
 
@@ -225,7 +250,12 @@ class UnifiedAnalyticsService
      * @param  array<string, mixed>  $assets
      * @return array<string, mixed>
      */
-    private function calculateSummaryMetrics(array $helpdesk, array $loans, array $assets): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function calculateSummaryMetrics(array $helpdesk, array $loans, array $assets): array
     {
         $totalIssues = $helpdesk['pending_tickets'] + $loans['overdue_loans'] + $assets['maintenance_assets'];
         $totalActive = $helpdesk['pending_tickets'] + $loans['active_loans'];
@@ -257,7 +287,12 @@ class UnifiedAnalyticsService
     /**
      * Get monthly trends for unified chart
      */
-    public function getMonthlyTrends(int $months = 6): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getMonthlyTrends(int $months = 6): array
     {
         $startDate = now()->subMonths($months)->startOfMonth();
 
@@ -332,7 +367,12 @@ class UnifiedAnalyticsService
     /**
      * Get asset utilization trends over time
      */
-    public function getAssetUtilizationTrends(int $days = 30): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAssetUtilizationTrends(int $days = 30): array
     {
         $startDate = now()->subDays($days)->startOfDay();
 
@@ -383,7 +423,12 @@ class UnifiedAnalyticsService
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    public function getDrillDownData(string $metric, array $filters = []): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getDrillDownData(string $metric, array $filters = []): array
     {
         return match ($metric) {
             'overdue_tickets' => $this->getOverdueTicketsDetail($filters),
@@ -400,7 +445,12 @@ class UnifiedAnalyticsService
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    private function getOverdueTicketsDetail(array $filters): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getOverdueTicketsDetail(array $filters): array
     {
         $query = HelpdeskTicket::where('sla_resolution_due_at', '<', now())
             ->whereNull('resolved_at')
@@ -434,7 +484,12 @@ class UnifiedAnalyticsService
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    private function getOverdueLoansDetail(array $filters): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getOverdueLoansDetail(array $filters): array
     {
         $query = LoanApplication::where('loan_end_date', '<', now()->toDateString())
             ->whereIn('status', ['issued', 'in_use'])
@@ -460,7 +515,12 @@ class UnifiedAnalyticsService
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    private function getMaintenanceAssetsDetail(array $filters): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getMaintenanceAssetsDetail(array $filters): array
     {
         $query = Asset::whereIn('status', ['maintenance', 'damaged'])
             ->with(['category']);
@@ -485,7 +545,12 @@ class UnifiedAnalyticsService
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    private function getCrossModuleIntegrationsDetail(array $filters): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getCrossModuleIntegrationsDetail(array $filters): array
     {
         $query = CrossModuleIntegration::with(['helpdeskTicket', 'loanApplication']);
 
@@ -557,7 +622,12 @@ class UnifiedAnalyticsService
      *
      * @return array<string, mixed>
      */
-    public function exportToArray(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function exportToArray(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
         $metrics = $this->getDashboardMetrics($startDate, $endDate);
 
@@ -599,7 +669,12 @@ class UnifiedAnalyticsService
      * @param  array<string, mixed>  $metrics
      * @return array<int, array{metric: string, value: mixed}>
      */
-    private function formatMetricsForExport(array $metrics): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function formatMetricsForExport(array $metrics): array
     {
         $formatted = [];
         foreach ($metrics as $key => $value) {

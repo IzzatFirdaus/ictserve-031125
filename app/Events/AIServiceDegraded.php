@@ -76,7 +76,12 @@ class AIServiceDegraded implements ShouldBroadcastNow
         };
     }
 
-    private function getAvailableFeatures(int $tier): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getAvailableFeatures(int $tier): array
     {
         return match ($tier) {
             1 => ['faq_bot', 'document_analysis', 'auto_reply', 'embeddings'],
@@ -87,7 +92,12 @@ class AIServiceDegraded implements ShouldBroadcastNow
         };
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-alerts'),
@@ -99,7 +109,12 @@ class AIServiceDegraded implements ShouldBroadcastNow
         return 'AIServiceDegraded';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'previousTier' => $this->previousTier,
