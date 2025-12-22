@@ -8,6 +8,9 @@ use App\Models\BedrockModelConfig;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<\App\Models\BedrockModelConfig>
+ */
 class BedrockModelConfigFactory extends Factory
 {
     protected $model = BedrockModelConfig::class;

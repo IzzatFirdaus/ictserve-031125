@@ -10,6 +10,9 @@ use App\Models\Asset;
 use App\Models\AssetCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<\App\Models\Asset>
+ */
 class AssetFactory extends Factory
 {
     protected $model = Asset::class;

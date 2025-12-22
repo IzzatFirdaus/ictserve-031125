@@ -7,6 +7,9 @@ namespace Database\Factories;
 use App\Models\ModelPerformanceMetric;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<\App\Models\ModelPerformanceMetric>
+ */
 class ModelPerformanceMetricFactory extends Factory
 {
     protected $model = ModelPerformanceMetric::class;

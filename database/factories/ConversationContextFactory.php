@@ -9,6 +9,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/**
+ * @extends Factory<\App\Models\ConversationContext>
+ */
 class ConversationContextFactory extends Factory
 {
     protected $model = ConversationContext::class;
