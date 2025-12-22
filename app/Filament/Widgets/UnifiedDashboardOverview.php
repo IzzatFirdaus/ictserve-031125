@@ -51,12 +51,11 @@ class UnifiedDashboardOverview extends BaseWidget
     /**
      * Widget roles - accessible to all authenticated users
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public static function getWidgetRoles(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public static function getWidgetRoles(): array
     {
         return ['staff', 'admin', 'superuser'];
     }
@@ -69,12 +68,10 @@ public static function getWidgetRoles(): array
         return 'D04 §3.2 Dashboard widgets, D12 §9 Performance optimization patterns';
     }
 
-    
-
-/**
- * @return array<string, mixed>
- */
-protected function getStats(): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getStats(): array
     {
         // Use cached data with 5-minute TTL for performance optimization
         $metrics = $this->cached(function () {
@@ -164,12 +161,11 @@ protected function getStats(): array
     /**
      * @return array<int, int>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getHealthTrendData(): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getHealthTrendData(): array
     {
         // Simple trend data - could be enhanced with historical data
         return [65, 70, 75, 80, 85, 88, 90];

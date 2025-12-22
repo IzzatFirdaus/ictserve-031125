@@ -108,12 +108,11 @@ class PerformanceMetricsWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $queueMetrics
      */
-    
 
-/**
- * @param array<string, mixed> $queueMetrics
- */
-private function buildQueueSuccessRateStat(array $queueMetrics): Stat
+    /**
+     * @param  array<string, mixed>  $queueMetrics
+     */
+    private function buildQueueSuccessRateStat(array $queueMetrics): Stat
     {
         $failureRate = $queueMetrics['failure_rate_percent'] ?? 0;
         $successRate = 100 - $failureRate;
@@ -141,12 +140,11 @@ private function buildQueueSuccessRateStat(array $queueMetrics): Stat
      *
      * @param  array<string, mixed>  $requestMetrics
      */
-    
 
-/**
- * @param array<string, mixed> $requestMetrics
- */
-private function buildResponseTimeStat(array $requestMetrics): Stat
+    /**
+     * @param  array<string, mixed>  $requestMetrics
+     */
+    private function buildResponseTimeStat(array $requestMetrics): Stat
     {
         $avgResponseTime = $requestMetrics['average_response_time_ms'] ?? 0;
         $slowRequestsCount = $requestMetrics['slow_requests_count'] ?? 0;
