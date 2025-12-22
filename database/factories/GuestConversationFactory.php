@@ -14,6 +14,8 @@ use Illuminate\Support\Str;
  *
  * Menyokong True Hybrid Architecture dengan Account Linking
  * Menjana sejarah perbualan tetamu yang realistik
+  *
+ * @extends Factory<\App\Models\GuestConversation>
  */
 class GuestConversationFactory extends Factory
 {

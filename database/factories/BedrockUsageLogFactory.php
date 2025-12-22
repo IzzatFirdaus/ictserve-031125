@@ -9,6 +9,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/**
+ * @extends Factory<\App\Models\BedrockUsageLog>
+ */
 class BedrockUsageLogFactory extends Factory
 {
     protected $model = BedrockUsageLog::class;
