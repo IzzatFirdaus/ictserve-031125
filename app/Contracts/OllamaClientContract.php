@@ -34,7 +34,7 @@ interface OllamaClientContract
      *                                         - temperature?: float (kreativiti model, 0.0-1.0)
      *                                         - top_p?: float (nucleus sampling, 0.0-1.0)
      *                                         - max_tokens?: int (token maksimum untuk respons)
-     * @return array Respons yang mengandungi:
+     * @return array<string, mixed> Respons yang mengandungi:
      *               - response: string (teks yang dijana)
      *               - model: string (model yang digunakan)
      *               - created_at: string (masa penciptaan)
@@ -59,7 +59,7 @@ interface OllamaClientContract
      *
      * @param  string  $text  Teks untuk dijadikan embedding (maksimum 8192 aksara)
      * @param  string|null  $model  Model untuk embedding (lalai: model konfigurasi)
-     * @return array Respons yang mengandungi:
+     * @return array<string, mixed> Respons yang mengandungi:
      *               - embedding: array (vektor float dengan dimensi bergantung model)
      *               - model: string (model yang digunakan)
      *               - total_duration?: int (masa pemprosesan)
@@ -88,7 +88,7 @@ interface OllamaClientContract
      *                                         - temperature?: float (kreativiti)
      *                                         - max_tokens?: int (token maksimum)
      *                                         - stream?: bool (streaming respons)
-     * @return array Respons chat yang mengandungi:
+     * @return array<string, mixed> Respons chat yang mengandungi:
      *               - message: array (mesej respons dengan role dan content)
      *               - model: string (model yang digunakan)
      *               - created_at: string (masa penciptaan)
@@ -106,7 +106,7 @@ interface OllamaClientContract
      * Kaedah ini mengembalikan senarai semua model LLM yang tersedia
      * pada pelayan Ollama untuk digunakan.
      *
-     * @return array Senarai model yang mengandungi:
+     * @return array<string, mixed> Senarai model yang mengandungi:
      *               - models: array (senarai model dengan maklumat)
      *               [
      *               [
@@ -140,7 +140,7 @@ interface OllamaClientContract
      * kunci cache untuk meningkatkan prestasi.
      *
      * @param  string  $cacheKey  Kunci cache untuk dicari
-     * @return array|null Respons dari cache atau null jika tidak dijumpai
+     * @return array<string, mixed>|null Respons dari cache atau null jika tidak dijumpai
      */
     public function getCachedResponse(string $cacheKey): ?array;
 
@@ -173,7 +173,7 @@ interface OllamaClientContract
      * Kaedah ini mengembalikan statistik prestasi untuk pemantauan
      * dan analisis penggunaan sistem AI.
      *
-     * @return array Statistik yang mengandungi:
+     * @return array<string, mixed> Statistik yang mengandungi:
      *               - total_requests: int (jumlah permintaan)
      *               - average_response_time: float (masa respons purata)
      *               - cache_hit_rate: float (kadar hit cache)
