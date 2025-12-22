@@ -167,11 +167,15 @@ public function detectPII(string $text): array
      *
      * @param  string  $text  Teks untuk disanitasi
      * @param  array|null  $typesToSanitize  Jenis PII untuk disanitasi (null = semua)
+      * @param array<string, mixed> $typesToSanitize
+
      * @return array Teks yang disanitasi dan statistik
      */
     
 
 /**
+  * @param array<string, mixed> $typesToSanitize
+
  * @return array<string, mixed>
  */
 public function sanitizePII(string $text, ?array $typesToSanitize = null): array
@@ -249,7 +253,7 @@ public function sanitizePII(string $text, ?array $typesToSanitize = null): array
      * Anonimkan data untuk analisis
      *
      * @param  array  $data  Data untuk dianonimkan
-     * @param  array  $fieldsToAnonymize  Medan untuk dianonimkan
+     * @param  array<string, mixed>  $fieldsToAnonymize  Medan untuk dianonimkan
      * @return array Data yang dianonimkan
      */
     
@@ -406,7 +410,12 @@ public function getDetectionStatistics(int $hours = 24): array
     /**
      * Kira tahap keterukan keseluruhan
      */
-    private function calculateOverallSeverity(array $detections): string
+    
+
+/**
+ * @param array<string, mixed> $detections
+ */
+private function calculateOverallSeverity(array $detections): string
     {
         if (empty($detections)) {
             return 'none';
@@ -426,7 +435,12 @@ public function getDetectionStatistics(int $hours = 24): array
     /**
      * Log pengesanan PII untuk audit (D09 v3.6.0 Dual Audit System)
      */
-    private function logPIIDetection(array $detections, int $totalCount): void
+    
+
+/**
+ * @param array<string, mixed> $detections
+ */
+private function logPIIDetection(array $detections, int $totalCount): void
     {
         Log::warning('PII detected in content', [
             'total_count' => $totalCount,
@@ -450,7 +464,12 @@ public function getDetectionStatistics(int $hours = 24): array
     /**
      * Log sanitasi PII untuk audit (D09 v3.6.0 Dual Audit System)
      */
-    private function logPIISanitization(array $stats, int $totalSanitized): void
+    
+
+/**
+ * @param array<string, mixed> $stats
+ */
+private function logPIISanitization(array $stats, int $totalSanitized): void
     {
         Log::info('PII sanitized from content', [
             'total_sanitized' => $totalSanitized,
@@ -476,6 +495,8 @@ public function getDetectionStatistics(int $hours = 24): array
     
 
 /**
+  * @param array<string, mixed> $detections
+
  * @return array<string, mixed>
  */
 private function countBySeverity(array $detections): array

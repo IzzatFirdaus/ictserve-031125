@@ -30,7 +30,12 @@ class WidgetRegistry implements WidgetRegistryInterface
     /**
      * Register a widget with the registry
      */
-    public function register(string $widgetClass, array $config = []): void
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function register(string $widgetClass, array $config = []): void
     {
         // Validate widget class
         if (! $this->validateWidget($widgetClass)) {

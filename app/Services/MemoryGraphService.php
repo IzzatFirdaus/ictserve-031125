@@ -17,12 +17,22 @@ use Illuminate\Support\Collection;
  */
 class MemoryGraphService
 {
-    public function createEntity(array $data): MemoryEntity
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createEntity(array $data): MemoryEntity
     {
         return MemoryEntity::create($data);
     }
 
-    public function updateEntity(MemoryEntity $entity, array $data): MemoryEntity
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function updateEntity(MemoryEntity $entity, array $data): MemoryEntity
     {
         $entity->fill($data);
         $entity->save();
@@ -35,7 +45,12 @@ class MemoryGraphService
         $entity->delete();
     }
 
-    public function recordObservation(MemoryEntity $entity, array $data): MemoryObservation
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function recordObservation(MemoryEntity $entity, array $data): MemoryObservation
     {
         $hash = $data['content_hash'] ?? sha1($data['content']);
 
@@ -53,7 +68,12 @@ class MemoryGraphService
         );
     }
 
-    public function createRelation(MemoryEntity $from, MemoryEntity $to, array $data): MemoryRelation
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createRelation(MemoryEntity $from, MemoryEntity $to, array $data): MemoryRelation
     {
         return MemoryRelation::updateOrCreate(
             [
@@ -69,7 +89,12 @@ class MemoryGraphService
         );
     }
 
-    public function registerAdapter(array $data): MemoryAdapter
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function registerAdapter(array $data): MemoryAdapter
     {
         $adapter = MemoryAdapter::updateOrCreate(
             [
@@ -89,7 +114,12 @@ class MemoryGraphService
         return $adapter;
     }
 
-    public function recordAdapterSync(MemoryAdapter $adapter, array $data): MemoryAdapterSync
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function recordAdapterSync(MemoryAdapter $adapter, array $data): MemoryAdapterSync
     {
         $sync = $adapter->syncs()->create([
             'status' => $data['status'] ?? 'completed',
@@ -110,7 +140,12 @@ class MemoryGraphService
         return $sync;
     }
 
-    public function attachAdapterEntities(MemoryAdapter $adapter, Collection $entities, ?array $metadata = null): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function attachAdapterEntities(MemoryAdapter $adapter, Collection $entities, ?array $metadata = null): void
     {
         $payload = $entities->mapWithKeys(function (MemoryEntity $entity) use ($metadata) {
             return [

@@ -66,7 +66,12 @@ class ApiTokenService implements ApiTokenServiceInterface
      * @param  int|null  $expirationDays  Days until expiration (default: 30, null for no expiry)
      * @return NewAccessToken The newly created token with plain text value
      */
-    public function createToken(
+    
+
+/**
+ * @param array<string, mixed> $abilities
+ */
+public function createToken(
         User $user,
         string $name,
         array $abilities = ['*'],
@@ -221,7 +226,12 @@ class ApiTokenService implements ApiTokenServiceInterface
      * @param  array<string>  $requiredAbilities  Abilities to check for
      * @return bool True if token has all required abilities
      */
-    public function validateTokenAbilities(PersonalAccessToken $token, array $requiredAbilities): bool
+    
+
+/**
+ * @param array<string, mixed> $requiredAbilities
+ */
+public function validateTokenAbilities(PersonalAccessToken $token, array $requiredAbilities): bool
     {
         // Wildcard grants all abilities
         if (\in_array('*', $token->abilities, true)) {

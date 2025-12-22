@@ -66,7 +66,12 @@ class PersonalStatsWidget extends Component
      *
      * @param  array<string, bool>  $config
      */
-    public function mount(array $config = [], bool $liveUpdates = true, int $pollInterval = 30): void
+    
+
+/**
+ * @param array<string, mixed> $config
+ */
+public function mount(array $config = [], bool $liveUpdates = true, int $pollInterval = 30): void
     {
         $this->config = array_merge($this->config, $config);
         $this->liveUpdates = $liveUpdates;

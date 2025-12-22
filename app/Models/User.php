@@ -510,7 +510,12 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     /**
      * @param  array<string, bool>  $preferences
      */
-    public function setNotificationPreferences(array $preferences): void
+    
+
+/**
+ * @param array<string, mixed> $preferences
+ */
+public function setNotificationPreferences(array $preferences): void
     {
         $normalized = array_map(
             static fn (bool|string|int $value): bool => (bool) $value,

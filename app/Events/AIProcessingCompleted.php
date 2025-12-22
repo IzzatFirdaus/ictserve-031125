@@ -49,7 +49,12 @@ class AIProcessingCompleted implements ShouldBroadcast
      * @param  float  $processingTime  Masa pemprosesan dalam saat
      * @param  string|null  $requestId  X-Request-ID untuk audit trail
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $result
+ */
+public function __construct(
         string $operationType,
         array $result = [],
         float $processingTime = 0.0,
@@ -78,6 +83,8 @@ class AIProcessingCompleted implements ShouldBroadcast
     
 
 /**
+  * @param array<string, mixed> $result
+
  * @return array<string, mixed>
  */
 private function sanitizeResult(array $result): array

@@ -28,13 +28,23 @@ class CreateApiToken extends CreateRecord
         return 'Cipta Token API';
     }
 
-    protected function mutateFormDataBeforeCreate(array $data): array
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+protected function mutateFormDataBeforeCreate(array $data): array
     {
         // We'll handle creation manually in handleRecordCreation
         return $data;
     }
 
-    protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         /** @var User|null $user */
         $user = User::find($data['tokenable_id'] ?? null);

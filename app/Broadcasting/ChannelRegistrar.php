@@ -16,7 +16,12 @@ final class ChannelRegistrar
     /**
      * @param  array<string, mixed>  $options
      */
-    public function channel(mixed $channel, callable|string $callback, array $options = []): void
+    
+
+/**
+ * @param array<string, mixed> $options
+ */
+public function channel(mixed $channel, callable|string $callback, array $options = []): void
     {
         $this->registrations[] = [
             'channel' => $channel,

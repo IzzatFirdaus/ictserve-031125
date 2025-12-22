@@ -181,7 +181,12 @@ class AutoReplyTemplate extends Model implements AuditableContract
     /**
      * Proses template dengan pembolehubah
      */
-    public function processTemplate(array $variables = []): string
+    
+
+/**
+ * @param array<string, mixed> $variables
+ */
+public function processTemplate(array $variables = []): string
     {
         $content = $this->template_content;
 
@@ -206,7 +211,12 @@ class AutoReplyTemplate extends Model implements AuditableContract
     /**
      * Sahkan sama ada semua pembolehubah yang diperlukan disediakan
      */
-    public function validateVariables(array $variables): bool
+    
+
+/**
+ * @param array<string, mixed> $variables
+ */
+public function validateVariables(array $variables): bool
     {
         $required = $this->getRequiredVariables();
 

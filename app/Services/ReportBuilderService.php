@@ -27,7 +27,12 @@ class ReportBuilderService
      * @param  array  $filters  Filters to apply
      * @return array Report data with metadata
      */
-    public function generateReport(string $module, array $filters = []): array
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function generateReport(string $module, array $filters = []): array
     {
         $data = match ($module) {
             'helpdesk' => $this->generateHelpdeskReport($filters),
@@ -48,7 +53,12 @@ class ReportBuilderService
     /**
      * Generate helpdesk tickets report
      */
-    private function generateHelpdeskReport(array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function generateHelpdeskReport(array $filters): Collection
     {
         $query = HelpdeskTicket::query()
             ->with(['user', 'assignedTo', 'division', 'asset']);
@@ -90,7 +100,12 @@ class ReportBuilderService
     /**
      * Generate loan applications report
      */
-    private function generateLoansReport(array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function generateLoansReport(array $filters): Collection
     {
         $query = LoanApplication::query()
             ->with(['user', 'division', 'loanItems.asset']);
@@ -129,7 +144,12 @@ class ReportBuilderService
     /**
      * Generate assets report
      */
-    private function generateAssetsReport(array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function generateAssetsReport(array $filters): Collection
     {
         $query = Asset::query()
             ->with(['category', 'loanItems']);
@@ -166,7 +186,12 @@ class ReportBuilderService
      * @param  string  $format  Export format (csv, excel, pdf)
      * @return array<string, mixed> Formatted data ready for export
      */
-    public function formatForExport(array $reportData, string $format): array
+    
+
+/**
+ * @param array<string, mixed> $reportData
+ */
+public function formatForExport(array $reportData, string $format): array
     {
         return [
             'format' => $format,

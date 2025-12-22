@@ -435,7 +435,12 @@ private function buildLoanContext(LoanApplication $loan): array
     /**
      * Jana kandungan draf menggunakan template atau AI
      */
-    private function generateDraftContent(array $context, ?int $templateId = null): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function generateDraftContent(array $context, ?int $templateId = null): string
     {
         if ($templateId) {
             return $this->generateFromTemplate($context, $templateId);
@@ -447,7 +452,12 @@ private function buildLoanContext(LoanApplication $loan): array
     /**
      * Jana kandungan menggunakan template
      */
-    private function generateFromTemplate(array $context, int $templateId): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function generateFromTemplate(array $context, int $templateId): string
     {
         $template = AutoReplyTemplate::active()->findOrFail($templateId);
 
@@ -471,7 +481,12 @@ private function buildLoanContext(LoanApplication $loan): array
     /**
      * Jana kandungan menggunakan AI sahaja
      */
-    private function generateWithAI(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function generateWithAI(array $context): string
     {
         $prompt = $this->buildAIPrompt($context);
 
@@ -499,7 +514,12 @@ private function buildLoanContext(LoanApplication $loan): array
     /**
      * Bina prompt AI untuk penjanaan respons
      */
-    private function buildAIPrompt(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function buildAIPrompt(array $context): string
     {
         $type = $context['type'];
         $model = $context['model'];
@@ -535,7 +555,12 @@ private function buildLoanContext(LoanApplication $loan): array
     /**
      * Jana konteks AI untuk template
      */
-    private function generateAIContext(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function generateAIContext(array $context): string
     {
         // Gunakan RAG untuk dapatkan konteks yang berkaitan
         $query = $this->buildContextQuery($context);
@@ -551,7 +576,12 @@ private function buildLoanContext(LoanApplication $loan): array
     /**
      * Bina query untuk RAG berdasarkan konteks
      */
-    private function buildContextQuery(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function buildContextQuery(array $context): string
     {
         $model = $context['model'];
 
@@ -702,7 +732,12 @@ private function buildLoanContext(LoanApplication $loan): array
     /**
      * Log penjanaan draf untuk audit
      */
-    private function logDraftGeneration(
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function logDraftGeneration(
         string $requestId,
         AutoReplyDraft $draft,
         array $context,

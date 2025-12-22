@@ -56,7 +56,12 @@ class LoanService implements LoanServiceInterface
      *
      * @throws \Exception If application creation fails
      */
-    public function createApplication(array $data, ?User $user = null): LoanApplication
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createApplication(array $data, ?User $user = null): LoanApplication
     {
         try {
             DB::beginTransaction();
@@ -184,7 +189,7 @@ class LoanService implements LoanServiceInterface
      * Validates that requested assets are available for the specified date range.
      * Detects conflicts with existing approved/active loan applications.
      *
-     * @param  array  $assetIds  Array of asset IDs to check
+     * @param  array<string, mixed>  $assetIds  Array of asset IDs to check
      * @param  Carbon  $startDate  Loan start date
      * @param  Carbon  $endDate  Loan end date
      * @param  int|null  $excludeApplicationId  Exclude this application from conflict check
@@ -337,7 +342,12 @@ public function checkAssetAvailability(
      *
      * @see Requirements 6.1 Check-out transaction recording
      */
-    public function checkOut(
+    
+
+/**
+ * @param array<string, mixed> $transactionData
+ */
+public function checkOut(
         LoanApplication $application,
         User $admin,
         array $transactionData = []
@@ -407,7 +417,12 @@ public function checkAssetAvailability(
      *
      * @see Requirements 6.2 Check-in status update
      */
-    public function checkIn(
+    
+
+/**
+ * @param array<string, mixed> $returnData
+ */
+public function checkIn(
         LoanApplication $application,
         User $admin,
         array $returnData = []
@@ -489,7 +504,12 @@ public function checkAssetAvailability(
      *
      * @see Requirements 6.3 Automatic maintenance ticket on damage
      */
-    public function createMaintenanceTicket(
+    
+
+/**
+ * @param array<string, mixed> $damagePhotos
+ */
+public function createMaintenanceTicket(
         LoanApplication $application,
         Asset $asset,
         string $damageDescription,

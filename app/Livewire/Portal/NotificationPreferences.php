@@ -61,7 +61,12 @@ class NotificationPreferences extends Component
         }
     }
 
-    public function updateAll(array $preferences): void
+    
+
+/**
+ * @param array<string, mixed> $preferences
+ */
+public function updateAll(array $preferences): void
     {
         foreach ($preferences as $key => $value) {
             if (isset($this->keysMap[$key])) {

@@ -97,7 +97,12 @@ class NetworkMonitoringService
      * @param  string  $source  Sumber permintaan
      * @param  array  $metadata  Metadata tambahan
      */
-    public function logConnectionAttempt(string $url, string $source, array $metadata = []): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function logConnectionAttempt(string $url, string $source, array $metadata = []): void
     {
         $parsedUrl = parse_url($url);
         $domain = $parsedUrl['host'] ?? 'unknown';
@@ -126,7 +131,12 @@ class NetworkMonitoringService
     /**
      * Tangani sambungan tidak dibenarkan
      */
-    private function handleUnauthorizedConnection(string $domain, string $source, array $metadata): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+private function handleUnauthorizedConnection(string $domain, string $source, array $metadata): void
     {
         $cacheKey = "unauthorized_connection:{$domain}";
         $attempts = Cache::get($cacheKey, 0) + 1;
@@ -154,7 +164,12 @@ class NetworkMonitoringService
     /**
      * Trigger amaran keselamatan
      */
-    private function triggerSecurityAlert(string $domain, string $source, int $attempts, array $metadata): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+private function triggerSecurityAlert(string $domain, string $source, int $attempts, array $metadata): void
     {
         $alertData = [
             'type' => 'unauthorized_external_connection',
@@ -180,7 +195,12 @@ class NetworkMonitoringService
     /**
      * Jadualkan notifikasi kepada admin
      */
-    private function scheduleAdminNotification(array $alertData): void
+    
+
+/**
+ * @param array<string, mixed> $alertData
+ */
+private function scheduleAdminNotification(array $alertData): void
     {
         $notificationKey = "security_notification:{$alertData['domain']}";
 
@@ -283,7 +303,12 @@ public function getBlockedDomains(): array
     /**
      * Log peristiwa keselamatan
      */
-    private function logSecurityEvent(string $eventType, array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+private function logSecurityEvent(string $eventType, array $data): void
     {
         $events = Cache::get('security_events', []);
 
@@ -354,6 +379,8 @@ public function getConnectionStatistics(int $days = 7): array
     
 
 /**
+  * @param array<string, mixed> $dailyStats
+
  * @return array<string, mixed>
  */
 private function calculateStatsSummary(array $dailyStats): array

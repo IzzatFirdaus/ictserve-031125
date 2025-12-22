@@ -590,7 +590,12 @@ class LoanApplicationsTable
      * @param  array<int, LoanStatus|LoanPriority>  $cases
      * @return array<string, string>
      */
-    private static function enumOptions(array $cases): array
+    
+
+/**
+ * @param array<string, mixed> $cases
+ */
+private static function enumOptions(array $cases): array
     {
         return collect($cases)
             ->mapWithKeys(fn (LoanStatus|LoanPriority $case): array => [$case->value => $case->label()])

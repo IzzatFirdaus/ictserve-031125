@@ -430,7 +430,12 @@ class DocumentService
     /**
      * Simpan chunks ke database
      */
-    private function saveChunks(Document $document, array $chunks): void
+    
+
+/**
+ * @param array<string, mixed> $chunks
+ */
+private function saveChunks(Document $document, array $chunks): void
     {
         foreach ($chunks as $chunk) {
             DocumentChunk::create([

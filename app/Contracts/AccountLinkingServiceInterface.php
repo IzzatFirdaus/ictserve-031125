@@ -60,7 +60,12 @@ interface AccountLinkingServiceInterface
      *
      * @see Requirements 18.4 - Atomic transaction for linking
      */
-    public function linkSubmissions(User $user, array $submissionIds): int;
+    
+
+/**
+ * @param array<string, mixed> $submissionIds
+ */
+public function linkSubmissions(User $user, array $submissionIds): int;
 
     /**
      * Get the count of submissions linked to a user's account

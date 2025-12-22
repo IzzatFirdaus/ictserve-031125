@@ -420,7 +420,12 @@ class ComponentInventoryService
      *
      * @phpstan-return array<int, ComponentInventoryItem>
      */
-    private function identifyObsoleteComponents(array $components): array
+    
+
+/**
+ * @param array<string, mixed> $components
+ */
+private function identifyObsoleteComponents(array $components): array
     {
         $obsolete = [];
 
@@ -445,7 +450,12 @@ class ComponentInventoryService
      *
      * @phpstan-return array<int, array{name: string, instances: array<int, array{relative_path: string}>}>
      */
-    private function identifyDuplicates(array $components): array
+    
+
+/**
+ * @param array<string, mixed> $components
+ */
+private function identifyDuplicates(array $components): array
     {
         $duplicates = [];
         $seen = [];

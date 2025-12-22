@@ -41,7 +41,12 @@ class CrossModuleSearchService
      * @param  array<string, mixed>  $filters  Additional filters
      * @return LengthAwarePaginator<int, array<string, mixed>>&iterable<array<string, mixed>>
      */
-    public function search(string $query, array $filters = [], int $perPage = 15, int $page = 1): LengthAwarePaginator
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function search(string $query, array $filters = [], int $perPage = 15, int $page = 1): LengthAwarePaginator
     {
         $cacheKey = $this->buildCacheKey($query, $filters, $perPage, $page);
 
@@ -77,7 +82,12 @@ class CrossModuleSearchService
      * @param  array<string, mixed>  $filters
      * @return Collection<int, array<string, mixed>>
      */
-    private function searchTickets(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchTickets(string $query, array $filters): Collection
     {
         $ticketQuery = HelpdeskTicket::query()
             ->with(['user', 'category', 'assignedUser', 'division']);
@@ -163,7 +173,12 @@ class CrossModuleSearchService
      * @param  array<string, mixed>  $filters
      * @return Collection<int, array<string, mixed>>
      */
-    private function searchLoanApplications(string $query, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function searchLoanApplications(string $query, array $filters): Collection
     {
         $loanQuery = LoanApplication::query()
             ->with(['user', 'loanItems.asset', 'approver', 'division']);
@@ -279,7 +294,12 @@ class CrossModuleSearchService
      * @param  array<string, mixed>  $filters
      * @return Collection<int, array<string, mixed>>
      */
-    private function applyFilters(Collection $results, array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function applyFilters(Collection $results, array $filters): Collection
     {
         // Apply priority filter
         if (isset($filters['priority']) && $filters['priority'] !== 'all') {
@@ -298,7 +318,12 @@ class CrossModuleSearchService
      *
      * @param  array<string, string|null>  $fields
      */
-    private function calculateRelevanceScore(string $query, array $fields): float
+    
+
+/**
+ * @param array<string, mixed> $fields
+ */
+private function calculateRelevanceScore(string $query, array $fields): float
     {
         $score = 0.0;
         $queryLower = strtolower($query);
@@ -375,7 +400,12 @@ class CrossModuleSearchService
      *
      * @param  array<string, mixed>  $filters
      */
-    private function buildCacheKey(string $query, array $filters, int $perPage, int $page): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+private function buildCacheKey(string $query, array $filters, int $perPage, int $page): string
     {
         $filterHash = md5(serialize($filters));
 

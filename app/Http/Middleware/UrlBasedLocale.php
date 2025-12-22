@@ -116,7 +116,12 @@ class UrlBasedLocale
      * @param  string|null  $locale  The locale to use (defaults to current)
      * @return string The full URL with locale prefix
      */
-    public static function localizedRoute(string $name, array $parameters = [], ?string $locale = null): string
+    
+
+/**
+ * @param array<string, mixed> $parameters
+ */
+public static function localizedRoute(string $name, array $parameters = [], ?string $locale = null): string
     {
         $locale = $locale ?? App::getLocale();
         $url = route($name, $parameters);

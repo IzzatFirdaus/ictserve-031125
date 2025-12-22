@@ -161,7 +161,12 @@ protected function collectMetrics(): array
      * Kira tier yang disyorkan berdasarkan metrik
      * Calculate recommended tier based on metrics
      */
-    protected function calculateRecommendedTier(array $metrics): int
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+protected function calculateRecommendedTier(array $metrics): int
     {
         if (! $metrics['server_available']) {
             return self::TIER_EMERGENCY;
@@ -191,7 +196,12 @@ protected function collectMetrics(): array
      * Jana sebab perubahan tier
      * Generate tier change reason
      */
-    protected function generateTierChangeReason(array $metrics, int $newTier): string
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+protected function generateTierChangeReason(array $metrics, int $newTier): string
     {
         $reasons = [];
 

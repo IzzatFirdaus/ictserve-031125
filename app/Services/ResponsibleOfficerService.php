@@ -29,7 +29,12 @@ class ResponsibleOfficerService implements ResponsibleOfficerServiceInterface
      *
      * @see Requirements 25.4 - Responsible Officer data storage
      */
-    public function setResponsibleOfficer(LoanApplication $app, array $officerData): void
+    
+
+/**
+ * @param array<string, mixed> $officerData
+ */
+public function setResponsibleOfficer(LoanApplication $app, array $officerData): void
     {
         $app->is_applicant_responsible = false;
         $app->responsible_officer_name = $officerData['name'];
@@ -189,7 +194,12 @@ class ResponsibleOfficerService implements ResponsibleOfficerServiceInterface
     /**
      * Validate Responsible Officer data
      */
-    public function validateResponsibleOfficerData(array $officerData): bool
+    
+
+/**
+ * @param array<string, mixed> $officerData
+ */
+public function validateResponsibleOfficerData(array $officerData): bool
     {
         // Required fields: name, grade, phone
         if (empty($officerData['name']) || ! is_string($officerData['name'])) {

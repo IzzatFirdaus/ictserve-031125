@@ -67,11 +67,15 @@ class ModelRouter
      * Tentukan laluan untuk penjanaan teks (Bedrock/Ollama) berdasarkan prompt.
      *
      * @param  array{session_id?: string|null, user_id?: int|null, is_malaysia_resident?: bool|null, operation_type?: string|null, data_classification?: string|null, has_cloud_consent?: bool|null}  $context
+      * @param array<string, mixed> $context
+
      * @return array{provider: 'bedrock'|'ollama', model_id?: string|null, model_key?: string|null, reason: string}
      */
     
 
 /**
+  * @param array<string, mixed> $context
+
  * @return array<string, mixed>
  */
 public function routeTextGeneration(string $prompt, array $context = []): array
@@ -218,11 +222,15 @@ public function routeTextGeneration(string $prompt, array $context = []): array
      * Select provider and model tier by task with config-aware fallbacks and caching.
      *
      * @param  array{query?: string, force_model_tier?: string|null}  $context
+      * @param array<string, mixed> $context
+
      * @return array{provider: string, model_tier: string|null, model_id?: string|null, reason: string, cost_estimate: float}
      */
     
 
 /**
+  * @param array<string, mixed> $context
+
  * @return array<string, mixed>
  */
 public function selectModel(string $task, array $context = []): array
@@ -329,7 +337,12 @@ public function selectModel(string $task, array $context = []): array
      *
      * @param  array{query?: string}  $context
      */
-    public function analyzeComplexity(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function analyzeComplexity(array $context): string
     {
         $q = is_string($context['query'] ?? null) ? (string) $context['query'] : '';
         if ($q === '') {
@@ -388,7 +401,12 @@ public function selectModel(string $task, array $context = []): array
      *
      * @param  array{query?: string, max_tokens?: int}  $context
      */
-    public function estimateRequestCost(string $modelTier, array $context): float
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function estimateRequestCost(string $modelTier, array $context): float
     {
         $pricing = [
             self::MODEL_HAIKU => ['prompt' => 0.00025, 'completion' => 0.0005],
@@ -515,7 +533,12 @@ public function getRoutingConfig(): array
     /**
      * @param  array{has_cloud_consent?: bool|null}  $context
      */
-    private function hasCloudConsent(array $context): bool
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function hasCloudConsent(array $context): bool
     {
         return ($context['has_cloud_consent'] ?? false) === true;
     }
@@ -523,7 +546,12 @@ public function getRoutingConfig(): array
     /**
      * @param  array<string, mixed>  $bedrockConfig
      */
-    private function isBudgetHardStopped(array $bedrockConfig): bool
+    
+
+/**
+ * @param array<string, mixed> $bedrockConfig
+ */
+private function isBudgetHardStopped(array $bedrockConfig): bool
     {
         $budgets = is_array($bedrockConfig['budgets'] ?? null) ? $bedrockConfig['budgets'] : [];
 
@@ -551,7 +579,12 @@ public function getRoutingConfig(): array
     /**
      * @param  array<string, mixed>  $bedrockConfig
      */
-    private function resolveBedrockModelId(string $modelKey, array $bedrockConfig): string
+    
+
+/**
+ * @param array<string, mixed> $bedrockConfig
+ */
+private function resolveBedrockModelId(string $modelKey, array $bedrockConfig): string
     {
         $models = is_array($bedrockConfig['models'] ?? null) ? $bedrockConfig['models'] : [];
 
@@ -567,7 +600,12 @@ public function getRoutingConfig(): array
      * @param  array<string, mixed>  $bedrockConfig
      * @param  array<string, mixed>  $context
      */
-    private function chooseBedrockModelKey(string $prompt, array $bedrockConfig = [], array $context = []): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function chooseBedrockModelKey(string $prompt, array $bedrockConfig = [], array $context = []): string
     {
         $text = $this->safeStrtolower($prompt);
         $length = $this->safeStrlen($prompt);
@@ -622,7 +660,12 @@ public function getRoutingConfig(): array
     /**
      * @param  array<string, mixed>  $bedrockConfig
      */
-    private function getCachedModelKey(string $prompt, array $bedrockConfig, array $context = []): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function getCachedModelKey(string $prompt, array $bedrockConfig, array $context = []): string
     {
         $routing = is_array($bedrockConfig['routing'] ?? null) ? $bedrockConfig['routing'] : [];
         $ttl = (int) ($routing['cache_ttl_seconds'] ?? 3600);
@@ -650,7 +693,12 @@ public function getRoutingConfig(): array
      *
      * @param  array{session_id?: string|null, user_id?: int|null}  $context
      */
-    private function isRateLimited(string $modelKey, array $context, array $bedrockConfig): bool
+    
+
+/**
+ * @param array<string, mixed> $bedrockConfig
+ */
+private function isRateLimited(string $modelKey, array $context, array $bedrockConfig): bool
     {
         $rateLimits = is_array($bedrockConfig['rate_limits'] ?? null) ? $bedrockConfig['rate_limits'] : [];
 

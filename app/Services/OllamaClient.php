@@ -60,6 +60,8 @@ class OllamaClient implements OllamaClientContract
     
 
 /**
+  * @param array<string, mixed> $payload
+
  * @return array<string, mixed>
  */
 public function generate(array $payload): array
@@ -230,6 +232,8 @@ public function embeddings(string $text, ?string $model = null): array
     
 
 /**
+  * @param array<string, mixed> $options
+
  * @return array<string, mixed>
  */
 public function chat(array $messages, array $options = []): array
@@ -379,7 +383,12 @@ public function models(): array
     /**
      * {@inheritDoc}
      */
-    public function cacheResponse(string $cacheKey, array $response, int $ttl): void
+    
+
+/**
+ * @param array<string, mixed> $response
+ */
+public function cacheResponse(string $cacheKey, array $response, int $ttl): void
     {
         if (! $this->config['cache']['enabled']) {
             return;
@@ -391,7 +400,12 @@ public function models(): array
     /**
      * {@inheritDoc}
      */
-    public function clearCache(string|array $tags): bool
+    
+
+/**
+ * @param array<string, mixed> $tags
+ */
+public function clearCache(string|array $tags): bool
     {
         try {
             if (is_string($tags)) {
@@ -470,6 +484,8 @@ public function getPerformanceStats(): array
     
 
 /**
+  * @param array<string, mixed> $payload
+
  * @return array<string, mixed>
  */
 private function makeRequest(string $endpoint, array $payload = []): array
@@ -539,7 +555,12 @@ private function makeRequest(string $endpoint, array $payload = []): array
     /**
      * Validasi payload untuk generate
      */
-    private function validateGeneratePayload(array $payload): void
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+private function validateGeneratePayload(array $payload): void
     {
         if (empty($payload['prompt'])) {
             throw new InvalidArgumentException('Prompt diperlukan untuk generate');
@@ -557,7 +578,12 @@ private function makeRequest(string $endpoint, array $payload = []): array
     /**
      * Validasi mesej chat
      */
-    private function validateChatMessages(array $messages): void
+    
+
+/**
+ * @param array<string, mixed> $messages
+ */
+private function validateChatMessages(array $messages): void
     {
         if (empty($messages)) {
             throw new InvalidArgumentException('Mesej diperlukan untuk chat');
@@ -577,7 +603,12 @@ private function makeRequest(string $endpoint, array $payload = []): array
     /**
      * Jana kunci cache
      */
-    private function generateCacheKey(string $operation, array $payload): string
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+private function generateCacheKey(string $operation, array $payload): string
     {
         $hash = md5(serialize($payload));
 
@@ -607,6 +638,8 @@ private function makeRequest(string $endpoint, array $payload = []): array
     
 
 /**
+  * @param array<string, mixed> $payload
+
  * @return array<string, mixed>
  */
 private function sanitizePayload(array $payload): array
