@@ -302,7 +302,12 @@ class AutoReplyService
     /**
      * Bina konteks untuk penjanaan respons
      */
-    private function buildContext(Model $replyable): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function buildContext(Model $replyable): array
     {
         $context = [
             'type' => $this->getReplyableType($replyable),
@@ -336,7 +341,12 @@ class AutoReplyService
     /**
      * Ekstrak pembolehubah template dari model
      */
-    private function extractTemplateVariables(Model $replyable): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function extractTemplateVariables(Model $replyable): array
     {
         $variables = $this->config['default_template_variables'];
 
@@ -368,7 +378,12 @@ class AutoReplyService
     /**
      * Dapatkan sejarah replyable untuk konteks
      */
-    private function getReplyableHistory(Model $replyable): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getReplyableHistory(Model $replyable): array
     {
         // Implementasi bergantung pada model - boleh diperluas
         return [
@@ -381,7 +396,12 @@ class AutoReplyService
     /**
      * Bina konteks khusus untuk tiket helpdesk
      */
-    private function buildTicketContext(HelpdeskTicket $ticket): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function buildTicketContext(HelpdeskTicket $ticket): array
     {
         return [
             'description' => $ticket->description,
@@ -396,7 +416,12 @@ class AutoReplyService
     /**
      * Bina konteks khusus untuk permohonan pinjaman
      */
-    private function buildLoanContext(LoanApplication $loan): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function buildLoanContext(LoanApplication $loan): array
     {
         return [
             'purpose' => $loan->purpose,

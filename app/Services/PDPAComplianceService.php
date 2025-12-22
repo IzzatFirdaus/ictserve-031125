@@ -68,7 +68,12 @@ class PDPAComplianceService
     /**
      * Check data retention period for a record
      */
-    public function checkRetentionPeriod($model): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkRetentionPeriod($model): array
     {
         $createdAt = $model->created_at;
         $retentionYears = 7;
@@ -98,7 +103,12 @@ class PDPAComplianceService
     /**
      * Generate data retention report
      */
-    public function generateRetentionReport(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateRetentionReport(): array
     {
         $totalRecords = LoanApplication::count();
         $cutoffDate = now()->subYears(7);
@@ -120,7 +130,12 @@ class PDPAComplianceService
     /**
      * Get all personal data for a user
      */
-    public function getUserPersonalData(int $userId): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getUserPersonalData(int $userId): array
     {
         $user = User::find($userId);
         $loanApplications = LoanApplication::where('user_id', $userId)->get();
@@ -171,7 +186,12 @@ class PDPAComplianceService
     /**
      * Check if user data can be deleted
      */
-    public function canDeleteUserData(int $userId): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function canDeleteUserData(int $userId): array
     {
         $activeLoans = LoanApplication::where('user_id', $userId)
             ->whereIn('status', ['submitted', 'approved', 'issued', 'in_use'])
@@ -193,7 +213,12 @@ class PDPAComplianceService
     /**
      * Sanitize personal data
      */
-    public function sanitizePersonalData(array $data): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function sanitizePersonalData(array $data): array
     {
         $allowedFields = [
             'applicant_name',
@@ -287,7 +312,12 @@ class PDPAComplianceService
     /**
      * Get current privacy policy version
      */
-    public function getCurrentPrivacyPolicyVersion(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getCurrentPrivacyPolicyVersion(): array
     {
         return [
             'version' => '1.0.0',
@@ -299,7 +329,12 @@ class PDPAComplianceService
     /**
      * Generate PDPA compliance report
      */
-    public function generateComplianceReport(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateComplianceReport(): array
     {
         return [
             'consent_management' => [
@@ -337,7 +372,12 @@ class PDPAComplianceService
     /**
      * Get compliance audit trail
      */
-    public function getComplianceAuditTrail(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getComplianceAuditTrail(): array
     {
         return [
             'total_events' => 100,
@@ -352,7 +392,12 @@ class PDPAComplianceService
     /**
      * Get compliance alerts
      */
-    public function getComplianceAlerts(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getComplianceAlerts(): array
     {
         return [
             [

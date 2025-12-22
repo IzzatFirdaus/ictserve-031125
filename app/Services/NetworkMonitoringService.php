@@ -244,7 +244,12 @@ class NetworkMonitoringService
     /**
      * Dapatkan senarai domain yang disekat
      */
-    public function getBlockedDomains(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getBlockedDomains(): array
     {
         return Cache::get('blocked_domains', []);
     }
@@ -313,7 +318,12 @@ class NetworkMonitoringService
      * @param  int  $days  Bilangan hari untuk statistik
      * @return array Statistik sambungan
      */
-    public function getConnectionStatistics(int $days = 7): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getConnectionStatistics(int $days = 7): array
     {
         $stats = [];
 
@@ -341,7 +351,12 @@ class NetworkMonitoringService
     /**
      * Kira ringkasan statistik
      */
-    private function calculateStatsSummary(array $dailyStats): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function calculateStatsSummary(array $dailyStats): array
     {
         $total = 0;
         $allowed = 0;
@@ -378,7 +393,12 @@ class NetworkMonitoringService
      * @param  int  $limit  Had bilangan peristiwa
      * @return array Senarai peristiwa
      */
-    public function getRecentSecurityEvents(int $limit = 50): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getRecentSecurityEvents(int $limit = 50): array
     {
         $events = Cache::get('security_events', []);
 
@@ -390,7 +410,12 @@ class NetworkMonitoringService
      *
      * @return array Senarai amaran
      */
-    public function getActiveSecurityAlerts(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getActiveSecurityAlerts(): array
     {
         return Cache::get('security_alerts', []);
     }

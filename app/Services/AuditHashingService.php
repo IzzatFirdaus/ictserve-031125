@@ -73,7 +73,12 @@ class AuditHashingService
      * @param  string|null  $previousHash  Hash entri sebelumnya
      * @return array Hash dan previous_hash
      */
-    public function generateChainedHash(array $data, ?string $previousHash = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateChainedHash(array $data, ?string $previousHash = null): array
     {
         // Tambah previous_hash ke data untuk rantaian
         $dataWithChain = array_merge($data, ['_previous_hash' => $previousHash ?? 'genesis']);
@@ -114,7 +119,12 @@ class AuditHashingService
      * @param  int  $limit  Had bilangan entri untuk disahkan
      * @return array Hasil pengesahan
      */
-    public function verifyAuditChain(int $limit = 1000): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function verifyAuditChain(int $limit = 1000): array
     {
         $logs = MessageLog::orderBy('id', 'asc')
             ->limit($limit)
@@ -259,7 +269,12 @@ class AuditHashingService
      *
      * @return array Statistik audit
      */
-    public function getAuditStatistics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAuditStatistics(): array
     {
         return [
             'total_logs' => MessageLog::count(),
@@ -318,7 +333,12 @@ class AuditHashingService
      * @param  \Carbon\Carbon  $endDate  Tarikh akhir
      * @return array Data eksport
      */
-    public function exportAuditLogs(\Carbon\Carbon $startDate, \Carbon\Carbon $endDate): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function exportAuditLogs(\Carbon\Carbon $startDate, \Carbon\Carbon $endDate): array
     {
         $logs = MessageLog::whereBetween('created_at', [$startDate, $endDate])
             ->orderBy('id', 'asc')
