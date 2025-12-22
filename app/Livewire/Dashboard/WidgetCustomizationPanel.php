@@ -55,13 +55,6 @@ class WidgetCustomizationPanel extends Component
         'widget-size-changed' => 'handleSizeChange',
     ];
 
-    public function __construct(
-        private WidgetLayoutManager $layoutManager,
-        private WidgetRegistry $widgetRegistry
-    ) {
-        parent::__construct();
-    }
-
     public function mount(): void
     {
         $this->loadUserLayout();
@@ -90,7 +83,7 @@ class WidgetCustomizationPanel extends Component
     {
         $validTabs = ['layout', 'visibility', 'sizes', 'import-export'];
 
-        if (in_array($tab, $validTabs, true)) {
+        if (\in_array($tab, $validTabs, true)) {
             $this->activeTab = $tab;
             $this->dispatch('tab-changed', ['tab' => $tab]);
         }
@@ -110,7 +103,8 @@ class WidgetCustomizationPanel extends Component
             return;
         }
 
-        $success = $this->layoutManager->updateWidgetOrder($user, $category, $widgetOrder);
+        $layoutManager = app(WidgetLayoutManager::class);
+        $success = $layoutManager->updateWidgetOrder($user, $category, $widgetOrder);
 
         if ($success) {
             $this->loadUserLayout();
@@ -148,7 +142,8 @@ class WidgetCustomizationPanel extends Component
         }
 
         $newVisibility = ! $currentlyVisible;
-        $success = $this->layoutManager->toggleWidgetVisibility($user, $widgetClass, $newVisibility);
+        $layoutManager = app(WidgetLayoutManager::class);
+        $success = $layoutManager->toggleWidgetVisibility($user, $widgetClass, $newVisibility);
 
         if ($success) {
             $this->loadUserLayout();
@@ -176,7 +171,8 @@ class WidgetCustomizationPanel extends Component
             return;
         }
 
-        $success = $this->layoutManager->updateWidgetSize($user, $widgetClass, $size);
+        $layoutManager = app(WidgetLayoutManager::class);
+        $success = $layoutManager->updateWidgetSize($user, $widgetClass, $size);
 
         if ($success) {
             $this->loadUserLayout();
@@ -203,7 +199,8 @@ class WidgetCustomizationPanel extends Component
             return;
         }
 
-        $success = $this->layoutManager->resetToDefault($user);
+        $layoutManager = app(WidgetLayoutManager::class);
+        $success = $layoutManager->resetToDefault($user);
 
         if ($success) {
             $this->loadUserLayout();
@@ -229,7 +226,8 @@ class WidgetCustomizationPanel extends Component
             return;
         }
 
-        $exportData = $this->layoutManager->exportLayout($user);
+        $layoutManager = app(WidgetLayoutManager::class);
+        $exportData = $layoutManager->exportLayout($user);
         $this->exportData = json_encode($exportData, JSON_PRETTY_PRINT);
         $this->showExportModal = true;
     }
@@ -256,7 +254,8 @@ class WidgetCustomizationPanel extends Component
                 return;
             }
 
-            $success = $this->layoutManager->importLayout($user, $importData);
+            $layoutManager = app(WidgetLayoutManager::class);
+            $success = $layoutManager->importLayout($user, $importData);
 
             if ($success) {
                 $this->loadUserLayout();
@@ -374,7 +373,8 @@ class WidgetCustomizationPanel extends Component
         $user = Auth::user();
 
         if ($user) {
-            $this->layout = $this->layoutManager->getUserLayout($user);
+            $layoutManager = app(WidgetLayoutManager::class);
+            $this->layout = $layoutManager->getUserLayout($user);
         }
     }
 
@@ -387,7 +387,8 @@ class WidgetCustomizationPanel extends Component
 
         if ($user) {
             $userRole = $user->role ?? 'staff';
-            $this->availableWidgets = $this->widgetRegistry->getWidgetsByRole($userRole);
+            $widgetRegistry = app(WidgetRegistry::class);
+            $this->availableWidgets = $widgetRegistry->getWidgetsByRole($userRole);
         }
     }
 
