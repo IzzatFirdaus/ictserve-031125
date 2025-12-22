@@ -1,0 +1,769 @@
+## PS C:\laragon\www\ictserve-031125> vendor/bin/phpstan analyse app/Filament --level=5 --no-progress
+
+
+Note: Using configuration file C:\laragon\www\ictserve-031125\phpstan.neon.
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Exports\UnifiedAnalyticsExporter.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  30     Method App\Filament\Exports\UnifiedAnalyticsExporter::getColumns() should return array<string, mixed> but
+          returns array<int, Filament\Actions\Exports\ExportColumn>.
+         🪪  return.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Pages\ApprovalMatrixConfiguration.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  335    Parameter #1 $testData of method App\Services\ApprovalMatrixService::testApprovalMatrix() expects array<s
+         tring, mixed>, array<int, array<string, array<string, int|list<string>>|string>> given.
+         🪪  argument.type
+  335    Property App\Filament\Pages\ApprovalMatrixConfiguration::$testResults (array<int, array<string, mixed>>)
+         does not accept array<string, mixed>.
+         🪪  assign.propertyType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------
+  Line   Pages\Auth\Login.php
+ ------ -----------------------------------------------------------------------------
+  83     Call to an undefined method Filament\Schemas\Components\Component::label().
+         🪪  method.notFound
+ ------ -----------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Pages\EmailQueueMonitoring.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  41     Method App\Filament\Pages\EmailQueueMonitoring::getHeaderWidgets() should return array<string, mixed> but
+          returns array<int, string>.
+         🪪  return.type
+  79     Method App\Filament\Pages\EmailQueueMonitoring::getHeaderActions() should return array<string, mixed> but
+          returns array<int, Filament\Actions\Action>.
+         🪪  return.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Pages\EmailTemplateManagement.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  151    Method App\Filament\Pages\EmailTemplateManagement::getHeaderActions() should return array<string, mixed>
+         but returns array<int, Filament\Actions\Action>.
+         🪪  return.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Pages\FilterPresets.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  227    Method App\Filament\Pages\FilterPresets::getQuickFilters() should return array<int, array<string, mixed>>
+          but returns array<string, mixed>.
+         🪪  return.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ ------------------------------------------------------------------
+  Line   Pages\ReportBuilder.php
+ ------ ------------------------------------------------------------------
+  63     No error with identifier method.notFound is reported on line 63.
+ ------ ------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Pages\ReportTemplates.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  286    Method App\Filament\Pages\ReportTemplates::getTemplates() should return array<int, array<string, mixed>>
+         but returns array<string, array<string, mixed>>.
+         🪪  return.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Pages\SecurityMonitoring.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  170    Property App\Filament\Pages\SecurityMonitoring::$alerts (array<int, mixed>) does not accept array<string,
+          mixed>.
+         🪪  assign.propertyType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Pages\UnifiedAuditLog.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  259    Strict comparison using !== between 'all'|'compliance' and 'activity' will always evaluate to true.
+         🪪  notIdentical.alwaysTrue
+  272    Strict comparison using !== between 'all'|'compliance' and 'activity' will always evaluate to true.
+         🪪  notIdentical.alwaysTrue
+  279    Strict comparison using !== between 'all'|'compliance' and 'activity' will always evaluate to true.
+         🪪  notIdentical.alwaysTrue
+  285    Strict comparison using !== between 'all'|'compliance' and 'activity' will always evaluate to true.
+         🪪  notIdentical.alwaysTrue
+  291    Strict comparison using !== between 'all'|'compliance' and 'activity' will always evaluate to true.
+         🪪  notIdentical.alwaysTrue
+  336    Method App\Filament\Pages\UnifiedAuditLog::getTableColumns() should return array<string, mixed> but retur
+         ns list<Filament\Tables\Columns\TextColumn>.
+         🪪  return.type
+  407    Strict comparison using !== between 'all'|'compliance' and 'activity' will always evaluate to true.
+         🪪  notIdentical.alwaysTrue
+  422    Strict comparison using !== between 'all'|'compliance' and 'activity' will always evaluate to true.
+         🪪  notIdentical.alwaysTrue
+  450    Method App\Filament\Pages\UnifiedAuditLog::getTableFilters() should return array<string, mixed> but retur
+         ns list<Filament\Tables\Filters\Filter|Filament\Tables\Filters\SelectFilter>.
+         🪪  return.type
+  464    Method App\Filament\Pages\UnifiedAuditLog::getHeaderActions() should return array<string, mixed> but retu
+         rns array<int, Filament\Actions\Action>.
+         🪪  return.type
+  608    Parameter #1 $callback of method Illuminate\Database\Eloquent\Collection<int,App\Models\Audit>::map() con
+         tains unresolvable type.
+         🪪  argument.unresolvableType
+  625    Parameter #1 $callback of method Illuminate\Database\Eloquent\Collection<int,App\Models\Activity>::map()
+         contains unresolvable type.
+         🪪  argument.unresolvableType
+  638    Method App\Filament\Pages\UnifiedAuditLog::getUnifiedRecords() should return
+         Illuminate\Support\Collection<int, array<string, mixed>> but returns Illuminate\Support\Collection<int, a
+         rray{id: int, source: string, created_at: Carbon\Carbon|null, user_name: mixed, action: string|null,
+         entity_type: string, entity_id: int|null, description: string, ...}>.
+         🪪  return.type
+         💡  Template type TValue on class Illuminate\Support\Collection is not covariant. Learn more: https://phps
+
+         tan.org/blog/whats-up-with-template-covariant
+  638    Parameter #1 $callback of method Illuminate\Support\Collection<int,array<string, mixed>>::sortByDesc() co
+         ntains unresolvable type.
+         🪪  argument.unresolvableType
+  638    Parameter #1 $source of method Illuminate\Support\Collection<int,array<string, mixed>>::concat() contains
+          unresolvable type.
+         🪪  argument.unresolvableType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Pages\UnifiedSearch.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  103    Parameter #2 $resources of method App\Services\UnifiedSearchService::search() expects array<string, mixed
+         >, array<int, string> given.
+         🪪  argument.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ ---------------------------------------------------------------------------------------
+  Line   Resources\ApiTokenResource\Pages\CreateApiToken.php
+ ------ ---------------------------------------------------------------------------------------
+  46     Access to an undefined property Illuminate\Database\Eloquent\Model::$name.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+  50     Access to an undefined property Illuminate\Database\Eloquent\Model::$expires_at.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+ ------ ---------------------------------------------------------------------------------------
+
+ ------ ---------------------------------------------------------------------------------------
+  Line   Resources\Assets\Actions\UpdateConditionAction.php
+ ------ ---------------------------------------------------------------------------------------
+  109    Access to an undefined property Illuminate\Database\Eloquent\Model::$name.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+  113    Access to an undefined property Illuminate\Database\Eloquent\Model::$id.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+  125    Access to an undefined property Illuminate\Database\Eloquent\Model::$name.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+ ------ ---------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Resources\Assets\AssetResource.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  62     Parameter #3 $conditions of static method App\Filament\Resources\Assets\Schemas\AssetForm::configure()
+         expects array<string, mixed>, array<int, App\Enums\AssetCondition::DAMAGED|App\Enums\AssetCondition::EXCE
+         LLENT|App\Enums\AssetCondition::FAIR|App\Enums\AssetCondition::GOOD|App\Enums\AssetCondition::POOR> given
+         .
+         🪪  argument.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -------------------------------------------------------------------------------------------------
+  Line   Resources\Assets\Schemas\AssetInfolist.php
+ ------ -------------------------------------------------------------------------------------------------
+  27     Class App\Filament\Resources\Assets\Schemas\BackedEnum not found.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+  28     Access to property $value on an unknown class App\Filament\Resources\Assets\Schemas\BackedEnum.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+  33     Class App\Filament\Resources\Assets\Schemas\BackedEnum not found.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+  34     Access to property $value on an unknown class App\Filament\Resources\Assets\Schemas\BackedEnum.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+ ------ -------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Resources\Assets\Tables\AssetsTable.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  176    Parameter #1 $cases of static method App\Filament\Resources\Assets\Tables\AssetsTable::enumOptions()
+         expects array<string, mixed>, array<int, App\Enums\AssetStatus::AVAILABLE|App\Enums\AssetStatus::DAMAGED|
+         App\Enums\AssetStatus::LOANED|App\Enums\AssetStatus::MAINTENANCE|App\Enums\AssetStatus::RESERVED|App\Enum
+         s\AssetStatus::RETIRED> given.
+         🪪  argument.type
+  182    Parameter #1 $cases of static method App\Filament\Resources\Assets\Tables\AssetsTable::enumOptions()
+         expects array<string, mixed>, array<int, App\Enums\AssetCondition::DAMAGED|App\Enums\AssetCondition::EXCE
+         LLENT|App\Enums\AssetCondition::FAIR|App\Enums\AssetCondition::GOOD|App\Enums\AssetCondition::POOR> given
+         .
+         🪪  argument.type
+  252    Parameter #1 $cases of static method App\Filament\Resources\Assets\Tables\AssetsTable::enumOptions()
+         expects array<string, mixed>, array<int, App\Enums\AssetStatus::AVAILABLE|App\Enums\AssetStatus::DAMAGED|
+         App\Enums\AssetStatus::LOANED|App\Enums\AssetStatus::MAINTENANCE|App\Enums\AssetStatus::RESERVED|App\Enum
+         s\AssetStatus::RETIRED> given.
+         🪪  argument.type
+  276    Parameter #1 $cases of static method App\Filament\Resources\Assets\Tables\AssetsTable::enumOptions()
+         expects array<string, mixed>, array<int, App\Enums\AssetCondition::DAMAGED|App\Enums\AssetCondition::EXCE
+         LLENT|App\Enums\AssetCondition::FAIR|App\Enums\AssetCondition::GOOD|App\Enums\AssetCondition::POOR> given
+         .
+         🪪  argument.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ ---------------------------------------------------------------------------------------
+  Line   Resources\Helpdesk\HelpdeskTicketResource.php
+ ------ ---------------------------------------------------------------------------------------
+  101    Access to an undefined property Illuminate\Database\Eloquent\Model::$subject.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+  102    Access to an undefined property Illuminate\Database\Eloquent\Model::$status.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+  103    Access to an undefined property Illuminate\Database\Eloquent\Model::$priority.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+  104    Access to an undefined property Illuminate\Database\Eloquent\Model::$category.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+ ------ ---------------------------------------------------------------------------------------
+
+ ------ ------------------------------------------------------------------------------------------------
+  Line   Resources\Helpdesk\Tables\HelpdeskTicketsTable.php
+ ------ ------------------------------------------------------------------------------------------------
+  522    Using nullsafe property access on non-nullable type App\Models\TicketCategory. Use -> instead.
+         🪪  nullsafe.neverNull
+ ------ ------------------------------------------------------------------------------------------------
+
+ ------ ---------------------------------------------------------------------------------------
+  Line   Resources\LoanApplications\LoanApplicationResource.php
+ ------ ---------------------------------------------------------------------------------------
+  122    Access to an undefined property Illuminate\Database\Eloquent\Model::$applicant_name.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+  123    Access to an undefined property Illuminate\Database\Eloquent\Model::$status.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+  124    Access to an undefined property Illuminate\Database\Eloquent\Model::$loan_start_date.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+  125    Access to an undefined property Illuminate\Database\Eloquent\Model::$loan_end_date.
+         🪪  property.notFound
+         💡  Learn more: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+ ------ ---------------------------------------------------------------------------------------
+
+ ------ ---------------------------------------------------------------------------------------
+  Line   Resources\LoanApplications\Pages\RecordReturn.php
+ ------ ---------------------------------------------------------------------------------------
+  66     Using nullsafe property access on non-nullable type App\Models\Asset. Use -> instead.
+         🪪  nullsafe.neverNull
+ ------ ---------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Resources\LoanApplications\Tables\LoanApplicationsTable.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  278    Parameter #1 $cases of static method
+         App\Filament\Resources\LoanApplications\Tables\LoanApplicationsTable::enumOptions() expects array<string,
+          mixed>, array<int, App\Enums\LoanStatus::APPROVED|App\Enums\LoanStatus::COMPLETED|App\Enums\LoanStatus::
+         DRAFT|App\Enums\LoanStatus::IN_USE|App\Enums\LoanStatus::ISSUED|App\Enums\LoanStatus::MAINTENANCE_REQUIRE
+         D|App\Enums\LoanStatus::OVERDUE|App\Enums\LoanStatus::PENDING_APPROVAL|App\Enums\LoanStatus::PENDING_INFO
+         |App\Enums\LoanStatus::READY_ISSUANCE|App\Enums\LoanStatus::REJECTED|App\Enums\LoanStatus::RETURN_DUE|App
+         \Enums\LoanStatus::RETURNED|App\Enums\LoanStatus::RETURNING|App\Enums\LoanStatus::SUBMITTED|App\Enums\Loa
+         nStatus::UNDER_REVIEW> given.
+         🪪  argument.type
+  284    Parameter #1 $cases of static method
+         App\Filament\Resources\LoanApplications\Tables\LoanApplicationsTable::enumOptions() expects array<string,
+          mixed>, array<int, App\Enums\LoanPriority::HIGH|App\Enums\LoanPriority::LOW|App\Enums\LoanPriority::NORM
+         AL|App\Enums\LoanPriority::URGENT> given.
+         🪪  argument.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ ----------------------------------------------------------------------------------------------------------
+  Line   Resources\Loans\Actions\ExportLoansAction.php
+ ------ ----------------------------------------------------------------------------------------------------------
+  111    Parameter #1 $status of method App\Filament\Resources\Loans\Actions\ExportLoansAction::getStatusLabel()
+         expects App\Filament\Resources\Loans\Actions\UnitEnum|string|null, App\Enums\LoanStatus given.
+         🪪  argument.type
+  112    Parameter #1 $priority of method
+         App\Filament\Resources\Loans\Actions\ExportLoansAction::getPriorityLabel() expects
+         App\Filament\Resources\Loans\Actions\UnitEnum|string|null, App\Enums\LoanPriority given.
+         🪪  argument.type
+  140    Parameter $status of method App\Filament\Resources\Loans\Actions\ExportLoansAction::getStatusLabel() has
+         invalid type App\Filament\Resources\Loans\Actions\UnitEnum.
+         🪪  class.notFound
+  142    Class App\Filament\Resources\Loans\Actions\UnitEnum not found.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+  151    Access to property $value on an unknown class App\Filament\Resources\Loans\Actions\UnitEnum.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+  154    Access to property $name on an unknown class App\Filament\Resources\Loans\Actions\UnitEnum.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+  167    Parameter $priority of method App\Filament\Resources\Loans\Actions\ExportLoansAction::getPriorityLabel()
+         has invalid type App\Filament\Resources\Loans\Actions\UnitEnum.
+         🪪  class.notFound
+  169    Class App\Filament\Resources\Loans\Actions\UnitEnum not found.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+  178    Access to property $value on an unknown class App\Filament\Resources\Loans\Actions\UnitEnum.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+  181    Access to property $name on an unknown class App\Filament\Resources\Loans\Actions\UnitEnum.
+         🪪  class.notFound
+         💡  Learn more at https://phpstan.org/user-guide/discovering-symbols
+ ------ ----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Resources\Loans\Actions\ProcessReturnAction.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  51     Parameter #1 $data of method Filament\Actions\Action::fillForm() expects array<string, mixed>|Closure|nul
+         l, array{Filament\Schemas\Components\Section, Filament\Schemas\Components\Section,
+         Filament\Schemas\Components\Section, Filament\Schemas\Components\Section} given.
+         🪪  argument.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Resources\Loans\LoanApplicationResource.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  72     Parameter #3 $priorities of static method
+         App\Filament\Resources\Loans\Schemas\LoanApplicationForm::configure() expects array<string, mixed>, array
+         <int,
+         App\Enums\LoanPriority::HIGH|App\Enums\LoanPriority::LOW|App\Enums\LoanPriority::NORMAL|App\Enums\LoanPri
+         ority::URGENT> given.
+         🪪  argument.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Resources\Loans\Tables\LoanApplicationsTable.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  256    Anonymous function never returns null so it can be removed from the return type.
+         🪪  return.unusedType
+  272    Parameter #1 $cases of static method
+         App\Filament\Resources\Loans\Tables\LoanApplicationsTable::enumOptions() expects array<string, mixed>, ar
+         ray<int, App\Enums\LoanStatus::APPROVED|App\Enums\LoanStatus::COMPLETED|App\Enums\LoanStatus::DRAFT|App\E
+         nums\LoanStatus::IN_USE|App\Enums\LoanStatus::ISSUED|App\Enums\LoanStatus::MAINTENANCE_REQUIRED|App\Enums
+         \LoanStatus::OVERDUE|App\Enums\LoanStatus::PENDING_APPROVAL|App\Enums\LoanStatus::PENDING_INFO|App\Enums\
+         LoanStatus::READY_ISSUANCE|App\Enums\LoanStatus::REJECTED|App\Enums\LoanStatus::RETURN_DUE|App\Enums\Loan
+         Status::RETURNED|App\Enums\LoanStatus::RETURNING|App\Enums\LoanStatus::SUBMITTED|App\Enums\LoanStatus::UN
+         DER_REVIEW> given.
+         🪪  argument.type
+  278    Parameter #1 $cases of static method
+         App\Filament\Resources\Loans\Tables\LoanApplicationsTable::enumOptions() expects array<string, mixed>, ar
+         ray<int, App\Enums\LoanPriority::HIGH|App\Enums\LoanPriority::LOW|App\Enums\LoanPriority::NORMAL|App\Enum
+         s\LoanPriority::URGENT> given.
+         🪪  argument.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ ----------------------------------------------------------------------------------
+  Line   Resources\OllamaAI\AutoReplyTemplateResource.php
+ ------ ----------------------------------------------------------------------------------
+  377    Call to an undefined method Illuminate\Database\Eloquent\Builder::withTrashed().
+         🪪  method.notFound
+ ------ ----------------------------------------------------------------------------------
+
+ ------ ----------------------------------------------------------------------------------
+  Line   Resources\OllamaAI\BedrockModelConfigResource.php
+ ------ ----------------------------------------------------------------------------------
+  385    Call to an undefined method Illuminate\Database\Eloquent\Builder::withTrashed().
+         🪪  method.notFound
+ ------ ----------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------
+  Line   Resources\OllamaAI\DocumentResource.php
+ ------ -----------------------------------------------------------------------------------------------------
+  273    Parameter #1 $callback of method
+         Illuminate\Support\Collection<(int|string),Illuminate\Database\Eloquent\Model>::each() expects
+         callable(Illuminate\Database\Eloquent\Model, int|string): mixed, Closure(App\Models\Document): void
+         given.
+         🪪  argument.type
+  385    Call to an undefined method Illuminate\Database\Eloquent\Builder::withTrashed().
+         🪪  method.notFound
+ ------ -----------------------------------------------------------------------------------------------------
+
+ ------ ----------------------------------------------------------------------------------
+  Line   Resources\OllamaAI\FaqResource.php
+ ------ ----------------------------------------------------------------------------------
+  344    Call to an undefined method Illuminate\Database\Eloquent\Builder::withTrashed().
+         🪪  method.notFound
+ ------ ----------------------------------------------------------------------------------
+
+ ------ --------------------------------------------------------------------------------------------
+  Line   Traits\CacheableWidget.php (in context of class App\Filament\Widgets\CriticalAlertsWidget)
+ ------ --------------------------------------------------------------------------------------------
+  221    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+  449    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+ ------ --------------------------------------------------------------------------------------------
+
+ ------ -------------------------------------------------------------------------------------------------------
+  Line   Traits\CacheableWidget.php (in context of class App\Filament\Widgets\EnhancedRealTimeDashboardWidget)
+ ------ -------------------------------------------------------------------------------------------------------
+  221    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+  449    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+ ------ -------------------------------------------------------------------------------------------------------
+
+ ------ -------------------------------------------------------------------------------------------
+  Line   Traits\CacheableWidget.php (in context of class App\Filament\Widgets\PulseOverviewWidget)
+ ------ -------------------------------------------------------------------------------------------
+  221    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+  449    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+ ------ -------------------------------------------------------------------------------------------
+
+ ------ ----------------------------------------------------------------------------------------
+  Line   Traits\CacheableWidget.php (in context of class App\Filament\Widgets\QueueStatsWidget)
+ ------ ----------------------------------------------------------------------------------------
+  221    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+  449    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+ ------ ----------------------------------------------------------------------------------------
+
+ ------ ------------------------------------------------------------------------------------------------
+  Line   Traits\CacheableWidget.php (in context of class App\Filament\Widgets\UnifiedDashboardOverview)
+ ------ ------------------------------------------------------------------------------------------------
+  221    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+  449    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+ ------ ------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------
+  Line   Traits\CacheableWidget.php (in context of class App\Filament\Widgets\WidgetPerformanceWidget)
+ ------ -----------------------------------------------------------------------------------------------
+  221    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+  449    Static method Redis::pipeline() invoked with 1 parameter, 0 required.
+         🪪  arguments.count
+ ------ -----------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\AssetAvailabilityCalendarWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\AssetAvailabilityCalendarWidget)>::isSubclassO
+         f() with 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\AssetAvailabilityCalendarWidget)>::isSubclassO
+         f() with 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\AssetStatusDistributionWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\AssetStatusDistributionWidget)>::isSubclassOf(
+         ) with 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\AssetUtilizationWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\AssetUtilizationWidget)>::isSubclassOf() with
+         'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\CriticalAlertsWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\CriticalAlertsWidget)>::isSubclassOf() with 'F
+         ilament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\CriticalAlertsWidget)>::isSubclassOf() with 'F
+         ilament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\CrossModuleIntegrationChart)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\CrossModuleIntegrationChart)>::isSubclassOf()
+         with 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\CrossModuleIntegrationWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\CrossModuleIntegrationWidget)>::isSubclassOf()
+          with 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\EmailQueueTrendsWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\EmailQueueTrendsWidget)>::isSubclassOf() with
+         'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\EnhancedUnifiedAnalyticsChart)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\EnhancedUnifiedAnalyticsChart)>::isSubclassOf(
+         ) with 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\HealthCheckTableWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\HealthCheckTableWidget)>::isSubclassOf() with
+         'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\HealthCheckTableWidget)>::isSubclassOf() with
+         'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\HorizonHealthWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\HorizonHealthWidget)>::isSubclassOf() with 'Fi
+         lament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\HorizonHealthWidget)>::isSubclassOf() with 'Fi
+         lament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\LoanAnalyticsWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\LoanAnalyticsWidget)>::isSubclassOf() with 'Fi
+         lament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\LoanApprovalQueueWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\LoanApprovalQueueWidget)>::isSubclassOf() with
+          'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\LoanApprovalQueueWidget)>::isSubclassOf() with
+          'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\QuickActionsWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\QuickActionsWidget)>::isSubclassOf() with 'Fil
+         ament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\QuickActionsWidget)>::isSubclassOf() with 'Fil
+         ament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\RecentActivityFeedWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\RecentActivityFeedWidget)>::isSubclassOf() wit
+         h 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\RecentActivityFeedWidget)>::isSubclassOf() wit
+         h 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\RecentTicketsTable)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\RecentTicketsTable)>::isSubclassOf() with 'Fil
+         ament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\RecentTicketsTable)>::isSubclassOf() with 'Fil
+         ament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\ResolutionTimeChart)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\ResolutionTimeChart)>::isSubclassOf() with 'Fi
+         lament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\SensitiveAccessLogWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\SensitiveAccessLogWidget)>::isSubclassOf() wit
+         h 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\SensitiveAccessLogWidget)>::isSubclassOf() wit
+         h 'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\SlowQueriesTableWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\SlowQueriesTableWidget)>::isSubclassOf() with
+         'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\SlowQueriesTableWidget)>::isSubclassOf() with
+         'Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\TicketVolumeChart)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\TicketVolumeChart)>::isSubclassOf() with 'Fila
+         ment\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\TicketsByStatusChart)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\TicketsByStatusChart)>::isSubclassOf() with 'F
+         ilament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\UnifiedAnalyticsChart)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\UnifiedAnalyticsChart)>::isSubclassOf() with '
+         Filament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Traits\WidgetMetadata.php (in context of class App\Filament\Widgets\UserActivityWidget)
+ ------ -----------------------------------------------------------------------------------------------------------
+  31     Call to method ReflectionClass<static(App\Filament\Widgets\UserActivityWidget)>::isSubclassOf() with 'Fil
+         ament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+  35     Call to method ReflectionClass<static(App\Filament\Widgets\UserActivityWidget)>::isSubclassOf() with 'Fil
+         ament\\Widgets…' will always evaluate to false.
+         🪪  method.impossibleType
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ --------------------------------------------------------------
+  Line   Widgets\AICostWidget.php
+ ------ --------------------------------------------------------------
+  283    Comparison operation ">" between 100.0 and 0 is always true.
+         🪪  greater.alwaysTrue
+ ------ --------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------
+  Line   Widgets\AssetAvailabilityCalendarWidget.php
+ ------ -----------------------------------------------------------------------------------------------
+  124    Using nullsafe method call on non-nullable type Carbon\Carbon. Use -> instead.
+         🪪  nullsafe.neverNull
+  127    Using nullsafe property access on non-nullable type App\Models\AssetCategory. Use -> instead.
+         🪪  nullsafe.neverNull
+  137    Using nullsafe property access on non-nullable type App\Models\AssetCategory. Use -> instead.
+         🪪  nullsafe.neverNull
+ ------ -----------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Widgets\AssetUtilizationWidget.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  64     Call to function is_object() with
+         App\Enums\AssetStatus::AVAILABLE|App\Enums\AssetStatus::DAMAGED|App\Enums\AssetStatus::LOANED|App\Enums\A
+         ssetStatus::MAINTENANCE|App\Enums\AssetStatus::RESERVED|App\Enums\AssetStatus::RETIRED will always
+         evaluate to true.
+         🪪  function.alreadyNarrowedType
+  64     Call to function method_exists() with
+         App\Enums\AssetStatus::AVAILABLE|App\Enums\AssetStatus::DAMAGED|App\Enums\AssetStatus::LOANED|App\Enums\A
+         ssetStatus::MAINTENANCE|App\Enums\AssetStatus::RESERVED|App\Enums\AssetStatus::RETIRED and 'label' will
+         always evaluate to true.
+         🪪  function.alreadyNarrowedType
+  68     Instanceof between
+         App\Enums\AssetStatus::AVAILABLE|App\Enums\AssetStatus::DAMAGED|App\Enums\AssetStatus::LOANED|App\Enums\A
+         ssetStatus::MAINTENANCE|App\Enums\AssetStatus::RESERVED|App\Enums\AssetStatus::RETIRED and BackedEnum
+         will always evaluate to true.
+         🪪  instanceof.alwaysTrue
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ ------------------------------------------------------------------------------------------
+  Line   Widgets\LoanApprovalQueueWidget.php
+ ------ ------------------------------------------------------------------------------------------
+  78     Anonymous function never returns null so it can be removed from the return type.
+         🪪  return.unusedType
+  78     Using nullsafe property access on non-nullable type App\Models\Division. Use -> instead.
+         🪪  nullsafe.neverNull
+ ------ ------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Widgets\RecentActivityFeedWidget.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  214    Anonymous function should return Illuminate\Support\Collection<int, array{type: string, description: (arr
+         ay|string), user: (array|string), created_at: Illuminate\Support\Carbon|null, reference: string, status:
+         string, priority?: string}> but returns Illuminate\Support\Collection<int, array{type: string, descriptio
+         n: (array|string), user: (array|string), created_at: Illuminate\Support\Carbon|null, reference: string,
+         status: string, priority?: string}>.
+         🪪  return.type
+         💡  Template type TValue on class Illuminate\Support\Collection is not covariant. Learn more: https://phps
+
+         tan.org/blog/whats-up-with-template-covariant
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ ------ -----------------------------------------------------------------------------------------------------------
+  Line   Widgets\UnifiedDashboardOverview.php
+ ------ -----------------------------------------------------------------------------------------------------------
+  60     Method App\Filament\Widgets\UnifiedDashboardOverview::getWidgetRoles() should return array<string, mixed>
+         but returns array<int, string>.
+         🪪  return.type
+  88     Method App\Filament\Widgets\UnifiedDashboardOverview::getStats() should return array<string, mixed> but r
+         eturns array<int, Filament\Widgets\StatsOverviewWidget\Stat>.
+         🪪  return.type
+  171    Method App\Filament\Widgets\UnifiedDashboardOverview::getHealthTrendData() should return array<string, mi
+         xed> but returns array<int, int>.
+         🪪  return.type
+ ------ -----------------------------------------------------------------------------------------------------------
+
+ -- ---------------------------------------------------------------------------------------------------------------
+     Error
+ -- ---------------------------------------------------------------------------------------------------------------
+     Ignored error pattern #Cannot redeclare class# was not matched in reported errors.
+     Ignored error pattern #Parameter \$\w+ of method
+     Filament\\.*::(label|title|description|helperText|body|modalHeading|modalDescription|make)\(\) expects .*,
+     array\|string\|null given# was not matched in reported errors.
+     Ignored error pattern #Call to an undefined (static )?method
+     App\\Models\\.*::(where|find|create|user|with|load|hasRole|notify|query|expired|due)# was not matched in
+     reported errors.
+     Ignored error pattern #should return Illuminate\\Database\\Eloquent\\Builder.* but returns
+     Illuminate\\Database\\Query\\Builder# was not matched in reported errors.
+     Ignored error pattern #(M|m)ethod .* should return string( but|\|null but returns array\|string\|null)# was
+     not matched in reported errors.
+     Ignored error pattern #Parameter .* expects .*, array\|string\|null given# was not matched in reported
+     errors.
+     Ignored error pattern #Binary operation "." between .* and array\|string\|null# was not matched in reported
+     errors.
+     Ignored error pattern #Parameter .* expects .*, array\|bool\|string\|null given# was not matched in reported
+     errors.
+     Ignored error pattern #Cannot cast array\|bool\|string\|null to string# was not matched in reported errors.
+     Ignored error pattern #Part .* of encapsed string cannot be cast to string# was not matched in reported
+     errors.
+     Ignored error pattern #should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View#
+     was not matched in reported errors.
+     Ignored error pattern #Using nullsafe (property access|method call) .* on non-nullable type# was not matched
+     in reported errors.
+     Ignored error pattern #Constant App\\Services\\ModelRouter::.* is unused# was not matched in reported errors.
+     Ignored error pattern #\bargument\.type\b# was not matched in reported errors.
+     Ignored error pattern #\breturn\.type\b# was not matched in reported errors.
+     Ignored error pattern #\bcast\.int\b# was not matched in reported errors.
+     Ignored error pattern #\bcast\.string\b# was not matched in reported errors.
+     Ignored error pattern #\bcast\.double\b# was not matched in reported errors.
+     Ignored error pattern #\btrait\.unused\b# was not matched in reported errors.
+     Ignored error pattern #\bisset\.offset\b# was not matched in reported errors.
+     Ignored error pattern #\bmatch\.unhandled\b# was not matched in reported errors.
+     Ignored error pattern #\bmethod\.unused\b# was not matched in reported errors.
+     Ignored error pattern #\barguments\.count\b# was not matched in reported errors.
+ -- ---------------------------------------------------------------------------------------------------------------
+
+
+ [ERROR] Found 154 errors
