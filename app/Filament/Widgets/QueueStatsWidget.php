@@ -128,7 +128,9 @@ class QueueStatsWidget extends BaseWidget
     protected function getJobsProcessed(): int
     {
         try {
-            return Pulse::aggregate('queue', 'count', now()->subHour())->sum('count') ?? 0;
+            $interval = now()->diffAsCarbonInterval(now()->subHour());
+
+            return Pulse::aggregate('queue', 'count', $interval)->sum('count') ?? 0;
         } catch (\Exception) {
             return 0;
         }
@@ -140,7 +142,9 @@ class QueueStatsWidget extends BaseWidget
     protected function getJobsFailed(): int
     {
         try {
-            return Pulse::aggregate('slow_job', 'count', now()->subHour())->sum('count') ?? 0;
+            $interval = now()->diffAsCarbonInterval(now()->subHour());
+
+            return Pulse::aggregate('slow_job', 'count', $interval)->sum('count') ?? 0;
         } catch (\Exception) {
             return 0;
         }
@@ -152,7 +156,9 @@ class QueueStatsWidget extends BaseWidget
     protected function getAverageProcessingTime(): float
     {
         try {
-            return Pulse::aggregate('slow_job', 'avg', now()->subHour())->avg('avg') ?? 0.0;
+            $interval = now()->diffAsCarbonInterval(now()->subHour());
+
+            return Pulse::aggregate('slow_job', 'avg', $interval)->avg('avg') ?? 0.0;
         } catch (\Exception) {
             return 0.0;
         }
