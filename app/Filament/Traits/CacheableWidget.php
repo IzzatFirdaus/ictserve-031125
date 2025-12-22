@@ -50,7 +50,7 @@ trait CacheableWidget
      */
     protected function getCacheKeyPrefix(): string
     {
-        return 'widget:'.class_basename(static::class);
+        return 'widget:' . class_basename(static::class);
     }
 
     /**
@@ -64,11 +64,11 @@ trait CacheableWidget
 
         // Add user-specific key if widget is user-scoped
         if ($this->isUserScoped() && Auth::check()) {
-            $key .= ':user:'.Auth::id();
+            $key .= ':user:' . Auth::id();
         }
 
         if ($suffix) {
-            $key .= ':'.$suffix;
+            $key .= ':' . $suffix;
         }
 
         return $key;
@@ -223,7 +223,7 @@ trait CacheableWidget
                 $pipe->setex($key, $ttl, $serialized);
 
                 // Store metadata for cache warming
-                $metaKey = $key.':meta';
+                $metaKey = $key . ':meta';
                 $metadata = json_encode([
                     'widget' => class_basename(static::class),
                     'created_at' => now()->timestamp,
@@ -416,7 +416,7 @@ trait CacheableWidget
 
         try {
             $prefix = $this->getCacheKeyPrefix();
-            $pattern = config('cache.prefix').$prefix.'*';
+            $pattern = config('cache.prefix') . $prefix . '*';
 
             return Redis::keys($pattern);
         } catch (\Exception $e) {
