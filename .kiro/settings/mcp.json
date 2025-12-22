@@ -115,7 +115,8 @@
         "list_console_messages",
         "list_console_messages",
         "list_console_messages",
-        "wait_for"
+        "wait_for",
+        "get_console_message"
       ]
     },
     "playwright": {
