@@ -29,9 +29,8 @@
 			"autoApprove": ["sequentialthinking"]
 		},
 		"laravel-boost": {
-			"command": "php",
-			"args": ["artisan", "boost:mcp"],
-			"cwd": ".",
+			"command": "C:\\Users\\exatf\\tools\\php-8.4.11\\php.exe",
+			"args": ["C:\\XAMPP\\htdocs\\ictserve-031125\\artisan", "boost:mcp"],
 			"env": {
 				"APP_ENV": "local"
 			},
@@ -56,9 +55,12 @@
 			]
 		},
 		"ictserve": {
-			"command": "php",
-			"args": ["artisan", "mcp:start", "ictserve"],
-			"cwd": ".",
+			"command": "C:\\Users\\exatf\\tools\\php-8.4.11\\php.exe",
+			"args": [
+				"C:\\XAMPP\\htdocs\\ictserve-031125\\artisan",
+				"mcp:start",
+				"ictserve"
+			],
 			"env": {
 				"APP_ENV": "local"
 			},
