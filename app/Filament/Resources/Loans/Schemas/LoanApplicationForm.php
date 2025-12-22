@@ -22,12 +22,11 @@ class LoanApplicationForm
      * @param  array<int, LoanStatus>  $statuses
      * @param  array<int, LoanPriority>  $priorities
      */
-    
 
-/**
- * @param array<string, mixed> $priorities
- */
-public static function configure(Schema $schema, array $statuses, array $priorities): Schema
+    /**
+     * @param  array<string, mixed>  $priorities
+     */
+    public static function configure(Schema $schema, array $statuses, array $priorities): Schema
     {
         return $schema->components([
             Section::make('Maklumat Permohonan')
@@ -157,12 +156,11 @@ public static function configure(Schema $schema, array $statuses, array $priorit
      * @param  array<int, LoanStatus|LoanPriority>  $cases
      * @return array<string, string>
      */
-    
 
-/**
- * @param array<string, mixed> $cases
- */
-private static function enumOptions(array $cases): array
+    /**
+     * @param  array<string, mixed>  $cases
+     */
+    private static function enumOptions(array $cases): array
     {
         return collect($cases)
             ->mapWithKeys(fn (LoanStatus|LoanPriority $case): array => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])

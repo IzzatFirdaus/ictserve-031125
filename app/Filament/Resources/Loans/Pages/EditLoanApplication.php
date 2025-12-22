@@ -25,12 +25,10 @@ class EditLoanApplication extends EditRecord
         ];
     }
 
-    
-
-/**
- * @param array<string, mixed> $data
- */
-protected function mutateFormDataBeforeSave(array $data): array
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    protected function mutateFormDataBeforeSave(array $data): array
     {
         $record = $this->getRecord();
 

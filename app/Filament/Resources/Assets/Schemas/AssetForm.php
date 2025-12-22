@@ -24,12 +24,11 @@ class AssetForm
      * @param  array<int, AssetStatus>  $statuses
      * @param  array<int, AssetCondition>  $conditions
      */
-    
 
-/**
- * @param array<string, mixed> $conditions
- */
-public static function configure(Schema $schema, array $statuses, array $conditions): Schema
+    /**
+     * @param  array<string, mixed>  $conditions
+     */
+    public static function configure(Schema $schema, array $statuses, array $conditions): Schema
     {
         return $schema->components([
             Section::make(__('filament.asset_form.asset_info'))
@@ -123,12 +122,11 @@ public static function configure(Schema $schema, array $statuses, array $conditi
      * @param  array<int, AssetStatus|AssetCondition>  $enumCases
      * @return array<string, string>
      */
-    
 
-/**
- * @param array<string, mixed> $enumCases
- */
-private static function enumOptions(array $enumCases): array
+    /**
+     * @param  array<string, mixed>  $enumCases
+     */
+    private static function enumOptions(array $enumCases): array
     {
         return collect($enumCases)
             ->mapWithKeys(fn ($case) => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
