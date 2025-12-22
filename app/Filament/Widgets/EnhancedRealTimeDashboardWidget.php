@@ -156,14 +156,13 @@ class EnhancedRealTimeDashboardWidget extends BaseWidget
     }
 
     /**
-     * @param array{sla_breaches: int, overdue_loans: int, critical_tickets: int} $alerts
+     * @param  array{sla_breaches: int, overdue_loans: int, critical_tickets: int}  $alerts
      */
-    
 
-/**
- * @param array<string, mixed> $alerts
- */
-private function getAlertDescription(array $alerts): string
+    /**
+     * @param  array<string, mixed>  $alerts
+     */
+    private function getAlertDescription(array $alerts): string
     {
         $parts = [];
         if ($alerts['sla_breaches'] > 0) {
