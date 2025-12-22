@@ -245,13 +245,10 @@ class SetupXamppEnvironment extends Command
 
     /**
      * Check XAMPP installation
+     *
+     * @return array<string, mixed>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkXamppInstallation(): array
+    private function checkXamppInstallation(): array
     {
         $xamppPath = 'C:\xampp';
 
@@ -271,13 +268,10 @@ private function checkXamppInstallation(): array
 
     /**
      * Check XAMPP MySQL
+     *
+     * @return array<string, mixed>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkXamppMySQL(): array
+    private function checkXamppMySQL(): array
     {
         $mysqlPath = 'C:\xampp\mysql\bin\mysqld.exe';
 
@@ -297,13 +291,10 @@ private function checkXamppMySQL(): array
 
     /**
      * Check XAMPP Apache
+     *
+     * @return array<string, mixed>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkXamppApache(): array
+    private function checkXamppApache(): array
     {
         $apachePath = 'C:\xampp\apache\bin\httpd.exe';
 
@@ -323,13 +314,10 @@ private function checkXamppApache(): array
 
     /**
      * Check WSL availability
+     *
+     * @return array<string, mixed>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkWSLAvailability(): array
+    private function checkWSLAvailability(): array
     {
         if (PHP_OS_FAMILY !== 'Windows') {
             return [
@@ -349,13 +337,10 @@ private function checkWSLAvailability(): array
 
     /**
      * Check WSL Redis
+     *
+     * @return array<string, mixed>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkWSLRedis(): array
+    private function checkWSLRedis(): array
     {
         if (PHP_OS_FAMILY !== 'Windows') {
             return [
@@ -374,13 +359,10 @@ private function checkWSLRedis(): array
 
     /**
      * Check PowerShell scripts
+     *
+     * @return array<string, mixed>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkPowerShellScripts(): array
+    private function checkPowerShellScripts(): array
     {
         $scripts = [
             'scripts/xampp/manage-xampp.ps1',
@@ -403,13 +385,10 @@ private function checkPowerShellScripts(): array
 
     /**
      * Check configuration files
+     *
+     * @return array<string, mixed>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkConfigurationFiles(): array
+    private function checkConfigurationFiles(): array
     {
         $xamppEnvExists = File::exists(base_path('.env.xampp'));
 
