@@ -31,6 +31,7 @@
 		"laravel-boost": {
 			"command": "php",
 			"args": ["artisan", "boost:mcp"],
+			"cwd": ".",
 			"env": {
 				"APP_ENV": "local"
 			},
@@ -57,6 +58,7 @@
 		"ictserve": {
 			"command": "php",
 			"args": ["artisan", "mcp:start", "ictserve"],
+			"cwd": ".",
 			"env": {
 				"APP_ENV": "local"
 			},
