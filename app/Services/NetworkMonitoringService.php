@@ -97,7 +97,12 @@ class NetworkMonitoringService
      * @param  string  $source  Sumber permintaan
      * @param  array  $metadata  Metadata tambahan
      */
-    public function logConnectionAttempt(string $url, string $source, array $metadata = []): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function logConnectionAttempt(string $url, string $source, array $metadata = []): void
     {
         $parsedUrl = parse_url($url);
         $domain = $parsedUrl['host'] ?? 'unknown';
@@ -126,7 +131,12 @@ class NetworkMonitoringService
     /**
      * Tangani sambungan tidak dibenarkan
      */
-    private function handleUnauthorizedConnection(string $domain, string $source, array $metadata): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+private function handleUnauthorizedConnection(string $domain, string $source, array $metadata): void
     {
         $cacheKey = "unauthorized_connection:{$domain}";
         $attempts = Cache::get($cacheKey, 0) + 1;
@@ -154,7 +164,12 @@ class NetworkMonitoringService
     /**
      * Trigger amaran keselamatan
      */
-    private function triggerSecurityAlert(string $domain, string $source, int $attempts, array $metadata): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+private function triggerSecurityAlert(string $domain, string $source, int $attempts, array $metadata): void
     {
         $alertData = [
             'type' => 'unauthorized_external_connection',
@@ -180,7 +195,12 @@ class NetworkMonitoringService
     /**
      * Jadualkan notifikasi kepada admin
      */
-    private function scheduleAdminNotification(array $alertData): void
+    
+
+/**
+ * @param array<string, mixed> $alertData
+ */
+private function scheduleAdminNotification(array $alertData): void
     {
         $notificationKey = "security_notification:{$alertData['domain']}";
 
@@ -244,7 +264,12 @@ class NetworkMonitoringService
     /**
      * Dapatkan senarai domain yang disekat
      */
-    public function getBlockedDomains(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getBlockedDomains(): array
     {
         return Cache::get('blocked_domains', []);
     }
@@ -278,7 +303,12 @@ class NetworkMonitoringService
     /**
      * Log peristiwa keselamatan
      */
-    private function logSecurityEvent(string $eventType, array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+private function logSecurityEvent(string $eventType, array $data): void
     {
         $events = Cache::get('security_events', []);
 
@@ -313,7 +343,12 @@ class NetworkMonitoringService
      * @param  int  $days  Bilangan hari untuk statistik
      * @return array Statistik sambungan
      */
-    public function getConnectionStatistics(int $days = 7): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getConnectionStatistics(int $days = 7): array
     {
         $stats = [];
 
@@ -341,7 +376,14 @@ class NetworkMonitoringService
     /**
      * Kira ringkasan statistik
      */
-    private function calculateStatsSummary(array $dailyStats): array
+    
+
+/**
+  * @param array<string, mixed> $dailyStats
+
+ * @return array<string, mixed>
+ */
+private function calculateStatsSummary(array $dailyStats): array
     {
         $total = 0;
         $allowed = 0;
@@ -378,7 +420,12 @@ class NetworkMonitoringService
      * @param  int  $limit  Had bilangan peristiwa
      * @return array Senarai peristiwa
      */
-    public function getRecentSecurityEvents(int $limit = 50): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getRecentSecurityEvents(int $limit = 50): array
     {
         $events = Cache::get('security_events', []);
 
@@ -390,7 +437,12 @@ class NetworkMonitoringService
      *
      * @return array Senarai amaran
      */
-    public function getActiveSecurityAlerts(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getActiveSecurityAlerts(): array
     {
         return Cache::get('security_alerts', []);
     }

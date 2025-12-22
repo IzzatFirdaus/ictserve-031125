@@ -247,7 +247,12 @@ class PerformanceAlertService
     /**
      * Send performance alert to admin users.
      */
-    protected function sendAlert(string $title, string $message, string $severity, array $data = []): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+protected function sendAlert(string $title, string $message, string $severity, array $data = []): void
     {
         // Log the alert
         Log::channel('performance')->{$severity}($title, [

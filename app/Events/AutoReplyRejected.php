@@ -72,7 +72,12 @@ class AutoReplyRejected implements ShouldBroadcast
         $this->rejectedAt = now()->timezone('Asia/Kuala_Lumpur')->format('Y-m-d H:i:s');
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-approvals'),
@@ -84,7 +89,12 @@ class AutoReplyRejected implements ShouldBroadcast
         return 'AutoReplyRejected';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'draftId' => $this->draftId,

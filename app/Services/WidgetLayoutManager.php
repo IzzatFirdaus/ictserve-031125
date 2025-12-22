@@ -64,7 +64,12 @@ class WidgetLayoutManager
      * @param  array  $layout  Layout configuration
      * @return bool Success status
      */
-    public function saveUserLayout(User $user, array $layout): bool
+    
+
+/**
+ * @param array<string, mixed> $layout
+ */
+public function saveUserLayout(User $user, array $layout): bool
     {
         try {
             $normalizedLayout = $this->validateAndNormalizeLayout($layout);
@@ -232,7 +237,12 @@ class WidgetLayoutManager
      * @param  array  $widgetOrder  Array of widget class names in desired order
      * @return bool Success status
      */
-    public function updateWidgetOrder(User $user, string $category, array $widgetOrder): bool
+    
+
+/**
+ * @param array<string, mixed> $widgetOrder
+ */
+public function updateWidgetOrder(User $user, string $category, array $widgetOrder): bool
     {
         $layout = $this->getUserLayout($user);
 
@@ -286,7 +296,12 @@ class WidgetLayoutManager
      * @param  array  $importData  Imported layout data
      * @return bool Success status
      */
-    public function importLayout(User $user, array $importData): bool
+    
+
+/**
+ * @param array<string, mixed> $importData
+ */
+public function importLayout(User $user, array $importData): bool
     {
         if (! isset($importData['layout']) || ! is_array($importData['layout'])) {
             Log::warning('Invalid import data provided', [
@@ -372,7 +387,12 @@ class WidgetLayoutManager
      * @param  array  $layout  Layout configuration
      * @return array Normalized layout
      */
-    private function validateAndNormalizeLayout(array $layout): array
+    
+
+/**
+ * @param array<string, mixed> $layout
+ */
+private function validateAndNormalizeLayout(array $layout): array
     {
         $normalized = [
             'version' => $layout['version'] ?? '1.0',
@@ -425,7 +445,12 @@ class WidgetLayoutManager
      * @param  array  $layout  Layout configuration
      * @return array Layout summary
      */
-    private function getLayoutSummary(array $layout): array
+    
+
+/**
+ * @param array<string, mixed> $layout
+ */
+private function getLayoutSummary(array $layout): array
     {
         $summary = [
             'version' => $layout['version'] ?? '1.0',

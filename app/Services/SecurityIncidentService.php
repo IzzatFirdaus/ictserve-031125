@@ -208,7 +208,12 @@ class SecurityIncidentService
      *
      * @param  array<string, mixed>  $incident
      */
-    public function handleIncident(array $incident): void
+    
+
+/**
+ * @param array<string, mixed> $incident
+ */
+public function handleIncident(array $incident): void
     {
         // Create alert
         $this->monitoringService->createAlert(
@@ -235,7 +240,12 @@ class SecurityIncidentService
      *
      * @param  array<string, mixed>  $incident
      */
-    private function notifySuperusers(array $incident): void
+    
+
+/**
+ * @param array<string, mixed> $incident
+ */
+private function notifySuperusers(array $incident): void
     {
         $superusers = User::role('superuser')->get();
 
@@ -258,7 +268,12 @@ class SecurityIncidentService
      *
      * @param  array<string, mixed>  $incident
      */
-    private function logIncident(array $incident): void
+    
+
+/**
+ * @param array<string, mixed> $incident
+ */
+private function logIncident(array $incident): void
     {
         \Log::channel('security')->critical('Security Incident Detected', [
             'type' => $incident['type'],
@@ -274,7 +289,12 @@ class SecurityIncidentService
      *
      * @param  array<string, mixed>  $incident
      */
-    private function handleCriticalIncident(array $incident): void
+    
+
+/**
+ * @param array<string, mixed> $incident
+ */
+private function handleCriticalIncident(array $incident): void
     {
         // For brute force attacks, IP is already blocked in detection
         if ($incident['type'] === 'brute_force') {

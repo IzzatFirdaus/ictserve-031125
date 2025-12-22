@@ -22,14 +22,24 @@ class ApprovalMatrixService
 
     private const CACHE_KEY = 'approval_matrix_config';
 
-    public function getApprovalMatrix(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getApprovalMatrix(): array
     {
         return Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
             return $this->loadDefaultMatrix();
         });
     }
 
-    public function updateApprovalMatrix(array $matrix): void
+    
+
+/**
+ * @param array<string, mixed> $matrix
+ */
+public function updateApprovalMatrix(array $matrix): void
     {
         // Validate matrix structure
         $this->validateMatrix($matrix);
@@ -45,7 +55,14 @@ class ApprovalMatrixService
         ]);
     }
 
-    public function getApproversForLoan(array $loanData): array
+    
+
+/**
+  * @param array<string, mixed> $loanData
+
+ * @return array<string, mixed>
+ */
+public function getApproversForLoan(array $loanData): array
     {
         $matrix = $this->getApprovalMatrix();
         $approvers = [];
@@ -59,7 +76,12 @@ class ApprovalMatrixService
         return array_unique($approvers, SORT_REGULAR);
     }
 
-    protected function matchesRule(array $rule, array $loanData): bool
+    
+
+/**
+ * @param array<string, mixed> $loanData
+ */
+protected function matchesRule(array $rule, array $loanData): bool
     {
         // Check asset value threshold
         if (isset($rule['asset_value_min']) && $loanData['total_value'] < $rule['asset_value_min']) {
@@ -99,7 +121,14 @@ class ApprovalMatrixService
         return true;
     }
 
-    protected function getApproversFromRule(array $rule): array
+    
+
+/**
+  * @param array<string, mixed> $rule
+
+ * @return array<string, mixed>
+ */
+protected function getApproversFromRule(array $rule): array
     {
         $approvers = [];
 
@@ -160,7 +189,12 @@ class ApprovalMatrixService
         return $approvers;
     }
 
-    protected function validateMatrix(array $matrix): void
+    
+
+/**
+ * @param array<string, mixed> $matrix
+ */
+protected function validateMatrix(array $matrix): void
     {
         if (! isset($matrix['rules']) || ! is_array($matrix['rules'])) {
             throw new \InvalidArgumentException('Approval matrix must contain rules array');
@@ -192,7 +226,12 @@ class ApprovalMatrixService
         }
     }
 
-    protected function loadDefaultMatrix(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function loadDefaultMatrix(): array
     {
         return [
             'version' => '1.0',
@@ -268,7 +307,12 @@ class ApprovalMatrixService
         ];
     }
 
-    public function getApprovalLevels(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getApprovalLevels(): array
     {
         return [
             1 => [
@@ -289,7 +333,12 @@ class ApprovalMatrixService
         ];
     }
 
-    public function getAvailableRoles(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableRoles(): array
     {
         return [
             'admin' => 'Pentadbir',
@@ -297,7 +346,12 @@ class ApprovalMatrixService
         ];
     }
 
-    public function getAvailableGrades(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableGrades(): array
     {
         return [
             1 => 'Gred 1-10',
@@ -309,7 +363,14 @@ class ApprovalMatrixService
         ];
     }
 
-    public function testApprovalMatrix(array $testData): array
+    
+
+/**
+  * @param array<string, mixed> $testData
+
+ * @return array<string, mixed>
+ */
+public function testApprovalMatrix(array $testData): array
     {
         $results = [];
 
@@ -327,7 +388,12 @@ class ApprovalMatrixService
         return $results;
     }
 
-    protected function compareApprovers(array $expected, array $actual): bool
+    
+
+/**
+ * @param array<string, mixed> $actual
+ */
+protected function compareApprovers(array $expected, array $actual): bool
     {
         if (count($expected) !== count($actual)) {
             return false;
@@ -347,7 +413,12 @@ class ApprovalMatrixService
         Cache::forget(self::CACHE_KEY);
     }
 
-    public function exportMatrix(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function exportMatrix(): array
     {
         return [
             'matrix' => $this->getApprovalMatrix(),
@@ -359,7 +430,12 @@ class ApprovalMatrixService
         ];
     }
 
-    public function importMatrix(array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function importMatrix(array $data): void
     {
         if (! isset($data['matrix'])) {
             throw new \InvalidArgumentException('Import data must contain matrix');
@@ -383,7 +459,12 @@ class ApprovalMatrixService
      *
      * @throws \RuntimeException When no suitable approver found
      */
-    public function determineApprover(string $applicantGrade, float $assetValue): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function determineApprover(string $applicantGrade, float $assetValue): array
     {
         $applicantGradeLevel = (int) $applicantGrade;
         $requiredApproverGrade = $this->getRequiredApproverGrade($applicantGradeLevel, $assetValue);

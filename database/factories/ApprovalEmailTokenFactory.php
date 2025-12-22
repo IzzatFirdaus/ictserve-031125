@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Factory untuk model ApprovalEmailToken
  *
  * Menjana token kelulusan e-mel untuk testing aliran kerja auto-reply
+  *
+ * @extends Factory<\App\Models\ApprovalEmailToken>
  */
 class ApprovalEmailTokenFactory extends Factory
 {

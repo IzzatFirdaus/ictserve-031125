@@ -43,7 +43,12 @@ class ExportSubmissionsJob implements ShouldQueue
      *
      * @param  array<string, mixed>  $filters
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function __construct(
         public User $user,
         public string $format,
         public array $filters,

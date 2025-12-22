@@ -213,7 +213,12 @@ class Activity extends Model
      *
      * @param  array<string, mixed>  $properties
      */
-    public static function log(
+    
+
+/**
+ * @param array<string, mixed> $properties
+ */
+public static function log(
         string $description,
         ?string $logName = 'default',
         ?string $event = null,

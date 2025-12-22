@@ -51,7 +51,12 @@ class AIErrorOccurred implements ShouldBroadcastNow
      * @param  array  $context  Konteks tambahan (sanitized)
      * @param  string|null  $requestId  X-Request-ID untuk audit trail
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function __construct(
         string $errorType,
         string $message,
         string $severity = 'medium',
@@ -106,7 +111,14 @@ class AIErrorOccurred implements ShouldBroadcastNow
         );
     }
 
-    private function sanitizeContext(array $context): array
+    
+
+/**
+  * @param array<string, mixed> $context
+
+ * @return array<string, mixed>
+ */
+private function sanitizeContext(array $context): array
     {
         $sanitized = [];
         $allowedKeys = [
@@ -126,7 +138,12 @@ class AIErrorOccurred implements ShouldBroadcastNow
         return $sanitized;
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-alerts'),
@@ -138,7 +155,12 @@ class AIErrorOccurred implements ShouldBroadcastNow
         return 'AIErrorOccurred';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'errorType' => $this->errorType,

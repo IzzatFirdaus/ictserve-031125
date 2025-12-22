@@ -314,7 +314,12 @@ class SlaMonitoringService
      *
      * @param  array{status: string, hours_elapsed: float, hours_remaining: float|null, percentage: float}  $sla
      */
-    private function sendAlertEmail(LoanApplication $application, User $approver, array $sla): void
+    
+
+/**
+ * @param array<string, mixed> $sla
+ */
+private function sendAlertEmail(LoanApplication $application, User $approver, array $sla): void
     {
         $subject = match ($sla['status']) {
             'breached' => __('sla.email.subject_breached', ['number' => $application->application_number]),

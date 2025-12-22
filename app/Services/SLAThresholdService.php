@@ -21,14 +21,24 @@ class SLAThresholdService
 
     private const CACHE_KEY = 'sla_thresholds_config';
 
-    public function getSLAThresholds(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSLAThresholds(): array
     {
         return Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
             return $this->loadDefaultThresholds();
         });
     }
 
-    public function updateSLAThresholds(array $thresholds): void
+    
+
+/**
+ * @param array<string, mixed> $thresholds
+ */
+public function updateSLAThresholds(array $thresholds): void
     {
         // Validate thresholds
         $this->validateThresholds($thresholds);
@@ -44,7 +54,12 @@ class SLAThresholdService
         ]);
     }
 
-    public function getSLAForTicket(string $priority, string $category = 'general'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSLAForTicket(string $priority, string $category = 'general'): array
     {
         $thresholds = $this->getSLAThresholds();
         $categoryConfig = $thresholds['categories'][$category] ?? $thresholds['categories']['general'];
@@ -58,7 +73,12 @@ class SLAThresholdService
         ];
     }
 
-    public function calculateSLADeadlines(string $priority, string $category = 'general', ?\Carbon\Carbon $startTime = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function calculateSLADeadlines(string $priority, string $category = 'general', ?\Carbon\Carbon $startTime = null): array
     {
         $startTime = $startTime ?? now();
         $sla = $this->getSLAForTicket($priority, $category);
@@ -81,7 +101,12 @@ class SLAThresholdService
         ];
     }
 
-    public function checkSLABreach(\Carbon\Carbon $startTime, string $priority, string $category = 'general'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkSLABreach(\Carbon\Carbon $startTime, string $priority, string $category = 'general'): array
     {
         $deadlines = $this->calculateSLADeadlines($priority, $category, $startTime);
         $now = now();
@@ -126,7 +151,14 @@ class SLAThresholdService
         return 'low';
     }
 
-    public function getSLACompliance(array $tickets): array
+    
+
+/**
+  * @param array<string, mixed> $tickets
+
+ * @return array<string, mixed>
+ */
+public function getSLACompliance(array $tickets): array
     {
         $total = count($tickets);
         $responseCompliant = 0;
@@ -157,7 +189,12 @@ class SLAThresholdService
         ];
     }
 
-    protected function validateThresholds(array $thresholds): void
+    
+
+/**
+ * @param array<string, mixed> $thresholds
+ */
+protected function validateThresholds(array $thresholds): void
     {
         if (! isset($thresholds['categories']) || ! is_array($thresholds['categories'])) {
             throw new \InvalidArgumentException('SLA thresholds must contain categories array');
@@ -192,7 +229,12 @@ class SLAThresholdService
         }
     }
 
-    protected function loadDefaultThresholds(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function loadDefaultThresholds(): array
     {
         return [
             'version' => '1.0',
@@ -311,7 +353,12 @@ class SLAThresholdService
         ];
     }
 
-    public function getAvailableCategories(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableCategories(): array
     {
         $thresholds = $this->getSLAThresholds();
         $categories = [];
@@ -323,7 +370,12 @@ class SLAThresholdService
         return $categories;
     }
 
-    public function getAvailablePriorities(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailablePriorities(): array
     {
         return [
             'low' => 'Rendah',
@@ -338,7 +390,12 @@ class SLAThresholdService
         Cache::forget(self::CACHE_KEY);
     }
 
-    public function exportThresholds(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function exportThresholds(): array
     {
         return [
             'thresholds' => $this->getSLAThresholds(),
@@ -347,7 +404,12 @@ class SLAThresholdService
         ];
     }
 
-    public function importThresholds(array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function importThresholds(array $data): void
     {
         if (! isset($data['thresholds'])) {
             throw new \InvalidArgumentException('Import data must contain thresholds');

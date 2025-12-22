@@ -30,7 +30,12 @@ trait MinimalistInterface
      * @param  array  $context  Current context (user type, step, etc.)
      * @return array Filtered essential fields only
      */
-    protected function showEssentialFieldsOnly(array $fields, array $context): array
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+protected function showEssentialFieldsOnly(array $fields, array $context): array
     {
         return array_filter($fields, function ($field) use ($context) {
             // Always show required fields
@@ -77,7 +82,12 @@ trait MinimalistInterface
      * @param  string  $context  Current context
      * @return array Filtered actions
      */
-    protected function showRelevantActionsOnly(array $allActions, string $userRole, string $context): array
+    
+
+/**
+ * @param array<string, mixed> $allActions
+ */
+protected function showRelevantActionsOnly(array $allActions, string $userRole, string $context): array
     {
         return array_filter($allActions, function ($action) use ($userRole, $context) {
             // Check role permission
@@ -120,7 +130,12 @@ trait MinimalistInterface
      * @param  mixed  $condition  Condition to evaluate
      * @param  array  $context  Current context
      */
-    protected function evaluateCondition(mixed $condition, array $context): bool
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+protected function evaluateCondition(mixed $condition, array $context): bool
     {
         if (is_callable($condition)) {
             return $condition($context);

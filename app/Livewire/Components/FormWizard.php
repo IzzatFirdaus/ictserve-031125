@@ -88,7 +88,12 @@ class FormWizard extends Component
      *
      * @param  array<int, array{id: string, title: string, description?: string, icon?: string}>  $steps
      */
-    public function mount(
+    
+
+/**
+ * @param array<string, mixed> $completedSteps
+ */
+public function mount(
         array $steps = [],
         int $currentStep = 1,
         array $completedSteps = [],
@@ -190,7 +195,12 @@ class FormWizard extends Component
      * @param  array<string, string>  $errors
      */
     #[On('wizard-step-errors')]
-    public function setStepErrors(array $errors): void
+    
+
+/**
+ * @param array<string, mixed> $errors
+ */
+public function setStepErrors(array $errors): void
     {
         $this->stepErrors = $errors;
     }

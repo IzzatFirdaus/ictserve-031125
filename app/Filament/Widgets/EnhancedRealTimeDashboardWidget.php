@@ -66,6 +66,7 @@ class EnhancedRealTimeDashboardWidget extends BaseWidget
     protected function getStats(): array
     {
         $service = app(EnhancedUnifiedDashboardService::class);
+        /** @var array{summary: array{overall_system_health: float, total_active_items: int}, alerts: array{total_alerts: int, severity: string, sla_breaches: int, overdue_loans: int, critical_tickets: int}, helpdesk: array{resolution_rate: float, pending_tickets: int}, loans: array{approval_rate: float, pending_approval: int}, assets: array{utilization_rate: float, available_assets: int}, performance?: array{status: string, response_time_avg: float}} $metrics */
         $metrics = $this->cached(
             fn () => $service->getAdminDashboardMetrics(),
             'enhanced-dashboard-metrics'
@@ -74,54 +75,61 @@ class EnhancedRealTimeDashboardWidget extends BaseWidget
         $user = Auth::user();
         $canAccessPulse = $user && method_exists($user, 'canAccessPulse') && $user->canAccessPulse();
 
+        $summary = $metrics['summary'];
+        $alerts = $metrics['alerts'];
+        $helpdesk = $metrics['helpdesk'];
+        $loans = $metrics['loans'];
+        $assets = $metrics['assets'];
+
         $stats = [
             // System Health with trend
-            Stat::make('Kesihatan Sistem', $metrics['summary']['overall_system_health'].'%')
-                ->description($this->getHealthDescription($metrics['summary']['overall_system_health']))
+            Stat::make('Kesihatan Sistem', $summary['overall_system_health'].'%')
+                ->description($this->getHealthDescription($summary['overall_system_health']))
                 ->descriptionIcon('heroicon-m-heart')
-                ->color($this->getHealthColor($metrics['summary']['overall_system_health']))
+                ->color($this->getHealthColor($summary['overall_system_health']))
                 ->chart($this->getHealthTrendData()),
 
             // Active Items
-            Stat::make('Item Aktif', (string) $metrics['summary']['total_active_items'])
+            Stat::make('Item Aktif', (string) $summary['total_active_items'])
                 ->description('Tiket & pinjaman dalam proses')
                 ->descriptionIcon('heroicon-m-clock')
                 ->color('info'),
 
             // Alerts Requiring Attention
-            Stat::make('Amaran', (string) $metrics['alerts']['total_alerts'])
-                ->description($this->getAlertDescription($metrics['alerts']))
+            Stat::make('Amaran', (string) $alerts['total_alerts'])
+                ->description($this->getAlertDescription($alerts))
                 ->descriptionIcon('heroicon-m-exclamation-triangle')
-                ->color($this->getAlertColor($metrics['alerts']['severity'])),
+                ->color($this->getAlertColor($alerts['severity'])),
 
             // Helpdesk Performance
-            Stat::make('Kadar Penyelesaian', $metrics['helpdesk']['resolution_rate'].'%')
-                ->description($metrics['helpdesk']['pending_tickets'].' tiket tertunda')
+            Stat::make('Kadar Penyelesaian', $helpdesk['resolution_rate'].'%')
+                ->description($helpdesk['pending_tickets'].' tiket tertunda')
                 ->descriptionIcon('heroicon-m-ticket')
-                ->color($this->getPerformanceColor($metrics['helpdesk']['resolution_rate']))
+                ->color($this->getPerformanceColor($helpdesk['resolution_rate']))
                 ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
 
             // Loan Approval Rate
-            Stat::make('Kadar Kelulusan', $metrics['loans']['approval_rate'].'%')
-                ->description($metrics['loans']['pending_approval'].' menunggu kelulusan')
+            Stat::make('Kadar Kelulusan', $loans['approval_rate'].'%')
+                ->description($loans['pending_approval'].' menunggu kelulusan')
                 ->descriptionIcon('heroicon-m-document-check')
-                ->color($this->getPerformanceColor($metrics['loans']['approval_rate']))
+                ->color($this->getPerformanceColor($loans['approval_rate']))
                 ->url(route('filament.admin.operations.resources.loan-applications.index')),
 
             // Asset Utilization
-            Stat::make('Penggunaan Aset', $metrics['assets']['utilization_rate'].'%')
-                ->description($metrics['assets']['available_assets'].' tersedia')
+            Stat::make('Penggunaan Aset', $assets['utilization_rate'].'%')
+                ->description($assets['available_assets'].' tersedia')
                 ->descriptionIcon('heroicon-m-cube')
-                ->color($this->getUtilizationColor($metrics['assets']['utilization_rate']))
+                ->color($this->getUtilizationColor($assets['utilization_rate']))
                 ->url(route('filament.admin.inventory.resources.assets.index')),
         ];
 
         // Add performance metrics for admin/superuser
         if ($canAccessPulse && isset($metrics['performance']['status']) && $metrics['performance']['status'] === 'healthy') {
-            $stats[] = Stat::make('Masa Respons', $metrics['performance']['response_time_avg'].'ms')
+            $performance = $metrics['performance'];
+            $stats[] = Stat::make('Masa Respons', $performance['response_time_avg'].'ms')
                 ->description('Purata masa respons')
                 ->descriptionIcon('heroicon-m-bolt')
-                ->color($this->getResponseTimeColor($metrics['performance']['response_time_avg']))
+                ->color($this->getResponseTimeColor($performance['response_time_avg']))
                 ->url(route('filament.admin.pages.pulse-dashboard'));
         }
 
@@ -147,7 +155,15 @@ class EnhancedRealTimeDashboardWidget extends BaseWidget
         };
     }
 
-    private function getAlertDescription(array $alerts): string
+    /**
+     * @param array{sla_breaches: int, overdue_loans: int, critical_tickets: int} $alerts
+     */
+    
+
+/**
+ * @param array<string, mixed> $alerts
+ */
+private function getAlertDescription(array $alerts): string
     {
         $parts = [];
         if ($alerts['sla_breaches'] > 0) {

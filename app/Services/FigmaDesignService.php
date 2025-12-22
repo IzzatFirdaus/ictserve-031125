@@ -574,7 +574,12 @@ class FigmaDesignService
      *
      * @param  array<string, mixed>  $rules
      */
-    private function countTokens(array $rules): int
+    
+
+/**
+ * @param array<string, mixed> $rules
+ */
+private function countTokens(array $rules): int
     {
         $count = 0;
         foreach ($rules as $category) {

@@ -97,7 +97,12 @@ class AlertService
         return $count;
     }
 
-    protected function notifyAdmins(string $type, array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+protected function notifyAdmins(string $type, array $data): void
     {
         $admins = User::role(['admin', 'superuser'])->get();
 

@@ -135,7 +135,12 @@ class AddComponentMetadata extends Command
      *
      * @param  array{success: int, skipped: int, failed: int, errors: array<int, string>}  $results
      */
-    protected function displayResults(array $results): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+protected function displayResults(array $results): void
     {
         $this->newLine();
         $this->info('Results:');

@@ -29,7 +29,12 @@ class AiAuditService
      * @param array $context Konteks operasi (input, output, metadata)
      * @param string|null $requestId X-Request-ID untuk kebolehkesanan
      */
-    public function logAiOperation(string $operation, array $context, ?string $requestId = null): void
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function logAiOperation(string $operation, array $context, ?string $requestId = null): void
     {
         $requestId = $requestId ?? (string) Str::uuid();
 
@@ -66,7 +71,12 @@ class AiAuditService
      * @param array $context Konteks tambahan
      * @param string|null $requestId X-Request-ID untuk kebolehkesanan
      */
-    public function logAiError(string $operation, \Throwable $exception, array $context = [], ?string $requestId = null): void
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function logAiError(string $operation, \Throwable $exception, array $context = [], ?string $requestId = null): void
     {
         $requestId = $requestId ?? (string) Str::uuid();
 
@@ -110,7 +120,12 @@ class AiAuditService
      * @param array $metrics Metrik tambahan (cache hit/miss, token usage, dll)
      * @param string|null $requestId X-Request-ID untuk kebolehkesanan
      */
-    public function logAiPerformance(string $operation, float $responseTime, array $metrics = [], ?string $requestId = null): void
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+public function logAiPerformance(string $operation, float $responseTime, array $metrics = [], ?string $requestId = null): void
     {
         $requestId = $requestId ?? (string) Str::uuid();
 
@@ -187,7 +202,12 @@ class AiAuditService
      * @param array $context Konteks asal
      * @return array Konteks yang telah disanitasi
      */
-    private function sanitizeContext(array $context): array
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function sanitizeContext(array $context): array
     {
         $sanitized = $context;
 

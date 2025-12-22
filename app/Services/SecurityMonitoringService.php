@@ -51,7 +51,12 @@ class SecurityMonitoringService
      *
      * @return array<string, mixed>
      */
-    public function getDashboardStats(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getDashboardStats(): array
     {
         /** @var array<string, mixed> $stats */
         $stats = Cache::remember('security_dashboard_stats', self::CACHE_DURATION, function (): array {
@@ -378,7 +383,12 @@ class SecurityMonitoringService
      *
      * @return array<string, array>
      */
-    public function getBlockedIPs(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getBlockedIPs(): array
     {
         return Cache::get('blocked_ips', []);
     }
@@ -388,7 +398,12 @@ class SecurityMonitoringService
      *
      * @param  array<string, mixed>  $metadata
      */
-    public function createAlert(string $type, string $message, string $severity = 'medium', array $metadata = []): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function createAlert(string $type, string $message, string $severity = 'medium', array $metadata = []): void
     {
         $alerts = Cache::get('security_alerts', []);
         $alerts[] = [
@@ -413,7 +428,12 @@ class SecurityMonitoringService
      *
      * @return array<int, array>
      */
-    public function getAlerts(bool $unacknowledgedOnly = false): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAlerts(bool $unacknowledgedOnly = false): array
     {
         $alerts = Cache::get('security_alerts', []);
 
@@ -634,7 +654,12 @@ class SecurityMonitoringService
      * @param  array<string, mixed>  $metadata  Activity metadata
      * @param  \Illuminate\Http\Request  $request  HTTP request
      */
-    public function logSuspiciousActivity(string $activity, array $metadata, \Illuminate\Http\Request $request): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function logSuspiciousActivity(string $activity, array $metadata, \Illuminate\Http\Request $request): void
     {
         $ipAddress = $request->ip() ?? $request->server->get('REMOTE_ADDR', '0.0.0.0');
 
@@ -677,7 +702,12 @@ class SecurityMonitoringService
      * @param  string  $event  Event type
      * @param  array<string, mixed>  $metadata  Event metadata
      */
-    public function logSecurityEvent(string $event, array $metadata): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function logSecurityEvent(string $event, array $metadata): void
     {
         $severity = $metadata['severity'] ?? 'medium';
 
@@ -721,7 +751,12 @@ class SecurityMonitoringService
      *
      * @return array<string, mixed> Scan results
      */
-    public function runSecurityScan(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function runSecurityScan(): array
     {
         $scanTime = Carbon::now();
         Cache::put('last_security_scan_time', $scanTime->toISOString(), 86400);
@@ -777,7 +812,12 @@ class SecurityMonitoringService
      *
      * @return array<string, mixed>
      */
-    public function getSecurityStatistics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSecurityStatistics(): array
     {
         return [
             'total_failed_logins' => $this->getFailedLoginsCount(720), // 30 days

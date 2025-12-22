@@ -121,7 +121,12 @@ class NotificationBell extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:ticket.status.changed')]
-    public function handleTicketStatusChanged(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleTicketStatusChanged(array $event): void
     {
         $this->loadNotifications();
 
@@ -136,7 +141,12 @@ class NotificationBell extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:loan.status.changed')]
-    public function handleLoanStatusChanged(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleLoanStatusChanged(array $event): void
     {
         $this->loadNotifications();
 
@@ -151,7 +161,12 @@ class NotificationBell extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:status.updated')]
-    public function handleStatusUpdated(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleStatusUpdated(array $event): void
     {
         $this->loadNotifications();
 
@@ -169,7 +184,12 @@ class NotificationBell extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:notification')]
-    public function handleNewNotification(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleNewNotification(array $event): void
     {
         // Increment count optimistically
         $this->unreadCount++;
@@ -207,7 +227,12 @@ class NotificationBell extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo:email-verified')]
-    public function handleEmailVerified(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleEmailVerified(array $event): void
     {
         $this->dispatch('toast', message: (string) __('notifications.email_verified'), type: 'success');
         $this->loadNotifications();
@@ -223,7 +248,12 @@ class NotificationBell extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo:account-linked')]
-    public function handleAccountLinked(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleAccountLinked(array $event): void
     {
         $rawCount = $event['linked_submissions'] ?? 0;
         $linkedCount = \is_numeric($rawCount) ? (int) $rawCount : 0;
@@ -247,7 +277,12 @@ class NotificationBell extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo:api-token-created')]
-    public function handleApiTokenCreated(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleApiTokenCreated(array $event): void
     {
         $rawName = $event['token_name'] ?? 'Unknown';
         $tokenName = \is_scalar($rawName) ? (string) $rawName : 'Unknown';
@@ -267,7 +302,12 @@ class NotificationBell extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo:google-sso-linked')]
-    public function handleGoogleSsoLinked(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleGoogleSsoLinked(array $event): void
     {
         $rawEmail = $event['google_email'] ?? (string) __('notifications.google_account');
         $googleEmail = \is_scalar($rawEmail) ? (string) $rawEmail : '';

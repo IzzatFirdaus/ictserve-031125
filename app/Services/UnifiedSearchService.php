@@ -37,7 +37,12 @@ class UnifiedSearchService
      * @param  int  $limit  Maximum results per resource
      * @return array<string, Collection> Grouped search results with relevance scores
      */
-    public function search(string $query, array $resources = [], int $limit = 10): array
+    
+
+/**
+ * @param array<string, mixed> $resources
+ */
+public function search(string $query, array $resources = [], int $limit = 10): array
     {
         if (empty($query) || strlen($query) < 2) {
             return [];
@@ -229,7 +234,12 @@ class UnifiedSearchService
      * @param  array<string|null>  $fields  Fields to check
      * @return float Relevance score (0-100)
      */
-    private function calculateRelevance(string $query, array $fields): float
+    
+
+/**
+ * @param array<string, mixed> $fields
+ */
+private function calculateRelevance(string $query, array $fields): float
     {
         $score = 0;
         $query = strtolower($query);
@@ -272,7 +282,12 @@ class UnifiedSearchService
      *
      * @param  array<string>  $resources
      */
-    private function getCacheKey(string $query, array $resources, int $limit): string
+    
+
+/**
+ * @param array<string, mixed> $resources
+ */
+private function getCacheKey(string $query, array $resources, int $limit): string
     {
         return 'unified_search:'.md5($query.implode(',', $resources).$limit);
     }

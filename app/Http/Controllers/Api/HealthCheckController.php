@@ -79,7 +79,12 @@ class HealthCheckController extends Controller
     /**
      * Check database connectivity.
      */
-    private function checkDatabase(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkDatabase(): array
     {
         try {
             $start = microtime(true);
@@ -102,7 +107,12 @@ class HealthCheckController extends Controller
     /**
      * Check cache connectivity.
      */
-    private function checkCache(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkCache(): array
     {
         try {
             $start = microtime(true);
@@ -128,7 +138,12 @@ class HealthCheckController extends Controller
     /**
      * Check queue connectivity.
      */
-    private function checkQueue(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkQueue(): array
     {
         try {
             $connection = config('queue.default');
@@ -153,7 +168,12 @@ class HealthCheckController extends Controller
     /**
      * Check storage accessibility.
      */
-    private function checkStorage(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkStorage(): array
     {
         try {
             $storagePath = storage_path('app');
@@ -179,7 +199,12 @@ class HealthCheckController extends Controller
     /**
      * Check performance metrics.
      */
-    private function checkPerformance(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkPerformance(): array
     {
         return [
             'healthy' => $this->performanceService->isHealthy(),
@@ -218,7 +243,12 @@ class HealthCheckController extends Controller
     /**
      * Check Ollama local LLM service.
      */
-    private function checkOllama(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkOllama(): array
     {
         try {
             $start = microtime(true);
@@ -249,7 +279,12 @@ class HealthCheckController extends Controller
     /**
      * Check AWS Bedrock service.
      */
-    private function checkBedrock(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkBedrock(): array
     {
         try {
             $enabled = config('bedrock.enabled', false);

@@ -548,7 +548,12 @@ class PulseWidgetIntegration
      *
      * @param  array<string, array<string, float|int>>  $thresholds
      */
-    public function updateThresholds(array $thresholds): void
+    
+
+/**
+ * @param array<string, mixed> $thresholds
+ */
+public function updateThresholds(array $thresholds): void
     {
         $this->thresholds = array_merge($this->thresholds, $thresholds);
     }

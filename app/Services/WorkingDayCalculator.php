@@ -40,7 +40,12 @@ class WorkingDayCalculator
      *
      * @param  Carbon|string  $date
      */
-    public function isWorkingDay($date, ?array $holidays = null): bool
+    
+
+/**
+ * @param array<string, mixed> $holidays
+ */
+public function isWorkingDay($date, ?array $holidays = null): bool
     {
         $date = Carbon::parse($date);
 

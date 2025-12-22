@@ -22,7 +22,12 @@ class UnifiedAnalyticsExporter extends Exporter
 {
     protected static ?string $model = Export::class;
 
-    public static function getColumns(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public static function getColumns(): array
     {
         return [
             // Report Metadata

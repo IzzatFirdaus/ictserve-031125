@@ -120,7 +120,12 @@ class OllamaApiMiddleware
     /**
      * Sanitasi data untuk logging (redaksi PII)
      */
-    private function sanitizeForLogging(array $data): array
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+private function sanitizeForLogging(array $data): array
     {
         $sanitized = [];
 

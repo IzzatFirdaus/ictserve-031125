@@ -87,7 +87,12 @@ class Audit extends BaseAudit
     /**
      * Prevent updates to audit records (immutable)
      */
-    public function save(array $options = []): bool
+    
+
+/**
+ * @param array<string, mixed> $options
+ */
+public function save(array $options = []): bool
     {
         // Only allow creation, not updates
         if ($this->exists) {
@@ -252,7 +257,12 @@ class Audit extends BaseAudit
     /**
      * Search audit records
      */
-    public static function search(array $criteria): Builder
+    
+
+/**
+ * @param array<string, mixed> $criteria
+ */
+public static function search(array $criteria): Builder
     {
         $query = static::query();
 

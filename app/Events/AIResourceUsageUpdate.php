@@ -50,7 +50,14 @@ class AIResourceUsageUpdate implements ShouldBroadcast
     /**
      * Sanitize usage to only include allowed keys.
      */
-    private function sanitizeUsage(array $usage): array
+    
+
+/**
+  * @param array<string, mixed> $usage
+
+ * @return array<string, mixed>
+ */
+private function sanitizeUsage(array $usage): array
     {
         $allowedKeys = [
             'cpu_percent',
@@ -66,7 +73,12 @@ class AIResourceUsageUpdate implements ShouldBroadcast
         return array_intersect_key($usage, array_flip($allowedKeys));
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-performance'),
@@ -78,7 +90,12 @@ class AIResourceUsageUpdate implements ShouldBroadcast
         return 'AIResourceUsageUpdate';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'usage' => $this->usage,

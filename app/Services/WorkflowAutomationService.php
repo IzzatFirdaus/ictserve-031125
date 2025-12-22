@@ -34,7 +34,12 @@ class WorkflowAutomationService
      * @param  array<int, array<string, mixed>>  $sampleData
      * @return array<int, array<string, mixed>>
      */
-    public function testRule(WorkflowRule $rule, array $sampleData): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function testRule(WorkflowRule $rule, array $sampleData): array
     {
         $results = [];
 
@@ -50,7 +55,12 @@ class WorkflowAutomationService
         return $results;
     }
 
-    public function getAvailableConditions(string $module): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableConditions(string $module): array
     {
         $conditions = [
             'helpdesk' => [
@@ -76,7 +86,12 @@ class WorkflowAutomationService
         return $conditions[$module] ?? [];
     }
 
-    public function getAvailableActions(string $module): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableActions(string $module): array
     {
         return [
             'send_email' => [
@@ -101,7 +116,12 @@ class WorkflowAutomationService
     /**
      * @param  array<int, array<string, mixed>>  $conditions
      */
-    private function evaluateConditions(array $conditions, object $entity, string $event): bool
+    
+
+/**
+ * @param array<string, mixed> $conditions
+ */
+private function evaluateConditions(array $conditions, object $entity, string $event): bool
     {
         if (empty($conditions)) {
             return true;
@@ -125,7 +145,12 @@ class WorkflowAutomationService
     /**
      * @param  array<int, array<string, mixed>>  $actions
      */
-    private function executeActions(array $actions, object $entity): void
+    
+
+/**
+ * @param array<string, mixed> $actions
+ */
+private function executeActions(array $actions, object $entity): void
     {
         foreach ($actions as $action) {
             $type = $action['type'] ?? '';
@@ -170,7 +195,12 @@ class WorkflowAutomationService
     /**
      * @param  array<string, mixed>  $action
      */
-    private function sendEmail(array $action, object $entity): void
+    
+
+/**
+ * @param array<string, mixed> $action
+ */
+private function sendEmail(array $action, object $entity): void
     {
         // Email sending logic would be implemented here
         Log::info('Workflow email action executed', [
@@ -182,7 +212,12 @@ class WorkflowAutomationService
     /**
      * @param  array<string, mixed>  $action
      */
-    private function updateStatus(array $action, object $entity): void
+    
+
+/**
+ * @param array<string, mixed> $action
+ */
+private function updateStatus(array $action, object $entity): void
     {
         if (method_exists($entity, 'update') && is_callable([$entity, 'update'])) {
             $entity->update(['status' => $action['new_status']]);
@@ -192,7 +227,12 @@ class WorkflowAutomationService
     /**
      * @param  array<string, mixed>  $action
      */
-    private function assignUser(array $action, object $entity): void
+    
+
+/**
+ * @param array<string, mixed> $action
+ */
+private function assignUser(array $action, object $entity): void
     {
         if (method_exists($entity, 'update') && is_callable([$entity, 'update']) && isset($action['user_id'])) {
             $entity->update(['assigned_to' => $action['user_id']]);
@@ -202,7 +242,12 @@ class WorkflowAutomationService
     /**
      * @param  array<string, mixed>  $action
      */
-    private function createNotification(array $action, object $entity): void
+    
+
+/**
+ * @param array<string, mixed> $action
+ */
+private function createNotification(array $action, object $entity): void
     {
         // Notification creation logic would be implemented here
         Log::info('Workflow notification action executed', [

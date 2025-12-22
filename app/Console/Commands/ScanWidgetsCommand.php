@@ -303,7 +303,12 @@ class ScanWidgetsCommand extends Command
      *
      * @param  array<string, int>  $results
      */
-    private function displaySummary(array $results, bool $isDryRun): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function displaySummary(array $results, bool $isDryRun): void
     {
         $this->newLine();
         $this->info('📊 Scan Summary:');
@@ -328,7 +333,12 @@ class ScanWidgetsCommand extends Command
      *
      * @param  array<string, mixed>  $validation
      */
-    private function displayValidationResults(array $validation): void
+    
+
+/**
+ * @param array<string, mixed> $validation
+ */
+private function displayValidationResults(array $validation): void
     {
         $this->newLine();
         $this->info('🔍 Widget Placement Validation:');

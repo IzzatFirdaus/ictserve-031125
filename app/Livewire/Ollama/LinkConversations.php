@@ -281,7 +281,12 @@ class LinkConversations extends Component
     /**
      * Get conversation preview
      */
-    private function getConversationPreview(array $conversationHistory): string
+    
+
+/**
+ * @param array<string, mixed> $conversationHistory
+ */
+private function getConversationPreview(array $conversationHistory): string
     {
         if (empty($conversationHistory)) {
             return __('ollama.link_conversations.no_messages', [], 'ms');

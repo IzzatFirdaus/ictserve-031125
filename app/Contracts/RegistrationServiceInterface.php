@@ -33,7 +33,12 @@ interface RegistrationServiceInterface
      * @throws \App\Exceptions\InvalidEmailDomainException If email is not @motac.gov.my
      * @throws \Illuminate\Validation\ValidationException If validation fails
      */
-    public function register(array $data): User;
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function register(array $data): User;
 
     /**
      * Validate that email domain is @motac.gov.my
