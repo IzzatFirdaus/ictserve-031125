@@ -25,9 +25,18 @@ class FilterPresetService
     }
 
     /**
+      * @param array<string, mixed> $filters
+
      * @return array<string, mixed>
      */
-    public function saveFilterPreset(mixed $user, string $resource, string $name, array $filters, bool $isDefault = false): array
+    
+
+/**
+  * @param array<string, mixed> $filters
+
+ * @return array<string, mixed>
+ */
+public function saveFilterPreset(mixed $user, string $resource, string $name, array $filters, bool $isDefault = false): array
     {
         $payload = [
             'filters' => $filters,
@@ -39,12 +48,22 @@ class FilterPresetService
         return $payload;
     }
 
-    public function getPresets(string $resource): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getPresets(string $resource): array
     {
         return Cache::get("filter_presets:{$resource}", []);
     }
 
-    public function getUserPresets(mixed $user, string $resource): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getUserPresets(mixed $user, string $resource): array
     {
         return $this->getPresets($resource);
     }
@@ -56,7 +75,12 @@ class FilterPresetService
         Cache::put("filter_presets:{$resource}", $presets, 86400);
     }
 
-    public function updatePreset(mixed $user, string $resource, string $name, array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function updatePreset(mixed $user, string $resource, string $name, array $data): void
     {
         $presets = $this->getPresets($resource);
         $existing = $presets[$name] ?? [];
@@ -66,9 +90,18 @@ class FilterPresetService
     }
 
     /**
+      * @param array<string, mixed> $filters
+
      * @return array<string, mixed>
      */
-    public function generateQuickFilter(string $label, array $filters): array
+    
+
+/**
+  * @param array<string, mixed> $filters
+
+ * @return array<string, mixed>
+ */
+public function generateQuickFilter(string $label, array $filters): array
     {
         return [
             'label' => $label,
@@ -79,7 +112,12 @@ class FilterPresetService
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function getQuickFilters(string $resource): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getQuickFilters(string $resource): array
     {
         return [
             $this->generateQuickFilter('Open High Priority Tickets', [
@@ -89,7 +127,12 @@ class FilterPresetService
         ];
     }
 
-    public function generateFilterUrl(string $baseUrl, array $filters): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function generateFilterUrl(string $baseUrl, array $filters): string
     {
         if (empty($filters)) {
             return $baseUrl;
@@ -98,7 +141,12 @@ class FilterPresetService
         return $baseUrl.'?'.http_build_query($filters);
     }
 
-    public function generateUrl(string $resource, array $filters): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function generateUrl(string $resource, array $filters): string
     {
         return route("filament.admin.resources.{$resource}.index", $filters);
     }

@@ -122,7 +122,12 @@ class TwoFactorAuthService
     /**
      * Verify backup code
      */
-    public function verifyBackupCode(array $backupCodes, string $code): bool
+    
+
+/**
+ * @param array<string, mixed> $backupCodes
+ */
+public function verifyBackupCode(array $backupCodes, string $code): bool
     {
         return in_array(strtoupper($code), $backupCodes);
     }

@@ -327,7 +327,12 @@ class FaqBot extends Component
     /**
      * Add message to conversation history
      */
-    private function addMessage(string $role, string $content, array $sources = []): void
+    
+
+/**
+ * @param array<string, mixed> $sources
+ */
+private function addMessage(string $role, string $content, array $sources = []): void
     {
         $message = [
             'role' => $role,

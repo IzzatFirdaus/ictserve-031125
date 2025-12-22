@@ -14,6 +14,8 @@ use Illuminate\Support\Str;
  *
  * Menyokong True Hybrid Architecture dengan nullable user_id
  * Menjana data audit yang realistik untuk testing
+  *
+ * @extends Factory<\App\Models\MessageLog>
  */
 class MessageLogFactory extends Factory
 {

@@ -115,7 +115,12 @@ class PIIDetectionService
      * @param  string  $text  Teks untuk diimbas
      * @return array Hasil pengesanan dengan jenis dan lokasi PII
      */
-    public function detectPII(string $text): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function detectPII(string $text): array
     {
         $detections = [];
         $totalCount = 0;
@@ -162,9 +167,18 @@ class PIIDetectionService
      *
      * @param  string  $text  Teks untuk disanitasi
      * @param  array|null  $typesToSanitize  Jenis PII untuk disanitasi (null = semua)
+      * @param array<string, mixed> $typesToSanitize
+
      * @return array Teks yang disanitasi dan statistik
      */
-    public function sanitizePII(string $text, ?array $typesToSanitize = null): array
+    
+
+/**
+  * @param array<string, mixed> $typesToSanitize
+
+ * @return array<string, mixed>
+ */
+public function sanitizePII(string $text, ?array $typesToSanitize = null): array
     {
         $sanitizedText = $text;
         $sanitizationStats = [];
@@ -239,10 +253,15 @@ class PIIDetectionService
      * Anonimkan data untuk analisis
      *
      * @param  array  $data  Data untuk dianonimkan
-     * @param  array  $fieldsToAnonymize  Medan untuk dianonimkan
+     * @param  array<string, mixed>  $fieldsToAnonymize  Medan untuk dianonimkan
      * @return array Data yang dianonimkan
      */
-    public function anonymizeData(array $data, array $fieldsToAnonymize): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function anonymizeData(array $data, array $fieldsToAnonymize): array
     {
         $anonymized = $data;
 
@@ -262,7 +281,12 @@ class PIIDetectionService
      * @param  string  $minSeverity  Tahap keterukan minimum untuk gagal
      * @return array Hasil pengesahan
      */
-    public function validatePIIFree(string $text, string $minSeverity = 'medium'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function validatePIIFree(string $text, string $minSeverity = 'medium'): array
     {
         $detection = $this->detectPII($text);
         $severityLevels = ['low' => 1, 'medium' => 2, 'high' => 3, 'critical' => 4];
@@ -292,7 +316,12 @@ class PIIDetectionService
      * @param  bool  $autoSanitize  Sanitasi automatik jika PII dikesan
      * @return array Hasil pemprosesan
      */
-    public function processText(string $text, bool $autoSanitize = true): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function processText(string $text, bool $autoSanitize = true): array
     {
         // Kesan PII
         $detection = $this->detectPII($text);
@@ -322,7 +351,12 @@ class PIIDetectionService
      * @param  int  $hours  Tempoh dalam jam
      * @return array Statistik pengesanan
      */
-    public function getDetectionStatistics(int $hours = 24): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getDetectionStatistics(int $hours = 24): array
     {
         $cacheKey = "pii_detection_stats_{$hours}h";
 
@@ -376,7 +410,12 @@ class PIIDetectionService
     /**
      * Kira tahap keterukan keseluruhan
      */
-    private function calculateOverallSeverity(array $detections): string
+    
+
+/**
+ * @param array<string, mixed> $detections
+ */
+private function calculateOverallSeverity(array $detections): string
     {
         if (empty($detections)) {
             return 'none';
@@ -396,7 +435,12 @@ class PIIDetectionService
     /**
      * Log pengesanan PII untuk audit (D09 v3.6.0 Dual Audit System)
      */
-    private function logPIIDetection(array $detections, int $totalCount): void
+    
+
+/**
+ * @param array<string, mixed> $detections
+ */
+private function logPIIDetection(array $detections, int $totalCount): void
     {
         Log::warning('PII detected in content', [
             'total_count' => $totalCount,
@@ -420,7 +464,12 @@ class PIIDetectionService
     /**
      * Log sanitasi PII untuk audit (D09 v3.6.0 Dual Audit System)
      */
-    private function logPIISanitization(array $stats, int $totalSanitized): void
+    
+
+/**
+ * @param array<string, mixed> $stats
+ */
+private function logPIISanitization(array $stats, int $totalSanitized): void
     {
         Log::info('PII sanitized from content', [
             'total_sanitized' => $totalSanitized,
@@ -443,7 +492,14 @@ class PIIDetectionService
     /**
      * Kira bilangan mengikut keterukan
      */
-    private function countBySeverity(array $detections): array
+    
+
+/**
+  * @param array<string, mixed> $detections
+
+ * @return array<string, mixed>
+ */
+private function countBySeverity(array $detections): array
     {
         $counts = ['critical' => 0, 'high' => 0, 'medium' => 0, 'low' => 0];
 
@@ -460,7 +516,12 @@ class PIIDetectionService
      *
      * @return array Senarai corak PII
      */
-    public function getAvailablePatterns(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailablePatterns(): array
     {
         return array_map(function ($config) {
             return [

@@ -62,7 +62,12 @@ class WidgetErrorHandler
      * @param  array<string, mixed>  $context  Additional context information
      * @return array<string, mixed> Fallback content for the widget
      */
-    public function handleError(string $widgetClass, \Throwable $error, array $context = []): array
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function handleError(string $widgetClass, \Throwable $error, array $context = []): array
     {
         $errorId = $this->generateErrorId();
         $widgetName = class_basename($widgetClass);
@@ -95,7 +100,12 @@ class WidgetErrorHandler
      * @param  array<string, mixed>  $context  Additional context
      * @return mixed The result of the operation or fallback content
      */
-    public function retryOperation(string $widgetClass, callable $operation, array $context = []): mixed
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+public function retryOperation(string $widgetClass, callable $operation, array $context = []): mixed
     {
         $retryKey = "widget_retry_{$widgetClass}";
         $retryCount = Cache::get($retryKey, 0);
@@ -290,7 +300,12 @@ class WidgetErrorHandler
     /**
      * Log error with comprehensive context
      */
-    protected function logError(string $widgetClass, \Throwable $error, array $context, string $errorId): void
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+protected function logError(string $widgetClass, \Throwable $error, array $context, string $errorId): void
     {
         Log::error('Widget error occurred', [
             'error_id' => $errorId,
@@ -324,7 +339,12 @@ class WidgetErrorHandler
     /**
      * Store error information for retry mechanism
      */
-    protected function storeErrorForRetry(string $widgetClass, \Throwable $error, array $context, string $errorId): void
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+protected function storeErrorForRetry(string $widgetClass, \Throwable $error, array $context, string $errorId): void
     {
         $errorKey = 'widget_errors_'.now()->format('Y-m-d-H');
         $errors = Cache::get($errorKey, []);
@@ -522,7 +542,12 @@ class WidgetErrorHandler
      * @param  array<int, array<string, mixed>>  $errors
      * @return array<string, int>
      */
-    protected function getMostCommonErrors(array $errors): array
+    
+
+/**
+ * @param array<string, mixed> $errors
+ */
+protected function getMostCommonErrors(array $errors): array
     {
         $errorTypes = [];
 
@@ -542,7 +567,12 @@ class WidgetErrorHandler
      * @param  array<int, array<string, mixed>>  $errors
      * @return array<string, int>
      */
-    protected function getAffectedWidgets(array $errors): array
+    
+
+/**
+ * @param array<string, mixed> $errors
+ */
+protected function getAffectedWidgets(array $errors): array
     {
         $widgets = [];
 

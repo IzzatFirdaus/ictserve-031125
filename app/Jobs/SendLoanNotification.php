@@ -45,7 +45,12 @@ class SendLoanNotification implements ShouldQueue
     /**
      * @param  array<string,mixed>  $payload  Notification data
      */
-    public function __construct(private array $payload)
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+public function __construct(private array $payload)
     {
         $this->onQueue('notifications');
     }

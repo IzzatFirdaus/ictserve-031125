@@ -59,7 +59,12 @@ class NotificationCenter extends Component
     }
 
     #[On('echo:notifications,NotificationCreated')]
-    public function handleEchoNotification(array $payload = []): void
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+public function handleEchoNotification(array $payload = []): void
     {
         // No-op for now; reactivity occurs via render() pulling latest.
         // Method exists to satisfy potential listeners.

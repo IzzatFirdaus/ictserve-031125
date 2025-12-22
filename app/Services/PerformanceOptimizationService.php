@@ -343,7 +343,12 @@ class PerformanceOptimizationService
      * @param  array{lcp?: float, fid?: float, cls?: float, ttfb?: float}  $metrics
      * @return array{passed: bool, details: array<string, array{value: float, target: float, passed: bool}>}
      */
-    public function checkCoreWebVitals(array $metrics): array
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+public function checkCoreWebVitals(array $metrics): array
     {
         $details = [];
 

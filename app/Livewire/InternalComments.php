@@ -184,7 +184,12 @@ class InternalComments extends Component
     /**
      * Handle new comment from Echo broadcast.
      */
-    public function handleEchoCommentPosted(array $event): void
+    
+
+/**
+ * @param array<string, mixed> $event
+ */
+public function handleEchoCommentPosted(array $event): void
     {
         // Check if this comment is for current submission
         if ($event['submission_type'] === $this->submissionType && $event['submission_id'] === $this->submissionId) {

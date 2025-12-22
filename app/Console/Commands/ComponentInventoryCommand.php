@@ -87,7 +87,12 @@ class ComponentInventoryCommand extends Command
      *
      * @param  ComponentInventory  $inventory
      */
-    private function displaySummary(array $inventory): void
+    
+
+/**
+ * @param array<string, mixed> $inventory
+ */
+private function displaySummary(array $inventory): void
     {
         $this->info('📊 Summary');
         $this->table(
@@ -107,7 +112,12 @@ class ComponentInventoryCommand extends Command
      *
      * @param  ComponentInventory  $inventory
      */
-    private function displayCategoryBreakdown(array $inventory): void
+    
+
+/**
+ * @param array<string, mixed> $inventory
+ */
+private function displayCategoryBreakdown(array $inventory): void
     {
         $this->info('📁 Components by Category');
 
@@ -140,7 +150,12 @@ class ComponentInventoryCommand extends Command
      *
      * @param  ComponentInventory  $inventory
      */
-    private function displayIssues(array $inventory): void
+    
+
+/**
+ * @param array<string, mixed> $inventory
+ */
+private function displayIssues(array $inventory): void
     {
         if (! empty($inventory['obsolete'])) {
             $this->warn('⚠️  Obsolete Components Found');
@@ -205,7 +220,12 @@ class ComponentInventoryCommand extends Command
      *
      * @param  ComponentInventory  $inventory
      */
-    private function generateHtmlReport(array $inventory): string
+    
+
+/**
+ * @param array<string, mixed> $inventory
+ */
+private function generateHtmlReport(array $inventory): string
     {
         // Simple HTML report generation
         $html = '<!DOCTYPE html><html><head><title>Component Inventory Report</title>';

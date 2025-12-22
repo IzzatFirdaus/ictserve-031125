@@ -302,7 +302,12 @@ class AutoReplyService
     /**
      * Bina konteks untuk penjanaan respons
      */
-    private function buildContext(Model $replyable): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function buildContext(Model $replyable): array
     {
         $context = [
             'type' => $this->getReplyableType($replyable),
@@ -336,7 +341,12 @@ class AutoReplyService
     /**
      * Ekstrak pembolehubah template dari model
      */
-    private function extractTemplateVariables(Model $replyable): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function extractTemplateVariables(Model $replyable): array
     {
         $variables = $this->config['default_template_variables'];
 
@@ -368,7 +378,12 @@ class AutoReplyService
     /**
      * Dapatkan sejarah replyable untuk konteks
      */
-    private function getReplyableHistory(Model $replyable): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getReplyableHistory(Model $replyable): array
     {
         // Implementasi bergantung pada model - boleh diperluas
         return [
@@ -381,7 +396,12 @@ class AutoReplyService
     /**
      * Bina konteks khusus untuk tiket helpdesk
      */
-    private function buildTicketContext(HelpdeskTicket $ticket): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function buildTicketContext(HelpdeskTicket $ticket): array
     {
         return [
             'description' => $ticket->description,
@@ -396,7 +416,12 @@ class AutoReplyService
     /**
      * Bina konteks khusus untuk permohonan pinjaman
      */
-    private function buildLoanContext(LoanApplication $loan): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function buildLoanContext(LoanApplication $loan): array
     {
         return [
             'purpose' => $loan->purpose,
@@ -410,7 +435,12 @@ class AutoReplyService
     /**
      * Jana kandungan draf menggunakan template atau AI
      */
-    private function generateDraftContent(array $context, ?int $templateId = null): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function generateDraftContent(array $context, ?int $templateId = null): string
     {
         if ($templateId) {
             return $this->generateFromTemplate($context, $templateId);
@@ -422,7 +452,12 @@ class AutoReplyService
     /**
      * Jana kandungan menggunakan template
      */
-    private function generateFromTemplate(array $context, int $templateId): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function generateFromTemplate(array $context, int $templateId): string
     {
         $template = AutoReplyTemplate::active()->findOrFail($templateId);
 
@@ -446,7 +481,12 @@ class AutoReplyService
     /**
      * Jana kandungan menggunakan AI sahaja
      */
-    private function generateWithAI(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function generateWithAI(array $context): string
     {
         $prompt = $this->buildAIPrompt($context);
 
@@ -474,7 +514,12 @@ class AutoReplyService
     /**
      * Bina prompt AI untuk penjanaan respons
      */
-    private function buildAIPrompt(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function buildAIPrompt(array $context): string
     {
         $type = $context['type'];
         $model = $context['model'];
@@ -510,7 +555,12 @@ class AutoReplyService
     /**
      * Jana konteks AI untuk template
      */
-    private function generateAIContext(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function generateAIContext(array $context): string
     {
         // Gunakan RAG untuk dapatkan konteks yang berkaitan
         $query = $this->buildContextQuery($context);
@@ -526,7 +576,12 @@ class AutoReplyService
     /**
      * Bina query untuk RAG berdasarkan konteks
      */
-    private function buildContextQuery(array $context): string
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function buildContextQuery(array $context): string
     {
         $model = $context['model'];
 
@@ -677,7 +732,12 @@ class AutoReplyService
     /**
      * Log penjanaan draf untuk audit
      */
-    private function logDraftGeneration(
+    
+
+/**
+ * @param array<string, mixed> $context
+ */
+private function logDraftGeneration(
         string $requestId,
         AutoReplyDraft $draft,
         array $context,

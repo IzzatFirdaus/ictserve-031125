@@ -103,7 +103,12 @@ class OllamaGracefulDegradationService
      * Semak dan kemas kini tier berdasarkan metrik semasa
      * Check and update tier based on current metrics
      */
-    public function evaluateAndAdjustTier(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function evaluateAndAdjustTier(): array
     {
         $metrics = $this->collectMetrics();
         $recommendedTier = $this->calculateRecommendedTier($metrics);
@@ -129,7 +134,12 @@ class OllamaGracefulDegradationService
      * Kumpul metrik untuk penilaian
      * Collect metrics for evaluation
      */
-    protected function collectMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function collectMetrics(): array
     {
         $modelHealth = $this->modelService->getModelHealth();
         $cacheStats = $this->cacheService->getStats();
@@ -151,7 +161,12 @@ class OllamaGracefulDegradationService
      * Kira tier yang disyorkan berdasarkan metrik
      * Calculate recommended tier based on metrics
      */
-    protected function calculateRecommendedTier(array $metrics): int
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+protected function calculateRecommendedTier(array $metrics): int
     {
         if (! $metrics['server_available']) {
             return self::TIER_EMERGENCY;
@@ -181,7 +196,12 @@ class OllamaGracefulDegradationService
      * Jana sebab perubahan tier
      * Generate tier change reason
      */
-    protected function generateTierChangeReason(array $metrics, int $newTier): string
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+protected function generateTierChangeReason(array $metrics, int $newTier): string
     {
         $reasons = [];
 
@@ -216,7 +236,12 @@ class OllamaGracefulDegradationService
      * Dapatkan respons berdasarkan tier semasa
      * Get response based on current tier
      */
-    public function getResponse(string $query, callable $fullResponseCallback): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getResponse(string $query, callable $fullResponseCallback): array
     {
         $tier = $this->getCurrentTier();
 
@@ -240,7 +265,12 @@ class OllamaGracefulDegradationService
      * Kendalikan tier penuh
      * Handle full tier
      */
-    protected function handleFullTier(string $query, callable $callback): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function handleFullTier(string $query, callable $callback): array
     {
         try {
             return $callback($query);
@@ -255,7 +285,12 @@ class OllamaGracefulDegradationService
      * Kendalikan tier dikurangkan
      * Handle reduced tier
      */
-    protected function handleReducedTier(string $query, callable $callback): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function handleReducedTier(string $query, callable $callback): array
     {
         $cached = $this->cacheService->getFaqResponse($query);
 
@@ -282,7 +317,12 @@ class OllamaGracefulDegradationService
      * Kendalikan tier cache sahaja
      * Handle cache only tier
      */
-    protected function handleCacheOnlyTier(string $query): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function handleCacheOnlyTier(string $query): array
     {
         $cached = $this->cacheService->getFaqResponse($query);
 
@@ -306,7 +346,12 @@ class OllamaGracefulDegradationService
      * Kendalikan tier kecemasan
      * Handle emergency tier
      */
-    protected function handleEmergencyTier(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function handleEmergencyTier(): array
     {
         return [
             'answer' => 'Sistem AI sedang tidak tersedia buat sementara waktu. Sila hubungi Bahagian Pengurusan Maklumat (BPM) untuk bantuan segera di talian 03-8891 7000.',
@@ -369,7 +414,12 @@ class OllamaGracefulDegradationService
      * Dapatkan sejarah perubahan tier
      * Get tier change history
      */
-    public function getTierHistory(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getTierHistory(): array
     {
         return Cache::get(self::HISTORY_CACHE_KEY, []);
     }
@@ -378,7 +428,12 @@ class OllamaGracefulDegradationService
      * Dapatkan penerangan tier
      * Get tier description
      */
-    public function getTierDescription(int $tier): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getTierDescription(int $tier): array
     {
         $descriptions = [
             self::TIER_FULL => [

@@ -66,7 +66,12 @@ class UnifiedNotificationDispatcher
      * @param  string|null  $priority  Priority level (critical, high, normal, low)
      * @return array<string, mixed> Result of dispatch with channels used
      */
-    public function dispatch(
+    
+
+/**
+ * @param array<string, mixed> $meta
+ */
+public function dispatch(
         User $user,
         Notification $notification,
         ?Mailable $mailable = null,
@@ -214,7 +219,12 @@ class UnifiedNotificationDispatcher
      * @param  string|null  $priority  Priority level
      * @return array<int, array<string, mixed>> Results for each user
      */
-    public function dispatchToMany(
+    
+
+/**
+ * @param array<string, mixed> $meta
+ */
+public function dispatchToMany(
         iterable $users,
         Notification $notification,
         ?Mailable $mailable = null,
@@ -260,7 +270,12 @@ class UnifiedNotificationDispatcher
      * @param  string  $notificationType  Type (for logging)
      * @return array<string, mixed> Dispatch result
      */
-    public function dispatchCritical(
+    
+
+/**
+ * @param array<string, mixed> $meta
+ */
+public function dispatchCritical(
         User $user,
         Notification $notification,
         ?Mailable $mailable = null,
@@ -294,7 +309,12 @@ class UnifiedNotificationDispatcher
      * @param  string  $notificationType  Type for preference check
      * @return array<string, mixed> Dispatch result
      */
-    public function dispatchEmailOnly(
+    
+
+/**
+ * @param array<string, mixed> $meta
+ */
+public function dispatchEmailOnly(
         User $user,
         Mailable $mailable,
         array $meta = [],
@@ -365,7 +385,12 @@ class UnifiedNotificationDispatcher
     /**
      * @param  array<string>  $channelsUsed
      */
-    private function recordStatistics(string $notificationType, array $channelsUsed, bool $hadFailure): void
+    
+
+/**
+ * @param array<string, mixed> $channelsUsed
+ */
+private function recordStatistics(string $notificationType, array $channelsUsed, bool $hadFailure): void
     {
         self::$statistics['attempts']++;
 

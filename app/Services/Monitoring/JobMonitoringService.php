@@ -60,7 +60,12 @@ class JobMonitoringService
      * @param  string  $jobId  ID unik job
      * @param  array<string, mixed>  $payload  Data job
      */
-    public function recordJobStart(string $jobClass, string $jobId, array $payload = []): void
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+public function recordJobStart(string $jobClass, string $jobId, array $payload = []): void
     {
         $key = self::CACHE_PREFIX."job:{$jobId}";
 
@@ -91,7 +96,12 @@ class JobMonitoringService
      * @param  bool  $success  Status kejayaan
      * @param  array<string, mixed>  $metadata  Metadata tambahan
      */
-    public function recordJobComplete(string $jobId, bool $success = true, array $metadata = []): void
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function recordJobComplete(string $jobId, bool $success = true, array $metadata = []): void
     {
         $key = self::CACHE_PREFIX."job:{$jobId}";
         $data = Cache::get($key, []);
@@ -179,7 +189,12 @@ class JobMonitoringService
      * @param  int  $hours  Bilangan jam untuk dikira
      * @return array<string, mixed>
      */
-    public function getJobStatistics(int $hours = 24): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getJobStatistics(int $hours = 24): array
     {
         $stats = [
             'running' => $this->getCounter('running_jobs'),
@@ -222,7 +237,12 @@ class JobMonitoringService
      * @param  int  $limit  Had bilangan rekod
      * @return array<int, array<string, mixed>>
      */
-    public function getFailedJobs(int $limit = 50): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getFailedJobs(int $limit = 50): array
     {
         try {
             return DB::table('failed_jobs')
@@ -322,7 +342,12 @@ class JobMonitoringService
      *
      * @param  array<string, mixed>  $failureData  Data kegagalan
      */
-    private function checkCriticalFailure(array $failureData): void
+    
+
+/**
+ * @param array<string, mixed> $failureData
+ */
+private function checkCriticalFailure(array $failureData): void
     {
         $failuresKey = self::CACHE_PREFIX.'failures:'.now()->format('Y-m-d');
         $failures = Cache::get($failuresKey, []);
@@ -346,7 +371,12 @@ class JobMonitoringService
      *
      * @param  array<string, mixed>  $data  Data job
      */
-    private function checkAlerts(array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+private function checkAlerts(array $data): void
     {
         // Check execution time
         if (($data['execution_time_ms'] ?? 0) > $this->thresholds['max_execution_time'] * 1000) {
@@ -374,7 +404,12 @@ class JobMonitoringService
      *
      * @param  array<int, array<string, mixed>>  $failures  Senarai kegagalan
      */
-    private function sendCriticalAlert(array $failures): void
+    
+
+/**
+ * @param array<string, mixed> $failures
+ */
+private function sendCriticalAlert(array $failures): void
     {
         // Check if alert already sent recently (within 1 hour)
         $alertKey = self::CACHE_PREFIX.'critical_alert_sent';
@@ -404,7 +439,12 @@ class JobMonitoringService
      * @param  string  $jobClass  Nama kelas job
      * @param  array<int, array<string, mixed>>  $failures  Senarai kegagalan
      */
-    private function sendJobClassAlert(string $jobClass, array $failures): void
+    
+
+/**
+ * @param array<string, mixed> $failures
+ */
+private function sendJobClassAlert(string $jobClass, array $failures): void
     {
         $alertKey = self::CACHE_PREFIX."class_alert:{$jobClass}";
         if (Cache::has($alertKey)) {
@@ -488,7 +528,12 @@ class JobMonitoringService
      * @param  array<int, array<string, mixed>>  $metrics  Senarai metrik
      * @return float Kadar kejayaan dalam peratus
      */
-    private function calculateSuccessRate(array $metrics): float
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+private function calculateSuccessRate(array $metrics): float
     {
         if (empty($metrics)) {
             return 100.0;
@@ -506,7 +551,12 @@ class JobMonitoringService
      * @param  string  $field  Nama field
      * @return float Nilai purata
      */
-    private function calculateAverage(array $metrics, string $field): float
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+private function calculateAverage(array $metrics, string $field): float
     {
         if (empty($metrics)) {
             return 0.0;
@@ -581,7 +631,12 @@ class JobMonitoringService
      *
      * @return array<string, mixed>
      */
-    public function getQueueHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getQueueHealth(): array
     {
         $stats = $this->getJobStatistics(24);
         $failedJobs = $this->getFailedJobs(10);

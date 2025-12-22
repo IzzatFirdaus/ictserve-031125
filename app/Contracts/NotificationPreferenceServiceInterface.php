@@ -69,7 +69,12 @@ interface NotificationPreferenceServiceInterface
      *
      * @see Requirements 17.5 - Notification preferences configuration
      */
-    public function updatePreferences(User $user, array $preferences): void;
+    
+
+/**
+ * @param array<string, mixed> $preferences
+ */
+public function updatePreferences(User $user, array $preferences): void;
 
     /**
      * Determine if email notification should be sent for a specific type

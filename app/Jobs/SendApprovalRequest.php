@@ -45,7 +45,12 @@ class SendApprovalRequest implements ShouldQueue
      *                                        - approver_name: string (optional)
      *                                        - token: string (required, approval token)
      */
-    public function __construct(private array $payload)
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+public function __construct(private array $payload)
     {
         $this->onQueue('emails');
     }

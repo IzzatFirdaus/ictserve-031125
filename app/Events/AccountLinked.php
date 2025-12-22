@@ -32,7 +32,12 @@ class AccountLinked implements ShouldBroadcast
      * @param int $linkedSubmissionsCount Number of submissions linked
      * @param array<string> $submissionTypes Types of submissions linked (helpdesk, loan)
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $submissionTypes
+ */
+public function __construct(
         public User $user,
         public int $linkedSubmissionsCount,
         public array $submissionTypes
@@ -43,7 +48,12 @@ class AccountLinked implements ShouldBroadcast
      *
      * @return array<int, Channel>
      */
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel("user.{$this->user->id}"),
@@ -63,7 +73,12 @@ class AccountLinked implements ShouldBroadcast
      *
      * @return array<string, mixed>
      */
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'user_id' => $this->user->id,

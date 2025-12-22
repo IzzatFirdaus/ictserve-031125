@@ -218,7 +218,12 @@ class OTPHandoverService
      * @param  array<string, mixed>  $extra
      * @return array<string, mixed>
      */
-    private function logContext(LoanApplication $application, array $extra = []): array
+    
+
+/**
+ * @param array<string, mixed> $extra
+ */
+private function logContext(LoanApplication $application, array $extra = []): array
     {
         return array_merge([
             'application_id' => $application->id,

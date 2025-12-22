@@ -46,7 +46,12 @@ class EnhancedCrossModuleService
      * Create automatic maintenance ticket for damaged asset
      * Must complete within 5 seconds per requirements
      */
-    public function createAutomaticMaintenanceTicket(
+    
+
+/**
+ * @param array<string, mixed> $damageData
+ */
+public function createAutomaticMaintenanceTicket(
         Asset $asset,
         LoanApplication $application,
         array $damageData
@@ -151,7 +156,12 @@ class EnhancedCrossModuleService
      *
      * @return array<string, mixed>
      */
-    public function unifiedSearch(string $query, array $filters = []): array
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function unifiedSearch(string $query, array $filters = []): array
     {
         $cacheKey = 'unified_search:'.md5($query.serialize($filters));
 

@@ -66,7 +66,12 @@ class CheckSystemAlerts extends Command
     /**
      * @param  array<string, array<string, mixed>>  $results
      */
-    private function displayAlertResults(array $results): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function displayAlertResults(array $results): void
     {
         $this->newLine();
         $this->info('=== ALERT CHECK RESULTS ===');

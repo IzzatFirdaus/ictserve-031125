@@ -22,7 +22,12 @@ use Illuminate\Mail\Mailables\Envelope;
  */
 class SystemAlertMail extends BaseMailable
 {
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $alertData
+ */
+public function __construct(
         public array $alertData
     ) {
         parent::__construct(); // Load retry config from config/notifications.php

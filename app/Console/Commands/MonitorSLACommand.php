@@ -19,9 +19,6 @@ class MonitorSLACommand extends Command
     // Artisan command signature (not credentials - Laravel command name convention)
     protected $signature = 'helpdesk:monitor-sla';
 
-    // Command name constant (not credentials - Laravel convention)
-    private const DEFAULT_COMMAND_NAME = 'helpdesk:monitor-sla';
-
     protected $description = 'Monitor SLA compliance and send escalation notifications';
 
     public function handle(SLATrackingService $slaService): int

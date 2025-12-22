@@ -101,7 +101,12 @@ class WidgetCategorizer
      * @param  string  $category  Target category
      * @return int Next sort order
      */
-    public function getNextSortOrder(array $widgets, string $category): int
+    
+
+/**
+ * @param array<string, mixed> $widgets
+ */
+public function getNextSortOrder(array $widgets, string $category): int
     {
         $maxOrder = 0;
 
@@ -120,7 +125,12 @@ class WidgetCategorizer
      * @param  array  $widgets  Widget configurations
      * @return array Organized widget sections
      */
-    public function organizeWidgets(array $widgets): array
+    
+
+/**
+ * @param array<string, mixed> $widgets
+ */
+public function organizeWidgets(array $widgets): array
     {
         $organized = [
             'header' => [],
@@ -155,7 +165,12 @@ class WidgetCategorizer
      * @param  array  $widgets  Widget configurations
      * @return array Validation results
      */
-    public function validatePlacement(array $widgets): array
+    
+
+/**
+ * @param array<string, mixed> $widgets
+ */
+public function validatePlacement(array $widgets): array
     {
         $organized = $this->organizeWidgets($widgets);
         $violations = [];
@@ -249,7 +264,12 @@ class WidgetCategorizer
      * @param  array  $widgets  Widget configurations
      * @return array Category statistics
      */
-    public function getStatistics(array $widgets): array
+    
+
+/**
+ * @param array<string, mixed> $widgets
+ */
+public function getStatistics(array $widgets): array
     {
         $organized = $this->organizeWidgets($widgets);
 
@@ -286,7 +306,12 @@ class WidgetCategorizer
      * @param  array  $existingWidgets  Existing widget configurations
      * @return array Suggestion with reasoning
      */
-    public function suggestCategory(string $widgetClass, array $existingWidgets = []): array
+    
+
+/**
+ * @param array<string, mixed> $existingWidgets
+ */
+public function suggestCategory(string $widgetClass, array $existingWidgets = []): array
     {
         $detectedCategory = $this->detectCategory($widgetClass);
         $organized = $this->organizeWidgets($existingWidgets);

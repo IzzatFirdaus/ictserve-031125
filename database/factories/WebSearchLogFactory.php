@@ -9,6 +9,9 @@ use App\Models\WebSearchLog;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/**
+ * @extends Factory<\App\Models\WebSearchLog>
+ */
 class WebSearchLogFactory extends Factory
 {
     protected $model = WebSearchLog::class;

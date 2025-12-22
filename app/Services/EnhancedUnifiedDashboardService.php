@@ -54,7 +54,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<string, mixed>
      */
-    public function getAdminDashboardMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAdminDashboardMetrics(): array
     {
         return Cache::remember('enhanced_admin_dashboard', self::CACHE_TTL_REALTIME, function () {
             $baseMetrics = $this->analyticsService->getDashboardMetrics();
@@ -78,7 +83,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<string, mixed>
      */
-    public function getStaffDashboardMetrics(User $user): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getStaffDashboardMetrics(User $user): array
     {
         $cacheKey = "staff_dashboard_{$user->id}";
 
@@ -99,7 +109,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<string, mixed>
      */
-    private function getPerformanceMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getPerformanceMetrics(): array
     {
         try {
             $requestMetrics = $this->performanceService->getRequestMetrics();
@@ -136,7 +151,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<string, mixed>
      */
-    private function getAlertMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getAlertMetrics(): array
     {
         $slaBreaches = HelpdeskTicket::where('sla_resolution_due_at', '<', now())
             ->whereNull('resolved_at')
@@ -171,7 +191,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<string, mixed>
      */
-    private function getWorkloadDistribution(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getWorkloadDistribution(): array
     {
         $ticketsByDivision = HelpdeskTicket::whereNotIn('status', ['resolved', 'closed'])
             ->select('assigned_to_division', DB::raw('COUNT(*) as count'))
@@ -202,7 +227,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<string, int>
      */
-    private function getPersonalMetrics(User $user): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getPersonalMetrics(User $user): array
     {
         $openTickets = HelpdeskTicket::where(function ($query) use ($user) {
             $query->where('user_id', $user->id)
@@ -237,7 +267,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<string, mixed>
      */
-    private function getQuickStats(User $user): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getQuickStats(User $user): array
     {
         $stats = $this->getPersonalMetrics($user);
 
@@ -256,7 +291,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<int, array<string, mixed>>
      */
-    private function getRecentActivity(User $user): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getRecentActivity(User $user): array
     {
         $tickets = HelpdeskTicket::where(function ($query) use ($user) {
             $query->where('user_id', $user->id)
@@ -301,7 +341,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<int, array{type: string, priority: string, title: string, description: string, url: string, due_date: string|null}>
      */
-    private function getPendingActions(User $user): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getPendingActions(User $user): array
     {
         $actions = [
             ...$this->getTicketResponseActions($user),
@@ -326,7 +371,12 @@ class EnhancedUnifiedDashboardService
     /**
      * @return array<int, array{type: string, priority: string, title: string, description: string, url: string, due_date: string|null}>
      */
-    private function getTicketResponseActions(User $user): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getTicketResponseActions(User $user): array
     {
         $pendingTickets = HelpdeskTicket::where('user_id', $user->id)
             ->where('status', 'pending_user')
@@ -351,7 +401,12 @@ class EnhancedUnifiedDashboardService
     /**
      * @return array<int, array{type: string, priority: string, title: string, description: string, url: string, due_date: string|null}>
      */
-    private function getOverdueLoanActions(User $user): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getOverdueLoanActions(User $user): array
     {
         $overdueLoans = LoanApplication::where('user_id', $user->id)
             ->where('loan_end_date', '<', now()->toDateString())
@@ -382,7 +437,12 @@ class EnhancedUnifiedDashboardService
     /**
      * @return array<int, array{type: string, priority: string, title: string, description: string, url: string, due_date: string|null}>
      */
-    private function getApprovalPendingActions(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getApprovalPendingActions(): array
     {
         $pendingApprovals = LoanApplication::where('status', 'under_review')
             ->whereNull('approved_at')
@@ -452,7 +512,12 @@ class EnhancedUnifiedDashboardService
      *
      * @return array<string, mixed>
      */
-    public function getRealTimeWidgetData(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getRealTimeWidgetData(): array
     {
         return [
             'timestamp' => now()->toIso8601String(),

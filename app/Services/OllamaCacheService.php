@@ -60,7 +60,12 @@ class OllamaCacheService
         $this->loadStatsFromCache();
     }
 
-    public function cacheFaqResponse(string $query, array $response, ?int $ttl = null): bool
+    
+
+/**
+ * @param array<string, mixed> $response
+ */
+public function cacheFaqResponse(string $query, array $response, ?int $ttl = null): bool
     {
         if (! $this->isCacheEnabled()) {
             return false;
@@ -121,7 +126,12 @@ class OllamaCacheService
         }
     }
 
-    public function cacheEmbedding(int $documentId, int $chunkIndex, array $embedding, ?int $ttl = null): bool
+    
+
+/**
+ * @param array<string, mixed> $embedding
+ */
+public function cacheEmbedding(int $documentId, int $chunkIndex, array $embedding, ?int $ttl = null): bool
     {
         if (! $this->isCacheEnabled()) {
             return false;

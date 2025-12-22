@@ -247,7 +247,12 @@ class PerformanceMonitorCommand extends Command
      *
      * @param  array<int, array<string, mixed>>  $queries
      */
-    private function generateReportContent(array $queries, float $avgTime): string
+    
+
+/**
+ * @param array<string, mixed> $queries
+ */
+private function generateReportContent(array $queries, float $avgTime): string
     {
         $content = "ICTServe Performance Report\n";
         $content .= 'Generated: '.date('Y-m-d H:i:s')."\n";

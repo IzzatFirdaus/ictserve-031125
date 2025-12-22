@@ -49,7 +49,12 @@ class SendNotificationJob implements ShouldQueue
      * @param  array<string, mixed>  $notificationData
      * @param  array<string>  $channels
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $channels
+ */
+public function __construct(
         public string $notificationType,
         public array $notificationData,
         public ?User $user = null,
@@ -246,17 +251,32 @@ class SendNotificationJob implements ShouldQueue
     /**
      * Static factory methods for common notification types
      */
-    public static function ticketCreated(array $data, ?User $user = null, ?string $email = null): self
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public static function ticketCreated(array $data, ?User $user = null, ?string $email = null): self
     {
         return new self('ticket_created', $data, $user, $email);
     }
 
-    public static function loanApproved(array $data, ?User $user = null, ?string $email = null): self
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public static function loanApproved(array $data, ?User $user = null, ?string $email = null): self
     {
         return new self('loan_approved', $data, $user, $email);
     }
 
-    public static function assetOverdue(array $data, ?User $user = null, ?string $email = null): self
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public static function assetOverdue(array $data, ?User $user = null, ?string $email = null): self
     {
         return new self('asset_overdue', $data, $user, $email);
     }

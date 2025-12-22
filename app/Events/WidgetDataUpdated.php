@@ -40,7 +40,12 @@ class WidgetDataUpdated implements ShouldBroadcast
      * @param  int|null  $userId  Target user ID (null for global broadcast)
      * @param  int|null  $refreshInterval  Custom refresh interval in seconds
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function __construct(
         public readonly string $widgetId,
         public readonly string $widgetType,
         public readonly array $data,
@@ -53,7 +58,12 @@ class WidgetDataUpdated implements ShouldBroadcast
      *
      * @return array<int, Channel>
      */
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         $channels = [];
 
@@ -86,7 +96,12 @@ class WidgetDataUpdated implements ShouldBroadcast
      *
      * @return array<string, mixed> Broadcast payload
      */
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'widget_id' => $this->widgetId,
@@ -128,7 +143,12 @@ class WidgetDataUpdated implements ShouldBroadcast
      *
      * @return array<int, string> Job tags
      */
-    public function tags(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function tags(): array
     {
         $tags = [
             'widget-broadcast',

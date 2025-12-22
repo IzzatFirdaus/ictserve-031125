@@ -142,7 +142,12 @@ class NotificationPreferenceService implements NotificationPreferenceServiceInte
      *
      * @throws \InvalidArgumentException If invalid preference key or value provided
      */
-    public function updatePreferences(User $user, array $preferences): void
+    
+
+/**
+ * @param array<string, mixed> $preferences
+ */
+public function updatePreferences(User $user, array $preferences): void
     {
         // Validate preference keys
         $invalidKeys = array_diff(array_keys($preferences), self::VALID_PREFERENCE_KEYS);
@@ -410,7 +415,12 @@ class NotificationPreferenceService implements NotificationPreferenceServiceInte
      * @param  User  $user  The user whose preferences were updated
      * @param  array<string, bool|string>  $changes  The changes made
      */
-    private function logPreferenceUpdate(User $user, array $changes): void
+    
+
+/**
+ * @param array<string, mixed> $changes
+ */
+private function logPreferenceUpdate(User $user, array $changes): void
     {
         Log::channel('single')->info('Notification preferences updated', [
             'action' => 'notification_preferences_updated',
