@@ -230,12 +230,11 @@ class FilterPresets extends Page
     /**
      * @param  array<string, mixed>  $filters
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-public function applyQuickFilter(array $filters): void
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    public function applyQuickFilter(array $filters): void
     {
         $baseUrl = $this->getResourceUrl($this->selectedResource);
         $filterUrl = $this->presetService->generateFilterUrl($baseUrl, $filters);

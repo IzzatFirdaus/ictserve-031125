@@ -162,12 +162,11 @@ class AccessibilityCompliance extends Page
     /**
      * @param  array<string, mixed>  $category
      */
-    
 
-/**
- * @param array<string, mixed> $category
- */
-public function getComplianceStatus(array $category): string
+    /**
+     * @param  array<string, mixed>  $category
+     */
+    public function getComplianceStatus(array $category): string
     {
         return match ($category['status']) {
             'compliant' => 'success',
@@ -180,12 +179,11 @@ public function getComplianceStatus(array $category): string
     /**
      * @param  array<string, mixed>  $category
      */
-    
 
-/**
- * @param array<string, mixed> $category
- */
-public function getComplianceIcon(array $category): string
+    /**
+     * @param  array<string, mixed>  $category
+     */
+    public function getComplianceIcon(array $category): string
     {
         return match ($category['status']) {
             'compliant' => 'heroicon-o-check-circle',
