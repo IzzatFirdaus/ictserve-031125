@@ -1,15 +1,15 @@
 # Implementation Plan
 
-- [ ] 1. Configure Broadcasting Infrastructure
-  - [ ] 1.1 Verify and update Reverb configuration in `config/reverb.php`
+- [x] 1. Configure Broadcasting Infrastructure
+  - [x] 1.1 Verify and update Reverb configuration in `config/reverb.php`
     - Ensure host, port, and TLS settings are correct
     - Configure Redis connection for pub/sub
     - _Requirements: 3.1, 3.2, 3.3_
-  - [ ] 1.2 Update `.env.example` with all required broadcasting variables
+  - [x] 1.2 Update `.env.example` with all required broadcasting variables
     - Add REVERB_*, VITE_REVERB_* variables
     - Document Pusher fallback variables
     - _Requirements: 3.1, 3.2_
-  - [ ] 1.3 Configure queue connection for broadcasting in `config/queue.php`
+  - [x] 1.3 Configure queue connection for broadcasting in `config/queue.php`
     - Set Redis as default queue driver
     - Configure broadcast queue with appropriate retry settings
     - _Requirements: 3.4, 3.5_
@@ -18,15 +18,15 @@
     - Test fallback behavior
     - _Requirements: 3.1, 3.2_
 
-- [ ] 2. Implement Broadcasting Events
-  - [ ] 2.1 Create `BroadcastsToHybridChannels` trait
+- [x] 2. Implement Broadcasting Events
+  - [x] 2.1 Create `BroadcastsToHybridChannels` trait
     - Implement channel selection logic for authenticated vs guest
     - Add abstract methods for channel type and UUID
     - _Requirements: 4.1, 4.2_
   - [ ]* 2.2 Write property test for hybrid channel routing
     - **Property 1: Authenticated User Broadcast Routing**
     - **Validates: Requirements 1.1, 1.2**
-  - [ ] 2.3 Create `StatusUpdated` event class
+  - [x] 2.3 Create `StatusUpdated` event class
     - Implement ShouldBroadcast interface
     - Use BroadcastsToHybridChannels trait
     - Define broadcastWith() payload without PII
@@ -34,11 +34,11 @@
   - [ ]* 2.4 Write property test for event structure compliance
     - **Property 4: Event Structure Compliance**
     - **Validates: Requirements 4.1, 4.2, 4.3, 4.4**
-  - [ ] 2.5 Create `NotificationCreated` event class
+  - [x] 2.5 Create `NotificationCreated` event class
     - Implement ShouldBroadcast with hybrid channels
     - Define notification payload structure
     - _Requirements: 1.2, 4.1, 4.2, 4.3, 4.4_
-  - [ ] 2.6 Create `CommentPosted` event class
+  - [x] 2.6 Create `CommentPosted` event class
     - Implement for ticket/loan comment notifications
     - _Requirements: 4.1, 4.2, 4.3, 4.4_
   - [ ]* 2.7 Write property test for payload sanitization
