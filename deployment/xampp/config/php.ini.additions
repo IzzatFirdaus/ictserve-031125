@@ -1,0 +1,76 @@
+; ICTServe PHP Configuration Additions
+; Add these settings to your php.ini file or create a separate .ini file
+; Location: C:\xampp\php\php.ini
+
+; Memory and execution limits
+memory_limit = 512M
+max_execution_time = 300
+max_input_time = 300
+
+; File upload settings
+upload_max_filesize = 64M
+post_max_size = 64M
+max_file_uploads = 20
+
+; Session settings
+session.gc_maxlifetime = 7200
+session.cookie_lifetime = 7200
+
+; Error reporting (development)
+display_errors = On
+display_startup_errors = On
+error_reporting = E_ALL
+
+; Logging
+log_errors = On
+error_log = "C:\xampp\php\logs\php_error.log"
+
+; OPcache settings (recommended for production)
+opcache.enable = 1
+opcache.enable_cli = 1
+opcache.memory_consumption = 128
+opcache.interned_strings_buffer = 8
+opcache.max_accelerated_files = 4000
+opcache.revalidate_freq = 2
+opcache.fast_shutdown = 1
+
+; Required extensions for Laravel
+extension=curl
+extension=fileinfo
+extension=gd
+extension=intl
+extension=mbstring
+extension=openssl
+extension=pdo_mysql
+extension=tokenizer
+extension=xml
+extension=zip
+
+; Optional extensions for enhanced functionality
+extension=redis
+extension=imagick
+
+; Timezone
+date.timezone = "Asia/Kuala_Lumpur"
+
+; Security settings
+expose_php = Off
+allow_url_fopen = On
+allow_url_include = Off
+
+; Performance settings
+realpath_cache_size = 4096K
+realpath_cache_ttl = 600
+
+; MySQL settings
+mysql.default_host = 127.0.0.1
+mysql.default_user = root
+mysql.default_password = 
+
+; MySQLi settings
+mysqli.default_host = 127.0.0.1
+mysqli.default_user = root
+mysqli.default_pw = 
+
+; PDO MySQL settings
+pdo_mysql.default_socket = 
