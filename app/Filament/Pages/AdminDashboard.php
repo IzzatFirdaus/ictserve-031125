@@ -132,6 +132,7 @@ class AdminDashboard extends Page
     private function canViewAIWidgets(): bool
     {
         $user = Auth::user();
+
         return $user && $user->hasAnyRole(['admin', 'superuser']);
     }
 
