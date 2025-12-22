@@ -83,12 +83,11 @@ class AIHealthWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $healthMetrics
      */
-    
 
-/**
- * @param array<string, mixed> $healthMetrics
- */
-private function createOverallHealthStat(array $healthMetrics): Stat
+    /**
+     * @param  array<string, mixed>  $healthMetrics
+     */
+    private function createOverallHealthStat(array $healthMetrics): Stat
     {
         $overallStatus = $healthMetrics['overall_status'] ?? 'unknown';
 
@@ -125,12 +124,11 @@ private function createOverallHealthStat(array $healthMetrics): Stat
      *
      * @param  array<string, mixed>  $ollamaHealth
      */
-    
 
-/**
- * @param array<string, mixed> $ollamaHealth
- */
-private function createOllamaHealthStat(array $ollamaHealth): Stat
+    /**
+     * @param  array<string, mixed>  $ollamaHealth
+     */
+    private function createOllamaHealthStat(array $ollamaHealth): Stat
     {
         $status = $ollamaHealth['status'] ?? 'unknown';
         $errorRate = $ollamaHealth['error_rate_percent'] ?? 0;
@@ -169,12 +167,11 @@ private function createOllamaHealthStat(array $ollamaHealth): Stat
      *
      * @param  array<string, mixed>  $bedrockHealth
      */
-    
 
-/**
- * @param array<string, mixed> $bedrockHealth
- */
-private function createBedrockHealthStat(array $bedrockHealth): Stat
+    /**
+     * @param  array<string, mixed>  $bedrockHealth
+     */
+    private function createBedrockHealthStat(array $bedrockHealth): Stat
     {
         $status = $bedrockHealth['status'] ?? 'unknown';
         $errorRate = $bedrockHealth['error_rate_percent'] ?? 0;
@@ -213,12 +210,11 @@ private function createBedrockHealthStat(array $bedrockHealth): Stat
      *
      * @param  array<string, mixed>  $healthMetrics
      */
-    
 
-/**
- * @param array<string, mixed> $healthMetrics
- */
-private function createLastCheckStat(array $healthMetrics): Stat
+    /**
+     * @param  array<string, mixed>  $healthMetrics
+     */
+    private function createLastCheckStat(array $healthMetrics): Stat
     {
         $lastCheck = $healthMetrics['last_health_check'] ?? null;
 
@@ -289,12 +285,11 @@ private function createLastCheckStat(array $healthMetrics): Stat
      *
      * @param  array<string, mixed>  $healthMetrics
      */
-    
 
-/**
- * @param array<string, mixed> $healthMetrics
- */
-private function getOverallHealthDescription(array $healthMetrics): string
+    /**
+     * @param  array<string, mixed>  $healthMetrics
+     */
+    private function getOverallHealthDescription(array $healthMetrics): string
     {
         $ollamaStatus = $healthMetrics['ollama']['status'] ?? 'unknown';
         $bedrockStatus = $healthMetrics['bedrock']['status'] ?? 'unknown';
