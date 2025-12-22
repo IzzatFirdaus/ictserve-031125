@@ -22,7 +22,12 @@ class EmailTemplateService
         );
     }
 
-    public function renderTemplate(string $category, array $data, string $locale = 'ms'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function renderTemplate(string $category, array $data, string $locale = 'ms'): array
     {
         $template = $this->getTemplate($category, $locale);
 
@@ -46,7 +51,12 @@ class EmailTemplateService
         ];
     }
 
-    public function previewTemplate(EmailTemplate $template, array $sampleData = []): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function previewTemplate(EmailTemplate $template, array $sampleData = []): array
     {
         $defaultData = $this->getDefaultSampleData($template->category);
         $data = array_merge($defaultData, $sampleData);
@@ -59,7 +69,12 @@ class EmailTemplateService
         ];
     }
 
-    public function getAvailableVariables(string $category): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailableVariables(string $category): array
     {
         $variables = [
             'ticket_confirmation' => [
@@ -108,7 +123,12 @@ class EmailTemplateService
         return $variables[$category] ?? [];
     }
 
-    public function validateTemplate(string $subject, string $bodyHtml): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function validateTemplate(string $subject, string $bodyHtml): array
     {
         $errors = [];
 
@@ -159,7 +179,12 @@ class EmailTemplateService
         }
     }
 
-    private function getDefaultSampleData(string $category): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getDefaultSampleData(string $category): array
     {
         $sampleData = [
             'ticket_confirmation' => [

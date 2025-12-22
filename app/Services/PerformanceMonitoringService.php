@@ -79,7 +79,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
     /**
      * {@inheritdoc}
      */
-    public function getQueueJobMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getQueueJobMetrics(): array
     {
         return Cache::remember('pulse_queue_metrics', 60, function () {
             try {
@@ -150,7 +155,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
     /**
      * {@inheritdoc}
      */
-    public function getRequestMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getRequestMetrics(): array
     {
         return Cache::remember('pulse_request_metrics', 60, function () {
             try {
@@ -206,7 +216,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
     /**
      * {@inheritdoc}
      */
-    public function getServerHealthMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getServerHealthMetrics(): array
     {
         return Cache::remember('pulse_server_health', 30, function () {
             try {
@@ -278,7 +293,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
     /**
      * {@inheritdoc}
      */
-    public function checkPerformanceThresholds(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkPerformanceThresholds(): array
     {
         $alerts = [];
 
@@ -498,7 +518,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
      *
      * @return array{hit_rate: float, hits: int, misses: int}
      */
-    private function getCacheMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getCacheMetrics(): array
     {
         try {
             // Try to get cache metrics from Pulse
@@ -548,7 +573,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
      *
      * @return array{used_gb: float, total_gb: float, percent: float}
      */
-    private function getDiskMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getDiskMetrics(): array
     {
         try {
             $path = PHP_OS_FAMILY === 'Windows' ? 'C:' : '/';
@@ -580,7 +610,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
      *
      * @return array<string, array>
      */
-    private function getLocalServerMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getLocalServerMetrics(): array
     {
         $serverName = gethostname() ?: 'localhost';
         $diskMetrics = $this->getDiskMetrics();
@@ -663,7 +698,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
     /**
      * Get default queue metrics when Pulse data is unavailable
      */
-    private function getDefaultQueueMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getDefaultQueueMetrics(): array
     {
         return [
             'total_jobs' => 0,
@@ -680,7 +720,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
     /**
      * Get default request metrics when Pulse data is unavailable
      */
-    private function getDefaultRequestMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function getDefaultRequestMetrics(): array
     {
         return [
             'total_requests' => 0,
@@ -699,7 +744,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
     /**
      * Get system metrics (legacy method for backward compatibility)
      */
-    public function getSystemMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getSystemMetrics(): array
     {
         $requestMetrics = $this->getRequestMetrics();
         $serverHealth = $this->getServerHealthMetrics();
@@ -724,7 +774,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
      *
      * @param  string  $period  Time period ('1h', '24h', '7d', '30d')
      */
-    public function getPerformanceTrends(string $period = '24h'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getPerformanceTrends(string $period = '24h'): array
     {
         $cacheKey = "performance_trends_{$period}";
 
@@ -750,7 +805,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
     /**
      * Get integration health status (legacy method)
      */
-    public function getIntegrationHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getIntegrationHealth(): array
     {
         return [
             'database' => $this->checkDatabaseHealth(),
@@ -767,7 +827,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
      * @param  int  $min  Minimum value
      * @param  int  $max  Maximum value
      */
-    private function generateTrendData(int $hours, int $min, int $max): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function generateTrendData(int $hours, int $min, int $max): array
     {
         $data = [];
         for ($i = $hours; $i >= 0; $i--) {
@@ -825,7 +890,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
      *
      * @return array Health status
      */
-    private function checkDatabaseHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkDatabaseHealth(): array
     {
         try {
             $start = microtime(true);
@@ -851,7 +921,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
      *
      * @return array Health status
      */
-    private function checkRedisHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkRedisHealth(): array
     {
         try {
             if (! extension_loaded('redis')) {
@@ -885,7 +960,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
      *
      * @return array Health status
      */
-    private function checkEmailHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkEmailHealth(): array
     {
         return [
             'status' => 'healthy',
@@ -898,7 +978,12 @@ class PerformanceMonitoringService implements PerformanceMonitoringServiceInterf
      *
      * @return array Health status
      */
-    private function checkQueueHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function checkQueueHealth(): array
     {
         try {
             $failedJobs = DB::table('failed_jobs')->count();

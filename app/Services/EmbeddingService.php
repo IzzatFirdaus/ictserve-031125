@@ -60,7 +60,12 @@ class EmbeddingService
      *
      * @throws InvalidArgumentException Jika teks tidak sah
      */
-    public function generateEmbedding(string $text, ?string $model = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateEmbedding(string $text, ?string $model = null): array
     {
         $startTime = microtime(true);
 
@@ -118,7 +123,12 @@ class EmbeddingService
      * @param  string|null  $model  Model untuk digunakan (opsyen)
      * @return array Array embeddings dengan indeks yang sama
      */
-    public function generateBatchEmbeddings(array $texts, ?string $model = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateBatchEmbeddings(array $texts, ?string $model = null): array
     {
         $embeddings = [];
         $batches = array_chunk($texts, $this->config['batch_size']);
@@ -198,7 +208,12 @@ class EmbeddingService
      * @param  int  $limit  Bilangan maksimum hasil
      * @return array Array hasil dengan indeks dan skor similarity
      */
-    public function findSimilarEmbeddings(
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function findSimilarEmbeddings(
         array $queryEmbedding,
         array $candidateEmbeddings,
         float $threshold = 0.3,
@@ -290,7 +305,12 @@ class EmbeddingService
      *
      * @return array Statistik cache
      */
-    public function getCacheStats(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getCacheStats(): array
     {
         try {
             $redis = Redis::connection();

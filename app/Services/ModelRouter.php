@@ -69,7 +69,12 @@ class ModelRouter
      * @param  array{session_id?: string|null, user_id?: int|null, is_malaysia_resident?: bool|null, operation_type?: string|null, data_classification?: string|null, has_cloud_consent?: bool|null}  $context
      * @return array{provider: 'bedrock'|'ollama', model_id?: string|null, model_key?: string|null, reason: string}
      */
-    public function routeTextGeneration(string $prompt, array $context = []): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function routeTextGeneration(string $prompt, array $context = []): array
     {
         $configService = app(BedrockRoutingConfigurationService::class);
         $bedrockConfig = $configService->getConfiguration();
@@ -215,7 +220,12 @@ class ModelRouter
      * @param  array{query?: string, force_model_tier?: string|null}  $context
      * @return array{provider: string, model_tier: string|null, model_id?: string|null, reason: string, cost_estimate: float}
      */
-    public function selectModel(string $task, array $context = []): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function selectModel(string $task, array $context = []): array
     {
         $query = is_string($context['query'] ?? null) ? (string) $context['query'] : '';
         $bedrockConfig = config('bedrock', []);
@@ -401,7 +411,12 @@ class ModelRouter
      *
      * @return array{total_requests:int, successful_requests:int, success_rate:float, by_model:array}
      */
-    public function getRoutingStatistics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getRoutingStatistics(): array
     {
         try {
             $total = (int) BedrockUsageLog::count();
@@ -454,7 +469,12 @@ class ModelRouter
      *
      * @return array{bedrock_enabled:bool, rate_limits:array, models:array, model_costs:array, task_types:array}
      */
-    public function getRoutingConfig(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getRoutingConfig(): array
     {
         $cfg = config('bedrock', []);
 

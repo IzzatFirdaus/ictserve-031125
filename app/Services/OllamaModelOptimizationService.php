@@ -53,7 +53,12 @@ class OllamaModelOptimizationService
      * Pemanasan model pada permulaan aplikasi
      * Warm up model on application start
      */
-    public function warmUpModel(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function warmUpModel(): array
     {
         $startTime = microtime(true);
         $result = [
@@ -118,7 +123,12 @@ class OllamaModelOptimizationService
      * Hantar isyarat keep-alive untuk mengekalkan model dalam memori
      * Send keep-alive signal to keep model in memory
      */
-    public function sendKeepAlive(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function sendKeepAlive(): array
     {
         $result = [
             'success' => false,
@@ -167,7 +177,12 @@ class OllamaModelOptimizationService
      * Dapatkan status kesihatan model
      * Get model health status
      */
-    public function getModelHealth(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getModelHealth(): array
     {
         $health = [
             'status' => 'unknown',
@@ -208,7 +223,12 @@ class OllamaModelOptimizationService
      * Dapatkan metrik prestasi
      * Get performance metrics
      */
-    public function getPerformanceMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getPerformanceMetrics(): array
     {
         $cacheKey = 'ollama:performance:metrics';
 
@@ -227,7 +247,12 @@ class OllamaModelOptimizationService
      * Ukur prestasi semasa
      * Measure current performance
      */
-    protected function measureCurrentPerformance(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function measureCurrentPerformance(): array
     {
         $metrics = [
             'response_times' => [],
@@ -278,7 +303,12 @@ class OllamaModelOptimizationService
      * Semak sama ada penskalaan automatik diperlukan
      * Check if automatic scaling is needed
      */
-    public function checkScalingTriggers(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkScalingTriggers(): array
     {
         $triggers = [
             'should_scale_up' => false,
@@ -316,7 +346,12 @@ class OllamaModelOptimizationService
      * Dapatkan beban semasa sistem
      * Get current system load
      */
-    protected function getCurrentLoad(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function getCurrentLoad(): array
     {
         return [
             'cpu_percent' => $this->getCpuUsage(),
@@ -410,7 +445,12 @@ class OllamaModelOptimizationService
      * Optimumkan tetapan model untuk persekitaran semasa
      * Optimize model settings for current environment
      */
-    public function optimizeForEnvironment(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function optimizeForEnvironment(): array
     {
         $environment = app()->environment();
         $optimization = [

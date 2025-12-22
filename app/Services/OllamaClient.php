@@ -57,7 +57,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function generate(array $payload): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generate(array $payload): array
     {
         $startTime = microtime(true);
 
@@ -146,7 +151,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function embeddings(string $text, ?string $model = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function embeddings(string $text, ?string $model = null): array
     {
         $startTime = microtime(true);
 
@@ -217,7 +227,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function chat(array $messages, array $options = []): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function chat(array $messages, array $options = []): array
     {
         $startTime = microtime(true);
 
@@ -257,7 +272,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function models(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function models(): array
     {
         $startTime = microtime(true);
 
@@ -396,7 +416,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function getPerformanceStats(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getPerformanceStats(): array
     {
         $stats = $this->stats;
 
@@ -442,7 +467,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * Membuat permintaan HTTP ke pelayan Ollama
      */
-    private function makeRequest(string $endpoint, array $payload = []): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function makeRequest(string $endpoint, array $payload = []): array
     {
         $url = $this->config['url'].$endpoint;
         $timeout = $this->config['connection']['timeout'];
@@ -574,7 +604,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * Sanitasi payload untuk logging
      */
-    private function sanitizePayload(array $payload): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+private function sanitizePayload(array $payload): array
     {
         // Redaksi maklumat sensitif untuk logging
         $sanitized = $payload;

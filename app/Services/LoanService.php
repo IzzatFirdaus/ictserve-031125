@@ -192,7 +192,12 @@ class LoanService implements LoanServiceInterface
      *
      * @see Requirements 3.2 Real-time availability checking
      */
-    public function checkAssetAvailability(
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function checkAssetAvailability(
         array $assetIds,
         Carbon $startDate,
         Carbon $endDate,
