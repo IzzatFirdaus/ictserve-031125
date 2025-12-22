@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\EnvironmentMigrationService;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
 /**
  * Setup XAMPP Environment Command for ICTServe v3.6.1
- * 
+ *
  * Provides guided setup and migration to XAMPP environment
  */
 class SetupXamppEnvironment extends Command
 {
-    protected $signature = 'ict:setup-xampp 
+    protected $signature = 'ict:setup-xampp
                            {--migrate : Execute full migration to XAMPP}
                            {--status : Show current environment status}
                            {--validate : Validate XAMPP prerequisites}
@@ -72,11 +72,11 @@ class SetupXamppEnvironment extends Command
                 ['XAMPP MySQL', $status['xampp_mysql_available'] ? '✅ Available' : '❌ Not Available', 'Host: 127.0.0.1:3306'],
                 ['WSL Redis', $status['wsl_redis_available'] ? '✅ Available' : '❌ Not Available', 'Host: 127.0.0.1:6379'],
                 ['Backup Directory', $status['backup_directory_exists'] ? '✅ Ready' : '❌ Missing', 'For migration backups'],
-                ['Current Environment', '📋 ' . $status['current_environment'], 'APP_ENV setting'],
-                ['Database Connection', '🗄️ ' . $status['database_connection'], 'Current DB driver'],
-                ['Cache Driver', '💾 ' . $status['cache_driver'], 'Current cache system'],
-                ['Session Driver', '🔐 ' . $status['session_driver'], 'Current session storage'],
-                ['Queue Connection', '⚡ ' . $status['queue_connection'], 'Current queue system'],
+                ['Current Environment', '📋 '.$status['current_environment'], 'APP_ENV setting'],
+                ['Database Connection', '🗄️ '.$status['database_connection'], 'Current DB driver'],
+                ['Cache Driver', '💾 '.$status['cache_driver'], 'Current cache system'],
+                ['Session Driver', '🔐 '.$status['session_driver'], 'Current session storage'],
+                ['Queue Connection', '⚡ '.$status['queue_connection'], 'Current queue system'],
             ]
         );
 
@@ -113,7 +113,7 @@ class SetupXamppEnvironment extends Command
             $this->line("{$status} {$check}: {$result['message']}");
         }
 
-        $allPassed = collect($checks)->every(fn($result) => $result['status']);
+        $allPassed = collect($checks)->every(fn ($result) => $result['status']);
 
         $this->line('');
         if ($allPassed) {
@@ -166,8 +166,9 @@ class SetupXamppEnvironment extends Command
         $this->warn('   Current data will be backed up before migration');
         $this->line('');
 
-        if (!$this->confirm('Do you want to proceed with the migration?')) {
+        if (! $this->confirm('Do you want to proceed with the migration?')) {
             $this->info('Migration cancelled');
+
             return 0;
         }
 
@@ -190,11 +191,11 @@ class SetupXamppEnvironment extends Command
             $this->info('Migration Results:');
             foreach ($result['results'] as $step => $status) {
                 $icon = $status ? '✅' : '❌';
-                $this->line("  {$icon} " . str_replace('_', ' ', ucfirst($step)));
+                $this->line("  {$icon} ".str_replace('_', ' ', ucfirst($step)));
             }
 
             $this->line('');
-            $this->info('Backup Location: ' . $result['backup_location']);
+            $this->info('Backup Location: '.$result['backup_location']);
             $this->line('');
             $this->info('Next Steps:');
             $this->line('1. Start Laravel: php artisan serve');
@@ -203,16 +204,16 @@ class SetupXamppEnvironment extends Command
 
             return 0;
         } else {
-            $this->error('❌ Migration failed: ' . $result['message']);
+            $this->error('❌ Migration failed: '.$result['message']);
             $this->line('');
             $this->info('Partial Results:');
             foreach ($result['results'] as $step => $status) {
                 $icon = $status ? '✅' : '❌';
-                $this->line("  {$icon} " . str_replace('_', ' ', ucfirst($step)));
+                $this->line("  {$icon} ".str_replace('_', ' ', ucfirst($step)));
             }
 
             $this->line('');
-            $this->warn('Check logs and backup location: ' . $result['backup_location']);
+            $this->warn('Check logs and backup location: '.$result['backup_location']);
 
             return 1;
         }
@@ -245,124 +246,87 @@ class SetupXamppEnvironment extends Command
 
     /**
      * Check XAMPP installation
-<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkXamppInstallation(): array
-=======
-     */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkXamppInstallation(): array
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $xamppPath = 'C:\xampp';
 
         if (PHP_OS_FAMILY === 'Windows') {
             $exists = is_dir($xamppPath);
+
             return [
                 'status' => $exists,
-                'message' => $exists ? "Found at {$xamppPath}" : "Not found at {$xamppPath}"
+                'message' => $exists ? "Found at {$xamppPath}" : "Not found at {$xamppPath}",
             ];
         }
 
         return [
             'status' => false,
-            'message' => 'Windows required for XAMPP'
+            'message' => 'Windows required for XAMPP',
         ];
     }
 
     /**
      * Check XAMPP MySQL
-<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkXamppMySQL(): array
-=======
-     */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkXamppMySQL(): array
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $mysqlPath = 'C:\xampp\mysql\bin\mysqld.exe';
 
         if (PHP_OS_FAMILY === 'Windows') {
             $exists = file_exists($mysqlPath);
+
             return [
                 'status' => $exists,
-                'message' => $exists ? 'MySQL executable found' : 'MySQL executable not found'
+                'message' => $exists ? 'MySQL executable found' : 'MySQL executable not found',
             ];
         }
 
         return [
             'status' => false,
-            'message' => 'Windows required'
+            'message' => 'Windows required',
         ];
     }
 
     /**
      * Check XAMPP Apache
-<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkXamppApache(): array
-=======
-     */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkXamppApache(): array
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $apachePath = 'C:\xampp\apache\bin\httpd.exe';
 
         if (PHP_OS_FAMILY === 'Windows') {
             $exists = file_exists($apachePath);
+
             return [
                 'status' => $exists,
-                'message' => $exists ? 'Apache executable found' : 'Apache executable not found'
+                'message' => $exists ? 'Apache executable found' : 'Apache executable not found',
             ];
         }
 
         return [
             'status' => false,
-            'message' => 'Windows required'
+            'message' => 'Windows required',
         ];
     }
 
     /**
      * Check WSL availability
-<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkWSLAvailability(): array
-=======
-     */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkWSLAvailability(): array
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         if (PHP_OS_FAMILY !== 'Windows') {
             return [
                 'status' => false,
-                'message' => 'WSL only available on Windows'
+                'message' => 'WSL only available on Windows',
             ];
         }
 
@@ -371,31 +335,21 @@ private function checkWSLAvailability(): array
 
         return [
             'status' => $returnCode === 0,
-            'message' => $returnCode === 0 ? 'WSL is available' : 'WSL not installed or not available'
+            'message' => $returnCode === 0 ? 'WSL is available' : 'WSL not installed or not available',
         ];
     }
 
     /**
      * Check WSL Redis
-<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkWSLRedis(): array
-=======
-     */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkWSLRedis(): array
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         if (PHP_OS_FAMILY !== 'Windows') {
             return [
                 'status' => false,
-                'message' => 'WSL only available on Windows'
+                'message' => 'WSL only available on Windows',
             ];
         }
 
@@ -403,31 +357,21 @@ private function checkWSLRedis(): array
 
         return [
             'status' => $returnCode === 0,
-            'message' => $returnCode === 0 ? 'Redis available in WSL' : 'Redis not found in WSL'
+            'message' => $returnCode === 0 ? 'Redis available in WSL' : 'Redis not found in WSL',
         ];
     }
 
     /**
      * Check PowerShell scripts
-<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkPowerShellScripts(): array
-=======
-     */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkPowerShellScripts(): array
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $scripts = [
             'scripts/xampp/manage-xampp.ps1',
             'scripts/wsl/manage-redis.ps1',
-            'scripts/environment/switch-environment.ps1'
+            'scripts/environment/switch-environment.ps1',
         ];
 
         $existing = 0;
@@ -439,32 +383,22 @@ private function checkPowerShellScripts(): array
 
         return [
             'status' => $existing === count($scripts),
-            'message' => "{$existing}/" . count($scripts) . " scripts found"
+            'message' => "{$existing}/".count($scripts).' scripts found',
         ];
     }
 
     /**
      * Check configuration files
-<<<<<<< HEAD
      *
      * @return array<string, mixed>
      */
     private function checkConfigurationFiles(): array
-=======
-     */
-    
-
-/**
- * @return array<string, mixed>
- */
-private function checkConfigurationFiles(): array
->>>>>>> af75c552fb7a4feda67d2d695f160bac8a26673c
     {
         $xamppEnvExists = File::exists(base_path('.env.xampp'));
 
         return [
             'status' => $xamppEnvExists,
-            'message' => $xamppEnvExists ? '.env.xampp configuration ready' : '.env.xampp not found'
+            'message' => $xamppEnvExists ? '.env.xampp configuration ready' : '.env.xampp not found',
         ];
     }
 
@@ -484,7 +418,7 @@ private function checkConfigurationFiles(): array
         $scripts = [
             'xampp' => 'scripts/xampp/manage-xampp.ps1',
             'wsl' => 'scripts/wsl/manage-redis.ps1',
-            'environment' => 'scripts/environment/switch-environment.ps1'
+            'environment' => 'scripts/environment/switch-environment.ps1',
         ];
 
         return isset($scripts[$type]) && File::exists(base_path($scripts[$type]));
