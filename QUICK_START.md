@@ -12,18 +12,16 @@
 ### First Time Setup
 
 ```bash
-# 1. Install dependencies
-composer install && npm install
+# Option 1: Docker (Workspace - Recommended for Kiro)
+switch-env.bat docker
+.\scripts\docker-start.ps1
 
-# 2. Setup environment
-cp .env.example .env
-php artisan key:generate
+# Option 2: Laragon (Non-Workspace - Optimized for Laragon)
+switch-env.bat laragon
+.\scripts\laragon-start.ps1
 
-# 3. Setup database
-php artisan migrate --seed
-
-# 4. Start development environment
-.\scripts\dev\start-dev.ps1
+# Option 3: Manual environment selection
+.\scripts\switch-env.ps1 -env docker    # or -env laragon
 ```
 
 ### Daily Development
@@ -98,86 +96,188 @@ npm run dev:win
 
 ## Development Environment Setup
 
+### Environment Configurations
+
+ICTServe supports two development configurations:
+
+1. **Laragon (Non-Workspace)** - Local PHP, MySQL, and WSL Redis
+2. **Docker (Workspace)** - Fully containerized environment
+
 ### Prerequisites
 
-- **PHP**: 8.2.12+ with extensions (mbstring, xml, curl, zip, gd, mysql)
+#### For Laragon Setup
+- **Laragon**: Latest version with PHP 8.2.12+, MySQL 8.0+
 - **Node.js**: 22.12+ (for Vite 7.0.7 compatibility)
 - **Composer**: Latest version
-- **MySQL**: 8.0+ or SQLite for development
-- **Redis**: Optional but recommended (WSL, Laragon, or Docker)
+- **WSL2**: For Redis (recommended) or use file-based cache
+- **Redis**: WSL Redis recommended for full features
 
-### One-Command Setup
+#### For Docker Setup
+- **Docker Desktop**: Latest version with WSL2 backend
+- **Windows**: Windows 10/11 with WSL2 enabled
+- **Node.js**: 22.12+ (for local development tools)
+
+### Quick Environment Setup
+
+#### Option 1: Docker (Workspace - Recommended)
 
 ```bash
-# Complete setup (first time only)
-.\scripts\dev\dev-helpers.ps1 setup
+# Complete Docker setup
+.\scripts\docker-start.ps1
+
+# Or switch to Docker configuration manually
+.\scripts\switch-env.ps1 -env docker
+docker compose up -d
+```
+
+#### Option 2: Laragon (Non-Workspace)
+
+```bash
+# Complete Laragon setup
+.\scripts\laragon-start.ps1
+
+# Or switch to Laragon configuration manually
+.\scripts\switch-env.ps1 -env laragon
+.\scripts\dev\start-dev.ps1
+```
+
+### Environment Switching
+
+Use the environment switcher to change between configurations:
+
+```bash
+# PowerShell (Recommended)
+.\scripts\switch-env.ps1 -env docker
+.\scripts\switch-env.ps1 -env laragon
+
+# Batch file (Alternative)
+switch-env.bat docker
+switch-env.bat laragon
+
+# Force overwrite without confirmation
+.\scripts\switch-env.ps1 -env docker -Force
+switch-env.bat docker force
 ```
 
 ### Manual Setup Steps
 
-#### 1. Install Dependencies
+#### Laragon Configuration
+
+##### 1. Quick Laragon Setup
 
 ```bash
+# Complete Laragon setup
+.\scripts\laragon-start.ps1
+
+# Options:
+.\scripts\laragon-start.ps1 -InstallRedis      # Auto-install WSL Redis
+.\scripts\laragon-start.ps1 -SkipRedis         # Use file-based cache
+.\scripts\laragon-start.ps1 -SkipMigrations    # Skip database setup
+.\scripts\laragon-start.ps1 -NoBrowser         # Don't open browser
+```
+
+##### 2. Manual Laragon Setup
+
+```bash
+# 1. Switch to Laragon configuration
+.\scripts\switch-env.ps1 -env laragon
+
+# 2. Install dependencies
 composer install
 npm install
-```
 
-#### 2. Environment Configuration
-
-```bash
-# Copy and configure environment
-cp .env.example .env
+# 3. Generate application key
 php artisan key:generate
 
-# Edit .env file with your database settings
-# DB_CONNECTION=mysql
-# DB_HOST=127.0.0.1
-# DB_DATABASE=ictserve
-```
-
-#### 3. Database Setup
-
-```bash
-# Create database (if using MySQL)
-mysql -u root -p -e "CREATE DATABASE ictserve;"
-
-# Run migrations and seeders
+# 4. Setup database (ensure Laragon MySQL is running)
+mysql -u root -e "CREATE DATABASE ictserve;"
 php artisan migrate --seed
+
+# 5. Setup WSL Redis (optional but recommended)
+wsl sudo apt update && sudo apt install redis-server
+wsl sudo systemctl enable redis-server && sudo systemctl start redis-server
+
+# 6. Start development services
+.\scripts\dev\start-dev.ps1
 ```
 
-#### 4. Redis Setup (Optional but Recommended)
+##### 3. Laragon Services
 
-**CRITICAL**: ICTServe uses **Predis** as the Redis client for cross-platform compatibility.
+- **MySQL**: Laragon MySQL service (no password for root)
+- **PHP**: Laragon PHP 8.2.12+ with extensions
+- **Redis**: WSL Redis (recommended) or file-based cache
+- **Web Server**: Laravel development server (php artisan serve)
+- **Ollama**: Local installation for AI features
+
+#### Docker Configuration
+
+##### 1. Quick Setup
 
 ```bash
-# WSL Redis (recommended for Horizon support)
-wsl.exe
-sudo apt update && sudo apt install redis-server
-sudo systemctl enable redis-server && sudo systemctl start redis-server
-redis-cli ping  # Should return PONG
+# Complete Docker setup
+.\scripts\docker-start.ps1
 
-# Configure Predis client in .env
-REDIS_CLIENT=predis
-REDIS_HOST=127.0.0.1
-REDIS_PORT=6379
-
-# Or use Laragon/XAMPP Redis (limited Horizon support)
-# Or skip Redis (will use file-based cache/sessions)
+# Or manual setup
+.\scripts\switch-env.ps1 -env docker
+docker compose up -d
 ```
 
-**Laravel Horizon (Queue Management)**:
+##### 2. Manual Docker Setup
 
-- **Requires WSL**: Horizon needs `pcntl`/`posix` extensions (not available on Windows)
-- **Complete Setup Guide**: [docs/horizon/HORIZON_WSL_SETUP.md](docs/horizon/HORIZON_WSL_SETUP.md)
-- **Key Requirement**: Use `REDIS_CLIENT=predis` in all `.env` files
+```bash
+# 1. Switch to Docker configuration
+.\scripts\switch-env.ps1 -env docker
+
+# 2. Build and start services
+docker compose build
+docker compose up -d
+
+# 3. Install dependencies inside containers
+docker compose exec app composer install --no-interaction
+docker compose exec app npm ci
+
+# 4. Setup Laravel
+docker compose exec app php artisan key:generate --force
+docker compose exec app php artisan migrate --seed --force
+
+# 5. Build frontend assets
+docker compose exec app npm run build
+
+# 6. Fix permissions
+docker compose exec app chown -R www-data:www-data storage bootstrap/cache
+```
+
+##### 3. Docker Services
+
+- **app**: PHP 8.4-FPM with Laravel
+- **nginx**: Web server (port 8000)
+- **db**: MySQL 8.0 (port 3306)
+- **redis**: Redis 7.0 (port 6379)
+- **reverb**: Laravel Reverb WebSocket server
+- **mcp-***: MCP servers for AI integration
 
 ---
 
 ## Service Management
 
-### Start Development Environment
+### Environment-Specific Service Management
 
-#### Recommended: Enhanced Development Script
+#### Laragon Environment
+
+##### Quick Laragon Start
+
+```bash
+# Complete Laragon setup and start
+.\scripts\laragon-start.ps1
+
+# Options:
+.\scripts\laragon-start.ps1 -InstallRedis      # Auto-install WSL Redis
+.\scripts\laragon-start.ps1 -SkipRedis         # Use file-based cache
+.\scripts\laragon-start.ps1 -SkipMigrations    # Skip database setup
+.\scripts\laragon-start.ps1 -NoBrowser         # Don't open browser
+```
+
+##### Enhanced Development Script
 
 ```bash
 # Start all services with health checks and AI integration
@@ -198,62 +298,20 @@ REDIS_PORT=6379
 .\scripts\dev\start-dev.ps1 -NoBrowser         # Don't open browser
 .\scripts\dev\start-dev.ps1 -InstallRedis      # Auto-install WSL Redis
 .\scripts\dev\start-dev.ps1 -Help              # Show comprehensive help
-
-# Examples:
-.\scripts\dev\start-dev.ps1 -ProfileName ai -InstallRedis
-.\scripts\dev\start-dev.ps1 -SkipChecks -NoMCP -NoBrowser
 ```
 
-**Services Started:**
+**Services Started (Laragon)**:
 
-- 🔴 Redis Server (Cache, Sessions, Queues)
+- 🔴 Redis Server (Cache, Sessions, Queues) - WSL
 - 🔵 Laravel Server (<http://127.0.0.1:8000>)
-- 🟣 Laravel Reverb (WebSocket - ws://127.0.0.1:8080)
-- 🔷 **Queue Workers** (Background Jobs) *Windows-compatible*
-- 🟢 Vite Dev Server (HMR - 127.0.0.1:5173)
+- �  Laravel Reverb (WebSocket - ws://127.0.0.1:8080)
+- � **rQueue Workers** (Background Jobs) *Windows-compatible*
+- � Vite DevR Server (HMR - 127.0.0.1:5173)
 - 🤖 Laravel MCP Server (AI Integration)
 - 🧠 **Ollama AI Server** (Local LLM - 127.0.0.1:11434) *AI Profile Only*
 - 📊 Laravel Pulse (Performance Monitoring)
 
-**New Features:**
-
-- ✅ **Ollama AI Integration** - Local LLM support for D18 AI Chatbot
-- ✅ **Enhanced Service Profiles** - 7 different development configurations
-- ✅ **Comprehensive Help System** - PowerShell help with examples (`-Help`)
-- ✅ **Advanced Health Checks** - HTTP endpoint validation with retry logic
-- ✅ **Smart WSL Redis Management** - Auto-detection and installation
-- ✅ **Windows Queue Workers** - Compatible alternative to Horizon
-
-**AI Development Profile (ai):**
-
-The AI profile includes Ollama for local LLM inference, supporting the D18 AI Chatbot integration:
-
-```bash
-# Start AI development environment
-.\scripts\dev\start-dev.ps1 -ProfileName ai
-
-# Install Ollama (if not already installed)
-# Visit: https://ollama.ai/download
-
-# Install recommended AI models
-ollama pull llama3.2:3b      # Fast, good quality (3B parameters)
-ollama pull phi3:mini         # Microsoft, efficient (3.8B parameters)
-ollama pull qwen2.5:3b        # Multilingual support (3B parameters)
-
-# Test AI integration
-curl http://127.0.0.1:11434/api/tags
-```
-
-**Horizon Integration:**
-
-- **Automatic Detection**: Scripts detect Redis availability and Horizon installation
-- **Smart Fallback**: Uses Windows-compatible queue workers when Horizon unavailable
-- **Dashboard Access**: <http://127.0.0.1:8000/horizon> (when Horizon is running)
-- **Cross-Platform**: Works on PowerShell, Bash, and Batch environments
-
-**📖 For detailed script documentation, see [scripts/dev/README.md](scripts/dev/README.md)**
-
-#### Alternative: Individual Services
+##### Alternative: Individual Services
 
 ```bash
 # Laravel server only
@@ -268,21 +326,76 @@ php artisan queue:work       # Background jobs
 npm run dev                  # Vite dev server
 ```
 
-#### NPM Scripts (Package.json)
+#### Docker Environment
+
+##### Quick Docker Start
 
 ```bash
-npm run dev:win              # Full development environment
-npm run dev:win:minimal      # Minimal profile
-npm run dev:win:backend      # Backend profile
-npm run dev:win:frontend     # Frontend profile
-npm run dev:win:ai           # AI development profile (with Ollama)
-npm run dev:win:testing      # Testing profile
-npm run dev:win:production   # Production-like profile
-npm run dev:helpers          # Development helper commands
-npm run wsl-redis-setup      # WSL Redis setup
+# Complete Docker setup and start
+.\scripts\docker-start.ps1
+
+# Options:
+.\scripts\docker-start.ps1 -Clean              # Clean rebuild
+.\scripts\docker-start.ps1 -SkipBuild          # Skip image building
+.\scripts\docker-start.ps1 -SkipMigrations     # Skip database setup
+.\scripts\docker-start.ps1 -NoBrowser          # Don't open browser
 ```
 
+**Services Started (Docker)**:
+
+- 🐳 PHP 8.4-FPM (Application Container)
+- 🌐 Nginx (Web Server - port 8000)
+- 🗄️ MySQL 8.0 (Database Container)
+- 🔴 Redis 7.0 (Cache/Queue Container)
+- 🟣 Laravel Reverb (WebSocket Container)
+- 🔷 Queue Worker (Background Jobs Container)
+- 🤖 MCP Servers (Memory, Sequential Thinking, Playwright, Chrome DevTools)
+
+##### Manual Docker Commands
+
+```bash
+# Start all services
+docker compose up -d
+
+# View logs
+docker compose logs -f app
+
+# Stop services
+docker compose down
+
+# Execute commands in container
+docker compose exec app php artisan migrate
+docker compose exec app composer install
+docker compose exec app npm run build
+
+# Access container shell
+docker compose exec app sh
+```
+
+### Access URLs
+
+#### Laragon URLs
+- **Application**: <http://127.0.0.1:8000>
+- **Admin Panel**: <http://127.0.0.1:8000/admin>
+- **Helpdesk**: <http://127.0.0.1:8000/helpdesk/create>
+- **Asset Loan**: <http://127.0.0.1:8000/loan/create>
+- **AI Chatbot**: <http://127.0.0.1:8000/chatbot> (D18 Integration)
+- **Laravel Pulse**: <http://127.0.0.1:8000/pulse> (Performance Monitoring)
+- **Ollama API**: <http://127.0.0.1:11434> (AI Profile Only)
+
+#### Docker URLs
+- **Application**: <http://localhost:8000>
+- **Admin Panel**: <http://localhost:8000/admin>
+- **Helpdesk**: <http://localhost:8000/helpdesk/create>
+- **Asset Loan**: <http://localhost:8000/loan/create>
+- **AI Chatbot**: <http://localhost:8000/chatbot> (D18 Integration)
+- **Horizon**: <http://localhost:8000/horizon>
+- **Telescope**: <http://localhost:8000/telescope>
+- **Pulse**: <http://localhost:8000/pulse>
+
 ### Service Status & Management
+
+#### Laragon Environment
 
 ```bash
 # Check service status
@@ -294,6 +407,55 @@ npm run wsl-redis-setup      # WSL Redis setup
 # Stop all services (press any key in main script window)
 # Or manually kill processes if needed
 ```
+
+#### Docker Environment
+
+```bash
+# Check service status
+docker compose ps
+
+# View logs
+docker compose logs -f app
+docker compose logs -f nginx
+docker compose logs -f reverb
+
+# Stop services
+docker compose down
+
+# Stop and remove volumes (clean slate)
+docker compose down -v
+```
+
+### Environment Comparison
+
+| Feature | Laragon | Docker |
+|---------|---------------|---------|
+| **Setup Complexity** | Medium | Low |
+| **Performance** | Native (Faster) | Containerized (Slower) |
+| **Isolation** | Shared host | Fully isolated |
+| **Dependencies** | Manual installation | Automatic |
+| **Consistency** | Environment-dependent | Consistent across machines |
+| **Resource Usage** | Lower | Higher |
+| **Debugging** | Direct access | Container access |
+| **Production Similarity** | Lower | Higher |
+| **MCP Integration** | Host-based | Container-based |
+| **Recommended For** | Local development | Team collaboration |
+
+### When to Use Each Environment
+
+#### Use Laragon When:
+- Working on a single machine
+- Need maximum performance
+- Debugging complex issues
+- Working with local tools
+- Limited system resources
+
+#### Use Docker When:
+- Working in a team
+- Need consistent environment
+- Deploying to containers
+- Testing production-like setup
+- Using Kiro workspace features
 
 ---
 
