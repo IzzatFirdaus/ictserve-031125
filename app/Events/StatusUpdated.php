@@ -54,13 +54,13 @@ class StatusUpdated implements ShouldBroadcast
             return null; // Authenticated submission
         }
 
-        // For guest submissions, use the model's UUID field
+        // For guest submissions, use the model's ID as the UUID
         if ($this->model instanceof HelpdeskTicket) {
-            return $this->model->uuid ?? null;
+            return (string) $this->model->id;
         }
 
         if ($this->model instanceof LoanApplication) {
-            return $this->model->uuid ?? null;
+            return (string) $this->model->id;
         }
 
         return null;
