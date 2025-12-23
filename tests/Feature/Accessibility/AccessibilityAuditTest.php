@@ -6,6 +6,7 @@ namespace Tests\Feature\Accessibility;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -30,7 +31,8 @@ class AccessibilityAuditTest extends TestCase
      * - Skip links for keyboard navigation
      * - Language switcher accessibility
      */
-    public function test_homepage_has_proper_accessibility_structure(): void
+    #[Test]
+    public function homepage_has_proper_accessibility_structure(): void
     {
         $response = $this->get('/');
 
@@ -57,7 +59,8 @@ class AccessibilityAuditTest extends TestCase
      * - Progress indicator has ARIA attributes
      * - ISO compliance header is visible
      */
-    public function test_helpdesk_form_has_proper_accessibility(): void
+    #[Test]
+    public function helpdesk_form_has_proper_accessibility(): void
     {
         $response = $this->get('/helpdesk/submit');
 
@@ -86,7 +89,8 @@ class AccessibilityAuditTest extends TestCase
      *
      * Note: Language switcher disabled in v3.6.0 (Bahasa Melayu sahaja)
      */
-    public function test_login_page_has_proper_accessibility(): void
+    #[Test]
+    public function login_page_has_proper_accessibility(): void
     {
         $response = $this->get('/login');
 
@@ -115,7 +119,8 @@ class AccessibilityAuditTest extends TestCase
      * - Terms and conditions accordion is accessible
      * - ISO compliance header is visible
      */
-    public function test_asset_loan_form_has_proper_accessibility(): void
+    #[Test]
+    public function asset_loan_form_has_proper_accessibility(): void
     {
         $response = $this->get('/loan/apply');
 
@@ -131,7 +136,8 @@ class AccessibilityAuditTest extends TestCase
     /**
      * Test authenticated dashboard has proper accessibility.
      */
-    public function test_dashboard_has_proper_accessibility(): void
+    #[Test]
+    public function dashboard_has_proper_accessibility(): void
     {
         $user = User::factory()->create();
 
@@ -151,7 +157,8 @@ class AccessibilityAuditTest extends TestCase
      *
      * WCAG 3.1.1: Language of Page
      */
-    public function test_pages_have_proper_lang_attribute(): void
+    #[Test]
+    public function pages_have_proper_lang_attribute(): void
     {
         $pages = ['/', '/login', '/helpdesk/submit', '/loan/apply'];
 
@@ -166,7 +173,8 @@ class AccessibilityAuditTest extends TestCase
      *
      * Ensures responsive design and proper zoom behavior.
      */
-    public function test_pages_have_proper_viewport_meta(): void
+    #[Test]
+    public function pages_have_proper_viewport_meta(): void
     {
         $response = $this->get('/');
 
@@ -179,7 +187,8 @@ class AccessibilityAuditTest extends TestCase
      *
      * WCAG 1.1.1: Non-text Content
      */
-    public function test_images_have_alt_attributes(): void
+    #[Test]
+    public function images_have_alt_attributes(): void
     {
         $response = $this->get('/');
 
@@ -216,7 +225,8 @@ class AccessibilityAuditTest extends TestCase
      *
      * WCAG 3.2.2: On Input
      */
-    public function test_forms_have_proper_submit_buttons(): void
+    #[Test]
+    public function forms_have_proper_submit_buttons(): void
     {
         $response = $this->get('/helpdesk/submit');
 
@@ -232,7 +242,8 @@ class AccessibilityAuditTest extends TestCase
      *
      * Target: 4.5:1 for normal text, 3:1 for large text and UI components
      */
-    public function test_color_contrast_compliance(): void
+    #[Test]
+    public function color_contrast_compliance(): void
     {
         // Document WCAG-compliant color palette
         $wcagCompliantColors = [
@@ -279,7 +290,8 @@ class AccessibilityAuditTest extends TestCase
      *
      * WCAG 2.4.7: Focus Visible
      */
-    public function test_focus_indicators_are_present(): void
+    #[Test]
+    public function focus_indicators_are_present(): void
     {
         $response = $this->get('/');
 
@@ -292,7 +304,8 @@ class AccessibilityAuditTest extends TestCase
      *
      * WCAG 2.4.1: Bypass Blocks
      */
-    public function test_skip_links_are_present(): void
+    #[Test]
+    public function skip_links_are_present(): void
     {
         $response = $this->get('/');
 
@@ -313,7 +326,8 @@ class AccessibilityAuditTest extends TestCase
      *
      * WCAG 2.5.5: Target Size (Enhanced) - 44x44px minimum
      */
-    public function test_touch_targets_meet_minimum_size(): void
+    #[Test]
+    public function touch_targets_meet_minimum_size(): void
     {
         // This test documents the requirement
         // Actual size testing requires browser-based tools
