@@ -182,10 +182,10 @@
         "herd": {
             "command": "php",
             "args": [
-                "C:/Users/exatf/.config/herd/bin/herd-mcp.phar"
+                "C:/Users/izzatfirdaus/.config/herd/bin/herd-mcp.phar"
             ],
             "env": {
-                "SITE_PATH": "C:\\XAMPP\\htdocs\\ictserve-031125"
+                "SITE_PATH": "C:\\laragon\\www\\ictserve-031125"
             }
         }
     }

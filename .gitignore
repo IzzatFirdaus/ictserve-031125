@@ -64,6 +64,13 @@ switch-mcp-config.ps1
 mcp-servers/
 copilot-data/
 
+# Laravel Boost generated files (auto-regenerated on boost:install/update)
+.mcp.json
+CLAUDE.md
+AGENTS.md
+boost.json
+.ai/guidelines/
+
 # Python cache
 __pycache__/
 *.py[cod]

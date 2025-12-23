@@ -30,10 +30,12 @@ ICTServe now supports two distinct development environments:
 ## Environment Files Status
 
 ### ✅ Safe (Can be committed)
+
 - `.env.example` - Main template
 - `.env.*.example` - All example templates
 
 ### 🚫 Protected (Never committed)
+
 - `.env` - Your main environment file
 - `.env.bak` - Your backup with API keys
 - `.env.laragon` - Laragon configuration
@@ -46,6 +48,7 @@ ICTServe now supports two distinct development environments:
 ## Quick Setup
 
 ### For Docker Development (Workspace Default)
+
 ```bash
 # The .env file is already configured for Docker
 # Start the containers
@@ -56,6 +59,7 @@ composer run dev
 ```
 
 ### For XAMPP Development (Non-Workspace)
+
 ```bash
 # Copy XAMPP template
 cp .env.example .env.xampp
@@ -67,6 +71,7 @@ cp .env.example .env.xampp
 ```
 
 ### For Laragon Development
+
 ```bash
 # Copy Laragon template
 cp .env.example .env
@@ -84,6 +89,7 @@ cp .env.example .env
 The main `.env` file is now configured for Docker development by default. This is the workspace standard configuration.
 
 **Key Settings:**
+
 - `DB_HOST=db` (Docker container)
 - `REDIS_HOST=redis` (Docker container)
 - `APP_URL=http://localhost:8000`
@@ -96,6 +102,7 @@ The main `.env` file is now configured for Docker development by default. This i
 For traditional XAMPP development with local services.
 
 **Key Settings:**
+
 - `DB_HOST=127.0.0.1` (Local MySQL)
 - `REDIS_HOST=127.0.0.1` (Local Redis)
 - `APP_URL=http://127.0.0.1:8000`
@@ -107,7 +114,8 @@ For traditional XAMPP development with local services.
 
 **Previous Issue**: Environment configuration files were accidentally committed to Git, creating a security risk.
 
-**Resolution**: 
+**Resolution**:
+
 - Removed all environment-specific files from Git tracking
 - Added comprehensive `.env.*` patterns to `.gitignore`
 - Created security documentation and guidelines
@@ -119,6 +127,7 @@ For traditional XAMPP development with local services.
 ### Docker Workflow (Recommended)
 
 1. **Initial Setup**:
+
    ```bash
    # Clone repository
    git clone <repository-url>
@@ -136,6 +145,7 @@ For traditional XAMPP development with local services.
    ```
 
 2. **Daily Development**:
+
    ```bash
    # Start services
    docker compose up -d
@@ -148,6 +158,7 @@ For traditional XAMPP development with local services.
    ```
 
 3. **Stopping Services**:
+
    ```bash
    docker compose down
    ```
@@ -155,6 +166,7 @@ For traditional XAMPP development with local services.
 ### XAMPP Workflow
 
 1. **Initial Setup**:
+
    ```bash
    # Clone repository
    git clone <repository-url>
@@ -178,6 +190,7 @@ For traditional XAMPP development with local services.
    ```
 
 2. **Daily Development**:
+
    ```bash
    # Start XAMPP services (Apache, MySQL)
    # Start Redis if using caching

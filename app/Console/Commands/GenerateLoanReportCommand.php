@@ -49,13 +49,14 @@ class GenerateLoanReportCommand extends Command
 
         $this->newLine();
         $this->info('Asset Utilization:');
+        $utilizationRate = is_float($assetStats['utilization_rate'] ?? null) ? (float) $assetStats['utilization_rate'] : 0.0;
         $this->table(
             ['Metric', 'Value'],
             [
                 ['Total Assets', $assetStats['total_assets']],
                 ['Available', $assetStats['available_assets']],
                 ['Loaned', $assetStats['loaned_assets']],
-                ['Utilization Rate', number_format((float) ($assetStats['utilization_rate'] ?? 0), 2).'%'],
+                ['Utilization Rate', number_format($utilizationRate, 2).'%'],
             ]
         );
 

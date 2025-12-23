@@ -16,12 +16,14 @@ This document catalogs the common error patterns found in the ICTServe codebase 
 Blank lines between PHPDoc block and method/property declarations prevent Larastan from reading type annotations.
 
 ### Error Message
+
 ```
 Method Example::method() return type has no value type specified in iterable type array.
 🪪 missingType.iterableValue
 ```
 
 ### Bad Code
+
 ```php
 /**
  * Description
@@ -38,6 +40,7 @@ public function method(): array
 ```
 
 ### Good Code
+
 ```php
 /**
  * Description
@@ -51,6 +54,7 @@ public function method(): array
 ```
 
 ### Affected Files
+
 - `app/Console/Commands/SetupXamppEnvironment.php` (7 methods)
 - `app/Contracts/OllamaClientContract.php` (4 methods)
 - `app/Events/*.php` (20+ Event classes)
@@ -66,17 +70,20 @@ public function method(): array
 Array properties without generic type specifications.
 
 ### Error Message
+
 ```
 Property Example::$data type has no value type specified in iterable type array.
 🪪 missingType.iterableValue
 ```
 
 ### Bad Code
+
 ```php
 public array $stats;
 ```
 
 ### Good Code
+
 ```php
 /**
  * @var array<string, mixed>
@@ -85,6 +92,7 @@ public array $stats;
 ```
 
 ### Affected Files
+
 - `app/Events/*.php` (Event payload properties)
 - `app/Services/*.php` (Configuration arrays)
 - `app/DTOs/*.php` (Data transfer objects)
@@ -100,22 +108,26 @@ public array $stats;
 PHP 8.0+ first-class callable syntax `$obj->method(...)` triggers warnings for Eloquent methods.
 
 ### Error Message
+
 ```
 Creating callable from a non-native method Illuminate\Database\Eloquent\Builder<TModel>::count().
 🪪 callable.nonNativeMethod
 ```
 
 ### Bad Code
+
 ```php
 $count = $this->getCachedComponentData($cacheKey, $query->count(...), 60);
 ```
 
 ### Good Code
+
 ```php
 $count = $this->getCachedComponentData($cacheKey, fn() => $query->count(), 60);
 ```
 
 ### Affected Files
+
 - `app/Traits/OptimizedLivewireComponent.php` (19 instances)
 
 ### Status
@@ -129,12 +141,14 @@ $count = $this->getCachedComponentData($cacheKey, fn() => $query->count(), 60);
 `config()` helper returns `mixed`, not guaranteed types.
 
 ### Error Message
+
 ```
 Method Example::getTtl() should return int but returns mixed.
 🪪 return.type
 ```
 
 ### Bad Code
+
 ```php
 protected function getCacheTtl(): int
 {
@@ -143,6 +157,7 @@ protected function getCacheTtl(): int
 ```
 
 ### Good Code
+
 ```php
 protected function getCacheTtl(): int
 {
@@ -152,6 +167,7 @@ protected function getCacheTtl(): int
 ```
 
 ### Affected Files
+
 - `app/Filament/Traits/CacheableWidget.php`
 - `app/Services/*.php` (any service using config values for types)
 
@@ -166,18 +182,21 @@ protected function getCacheTtl(): int
 Raw DB queries return `object` type, not typed models.
 
 ### Error Message
+
 ```
 Access to an undefined property object::$id.
 🪪 property.notFound
 ```
 
 ### Bad Code
+
 ```php
 $category = DB::table('tickets')->first();
 $categoryId = $category->id; // Error: property not found
 ```
 
 ### Good Code
+
 ```php
 /** @var object{id: int}|null $category */
 $category = DB::table('tickets')->first();
@@ -185,6 +204,7 @@ $categoryId = $category?->id;
 ```
 
 ### Affected Files
+
 - `database/seeders/CrossModuleIntegrationSeeder.php`
 - Any code using `DB::table()` instead of Eloquent
 
@@ -198,6 +218,7 @@ $categoryId = $category?->id;
 ### Factory Generic Types
 
 **Error**:
+
 ```
 Class Database\Factories\AssetFactory extends generic class Factory but does not specify its types: TModel
 🪪 missingType.generics
@@ -206,6 +227,7 @@ Class Database\Factories\AssetFactory extends generic class Factory but does not
 **Why Unfixable**: PHP lacks native generic type support. The `@extends Factory<\App\Models\Asset>` annotation exists but Larastan still flags it at Level 9.
 
 **Solution**: Add to `phpstan.neon`:
+
 ```php
 ignoreErrors:
     - '#Class Database\\Factories\\.+Factory extends generic class .+\\Factory but does not specify its types#'
@@ -218,6 +240,7 @@ ignoreErrors:
 ### Eloquent Type Covariance
 
 **Error**:
+
 ```
 Method should return Illuminate\Database\Eloquent\Builder<App\Models\User> but returns Illuminate\Database\Query\Builder
 🪪 return.type
@@ -306,6 +329,7 @@ php artisan test
 | Other/Complex | ~1800 | ⚪ Requires Review |
 
 **Legend**:
+
 - ✅ Fully Fixed
 - 🟡 Partially Fixed (pattern identified, can be applied systematically)
 - 🔴 Requires Ignore (framework/language limitation)

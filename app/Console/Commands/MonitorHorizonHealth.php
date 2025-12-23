@@ -80,14 +80,9 @@ class MonitorHorizonHealth extends Command
     /**
      * Display health status in console
      *
-     * @param  array<string, array{healthy: bool, total_supervisors?: int, unhealthy_supervisors?: int, details?: array<int, array{name: string, status: string}>, issues?: array<int, array{severity: string, queue: string, wait_time: float, threshold: float}>, failed_count?: int, threshold?: int, healthy_ratio?: float, active_processes?: int, total_processes?: int}>  $healthStatus
+     * @param array<string, mixed> $healthStatus
      */
-    
-
-/**
- * @param array<string, mixed> $healthStatus
- */
-private function displayHealthStatus(array $healthStatus): void
+    private function displayHealthStatus(array $healthStatus): void
     {
         $this->newLine();
         $this->info('Horizon Health Status Report');
@@ -95,10 +90,13 @@ private function displayHealthStatus(array $healthStatus): void
 
         // Supervisors
         $supervisors = $healthStatus['supervisors'] ?? [];
-        $status = ($supervisors['healthy'] ?? false) ? '✅' : '❌';
-        $this->line("{$status} Supervisors: {$supervisors['total_supervisors']} total, {$supervisors['unhealthy_supervisors']} unhealthy");
+        $supervisorsHealthy = $supervisors['healthy'] ?? false;
+        $supervisorsTotal = $supervisors['total_supervisors'] ?? 0;
+        $supervisorsUnhealthy = $supervisors['unhealthy_supervisors'] ?? 0;
+        $status = $supervisorsHealthy ? '✅' : '❌';
+        $this->line("{$status} Supervisors: {$supervisorsTotal} total, {$supervisorsUnhealthy} unhealthy");
 
-        if (! ($supervisors['healthy'] ?? true) && ! empty($supervisors['details'])) {
+        if (! $supervisorsHealthy && ! empty($supervisors['details'])) {
             foreach ($supervisors['details'] as $detail) {
                 $this->line("   - {$detail['name']}: {$detail['status']}");
             }
@@ -106,26 +104,33 @@ private function displayHealthStatus(array $healthStatus): void
 
         // Queue wait times
         $queues = $healthStatus['queues'] ?? [];
-        $status = ($queues['healthy'] ?? false) ? '✅' : '❌';
+        $queuesHealthy = $queues['healthy'] ?? false;
+        $status = $queuesHealthy ? '✅' : '❌';
         $this->line("{$status} Queue Wait Times");
 
-        if (! ($queues['healthy'] ?? true) && ! empty($queues['issues'])) {
+        if (! $queuesHealthy && ! empty($queues['issues'])) {
             foreach ($queues['issues'] as $issue) {
-                $severity = $issue['severity'] === 'critical' ? '🔴' : '🟡';
+                $severity = ($issue['severity'] ?? '') === 'critical' ? '🔴' : '🟡';
                 $this->line("   {$severity} {$issue['queue']}: {$issue['wait_time']}s (threshold: {$issue['threshold']}s)");
             }
         }
 
         // Failed jobs
         $failedJobs = $healthStatus['failed_jobs'] ?? [];
-        $status = ($failedJobs['healthy'] ?? false) ? '✅' : '❌';
-        $this->line("{$status} Failed Jobs: {$failedJobs['failed_count']} (threshold: {$failedJobs['threshold']})");
+        $failedJobsHealthy = $failedJobs['healthy'] ?? false;
+        $failedCount = $failedJobs['failed_count'] ?? 0;
+        $failedThreshold = $failedJobs['threshold'] ?? 0;
+        $status = $failedJobsHealthy ? '✅' : '❌';
+        $this->line("{$status} Failed Jobs: {$failedCount} (threshold: {$failedThreshold})");
 
         // Worker processes
         $workers = $healthStatus['worker_processes'] ?? [];
-        $status = ($workers['healthy'] ?? false) ? '✅' : '❌';
-        $ratio = round((float) ($workers['healthy_ratio'] ?? 0) * 100, 1);
-        $this->line("{$status} Worker Processes: {$workers['active_processes']}/{$workers['total_processes']} active ({$ratio}%)");
+        $workersHealthy = $workers['healthy'] ?? false;
+        $activeProcesses = $workers['active_processes'] ?? 0;
+        $totalProcesses = $workers['total_processes'] ?? 0;
+        $healthyRatio = round((float) ($workers['healthy_ratio'] ?? 0) * 100, 1);
+        $status = $workersHealthy ? '✅' : '❌';
+        $this->line("{$status} Worker Processes: {$activeProcesses}/{$totalProcesses} active ({$healthyRatio}%)");
 
         $this->newLine();
     }
