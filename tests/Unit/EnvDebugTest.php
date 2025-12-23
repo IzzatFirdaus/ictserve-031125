@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class EnvDebugTest extends TestCase
 {
-    public function test_env_values_are_expected(): void
+    #[Test]
+    public function env_values_are_expected(): void
     {
         // Output environment values to help debug PHPUnit bootstrap ordering
         echo 'getenv(APP_ENV)='.(getenv('APP_ENV') ?: 'NULL').PHP_EOL;
