@@ -32,6 +32,7 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Livewire\Concerns\ListensForBroadcasts;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -43,6 +44,8 @@ use Livewire\Component;
 
 class NotificationBell extends Component
 {
+    use ListensForBroadcasts;
+
     /**
      * Unread notification count.
      */
@@ -93,16 +96,20 @@ class NotificationBell extends Component
     }
 
     /**
-     * Get Echo listeners for real-time updates via Laravel Reverb.
+     * Get additional component-specific listeners for NotificationBell.
+     *
+     * Extends the base trait listeners with NotificationBell-specific events.
      *
      * @return array<string, string>
      */
-    public function getListeners(): array
+    protected function getAdditionalListeners(): array
     {
         $user = Auth::user();
 
         if (! $user instanceof User) {
-            return [];
+            return [
+                'refresh-notifications' => 'loadNotifications',
+            ];
         }
 
         return [
@@ -116,17 +123,29 @@ class NotificationBell extends Component
     }
 
     /**
+     * Handle notification.created event from Laravel Reverb.
+     *
+     * Overrides the trait's default implementation to use NotificationBell-specific logic.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    public function handleNotification(array $event): void
+    {
+        // Use the existing handleNewNotification logic
+        $this->handleNewNotification($event);
+    }
+
+    /**
      * Handle ticket status change from Laravel Reverb broadcast.
      *
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:ticket.status.changed')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleTicketStatusChanged(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleTicketStatusChanged(array $event): void
     {
         $this->loadNotifications();
 
@@ -141,12 +160,11 @@ public function handleTicketStatusChanged(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:loan.status.changed')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleLoanStatusChanged(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleLoanStatusChanged(array $event): void
     {
         $this->loadNotifications();
 
@@ -156,17 +174,29 @@ public function handleLoanStatusChanged(array $event): void
     }
 
     /**
+     * Handle status.updated event from Laravel Reverb.
+     *
+     * Overrides the trait's default implementation to use NotificationBell-specific logic.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    public function handleStatusUpdate(array $event): void
+    {
+        // Use the existing handleStatusUpdated logic
+        $this->handleStatusUpdated($event);
+    }
+
+    /**
      * Handle generic status update from Laravel Reverb broadcast.
      *
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:status.updated')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleStatusUpdated(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleStatusUpdated(array $event): void
     {
         $this->loadNotifications();
 
@@ -184,12 +214,11 @@ public function handleStatusUpdated(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:notification')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleNewNotification(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleNewNotification(array $event): void
     {
         // Increment count optimistically
         $this->unreadCount++;
@@ -227,12 +256,11 @@ public function handleNewNotification(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo:email-verified')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleEmailVerified(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleEmailVerified(array $event): void
     {
         $this->dispatch('toast', message: (string) __('notifications.email_verified'), type: 'success');
         $this->loadNotifications();
@@ -248,12 +276,11 @@ public function handleEmailVerified(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo:account-linked')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleAccountLinked(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleAccountLinked(array $event): void
     {
         $rawCount = $event['linked_submissions'] ?? 0;
         $linkedCount = \is_numeric($rawCount) ? (int) $rawCount : 0;
@@ -277,12 +304,11 @@ public function handleAccountLinked(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo:api-token-created')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleApiTokenCreated(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleApiTokenCreated(array $event): void
     {
         $rawName = $event['token_name'] ?? 'Unknown';
         $tokenName = \is_scalar($rawName) ? (string) $rawName : 'Unknown';
@@ -302,12 +328,11 @@ public function handleApiTokenCreated(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo:google-sso-linked')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleGoogleSsoLinked(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleGoogleSsoLinked(array $event): void
     {
         $rawEmail = $event['google_email'] ?? (string) __('notifications.google_account');
         $googleEmail = \is_scalar($rawEmail) ? (string) $rawEmail : '';

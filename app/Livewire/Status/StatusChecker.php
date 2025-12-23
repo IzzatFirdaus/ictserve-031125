@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Livewire\Status;
 
 use App\Contracts\TokenServiceInterface;
+use App\Livewire\Concerns\ListensForBroadcasts;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Traits\OptimizedLivewireComponent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\View\View;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -36,7 +37,7 @@ use Livewire\Component;
 #[Layout('layouts.front')]
 class StatusChecker extends Component
 {
-    use OptimizedLivewireComponent;
+    use ListensForBroadcasts, OptimizedLivewireComponent;
 
     /**
      * The status token entered by the user
@@ -100,6 +101,29 @@ class StatusChecker extends Component
     public function boot(TokenServiceInterface $tokenService): void
     {
         $this->tokenService = $tokenService;
+    }
+
+    /**
+     * Get additional component-specific listeners for StatusChecker.
+     *
+     * Listens for status updates on the specific ticket or loan channels.
+     *
+     * @return array<string, string>
+     */
+    protected function getAdditionalListeners(): array
+    {
+        $listeners = [];
+
+        // If we have a submission loaded, listen for its specific channel
+        if ($this->submission instanceof HelpdeskTicket) {
+            $uuid = $this->submission->uuid;
+            $listeners["echo-private:ticket.{$uuid},.status.updated"] = 'handleSubmissionStatusUpdate';
+        } elseif ($this->submission instanceof LoanApplication) {
+            $uuid = $this->submission->uuid;
+            $listeners["echo-private:loan.{$uuid},.status.updated"] = 'handleSubmissionStatusUpdate';
+        }
+
+        return $listeners;
     }
 
     /**
@@ -487,6 +511,40 @@ class StatusChecker extends Component
         $this->token = '';
         $this->type = 'auto';
         $this->resetState();
+    }
+
+    /**
+     * Handle status update for the current submission.
+     *
+     * Refreshes the submission data and timeline when a status update is received.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    #[On('echo-private:status.updated')]
+    public function handleSubmissionStatusUpdate(array $event): void
+    {
+        if (! $this->submission) {
+            return;
+        }
+
+        // Refresh the submission data
+        $this->submission->refresh();
+
+        // Rebuild timeline and comments
+        if ($this->submission instanceof HelpdeskTicket) {
+            $this->timeline = $this->buildTicketTimeline($this->submission);
+            $this->publicComments = $this->buildTicketComments($this->submission);
+        } elseif ($this->submission instanceof LoanApplication) {
+            $this->timeline = $this->buildLoanTimeline($this->submission);
+            $this->publicComments = $this->buildLoanComments($this->submission);
+        }
+
+        // Show toast notification
+        $entityType = $this->foundType === 'ticket' ? 'Tiket' : 'Permohonan Pinjaman';
+        $newStatus = $event['new_status'] ?? 'dikemaskini';
+        $message = "{$entityType} telah {$newStatus}";
+
+        $this->dispatch('toast', message: $message, type: 'info');
     }
 
     /**
