@@ -1,25 +1,26 @@
 <x-mail::message>
-# {{ __('loans.email.return_reminder.title') }}
+    # Peringatan Pemulangan Aset
 
-{{ __('loans.email.return_reminder.greeting') }} {{ $borrowerName }}, {{ __('loans.email.return_reminder.message', ['number' => $application->application_number]) }}
+    {{ __('loan.email.dear') }} {{ $borrowerName }},
+    {{ __('loan.email.return_reminder_body', ['number' => $application->application_number, 'days' => ceil($hoursRemaining / 24)]) }}
 
-## {{ __('loans.email.return_reminder.loan_details_heading') }}
+    ## Butiran Pinjaman
 
-**{{ __('loans.email.return_reminder.application_number') }}:** {{ $application->application_number }}  
-**{{ __('loans.email.return_reminder.return_date') }}:** {{ $dueDate->translatedFormat('d M Y, h:i A') }}  
-**{{ __('loans.email.return_reminder.time_remaining') }}:** {{ $hoursRemaining }} {{ __('loans.email.return_reminder.hours') }}
+    **{{ __('loan.fields.application_number') }}:** {{ $application->application_number }}
+    **Tarikh Pemulangan:** {{ $dueDate->translatedFormat('d M Y, h:i A') }}
+    **Masa Berbaki:** {{ $hoursRemaining }} jam
 
-@if($application->loanItems->isNotEmpty())
-**{{ __('loans.email.return_reminder.assets_heading') }}:**  
-@foreach($application->loanItems as $item)
-- {{ $item->asset->name }} × {{ $item->quantity }}
-@endforeach
-@endif
+    @if ($application->loanItems->isNotEmpty())
+        **Aset untuk Dipulangkan:**
+        @foreach ($application->loanItems as $item)
+            - {{ $item->asset->name }} × {{ $item->quantity }}
+        @endforeach
+    @endif
 
-{{ __('loans.email.return_reminder.please_return') }}
+    Sila pulangkan aset ke pejabat BPM sebelum tarikh tamat. Ini adalah peringatan untuk pulangan aset anda.
 
----
+    ---
 
-{{ __('loans.email.return_reminder.thank_you') }}  
-{{ config('app.name') }}
+    {{ __('loan.email.thank_you') }} atas kerjasama anda.
+    {{ config('app.name') }}
 </x-mail::message>
