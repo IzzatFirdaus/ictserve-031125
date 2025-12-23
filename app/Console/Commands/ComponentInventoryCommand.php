@@ -87,21 +87,27 @@ class ComponentInventoryCommand extends Command
      *
      * @param  ComponentInventory  $inventory
      */
-    
 
-/**
- * @param array<string, mixed> $inventory
- */
-private function displaySummary(array $inventory): void
+    /**
+     * @param  array<string, mixed>  $inventory
+     */
+    private function displaySummary(array $inventory): void
     {
         $this->info('📊 Summary');
+
+        $totalComponentsValue = $inventory['total_components'] ?? 0;
+        $totalComponents = is_numeric($totalComponentsValue) ? (int) $totalComponentsValue : 0;
+        $byCategory = is_array($inventory['by_category'] ?? null) ? $inventory['by_category'] : [];
+        $obsolete = is_array($inventory['obsolete'] ?? null) ? $inventory['obsolete'] : [];
+        $duplicates = is_array($inventory['duplicates'] ?? null) ? $inventory['duplicates'] : [];
+
         $this->table(
             ['Metric', 'Count'],
             [
-                ['Total Components', $inventory['total_components']],
-                ['Categories', count($inventory['by_category'])],
-                ['Obsolete Components', count($inventory['obsolete'])],
-                ['Duplicate Components', count($inventory['duplicates'])],
+                ['Total Components', $totalComponents],
+                ['Categories', count($byCategory)],
+                ['Obsolete Components', count($obsolete)],
+                ['Duplicate Components', count($duplicates)],
             ]
         );
         $this->newLine();
@@ -112,26 +118,38 @@ private function displaySummary(array $inventory): void
      *
      * @param  ComponentInventory  $inventory
      */
-    
 
-/**
- * @param array<string, mixed> $inventory
- */
-private function displayCategoryBreakdown(array $inventory): void
+    /**
+     * @param  array<string, mixed>  $inventory
+     */
+    private function displayCategoryBreakdown(array $inventory): void
     {
         $this->info('📁 Components by Category');
 
         $rows = [];
-        /** @var array<string, array{count: int, components: array<int, array<string, mixed>>}> $categories */
-        $categories = $inventory['by_category'];
+        $categories = is_array($inventory['by_category'] ?? null) ? $inventory['by_category'] : [];
+
         foreach ($categories as $category => $data) {
-            $withMetadata = count(array_filter($data['components'], static fn (array $component): bool => (bool) $component['has_metadata']));
-            $wcagCompliant = count(array_filter($data['components'], static fn (array $component): bool => (bool) $component['wcag_compliant']));
-            $deprecated = count(array_filter($data['components'], static fn (array $component): bool => (bool) $component['uses_deprecated_colors']));
+            if (! is_array($data)) {
+                continue;
+            }
+
+            $components = is_array($data['components'] ?? null) ? $data['components'] : [];
+            $count = is_numeric($data['count'] ?? 0) ? (int) $data['count'] : 0;
+
+            $withMetadata = count(array_filter($components, static function (mixed $component): bool {
+                return is_array($component) && (bool) ($component['has_metadata'] ?? false);
+            }));
+            $wcagCompliant = count(array_filter($components, static function (mixed $component): bool {
+                return is_array($component) && (bool) ($component['wcag_compliant'] ?? false);
+            }));
+            $deprecated = count(array_filter($components, static function (mixed $component): bool {
+                return is_array($component) && (bool) ($component['uses_deprecated_colors'] ?? false);
+            }));
 
             $rows[] = [
                 ucfirst((string) $category),
-                $data['count'],
+                $count,
                 $withMetadata,
                 $wcagCompliant,
                 $deprecated > 0 ? "<fg=red>{$deprecated}</>" : '0',
@@ -150,34 +168,52 @@ private function displayCategoryBreakdown(array $inventory): void
      *
      * @param  ComponentInventory  $inventory
      */
-    
 
-/**
- * @param array<string, mixed> $inventory
- */
-private function displayIssues(array $inventory): void
+    /**
+     * @param  array<string, mixed>  $inventory
+     */
+    private function displayIssues(array $inventory): void
     {
-        if (! empty($inventory['obsolete'])) {
+        $obsolete = is_array($inventory['obsolete'] ?? null) ? $inventory['obsolete'] : [];
+        if (! empty($obsolete)) {
             $this->warn('⚠️  Obsolete Components Found');
-            foreach ($inventory['obsolete'] as $component) {
-                $this->line("  - {$component['name']} ({$component['category']})");
+            foreach ($obsolete as $component) {
+                if (! is_array($component)) {
+                    continue;
+                }
+                $name = $component['name'] ?? 'Unknown';
+                $category = $component['category'] ?? 'Unknown';
+                $this->line("  - {$name} ({$category})");
             }
             $this->newLine();
         }
 
-        if (! empty($inventory['duplicates'])) {
+        $duplicates = is_array($inventory['duplicates'] ?? null) ? $inventory['duplicates'] : [];
+        if (! empty($duplicates)) {
             $this->warn('⚠️  Duplicate Components Found');
-            foreach ($inventory['duplicates'] as $duplicate) {
-                $this->line("  - {$duplicate['name']}");
-                foreach ($duplicate['instances'] as $instance) {
-                    $this->line("    → {$instance['relative_path']}");
+            foreach ($duplicates as $duplicate) {
+                if (! is_array($duplicate)) {
+                    continue;
+                }
+                $name = $duplicate['name'] ?? 'Unknown';
+                $this->line("  - {$name}");
+                $instances = is_array($duplicate['instances'] ?? null) ? $duplicate['instances'] : [];
+                foreach ($instances as $instance) {
+                    if (! is_array($instance)) {
+                        continue;
+                    }
+                    $relativePath = $instance['relative_path'] ?? 'Unknown';
+                    $this->line("    → {$relativePath}");
                 }
             }
             $this->newLine();
         }
 
         // Check for components without metadata
-        $withoutMetadata = array_filter($inventory['components'], fn ($c) => ! $c['has_metadata']);
+        $components = is_array($inventory['components'] ?? null) ? $inventory['components'] : [];
+        $withoutMetadata = array_filter($components, static function (mixed $c): bool {
+            return is_array($c) && ! ($c['has_metadata'] ?? false);
+        });
         if (! empty($withoutMetadata)) {
             $this->warn('⚠️  Components Without Metadata: '.count($withoutMetadata));
             $this->line('  Run: php artisan component:add-metadata to fix');
@@ -185,11 +221,18 @@ private function displayIssues(array $inventory): void
         }
 
         // Check for components with deprecated colors
-        $withDeprecated = array_filter($inventory['components'], fn ($c) => $c['uses_deprecated_colors']);
+        $withDeprecated = array_filter($components, static function (mixed $c): bool {
+            return is_array($c) && ($c['uses_deprecated_colors'] ?? false);
+        });
         if (! empty($withDeprecated)) {
             $this->error('❌ Components Using Deprecated Colors: '.count($withDeprecated));
             foreach ($withDeprecated as $component) {
-                $this->line("  - {$component['name']} ({$component['category']})");
+                if (! is_array($component)) {
+                    continue;
+                }
+                $name = $component['name'] ?? 'Unknown';
+                $category = $component['category'] ?? 'Unknown';
+                $this->line("  - {$name} ({$category})");
             }
             $this->newLine();
         }
@@ -220,12 +263,11 @@ private function displayIssues(array $inventory): void
      *
      * @param  ComponentInventory  $inventory
      */
-    
 
-/**
- * @param array<string, mixed> $inventory
- */
-private function generateHtmlReport(array $inventory): string
+    /**
+     * @param  array<string, mixed>  $inventory
+     */
+    private function generateHtmlReport(array $inventory): string
     {
         // Simple HTML report generation
         $html = '<!DOCTYPE html><html><head><title>Component Inventory Report</title>';
@@ -236,9 +278,15 @@ private function generateHtmlReport(array $inventory): string
         $html .= '<p>Generated: '.date('Y-m-d H:i:s').'</p>';
         $html .= '<h2>Summary</h2>';
         $html .= '<ul>';
-        $html .= "<li>Total Components: {$inventory['total_components']}</li>";
-        $html .= '<li>Obsolete Components: '.count($inventory['obsolete']).'</li>';
-        $html .= '<li>Duplicate Components: '.count($inventory['duplicates']).'</li>';
+
+        $totalComponentsValue = $inventory['total_components'] ?? 0;
+        $totalComponents = is_numeric($totalComponentsValue) ? (int) $totalComponentsValue : 0;
+        $obsolete = is_array($inventory['obsolete'] ?? null) ? $inventory['obsolete'] : [];
+        $duplicates = is_array($inventory['duplicates'] ?? null) ? $inventory['duplicates'] : [];
+
+        $html .= "<li>Total Components: {$totalComponents}</li>";
+        $html .= '<li>Obsolete Components: '.count($obsolete).'</li>';
+        $html .= '<li>Duplicate Components: '.count($duplicates).'</li>';
         $html .= '</ul>';
         $html .= '</body></html>';
 

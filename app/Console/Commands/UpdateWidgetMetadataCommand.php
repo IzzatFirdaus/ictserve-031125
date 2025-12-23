@@ -278,19 +278,17 @@ class UpdateWidgetMetadataCommand extends Command
         return $content;
     }
 
-    private function getClassNameFromFile(string $filePath): ?string
+    private function getClassNameFromFile(string $filePath): string
     {
         $fileName = basename($filePath, '.php');
 
         return $fileName;
     }
 
-    
-
-/**
- * @param array<string, mixed> $results
- */
-private function displaySummary(array $results, bool $isDryRun): void
+    /**
+     * @param  array<string, mixed>  $results
+     */
+    private function displaySummary(array $results, bool $isDryRun): void
     {
         $this->newLine();
         $this->info('📊 Update Summary:');

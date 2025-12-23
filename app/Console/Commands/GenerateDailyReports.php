@@ -76,17 +76,20 @@ class GenerateDailyReports extends Command
      *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
      * }  $reportData
      */
-    
 
-/**
- * @param array<string, mixed> $reportData
- */
-private function displayReportSummary(array $reportData): void
+    /**
+     * @param  array<string, mixed>  $reportData
+     */
+    private function displayReportSummary(array $reportData): void
     {
-        $helpdesk = $reportData['helpdesk_stats'];
-        $loan = $reportData['loan_stats'];
-        $asset = $reportData['asset_stats'];
-        $sla = $reportData['sla_compliance'];
+        /** @var array<string, mixed> $helpdesk */
+        $helpdesk = is_array($reportData['helpdesk_stats'] ?? null) ? $reportData['helpdesk_stats'] : [];
+        /** @var array<string, mixed> $loan */
+        $loan = is_array($reportData['loan_stats'] ?? null) ? $reportData['loan_stats'] : [];
+        /** @var array<string, mixed> $asset */
+        $asset = is_array($reportData['asset_stats'] ?? null) ? $reportData['asset_stats'] : [];
+        /** @var array<string, mixed> $sla */
+        $sla = is_array($reportData['sla_compliance'] ?? null) ? $reportData['sla_compliance'] : [];
 
         $this->newLine();
         $this->info('=== DAILY REPORT SUMMARY ===');
@@ -97,11 +100,13 @@ private function displayReportSummary(array $reportData): void
         $this->info("Assets: {$asset['total_assets']} total, {$asset['maintenance_assets']} in maintenance");
         $this->info("SLA Compliance - Helpdesk: {$sla['helpdesk_sla']}%, Loan Approval: {$sla['loan_approval_sla']}%");
 
-        if (! empty($asset['most_requested'])) {
+        if (! empty($asset['most_requested']) && is_array($asset['most_requested'])) {
             $this->newLine();
             $this->info('Top Requested Assets:');
             foreach ($asset['most_requested'] as $assetItem) {
-                $this->line(" - {$assetItem['name']} ({$assetItem['asset_code']}): {$assetItem['request_count']} requests");
+                if (is_array($assetItem)) {
+                    $this->line(" - {$assetItem['name']} ({$assetItem['asset_code']}): {$assetItem['request_count']} requests");
+                }
             }
         }
 

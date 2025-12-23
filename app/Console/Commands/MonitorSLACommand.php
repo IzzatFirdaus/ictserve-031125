@@ -30,14 +30,16 @@ class MonitorSLACommand extends Command
         $this->info("Escalated {$escalated} tickets approaching SLA breach.");
 
         // Get statistics
+        /** @var array{total: int|float, compliant: int|float, breached: int|float, compliance_rate: int|float|string} $stats */
         $stats = $slaService->getComplianceStats();
+        $complianceRate = is_scalar($stats['compliance_rate']) ? (string) $stats['compliance_rate'] : '0';
         $this->table(
             ['Metric', 'Value'],
             [
                 ['Total Resolved', $stats['total']],
                 ['Compliant', $stats['compliant']],
                 ['Breached', $stats['breached']],
-                ['Compliance Rate', $stats['compliance_rate'].'%'],
+                ['Compliance Rate', $complianceRate.'%'],
             ]
         );
 

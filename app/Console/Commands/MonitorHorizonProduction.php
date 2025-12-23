@@ -99,9 +99,12 @@ class MonitorHorizonProduction extends Command
     ): array {
         $memoryLimit = ini_get('memory_limit');
 
+        $environment = app()->environment();
+        $environmentString = is_string($environment) ? $environment : 'unknown';
+
         $data = [
             'timestamp' => now()->toIso8601String(),
-            'environment' => app()->environment(),
+            'environment' => $environmentString,
             'masters' => [],
             'queues' => [],
             'performance' => [],
@@ -153,7 +156,7 @@ class MonitorHorizonProduction extends Command
         $queueStatistics = $monitoring->getQueueStatistics();
         $data['queues'] = collect($queueStatistics)
             ->mapWithKeys(function (mixed $metrics, mixed $queue): array {
-                if (! is_string($queue) || ! is_array($metrics)) {
+                if (! is_array($metrics)) {
                     return [];
                 }
 
@@ -211,45 +214,67 @@ class MonitorHorizonProduction extends Command
      *   summary: array{status: string, issue_count: int, warning_count: int}
      * }
      */
-    
 
-/**
- * @param array<string, mixed> $data
- */
-private function analyzeHealthStatus(array $data): array
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array{
+     *   overall_healthy: bool,
+     *   has_warnings: bool,
+     *   issues: list<string>,
+     *   warnings: list<string>,
+     *   summary: array{status: string, issue_count: int, warning_count: int}
+     * }
+     */
+    private function analyzeHealthStatus(array $data): array
     {
         $issues = [];
         $warnings = [];
 
         // Check master supervisors
-        if ($data['masters']['total'] === 0) {
+        /** @var array{total: int, running: int} $masters */
+        $masters = is_array($data['masters'] ?? null) ? $data['masters'] : ['total' => 0, 'running' => 0];
+        $mastersTotal = is_numeric($masters['total'] ?? 0) ? (int) $masters['total'] : 0;
+        $mastersRunning = is_numeric($masters['running'] ?? 0) ? (int) $masters['running'] : 0;
+
+        if ($mastersTotal === 0) {
             $issues[] = 'No Horizon master supervisors found';
-        } elseif ($data['masters']['running'] < $data['masters']['total']) {
+        } elseif ($mastersRunning < $mastersTotal) {
             $issues[] = sprintf(
                 'Only %d of %d master supervisors are running',
-                $data['masters']['running'],
-                $data['masters']['total']
+                $mastersRunning,
+                $mastersTotal
             );
         }
 
         // Check queue health
-        foreach ($data['queues'] as $queue => $metrics) {
-            if (isset($metrics['wait_time']) && $metrics['wait_time'] > 60) {
-                $issues[] = "Queue {$queue} has high wait time: {$metrics['wait_time']}s";
+        $queues = is_array($data['queues'] ?? null) ? $data['queues'] : [];
+        foreach ($queues as $queue => $metrics) {
+            if (! is_array($metrics)) {
+                continue;
             }
 
-            if (isset($metrics['failed_jobs']) && $metrics['failed_jobs'] > 10) {
-                $issues[] = "Queue {$queue} has too many failed jobs: {$metrics['failed_jobs']}";
+            $waitTime = is_numeric($metrics['wait_time'] ?? 0) ? (float) $metrics['wait_time'] : 0;
+            $failedJobs = is_numeric($metrics['failed_jobs'] ?? 0) ? (int) $metrics['failed_jobs'] : 0;
+
+            if ($waitTime > 60) {
+                $issues[] = "Queue {$queue} has high wait time: {$waitTime}s";
             }
 
-            if (isset($metrics['wait_time']) && $metrics['wait_time'] > 30) {
-                $warnings[] = "Queue {$queue} wait time approaching threshold: {$metrics['wait_time']}s";
+            if ($failedJobs > 10) {
+                $issues[] = "Queue {$queue} has too many failed jobs: {$failedJobs}";
+            }
+
+            if ($waitTime > 30 && $waitTime <= 60) {
+                $warnings[] = "Queue {$queue} wait time approaching threshold: {$waitTime}s";
             }
         }
 
         // Check system resources
-        $memoryUsage = $data['performance']['memory_usage'];
-        $memoryLimit = $this->parseMemoryLimit($data['performance']['memory_limit']);
+        /** @var array{memory_usage: int|float, memory_limit: string} $performance */
+        $performance = is_array($data['performance'] ?? null) ? $data['performance'] : ['memory_usage' => 0, 'memory_limit' => '0'];
+        $memoryUsage = is_numeric($performance['memory_usage'] ?? 0) ? (float) $performance['memory_usage'] : 0;
+        $memoryLimitStr = is_string($performance['memory_limit'] ?? '') ? $performance['memory_limit'] : '0';
+        $memoryLimit = $this->parseMemoryLimit($memoryLimitStr);
 
         if ($memoryLimit > 0 && ($memoryUsage / $memoryLimit) > 0.9) {
             $issues[] = 'High memory usage: '.round(($memoryUsage / $memoryLimit) * 100, 1).'%';
@@ -258,7 +283,10 @@ private function analyzeHealthStatus(array $data): array
         }
 
         // Check Redis status
-        if (! $data['system']['redis_status']) {
+        /** @var array{redis_status?: bool} $system */
+        $system = is_array($data['system'] ?? null) ? $data['system'] : [];
+        $redisStatus = $system['redis_status'] ?? false;
+        if (! $redisStatus) {
             $issues[] = 'Redis connection failed';
         }
 
@@ -279,18 +307,15 @@ private function analyzeHealthStatus(array $data): array
      * Send health alerts for critical issues.
      *
      * @param array{
+     *   overall_healthy: bool,
+     *   has_warnings: bool,
      *   issues: list<string>,
      *   warnings: list<string>,
-     *   summary: array{status: string}
+     *   summary: array{status: string, issue_count: int, warning_count: int}
      * } $healthStatus
-     * @param  array{timestamp: string, environment: string, ...}  $monitoringData
+     * @param  array<string, mixed>  $monitoringData
      */
-    
-
-/**
- * @param array<string, mixed> $monitoringData
- */
-private function sendHealthAlerts(array $healthStatus, array $monitoringData): void
+    private function sendHealthAlerts(array $healthStatus, array $monitoringData): void
     {
         if (empty($healthStatus['issues'])) {
             return;
@@ -322,8 +347,11 @@ private function sendHealthAlerts(array $healthStatus, array $monitoringData): v
                 }
             }
 
-            $message .= "\nEnvironment: {$monitoringData['environment']}\n";
-            $message .= "Timestamp: {$monitoringData['timestamp']}\n";
+            $environment = isset($monitoringData['environment']) && is_string($monitoringData['environment']) ? $monitoringData['environment'] : 'unknown';
+            $timestamp = isset($monitoringData['timestamp']) && is_string($monitoringData['timestamp']) ? $monitoringData['timestamp'] : now()->toIso8601String();
+
+            $message .= "\nEnvironment: {$environment}\n";
+            $message .= "Timestamp: {$timestamp}\n";
             $message .= "\nPlease check the Horizon dashboard for more details.";
 
             foreach ($recipients as $recipient) {
@@ -365,12 +393,12 @@ private function sendHealthAlerts(array $healthStatus, array $monitoringData): v
      *   summary: array{status: string, issue_count: int, warning_count: int}
      * }  $healthStatus
      */
-    
 
-/**
- * @param array<string, mixed> $healthStatus
- */
-private function outputJson(array $monitoringData, array $healthStatus): void
+    /**
+     * @param  array<string, mixed>  $monitoringData
+     * @param  array<string, mixed>  $healthStatus
+     */
+    private function outputJson(array $monitoringData, array $healthStatus): void
     {
         $output = [
             'monitoring_data' => $monitoringData,
@@ -409,15 +437,17 @@ private function outputJson(array $monitoringData, array $healthStatus): void
      *   summary: array{status: string}
      * }  $health
      */
-    
 
-/**
- * @param array<string, mixed> $health
- */
-private function outputConsole(array $data, array $health, bool $detailed): void
+    /**
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $health
+     */
+    private function outputConsole(array $data, array $health, bool $detailed): void
     {
         // Overall status
-        $status = $health['summary']['status'];
+        /** @var array{status: string} $summary */
+        $summary = is_array($health['summary'] ?? null) ? $health['summary'] : ['status' => 'unknown'];
+        $status = is_string($summary['status'] ?? '') ? $summary['status'] : 'unknown';
         $statusColor = match ($status) {
             'healthy' => 'info',
             'warning' => 'comment',
@@ -426,28 +456,43 @@ private function outputConsole(array $data, array $health, bool $detailed): void
         };
 
         $this->$statusColor('🔍 Horizon Status: '.strtoupper($status));
-        $this->line("📅 Timestamp: {$data['timestamp']}");
-        $this->line("🌍 Environment: {$data['environment']}");
+
+        $timestamp = isset($data['timestamp']) && is_string($data['timestamp']) ? $data['timestamp'] : now()->toIso8601String();
+        $environment = isset($data['environment']) && is_string($data['environment']) ? $data['environment'] : 'unknown';
+
+        $this->line("📅 Timestamp: {$timestamp}");
+        $this->line("🌍 Environment: {$environment}");
         $this->newLine();
 
         // Master supervisors
-        $this->line('👥 Master Supervisors:');
-        $this->line("   Total: {$data['masters']['total']}");
-        $this->line("   Running: {$data['masters']['running']}");
+        /** @var array{total: int, running: int, details: array<int, array{running: bool, name: string, processes: int}>} $masters */
+        $masters = is_array($data['masters'] ?? null) ? $data['masters'] : ['total' => 0, 'running' => 0, 'details' => []];
+        $mastersTotal = is_numeric($masters['total'] ?? 0) ? (int) $masters['total'] : 0;
+        $mastersRunning = is_numeric($masters['running'] ?? 0) ? (int) $masters['running'] : 0;
 
-        if ($detailed) {
-            foreach ($data['masters']['details'] as $master) {
-                $status = $master['running'] ? '✅' : '❌';
-                $this->line("   {$status} {$master['name']} ({$master['processes']} processes)");
+        $this->line('👥 Master Supervisors:');
+        $this->line("   Total: {$mastersTotal}");
+        $this->line("   Running: {$mastersRunning}");
+
+        if ($detailed && ! empty($masters['details']) && is_array($masters['details'])) {
+            foreach ($masters['details'] as $master) {
+                if (is_array($master)) {
+                    $runningStatus = ($master['running'] ?? false) ? '✅' : '❌';
+                    $this->line("   {$runningStatus} {$master['name']} ({$master['processes']} processes)");
+                }
             }
         }
         $this->newLine();
 
         // Queue status
         $this->line('📋 Queue Status:');
-        foreach ($data['queues'] as $queue => $metrics) {
-            $waitTime = $metrics['wait_time'] ?? 0;
-            $failedJobs = $metrics['failed_jobs'] ?? 0;
+        $queues = is_array($data['queues'] ?? null) ? $data['queues'] : [];
+        foreach ($queues as $queue => $metrics) {
+            if (! is_array($metrics)) {
+                continue;
+            }
+            $waitTime = is_numeric($metrics['wait_time'] ?? 0) ? (float) $metrics['wait_time'] : 0;
+            $failedJobs = is_numeric($metrics['failed_jobs'] ?? 0) ? (int) $metrics['failed_jobs'] : 0;
 
             $queueStatus = '✅';
             if ($waitTime > 60 || $failedJobs > 10) {
@@ -461,34 +506,52 @@ private function outputConsole(array $data, array $health, bool $detailed): void
         $this->newLine();
 
         // Issues and warnings
-        if (! empty($health['issues'])) {
+        $issues = is_array($health['issues'] ?? null) ? $health['issues'] : [];
+        $warnings = is_array($health['warnings'] ?? null) ? $health['warnings'] : [];
+        $overallHealthy = $health['overall_healthy'] ?? false;
+
+        if (! empty($issues)) {
             $this->error('❌ Issues Found:');
-            foreach ($health['issues'] as $issue) {
-                $this->error("   • {$issue}");
+            foreach ($issues as $issue) {
+                if (is_string($issue)) {
+                    $this->error("   • {$issue}");
+                }
             }
             $this->newLine();
         }
 
-        if (! empty($health['warnings'])) {
+        if (! empty($warnings)) {
             $this->comment('⚠️  Warnings:');
-            foreach ($health['warnings'] as $warning) {
-                $this->comment("   • {$warning}");
+            foreach ($warnings as $warning) {
+                if (is_string($warning)) {
+                    $this->comment("   • {$warning}");
+                }
             }
             $this->newLine();
         }
 
-        if ($health['overall_healthy'] && empty($health['warnings'])) {
+        if ($overallHealthy && empty($warnings)) {
             $this->info('✅ All systems healthy!');
         }
 
         // Detailed system info
         if ($detailed) {
             $this->line('💻 System Information:');
-            $this->line("   PHP: {$data['system']['php_version']}");
-            $this->line("   Laravel: {$data['system']['laravel_version']}");
-            $this->line("   Horizon: {$data['system']['horizon_version']}");
-            $this->line('   Redis: '.($data['system']['redis_status'] ? 'Connected' : 'Disconnected'));
-            $this->line('   Memory: '.$this->formatBytes($data['performance']['memory_usage']));
+
+            $system = is_array($data['system'] ?? null) ? $data['system'] : [];
+            $performance = is_array($data['performance'] ?? null) ? $data['performance'] : [];
+
+            $phpVersion = is_string($system['php_version'] ?? '') ? $system['php_version'] : 'Unknown';
+            $laravelVersion = is_string($system['laravel_version'] ?? '') ? $system['laravel_version'] : 'Unknown';
+            $horizonVersion = is_string($system['horizon_version'] ?? '') ? $system['horizon_version'] : 'Unknown';
+            $redisStatus = (bool) ($system['redis_status'] ?? false);
+            $memoryUsage = is_numeric($performance['memory_usage'] ?? 0) ? (int) $performance['memory_usage'] : 0;
+
+            $this->line("   PHP: {$phpVersion}");
+            $this->line("   Laravel: {$laravelVersion}");
+            $this->line("   Horizon: {$horizonVersion}");
+            $this->line('   Redis: '.($redisStatus ? 'Connected' : 'Disconnected'));
+            $this->line('   Memory: '.$this->formatBytes($memoryUsage));
         }
     }
 
@@ -503,22 +566,31 @@ private function outputConsole(array $data, array $health, bool $detailed): void
      * } $healthStatus
      * @param  array{masters: array{running: int, total: int}, environment: string, ...}  $monitoringData
      */
-    
 
-/**
- * @param array<string, mixed> $monitoringData
- */
-private function logMonitoringResults(array $healthStatus, array $monitoringData): void
+    /**
+     * @param  array<string, mixed>  $healthStatus
+     * @param  array<string, mixed>  $monitoringData
+     */
+    private function logMonitoringResults(array $healthStatus, array $monitoringData): void
     {
-        $logLevel = $healthStatus['overall_healthy'] ? 'info' : 'warning';
+        $overallHealthy = $healthStatus['overall_healthy'] ?? false;
+        $logLevel = $overallHealthy ? 'info' : 'warning';
+
+        /** @var array{status: string} $summary */
+        $summary = is_array($healthStatus['summary'] ?? null) ? $healthStatus['summary'] : ['status' => 'unknown'];
+
+        /** @var array{running: int, total: int} $mastersData */
+        $mastersData = is_array($monitoringData['masters'] ?? null) ? $monitoringData['masters'] : ['running' => 0, 'total' => 0];
+        $mastersRunning = isset($mastersData['running']) && is_int($mastersData['running']) ? $mastersData['running'] : 0;
+        $mastersTotal = isset($mastersData['total']) && is_int($mastersData['total']) ? $mastersData['total'] : 0;
 
         Log::$logLevel('Horizon production monitoring completed', [
-            'status' => $healthStatus['summary']['status'],
-            'issues' => count($healthStatus['issues']),
-            'warnings' => count($healthStatus['warnings']),
-            'masters_running' => $monitoringData['masters']['running'],
-            'masters_total' => $monitoringData['masters']['total'],
-            'environment' => $monitoringData['environment'],
+            'status' => $summary['status'],
+            'issues' => count(is_array($healthStatus['issues'] ?? null) ? $healthStatus['issues'] : []),
+            'warnings' => count(is_array($healthStatus['warnings'] ?? null) ? $healthStatus['warnings'] : []),
+            'masters_running' => $mastersRunning,
+            'masters_total' => $mastersTotal,
+            'environment' => $monitoringData['environment'] ?? 'unknown',
         ]);
     }
 
