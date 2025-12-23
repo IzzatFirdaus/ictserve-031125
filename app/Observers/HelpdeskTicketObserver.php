@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Events\TicketStatusChanged;
+use App\Events\StatusUpdated;
 use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
@@ -76,7 +76,7 @@ class HelpdeskTicketObserver
             }
 
             // Broadcast real-time status change event
-            TicketStatusChanged::dispatch($ticket, $oldStatus, $newStatus);
+            StatusUpdated::dispatch($ticket, $oldStatus, $newStatus);
 
             // Send notification to submitter
             try {
