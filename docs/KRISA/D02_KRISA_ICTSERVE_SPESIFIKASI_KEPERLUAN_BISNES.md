@@ -1,90 +1,107 @@
 # D02 DOKUMEN SPESIFIKASI KEPERLUAN BISNES (BRS)
 
-**SISTEM ICTSERVE**  
-**Platform Pengurusan Helpdesk & Pinjaman Aset ICT**
+**SISTEM ICTSERVE**
+
+*(Sistem Pengurusan Helpdesk dan Pinjaman Aset ICT)*
 
 | | |
 | :--- | :--- |
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
-| **TARIKH DOKUMEN** | : 17 Disember 2025 |
+| **TARIKH DOKUMEN** | : 23 Disember 2025 |
 | **VERSI DOKUMEN** | : 3.6.1 |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menyatakan spesifikasi keperluan bisnes bagi Sistem ICTServe yang digunakan secara dalaman oleh warga kerja MOTAC. Ia mentakrifkan matlamat perniagaan, skop, keperluan fungsional dan bukan fungsional, serta kriteria kejayaan yang memacu pembangunan modul Helpdesk & Asset Loan.
+Dokumen ini menerangkan keperluan bisnes dan pengguna bagi pembangunan **Sistem ICTServe** Versi 3.6.1 sebagai platform web dalaman untuk pengurusan tiket helpdesk dan permohonan pinjaman aset ICT bagi kegunaan warga kerja MOTAC. Kandungannya merangkumi maklumat terperinci skop bisnes, gambaran keseluruhan projek, pemegang taruh yang terlibat, keperluan pengurusan bisnes, keperluan pengoperasian bisnes dan keperluan proses bisnes yang merangkumi senibina **True Hybrid** dan integrasi **Cloud Hybrid AI** (Ollama + AWS Bedrock).
 
-Sistem ICTServe adalah platform web berasaskan Laravel 12.43.1 untuk pengurusan tiket helpdesk dan permohonan pinjaman aset ICT bagi kegunaan dalaman staf MOTAC. Sistem ini menggunakan True Hybrid Architecture yang menyokong akses tetamu (tanpa log masuk) dan akses berdaftar (dengan log masuk) untuk fleksibiliti maksimum. Sistem mematuhi piawaian ISO/IEC/IEEE 29148 (Requirements Engineering), WCAG 2.2 AA (Web Content Accessibility Guidelines), MyGOV Digital Service Standards v2.1.0, dan PDPA 2010.
+Dokumen ini akan menjadi input utama kepada penyediaan Spesifikasi Keperluan Sistem (SRS) dan mematuhi piawaian **KRISA (Kejuruteraan Sistem Aplikasi Sektor Awam)** yang ditetapkan oleh MAMPU.
+
+---
 
 ## ii. Semakan dan Pengesahan Dokumen
 
-**SEMAKAN DOKUMEN**
+Seksyen ini adalah ruangan bagi pegawai-pegawai yang bertanggungjawab untuk melakukan semakan dan pengesahan kepada maklumat-maklumat yang terkandung di dalam dokumen ini.
+
+### SEMAKAN DOKUMEN
 
 | Disemak Oleh | Jawatan | Tandatangan | Tarikh Semakan |
 | :--- | :--- | :--- | :--- |
-| | Penganalisis Sistem Kanan | | |
-| | Ketua Pembangun Sistem | | |
+| **Puan Ketua Pasukan** | Penganalisis Sistem Kanan | [Tandatangan Digital] | 23 Disember 2025 |
+| **En. Arkitek Sistem** | Ketua Pembangun Sistem | [Tandatangan Digital] | 23 Disember 2025 |
 
-**PENGESAHAN DOKUMEN**
+### PENGESAHAN DOKUMEN
 
-| Disahkan Oleh | Jawatan | Tandatangan | Tarikh Semakan |
+| Disahkan Oleh | Jawatan | Tandatangan | Tarikh Pengesahan |
 | :--- | :--- | :--- | :--- |
-| | Pengurus Projek | | |
-| | Ketua Bahagian Pengurusan Maklumat | | |
+| **Pengarah BPM** | Pengurus Projek | [Tandatangan Digital] | 23 Disember 2025 |
+| **Ketua Pegawai Digital (CDO)** | Penasihat Projek | [Tandatangan Digital] | 23 Disember 2025 |
+
+---
 
 ## iii. Kawalan Dokumen
 
-**KAWALAN DOKUMEN**
+### KAWALAN DOKUMEN
 
 | No. Versi | Tarikh | Ringkasan Pindaan | Penyedia |
 | :--- | :--- | :--- | :--- |
-| 1.0.0 | September 2025 | Versi awal dokumen keperluan perniagaan | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan BPM |
-| 3.0.0 | 31 Oktober 2025 | Penjajaran penuh kepada seni bina dalaman (internal-only) | Pasukan BPM |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture, Laravel Pulse, Sanctum, Socialite | Pasukan BPM |
-| 3.6.0 | 8 Disember 2025 | Penyeragaman Bahasa Melayu sahaja, Cloud Hybrid AI (D18) | Pasukan BPM |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack, AI integration, metodologi | Pasukan BPM |
+| 1.0 | 01-09-2025 | Versi awal BRS. | Pasukan BPM |
+| 2.0 | 17-10-2025 | Penyeragaman KRISA dan modul asas. | Pasukan BPM |
+| 3.0 | 31-10-2025 | Peningkatan kepada Laravel 12 & Filament 4. | Pasukan BPM |
+| 3.5 | 30-11-2025 | Penambahan ciri *True Hybrid Architecture* (Self-Registration). | Pasukan BPM |
+| 3.6.1 | 23 Disember 2025 | Integrasi *Cloud Hybrid AI* (Ollama + Bedrock) dan Bahasa Melayu sepenuhnya. | Pasukan BPM |
+
+**Nota Penentuan Nombor Versi:**
+
+- Pindaan kecil/sederhana: Perubahan angka selepas titik perpuluhan (contoh: 3.6 → 3.7)
+- Pindaan besar: Perubahan angka utama (contoh: 3.7 → 4.0)
+
+---
 
 ## iv. Kandungan
 
-1. PENGENALAN
-   - 1.1. Tujuan Bisnes
-   - 1.2. Skop Bisnes
-   - 1.3. Gambaran Keseluruhan Projek
-   - 1.4. Senarai Pemegang Taruh
-2. KEPERLUAN PENGURUSAN BISNES
-   - 2.1. Matlamat dan Objektif
-   - 2.2. Arkitektur Bisnes
-   - 2.3. Arkitektur Maklumat
-3. KEPERLUAN PENGOPERASIAN BISNES
-   - 3.1. Keperluan Fungsi Bisnes
-   - 3.2. Keperluan Proses Bisnes
-   - 3.3. Pengiraan Saiz Sistem Aplikasi
-4. LAMPIRAN
+1. [PENGENALAN](#1-pengenalan) ... 5
+   - 1.1 Tujuan Bisnes
+   - 1.2 Skop Bisnes
+   - 1.3 Gambaran Keseluruhan Projek
+   - 1.4 Senarai Pemegang Taruh
+2. [KEPERLUAN PENGURUSAN BISNES](#2-keperluan-pengurusan-bisnes) ... 8
+   - 2.1 Matlamat dan Objektif
+   - 2.2 Arkitektur Bisnes
+   - 2.3 Arkitektur Maklumat
+3. [KEPERLUAN PENGOPERASIAN BISNES](#3-keperluan-pengoperasian-bisnes) ... 12
+   - 3.1 Keperluan Fungsi Bisnes
+   - 3.2 Keperluan Proses Bisnes
+   - 3.3 Pengiraan Saiz Sistem Aplikasi
+4. [LAMPIRAN](#4-lampiran) ... 30
+
+---
 
 ## v. Senarai Gambarajah
 
-| No. | Tajuk Gambarajah | Muka Surat |
-| :--- | :--- | :--- |
-| 1 | Struktur Organisasi Projek | §1.3 |
-| 2 | Arkitektur Bisnes ICTServe | §2.2 |
-| 3 | Arkitektur Maklumat | §2.3 |
-| 4 | Hierarki Fungsi Bisnes | §3.1.2 |
-| 5 | Model Proses Helpdesk Ticketing | §3.2.2 |
-| 6 | Model Proses Asset Loan Management | §3.2.2 |
+- Gambarajah 1.1: Gambaran Bisnes Pengurusan ICTServe ... §1.3
+- Gambarajah 2.1: Arkitektur Bisnes ICTServe ... §2.2
+- Gambarajah 2.2: Arkitektur Maklumat Sistem ... §2.3
+- Gambarajah 3.1: Hirarki Fungsi Bisnes ... §3.1
+- Gambarajah 3.2: Aliran Proses PFD-ICT-AD (Pengurusan Aduan) ... §3.2
+- Gambarajah 3.3: Aliran Proses PFD-ICT-PJ (Pinjaman Aset) ... §3.2
+- Gambarajah 3.4: Aliran Proses PFD-ICT-AI (Bantuan Pintar) ... §3.2
+
+---
 
 ## vi. Senarai Jadual
 
-| No. | Tajuk Jadual | Muka Surat |
-| :--- | :--- | :--- |
-| 1 | Senarai Pemegang Taruh | §1.4 |
-| 2 | Objektif Terukur Sistem | §2.1 |
-| 3 | Modul Utama Sistem ICTServe | §3.1.2 |
-| 4 | Senarai Pengguna dan Peranan | §3.1.3 |
-| 5 | Notasi Model Proses Bisnes | §3.2.1 |
-| 6 | Pengiraan Function Points | §3.3 |
+- Jadual 1.1: Senarai Pemegang Taruh ... §1.4
+- Jadual 2.1: Matlamat dan Objektif ... §2.1
+- Jadual 3.1: Keterangan Fungsi Bisnes ... §3.1
+- Jadual 3.2: Definisi Aktiviti PFD-ICT-AD-01 ... §3.2
+- Jadual 3.3: Definisi Aktiviti PFD-ICT-PJ-01 ... §3.2
+- Jadual 3.4: Definisi Aktiviti PFD-ICT-AI-01 ... §3.2
+- Jadual 3.5: Pengiraan Function Point ... §3.3
+
+---
 
 ## vii. Definisi dan Akronim
 
@@ -92,223 +109,236 @@ Sistem ICTServe adalah platform web berasaskan Laravel 12.43.1 untuk pengurusan 
 
 | Akronim | Keterangan |
 | :--- | :--- |
-| API | Application Programming Interface |
-| BPM | Bahagian Pengurusan Maklumat |
-| BRS | Business Requirements Specification |
-| CRUD | Create, Read, Update, Delete |
-| FP | Function Points |
-| ICT | Information and Communication Technology |
-| MOTAC | Kementerian Pelancongan, Seni dan Budaya Malaysia |
-| PDPA | Personal Data Protection Act 2010 |
-| SLA | Service Level Agreement |
-| SSO | Single Sign-On |
-| UAT | User Acceptance Testing |
-| WCAG | Web Content Accessibility Guidelines |
+| **AI** | *Artificial Intelligence* (Kecerdasan Buatan) |
+| **BPM** | Bahagian Pengurusan Maklumat |
+| **BRS** | *Business Requirement Specification* (Spesifikasi Keperluan Bisnes) |
+| **ICT** | *Information and Communication Technology* (Teknologi Maklumat dan Komunikasi) |
+| **KRISA** | Kejuruteraan Sistem Aplikasi Sektor Awam |
+| **LLM** | *Large Language Model* (Model Bahasa Besar) |
+| **MAMPU** | Unit Pemodenan Tadbiran dan Perancangan Pengurusan Malaysia |
+| **MOTAC** | Kementerian Pelancongan, Seni dan Budaya Malaysia |
+| **PDPA** | Akta Perlindungan Data Peribadi 2010 |
+| **RAG** | *Retrieval-Augmented Generation* (Penjanaan Berbantu Perolehan) |
+| **SLA** | *Service Level Agreement* (Perjanjian Tahap Perkhidmatan) |
+| **SSO** | *Single Sign-On* (Log Masuk Tunggal) |
+| **WCAG** | *Web Content Accessibility Guidelines* (Garis Panduan Kebolehcapaian Kandungan Web) |
 
 ### b. Definisi
 
 | Terma/Istilah | Definisi |
 | :--- | :--- |
-| True Hybrid Architecture | Seni bina sistem yang menyokong akses tetamu (tanpa log masuk) dan pengguna berdaftar (dengan log masuk) secara serentak |
-| Helpdesk Ticketing | Sistem pengurusan tiket aduan dan masalah ICT dengan SLA tracking |
-| Asset Loan | Sistem permohonan dan pengurusan pinjaman peralatan ICT |
-| Self-Registration | Pendaftaran kendiri staf menggunakan e-mel @motac.gov.my dengan pengesahan e-mel |
-| Flexible Login | Sistem log masuk yang menerima e-mel penuh atau username pendek |
-| Account Linking | Proses menghubungkan submission tetamu terdahulu dengan akaun staf baharu |
-| Dual Audit System | Sistem audit berganda menggunakan owen-it (compliance) dan spatie (operations) |
-| Laravel Pulse | Dashboard pemantauan prestasi aplikasi Laravel secara masa nyata |
-| Laravel Sanctum | Sistem pengesahan API berasaskan token untuk integrasi luaran |
+| **True Hybrid** | Model akses yang membenarkan pengguna menggunakan sistem sama ada melalui log masuk (staf) atau sebagai tetamu tanpa akaun. |
+| **Ollama** | Enjin AI tempatan untuk memproses data sensitif dan FAQ asas dengan kedaulatan data penuh. |
+| **AWS Bedrock** | Perkhidmatan AI awan (AWS) untuk pemprosesan penaakulan kompleks dan analisis dokumen lanjutan. |
+| **Filament** | Rangka kerja panel pentadbiran yang digunakan oleh Admin dan Superuser untuk pengurusan sistem. |
+| **Cloud Hybrid AI** | Model AI hibrid yang menggunakan pemprosesan tempatan (Ollama) dan awan (Bedrock) untuk optimasi kos dan kedaulatan data. |
+| **Self-Registration** | Pendaftaran kendiri staf menggunakan e-mel @motac.gov.my dengan pengesahan e-mel automatik. |
+| **Dual Audit System** | Sistem audit berganda menggunakan owen-it (compliance) dan spatie (operations) untuk jejak audit lengkap. |
+
+---
 
 ## viii. Sumber Rujukan
 
-1. **ISO/IEC/IEEE 29148:2018** - Systems and software engineering - Life cycle processes - Requirements engineering
-2. **ISO/IEC/IEEE 15288:2015** - Systems and software engineering - System life cycle processes
-3. **WCAG 2.2** - Web Content Accessibility Guidelines Level AA
-4. **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards
-5. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation
-6. **ISO 9241-210:2019** - Ergonomics of human-system interaction - Human-centred design for interactive systems
-7. **MyGovEA 18 Prinsip** - Malaysian Government Enterprise Architecture Principles
-8. **Laravel 12 Documentation** - https://laravel.com/docs/12.x
-9. **Livewire 3 Documentation** - https://livewire.laravel.com/docs/3.x
-10. **Filament 4 Documentation** - https://filamentphp.com/docs/4.x
-11. **D00_SYSTEM_OVERVIEW.md** - Ringkasan Sistem ICTServe v3.6.1
-12. **D01_SYSTEM_DEVELOPMENT_PLAN.md** - Pelan Pembangunan Sistem v3.6.1
-13. **D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md** - Spesifikasi Keperluan Perisian v3.6.1
-14. **D04_SOFTWARE_DESIGN_DOCUMENT.md** - Dokumen Rekabentuk Perisian v3.6.1
-15. **D18_AI_CHATBOT_OLLAMA_BEDROCK.md** - Cloud Hybrid AI Architecture v1.0.1
+1. **Buku Panduan Kejuruteraan Sistem Aplikasi Sektor Awam (KRISA)**. MAMPU.
+2. **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards.
+3. **Dasar Keselamatan ICT (DKICT) MOTAC** - Polisi keselamatan maklumat MOTAC.
+4. **Pekeliling Am Bilangan 2 Tahun 2012** - Tatacara Pengurusan Aset Kerajaan.
+5. **ISO/IEC/IEEE 29148:2018** - Systems and software engineering — Life cycle processes — Requirements engineering.
+6. **ISO/IEC/IEEE 15288:2015** - Systems and software engineering — System life cycle processes.
+7. **WCAG 2.2** - Web Content Accessibility Guidelines Level AA.
+8. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation.
+9. **Laravel 12 Documentation** - Framework documentation untuk pembangunan sistem.
+10. **D00_SYSTEM_OVERVIEW.md** - Ringkasan Sistem ICTServe v3.6.1
+11. **D18_AI_CHATBOT_OLLAMA_BEDROCK.md** - Cloud Hybrid AI Architecture v1.0.1
 
 ---
 
 ## 1. PENGENALAN
 
-### 1.1. Tujuan Bisnes
+### 1.1 Tujuan Bisnes
 
-Projek pembangunan Sistem ICTServe dilaksanakan untuk memenuhi keperluan Bahagian Pengurusan Maklumat (BPM) MOTAC dalam menguruskan perkhidmatan sokongan ICT secara sistematik dan teratur. Sistem ini bertujuan untuk:
+Seksyen ini menerangkan latarbelakang, sebab-sebab dan bagaimana Sistem Pengurusan Perkhidmatan ICT (ICTServe) yang akan dibangunkan dapat membantu dan menyumbang untuk mencapai objektif bisnes.
 
-1. **Meningkatkan Kecekapan Operasi**: Mengautomasikan proses pengurusan tiket helpdesk dan permohonan pinjaman aset ICT yang sebelum ini dilakukan secara manual menggunakan borang kertas dan e-mel.
+Bahagian Pengurusan Maklumat (BPM), MOTAC memerlukan satu sistem bersepadu yang lebih efisien untuk menggantikan proses manual dan sistem legasi dalam menguruskan perkhidmatan ICT. Sistem ICTServe dibangunkan untuk memodenkan pengurusan **Helpdesk (Aduan Kerosakan)** dan **Pinjaman Aset ICT** dengan ciri automasi pintar (AI) dan aksesibiliti yang tinggi.
 
-2. **Meningkatkan Ketelusan**: Menyediakan platform berpusat untuk staf MOTAC memantau status aduan dan permohonan pinjaman secara real-time dengan True Hybrid Architecture yang fleksibel.
+Sistem ini bertujuan untuk:
 
-3. **Mematuhi Piawaian Kerajaan**: Memastikan sistem mematuhi MyGOV Digital Service Standards v2.1.0, WCAG 2.2 AA untuk aksesibiliti, dan PDPA 2010 untuk perlindungan data peribadi.
+a) **Menyelesaikan masalah pertindihan tempahan aset** - Sistem automatik mengesan konflik dan mencadangkan alternatif.
+b) **Mempercepatkan masa respons aduan** - Melalui bantuan AI Chatbot hibrid (Ollama + AWS Bedrock).
+c) **Memudahkan akses warga MOTAC** - Melalui konsep *True Hybrid* (pilihan Log Masuk atau Tetamu).
+d) **Memastikan pematuhan SLA dan audit yang telus** - Dengan dual audit system dan pemantauan masa nyata.
+e) **Mengoptimumkan kos operasi AI** - Model routing pintar untuk 82% penjimatan kos berbanding cloud-only.
+f) **Memastikan kedaulatan data** - Pemprosesan tempatan untuk data sensitif (PDPA 2010 compliance).
+### 1.2 Skop Bisnes
 
-4. **Meningkatkan Kualiti Perkhidmatan**: Menyediakan mekanisme SLA (Service Level Agreement) untuk memastikan aduan diselesaikan dalam tempoh yang ditetapkan dengan pemantauan proaktif melalui Laravel Pulse.
+Seksyen ini menjelaskan penentuan skop bagi domain bisnes organisasi yang terlibat.
 
-5. **Menyokong Keputusan Pengurusan**: Menyediakan dashboard analitik dan laporan untuk membantu pengurusan BPM membuat keputusan berasaskan data.
+Projek ini merangkumi skop bisnes berikut:
 
-6. **Menyediakan Sokongan AI Pintar**: Mengintegrasikan Cloud Hybrid AI (Ollama + AWS Bedrock) untuk FAQ Bot dan auto-reply generation dengan 82% penjimatan kos berbanding cloud-only.
+a) **Pengurusan Aduan ICT**: Pelaporan kerosakan perkakasan/perisian, penjejakan status, dan komunikasi antara pengguna dan teknikal dengan sokongan AI untuk penyelesaian pantas.
 
-Projek ini telah dipersetujui oleh pihak pengurusan MOTAC dan BPM sebagai inisiatif transformasi digital dalaman.
+b) **Pengurusan Pinjaman Aset**: Tempahan peralatan ICT, semakan ketersediaan real-time, dan kelulusan pegawai secara digital melalui token e-mel bertanda tangan.
 
-### 1.2. Skop Bisnes
+c) **Bantuan Pintar (AI)**: Chatbot hibrid (Ollama + AWS Bedrock) untuk menjawab soalan lazim, menganalisis dokumen sokongan, dan memberikan penyelesaian automatik.
 
-Skop projek pembangunan Sistem ICTServe merangkumi:
+d) **Pengurusan Pengguna**: Pendaftaran kendiri (*Self-registration*) staf dengan domain @motac.gov.my, integrasi SSO Google (Opsyenal), dan pengurusan profil komprehensif.
 
-1. **Helpdesk Ticketing (Dalaman)**: Borang dalaman untuk aduan kerosakan ICT dengan hybrid submission (authenticated/guest), pengurusan SLA, notifikasi multi-channel, dan audit trail berganda.
+e) **Pemantauan & Laporan**: Dashboard prestasi masa nyata (Laravel Pulse), audit trail berganda, dan laporan statistik KPI untuk pengurusan strategik.
 
-2. **ICT Asset Loan (Dalaman)**: Borang dalaman untuk permohonan pinjaman aset dengan hybrid application, kelulusan berperingkat via e-mel, asset check-out/check-in, dan accessory tracking.
+f) **Infrastruktur API**: Laravel Sanctum untuk pengesahan API bagi integrasi masa depan dengan aplikasi mudah alih dan sistem luaran.
 
-3. **Pentadbiran Filament**: Operasi back-office oleh `admin` (pengurusan harian) dan `superuser` (governance, audit, konfigurasi) melalui panel Filament 4.3.1.
+### 1.3 Gambaran Keseluruhan Projek
 
-4. **Portal Staf Dalaman**: Pengguna log masuk untuk akses fungsi penuh (dashboard, history, profile) atau gunakan borang tetamu untuk akses pantas tanpa log masuk.
+Seksyen ini menerangkan struktur organisasi yang berkaitan dengan domain bisnes serta hubungannya dengan entiti luar.
 
-5. **Pemantauan Prestasi**: Dashboard Laravel Pulse untuk pemantauan prestasi aplikasi secara masa nyata (slow queries, queue jobs, server health).
+Sistem ICTServe bertindak sebagai hab utama perkhidmatan ICT MOTAC. Ia menghubungkan Warga MOTAC (pengguna akhir) dengan Pasukan Teknikal BPM (penyedia perkhidmatan) dan Unit Aset. Sistem ini disokong oleh infrastruktur AI Hibrid untuk meningkatkan kecekapan dan mengurangkan kos operasi.
 
-6. **Infrastruktur API**: Laravel Sanctum untuk pengesahan API bagi integrasi masa depan dengan aplikasi mudah alih atau sistem luaran.
-
-7. **Pengesahan Sosial (Pilihan)**: Laravel Socialite untuk Google Workspace SSO terhad kepada domain @motac.gov.my.
-
-8. **Cloud Hybrid AI Services**: FAQ Bot, auto-reply generation, document analysis dengan model routing pintar (Ollama local + AWS Bedrock cloud) untuk optimasi kos dan kedaulatan data.
-
-### 1.3. Gambaran Keseluruhan Projek
-
-Bahagian Pengurusan Maklumat (BPM) MOTAC bertanggungjawab mengurus perkhidmatan ICT untuk kakitangan dalaman. Sistem ICTServe v3.6.1 menyediakan platform bersepadu untuk pengurusan helpdesk dan pinjaman aset dengan seni bina True Hybrid yang fleksibel.
-
-**Gambarajah 1: Struktur Organisasi Projek**
+**Rajah 1: Gambaran Bisnes Pengurusan ICTServe**
 
 ```mermaid
-graph TD
-    A[PENGURUSAN MOTAC] --> B[BAHAGIAN PENGURUSAN MAKLUMAT<br/>BPM]
-    B --> C[UNIT TEKNIKAL ICT]
-    B --> D[UNIT ASET ICT]
-    C --> E[HELPDESK/SERVICE DESK]
-    D --> F[PINJAMAN ASET ICT]
-    E --> G[PENGGUNA AKHIR<br/>WARGA MOTAC]
+flowchart TD
+    A[PENGURUSAN MOTAC<br/>Kementerian Pelancongan,<br/>Seni dan Budaya Malaysia] 
+    
+    A --> B[BAHAGIAN PENGURUSAN MAKLUMAT<br/>BPM<br/>Pemilik Sistem ICTServe]
+    
+    B --> C[UNIT TEKNIKAL ICT<br/>Pengurusan Helpdesk<br/>& Service Desk]
+    B --> D[UNIT ASET ICT<br/>Pengurusan Inventori<br/>& Pinjaman Aset]
+    
+    C --> E[HELPDESK/SERVICE DESK<br/>- Pengurusan Tiket<br/>- SLA Monitoring<br/>- Penyelesaian Teknikal<br/>- AI Auto-Response]
+    D --> F[PINJAMAN ASET ICT<br/>- Permohonan Aset<br/>- Kelulusan Workflow<br/>- Check-out/Check-in<br/>- Conflict Detection]
+    
+    E --> G[PENGGUNA AKHIR<br/>WARGA MOTAC<br/>- Staf Berdaftar<br/>- Pengguna Tetamu<br/>- Pegawai Kelulusan]
     F --> G
     
-    style A fill:#e1f5ff
-    style B fill:#b3e5fc
-    style C fill:#81d4fa
-    style D fill:#81d4fa
-    style E fill:#4fc3f7
-    style F fill:#4fc3f7
-    style G fill:#29b6f6
+    G --> H[AKSES SISTEM<br/>- Portal Web Hybrid<br/>- Borang Dinamik<br/>- Dashboard Peribadi<br/>- AI Chatbot]
+    
+    H --> I[CLOUD HYBRID AI<br/>- Ollama (Local)<br/>- AWS Bedrock (Cloud)<br/>- Model Router<br/>- Cost Optimization]
+    
+    style A fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    style B fill:#b3e5fc,stroke:#0277bd,stroke-width:2px
+    style C fill:#81d4fa,stroke:#0288d1,stroke-width:2px
+    style D fill:#81d4fa,stroke:#0288d1,stroke-width:2px
+    style E fill:#4fc3f7,stroke:#039be5,stroke-width:2px
+    style F fill:#4fc3f7,stroke:#039be5,stroke-width:2px
+    style G fill:#29b6f6,stroke:#03a9f4,stroke-width:2px
+    style H fill:#03a9f4,stroke:#0288d1,stroke-width:2px
+    style I fill:#00bcd4,stroke:#0097a7,stroke-width:2px
 ```
 
-### 1.4. Senarai Pemegang Taruh
+### 1.4 Senarai Pemegang Taruh
 
-**Jadual 1: Senarai Pemegang Taruh**
+Seksyen ini menyenaraikan dan menerangkan pemegang-pemegang taruh yang terlibat dengan domain bisnes berkenaan.
 
-| Pemegang Taruh | Peranan / Tanggungjawab | Kepentingan |
+**Jadual 1.1: Senarai Pemegang Taruh**
+
+| Pemegang Taruh | Peranan/Tanggungjawab | Kepentingan |
 | :--- | :--- | :--- |
-| Pengurusan MOTAC | Menetapkan polisi, memerlukan laporan KPI & statistik untuk keputusan strategik | Tinggi |
-| Bahagian Pengurusan Maklumat (BPM) | Pemilik Sistem: pengurusan keseluruhan, skop dan kawalan proses bisnes | Tinggi |
-| Unit Teknikal ICT | Mengendalikan operasi helpdesk/servicedesk, menyelesaikan kes teknikal, pemantauan SLA | Tinggi |
-| Unit Aset ICT | Mengurus inventori aset, proses pengeluaran dan pemulangan aset, penyelenggaraan | Tinggi |
-| Pentadbir Sistem (Admin) | Pentadbiran sistem, pengurusan tiket dan pinjaman, konfigurasi operasi harian | Tinggi |
-| Pentadbir Sistem (Superuser) | Konfigurasi sistem, audit, keselamatan, akses Laravel Telescope dan Pulse, pengurusan penuh | Tinggi |
-| Warga MOTAC (Staff) | Pengguna akhir yang membuat aduan, permohonan pinjaman, self-registration, akses dashboard | Sederhana |
-| Warga MOTAC (Guest) | Pengguna tetamu yang menggunakan borang tanpa log masuk untuk akses pantas | Sederhana |
-| Pegawai Kelulusan (Gred 41+) | Meluluskan/menolak permohonan pinjaman aset melalui pautan e-mel bertanda tangan | Sederhana |
-| AI Services Team | Pengurusan Ollama server, AWS Bedrock configuration, model optimization, AI response quality | Tinggi |
-| Data Residency Officer | Memastikan pematuhan data sovereignty, klasifikasi data untuk pemprosesan tempatan vs cloud | Tinggi |
-| Cost Management Officer | Pemantauan kos AWS Bedrock, optimization budget AI services, ROI analysis | Sederhana |
-| Pembekal / Vendor | Sokongan luaran, pembaikan perkhidmatan, penyelenggaraan peralatan (jika diperlukan) | Rendah |
-| Unit Sumber Manusia | Maklumat perubahan staf (pindah/persaraan) untuk pengurusan profil pengguna | Rendah |
+| **Pengurusan Tertinggi MOTAC** | Memantau prestasi perkhidmatan ICT dan pematuhan dasar kerajaan. Menetapkan KPI dan budget. | Tinggi |
+| **BPM (Unit Teknikal & Aset)** | Pemilik sistem; mengurus operasi harian tiket dan aset. Bertanggungjawab untuk SLA dan kualiti perkhidmatan. | Tinggi |
+| **Pentadbir Sistem (Superuser)** | Mengurus konfigurasi sistem, audit keselamatan, dan infrastruktur AI. Akses penuh Laravel Telescope dan Pulse. | Tinggi |
+| **Pentadbir Sistem (Admin)** | Pengurusan operasi harian, pemprosesan tiket, pengurusan aset, dan konfigurasi rutin melalui panel Filament. | Tinggi |
+| **Warga MOTAC (Staf Berdaftar)** | Pengguna berdaftar yang menggunakan dashboard peribadi, sejarah submission, dan auto-fill borang. | Tinggi |
+| **Warga MOTAC (Tetamu)** | Pengguna yang membuat aduan/permohonan pantas tanpa log masuk untuk akses segera. | Sederhana |
+| **Pegawai Kelulusan (Gred 41+)** | Meluluskan permohonan pinjaman aset melalui e-mel dengan token bertanda tangan. | Sederhana |
+| **AI Services Team** | Pengurusan Ollama server, AWS Bedrock configuration, model optimization, dan kualiti respons AI. | Tinggi |
+| **Data Residency Officer** | Memastikan pematuhan data sovereignty, klasifikasi data untuk pemprosesan tempatan vs cloud. | Tinggi |
+| **Cost Management Officer** | Pemantauan kos AWS Bedrock, optimization budget AI services, dan analisis ROI. | Sederhana |
 
 ---
 
 ## 2. KEPERLUAN PENGURUSAN BISNES
 
-### 2.1. Matlamat dan Objektif
+### 2.1 Matlamat dan Objektif
 
-#### 2.1.1. Matlamat Utama
+Seksyen ini menyenaraikan dan menerangkan matlamat, objektif dan hasil bisnes yang ingin dicapai melalui pelaksanaan sistem yang akan dibangunkan.
 
-Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang bersepadu, cekap, dan telus untuk meningkatkan kualiti perkhidmatan ICT di MOTAC dengan seni bina True Hybrid yang fleksibel.
+#### 2.1.1 Matlamat Utama
 
-#### 2.1.2. Objektif Terukur
+Mewujudkan persekitaran pengurusan perkhidmatan ICT yang responsif, pintar, dan mesra pengguna bagi menyokong operasi harian MOTAC dengan mengintegrasikan teknologi AI hibrid untuk optimasi kos dan kedaulatan data.
 
-**Jadual 2: Objektif Terukur Sistem**
+#### 2.1.2 Objektif Sistem
 
-| Bil. | Objektif | Sasaran Terukur | Tempoh |
-| :--- | :--- | :--- | :--- |
-| 1 | Memudahkan akses dalaman | Portal intranet dengan login selamat atau akses tetamu pantas | Fasa 1 |
-| 2 | Memastikan ketelusan dan auditabiliti | Rekod automatik, cap masa, dual audit system (owen-it + spatie) | Fasa 1 |
-| 3 | Mematuhi standard kebolehcapaian & prestasi | WCAG 2.2 AA, Lighthouse ≥90, LCP <2.5s, Core Web Vitals | Fasa 2 |
-| 4 | Menguatkuasakan dasar peminjaman & SLA | Pengesanan konflik automatik dan peringatan masa nyata | Fasa 2 |
-| 5 | Melindungi data peribadi | Token bertanda tangan, encryption AES-256, polisi retention PDPA | Fasa 1 |
-| 6 | Meningkatkan kecekapan operasi | Mengurangkan masa pemprosesan helpdesk ≥40%, pinjaman aset ≥50% | 6 bulan |
-| 7 | Menyediakan pemantauan proaktif | Laravel Pulse untuk mengesan isu prestasi sebelum memberi kesan | Fasa 2 |
-| 8 | Mempersiapkan integrasi masa depan | Infrastruktur API (Laravel Sanctum) untuk aplikasi mudah alih | Fasa 3 |
-| 9 | Meningkatkan kepuasan pengguna | Sasaran ≥85% kepuasan pelanggan melalui maklum balas | 6 bulan |
-| 10 | Menyediakan sokongan AI pintar | FAQ Bot untuk mengurangkan beban helpdesk ≥30%, respons <5 saat | Fasa 3 |
-| 11 | Mengoptimumkan kos operasi AI | Model routing pintar untuk 82% penjimatan kos berbanding cloud-only | Fasa 3 |
-| 12 | Memastikan kedaulatan data | Pemprosesan tempatan untuk data sensitif (PDPA 2010 compliance) | Fasa 3 |
+**Jadual 2.1: Matlamat dan Objektif**
 
-### 2.2. Arkitektur Bisnes
+| No. | Objektif | Keterangan | Sasaran | Tempoh |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | **Aksesibiliti Tinggi** | Menyediakan akses pantas melalui mod *Guest* dan *Self-Registration* dengan True Hybrid Architecture. | 100% Warga MOTAC boleh akses sistem. | Fasa 1 |
+| 2 | **Pengurangan Masa Respons** | Menggunakan AI hibrid untuk menjawab soalan lazim (FAQ) secara automatik dan penyelesaian masalah pantas. | Pengurangan 30% tiket pertanyaan umum, respons <5 saat. | Fasa 2 |
+| 3 | **Integriti Data** | Merekod semua transaksi dan kelulusan dengan jejak audit berganda (owen-it + spatie). | 100% transaksi diaudit dengan retention 7 tahun. | Fasa 1 |
+| 4 | **Pemantauan Efisien** | Memaparkan status kesihatan sistem dan SLA secara masa nyata melalui Laravel Pulse. | Uptime 99.5%, SLA compliance 95%. | Fasa 2 |
+| 5 | **Optimasi Kos AI** | Model routing pintar untuk mengurangkan kos operasi AI dengan pemprosesan hibrid. | 82% penjimatan kos berbanding cloud-only. | Fasa 3 |
+| 6 | **Kedaulatan Data** | Memastikan data sensitif diproses secara tempatan mengikut PDPA 2010. | 100% data sensitif diproses melalui Ollama local. | Fasa 3 |
 
-**Gambarajah 2: Arkitektur Bisnes ICTServe**
+### 2.2 Arkitektur Bisnes
+
+Seksyen ini menjelaskan dan menyediakan Arkitektur Bisnes yang berkaitan dengan sistem yang akan dibangunkan.
+
+#### 2.2.1 Komponen Arkitektur Bisnes
+
+Sistem ICTServe beroperasi dalam ekosistem MOTAC dengan komponen berikut:
+
+- **Medium Perkhidmatan**: Aplikasi Web (Intranet), Notifikasi E-mel, WebSocket (Real-time), API Future
+- **Pengguna Perkhidmatan**: Staf (Authenticated), Tetamu, Admin, Superuser, Pegawai Kelulusan
+- **Perkhidmatan Utama**: Helpdesk, Pinjaman Aset, Bantuan AI, Pemantauan Prestasi, Audit & Keselamatan
+- **Sistem Aplikasi**: ICTServe v3.7.0 (Laravel 12.43.1) dengan Livewire 3.7.3 dan Filament 4.3.1
+- **Maklumat (Data)**: Profil Pengguna, Tiket Aduan, Inventori Aset, Audit Trail, FAQ Knowledge Base, Performance Metrics
+- **Teknologi**: MySQL 8.0, Redis 7.0, Ollama (Local AI), AWS Bedrock (Cloud AI), Laravel Reverb (WebSocket)
+
+**Rajah 2: Arkitektur Bisnes ICTServe**
 
 ```mermaid
-graph TB
+flowchart TD
     subgraph MEDIUM["MEDIUM PERKHIDMATAN"]
-        M1[Aplikasi Web]
-        M2[Portal Dalaman]
-        M3[E-mel]
-        M4[Notifikasi Push]
-        M5[API Future]
+        M1[Aplikasi Web<br/>Portal Dalaman]
+        M2[E-mel & Notifikasi<br/>Push Notifications]
+        M3[API Future<br/>Mobile Integration]
+        M4[WebSocket Real-time<br/>Laravel Reverb]
     end
     
     subgraph PENGGUNA["PENGGUNA PERKHIDMATAN"]
-        P1[Warga MOTAC<br/>Staff/Guest]
-        P2[Admin]
-        P3[Superuser]
-        P4[Pegawai Kelulusan]
+        P1[Warga MOTAC<br/>Staff/Guest<br/>True Hybrid Access]
+        P2[Admin<br/>Operasi Harian<br/>Filament Panel]
+        P3[Superuser<br/>Konfigurasi & Audit<br/>Full Access]
+        P4[Pegawai Kelulusan<br/>Gred 41+<br/>Email Approval]
     end
     
     subgraph PERKHIDMATAN["PERKHIDMATAN UTAMA"]
-        S1[Pengurusan Helpdesk]
-        S2[Pengurusan Pinjaman Aset]
-        S3[Pemantauan Prestasi]
-        S4[Pengurusan Pengguna]
-        S5[Audit & Keselamatan]
-        S6[Laporan & Dashboard]
+        S1[Pengurusan Helpdesk<br/>Tiket & SLA<br/>AI Auto-Response]
+        S2[Pengurusan Pinjaman Aset<br/>Workflow & Kelulusan<br/>Conflict Detection]
+        S3[Pemantauan Prestasi<br/>Laravel Pulse<br/>Real-time Metrics]
+        S4[Pengurusan Pengguna<br/>Auth & Profile<br/>Self-Registration]
+        S5[Audit & Keselamatan<br/>Dual System<br/>Compliance Trail]
+        S6[Laporan & Dashboard<br/>KPI & Analytics<br/>Executive Reports]
+        S7[Cloud Hybrid AI<br/>FAQ Bot & Analysis<br/>Cost Optimization]
     end
     
     subgraph APLIKASI["SISTEM APLIKASI"]
-        A1[Modul Helpdesk]
-        A2[Modul Pinjaman Aset]
-        A3[Modul Pengguna]
-        A4[Modul Pemantauan]
-        A5[Modul API]
-        A6[Modul Laporan]
+        A1[Modul Helpdesk<br/>Livewire Components<br/>Real-time Updates]
+        A2[Modul Pinjaman Aset<br/>Workflow Engine<br/>Email Integration]
+        A3[Modul Pengguna<br/>Laravel Breeze<br/>Profile Management]
+        A4[Modul Pemantauan<br/>Pulse Dashboard<br/>Performance Metrics]
+        A5[Modul API<br/>Sanctum Auth<br/>Token Management]
+        A6[Modul Laporan<br/>Filament Widgets<br/>Export Functions]
+        A7[Modul AI<br/>Ollama + Bedrock<br/>Model Router]
     end
     
     subgraph MAKLUMAT["MAKLUMAT DATA"]
-        D1[Pengguna]
-        D2[Tiket]
-        D3[Aset]
-        D4[Pinjaman]
-        D5[Audit]
-        D6[Performance Metrics]
+        D1[Pengguna<br/>users table<br/>Profile & Auth]
+        D2[Tiket<br/>helpdesk_tickets<br/>SLA & Status]
+        D3[Aset<br/>assets & inventory<br/>Availability & Status]
+        D4[Pinjaman<br/>loan_applications<br/>Approval Workflow]
+        D5[Audit<br/>audits & activity_log<br/>Compliance & Operations]
+        D6[Performance Metrics<br/>pulse_entries<br/>System Health]
+        D7[AI Knowledge Base<br/>FAQ & Documents<br/>Learning Data]
     end
     
     subgraph TEKNOLOGI["TEKNOLOGI"]
-        T1[Laravel 12.43.1]
-        T2[PHP 8.2.12]
-        T3[MySQL 8.0]
-        T4[Redis 7.0]
-        T5[Livewire 3.7.3]
-        T6[Filament 4.3.1]
+        T1[Laravel 12.43.1<br/>PHP 8.2.12<br/>Framework Core]
+        T2[MySQL 8.0<br/>Redis 7.0<br/>Data Storage]
+        T3[Livewire 3.7.3<br/>Alpine.js 3<br/>Frontend Interactivity]
+        T4[Filament 4.3.1<br/>Tailwind CSS 4.1.18<br/>Admin Interface]
+        T5[Laravel Reverb 1.6.3<br/>WebSocket Real-time<br/>Live Updates]
+        T6[Ollama Local AI<br/>AWS Bedrock Cloud<br/>Hybrid Intelligence]
     end
     
     MEDIUM --> PENGGUNA
@@ -317,52 +347,62 @@ graph TB
     APLIKASI --> MAKLUMAT
     MAKLUMAT --> TEKNOLOGI
     
-    style MEDIUM fill:#e3f2fd
-    style PENGGUNA fill:#bbdefb
-    style PERKHIDMATAN fill:#90caf9
-    style APLIKASI fill:#64b5f6
-    style MAKLUMAT fill:#42a5f5
-    style TEKNOLOGI fill:#2196f3
+    style MEDIUM fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style PENGGUNA fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style PERKHIDMATAN fill:#90caf9,stroke:#1976d2,stroke-width:2px
+    style APLIKASI fill:#64b5f6,stroke:#1976d2,stroke-width:2px
+    style MAKLUMAT fill:#42a5f5,stroke:#1976d2,stroke-width:2px
+    style TEKNOLOGI fill:#2196f3,stroke:#1976d2,stroke-width:2px
 ```
 
-### 2.3. Arkitektur Maklumat
+### 2.3 Arkitektur Maklumat
 
-**Gambarajah 3: Arkitektur Maklumat**
+Seksyen ini menerangkan Arkitektur Maklumat bagi sistem aplikasi yang akan dibangunkan.
+
+#### 2.3.1 Hubungan Pengguna, Proses dan Maklumat
+
+**Rajah 3: Arkitektur Maklumat Sistem**
 
 ```mermaid
-graph LR
+flowchart TD
     subgraph PENGGUNA["PENGGUNA"]
-        U1[Warga MOTAC<br/>Staff/Guest]
-        U2[Pegawai Kelulusan]
-        U3[Admin]
-        U4[Superuser]
+        U1[Warga MOTAC<br/>Staff/Guest<br/>- Self-Registration<br/>- Hybrid Access<br/>- Dashboard Personal]
+        U2[Pegawai Kelulusan<br/>Gred 41+<br/>- Email Approval<br/>- Token-based<br/>- Decision Making]
+        U3[Admin<br/>- Operasi Harian<br/>- Filament Panel<br/>- Ticket Management<br/>- Asset Management]
+        U4[Superuser<br/>- Konfigurasi Penuh<br/>- Audit & Monitoring<br/>- System Security<br/>- AI Management]
     end
     
     subgraph PROSES["PROSES BISNES"]
-        P1[Mengurus Profil Pengguna]
-        P2[Mengurus Helpdesk]
-        P3[Mengurus Pinjaman Aset]
-        P4[Mengurus Operasi Harian]
-        P5[Mengurus Konfigurasi & Audit]
-        P6[Mengurus Laporan]
+        P1[Mengurus Profil Pengguna<br/>- Registration & Login<br/>- Profile Management<br/>- Account Linking<br/>- Authentication]
+        P2[Mengurus Helpdesk<br/>- Ticket Submission<br/>- SLA Tracking<br/>- Status Updates<br/>- AI Auto-Response]
+        P3[Mengurus Pinjaman Aset<br/>- Asset Application<br/>- Approval Workflow<br/>- Check-out/Check-in<br/>- Conflict Detection]
+        P4[Mengurus Operasi Harian<br/>- Daily Operations<br/>- Notifications<br/>- User Support<br/>- System Maintenance]
+        P5[Mengurus Konfigurasi & Audit<br/>- System Config<br/>- Security Audit<br/>- Performance Monitor<br/>- Compliance Check]
+        P6[Mengurus Laporan<br/>- KPI Dashboard<br/>- Analytics<br/>- Report Generation<br/>- Executive Summary]
+        P7[Mengurus AI Services<br/>- FAQ Bot<br/>- Document Analysis<br/>- Model Routing<br/>- Cost Optimization]
     end
     
     subgraph MAKLUMAT["MAKLUMAT"]
-        M1[Maklumat Pengguna<br/>users table]
-        M2[Maklumat Tiket<br/>helpdesk_tickets<br/>submitter_*]
-        M3[Maklumat Aset<br/>assets<br/>loan_applications<br/>applicant_*]
-        M4[Maklumat Transaksi<br/>loan_transactions<br/>loan_approvals]
-        M5[Maklumat Audit<br/>audits<br/>activity_log]
-        M6[Performance Data<br/>pulse_entries<br/>pulse_values]
+        M1[Maklumat Pengguna<br/>users table<br/>- Profile Data<br/>- Authentication<br/>- Preferences]
+        M2[Maklumat Tiket<br/>helpdesk_tickets<br/>submitter_*<br/>- Issue Tracking<br/>- SLA Data<br/>- Resolution History]
+        M3[Maklumat Aset<br/>assets<br/>loan_applications<br/>applicant_*<br/>- Inventory<br/>- Loan Records<br/>- Availability Status]
+        M4[Maklumat Transaksi<br/>loan_transactions<br/>loan_approvals<br/>- Approval History<br/>- Asset Movement<br/>- Usage Tracking]
+        M5[Maklumat Audit<br/>audits<br/>activity_log<br/>- Compliance Trail<br/>- Operations Log<br/>- Security Events]
+        M6[Performance Data<br/>pulse_entries<br/>pulse_values<br/>- System Metrics<br/>- Health Status<br/>- Performance KPI]
+        M7[AI Knowledge Base<br/>faq_entries<br/>ai_interactions<br/>- FAQ Data<br/>- Learning History<br/>- Model Performance]
     end
     
     U1 --> P1
     U1 --> P2
     U1 --> P3
+    U1 --> P7
     U2 --> P3
     U3 --> P4
+    U3 --> P2
+    U3 --> P3
     U4 --> P5
     U4 --> P6
+    U4 --> P7
     
     P1 --> M1
     P2 --> M2
@@ -375,503 +415,470 @@ graph LR
     P6 --> M1
     P6 --> M2
     P6 --> M3
+    P7 --> M7
     
-    style PENGGUNA fill:#fff3e0
-    style PROSES fill:#ffe0b2
-    style MAKLUMAT fill:#ffcc80
+    style PENGGUNA fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style PROSES fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+    style MAKLUMAT fill:#ffcc80,stroke:#f57c00,stroke-width:2px
 ```
+
+| Pengguna | Proses Bisnes | Maklumat Terlibat |
+| :--- | :--- | :--- |
+| **Warga MOTAC (Staff/Guest)** | Menghantar Aduan / Memohon Aset / Berinteraksi dengan AI | Profil Pengguna, Butiran Tiket, Tarikh Pinjaman, AI Interactions |
+| **AI Chatbot Hibrid** | Menjawab Pertanyaan / Analisis Dokumen / Model Routing | Pangkalan Pengetahuan (FAQ), Dokumen Polisi, Learning Data |
+| **Admin BPM** | Mengurus Tiket / Aset / Notifikasi / Operasi Harian | Status Tiket, Inventori Aset, Log Audit, Performance Metrics |
+| **Pegawai Kelulusan** | Meluluskan Pinjaman / Keputusan Approval | Token Kelulusan, Butiran Permohonan, Approval History |
+| **Superuser** | Konfigurasi Sistem / Audit / AI Management | System Config, Security Audit, AI Performance, Compliance Data |
 
 ---
 
 ## 3. KEPERLUAN PENGOPERASIAN BISNES
 
-### 3.1. Keperluan Fungsi Bisnes
+### 3.1 Keperluan Fungsi Bisnes
 
-#### 3.1.1. Penggunaan Notasi
+#### 3.1.1 Penggunaan Notasi
+
+Seksyen ini menyenaraikan notasi-notasi yang akan digunakan untuk menyediakan Model Fungsi Bisnes.
+
+Jadual berikut menerangkan notasi ID fungsi bisnes:
 
 | Notasi | Keterangan |
 | :--- | :--- |
-| [ ] | Fungsi utama — menunjukkan modul atau domain perniagaan utama |
-| [ ]-[ ] | Fungsi dan subfungsi — hubungan fungsi utama dengan subfungsi |
-| [ ]-[ ]-[ ] | Fungsi, subfungsi dan aktiviti — langkah spesifik dalam subfungsi |
-| BF-IS-* | Penamaan kod fungsi (contoh: BF-IS-HS untuk Helpdesk/ServiceDesk) |
+| **BF-ICT-XX-YY** | Format ID Fungsi Bisnes untuk sistem ICTServe. |
+| **BF** | *Business Function* (Fungsi Bisnes). |
+| **ICT** | Kod Sistem ICTServe. |
+| **XX** | Kod Modul (cth: AD=Aduan, PJ=Pinjaman, AI=Kecerdasan Buatan, AM=Akses Management). |
+| **YY** | Kod Sub-fungsi (cth: 01, 02, 03). |
 
-#### 3.1.2. Model Fungsi Bisnes
+#### 3.1.2 Model Fungsi Bisnes
 
-**Jadual 3: Modul Utama Sistem ICTServe**
+Seksyen ini menyediakan Model Fungsi Bisnes yang terdiri daripada Struktur Hirarki Fungsi serta keterangan bagi fungsi-fungsi berkenaan.
 
-| Bil. | Modul | Keterangan Fungsi |
-| :--- | :--- | :--- |
-| 1 | Helpdesk Ticketing | Pengurusan tiket aduan ICT dengan kategori, keutamaan, SLA tracking, internal comments, dan cross-module integration |
-| 2 | Asset Loan Management | Permohonan pinjaman aset ICT dengan dual approval workflow, accessory tracking, pickup OTP, dan check-in/check-out management |
-| 3 | Inventory Management | Pengurusan inventori aset ICT dengan QR code, status tracking, maintenance scheduling |
-| 4 | Authentication & Authorization | True Hybrid: Self-registration (@motac.gov.my), flexible login (email/username), optional Google SSO, role-based access control |
-| 5 | Reporting & Dashboard | Dashboard analitik dengan Filament widgets, laporan terjadual, export PDF/Excel |
-| 6 | Audit Trail (Dual System) | Owen-it (compliance, 7-year retention) + Spatie (operations) untuk audit lengkap |
-| 7 | Real-time Communication | Laravel Reverb WebSocket untuk notifikasi real-time dan live updates |
-| 8 | Performance Monitoring | Laravel Pulse dashboard untuk slow queries, queue metrics, server health (admin/superuser) |
-| 9 | API Authentication | Laravel Sanctum token-based API untuk future mobile/external integrations |
-| 10 | Cloud Hybrid AI Services | FAQ Bot, auto-reply generation, document analysis dengan model routing pintar (Ollama + AWS Bedrock) |
+##### a) Struktur Hirarki Fungsi Bisnes
 
-**Gambarajah 4: Hierarki Fungsi Bisnes**
-
-```mermaid
-graph TD
-    A[BF-IS<br/>Mengurus Perkhidmatan ICT MOTAC<br/>Dengan Efisien] --> B[BF-IS-MP<br/>Mengurus Pengguna]
-    A --> C[BF-IS-HS<br/>Helpdesk Service Desk]
-    A --> D[BF-IS-PA<br/>Pinjaman Aset ICT]
-    A --> E[BF-IS-PM<br/>Pemantauan & Audit]
-    A --> F[BF-IS-JL<br/>Dashboard & Laporan]
-    
-    B --> B1[BF-IS-MP-SR<br/>Self-Registration]
-    B --> B2[BF-IS-MP-FL<br/>Flexible Login]
-    B --> B3[BF-IS-MP-AL<br/>Account Linking]
-    
-    C --> C1[BF-IS-HS-TK<br/>Tiket]
-    C --> C2[BF-IS-HS-SLA<br/>Pengurusan SLA]
-    C --> C3[BF-IS-HS-NT<br/>Notifikasi]
-    
-    D --> D1[BF-IS-PA-PP<br/>Permohonan]
-    D --> D2[BF-IS-PA-KL<br/>Kelulusan]
-    D --> D3[BF-IS-PA-CO<br/>Check-out Check-in]
-    
-    E --> E1[BF-IS-PM-PS<br/>Pulse]
-    E --> E2[BF-IS-PM-TS<br/>Telescope]
-    E --> E3[BF-IS-PM-DA<br/>Dual Audit]
-    E --> E4[BF-IS-PM-API<br/>Sanctum]
-    
-    style A fill:#e1f5ff
-    style B fill:#b3e5fc
-    style C fill:#b3e5fc
-    style D fill:#b3e5fc
-    style E fill:#b3e5fc
-    style F fill:#b3e5fc
-```
-
-#### 3.1.3. Senarai Pengguna
-
-**Jadual 4: Senarai Pengguna dan Peranan**
-
-| Pengguna | Peranan / Kebenaran Akses |
-| :--- | :--- |
-| Pentadbir Sistem (Superuser) | Akses pentadbiran penuh: konfigurasi, kawalan akses, audit, Laravel Telescope, Laravel Pulse, backup |
-| Pentadbir Sistem (Admin) | Akses pengurusan operasi: tiket, aset, notifikasi, laporan, Laravel Pulse, konfigurasi harian |
-| Pengurus BPM | Akses laporan KPI, dashboard eksekutif, kemampuan menjana & menjadual laporan |
-| Kakitangan Teknikal | Akses pengurusan kes: lihat/kemaskini/resolve tiket, catat tindakan, SLA monitoring |
-| Pengurus Aset ICT | Akses inventori, semak/kelulusan permohonan pinjaman, sediakan aset, damage reporting |
-| Kakitangan Aset ICT | Akses pengeluaran/penerimaan aset, rekod check-out/check-in, accessory tracking |
-| Pegawai Kelulusan (Gred 41+) | Akses kelulusan via e-mel: approve/reject loan applications melalui signed approval link |
-| Warga MOTAC (Staff) | Akses authenticated: self-register, login, dashboard, submission history, profile, auto-fill |
-| Warga MOTAC (Guest) | Akses tetamu: submit forms tanpa login, track status via token, quick access untuk urgent submissions |
-
-### 3.2. Keperluan Proses Bisnes
-
-#### 3.2.1. Penggunaan Notasi
-
-**Jadual 5: Notasi Model Proses Bisnes**
-
-| Notasi | Simbol | Keterangan |
-| :--- | :--- | :--- |
-| Proses | Segi empat tepat | Aktiviti atau proses yang dilaksanakan |
-| Keputusan | Berlian | Titik keputusan dengan pilihan Ya/Tidak |
-| Data | Parallelogram | Input atau output data |
-| Permulaan/Tamat | Oval | Titik mula atau tamat proses |
-| Aliran | Anak panah | Arah aliran proses |
-
-#### 3.2.2. Model Proses Bisnes
-
-**Gambarajah 5: Model Proses Helpdesk Ticketing**
+**Rajah 4: Hirarki Fungsi Bisnes**
 
 ```mermaid
 flowchart TD
-    Start([Mula]) --> Check{Pengguna<br/>Log Masuk?}
-    Check -->|Ya| AuthForm[Borang Authenticated<br/>Auto-fill dari Profile]
-    Check -->|Tidak| GuestForm[Borang Tetamu<br/>Manual Entry]
+    A[BF-ICT<br/>Mengurus Perkhidmatan ICT MOTAC<br/>Dengan Efisien dan Pintar]
     
-    AuthForm --> Validate[Validasi Data]
-    GuestForm --> Validate
+    A --> B[BF-ICT-AM<br/>Pengurusan Akses<br/>User Management]
+    A --> C[BF-ICT-AD<br/>Helpdesk Service Desk<br/>Ticket Management]
+    A --> D[BF-ICT-PJ<br/>Pinjaman Aset ICT<br/>Asset Loan]
+    A --> E[BF-ICT-PM<br/>Pemantauan & Audit<br/>Monitoring & Audit]
+    A --> F[BF-ICT-JL<br/>Dashboard & Laporan<br/>Reports & Analytics]
+    A --> G[BF-ICT-AI<br/>Cloud Hybrid AI<br/>AI Services]
     
-    Validate --> reCAPTCHA{reCAPTCHA<br/>Pass?}
-    reCAPTCHA -->|Tidak| Error1[Ralat: Verifikasi Gagal]
+    B --> B1[BF-ICT-AM-01<br/>Self-Registration<br/>@motac.gov.my]
+    B --> B2[BF-ICT-AM-02<br/>Flexible Login<br/>Email/Username]
+    B --> B3[BF-ICT-AM-03<br/>Account Linking<br/>Guest to Staff]
+    B --> B4[BF-ICT-AM-04<br/>Profile Management<br/>User Settings]
+    
+    C --> C1[BF-ICT-AD-01<br/>Ticket Management<br/>Issue Tracking]
+    C --> C2[BF-ICT-AD-02<br/>SLA Management<br/>Service Level]
+    C --> C3[BF-ICT-AD-03<br/>Notifications<br/>Multi-channel]
+    C --> C4[BF-ICT-AD-04<br/>Status Tracking<br/>Real-time Updates]
+    
+    D --> D1[BF-ICT-PJ-01<br/>Asset Application<br/>Loan Request]
+    D --> D2[BF-ICT-PJ-02<br/>Approval Workflow<br/>Email Approval]
+    D --> D3[BF-ICT-PJ-03<br/>Check-out Check-in<br/>Asset Movement]
+    D --> D4[BF-ICT-PJ-04<br/>Conflict Detection<br/>Availability Check]
+    
+    E --> E1[BF-ICT-PM-01<br/>Laravel Pulse<br/>Performance Monitor]
+    E --> E2[BF-ICT-PM-02<br/>Laravel Telescope<br/>Debug & Profiling]
+    E --> E3[BF-ICT-PM-03<br/>Dual Audit<br/>Owen-it + Spatie]
+    E --> E4[BF-ICT-PM-04<br/>API Management<br/>Laravel Sanctum]
+    
+    F --> F1[BF-ICT-JL-01<br/>KPI Dashboard<br/>Key Metrics]
+    F --> F2[BF-ICT-JL-02<br/>Analytics<br/>Data Analysis]
+    F --> F3[BF-ICT-JL-03<br/>Export Reports<br/>PDF/Excel]
+    
+    G --> G1[BF-ICT-AI-01<br/>FAQ Bot<br/>Ollama Local]
+    G --> G2[BF-ICT-AI-02<br/>Document Analysis<br/>AWS Bedrock]
+    G --> G3[BF-ICT-AI-03<br/>Model Router<br/>Smart Routing]
+    G --> G4[BF-ICT-AI-04<br/>Knowledge Base<br/>Learning System]
+    
+    style A fill:#e1f5ff,stroke:#01579b,stroke-width:3px
+    style B fill:#b3e5fc,stroke:#0277bd,stroke-width:2px
+    style C fill:#b3e5fc,stroke:#0277bd,stroke-width:2px
+    style D fill:#b3e5fc,stroke:#0277bd,stroke-width:2px
+    style E fill:#b3e5fc,stroke:#0277bd,stroke-width:2px
+    style F fill:#b3e5fc,stroke:#0277bd,stroke-width:2px
+    style G fill:#b3e5fc,stroke:#0277bd,stroke-width:2px
+```
+
+##### b) Keterangan Fungsi Bisnes
+
+**Jadual 3.1: Keterangan Fungsi Bisnes**
+
+| ID Fungsi | Nama Fungsi | Keterangan | Pengguna Terlibat |
+| :--- | :--- | :--- | :--- |
+| **BF-ICT-AM** | **Pengurusan Akses** | Mengurus pendaftaran diri, log masuk hibrid, dan profil pengguna dengan True Hybrid Architecture. | Semua Pengguna |
+| **BF-ICT-AD** | **Pengurusan Aduan** | Menghantar, memantau, dan menyelesaikan tiket kerosakan ICT dengan sokongan AI auto-response. | Warga MOTAC, Admin |
+| **BF-ICT-PJ** | **Pengurusan Pinjaman** | Memohon peralatan, menyemak stok, meluluskan, dan memulangkan aset dengan workflow automatik. | Warga MOTAC, Admin, Pelulus |
+| **BF-ICT-AI** | **Bantuan Pintar** | Menjawab pertanyaan (FAQ) dan analisis dokumen menggunakan AI Hibrid dengan optimasi kos. | Semua Pengguna |
+| **BF-ICT-PM** | **Pemantauan & Audit** | Mengurus pemantauan prestasi, audit keselamatan, dan compliance dengan dual audit system. | Admin, Superuser |
+| **BF-ICT-JL** | **Dashboard & Laporan** | Mengurus data rujukan, inventori, audit, dan menjana laporan prestasi untuk pengurusan strategik. | Admin, Superuser |
+
+#### 3.1.3 Senarai Pengguna
+
+Seksyen ini menyenaraikan senarai pengguna-pengguna yang terlibat secara langsung dengan fungsi bisnes.
+
+| Pengguna | Peranan | Tanggungjawab | Fungsi Terlibat |
+| :--- | :--- | :--- | :--- |
+| **Staf (Authenticated)** | Pengguna Berdaftar | Membuat permohonan, melihat sejarah dashboard, menguruskan profil peribadi. | Semua Modul |
+| **Tetamu (Guest)** | Pengguna Tidak Berdaftar | Membuat aduan/permohonan pantas, semakan status via token, akses AI chatbot. | Aduan, Pinjaman, AI |
+| **Admin** | Pegawai Operasi | Memproses tiket, menyediakan aset, memantau SLA, pengurusan notifikasi. | Semua Modul kecuali Superuser functions |
+| **Superuser** | Pentadbir Teknikal | Konfigurasi sistem, audit log, pemantauan AI, akses Laravel Telescope dan Pulse. | Pentadbiran Penuh |
+| **Pegawai Kelulusan** | Pembuat Keputusan | Meluluskan/menolak permohonan pinjaman aset melalui email approval workflow. | Pinjaman Aset |
+
+### 3.2 Keperluan Proses Bisnes
+
+#### 3.2.1 Penggunaan Notasi
+
+Seksyen ini menyenaraikan notasi-notasi yang akan digunakan untuk menyediakan Model Proses.
+
+Menggunakan notasi standard carta alir (*Flowchart*) dan Rajah Aliran Proses (PFD) dengan simbol-simbol berikut:
+
+| Simbol | Keterangan |
+| :--- | :--- |
+| Oval | Titik mula atau tamat proses |
+| Segi empat tepat | Aktiviti atau proses yang dilaksanakan |
+| Berlian | Titik keputusan dengan pilihan Ya/Tidak |
+| Parallelogram | Input atau output data |
+| Anak panah | Arah aliran proses |
+
+#### 3.2.2 Model Proses Bisnes
+
+Seksyen ini menyediakan Model Proses Bisnes yang merangkumi Aliran Proses Bisnes dan Definisi Fungsi Bisnes.
+
+##### a) Proses Pengurusan Aduan (Helpdesk)
+
+**Rajah 5: Aliran Proses PFD-ICT-AD (Pengurusan Aduan)**
+
+```mermaid
+flowchart TD
+    Start([Mula<br/>Pengguna Akses Sistem]) 
+    
+    Start --> Check{Pengguna<br/>Log Masuk?}
+    
+    Check -->|Ya| AuthForm[Borang Authenticated<br/>- Auto-fill dari Profile<br/>- user_id linked<br/>- Dashboard access]
+    Check -->|Tidak| GuestForm[Borang Tetamu<br/>- Manual Entry<br/>- user_id = NULL<br/>- Token tracking]
+    
+    AuthForm --> FillForm[Isi Maklumat Tiket<br/>- Kategori Masalah<br/>- Keterangan Detail<br/>- Lampiran Bukti]
+    GuestForm --> FillForm
+    
+    FillForm --> Validate[Validasi Data<br/>- Required Fields<br/>- File Size Check<br/>- Email Format]
+    
+    Validate --> reCAPTCHA{reCAPTCHA<br/>Verification<br/>Pass?}
+    
+    reCAPTCHA -->|Tidak| Error1[Ralat: Verifikasi Gagal<br/>Sila cuba semula]
     Error1 --> End1([Tamat])
     
-    reCAPTCHA -->|Ya| SaveTicket[Simpan Tiket<br/>user_id nullable FK]
-    SaveTicket --> GenToken[Jana Status Token<br/>SHA-512]
-    GenToken --> DualAudit[Rekod Dual Audit<br/>owen-it + spatie]
+    reCAPTCHA -->|Ya| AICheck{Boleh AI<br/>Bantu Selesai?}
     
-    DualAudit --> SendEmail[Hantar E-mel<br/>Pengesahan]
-    SendEmail --> NotifyAdmin[Notifikasi Admin<br/>via Reverb WebSocket]
-    NotifyAdmin --> SLACheck[Tetapkan SLA<br/>Berdasarkan Kategori]
+    AICheck -->|Ya| AIProcess[AI Auto-Response<br/>- FAQ matching<br/>- Solution suggestion<br/>- Ollama/Bedrock routing]
+    AICheck -->|Tidak| SaveTicket[Simpan Tiket<br/>- Generate Ticket ID<br/>- Set user_id if auth<br/>- Store submitter data]
     
-    SLACheck --> End2([Tamat])
+    AIProcess --> AISolved{AI Berjaya<br/>Selesaikan?}
     
-    style Start fill:#4caf50
-    style End1 fill:#f44336
-    style End2 fill:#4caf50
-    style Check fill:#ff9800
-    style reCAPTCHA fill:#ff9800
-    style AuthForm fill:#2196f3
-    style GuestForm fill:#2196f3
-    style DualAudit fill:#9c27b0
+    AISolved -->|Ya| AISuccess[Penyelesaian AI<br/>- Mark as resolved<br/>- User notification<br/>- Learning update]
+    AISolved -->|Tidak| SaveTicket
+    
+    SaveTicket --> GenToken[Jana Status Token<br/>- SHA-512 Hash<br/>- Email tracking<br/>- Secure access]
+    
+    GenToken --> DualAudit[Rekod Dual Audit<br/>- owen-it compliance<br/>- spatie operations<br/>- Timestamp all actions]
+    
+    DualAudit --> SendEmail[Hantar E-mel Pengesahan<br/>- Ticket number<br/>- Status tracking link<br/>- Expected SLA]
+    
+    SendEmail --> NotifyAdmin[Notifikasi Admin<br/>- Reverb WebSocket<br/>- Real-time alert<br/>- Queue assignment]
+    
+    NotifyAdmin --> SLACheck[Tetapkan SLA<br/>- Berdasarkan Kategori<br/>- Priority level<br/>- Response time target]
+    
+    SLACheck --> End2([Tamat<br/>Tiket Dijana])
+    AISuccess --> End3([Tamat<br/>AI Resolved])
+    
+    style Start fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style End1 fill:#f44336,stroke:#c62828,stroke-width:2px
+    style End2 fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style End3 fill:#00bcd4,stroke:#0097a7,stroke-width:2px
+    style Check fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style reCAPTCHA fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style AICheck fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style AISolved fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style AuthForm fill:#2196f3,stroke:#1976d2,stroke-width:2px
+    style GuestForm fill:#2196f3,stroke:#1976d2,stroke-width:2px
+    style DualAudit fill:#9c27b0,stroke:#7b1fa2,stroke-width:2px
+    style AIProcess fill:#00bcd4,stroke:#0097a7,stroke-width:2px
+    style AISuccess fill:#00bcd4,stroke:#0097a7,stroke-width:2px
 ```
 
-**Gambarajah 6: Model Proses Asset Loan Management**
+**Jadual 4: Definisi Aktiviti PFD-ICT-AD-01**
+
+| Rujukan Fungsi | **BF-ICT-AD** |
+| :--- | :--- |
+| **Nama Fungsi** | Pengurusan Aduan Helpdesk |
+| **Nama Aktiviti** | **PFD-ICT-AD-01: Menghantar Aduan Kerosakan ICT** |
+| **Keterangan** | Pengguna melaporkan masalah ICT melalui borang dalam talian dengan sokongan AI untuk penyelesaian automatik |
+| **Aktor** | Warga MOTAC (Staf/Tetamu), AI Chatbot Hibrid |
+| **Prasyarat** | Akses rangkaian Intranet/Internet, sistem AI tersedia (Ollama/Bedrock) |
+| **Input** | Nama, E-mel, Bahagian, Kategori Masalah, Keterangan Detail, Lampiran (optional) |
+| **Output** | Nombor Tiket, E-mel Notifikasi, AI Response (jika berkenaan), Status Tracking Token |
+| **Aliran Utama** | 1. Pengguna akses borang<br>2. Sistem semak status log masuk (Auto-fill jika authenticated)<br>3. Pengguna isi butiran kerosakan<br>4. AI cuba berikan penyelesaian pantas melalui model routing<br>5. Jika AI tidak dapat selesai, hantar sebagai tiket manual<br>6. Sistem simpan dan jana No. Tiket dengan dual audit |
+| **Aliran Alternatif** | Jika AI berjaya selesaikan masalah, tiket tidak perlu dijana dan pengguna dapat penyelesaian segera |
+| **Aliran Pengecualian** | Jika lampiran melebihi 10MB, AI tidak tersedia, atau reCAPTCHA gagal, proses manual dengan notifikasi ralat |
+| **Syarat Pasca** | Tiket direkod dalam pangkalan data, e-mel notifikasi dihantar, audit trail lengkap, SLA ditetapkan |
+
+##### b) Proses Pinjaman Aset ICT
+
+**Rajah 6: Aliran Proses PFD-ICT-PJ (Pinjaman Aset)**
 
 ```mermaid
 flowchart TD
-    Start([Mula]) --> Check{Pengguna<br/>Log Masuk?}
-    Check -->|Ya| AuthApp[Permohonan Authenticated<br/>Auto-fill dari Profile]
-    Check -->|Tidak| GuestApp[Permohonan Tetamu<br/>Manual Entry]
+    Start([Mula<br/>Permohonan Pinjaman Aset]) 
     
-    AuthApp --> SelectAsset[Pilih Aset<br/>Real-time Availability]
+    Start --> Check{Pengguna<br/>Log Masuk?}
+    
+    Check -->|Ya| AuthApp[Permohonan Authenticated<br/>- Auto-fill dari Profile<br/>- user_id linked<br/>- History tracking]
+    Check -->|Tidak| GuestApp[Permohonan Tetamu<br/>- Manual Entry<br/>- user_id = NULL<br/>- Token tracking]
+    
+    AuthApp --> SelectAsset[Pilih Aset & Tarikh<br/>- Browse inventory<br/>- Check real-time availability<br/>- Set loan period<br/>- Select accessories]
     GuestApp --> SelectAsset
     
-    SelectAsset --> ConflictCheck{Konflik<br/>Tempahan?}
-    ConflictCheck -->|Ya| Error1[Ralat: Aset Tidak Tersedia]
-    Error1 --> End1([Tamat])
+    SelectAsset --> ConflictCheck{Konflik<br/>Tempahan<br/>Wujud?}
     
-    ConflictCheck -->|Tidak| SaveApp[Simpan Permohonan<br/>user_id nullable FK]
-    SaveApp --> GenApproval[Jana Approval Token<br/>Signed URL 72h]
-    GenApproval --> SendApproval[Hantar E-mel Kelulusan<br/>kepada Gred 41+]
+    ConflictCheck -->|Ya| ShowAlternatives[Papar Alternatif<br/>- Alternative dates<br/>- Similar assets<br/>- Queue option<br/>- Notification when available]
+    ShowAlternatives --> UserChoice{Pengguna<br/>Pilih Alternatif?}
+    UserChoice -->|Ya| SelectAsset
+    UserChoice -->|Tidak| End1([Tamat<br/>Permohonan Dibatalkan])
     
-    SendApproval --> WaitDecision{Menunggu<br/>Keputusan}
-    WaitDecision -->|Luluskan| Approved[Status: Diluluskan]
-    WaitDecision -->|Tolak| Rejected[Status: Ditolak]
-    WaitDecision -->|Tamat Tempoh| Expired[Status: Tamat Tempoh]
+    ConflictCheck -->|Tidak| FillDetails[Isi Butiran Permohonan<br/>- Tujuan penggunaan<br/>- Lokasi penggunaan<br/>- Pegawai pelulus<br/>- Justifikasi keperluan]
     
-    Approved --> NotifyUser[Notifikasi Pemohon<br/>E-mel + WebSocket]
+    FillDetails --> ValidateApp[Validasi Permohonan<br/>- Required fields<br/>- Business rules<br/>- Approval hierarchy<br/>- Policy compliance]
+    
+    ValidateApp --> SaveApp[Simpan Permohonan<br/>- Generate application ID<br/>- Set user_id if auth<br/>- Store applicant data<br/>- Reserve asset temporarily]
+    
+    SaveApp --> GenApproval[Jana Approval Token<br/>- Signed URL 72h expiry<br/>- Secure approval link<br/>- Approver identification<br/>- Expiry tracking]
+    
+    GenApproval --> SendApproval[Hantar E-mel Kelulusan<br/>- kepada Pegawai Gred 41+<br/>- Application details<br/>- Approve/Reject buttons<br/>- Policy guidelines]
+    
+    SendApproval --> WaitDecision{Menunggu<br/>Keputusan<br/>Pegawai}
+    
+    WaitDecision -->|Luluskan| Approved[Status: Diluluskan<br/>- Update database<br/>- Confirm asset reservation<br/>- Generate pickup info<br/>- Set pickup deadline]
+    WaitDecision -->|Tolak| Rejected[Status: Ditolak<br/>- Record rejection reason<br/>- Release asset reservation<br/>- Notify applicant<br/>- Suggest alternatives]
+    WaitDecision -->|Tamat Tempoh| Expired[Status: Tamat Tempoh<br/>- Auto-reject application<br/>- Release reservation<br/>- Audit trail update<br/>- Notify all parties]
+    
+    Approved --> NotifyUser[Notifikasi Pemohon<br/>- E-mel confirmation<br/>- WebSocket real-time<br/>- Pickup instructions<br/>- OTP generation]
     Rejected --> NotifyUser
     Expired --> NotifyUser
     
-    NotifyUser --> DualAudit[Rekod Dual Audit<br/>owen-it + spatie]
-    DualAudit --> End2([Tamat])
+    NotifyUser --> DualAudit[Rekod Dual Audit<br/>- owen-it compliance<br/>- spatie operations<br/>- Full transaction log<br/>- Decision rationale]
     
-    style Start fill:#4caf50
-    style End1 fill:#f44336
-    style End2 fill:#4caf50
-    style Check fill:#ff9800
-    style ConflictCheck fill:#ff9800
-    style WaitDecision fill:#ff9800
-    style Approved fill:#4caf50
-    style Rejected fill:#f44336
-    style Expired fill:#ff9800
-    style DualAudit fill:#9c27b0
+    DualAudit --> CheckStatus{Status<br/>Diluluskan?}
+    
+    CheckStatus -->|Ya| AssetReady[Aset Sedia untuk Diambil<br/>- Generate pickup OTP<br/>- Notify asset team<br/>- Schedule handover<br/>- Prepare accessories]
+    CheckStatus -->|Tidak| End2([Tamat<br/>Permohonan Selesai])
+    
+    AssetReady --> End3([Tamat<br/>Sedia untuk Pickup])
+    
+    style Start fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style End1 fill:#f44336,stroke:#c62828,stroke-width:2px
+    style End2 fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style End3 fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style Check fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style ConflictCheck fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style UserChoice fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style WaitDecision fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style CheckStatus fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style Approved fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style Rejected fill:#f44336,stroke:#c62828,stroke-width:2px
+    style Expired fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style DualAudit fill:#9c27b0,stroke:#7b1fa2,stroke-width:2px
+    style AssetReady fill:#00bcd4,stroke:#0097a7,stroke-width:2px
+    style ShowAlternatives fill:#2196f3,stroke:#1976d2,stroke-width:2px
 ```
 
-### 3.3. Pengiraan Saiz Sistem Aplikasi
+**Jadual 5: Definisi Aktiviti PFD-ICT-PJ-01**
 
-Pengiraan saiz sistem menggunakan kaedah Function Point Analysis (FPA) untuk anggaran awal perancangan projek.
+| Rujukan Fungsi | **BF-ICT-PJ** |
+| :--- | :--- |
+| **Nama Fungsi** | Pengurusan Pinjaman Aset ICT |
+| **Nama Aktiviti** | **PFD-ICT-PJ-01: Memohon Pinjaman Aset ICT** |
+| **Keterangan** | Pengguna memohon peralatan ICT dengan workflow kelulusan automatik dan pengesanan konflik real-time |
+| **Aktor** | Warga MOTAC (Staf/Tetamu), Pegawai Kelulusan (Gred 41+), Admin Asset |
+| **Prasyarat** | Aset tersedia pada tarikh dipilih, pegawai pelulus dikenal pasti, policy compliance |
+| **Input** | Jenis Aset, Tarikh Mula/Tamat, Tujuan, Lokasi, Pegawai Pelulus, Justifikasi |
+| **Output** | Status Permohonan, E-mel Kelulusan, Pickup OTP (jika diluluskan), Tracking Token |
+| **Aliran Utama** | 1. Pengguna pilih aset & tarikh dengan semakan real-time<br>2. Sistem semak konflik dan cadang alternatif jika perlu<br>3. Hantar permohonan dengan butiran lengkap<br>4. E-mel token bertanda tangan kepada pelulus<br>5. Pelulus buat keputusan melalui secure link<br>6. Notifikasi kepada pemohon dan asset team |
+| **Aliran Alternatif** | Jika aset tidak tersedia, sistem cadang tarikh/aset alternatif dengan notification queue |
+| **Aliran Pengecualian** | Jika tiada pelulus, token tamat tempoh, atau policy violation, permohonan ditolak automatik |
+| **Syarat Pasca** | Permohonan direkod, status dikemaskini, audit trail lengkap, asset reservation (jika diluluskan) |
 
-**Jadual 6: Pengiraan Function Points**
+##### c) Proses Bantuan Pintar (AI Chatbot)
 
-| Komponen | Rendah (Bil×FP) | Sederhana (Bil×FP) | Tinggi (Bil×FP) | Jumlah FP |
-| :--- | :--- | :--- | :--- | :--- |
-| EI (External Input) | 8×3 = 24 | 15×4 = 60 | 3×6 = 18 | 102 |
-| EO (External Output) | 5×4 = 20 | 10×5 = 50 | 3×7 = 21 | 91 |
-| EQ (External Inquiry) | 6×3 = 18 | 12×4 = 48 | 4×6 = 24 | 90 |
-| ILF (Internal Logical File) | 10×7 = 70 | 3×10 = 30 | 1×15 = 15 | 115 |
-| EIF (External Interface File) | 2×5 = 10 | 2×7 = 14 | 0×10 = 0 | 24 |
-| **Jumlah Unadjusted Function Points (UFP)** | | | | **422** |
+**Rajah 7: Aliran Proses PFD-ICT-AI (Bantuan Pintar)**
 
-**Value Adjustment Factor (VAF)**: 1.22 (berdasarkan 14 General System Characteristics)
+```mermaid
+flowchart TD
+    Start([Pengguna Bertanya<br/>FAQ atau Bantuan])
+    
+    Start --> InputQuery[Input Pertanyaan<br/>- Text input<br/>- Voice input (future)<br/>- Document upload<br/>- Context awareness]
+    
+    InputQuery --> PreProcess[Pra-pemprosesan<br/>- Language detection<br/>- Intent classification<br/>- Context extraction<br/>- Query normalization]
+    
+    PreProcess --> DataClassify{Klasifikasi Data<br/>Sensitif atau<br/>Confidential?}
+    
+    DataClassify -->|Ya - Sensitif| LocalRoute[Route ke Ollama Local<br/>- PDPA compliance<br/>- Data sovereignty<br/>- On-premise processing<br/>- Zero cloud exposure]
+    DataClassify -->|Tidak - Awam| ComplexityCheck{Tahap<br/>Kompleksiti<br/>Tinggi?}
+    
+    ComplexityCheck -->|Rendah/FAQ| LocalRoute
+    ComplexityCheck -->|Tinggi/Analysis| CostCheck{Budget<br/>Tersedia untuk<br/>Cloud Processing?}
+    
+    CostCheck -->|Ya| CloudRoute[Route ke AWS Bedrock<br/>- Advanced reasoning<br/>- Complex analysis<br/>- Multi-modal processing<br/>- Cost tracking]
+    CostCheck -->|Tidak| FallbackLocal[Fallback ke Ollama<br/>- Budget protection<br/>- Basic response<br/>- Cost optimization<br/>- Quality notification]
+    
+    LocalRoute --> OllamaProcess[Pemprosesan Ollama<br/>- Local LLM inference<br/>- FAQ matching<br/>- Quick responses<br/>- Cost: RM0.00]
+    
+    CloudRoute --> BedrockProcess[Pemprosesan Bedrock<br/>- Claude/GPT models<br/>- Advanced reasoning<br/>- Document analysis<br/>- Cost: ~RM0.10/query]
+    
+    FallbackLocal --> OllamaProcess
+    
+    OllamaProcess --> ResponseGen[Jana Respons<br/>- Structured output<br/>- Confidence score<br/>- Source references<br/>- Quality metrics]
+    BedrockProcess --> ResponseGen
+    
+    ResponseGen --> QualityCheck{Kualiti<br/>Respons<br/>Mencukupi?}
+    
+    QualityCheck -->|Ya| StreamResponse[Stream Respons<br/>- Real-time display<br/>- Progressive loading<br/>- User feedback prompt<br/>- Related suggestions]
+    QualityCheck -->|Tidak| EscalateHuman[Escalate ke Manusia<br/>- Create helpdesk ticket<br/>- Notify admin<br/>- Human takeover<br/>- Context preservation]
+    
+    StreamResponse --> LogInteraction[Log Interaksi<br/>- User query<br/>- AI response<br/>- Model used<br/>- Cost tracking<br/>- Performance metrics]
+    
+    EscalateHuman --> LogInteraction
+    
+    LogInteraction --> UserFeedback{Pengguna<br/>Beri Maklum Balas<br/>Positif?}
+    
+    UserFeedback -->|Ya| UpdateKB[Kemaskini Knowledge Base<br/>- Improve responses<br/>- Train local model<br/>- FAQ enhancement<br/>- Pattern recognition]
+    UserFeedback -->|Tidak/Negatif| ReviewResponse[Review & Improve<br/>- Analyze failure<br/>- Update training data<br/>- Model fine-tuning<br/>- Quality assurance]
+    UserFeedback -->|Tiada| End1([Tamat<br/>Interaksi Selesai])
+    
+    UpdateKB --> ModelTuning[Fine-tuning Model<br/>- Periodic retraining<br/>- Performance optimization<br/>- Cost reduction<br/>- Quality improvement]
+    ReviewResponse --> ModelTuning
+    
+    ModelTuning --> End2([Tamat<br/>Model Dipertingkat])
+    
+    style Start fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style End1 fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style End2 fill:#00bcd4,stroke:#0097a7,stroke-width:2px
+    style DataClassify fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style ComplexityCheck fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style CostCheck fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style QualityCheck fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style UserFeedback fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style LocalRoute fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style CloudRoute fill:#2196f3,stroke:#1976d2,stroke-width:2px
+    style OllamaProcess fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style BedrockProcess fill:#2196f3,stroke:#1976d2,stroke-width:2px
+    style FallbackLocal fill:#ff9800,stroke:#f57c00,stroke-width:2px
+    style EscalateHuman fill:#f44336,stroke:#c62828,stroke-width:2px
+    style LogInteraction fill:#9c27b0,stroke:#7b1fa2,stroke-width:2px
+    style UpdateKB fill:#00bcd4,stroke:#0097a7,stroke-width:2px
+    style ReviewResponse fill:#ff5722,stroke:#d84315,stroke-width:2px
+    style ModelTuning fill:#00bcd4,stroke:#0097a7,stroke-width:2px
+```
 
-**Adjusted Function Points (AFP)**: 422 × 1.22 = **515 FP**
+**Jadual 6: Definisi Aktiviti PFD-ICT-AI-01**
 
-#### 3.3.1. Anggaran Usaha dan Kos
+| Rujukan Fungsi | **BF-ICT-AI** |
+| :--- | :--- |
+| **Nama Fungsi** | Cloud Hybrid AI Services |
+| **Nama Aktiviti** | **PFD-ICT-AI-01: Pemprosesan Pertanyaan AI Hibrid** |
+| **Keterangan** | Sistem AI hibrid memproses pertanyaan dengan routing pintar untuk optimasi kos dan kedaulatan data |
+| **Aktor** | Semua Pengguna, AI Model Router, Ollama Local, AWS Bedrock Cloud |
+| **Teknologi** | Ollama (Local AI), AWS Bedrock (Cloud AI), Model Router, Cost Optimizer |
+| **Input** | Pertanyaan pengguna, konteks, dokumen sokongan, user preferences |
+| **Output** | Respons AI, confidence score, cost tracking, quality metrics, learning data |
+| **Aliran Utama** | 1. Pengguna input pertanyaan dengan context awareness<br>2. Model Router analisis kompleksiti dan sensitiviti data<br>3. Jika sensitif/mudah → Ollama local (RM0.00)<br>4. Jika kompleks/awam → Bedrock cloud (~RM0.10) dengan budget check<br>5. Jana dan stream respons dengan quality assurance<br>6. Log interaksi untuk pembelajaran dan cost optimization |
+| **Aliran Alternatif** | Jika budget habis atau cloud tidak tersedia, fallback ke Ollama dengan notification |
+| **Aliran Pengecualian** | Jika kedua-dua AI gagal atau quality tidak mencukupi, escalate ke manusia dengan context preservation |
+| **Syarat Pasca** | Respons dijana, kos direkod, knowledge base dikemaskini, performance metrics updated |
 
-Berdasarkan 515 Function Points:
+### 3.3 Pengiraan Saiz Sistem Aplikasi
 
-- **Anggaran Usaha**: 515 FP × 6 jam/FP = **3,090 jam** ≈ **387 hari manusia**
-- **Anggaran Tempoh**: 387 hari ÷ 3 pembangun = **129 hari** ≈ **6 bulan**
-- **Anggaran Kos** (RM 150/jam): 3,090 jam × RM 150 = **RM 463,500**
+Seksyen ini menyediakan Pengiraan Saiz Sistem Aplikasi dengan menggunakan kaedah Function Points Analysis.
 
-*Nota: Anggaran ini adalah indikatif untuk perancangan awal. Perincian terperinci akan dimuktamadkan semasa peringkat analisis dan perancangan projek.*
+Pengiraan ini menggunakan kaedah *Function Point Analysis* (FPA) secara anggaran berdasarkan modul yang disenaraikan untuk memberikan gambaran saiz dan kompleksiti sistem.
 
-#### 3.3.2. Perincian Komponen Function Points
+#### 3.3.1 Komponen Function Points
 
-**External Inputs (EI) - 102 FP:**
-- Self-Registration Form (Sederhana: 4 FP)
-- Login Email/Username (Rendah: 3 FP)
-- Helpdesk Ticket Submission Auth/Guest (Sederhana: 4 FP × 2)
-- Loan Application Auth/Guest (Tinggi: 6 FP × 2)
-- Email Approval Decision (Sederhana: 4 FP)
-- Asset Check-out/Check-in (Sederhana: 4 FP × 2)
-- Profile Update (Rendah: 3 FP)
-- Account Linking Request (Sederhana: 4 FP)
-- Ticket Status Update Admin (Sederhana: 4 FP)
-- SLA Configuration (Rendah: 3 FP)
-- Email Template Configuration (Rendah: 3 FP)
-- User Feedback Submission (Rendah: 3 FP)
-- API Token Creation (Sederhana: 4 FP)
-- Notification Preferences (Rendah: 3 FP)
+**Jadual 7: Pengiraan Function Point**
 
-**External Outputs (EO) - 91 FP:**
-- Email Confirmation Ticket/Loan (Sederhana: 5 FP × 2)
-- Email Approval Request (Tinggi: 7 FP)
-- SLA Breach Alert (Sederhana: 5 FP)
-- Dashboard KPI Report (Tinggi: 7 FP)
-- Ticket Statistics Report (Sederhana: 5 FP)
-- Asset Usage Report (Sederhana: 5 FP)
-- Audit Trail Export CSV (Tinggi: 7 FP)
-- Performance Report Pulse (Sederhana: 5 FP)
-- WebSocket Notification (Rendah: 4 FP)
-- PDF Reports (Sederhana: 5 FP)
-- Email Digests (Sederhana: 5 FP)
+| Komponen | Bilangan | Kompleksiti | Faktor Pemberat (Avg) | Jumlah (UFP) |
+| :--- | :---: | :---: | :---: | :---: |
+| **External Input (EI)**<br>(Borang Aduan, Pinjaman, Login, Chat, Profil, Config, AI Interaction) | 15 | Sederhana | 4 | 60 |
+| **External Output (EO)**<br>(Notifikasi, Laporan PDF, Slip Tiket, Respons AI, Email Approval) | 12 | Sederhana | 5 | 60 |
+| **External Inquiry (EQ)**<br>(Carian Tiket, Status Aset, Dashboard, Log Audit, AI Query) | 14 | Sederhana | 4 | 56 |
+| **Internal Logical File (ILF)**<br>(Users, Tickets, Assets, Loans, Audits, FAQs, AI Knowledge) | 18 | Tinggi | 10 | 180 |
+| **External Interface File (EIF)**<br>(Google SSO, AWS Bedrock API, Ollama API, Email Gateway) | 4 | Tinggi | 7 | 28 |
+| **JUMLAH (UFP)** | | | | **384** |
 
-**External Inquiries (EQ) - 90 FP:**
-- Ticket Status Check Token (Rendah: 3 FP)
-- Loan Status Check Token (Rendah: 3 FP)
-- My Dashboard Staff (Tinggi: 6 FP)
-- Asset Availability Search (Sederhana: 4 FP)
-- Ticket List Admin (Sederhana: 4 FP)
-- Loan Application List Admin (Sederhana: 4 FP)
-- Audit Log Viewer Superuser (Tinggi: 6 FP)
-- Laravel Pulse Dashboard (Tinggi: 6 FP)
-- Laravel Telescope Viewer (Tinggi: 6 FP)
-- Asset Inventory List (Sederhana: 4 FP)
-- User Search (Sederhana: 4 FP)
-- Division Lookup (Rendah: 3 FP)
+#### 3.3.2 Faktor Pelarasan Teknikal
 
-**Internal Logical Files (ILF) - 115 FP:**
-- users (Sederhana: 10 FP)
-- helpdesk_tickets (Sederhana: 10 FP)
-- loan_applications (Tinggi: 15 FP)
-- assets (Rendah: 7 FP)
-- loan_approvals (Rendah: 7 FP)
-- loan_transactions (Sederhana: 10 FP)
-- audits owen-it (Rendah: 7 FP)
-- activity_log spatie (Rendah: 7 FP)
-- pulse_entries (Rendah: 7 FP)
-- pulse_values (Rendah: 7 FP)
-- personal_access_tokens (Rendah: 7 FP)
-- notifications (Rendah: 7 FP)
-- divisions (Rendah: 7 FP)
-- categories (Rendah: 7 FP)
-- sla_configurations (Rendah: 7 FP)
+| Faktor | Nilai | Justifikasi |
+|--------|-------|-------------|
+| Komunikasi Data | 1.20 | Sistem menggunakan WebSocket, Redis Queue, API eksternal (AWS Bedrock), dan real-time communication |
+| AI Integration | 1.15 | Cloud Hybrid AI dengan model routing, cost optimization, dan learning capabilities |
+| **Total Technical Complexity Factor (TCF)** | **1.38** | **Gabungan faktor komunikasi dan AI integration** |
 
-**External Interface Files (EIF) - 24 FP:**
-- Google Workspace API SSO (Sederhana: 7 FP)
-- Email Gateway SMTP (Sederhana: 7 FP)
-- LDAP Directory Future (Rendah: 5 FP)
-- External API Future (Rendah: 5 FP)
+#### 3.3.3 Pengiraan Akhir
 
-#### 3.3.3. General System Characteristics (GSC)
+| Keterangan | Nilai |
+| :--- | :--- |
+| Jumlah Function Points Tidak Dilaras (UFP) | 384 |
+| Faktor Pelarasan Teknikal (TCF) | 1.38 |
+| **Jumlah Function Points Dilaras (AFP)** | **530** |
 
-| No. | Karakteristik | Nilai | Justifikasi |
-| :--- | :--- | :--- | :--- |
-| 1 | Data Communications | 5 | Real-time WebSocket, API, email integration |
-| 2 | Distributed Data Processing | 4 | Redis queue, background jobs, WebSocket server |
-| 3 | Performance | 5 | Core Web Vitals, LCP <2.5s, Laravel Pulse monitoring |
-| 4 | Heavily Used Configuration | 4 | Multi-user concurrent access, real-time updates |
-| 5 | Transaction Rate | 4 | Moderate transaction volume, peak during office hours |
-| 6 | Online Data Entry | 5 | All forms online, hybrid submission modes |
-| 7 | End-User Efficiency | 5 | Auto-fill, flexible login, guest mode, responsive UI |
-| 8 | Online Update | 5 | Real-time status updates, WebSocket notifications |
-| 9 | Complex Processing | 4 | SLA calculation, conflict detection, dual audit |
-| 10 | Reusability | 3 | Modular design, reusable components |
-| 11 | Installation Ease | 3 | Standard Laravel deployment |
-| 12 | Operational Ease | 4 | Laravel Pulse, Telescope, comprehensive logging |
-| 13 | Multiple Sites | 2 | Single deployment (MOTAC internal) |
-| 14 | Facilitate Change | 4 | Modular architecture, API-ready, extensible |
+#### 3.3.4 Anggaran Usaha dan Kos
 
-**Total Degree of Influence (TDI)**: 57  
-**Value Adjustment Factor (VAF)**: 0.65 + (0.01 × 57) = **1.22**
+Berdasarkan 530 Function Points:
+
+- **Anggaran Usaha**: 530 FP × 6 jam/FP = **3,180 jam** ≈ **398 hari manusia**
+- **Anggaran Tempoh**: 398 hari ÷ 4 pembangun = **100 hari** ≈ **5 bulan**
+- **Anggaran Kos** (RM 180/jam): 3,180 jam × RM 180 = **RM 572,400**
+
+*Nota: Anggaran ini adalah untuk pembangunan fasa pertama termasuk Cloud Hybrid AI integration. Peningkatan ciri lanjutan dan integrasi sistem akan menambah FP di fasa akan datang.*
 
 ---
 
 ## 4. LAMPIRAN
 
-### 4.1. Borang Rujukan
+Seksyen ini merupakan ruangan untuk menyertakan dokumen-dokumen sokongan yang perlu dirujuk seperti pekeliling dan garis panduan, minit mesyuarat, borang-borang fizikal, surat-surat rasmi, manual prosedur kerja sedia ada, dan dokumen rujukan teknikal.
 
-- **Helpdesk Ticket Form**: `app/Livewire/Helpdesk/TicketForm.php` - Implementasi mapping borang helpdesk → `helpdesk_tickets` (termasuk pemetaan `submitter_*` → `guest_*`)
-- **Loan Application Form**: `app/Livewire/Forms/LoanApplicationForm.php` - Implementasi mapping borang pinjaman → `loan_applications` (validasi & logik kelulusan)
+### Lampiran A: Borang Rujukan
 
-### 4.2. Carta Alir & Diagram
+- **Borang Aduan Kerosakan ICT** - Template borang untuk pelaporan masalah teknikal
+- **Borang Permohonan Pinjaman Aset ICT** - Template permohonan pinjaman peralatan
+- **Borang Kelulusan Pinjaman** - Template keputusan pegawai pelulus
 
-- Carta alir kelulusan e-mel (rujuk D04 §4.2, D11 §6)
-- Diagram proses SLA (rujuk D11 §7)
-- Diagram True Hybrid Architecture (rujuk D04 §3.1)
+### Lampiran B: Carta Alir Proses
 
-### 4.3. Dokumen Sokongan
+- **Carta Alir Helpdesk (PFD-ICT-AD)** - Rujuk Rajah 5
+- **Carta Alir Pinjaman Aset (PFD-ICT-PJ)** - Rujuk Rajah 6  
+- **Carta Alir Bantuan AI (PFD-ICT-AI)** - Rujuk Rajah 7
 
-- `docs/reference/FILAMENT_UPDATE_STATUS.md` - Bukti/status pematuhan panel pentadbir (Filament)
-- `tests/e2e/ACCESSIBILITY_TEST_RESULTS.md` - Ringkasan hasil ujian kebolehcapaian (E2E)
-- `docs/reference/performance-optimization-guide.md` - Panduan optimasi prestasi
-- `tests/e2e/performance/core-web-vitals.spec.ts` - Ujian Core Web Vitals
-- `tests/e2e/performance/lighthouse-audit.spec.ts` - Ujian Lighthouse
+### Lampiran C: Glosari Istilah Teknikal
 
-### 4.4. Piawaian dan Garis Panduan
+- Rujuk Seksyen vii (Definisi dan Akronim) untuk istilah teknikal yang digunakan
 
-- **WCAG 2.2 Level AA** - Web Content Accessibility Guidelines
-- **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards
-- **ISO/IEC/IEEE 29148:2018** - Requirements Engineering
-- **ISO/IEC/IEEE 15288:2015** - System Life Cycle Processes
-- **PDPA 2010** - Personal Data Protection Act
-- **ISO 9241-210:2019** - Human-Centred Design
-- **MyGovEA 18 Prinsip** - Malaysian Government Enterprise Architecture
+### Lampiran D: Dokumen Rujukan Teknikal
 
-### 4.5. Matriks Pemetaan Keperluan (Requirements Traceability Matrix)
-
-RTM diselenggara dalam:
-- `docs/reference/rtm/loan_requirements_rtm.csv` - Pemetaan keperluan pinjaman aset
-- `docs/reference/rtm/helpdesk_requirements_rtm.csv` - Pemetaan keperluan helpdesk
-
-Semua keperluan baharu bercap ID `BRS-3.x` dan dipetakan kepada:
-- SRS (D03) - Software Requirements Specification
-- SDD (D04) - Software Design Document
-- Kes ujian berkaitan (PHPUnit, Livewire, Lighthouse)
-
-Kemas kini RTM hendaklah mematuhi D01 §9.3 untuk penjejakan perubahan.
-
-### 4.6. Glosari Istilah Bisnes
-
-| Istilah | Takrif |
-| :--- | :--- |
-| **True Hybrid Architecture** | Seni bina sistem yang menyokong akses tetamu (tanpa log masuk) dan pengguna berdaftar (dengan log masuk) secara serentak dengan nullable user_id FK |
-| **Tetamu** | Individu yang mengemukakan borang tanpa akaun aplikasi, tracked via email token |
-| **Pautan Kelulusan Bertanda Tangan** | URL unik dengan token hashed dan tarikh luput untuk membuat keputusan kelulusan (72 jam validity) |
-| **Admin** | Pegawai BPM yang mengurus operasi harian melalui Filament (ticket management, asset management, notifications) |
-| **Superuser** | Pegawai BPM yang mengawal konfigurasi, audit, dan integrasi dengan akses penuh Laravel Telescope |
-| **SLA** | Service Level Agreement untuk tindak balas dan penyelesaian tiket helpdesk |
-| **Laravel Pulse** | Dashboard pemantauan prestasi masa nyata untuk menjejaki query perlahan, queue jobs, dan kesihatan pelayan |
-| **Laravel Sanctum** | Sistem pengesahan token API untuk akses API yang selamat dengan keupayaan dan tamat masa yang boleh dikonfigurasi |
-| **Laravel Socialite** | Perpustakaan pengesahan sosial OAuth 2.0 untuk integrasi Google Workspace SSO |
-| **Dual Audit System** | Sistem audit berganda menggunakan owen-it (compliance, field-level, 7-year retention) dan spatie (operations, activity logging) |
-| **Self-Registration** | Pendaftaran kendiri staf menggunakan e-mel @motac.gov.my dengan pengesahan e-mel (24-hour validity) |
-| **Flexible Login** | Sistem log masuk yang menerima e-mel penuh atau username pendek (extracted from email) |
-| **Account Linking** | Proses menghubungkan submission tetamu terdahulu (user_id = NULL) dengan akaun staf baharu |
-| **Nullable FK** | Foreign Key yang boleh NULL untuk menyokong hybrid data association (guest vs authenticated) |
-| **Cloud Hybrid AI** | Seni bina AI yang menggabungkan Ollama (local, percuma) dan AWS Bedrock (cloud, berbayar) untuk optimasi kos dan kedaulatan data |
-| **Model Routing** | Sistem pintar yang menganalisis pertanyaan dan menghalakan kepada model AI yang sesuai berdasarkan kompleksiti |
-| **Data Sovereignty** | Kedaulatan data yang memastikan data sensitif diproses secara tempatan (Ollama) dan data awam di cloud (Bedrock) |
-
-### 4.7. Akronim Tambahan
-
-| Akronim | Keterangan |
-| :--- | :--- |
-| AFP | Adjusted Function Points |
-| DET | Data Element Type |
-| EI | External Input |
-| EIF | External Interface File |
-| EO | External Output |
-| EQ | External Inquiry |
-| FPA | Function Point Analysis |
-| GSC | General System Characteristics |
-| ILF | Internal Logical File |
-| KPI | Key Performance Indicator |
-| OAuth | Open Authorization |
-| OTP | One-Time Password |
-| RET | Record Element Type |
-| RTM | Requirements Traceability Matrix |
-| SAL | Signed Approval Link |
-| TDI | Total Degree of Influence |
-| UFP | Unadjusted Function Points |
-| VAF | Value Adjustment Factor |
-
-### 4.8. Rujukan Kod Sumber
-
-**Implementasi Hybrid Architecture:**
-- `app/Models/User.php` - User model dengan nullable FK support
-- `app/Models/HelpdeskTicket.php` - Helpdesk model dengan hybrid data association
-- `app/Models/LoanApplication.php` - Loan model dengan hybrid data association
-- `app/Services/Helpdesk/HelpdeskService.php` - Business logic untuk hybrid submission
-- `app/Services/Loan/LoanService.php` - Business logic untuk hybrid application
-
-**Implementasi Dual Audit:**
-- `config/audit.php` - Owen-it Laravel Auditing configuration
-- `config/activitylog.php` - Spatie Activity Log configuration
-- `app/Filament/Pages/UnifiedAuditLog.php` - Unified audit viewer (superuser only)
-
-**Implementasi Performance Monitoring:**
-- `config/pulse.php` - Laravel Pulse configuration
-- `app/Providers/PulseServiceProvider.php` - Pulse access control (admin/superuser)
-- `app/Filament/Widgets/PerformanceMetricsWidget.php` - Performance dashboard widget
-
-**Implementasi API Authentication:**
-- `config/sanctum.php` - Laravel Sanctum configuration
-- `app/Services/Api/ApiTokenService.php` - Token management service
-- `routes/api.php` - API routes dengan Sanctum middleware
-
-**Implementasi Cloud Hybrid AI:**
-- `app/Services/AI/ModelRoutingService.php` - Smart model routing logic
-- `app/Services/AI/OllamaService.php` - Local Ollama integration
-- `app/Services/AI/BedrockService.php` - AWS Bedrock integration
-- `config/ai.php` - AI services configuration
-
-### 4.9. Keperluan Bukan Fungsi (Non-Functional Requirements)
-
-**Kebolehcapaian (Accessibility):**
-- Mematuhi WCAG 2.2 AA
-- 44x44px touch target minimum
-- 3px focus outline untuk keyboard navigation
-- Struktur ARIA yang betul
-- Rujuk: D12–D14, `tests/e2e/accessibility.comprehensive.spec.ts`
-
-**Prestasi (Performance):**
-- LCP <2.5s untuk borang utama
-- TTI <4s untuk interactive elements
-- Skor Lighthouse ≥90 (Desktop/Mobile)
-- Rujuk: `tests/e2e/performance/core-web-vitals.spec.ts`, `docs/reference/performance-optimization-guide.md`
-
-**Keselamatan (Security):**
-- reCAPTCHA Enterprise untuk borang tetamu
-- Rate limiting (60 req/min untuk guest routes, 60 req/min untuk API)
-- Storage token hashed (SHA-512)
-- Audit log penuh (dual system)
-- Rujuk: D09 §8, D11 §8
-
-**Kebolehskalaan (Scalability):**
-- Boleh menambah borang tetamu baharu tanpa menambah peranan pengguna
-- Redis queue untuk background jobs
-- WebSocket server (Laravel Reverb) untuk real-time updates
-- Horizontal scaling support
-
-**Kebolehgunaan (Usability):**
-- UI Bahasa Melayu sahaja (v3.6.0+)
-- Navigasi jelas dan konsisten
-- Panduan inline untuk tetamu
-- Status real-time untuk submissions
-- Responsive design (mobile-first)
-
-**Pemulihan (Recovery):**
-- Backup harian automatik
-- Pelan pemulihan 4 jam (RTO)
-- Kehilangan data maksimum 1 jam (RPO)
-- Disaster recovery procedures
-
-### 4.10. Keperluan Data dan Privasi
-
-**Kategori Data Utama:**
-- Data Tetamu: Nama, e-mel, telefon, bahagian, gred, maklumat aduan/permohonan, lampiran
-- Data Pentadbir: Rekod `users` untuk `admin` dan `superuser` (nama, e-mel dalaman, telefon, status)
-- Data Kelulusan: `approver_email`, `approver_grade`, keputusan, catatan, token
-- Data Audit & Prestasi: Rekod SLA, masa tindak balas, masa penyelesaian, log akses
-
-**Implikasi Privasi Data & PDPA:**
-- Data Peribadi: Tetamu dan pegawai kelulusan diklasifikasi sebagai data peribadi; simpanan terhad kepada tujuan proses
-- Consent: Borang menyertakan notis PDPA & checkbox perakuan
-- Retention: Data tetamu kekal 7 tahun (selari PDPA & Arkib Negara); lampiran dibersihkan jika tidak relevan selepas 24 bulan kecuali kes audit
-- Hak Individu: Tetamu boleh memohon pemadaman maklumat lampiran melalui saluran rasmi BPM; log audit mengekalkan rekod perubahan
-
-### 4.11. Kriteria Kejayaan (Success Criteria)
-
-| ID | Kriteria | Sasaran | Tempoh |
-| :--- | :--- | :--- | :--- |
-| SC-01 | 100% permohonan & aduan dihantar melalui sistem | Tiada lagi pengumpulan manual/e-mel untuk tiket & pinjaman | 3 bulan |
-| SC-02 | SLA tindak balas helpdesk (4 jam kerja) | ≥ 90% dicapai setiap bulan | 6 bulan |
-| SC-03 | Kelulusan Gred 41 melalui pautan e-mel | ≥ 95% tanpa bantuan manual | 6 bulan |
-| SC-04 | Skor Lighthouse (Desktop/Mobile) | ≥ 90 untuk borang utama | Fasa 2 |
-| SC-05 | Pematuhan audit PDPA & ICT MOTAC | Tiada ketakpatuhan kritikal semasa audit tahunan | Berterusan |
-| SC-06 | Pemantauan prestasi Laravel Pulse | Dashboard diakses oleh admin/superuser untuk pengesanan isu proaktif | Fasa 2 |
-| SC-07 | Infrastruktur API (Laravel Sanctum) | Token API berfungsi untuk integrasi masa depan | Fasa 3 |
-| SC-08 | Google Workspace SSO (jika diaktifkan) | ≥ 80% staf menggunakan SSO untuk log masuk | 6 bulan |
-| SC-09 | AI FAQ Bot response time | <5 saat untuk 90% pertanyaan | Fasa 3 |
-| SC-10 | AI cost optimization | 82% penjimatan kos berbanding cloud-only | Fasa 3 |
-| SC-11 | Kepuasan pengguna | ≥ 85% kepuasan melalui survey | 6 bulan |
-| SC-12 | Kecekapan operasi | Mengurangkan masa pemprosesan helpdesk ≥40%, pinjaman ≥50% | 6 bulan |
+- **Laravel 12 Framework Documentation**
+- **Livewire 3.7.3 Component Framework**
+- **Filament 4.3.1 Admin Panel**
+- **Ollama Local AI Engine Documentation**
+- **AWS Bedrock API Documentation**
 
 ---
 
-**TAMAT DOKUMEN D02**
+**TAMAT DOKUMEN / END OF DOCUMENT**
 
-*Dokumen ini disediakan mengikut format KRISA/MAMPU untuk Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC). Semua maklumat adalah terhad untuk kegunaan dalaman BPM MOTAC sahaja.*
+*Dokumen ini adalah hak milik Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) dan tertakluk kepada Akta Rahsia Rasmi 1972.*
