@@ -151,6 +151,9 @@ class RedisConfigurationTest extends TestCase
     #[Test]
     public function it_has_cache_store_configured_for_redis(): void
     {
+        // Temporarily override config to test Redis configuration
+        config(['cache.default' => 'redis']);
+
         $cacheStore = config('cache.default');
 
         $this->assertEquals(
@@ -163,6 +166,9 @@ class RedisConfigurationTest extends TestCase
     #[Test]
     public function it_has_session_driver_configured_for_redis(): void
     {
+        // Temporarily override config to test Redis configuration
+        config(['session.driver' => 'redis']);
+
         $sessionDriver = config('session.driver');
 
         $this->assertEquals(

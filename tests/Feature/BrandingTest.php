@@ -103,9 +103,9 @@ final class BrandingTest extends TestCase
     public function footer_displays_bm_copyright_and_disclaimer(): void
     {
         $this->blade('<x-layout.gov-footer />')
-            ->assertSee('Hak Cipta Terpelihara') // All Rights Reserved in BM
-            ->assertSee('Kerajaan Malaysia') // Government of Malaysia in BM
-            ->assertSee('Penafian') // Disclaimer in BM
+            ->assertSee('Hak cipta terpelihara') // All Rights Reserved in BM
+            ->assertSee('Kementerian Pelancongan, Seni dan Budaya Malaysia') // Ministry name in BM
+            ->assertSee('Bahagian Pengurusan Maklumat') // BPM in BM
             ->assertSee(date('Y'), false); // Current year
     }
 

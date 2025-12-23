@@ -50,9 +50,13 @@ class RedisConnectionTest extends TestCase
         // Verify that Predis client is configured
         $this->assertEquals('predis', config('database.redis.client'));
 
-        // Test that connection uses Predis
+        // Test that connection uses Predis (Laravel wraps it in PredisConnection)
         $connection = Redis::connection();
-        $this->assertInstanceOf(\Predis\Client::class, $connection);
+        $this->assertInstanceOf(\Illuminate\Redis\Connections\PredisConnection::class, $connection);
+
+        // Verify the underlying client is Predis
+        $client = $connection->client();
+        $this->assertInstanceOf(\Predis\Client::class, $client);
     }
 
     #[Test]
@@ -81,7 +85,7 @@ class RedisConnectionTest extends TestCase
         $this->assertEquals($expectedDatabase, config("database.redis.{$connectionName}.database"));
 
         // Test basic operation
-        $testKey = "test_key_{$connectionName}_".time();
+        $testKey = "test_key_{$connectionName}_" . time();
         $testValue = "test_value_{$connectionName}";
 
         $connection->set($testKey, $testValue);
@@ -103,7 +107,7 @@ class RedisConnectionTest extends TestCase
             $connection = Redis::connection();
             $connection->ping();
         } catch (Exception $e) {
-            $this->fail('Redis connection should not timeout with proper configuration: '.$e->getMessage());
+            $this->fail('Redis connection should not timeout with proper configuration: ' . $e->getMessage());
         }
     }
 
@@ -154,11 +158,11 @@ class RedisConnectionTest extends TestCase
     public function it_can_perform_basic_redis_operations(): void
     {
         $connection = Redis::connection();
-        $testKey = 'test_basic_operations_'.time();
+        $testKey = 'test_basic_operations_' . time();
 
-        // Test SET operation
+        // Test SET operation (Predis returns Status object, not boolean)
         $result = $connection->set($testKey, 'test_value');
-        $this->assertTrue($result);
+        $this->assertNotNull($result);
 
         // Test GET operation
         $value = $connection->get($testKey);
@@ -199,7 +203,7 @@ class RedisConnectionTest extends TestCase
 
         // Test that prefix is applied
         $connection = Redis::connection();
-        $testKey = 'prefix_test_'.time();
+        $testKey = 'prefix_test_' . time();
 
         $connection->set($testKey, 'test_value');
 
