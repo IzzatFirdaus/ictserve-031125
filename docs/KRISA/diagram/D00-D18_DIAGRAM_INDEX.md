@@ -201,13 +201,329 @@ Source: `docs/D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md#L550`
 
 ## D04 — Software Design Document
 
-- Image diagrams (senarai fail):
-  - `design/architecture/system-context-diagram.png` — `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1880`
-  - `design/architecture/component-diagram.png` — `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1881`
-  - `design/architecture/deployment-diagram.png` — `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1882`
-  - `design/architecture/guest-flow-diagram.png` — `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1883`
-  - `design/architecture/approval-flow-diagram.png` — `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1884`
-- Codebase check: folder `design/architecture/` tiada dalam repo semasa (rujukan fail di atas tidak dijumpai).
+### System Context Diagram
+
+Source: `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1880`
+
+```text
++-------------------------------------------------------------------------+
+|                        EXTERNAL SYSTEMS                                 |
+|  Google Workspace (SSO) | Email Gateway | AWS Bedrock | Ollama Server   |
++-------------------------------------------------------------------------+
+                                  |
+                                  v
++-------------------------------------------------------------------------+
+|                          ICTServe v3.6.1                                |
+|                     True Hybrid Architecture                            |
++-------------------------------------------------------------------------+
+|                                                                         |
+|  +-------------------------------------------------------------------+  |
+|  |                      CORE COMPONENTS                              |  |
+|  +-------------------------------------------------------------------+  |
+|  |                                                                   |  |
+|  |  +-----------------------+  +-----------------------+             |  |
+|  |  | Helpdesk Module       |  | Asset Loan Module     |             |  |
+|  |  | - Hybrid Submission   |  | - Hybrid Application  |             |  |
+|  |  | - SLA Management      |  | - Email Approval      |             |  |
+|  |  | - Status Tracking     |  | - Check-out/Check-in  |             |  |
+|  |  +-----------------------+  +-----------------------+             |  |
+|  |                                                                   |  |
+|  |  +-----------------------+  +-----------------------+             |  |
+|  |  | User Management       |  | Admin Panel           |             |  |
+|  |  | - Self-Registration   |  | - Filament 4.3.1      |             |  |
+|  |  | - Flexible Login      |  | - Laravel Telescope   |             |  |
+|  |  | - Account Linking     |  | - Laravel Pulse       |             |  |
+|  |  +-----------------------+  +-----------------------+             |  |
+|  |                                                                   |  |
+|  |  +-----------------------+  +-----------------------+             |  |
+|  |  | AI Chatbot            |  | Audit & Monitoring    |             |  |
+|  |  | - Ollama (Local)      |  | - Dual Audit System   |             |  |
+|  |  | - Bedrock (Cloud)     |  | - owen-it + spatie    |             |  |
+|  |  | - RAG Service         |  | - Performance Metrics |             |  |
+|  |  +-----------------------+  +-----------------------+             |  |
+|  |                                                                   |  |
+|  +-------------------------------------------------------------------+  |
+|                                                                         |
++-------------------------------------------------------------------------+
+                                  |
+                                  v
++-------------------------------------------------------------------------+
+|                            USER TYPES                                   |
+|  Guest Users | Staff (Authenticated) | Admin | Superuser | Approvers    |
++-------------------------------------------------------------------------+
+```
+
+### Component Diagram (Internal Architecture)
+
+Source: `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1881`
+
+```text
++-------------------------------------------------------------------------+
+|                      PRESENTATION LAYER                                 |
+|  Blade Templates | Livewire 3.7.3 | Volt 1.10.1 | Filament 4.3.1       |
+|  Alpine.js 3 | Tailwind CSS 4.1.18                                      |
++-------------------------------------------------------------------------+
+                                  |
++-------------------------------------------------------------------------+
+|                      APPLICATION LAYER                                  |
+|                                                                         |
+|  +-------------------------------------------------------------------+  |
+|  | Controllers                                                       |  |
+|  | - HelpdeskController | LoanController | AuthController          |  |
+|  | - AdminController | ApiController                                |  |
+|  +-------------------------------------------------------------------+  |
+|                                  |                                      |
+|  +-------------------------------------------------------------------+  |
+|  | Services (Business Logic)                                         |  |
+|  | - HelpdeskService | LoanService | ApprovalService               |  |
+|  | - RegistrationService | AccountLinkingService                    |  |
+|  | - RagService | BedrockService | OllamaClient                    |  |
+|  | - NotificationService | TokenService                             |  |
+|  +-------------------------------------------------------------------+  |
+|                                  |                                      |
+|  +-------------------------------------------------------------------+  |
+|  | Middleware & Policies                                             |  |
+|  | - SecurityMonitoring | RateLimiting | Authorization             |  |
+|  +-------------------------------------------------------------------+  |
+|                                                                         |
++-------------------------------------------------------------------------+
+                                  |
++-------------------------------------------------------------------------+
+|                        DOMAIN LAYER                                     |
+|                                                                         |
+|  +-------------------------------------------------------------------+  |
+|  | Models (Eloquent ORM)                                             |  |
+|  | - User | HelpdeskTicket | LoanApplication | Asset               |  |
+|  | - Faq | Document | BedrockConversation                          |  |
+|  | - Audit | Activity (Dual Audit System)                          |  |
+|  +-------------------------------------------------------------------+  |
+|                                  |                                      |
+|  +-------------------------------------------------------------------+  |
+|  | Events & Listeners                                                |  |
+|  | - TicketCreated | LoanApproved | UserRegistered                 |  |
+|  +-------------------------------------------------------------------+  |
+|                                  |                                      |
+|  +-------------------------------------------------------------------+  |
+|  | Jobs (Queue Workers)                                              |  |
+|  | - SendEmailNotification | ProcessApproval                        |  |
+|  | - DocumentIngestJob | EmbeddingJob                              |  |
+|  +-------------------------------------------------------------------+  |
+|                                                                         |
++-------------------------------------------------------------------------+
+                                  |
++-------------------------------------------------------------------------+
+|                    INFRASTRUCTURE LAYER                                 |
+|                                                                         |
+|  +-------------------------------------------------------------------+  |
+|  | Data Persistence                                                  |  |
+|  | - MySQL 8.0 (Primary Database)                                   |  |
+|  | - Redis 7.0 (Cache, Queue, Session, Reverb)                     |  |
+|  +-------------------------------------------------------------------+  |
+|                                  |                                      |
+|  +-------------------------------------------------------------------+  |
+|  | External Integrations                                             |  |
+|  | - Email Gateway (SMTP)                                           |  |
+|  | - Google Workspace (OAuth 2.0)                                   |  |
+|  | - AWS Bedrock (Claude Models)                                    |  |
+|  | - Ollama Server (Local AI)                                       |  |
+|  +-------------------------------------------------------------------+  |
+|                                  |                                      |
+|  +-------------------------------------------------------------------+  |
+|  | Monitoring & Observability                                        |  |
+|  | - Laravel Pulse (Performance)                                    |  |
+|  | - Laravel Telescope (Debugging)                                  |  |
+|  | - Laravel Reverb (WebSocket)                                     |  |
+|  +-------------------------------------------------------------------+  |
+|                                                                         |
++-------------------------------------------------------------------------+
+```
+
+### Deployment Architecture
+
+Source: `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1882`
+
+```text
++-------------------------------------------------------------------------+
+|                         SECURITY TIER                                   |
+|  Load Balancer (HAProxy/AWS ALB) | SSL/TLS 1.3 | WAF | DDoS Protection |
++-------------------------------------------------------------------------+
+                                  |
++-------------------------------------------------------------------------+
+|                       APPLICATION TIER                                  |
+|                                                                         |
+|  +-------------------+  +-------------------+  +-------------------+    |
+|  | App Server 1      |  | App Server 2      |  | App Server N      |    |
+|  | - Nginx 1.24      |  | - Nginx 1.24      |  | - Nginx 1.24      |    |
+|  | - PHP-FPM 8.2.12  |  | - PHP-FPM 8.2.12  |  | - PHP-FPM 8.2.12  |    |
+|  | - Laravel 12.43.1 |  | - Laravel 12.43.1 |  | - Laravel 12.43.1 |    |
+|  +-------------------+  +-------------------+  +-------------------+    |
+|                                                                         |
++-------------------------------------------------------------------------+
+                                  |
++-------------------------------------------------------------------------+
+|                         WORKER TIER                                     |
+|                                                                         |
+|  +-------------------+  +-------------------+                           |
+|  | Queue Worker 1    |  | Queue Worker 2    |                           |
+|  | - Redis Queue     |  | - Redis Queue     |                           |
+|  | - Supervisor      |  | - Supervisor      |                           |
+|  +-------------------+  +-------------------+                           |
+|                                                                         |
+|  +-------------------+  +-------------------+                           |
+|  | Reverb Server 1   |  | Reverb Server 2   |                           |
+|  | - WebSocket       |  | - WebSocket       |                           |
+|  | - Port 8080       |  | - Port 8080       |                           |
+|  +-------------------+  +-------------------+                           |
+|                                                                         |
++-------------------------------------------------------------------------+
+                                  |
++-------------------------------------------------------------------------+
+|                          DATA TIER                                      |
+|                                                                         |
+|  +-------------------------------------------------------------------+  |
+|  | MySQL 8.0 Cluster                                                 |  |
+|  | - Primary (Read/Write)                                           |  |
+|  | - Replica 1 (Read-only)                                          |  |
+|  | - Replica 2 (Read-only)                                          |  |
+|  +-------------------------------------------------------------------+  |
+|                                  |                                      |
+|  +-------------------------------------------------------------------+  |
+|  | Redis 7.0 Cluster                                                 |  |
+|  | - Cache Node 1 | Cache Node 2 | Cache Node 3                     |  |
+|  | - Queue Backend | Session Store | Reverb Backend                |  |
+|  +-------------------------------------------------------------------+  |
+|                                                                         |
++-------------------------------------------------------------------------+
+                                  |
++-------------------------------------------------------------------------+
+|                        STORAGE TIER                                     |
+|  S3/MinIO (File Attachments) | Backup Storage (Daily/Weekly)           |
++-------------------------------------------------------------------------+
+                                  |
++-------------------------------------------------------------------------+
+|                      MONITORING TIER                                    |
+|  Laravel Pulse | Laravel Telescope | Prometheus | Grafana | ELK Stack    |
++-------------------------------------------------------------------------+
+```
+
+### Guest User Flow (Helpdesk Ticket Submission)
+
+Source: `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1883`
+
+```text
+Guest User                 Frontend              Backend                Database
+    |                          |                      |                      |
+    |---(1) Access Form------->|                      |                      |
+    |                          |                      |                      |
+    |                          |---(2) Load Form----->|                      |
+    |                          |                      |                      |
+    |                          |<--(3) Form HTML------|                      |
+    |                          |                      |                      |
+    |<--(4) Display Form-------|                      |                      |
+    |                          |                      |                      |
+    |---(5) Fill & Submit----->|                      |                      |
+    |    (Manual Entry)        |                      |                      |
+    |                          |                      |                      |
+    |                          |---(6) Validate------>|                      |
+    |                          |      (CSRF, reCAPTCHA, Rules)              |
+    |                          |                      |                      |
+    |                          |                      |---(7) Create Ticket->|
+    |                          |                      |    (user_id = NULL)  |
+    |                          |                      |                      |
+    |                          |                      |<--(8) Ticket ID------||
+    |                          |                      |                      |
+    |                          |                      |---(9) Generate Token>|
+    |                          |                      |    (SHA-512 hash)    |
+    |                          |                      |                      |
+    |                          |                      |---(10) Dual Audit--->|
+    |                          |                      |    (owen-it+spatie)  |
+    |                          |                      |                      |
+    |                          |                      |---(11) Queue Email-->|
+    |                          |                      |    (Redis Queue)     |
+    |                          |                      |                      |
+    |                          |<--(12) Success-------|                      |
+    |                          |    + Status Token    |                      |
+    |                          |                      |                      |
+    |<--(13) Confirmation------|                      |                      |
+    |    + Token Link          |                      |                      |
+    |                          |                      |                      |
+    |---(14) Check Status----->|                      |                      |
+    |    (via Token Link)      |                      |                      |
+    |                          |                      |                      |
+    |                          |---(15) Verify Token->|                      |
+    |                          |                      |                      |
+    |                          |                      |---(16) Fetch Ticket->|
+    |                          |                      |                      |
+    |                          |                      |<--(17) Ticket Data---||
+    |                          |                      |                      |
+    |                          |<--(18) Status Info---|                      |
+    |                          |                      |                      |
+    |<--(19) Display Status----|                      |                      |
+    |                          |                      |                      |
+```
+
+### Loan Application Approval Workflow
+
+Source: `docs/D04_SOFTWARE_DESIGN_DOCUMENT.md#L1884`
+
+```text
+Applicant          Frontend         Backend          Approver         Database
+    |                  |                  |                  |                |
+    |-(1) Submit------>|                  |                  |                |
+    |    Application   |                  |                  |                |
+    |                  |                  |                  |                |
+    |                  |-(2) Validate---->|                  |                |
+    |                  |                  |                  |                |
+    |                  |                  |-(3) Create------>|                |
+    |                  |                  |    Application   |                |
+    |                  |                  |                  |                |
+    |                  |                  |<-(4) App ID------|                |
+    |                  |                  |                  |                |
+    |                  |                  |-(5) Generate---->|                |
+    |                  |                  |    Signed URL    |                |
+    |                  |                  |    (72h expiry)  |                |
+    |                  |                  |                  |                |
+    |                  |                  |-(6) Queue Email->|                |
+    |                  |                  |    to Approver   |                |
+    |                  |                  |                  |                |
+    |                  |<-(7) Success-----|                  |                |
+    |                  |                  |                  |                |
+    |<-(8) Confirmation|                  |                  |                |
+    |                  |                  |                  |                |
+    |                  |                  |                  |<-(9) Email-----||
+    |                  |                  |                  |    with Link   |
+    |                  |                  |                  |                |
+    |                  |                  |                  |-(10) Click---->|
+    |                  |                  |                  |    Link        |
+    |                  |                  |                  |                |
+    |                  |                  |<-(11) Verify-----|                |
+    |                  |                  |      Signature   |                |
+    |                  |                  |                  |                |
+    |                  |                  |-(12) Fetch------>|                |
+    |                  |                  |      Application |                |
+    |                  |                  |                  |                |
+    |                  |                  |<-(13) App Data---|                |
+    |                  |                  |                  |                |
+    |                  |                  |-(14) Display---->|                |
+    |                  |                  |      to Approver |                |
+    |                  |                  |                  |                |
+    |                  |                  |                  |-(15) Approve-->|
+    |                  |                  |                  |    or Reject   |
+    |                  |                  |                  |                |
+    |                  |                  |<-(16) Decision---|                |
+    |                  |                  |                  |                |
+    |                  |                  |-(17) Update----->|                |
+    |                  |                  |      Status      |                |
+    |                  |                  |                  |                |
+    |                  |                  |-(18) Dual Audit->|                |
+    |                  |                  |                  |                |
+    |                  |                  |-(19) Queue Email>|                |
+    |                  |                  |      to Applicant|                |
+    |                  |                  |                  |                |
+    |<-(20) Email------|<-(21) Notify-----|                  |                |
+    |    Notification  |                  |                  |                |
+    |                  |                  |                  |                |
+```
 
 ## D07 — System Integration Plan
 

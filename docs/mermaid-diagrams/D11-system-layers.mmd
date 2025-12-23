@@ -1,0 +1,9 @@
+graph TB
+    PRES[PRESENTATION LAYER<br/>Blade + Livewire 3 + Volt<br/>Filament 4 + Tailwind 4]
+    APP[APPLICATION LAYER<br/>Controllers + Services<br/>Jobs + Middleware + Policies]
+    INT[INTEGRATION LAYER<br/>RESTful API + WebSocket Reverb<br/>Email + Audit Trail]
+    DATA[DATA LAYER<br/>Eloquent ORM + MySQL<br/>Redis Cache + File Storage]
+    
+    PRES --> APP
+    APP --> INT
+    INT --> DATA

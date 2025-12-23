@@ -1,0 +1,9 @@
+graph LR
+    subgraph FAQ["FAQ Query"]
+        F1[Ollama RAG] --> F2[Bedrock Fallback]
+        F2 --> F3[Static FAQ]
+    end
+    
+    subgraph COMPLEX["Complex Query"]
+        C1[Bedrock Direct] --> C2[Error Message]
+    end

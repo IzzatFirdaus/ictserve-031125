@@ -1,0 +1,35 @@
+graph TB
+    subgraph INTERFACE["ICTServe Hybrid AI Interface - BedrockChat.php"]
+        UI[User Chat Interface<br/>Model Selection<br/>Internet Search Toggle<br/>Conversation History<br/>FAQ Suggestions]
+        
+        ANALYSIS[Query Analysis Layer<br/>Keyword Detection<br/>Intent Classification<br/>Context Evaluation]
+        
+        FAQ[FAQ Query<br/>Ollama RAG]
+        HYBRID[Hybrid Query<br/>Both AIs]
+        COMPLEX[Complex Query<br/>Bedrock Only]
+        
+        RESPONSE[Response Aggregation<br/>Source Attribution<br/>Markdown Rendering<br/>Conversation Persistence]
+        
+        UI --> ANALYSIS
+        ANALYSIS --> FAQ
+        ANALYSIS --> HYBRID
+        ANALYSIS --> COMPLEX
+        FAQ --> RESPONSE
+        HYBRID --> RESPONSE
+        COMPLEX --> RESPONSE
+    end
+    
+    subgraph BACKEND["Backend Services"]
+        RAG[RagService Ollama<br/>FAQ Knowledge Base<br/>Embedding Search<br/>Context Retrieval<br/>Local Processing]
+        
+        BEDROCK[BedrockService AWS<br/>Claude Opus 4.5<br/>Claude Sonnet 4.5<br/>Claude Haiku 4.5<br/>Internet Search]
+        
+        OLLAMA[Ollama Server<br/>localhost:11434]
+        AWS[AWS Bedrock API<br/>us-east-1]
+        
+        RAG --> OLLAMA
+        BEDROCK --> AWS
+    end
+    
+    RESPONSE --> RAG
+    RESPONSE --> BEDROCK

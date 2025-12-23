@@ -1,0 +1,30 @@
+graph TB
+    subgraph GUEST["Guest Layout"]
+        GH[Header<br/>Navigation + Language]
+        GM[Main Content<br/>Hero Section<br/>Form/Content<br/>AI Chat Widget]
+        GF[Footer<br/>Links + Copyright]
+        
+        GH --> GM
+        GM --> GF
+    end
+    
+    subgraph AUTH["Authenticated Layout"]
+        AH[Header<br/>Nav + Notifications + User]
+        AS[Sidebar<br/>Menu + Stats]
+        AM[Main Content<br/>Breadcrumbs<br/>Page Content<br/>AI Assistant]
+        AF[Footer<br/>System Info + Links]
+        
+        AH --> AS
+        AH --> AM
+        AS --> AF
+        AM --> AF
+    end
+    
+    subgraph ADMIN["Admin Layout Filament"]
+        ADH[Admin Header<br/>Filament Navigation]
+        ADS[Sidebar<br/>Admin Menu<br/>Stats]
+        ADM[Admin Content<br/>Dashboard/Resources<br/>AI Analytics<br/>System Monitoring]
+        
+        ADH --> ADS
+        ADH --> ADM
+    end

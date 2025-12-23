@@ -1,0 +1,17 @@
+graph TB
+    subgraph APP["Laravel 12.43.1 Application"]
+        CTRL[Controllers API & Web<br/>OllamaController<br/>FaqController<br/>DocumentController<br/>AutoReplyController<br/>Auth Controllers]
+        
+        SVC[Services Business Logic<br/>OllamaClient<br/>BedrockClient<br/>RagService<br/>DocumentService<br/>EmbeddingService<br/>ModelRouter<br/>StreamingResponseService<br/>WebSearchService]
+        
+        MODEL[Models & Data Layer<br/>User<br/>Faq, Document, DocumentChunk<br/>Embedding<br/>AutoReplyTemplate<br/>MessageLog<br/>BedrockConversation<br/>ActivityLog, Audits]
+        
+        JOBS[Jobs & Queues<br/>DocumentIngestJob<br/>EmbeddingJob<br/>AutoReplyGenerationJob<br/>NotificationDigestJob]
+        
+        MONITOR[Monitoring & Performance<br/>Laravel Pulse<br/>Laravel Telescope<br/>Laravel Sanctum<br/>Laravel Reverb]
+        
+        CTRL --> SVC
+        SVC --> MODEL
+        MODEL --> JOBS
+        JOBS --> MONITOR
+    end
