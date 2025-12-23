@@ -910,55 +910,62 @@ graph TD
 ```mermaid
 classDiagram
     class User {
-        +id: bigint
-        +name: string
-        +email: string
-        +staff_id: string
-        +department: string
-        +user_type: enum
-        +helpdeskTickets()
-        +loanApplications()
-        +audits()
+        +bigint id
+        +string name
+        +string email
+        +string staff_id
+        +string department
+        +enum user_type
+        +helpdeskTickets() HasMany
+        +loanApplications() HasMany
+        +audits() HasMany
     }
     
     class HelpdeskTicket {
-        +id: bigint
-        +user_id: bigint
-        +title: string
-        +description: text
-        +status: enum
-        +priority: enum
-        +user()
-        +attachments()
-        +comments()
+        +bigint id
+        +bigint user_id
+        +string title
+        +text description
+        +enum status
+        +enum priority
+        +user() BelongsTo
+        +attachments() HasMany
+        +comments() HasMany
     }
     
     class Asset {
-        +id: bigint
-        +asset_tag: string
-        +name: string
-        +category: string
-        +status: enum
-        +loanApplications()
-        +maintenanceRecords()
+        +bigint id
+        +string asset_tag
+        +string name
+        +string category
+        +enum status
+        +loanApplications() HasMany
+        +maintenanceRecords() HasMany
     }
     
     class LoanApplication {
-        +id: bigint
-        +user_id: bigint
-        +asset_id: bigint
-        +loan_start: date
-        +loan_end: date
-        +status: enum
-        +user()
-        +asset()
-        +approvals()
+        +bigint id
+        +bigint user_id
+        +bigint asset_id
+        +date loan_start
+        +date loan_end
+        +enum status
+        +user() BelongsTo
+        +asset() BelongsTo
+        +approvals() HasMany
     }
     
-    User ||--o{ HelpdeskTicket : creates
-    User ||--o{ LoanApplication : applies
-    Asset ||--o{ LoanApplication : involved_in
-    LoanApplication ||--o{ LoanApproval : requires
+    class LoanApproval {
+        +bigint id
+        +bigint loan_application_id
+        +string status
+        +loanApplication() BelongsTo
+    }
+    
+    User "1" --> "*" HelpdeskTicket : creates
+    User "1" --> "*" LoanApplication : applies
+    Asset "1" --> "*" LoanApplication : involved_in
+    LoanApplication "1" --> "*" LoanApproval : requires
 ```
 
 ---
