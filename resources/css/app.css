@@ -16,6 +16,9 @@
 /* WCAG 2.2 AA Accessibility styles */
 @import "./accessibility.css";
 
+/* AI Streaming component styles */
+@import "./ai-streaming.css";
+
 /* Print stylesheet for optimized printing (D12 §6.15) */
 @import "./print.css";
 
