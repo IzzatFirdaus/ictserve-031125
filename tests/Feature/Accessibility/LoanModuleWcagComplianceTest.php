@@ -8,6 +8,7 @@ use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -39,7 +40,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         ]);
     }
 
-    public function test_guest_loan_form_has_proper_aria_labels(): void
+    #[Test]
+    public function guest_loan_form_has_proper_aria_labels(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -49,7 +51,8 @@ class LoanModuleWcagComplianceTest extends TestCase
             ->assertSee('<form', false); // HTML5 form has implicit form role
     }
 
-    public function test_loan_dashboard_has_semantic_html(): void
+    #[Test]
+    public function loan_dashboard_has_semantic_html(): void
     {
         // Loan module uses portal.dashboard for authenticated dashboard
         $response = $this->actingAs($this->user)
@@ -61,7 +64,8 @@ class LoanModuleWcagComplianceTest extends TestCase
             ->assertSee('<header', false);
     }
 
-    public function test_loan_history_table_has_proper_headers(): void
+    #[Test]
+    public function loan_history_table_has_proper_headers(): void
     {
         try {
             $response = $this->actingAs($this->user)
@@ -71,14 +75,15 @@ class LoanModuleWcagComplianceTest extends TestCase
                 $response->assertSee('<th scope="col"', false)
                     ->assertSee('role="table"', false);
             } else {
-                $this->markTestSkipped('Loan history page returned ' . $response->status());
+                $this->markTestSkipped('Loan history page returned '.$response->status());
             }
         } catch (\Throwable $e) {
-            $this->markTestSkipped('Loan history page error: ' . $e->getMessage());
+            $this->markTestSkipped('Loan history page error: '.$e->getMessage());
         }
     }
 
-    public function test_form_inputs_have_associated_labels(): void
+    #[Test]
+    public function form_inputs_have_associated_labels(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -97,7 +102,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         }
     }
 
-    public function test_buttons_have_descriptive_text_or_aria_labels(): void
+    #[Test]
+    public function buttons_have_descriptive_text_or_aria_labels(): void
     {
         // Use portal dashboard instead of non-existent loan dashboard
         $response = $this->actingAs($this->user)
@@ -119,7 +125,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         }
     }
 
-    public function test_images_have_alt_text(): void
+    #[Test]
+    public function images_have_alt_text(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -137,7 +144,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         }
     }
 
-    public function test_focus_indicators_are_visible(): void
+    #[Test]
+    public function focus_indicators_are_visible(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -146,7 +154,8 @@ class LoanModuleWcagComplianceTest extends TestCase
             ->assertSee('focus:outline', false);
     }
 
-    public function test_color_contrast_meets_wcag_aa(): void
+    #[Test]
+    public function color_contrast_meets_wcag_aa(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -160,7 +169,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         $this->assertStringNotContainsString('text-gray-300 bg-gray-100', $html);
     }
 
-    public function test_form_validation_errors_are_accessible(): void
+    #[Test]
+    public function form_validation_errors_are_accessible(): void
     {
         // Livewire components handle validation client-side
         // This test verifies error markup exists in the form
@@ -177,7 +187,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         );
     }
 
-    public function test_keyboard_navigation_is_supported(): void
+    #[Test]
+    public function keyboard_navigation_is_supported(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -190,12 +201,13 @@ class LoanModuleWcagComplianceTest extends TestCase
         $this->assertStringNotContainsString('<a tabindex="-1"', $html);
     }
 
-    public function test_skip_links_are_present(): void
+    #[Test]
+    public function skip_links_are_present(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
         $response->assertOk();
-        
+
         $html = $response->getContent();
         // Skip links may be in various formats
         $this->assertTrue(
@@ -204,7 +216,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         );
     }
 
-    public function test_language_attribute_is_set(): void
+    #[Test]
+    public function language_attribute_is_set(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -212,7 +225,8 @@ class LoanModuleWcagComplianceTest extends TestCase
             ->assertSee('<html lang=', false);
     }
 
-    public function test_page_titles_are_descriptive(): void
+    #[Test]
+    public function page_titles_are_descriptive(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -226,7 +240,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         $this->assertGreaterThan(5, strlen($matches[1] ?? ''));
     }
 
-    public function test_form_fields_have_autocomplete_attributes(): void
+    #[Test]
+    public function form_fields_have_autocomplete_attributes(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -241,7 +256,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         }
     }
 
-    public function test_loading_states_are_announced(): void
+    #[Test]
+    public function loading_states_are_announced(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -255,7 +271,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         );
     }
 
-    public function test_modal_dialogs_have_proper_aria_attributes(): void
+    #[Test]
+    public function modal_dialogs_have_proper_aria_attributes(): void
     {
         // Use portal dashboard which may contain modals
         $response = $this->actingAs($this->user)
@@ -271,7 +288,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         }
     }
 
-    public function test_tables_have_proper_structure(): void
+    #[Test]
+    public function tables_have_proper_structure(): void
     {
         try {
             $response = $this->actingAs($this->user)
@@ -291,14 +309,15 @@ class LoanModuleWcagComplianceTest extends TestCase
                     $this->assertTrue(true);
                 }
             } else {
-                $this->markTestSkipped('Loan history page returned ' . $response->status());
+                $this->markTestSkipped('Loan history page returned '.$response->status());
             }
         } catch (\Throwable $e) {
-            $this->markTestSkipped('Loan history page error: ' . $e->getMessage());
+            $this->markTestSkipped('Loan history page error: '.$e->getMessage());
         }
     }
 
-    public function test_responsive_design_maintains_accessibility(): void
+    #[Test]
+    public function responsive_design_maintains_accessibility(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -308,7 +327,8 @@ class LoanModuleWcagComplianceTest extends TestCase
             ->assertSee('lg:', false);
     }
 
-    public function test_touch_targets_meet_minimum_size(): void
+    #[Test]
+    public function touch_targets_meet_minimum_size(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -320,7 +340,8 @@ class LoanModuleWcagComplianceTest extends TestCase
         $this->assertStringContainsString('px-4 py-2', $html);
     }
 
-    public function test_status_badges_have_accessible_colors(): void
+    #[Test]
+    public function status_badges_have_accessible_colors(): void
     {
         try {
             $response = $this->actingAs($this->user)
@@ -332,17 +353,17 @@ class LoanModuleWcagComplianceTest extends TestCase
                 // Verify status badges use high-contrast colors (dark mode theme)
                 // Check for proper contrast patterns
                 $this->assertTrue(
-                    str_contains($html, 'text-emerald') || 
-                    str_contains($html, 'text-blue') || 
-                    str_contains($html, 'text-amber') ||
-                    !str_contains($html, 'bg-green'), // If no badges, test passes
+                    str_contains($html, 'text-emerald') ||
+                        str_contains($html, 'text-blue') ||
+                        str_contains($html, 'text-amber') ||
+                        ! str_contains($html, 'bg-green'), // If no badges, test passes
                     'Status badges should use accessible color combinations'
                 );
             } else {
-                $this->markTestSkipped('Loan history page returned ' . $response->status());
+                $this->markTestSkipped('Loan history page returned '.$response->status());
             }
         } catch (\Throwable $e) {
-            $this->markTestSkipped('Loan history page error: ' . $e->getMessage());
+            $this->markTestSkipped('Loan history page error: '.$e->getMessage());
         }
     }
 }

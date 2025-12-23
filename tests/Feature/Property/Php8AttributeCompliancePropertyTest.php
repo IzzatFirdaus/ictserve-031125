@@ -19,7 +19,7 @@ namespace Tests\Feature\Property;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 #[Group('property')]
 #[Group('php8-attributes')]
@@ -32,15 +32,16 @@ class Php8AttributeCompliancePropertyTest extends TestCase
      * and the file SHALL contain proper PHPUnit attribute imports.
      */
     #[Test]
-    #[DataProvider('testFileProvider')]
-    public function test_files_use_php8_attributes(string $filePath): void
+    #[DataProvider('provideTestFiles')]
+    public function files_use_php8_attributes(string $filePath): void
     {
         $content = file_get_contents($filePath);
+        $this->assertNotFalse($content, "Could not read file: {$filePath}");
 
-        // Verify no @test annotations remain
-        $this->assertStringNotContainsString(
-            '@test',
-            $content,
+        // Verify no @test annotations remain (check for PHPDoc @test pattern)
+        $hasLegacyTestAnnotation = preg_match('/^\s*\*\s*@test\s/m', $content) === 1;
+        $this->assertFalse(
+            $hasLegacyTestAnnotation,
             "File {$filePath} still contains @test annotation"
         );
 
@@ -65,18 +66,21 @@ class Php8AttributeCompliancePropertyTest extends TestCase
      * Property 1.1: DataProvider Attribute Compliance
      *
      * For any test file using data providers, it SHALL use #[DataProvider] attributes
-     * instead of @dataProvider annotations.
+     * instead of legacy PHPDoc dataProvider annotations.
      */
     #[Test]
-    #[DataProvider('testFileProvider')]
-    public function test_files_use_data_provider_attributes(string $filePath): void
+    #[DataProvider('provideTestFiles')]
+    public function files_use_data_provider_attributes(string $filePath): void
     {
         $content = file_get_contents($filePath);
+        $this->assertNotFalse($content, "Could not read file: {$filePath}");
 
-        // Check if file uses data providers
-        if (preg_match('/@dataProvider\s+\w+/', $content)) {
-            $this->fail("File {$filePath} still uses @dataProvider annotation instead of #[DataProvider]");
-        }
+        // Check if file uses legacy PHPDoc @dataProvider annotation (must be in a PHPDoc block line starting with *)
+        $hasLegacyDataProvider = preg_match('/^\s*\*\s*@dataProvider\s+\w+/m', $content) === 1;
+        $this->assertFalse(
+            $hasLegacyDataProvider,
+            "File {$filePath} still uses @dataProvider annotation instead of #[DataProvider]"
+        );
 
         // If file has #[DataProvider], verify import
         if (str_contains($content, '#[DataProvider')) {
@@ -85,6 +89,9 @@ class Php8AttributeCompliancePropertyTest extends TestCase
                 $content,
                 "File {$filePath} uses #[DataProvider] but missing import statement"
             );
+        } else {
+            // File doesn't use DataProvider - that's valid
+            $this->assertTrue(true, "File {$filePath} does not use DataProvider attributes");
         }
     }
 
@@ -92,18 +99,21 @@ class Php8AttributeCompliancePropertyTest extends TestCase
      * Property 1.2: Group Attribute Compliance
      *
      * For any test file using groups, it SHALL use #[Group] attributes
-     * instead of @group annotations.
+     * instead of legacy PHPDoc group annotations.
      */
     #[Test]
-    #[DataProvider('testFileProvider')]
-    public function test_files_use_group_attributes(string $filePath): void
+    #[DataProvider('provideTestFiles')]
+    public function files_use_group_attributes(string $filePath): void
     {
         $content = file_get_contents($filePath);
+        $this->assertNotFalse($content, "Could not read file: {$filePath}");
 
-        // Check if file uses groups
-        if (preg_match('/@group\s+\w+/', $content)) {
-            $this->fail("File {$filePath} still uses @group annotation instead of #[Group]");
-        }
+        // Check if file uses legacy PHPDoc @group annotation (must be in a PHPDoc block line starting with *)
+        $hasLegacyGroup = preg_match('/^\s*\*\s*@group\s+\w+/m', $content) === 1;
+        $this->assertFalse(
+            $hasLegacyGroup,
+            "File {$filePath} still uses @group annotation instead of #[Group]"
+        );
 
         // If file has #[Group], verify import
         if (str_contains($content, '#[Group')) {
@@ -112,6 +122,9 @@ class Php8AttributeCompliancePropertyTest extends TestCase
                 $content,
                 "File {$filePath} uses #[Group] but missing import statement"
             );
+        } else {
+            // File doesn't use Group - that's valid
+            $this->assertTrue(true, "File {$filePath} does not use Group attributes");
         }
     }
 
@@ -121,10 +134,11 @@ class Php8AttributeCompliancePropertyTest extends TestCase
      * For any test file, it SHALL include declare(strict_types=1) at the top.
      */
     #[Test]
-    #[DataProvider('testFileProvider')]
-    public function test_files_have_strict_types_declaration(string $filePath): void
+    #[DataProvider('provideTestFiles')]
+    public function files_have_strict_types_declaration(string $filePath): void
     {
         $content = file_get_contents($filePath);
+        $this->assertNotFalse($content, "Could not read file: {$filePath}");
 
         $this->assertStringContainsString(
             'declare(strict_types=1);',
@@ -135,7 +149,8 @@ class Php8AttributeCompliancePropertyTest extends TestCase
         // Verify it's near the top (within first 10 lines)
         $lines = explode("\n", $content);
         $found = false;
-        for ($i = 0; $i < min(10, count($lines)); $i++) {
+        $maxLines = min(10, \count($lines));
+        for ($i = 0; $i < $maxLines; $i++) {
             if (str_contains($lines[$i], 'declare(strict_types=1)')) {
                 $found = true;
                 break;
@@ -153,7 +168,7 @@ class Php8AttributeCompliancePropertyTest extends TestCase
      *
      * Generates a list of all test files in the tests directory
      */
-    public static function test_file_provider(): array
+    public static function provideTestFiles(): array
     {
         $testFiles = [];
         $basePath = dirname(__DIR__, 3); // Go up from tests/Feature/Property to project root
@@ -164,7 +179,7 @@ class Php8AttributeCompliancePropertyTest extends TestCase
         ];
 
         foreach ($directories as $directory) {
-            $fullPath = $basePath.'/'.$directory;
+            $fullPath = "{$basePath}/{$directory}";
             if (! is_dir($fullPath)) {
                 continue;
             }
@@ -175,12 +190,14 @@ class Php8AttributeCompliancePropertyTest extends TestCase
 
             foreach ($iterator as $file) {
                 if ($file->isFile() && $file->getExtension() === 'php') {
-                    $relativePath = str_replace($basePath.'/', '', $file->getPathname());
+                    $relativePath = str_replace("{$basePath}/", '', $file->getPathname());
+                    // Normalize path separators for cross-platform compatibility
+                    $normalizedPath = str_replace('\\', '/', $relativePath);
 
                     // Skip certain files
                     if (
-                        str_contains($relativePath, 'Concerns/') ||
-                        str_contains($relativePath, 'manual/') ||
+                        str_contains($normalizedPath, 'Concerns/') ||
+                        str_contains($normalizedPath, 'manual/') ||
                         basename($relativePath) === 'TestCase.php'
                     ) {
                         continue;
@@ -199,8 +216,9 @@ class Php8AttributeCompliancePropertyTest extends TestCase
      */
     private function containsTestMethods(string $content): bool
     {
-        // Check for #[Test] attribute or test_ prefix methods
+        // Check for #[Test] attribute or test prefix methods (both test_ and testMethodName)
         return str_contains($content, '#[Test]') ||
-            preg_match('/public function test_\w+\(/', $content) === 1;
+            preg_match('/public function test_\w+\(/', $content) === 1 ||
+            preg_match('/public function test[A-Z]\w*\(/', $content) === 1;
     }
 }

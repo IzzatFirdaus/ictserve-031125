@@ -6,13 +6,15 @@ namespace Tests\Feature\Database\Seeders;
 
 use Database\Seeders\TicketCategorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class TicketCategorySeederTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_ticket_categories_are_seeded(): void
+    #[Test]
+    public function ticket_categories_are_seeded(): void
     {
         $this->seed(TicketCategorySeeder::class);
 

@@ -55,11 +55,11 @@ class AssetAvailabilityCalendarTest extends TestCase
         $component->assertStatus(200);
 
         // Verify translation keys are present (they will be translated by Laravel)
-        $component->assertSee('Previous')
-            ->assertSee('Next')
-            ->assertSee('Available')
-            ->assertSee('Loaned')
-            ->assertSee('Maintenance');
+        $component->assertSee('Sebelumnya')  // Previous in Bahasa Melayu
+            ->assertSee('Seterusnya')        // Next in Bahasa Melayu
+            ->assertSee('Tersedia')          // Available in Bahasa Melayu
+            ->assertSee('Dipinjam')          // Loaned in Bahasa Melayu
+            ->assertSee('Penyelenggaraan');  // Maintenance in Bahasa Melayu
     }
 
     #[Test]

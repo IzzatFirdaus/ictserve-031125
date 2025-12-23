@@ -1,18 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Email;
 
 use App\Mail\Loans\OTPPickupMail;
 use App\Models\LoanApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class OTPEmailTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_otp_email_can_be_sent(): void
+    #[Test]
+    public function otp_email_can_be_sent(): void
     {
         Mail::fake();
 
@@ -27,11 +31,12 @@ class OTPEmailTest extends TestCase
 
         Mail::assertSent(OTPPickupMail::class, function ($mail) use ($application, $otp) {
             return $mail->application->id === $application->id &&
-                   $mail->otp === $otp;
+                $mail->otp === $otp;
         });
     }
 
-    public function test_otp_email_contains_correct_otp(): void
+    #[Test]
+    public function otp_email_contains_correct_otp(): void
     {
         $application = LoanApplication::factory()->create([
             'pickup_otp_expires_at' => now()->addHours(24),
@@ -43,7 +48,8 @@ class OTPEmailTest extends TestCase
         $mailable->assertSeeInHtml($otp);
     }
 
-    public function test_otp_email_has_bilingual_subject(): void
+    #[Test]
+    public function otp_email_has_bilingual_subject(): void
     {
         $application = LoanApplication::factory()->create([
             'application_number' => 'TEST-001',
@@ -63,7 +69,8 @@ class OTPEmailTest extends TestCase
         $this->assertStringContainsString('OTP Pengambilan Aset', $mailableMs->subject);
     }
 
-    public function test_otp_email_includes_expiry_date(): void
+    #[Test]
+    public function otp_email_includes_expiry_date(): void
     {
         $expiryDate = now()->addHours(24);
         $application = LoanApplication::factory()->create([
@@ -74,7 +81,8 @@ class OTPEmailTest extends TestCase
         $mailable->assertSeeInHtml($expiryDate->format('d/m/Y'));
     }
 
-    public function test_otp_email_includes_tracking_link(): void
+    #[Test]
+    public function otp_email_includes_tracking_link(): void
     {
         $application = LoanApplication::factory()->create([
             'tracking_token' => 'test-token-123',
