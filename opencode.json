@@ -15,10 +15,10 @@
             "enabled": true,
             "command": [
                 "php",
-                "C:/Users/exatf/.config/herd/bin/herd-mcp.phar"
+                "C:/Users/izzatfirdaus/.config/herd/bin/herd-mcp.phar"
             ],
             "environment": {
-                "SITE_PATH": "C:\\XAMPP\\htdocs\\ictserve-031125"
+                "SITE_PATH": "C:\\laragon\\www\\ictserve-031125"
             }
         }
     }
