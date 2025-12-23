@@ -18,6 +18,7 @@
 		"filament/filament": "^4.1.10",
 		"filament/query-builder": "*",
 		"laravel/framework": "^12.0",
+		"laravel/horizon": "^5.41",
 		"laravel/mcp": "^0.3.4",
 		"laravel/pulse": "^1.4",
 		"laravel/reverb": "*",
