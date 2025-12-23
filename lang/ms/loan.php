@@ -270,7 +270,7 @@ return [
         'return_confirmation_title' => 'Terima Kasih - Pulangan Aset Disahkan',
 
         // Email greetings and closings
-        'dear' => 'Tuan/Puan',
+        'dear' => 'Yang Dihormati',
         'thank_you' => 'Terima kasih',
 
         // Email body content
