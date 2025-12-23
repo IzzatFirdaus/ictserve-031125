@@ -1,18 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Email;
 
 use App\Mail\Loans\ResponsibleOfficerSponsorshipRequestMail;
 use App\Models\LoanApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SponsorshipEmailTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_sponsorship_email_can_be_sent(): void
+    #[Test]
+    public function sponsorship_email_can_be_sent(): void
     {
         Mail::fake();
 
@@ -29,7 +33,8 @@ class SponsorshipEmailTest extends TestCase
         Mail::assertQueued(ResponsibleOfficerSponsorshipRequestMail::class);
     }
 
-    public function test_sponsorship_email_contains_acknowledge_url(): void
+    #[Test]
+    public function sponsorship_email_contains_acknowledge_url(): void
     {
         $application = LoanApplication::factory()->create([
             'sponsorship_token' => 'secure-token-123',
@@ -37,12 +42,13 @@ class SponsorshipEmailTest extends TestCase
         ]);
 
         $mailable = new ResponsibleOfficerSponsorshipRequestMail($application);
-        
+
         $expectedUrl = route('loan.sponsorship.acknowledge', ['token' => 'secure-token-123']);
         $this->assertEquals($expectedUrl, $mailable->acknowledgeUrl);
     }
 
-    public function test_sponsorship_email_has_bilingual_subject(): void
+    #[Test]
+    public function sponsorship_email_has_bilingual_subject(): void
     {
         $application = LoanApplication::factory()->create([
             'application_number' => 'TEST-002',
@@ -63,7 +69,8 @@ class SponsorshipEmailTest extends TestCase
         $this->assertStringContainsString('Permintaan Penajaan', $mailableMs->subject);
     }
 
-    public function test_sponsorship_email_includes_application_details(): void
+    #[Test]
+    public function sponsorship_email_includes_application_details(): void
     {
         $application = LoanApplication::factory()->create([
             'application_number' => 'APP-123',
@@ -76,7 +83,7 @@ class SponsorshipEmailTest extends TestCase
         ]);
 
         $mailable = new ResponsibleOfficerSponsorshipRequestMail($application);
-        
+
         $mailable->assertSeeInHtml('APP-123');
         $mailable->assertSeeInHtml('Jane Smith');
         $mailable->assertSeeInHtml('jane@example.com');
@@ -84,7 +91,8 @@ class SponsorshipEmailTest extends TestCase
         $mailable->assertSeeInHtml('Conference presentation');
     }
 
-    public function test_sponsorship_email_shows_expiry_warning(): void
+    #[Test]
+    public function sponsorship_email_shows_expiry_warning(): void
     {
         $expiryDate = now()->addHours(48);
         $application = LoanApplication::factory()->create([
@@ -96,7 +104,8 @@ class SponsorshipEmailTest extends TestCase
         $mailable->assertSeeInHtml($expiryDate->format('d/m/Y H:i'));
     }
 
-    public function test_sponsorship_email_includes_iso_document_id(): void
+    #[Test]
+    public function sponsorship_email_includes_iso_document_id(): void
     {
         $application = LoanApplication::factory()->create([
             'sponsorship_token' => 'test-token',

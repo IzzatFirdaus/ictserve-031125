@@ -42,10 +42,10 @@ class RegistrationTest extends TestCase
     {
         // Use a unique complex password that meets all requirements:
         // - Min 8 chars, mixed case, numbers, symbols
-        $password = 'TestP@ssw0rd'.time();
+        $password = 'TestP@ssw0rd' . time();
 
         // Per Requirement 15.2: Only @motac.gov.my emails are allowed
-        $email = 'testuser'.time().'@motac.gov.my';
+        $email = 'testuser' . time() . '@motac.gov.my';
 
         $component = Volt::test('pages.auth.register')
             ->set('name', 'Test User')
@@ -70,7 +70,7 @@ class RegistrationTest extends TestCase
     #[Test]
     public function registration_rejects_non_motac_email(): void
     {
-        $password = 'TestP@ssw0rd'.time();
+        $password = 'TestP@ssw0rd' . time();
 
         $component = Volt::test('pages.auth.register')
             ->set('name', 'Test User')
@@ -92,7 +92,7 @@ class RegistrationTest extends TestCase
     #[Test]
     public function registration_validates_password_confirmation(): void
     {
-        $email = 'testuser'.time().'@motac.gov.my';
+        $email = 'testuser' . time() . '@motac.gov.my';
 
         $component = Volt::test('pages.auth.register')
             ->set('name', 'Test User')
@@ -123,10 +123,10 @@ class RegistrationTest extends TestCase
     public function registration_prevents_duplicate_email(): void
     {
         // Create existing user
-        $existingEmail = 'existing'.time().'@motac.gov.my';
+        $existingEmail = 'existing' . time() . '@motac.gov.my';
         User::factory()->create(['email' => $existingEmail]);
 
-        $password = 'TestP@ssw0rd'.time();
+        $password = 'TestP@ssw0rd' . time();
 
         $component = Volt::test('pages.auth.register')
             ->set('name', 'New User')
@@ -153,7 +153,7 @@ class RegistrationTest extends TestCase
         $response->assertSee(__('auth.register_title')); // Registration title
         $response->assertSee(__('auth.name')); // Name field label
         $response->assertSee(__('auth.email')); // Email field label
-        $response->assertSee(__('common.password')); // Password field label
+        $response->assertSee(__('auth.password')); // Password field label
         $response->assertSee(__('auth.register_button')); // Register button text
         $response->assertSee(__('auth.already_registered')); // Already registered link
 
@@ -164,8 +164,8 @@ class RegistrationTest extends TestCase
     #[Test]
     public function email_verification_flow_uses_signed_url(): void
     {
-        $password = 'TestP@ssw0rd'.time();
-        $email = 'testuser'.time().'@motac.gov.my';
+        $password = 'TestP@ssw0rd' . time();
+        $email = 'testuser' . time() . '@motac.gov.my';
 
         $component = Volt::test('pages.auth.register')
             ->set('name', 'Test User')

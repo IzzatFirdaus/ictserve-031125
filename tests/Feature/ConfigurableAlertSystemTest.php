@@ -79,7 +79,7 @@ class ConfigurableAlertSystemTest extends TestCase
     }
 
     #[Test]
-    public function can_send_test_alert(): void
+    public function can_send_alert(): void
     {
         // Test that alert configuration exists
         $config = $this->alertService->getAlertConfiguration();

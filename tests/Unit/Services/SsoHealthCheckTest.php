@@ -151,7 +151,7 @@ class SsoHealthCheckTest extends TestCase
     }
 
     #[Test]
-    public function test_connectivity_returns_true_when_google_responds(): void
+    public function connectivity_returns_true_when_google_responds(): void
     {
         Http::fake([
             'accounts.google.com/*' => Http::response([
@@ -166,7 +166,7 @@ class SsoHealthCheckTest extends TestCase
     }
 
     #[Test]
-    public function test_connectivity_returns_false_when_google_unavailable(): void
+    public function connectivity_returns_false_when_google_unavailable(): void
     {
         Http::fake([
             'accounts.google.com/*' => Http::response(null, 500),
@@ -178,7 +178,7 @@ class SsoHealthCheckTest extends TestCase
     }
 
     #[Test]
-    public function test_connectivity_returns_false_when_response_missing_endpoints(): void
+    public function connectivity_returns_false_when_response_missing_endpoints(): void
     {
         Http::fake([
             'accounts.google.com/*' => Http::response([
