@@ -18,6 +18,8 @@ return [
 	'active_loans_list' => 'Senarai Pinjaman Aktif',
 	'application' => 'Permohonan',
 	'application_details' => 'Butiran Permohonan',
+	'application_title' => 'Tajuk Permohonan',
+	'applicant_information' => 'Maklumat Pemohon',
 	'application_number' => 'Nombor Permohonan',
 	'application_submitted' => 'Permohonan Berjaya Dihantar',
 	'asset' => 'Aset',
@@ -29,6 +31,7 @@ return [
 	'confirmation_email' => 'Anda akan menerima e-mel pengesahan tidak lama lagi',
 	'create_first_application' => 'Buat Permohonan Pertama Anda',
 	'dashboard_description' => 'Urus permohonan pinjaman aset anda dan lihat statistik peribadi.',
+	'dashboard_title' => 'Papan Pemuka Pinjaman',
 	'division' => 'Bahagian',
 	'division_required' => 'Bahagian diperlukan',
 	// Terjemahan notifikasi e-mel (mengikut Keperluan 4.1, 4.5, 8.3)

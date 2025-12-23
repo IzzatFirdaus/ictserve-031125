@@ -22,6 +22,7 @@ return [
     'can_claim_ticket_message' => 'Oleh kerana anda telah log masuk, anda boleh mengurus tiket ini melalui portal meja bantuan kakitangan.',
     'categories' => 'Kategori',
     'category' => 'Kategori isu',
+    'create_ticket' => 'Cipta Tiket',
     'category_required' => 'Sila pilih kategori isu.',
     'changed_by' => 'Diubah Oleh',
     'claimed_at' => 'Dituntut pada',
