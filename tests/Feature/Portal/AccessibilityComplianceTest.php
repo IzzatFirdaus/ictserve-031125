@@ -126,7 +126,7 @@ class AccessibilityComplianceTest extends TestCase
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
 
         $response->assertStatus(200);
-        $response->assertSee('Dashboard');
+        $response->assertSee('Papan Pemuka');  // Dashboard in Bahasa Melayu
         $response->assertSee($this->user->name);
     }
 

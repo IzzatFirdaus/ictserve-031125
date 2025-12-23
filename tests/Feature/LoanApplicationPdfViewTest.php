@@ -6,6 +6,7 @@ namespace Tests\Feature;
 
 use App\Models\LoanApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoanApplicationPdfViewTest extends TestCase
@@ -15,7 +16,8 @@ class LoanApplicationPdfViewTest extends TestCase
     /**
      * @see \App\Services\LoanApplicationPdfExporter
      */
-    public function test_loan_application_pdf_view_renders_with_qr_code(): void
+    #[Test]
+    public function loan_application_pdf_view_renders_with_qr_code(): void
     {
         $application = LoanApplication::factory()->approved()->create();
         $application->load(['user', 'division', 'loanItems.asset', 'transactions']);
