@@ -1,33 +1,34 @@
 <x-mail::message>
-# {{ __('loans.email.application_submitted.greeting') }} {{ $applicantName }}
+    # {{ __('loan.email.dear') }} {{ $applicantName }}
 
-{{ __('loans.email.application_submitted.intro') }}
+    {{ __('loan.email.application_submitted_body', ['number' => $application->application_number]) }}
 
-## {{ __('loans.email.application_submitted.details_heading') }}
+    ## Butiran Permohonan
 
-**{{ __('loans.email.application_submitted.application_number') }}:** {{ $application->application_number }}  
-**{{ __('loans.email.application_submitted.loan_period') }}:** {{ $application->loan_start_date->translatedFormat('d M Y') }} – {{ $application->loan_end_date->translatedFormat('d M Y') }}  
-**{{ __('loans.email.application_submitted.purpose') }}:** {{ $application->purpose }}  
-**{{ __('loans.email.application_submitted.priority') }}:** {{ ucfirst($application->priority->value) }}
+    **{{ __('loan.fields.application_number') }}:** {{ $application->application_number }}
+    **{{ __('loan.fields.loan_period') }}:** {{ $application->loan_start_date->translatedFormat('d M Y') }} –
+    {{ $application->loan_end_date->translatedFormat('d M Y') }}
+    **{{ __('loan.fields.purpose') }}:** {{ $application->purpose }}
+    **Keutamaan:** {{ ucfirst($application->priority->value) }}
 
-@if($application->loanItems->isNotEmpty())
-**{{ __('loans.email.application_submitted.requested_assets') }}:**  
-@foreach($application->loanItems as $item)
-- {{ $item->asset->name }} × {{ $item->quantity }}
-@endforeach
-@endif
+    @if ($application->loanItems->isNotEmpty())
+        **Aset Dimohon:**
+        @foreach ($application->loanItems as $item)
+            - {{ $item->asset->name }} × {{ $item->quantity }}
+        @endforeach
+    @endif
 
-## {{ __('loans.email.application_submitted.next_steps_heading') }}
-- {{ __('loans.email.application_submitted.next_step_1') }}  
-- {{ __('loans.email.application_submitted.next_step_2') }}  
-- {{ __('loans.email.application_submitted.next_step_3') }}
+    ## {{ __('loan.email.next_steps') }}
+    - Permohonan anda akan disemak oleh pegawai pelulus.
+    - Anda akan menerima pemberitahuan e-mel setelah keputusan dibuat.
+    - Jika diluluskan, anda akan dihubungi untuk pengambilan aset.
 
-{{ __('loans.email.application_submitted.tracking_note') }}
+    Anda boleh menjejak status permohonan menggunakan nombor permohonan di atas.
 
----
+    ---
 
-{{ __('loans.email.application_submitted.thank_you') }}
+    {{ __('loan.email.thank_you') }}
 
-{{ __('loans.email.application_submitted.regards') }},  
-{{ config('app.name') }}
+    Yang benar,
+    {{ config('app.name') }}
 </x-mail::message>
