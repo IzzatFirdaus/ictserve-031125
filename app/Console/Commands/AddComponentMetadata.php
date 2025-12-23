@@ -89,7 +89,9 @@ class AddComponentMetadata extends Command
         $this->info('📝 Adding metadata...');
 
         // Add metadata to components
-        $results = $metadata->batchAddMetadata($components->all());
+        /** @var array<string, mixed> $componentsArray */
+        $componentsArray = $components->all();
+        $results = $metadata->batchAddMetadata($componentsArray);
 
         // Display results
         $this->displayResults($results);
@@ -135,20 +137,25 @@ class AddComponentMetadata extends Command
      *
      * @param  array{success: int, skipped: int, failed: int, errors: array<int, string>}  $results
      */
-    
 
-/**
- * @param array<string, mixed> $results
- */
-protected function displayResults(array $results): void
+    /**
+     * @param  array<string, mixed>  $results
+     */
+    protected function displayResults(array $results): void
     {
         $this->newLine();
         $this->info('Results:');
 
-        $success = (int) ($results['success'] ?? 0);
-        $skipped = (int) ($results['skipped'] ?? 0);
-        $failed = (int) ($results['failed'] ?? 0);
-        $errors = $results['errors'] ?? [];
+        $successValue = $results['success'] ?? 0;
+        $success = is_numeric($successValue) ? (int) $successValue : 0;
+
+        $skippedValue = $results['skipped'] ?? 0;
+        $skipped = is_numeric($skippedValue) ? (int) $skippedValue : 0;
+
+        $failedValue = $results['failed'] ?? 0;
+        $failed = is_numeric($failedValue) ? (int) $failedValue : 0;
+
+        $errors = is_array($results['errors'] ?? null) ? $results['errors'] : [];
 
         $this->table(
             ['Status', 'Count'],
@@ -163,7 +170,9 @@ protected function displayResults(array $results): void
             $this->newLine();
             $this->error('Errors:');
             foreach ($errors as $error) {
-                $this->line("  - {$error}");
+                if (is_string($error)) {
+                    $this->line("  - {$error}");
+                }
             }
         }
 

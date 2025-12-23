@@ -98,12 +98,11 @@ class UpgradeColorPaletteCommand extends Command
      *
      * @phpstan-param CategoryResult|AllResult $result
      */
-    
 
-/**
- * @param array<string, mixed> $result
- */
-private function displayResults(array $result, bool $isDryRun): void
+    /**
+     * @param  array<string, mixed>  $result
+     */
+    private function displayResults(array $result, bool $isDryRun): void
     {
         $this->newLine();
 
@@ -112,15 +111,28 @@ private function displayResults(array $result, bool $isDryRun): void
             $this->newLine();
 
             $rows = [];
-            /** @var array<string, array{processed: int, modified: int, total_replacements: int}> $categories */
+            /** @var array<string, array{processed?: int, modified?: int, total_replacements?: int}> $categories */
             $categories = $result['by_category'];
 
             foreach ($categories as $category => $data) {
+                if (! is_array($data)) {
+                    continue;
+                }
+                
+                $processedValue = $data['processed'] ?? 0;
+                $processed = is_numeric($processedValue) ? (int) $processedValue : 0;
+                
+                $modifiedValue = $data['modified'] ?? 0;
+                $modified = is_numeric($modifiedValue) ? (int) $modifiedValue : 0;
+                
+                $replacementsValue = $data['total_replacements'] ?? 0;
+                $replacements = is_numeric($replacementsValue) ? (int) $replacementsValue : 0;
+
                 $rows[] = [
-                    ucfirst((string) $category),
-                    (int) ($data['processed'] ?? 0),
-                    (int) ($data['modified'] ?? 0),
-                    (int) ($data['total_replacements'] ?? 0),
+                    ucfirst(is_string($category) ? $category : ''),
+                    $processed,
+                    $modified,
+                    $replacements,
                 ];
             }
 
@@ -131,9 +143,14 @@ private function displayResults(array $result, bool $isDryRun): void
 
             $this->newLine();
 
-            $totalProcessed = (int) ($result['total_processed'] ?? 0);
-            $totalModified = (int) ($result['total_modified'] ?? 0);
-            $totalReplacements = (int) ($result['total_replacements'] ?? 0);
+            $totalProcessedValue = $result['total_processed'] ?? 0;
+            $totalProcessed = is_numeric($totalProcessedValue) ? (int) $totalProcessedValue : 0;
+            
+            $totalModifiedValue = $result['total_modified'] ?? 0;
+            $totalModified = is_numeric($totalModifiedValue) ? (int) $totalModifiedValue : 0;
+            
+            $totalReplacementsValue = $result['total_replacements'] ?? 0;
+            $totalReplacements = is_numeric($totalReplacementsValue) ? (int) $totalReplacementsValue : 0;
 
             $this->info("Total Processed: {$totalProcessed}");
             $this->info("Total Modified: {$totalModified}");
@@ -142,9 +159,14 @@ private function displayResults(array $result, bool $isDryRun): void
             return;
         }
 
-        $processed = (int) ($result['processed'] ?? 0);
-        $modified = (int) ($result['modified'] ?? 0);
-        $replacements = (int) ($result['total_replacements'] ?? 0);
+        $processedValue = $result['processed'] ?? 0;
+        $processed = is_numeric($processedValue) ? (int) $processedValue : 0;
+        
+        $modifiedValue = $result['modified'] ?? 0;
+        $modified = is_numeric($modifiedValue) ? (int) $modifiedValue : 0;
+        
+        $replacementsValue = $result['total_replacements'] ?? 0;
+        $replacements = is_numeric($replacementsValue) ? (int) $replacementsValue : 0;
 
         $this->info("Processed: {$processed}");
         $this->info("Modified: {$modified}");

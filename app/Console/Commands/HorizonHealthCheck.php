@@ -68,8 +68,9 @@ class HorizonHealthCheck extends Command
             }
 
             // Detailed health check
+            /** @var array<string, array{healthy: bool}> $healthStatus */
             $healthStatus = $monitoring->checkHealthAndAlert();
-            $allHealthy = collect($healthStatus)->every(fn ($status) => $status['healthy']);
+            $allHealthy = collect($healthStatus)->every(fn (array $status) => $status['healthy']);
 
             if ($allHealthy) {
                 $this->info('✅ All Horizon components are healthy');

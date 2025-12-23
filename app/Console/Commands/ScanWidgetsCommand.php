@@ -303,23 +303,38 @@ class ScanWidgetsCommand extends Command
      *
      * @param  array<string, int>  $results
      */
-    
 
-/**
- * @param array<string, mixed> $results
- */
-private function displaySummary(array $results, bool $isDryRun): void
+    /**
+     * @param  array<string, mixed>  $results
+     */
+    private function displaySummary(array $results, bool $isDryRun): void
     {
         $this->newLine();
         $this->info('📊 Scan Summary:');
+
+        $scannedValue = $results['scanned'] ?? 0;
+        $scanned = is_numeric($scannedValue) ? (int) $scannedValue : 0;
+        
+        $errorsValue = $results['errors'] ?? 0;
+        $errors = is_numeric($errorsValue) ? (int) $errorsValue : 0;
+        
+        $registeredValue = $results['registered'] ?? 0;
+        $registered = is_numeric($registeredValue) ? (int) $registeredValue : 0;
+        
+        $skippedValue = $results['skipped'] ?? 0;
+        $skipped = is_numeric($skippedValue) ? (int) $skippedValue : 0;
+        
+        $duplicatesValue = $results['duplicates'] ?? 0;
+        $duplicates = is_numeric($duplicatesValue) ? (int) $duplicatesValue : 0;
+
         $this->table(
             ['Metric', 'Count'],
             [
-                ['Files Scanned', $results['scanned']],
-                ['Widgets '.($isDryRun ? 'Found' : 'Registered'), $isDryRun ? $results['scanned'] - $results['errors'] : $results['registered']],
-                ['Skipped', $results['skipped']],
-                ['Duplicates Found', $results['duplicates']],
-                ['Errors', $results['errors']],
+                ['Files Scanned', $scanned],
+                ['Widgets '.($isDryRun ? 'Found' : 'Registered'), $isDryRun ? $scanned - $errors : $registered],
+                ['Skipped', $skipped],
+                ['Duplicates Found', $duplicates],
+                ['Errors', $errors],
             ]
         );
 
@@ -333,29 +348,38 @@ private function displaySummary(array $results, bool $isDryRun): void
      *
      * @param  array<string, mixed>  $validation
      */
-    
 
-/**
- * @param array<string, mixed> $validation
- */
-private function displayValidationResults(array $validation): void
+    /**
+     * @param  array<string, mixed>  $validation
+     */
+    private function displayValidationResults(array $validation): void
     {
         $this->newLine();
         $this->info('🔍 Widget Placement Validation:');
 
-        if ($validation['is_valid']) {
+        $isValid = $validation['is_valid'] ?? false;
+        if ($isValid) {
             $this->info('✅ All widgets pass placement validation');
         } else {
             $this->warn('⚠️  Found placement violations:');
 
-            foreach ($validation['violations'] as $violation) {
-                $severity = $violation['severity'] === 'error' ? '❌' : '⚠️';
-                $this->line("  {$severity} {$violation['category']}: {$violation['rule']}");
+            $violations = is_array($validation['violations'] ?? null) ? $validation['violations'] : [];
+            foreach ($violations as $violation) {
+                if (is_array($violation)) {
+                    $severity = ($violation['severity'] ?? '') === 'error' ? '❌' : '⚠️';
+                    $this->line("  {$severity} {$violation['category']}: {$violation['rule']}");
+                }
             }
         }
 
         // Display summary
-        $summary = $validation['summary'];
+        /** @var array{header_count: int, content_count: int, charts_count: int, total_count: int} $summary */
+        $summary = is_array($validation['summary'] ?? null) ? $validation['summary'] : [
+            'header_count' => 0,
+            'content_count' => 0,
+            'charts_count' => 0,
+            'total_count' => 0,
+        ];
         $this->table(
             ['Category', 'Widget Count'],
             [

@@ -247,12 +247,11 @@ class PerformanceMonitorCommand extends Command
      *
      * @param  array<int, array<string, mixed>>  $queries
      */
-    
 
-/**
- * @param array<string, mixed> $queries
- */
-private function generateReportContent(array $queries, float $avgTime): string
+    /**
+     * @param  array<string, mixed>  $queries
+     */
+    private function generateReportContent(array $queries, float $avgTime): string
     {
         $content = "ICTServe Performance Report\n";
         $content .= 'Generated: '.date('Y-m-d H:i:s')."\n";
@@ -261,7 +260,9 @@ private function generateReportContent(array $queries, float $avgTime): string
         $content .= "Database Performance:\n";
         $content .= '  Total Queries: '.count($queries)."\n";
         $content .= '  Average Time: '.number_format($avgTime, 2)." ms\n";
-        $content .= '  Slow Queries: '.count(array_filter($queries, fn ($q) => $q['time'] > 1000))."\n\n";
+        $content .= '  Slow Queries: '.count(array_filter($queries, function (mixed $q): bool {
+            return is_array($q) && isset($q['time']) && is_numeric($q['time']) && $q['time'] > 1000;
+        }))."\n\n";
 
         $content .= "Memory Usage:\n";
         $content .= '  Current: '.$this->formatBytes(memory_get_usage(true))."\n";

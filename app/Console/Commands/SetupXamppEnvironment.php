@@ -109,11 +109,14 @@ class SetupXamppEnvironment extends Command
         ];
 
         foreach ($checks as $check => $result) {
-            $status = $result['status'] ? '✅' : '❌';
-            $this->line("{$status} {$check}: {$result['message']}");
+            $status = ($result['status'] ?? false) ? '✅' : '❌';
+            $message = $result['message'] ?? '';
+            $this->line("{$status} {$check}: {$message}");
         }
 
-        $allPassed = collect($checks)->every(fn ($result) => $result['status']);
+        $allPassed = collect($checks)->every(function (array $result): bool {
+            return (bool) ($result['status'] ?? false);
+        });
 
         $this->line('');
         if ($allPassed) {

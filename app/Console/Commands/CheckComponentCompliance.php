@@ -152,38 +152,60 @@ class CheckComponentCompliance extends Command
      *     by_type: array<string, array{count: int, average_compliance: float|int|null}>
      * }  $statistics
      */
-    
 
-/**
- * @param array<string, mixed> $statistics
- */
-protected function displayStatistics(array $statistics): void
+    /**
+     * @param  array<string, mixed>  $statistics
+     */
+    protected function displayStatistics(array $statistics): void
     {
         $this->newLine();
         $this->info('📈 Compliance Statistics:');
-        $average = $statistics['average_compliance'];
-        $averageText = $average === null ? 'N/A' : $average.'%';
+
+        $totalComponentsValue = $statistics['total_components'] ?? 0;
+        $totalComponents = is_numeric($totalComponentsValue) ? (int) $totalComponentsValue : 0;
+
+        $criticalIssuesValue = $statistics['critical_issues'] ?? 0;
+        $criticalIssues = is_numeric($criticalIssuesValue) ? (int) $criticalIssuesValue : 0;
+
+        $highIssuesValue = $statistics['high_issues'] ?? 0;
+        $highIssues = is_numeric($highIssuesValue) ? (int) $highIssuesValue : 0;
+
+        $mediumIssuesValue = $statistics['medium_issues'] ?? 0;
+        $mediumIssues = is_numeric($mediumIssuesValue) ? (int) $mediumIssuesValue : 0;
+
+        $lowIssuesValue = $statistics['low_issues'] ?? 0;
+        $lowIssues = is_numeric($lowIssuesValue) ? (int) $lowIssuesValue : 0;
+
+        $average = $statistics['average_compliance'] ?? null;
+        $averageText = $average === null ? 'N/A' : (is_numeric($average) ? number_format((float) $average, 2) : 'N/A').'%';
+
         $this->table(
             ['Metric', 'Value'],
             [
-                ['Total Components', $statistics['total_components']],
+                ['Total Components', $totalComponents],
                 ['Average Compliance', $averageText],
-                ['Critical Issues', $statistics['critical_issues']],
-                ['High Issues', $statistics['high_issues']],
-                ['Medium Issues', $statistics['medium_issues']],
-                ['Low Issues', $statistics['low_issues']],
+                ['Critical Issues', $criticalIssues],
+                ['High Issues', $highIssues],
+                ['Medium Issues', $mediumIssues],
+                ['Low Issues', $lowIssues],
             ]
         );
 
         $this->newLine();
         $this->info('📊 Compliance by Type:');
         $typeData = [];
-        foreach ($statistics['by_type'] as $type => $data) {
-            $typeAverage = $data['average_compliance'];
+        $byType = is_array($statistics['by_type'] ?? null) ? $statistics['by_type'] : [];
+
+        foreach ($byType as $type => $data) {
+            if (! is_array($data)) {
+                continue;
+            }
+            $typeAverage = $data['average_compliance'] ?? null;
+            $count = is_numeric($data['count'] ?? 0) ? (int) $data['count'] : 0;
             $typeData[] = [
                 (string) $type,
-                $data['count'],
-                $typeAverage === null ? 'N/A' : $typeAverage.'%',
+                $count,
+                $typeAverage === null ? 'N/A' : (is_numeric($typeAverage) ? number_format((float) $typeAverage, 2) : 'N/A').'%',
             ];
         }
         $this->table(['Type', 'Count', 'Avg Compliance'], $typeData);
@@ -192,22 +214,26 @@ protected function displayStatistics(array $statistics): void
     /**
      * Display detailed compliance results
      *
-     * @param  array<int, ComplianceResult>  $results
+     * @param  array<int, array<string, mixed>>  $results
      */
-    
 
-/**
- * @param array<string, mixed> $results
- */
-protected function displayResults(array $results, int $minScore): void
+    /**
+     * @param  array<int, array<string, mixed>>  $results
+     */
+    protected function displayResults(array $results, int $minScore): void
     {
         $this->newLine();
         $this->info('🔍 Detailed Results:');
 
         $failedComponents = array_filter(
             $results,
-            static fn (array $result): bool => (float) $result['compliance_percentage'] < $minScore
-                || (string) $result['severity'] === 'critical'
+            static function (array $result) use ($minScore): bool {
+                $compliancePercentage = $result['compliance_percentage'] ?? 0;
+                $severity = $result['severity'] ?? '';
+
+                return (is_numeric($compliancePercentage) && (float) $compliancePercentage < $minScore)
+                    || (is_string($severity) && $severity === 'critical');
+            }
         );
 
         /** @var array<int, ComplianceResult> $failedComponents */
@@ -227,17 +253,17 @@ protected function displayResults(array $results, int $minScore): void
      *
      * @param  ComplianceResult  $result
      */
-    
 
-/**
- * @param array<string, mixed> $result
- */
-protected function displayComponentResult(array $result): void
+    /**
+     * @param  array<string, mixed>  $result
+     */
+    protected function displayComponentResult(array $result): void
     {
         $this->newLine();
 
         // Color-code severity
-        $severity = (string) ($result['severity'] ?? '');
+        $severityValue = $result['severity'] ?? '';
+        $severity = is_string($severityValue) ? $severityValue : '';
         $severityColor = match ($severity) {
             'critical' => 'red',
             'high' => 'yellow',
@@ -245,12 +271,23 @@ protected function displayComponentResult(array $result): void
             default => 'gray',
         };
 
-        $componentName = (string) ($result['component'] ?? '');
-        $type = (string) ($result['type'] ?? '');
-        $path = (string) ($result['path'] ?? '');
-        $compliance = (string) ($result['compliance_percentage'] ?? '');
-        $score = (string) ($result['score'] ?? '');
-        $maxScore = (string) ($result['max_score'] ?? '');
+        $componentNameValue = $result['component'] ?? '';
+        $componentName = is_string($componentNameValue) ? $componentNameValue : '';
+
+        $typeValue = $result['type'] ?? '';
+        $type = is_string($typeValue) ? $typeValue : '';
+
+        $pathValue = $result['path'] ?? '';
+        $path = is_string($pathValue) ? $pathValue : '';
+
+        $complianceValue = $result['compliance_percentage'] ?? 0;
+        $compliance = is_numeric($complianceValue) ? number_format((float) $complianceValue, 2) : '0';
+
+        $scoreValue = $result['score'] ?? 0;
+        $score = is_numeric($scoreValue) ? (string) $scoreValue : '0';
+
+        $maxScoreValue = $result['max_score'] ?? 0;
+        $maxScore = is_numeric($maxScoreValue) ? (string) $maxScoreValue : '0';
 
         $this->line("<fg={$severityColor}>■</> {$componentName} ({$type})");
         $this->line("  Path: {$path}");
@@ -286,12 +323,11 @@ protected function displayComponentResult(array $result): void
      *
      * @param  array{statistics: array<string, mixed>, results: array<int, array<string, mixed>>, generated_at: string}  $report
      */
-    
 
-/**
- * @param array<string, mixed> $report
- */
-protected function exportReport(array $report, string $format): void
+    /**
+     * @param  array<string, mixed>  $report
+     */
+    protected function exportReport(array $report, string $format): void
     {
         /** @var array{statistics: array<string, mixed>, results: array<int, ComplianceResult>, generated_at: string} $report */
         $filename = storage_path('app/compliance-report-'.date('Y-m-d-His').".{$format}");
@@ -311,12 +347,11 @@ protected function exportReport(array $report, string $format): void
      *
      * @param  array<string, mixed>  $report
      */
-    
 
-/**
- * @param array<string, mixed> $report
- */
-protected function exportHtml(array $report, string $filename): void
+    /**
+     * @param  array<string, mixed>  $report
+     */
+    protected function exportHtml(array $report, string $filename): void
     {
         $payload = json_encode($report, JSON_PRETTY_PRINT) ?: '';
         $html = '<!doctype html><html><body><pre>'.htmlspecialchars($payload, ENT_QUOTES).'</pre></body></html>';
@@ -328,12 +363,11 @@ protected function exportHtml(array $report, string $filename): void
      *
      * @param  array{statistics: array<string, mixed>, results: array<int, ComplianceResult>, generated_at: string}  $report
      */
-    
 
-/**
- * @param array<string, mixed> $report
- */
-protected function exportCsv(array $report, string $filename): void
+    /**
+     * @param  array<string, mixed>  $report
+     */
+    protected function exportCsv(array $report, string $filename): void
     {
         $csv = fopen($filename, 'w');
         if ($csv === false) {

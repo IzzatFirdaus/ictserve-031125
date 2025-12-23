@@ -80,7 +80,7 @@ class MonitorHorizonHealth extends Command
     /**
      * Display health status in console
      *
-     * @param array<string, mixed> $healthStatus
+     * @param  array<string, mixed>  $healthStatus
      */
     private function displayHealthStatus(array $healthStatus): void
     {
@@ -89,34 +89,41 @@ class MonitorHorizonHealth extends Command
         $this->info('================================');
 
         // Supervisors
-        $supervisors = $healthStatus['supervisors'] ?? [];
+        /** @var array{healthy?: bool, total_supervisors?: int, unhealthy_supervisors?: int, details?: array<int, array{name: string, status: string}>} $supervisors */
+        $supervisors = is_array($healthStatus['supervisors'] ?? null) ? $healthStatus['supervisors'] : [];
         $supervisorsHealthy = $supervisors['healthy'] ?? false;
         $supervisorsTotal = $supervisors['total_supervisors'] ?? 0;
         $supervisorsUnhealthy = $supervisors['unhealthy_supervisors'] ?? 0;
         $status = $supervisorsHealthy ? '✅' : '❌';
         $this->line("{$status} Supervisors: {$supervisorsTotal} total, {$supervisorsUnhealthy} unhealthy");
 
-        if (! $supervisorsHealthy && ! empty($supervisors['details'])) {
+        if (! $supervisorsHealthy && ! empty($supervisors['details']) && is_array($supervisors['details'])) {
             foreach ($supervisors['details'] as $detail) {
-                $this->line("   - {$detail['name']}: {$detail['status']}");
+                if (is_array($detail)) {
+                    $this->line("   - {$detail['name']}: {$detail['status']}");
+                }
             }
         }
 
         // Queue wait times
-        $queues = $healthStatus['queues'] ?? [];
+        /** @var array{healthy?: bool, issues?: array<int, array{severity?: string, queue: string, wait_time: int|float, threshold: int|float}>} $queues */
+        $queues = is_array($healthStatus['queues'] ?? null) ? $healthStatus['queues'] : [];
         $queuesHealthy = $queues['healthy'] ?? false;
         $status = $queuesHealthy ? '✅' : '❌';
         $this->line("{$status} Queue Wait Times");
 
-        if (! $queuesHealthy && ! empty($queues['issues'])) {
+        if (! $queuesHealthy && ! empty($queues['issues']) && is_array($queues['issues'])) {
             foreach ($queues['issues'] as $issue) {
-                $severity = ($issue['severity'] ?? '') === 'critical' ? '🔴' : '🟡';
-                $this->line("   {$severity} {$issue['queue']}: {$issue['wait_time']}s (threshold: {$issue['threshold']}s)");
+                if (is_array($issue)) {
+                    $severity = ($issue['severity'] ?? '') === 'critical' ? '🔴' : '🟡';
+                    $this->line("   {$severity} {$issue['queue']}: {$issue['wait_time']}s (threshold: {$issue['threshold']}s)");
+                }
             }
         }
 
         // Failed jobs
-        $failedJobs = $healthStatus['failed_jobs'] ?? [];
+        /** @var array{healthy?: bool, failed_count?: int, threshold?: int} $failedJobs */
+        $failedJobs = is_array($healthStatus['failed_jobs'] ?? null) ? $healthStatus['failed_jobs'] : [];
         $failedJobsHealthy = $failedJobs['healthy'] ?? false;
         $failedCount = $failedJobs['failed_count'] ?? 0;
         $failedThreshold = $failedJobs['threshold'] ?? 0;
@@ -124,7 +131,8 @@ class MonitorHorizonHealth extends Command
         $this->line("{$status} Failed Jobs: {$failedCount} (threshold: {$failedThreshold})");
 
         // Worker processes
-        $workers = $healthStatus['worker_processes'] ?? [];
+        /** @var array{healthy?: bool, active_processes?: int, total_processes?: int, healthy_ratio?: float} $workers */
+        $workers = is_array($healthStatus['worker_processes'] ?? null) ? $healthStatus['worker_processes'] : [];
         $workersHealthy = $workers['healthy'] ?? false;
         $activeProcesses = $workers['active_processes'] ?? 0;
         $totalProcesses = $workers['total_processes'] ?? 0;

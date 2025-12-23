@@ -66,21 +66,21 @@ class CheckSystemAlerts extends Command
     /**
      * @param  array<string, array<string, mixed>>  $results
      */
-    
 
-/**
- * @param array<string, mixed> $results
- */
-private function displayAlertResults(array $results): void
+    /**
+     * @param  array<string, mixed>  $results
+     */
+    private function displayAlertResults(array $results): void
     {
         $this->newLine();
         $this->info('=== ALERT CHECK RESULTS ===');
 
         foreach ($results as $alertType => $result) {
-            $status = $result['triggered'] ? '🔴 TRIGGERED' : '✅ OK';
+            /** @var array{triggered: bool, alert_data?: array<string, mixed>} $result */
+            $status = $result['triggered'] ?? false ? '🔴 TRIGGERED' : '✅ OK';
             $this->line("{$status} {$this->formatAlertType($alertType)}");
 
-            if ($result['triggered'] && isset($result['alert_data']) && is_array($result['alert_data'])) {
+            if (($result['triggered'] ?? false) && isset($result['alert_data']) && is_array($result['alert_data'])) {
                 $alertData = $result['alert_data'];
                 $severityValue = $alertData['severity'] ?? '';
                 $messageValue = $alertData['message'] ?? '';
