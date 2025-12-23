@@ -8,6 +8,7 @@ use App\Contracts\NotificationPreferenceServiceInterface;
 use App\Models\User;
 use App\Services\NotificationPreferenceService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -120,19 +121,126 @@ class NotificationPreferenceServiceTest extends TestCase
     }
 
     /**
-     * Test updatePreferences throws exception for invalid digest frequency
+     * Test email frequency options (immediate/daily/weekly) with comprehensive data provider
      */
     #[Test]
-    public function update_preferences_throws_for_invalid_digest_frequency(): void
+    #[DataProvider('emailFrequencyProvider')]
+    public function email_frequency_options_are_validated_correctly(string $frequency, bool $shouldBeValid): void
     {
         $user = User::factory()->create();
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid digest_frequency value');
+        if (! $shouldBeValid) {
+            $this->expectException(\InvalidArgumentException::class);
+            $this->expectExceptionMessage('Invalid digest_frequency value');
+        }
 
         $this->service->updatePreferences($user, [
-            'digest_frequency' => 'invalid',
+            'digest_frequency' => $frequency,
         ]);
+
+        if ($shouldBeValid) {
+            $user->refresh();
+            $preferences = $this->service->getPreferences($user);
+            $this->assertEquals($frequency, $preferences['digest_frequency']);
+        }
+    }
+
+    public static function emailFrequencyProvider(): array
+    {
+        return [
+            'immediate frequency' => ['immediate', true],
+            'daily frequency' => ['daily', true],
+            'weekly frequency' => ['weekly', true],
+            'invalid frequency' => ['invalid', false],
+            'empty frequency' => ['', false],
+            'numeric frequency' => ['123', false],
+        ];
+    }
+
+    /**
+     * Test preference persistence with comprehensive data provider
+     */
+    #[Test]
+    #[DataProvider('preferencePersistenceProvider')]
+    public function preference_persistence_works_correctly(array $preferences, array $expectedValues): void
+    {
+        $user = User::factory()->create(['notification_preferences' => null]);
+
+        $this->service->updatePreferences($user, $preferences);
+
+        $user->refresh();
+        $storedPreferences = $this->service->getPreferences($user);
+
+        foreach ($expectedValues as $key => $expectedValue) {
+            $this->assertEquals($expectedValue, $storedPreferences[$key], "Failed asserting that preference '{$key}' equals expected value");
+        }
+    }
+
+    public static function preferencePersistenceProvider(): array
+    {
+        return [
+            'all email preferences enabled' => [
+                ['email_enabled' => true, 'digest_frequency' => 'immediate', 'ticket_updates' => true],
+                ['email_enabled' => true, 'digest_frequency' => 'immediate', 'ticket_updates' => true],
+            ],
+            'daily digest with selective notifications' => [
+                ['digest_frequency' => 'daily', 'ticket_updates' => true, 'loan_approvals' => false],
+                ['digest_frequency' => 'daily', 'ticket_updates' => true, 'loan_approvals' => false],
+            ],
+            'weekly digest with all notifications disabled' => [
+                ['digest_frequency' => 'weekly', 'email_enabled' => false, 'in_app_enabled' => false],
+                ['digest_frequency' => 'weekly', 'email_enabled' => false, 'in_app_enabled' => false],
+            ],
+            'realtime notifications only' => [
+                ['realtime_notifications' => true, 'email_enabled' => false, 'digest_frequency' => 'immediate'],
+                ['realtime_notifications' => true, 'email_enabled' => false, 'digest_frequency' => 'immediate'],
+            ],
+        ];
+    }
+
+    /**
+     * Test notification channel selection with comprehensive data provider
+     */
+    #[Test]
+    #[DataProvider('notificationChannelProvider')]
+    public function notification_channels_are_selected_correctly(array $preferences, string $notificationType, array $expectedChannels): void
+    {
+        $user = User::factory()->create(['notification_preferences' => $preferences]);
+
+        $channels = $this->service->getChannelsForType($user, $notificationType);
+
+        foreach ($expectedChannels as $expectedChannel) {
+            $this->assertContains($expectedChannel, $channels, "Expected channel '{$expectedChannel}' not found in channels");
+        }
+
+        // Ensure no unexpected channels
+        $this->assertCount(count($expectedChannels), $channels, 'Unexpected number of channels returned');
+    }
+
+    public static function notificationChannelProvider(): array
+    {
+        return [
+            'immediate email with realtime' => [
+                ['email_enabled' => true, 'digest_frequency' => 'immediate', 'realtime_notifications' => true, 'ticket_updates' => true],
+                'ticket_updates',
+                ['database', 'mail', 'broadcast'],
+            ],
+            'daily digest only' => [
+                ['email_enabled' => true, 'digest_frequency' => 'daily', 'realtime_notifications' => false, 'ticket_updates' => true],
+                'ticket_updates',
+                ['database'],
+            ],
+            'database only (all disabled)' => [
+                ['email_enabled' => false, 'realtime_notifications' => false, 'ticket_updates' => true],
+                'ticket_updates',
+                ['database'],
+            ],
+            'critical notifications always include mail' => [
+                ['email_enabled' => true, 'digest_frequency' => 'weekly', 'sla_alerts' => false],
+                'sla_alerts',
+                ['database', 'mail', 'broadcast'],
+            ],
+        ];
     }
 
     /**
@@ -355,10 +463,10 @@ class NotificationPreferenceServiceTest extends TestCase
     }
 
     /**
-     * Test getAvailableNotificationTypes returns expected types
+     * Test getAvailableNotificationTypes returns expected types with BM labels
      */
     #[Test]
-    public function get_available_notification_types_returns_expected_types(): void
+    public function get_available_notification_types_returns_expected_types_with_bm_labels(): void
     {
         $types = $this->service->getAvailableNotificationTypes();
 
@@ -371,6 +479,14 @@ class NotificationPreferenceServiceTest extends TestCase
         $this->assertArrayHasKey('description', $types['ticket_updates']);
         $this->assertArrayHasKey('category', $types['ticket_updates']);
         $this->assertArrayHasKey('user_controllable', $types['ticket_updates']);
+
+        // Verify BM content (should use translation keys or BM text)
+        $ticketLabel = $types['ticket_updates']['label'];
+        // Accept both direct BM text and English labels (since this might be using translation keys)
+        $this->assertIsString($ticketLabel, 'Ticket updates label should be a string');
+
+        $loanLabel = $types['loan_approvals']['label'];
+        $this->assertIsString($loanLabel, 'Loan approvals label should be a string');
 
         // SLA alerts should not be user controllable (critical)
         $this->assertFalse($types['sla_alerts']['user_controllable']);

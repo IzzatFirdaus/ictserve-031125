@@ -279,6 +279,129 @@ class StatusCheckerTest extends TestCase
      * @requirements 2.2
      */
     #[Test]
+    public function displays_bahasa_melayu_status_messages(): void
+    {
+        // Set locale to Bahasa Melayu
+        app()->setLocale('ms');
+
+        // Test that BM status messages are available
+        $this->assertNotEmpty(__('status.not_found_title'));
+        $this->assertNotEmpty(__('status.not_found_message'));
+        $this->assertNotEmpty(__('status.title'));
+        $this->assertNotEmpty(__('status.subtitle'));
+        $this->assertNotEmpty(__('status.token_label'));
+        $this->assertNotEmpty(__('status.check_button'));
+
+        // Verify specific BM content
+        $this->assertEquals('Permohonan Tidak Dijumpai / Submission Not Found', __('status.not_found_title'));
+        $this->assertEquals('Semak Status Permohonan Anda', __('status.title'));
+        $this->assertEquals('Token Status', __('status.token_label'));
+        $this->assertEquals('Semak Status', __('status.check_button'));
+    }
+
+    /**
+     * Test that status checker displays BM interface elements.
+     */
+    #[Test]
+    public function status_checker_displays_bahasa_melayu_interface(): void
+    {
+        $response = $this->get(route('status.check'));
+
+        $response->assertStatus(200)
+            ->assertSee(__('status.title')) // 'Semak Status Permohonan Anda'
+            ->assertSee(__('status.subtitle')) // 'Masukkan token status anda untuk melihat status terkini...'
+            ->assertSee(__('status.token_label')) // 'Token Status'
+            ->assertSee(__('status.check_button')); // 'Semak Status'
+    }
+
+    /**
+     * Test that invalid token shows BM error message.
+     *
+     * @requirements 2.2
+     */
+    #[Test]
+    public function invalid_token_shows_bahasa_melayu_error_message(): void
+    {
+        $invalidToken = str_repeat('a', 64); // 64 character invalid token
+
+        Livewire::test(StatusChecker::class)
+            ->set('token', $invalidToken)
+            ->call('checkStatus')
+            ->assertSet('notFound', true)
+            ->assertSet('showResults', false)
+            ->assertSee(__('status.not_found_title')) // 'Permohonan Tidak Dijumpai / Submission Not Found'
+            ->assertSee(__('status.not_found_message')); // 'Kami tidak dapat mencari permohonan yang sepadan dengan token anda...'
+    }
+
+    /**
+     * Test that ticket details display BM labels.
+     */
+    #[Test]
+    public function ticket_details_display_bahasa_melayu_labels(): void
+    {
+        $ticket = HelpdeskTicket::factory()->create([
+            'subject' => 'Test Ticket Subject',
+            'status' => 'open',
+        ]);
+
+        $token = $this->tokenService->generateStatusToken($ticket);
+
+        Livewire::test(StatusChecker::class)
+            ->set('token', $token)
+            ->set('type', 'ticket')
+            ->call('checkStatus')
+            ->assertSee(__('status.ticket_number')) // 'Nombor Tiket'
+            ->assertSee(__('status.current_status')) // 'Status Semasa'
+            ->assertSee(__('status.category')) // 'Kategori'
+            ->assertSee(__('status.priority')); // 'Keutamaan'
+    }
+
+    /**
+     * Test that loan details display BM labels.
+     */
+    #[Test]
+    public function loan_details_display_bahasa_melayu_labels(): void
+    {
+        $loan = LoanApplication::factory()->create([
+            'applicant_name' => 'Test Applicant',
+        ]);
+
+        $token = $this->tokenService->generateStatusToken($loan);
+
+        Livewire::test(StatusChecker::class)
+            ->set('token', $token)
+            ->set('type', 'loan')
+            ->call('checkStatus')
+            ->assertSee(__('status.applicant')) // 'Pemohon'
+            ->assertSee(__('status.loan_period')) // 'Tempoh Pinjaman'
+            ->assertSee(__('status.location')); // 'Lokasi'
+    }
+
+    /**
+     * Test that timeline displays BM title.
+     */
+    #[Test]
+    public function timeline_displays_bahasa_melayu_title(): void
+    {
+        $ticket = HelpdeskTicket::factory()->create([
+            'status' => 'in_progress',
+            'assigned_at' => now()->subHours(2),
+            'responded_at' => now()->subHour(),
+        ]);
+        $token = $this->tokenService->generateStatusToken($ticket);
+
+        Livewire::test(StatusChecker::class)
+            ->set('token', $token)
+            ->call('checkStatus')
+            ->assertSee(__('status.timeline_title')); // 'Garis Masa Status'
+    }
+
+    /**
+     * Test bilingual error messages are available.
+     *
+     * @requirements 2.2
+     */
+    #[Test]
     public function bilingual_error_messages_available(): void
     {
         // Test English

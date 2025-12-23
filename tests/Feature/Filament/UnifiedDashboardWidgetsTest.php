@@ -167,4 +167,135 @@ class UnifiedDashboardWidgetsTest extends TestCase
         Livewire::test(AssetLoanStatsOverview::class)->assertOk();
         Livewire::test(CrossModuleIntegrationChart::class)->assertOk();
     }
+
+    #[Test]
+    public function widgets_display_combined_helpdesk_and_loan_metrics(): void
+    {
+        // Arrange: Create mixed data for both modules
+        HelpdeskTicket::factory()->count(8)->create(['user_id' => null, 'status' => 'open']); // Guest tickets
+        HelpdeskTicket::factory()->count(4)->create(['user_id' => $this->admin->id, 'status' => 'resolved']); // Authenticated tickets
+
+        LoanApplication::factory()->count(6)->create(['user_id' => null, 'status' => \App\Enums\LoanStatus::UNDER_REVIEW]); // Guest loans
+        LoanApplication::factory()->count(3)->create(['user_id' => $this->admin->id, 'status' => \App\Enums\LoanStatus::APPROVED]); // Authenticated loans
+
+        Asset::factory()->count(15)->create(['status' => 'available']);
+        Asset::factory()->count(5)->create(['status' => 'loaned']);
+
+        $this->actingAs($this->admin);
+
+        // Act & Assert: Verify helpdesk metrics
+        Livewire::test(HelpdeskStatsOverview::class)
+            ->assertOk()
+            ->assertSee('Jumlah Tiket')
+            ->assertSee('12') // Total tickets (8 + 4)
+            ->assertSee('Tiket Tetamu')
+            ->assertSee('8') // Guest tickets
+            ->assertSee('Tiket Berdaftar')
+            ->assertSee('4'); // Authenticated tickets
+
+        // Act & Assert: Verify loan metrics
+        Livewire::test(AssetLoanStatsOverview::class)
+            ->assertOk()
+            ->assertSee('Jumlah Permohonan')
+            ->assertSee('9') // Total applications (6 + 3)
+            ->assertSee('Permohonan Tetamu')
+            ->assertSee('6') // Guest applications
+            ->assertSee('Permohonan Berdaftar')
+            ->assertSee('3') // Authenticated applications
+            ->assertSee('Kadar Penggunaan Aset');
+
+        // Act & Assert: Verify cross-module integration
+        Livewire::test(CrossModuleIntegrationChart::class)
+            ->assertOk()
+            ->assertSee('Integrasi Silang Modul');
+    }
+
+    #[Test]
+    public function widgets_calculate_hybrid_architecture_metrics(): void
+    {
+        // Arrange: Create data that demonstrates hybrid architecture
+        // 70% guest submissions, 30% authenticated submissions
+        HelpdeskTicket::factory()->count(7)->create(['user_id' => null]);
+        HelpdeskTicket::factory()->count(3)->create(['user_id' => $this->admin->id]);
+
+        LoanApplication::factory()->count(14)->create(['user_id' => null]);
+        LoanApplication::factory()->count(6)->create(['user_id' => $this->admin->id]);
+
+        $this->actingAs($this->admin);
+
+        // Act & Assert: Verify hybrid metrics in helpdesk widget
+        Livewire::test(HelpdeskStatsOverview::class)
+            ->assertOk()
+            ->assertSee('10') // Total tickets
+            ->assertSee('7') // Guest tickets (70%)
+            ->assertSee('3'); // Authenticated tickets (30%)
+
+        // Act & Assert: Verify hybrid metrics in loan widget
+        Livewire::test(AssetLoanStatsOverview::class)
+            ->assertOk()
+            ->assertSee('20') // Total applications
+            ->assertSee('14') // Guest applications (70%)
+            ->assertSee('6'); // Authenticated applications (30%)
+    }
+
+    #[Test]
+    public function widgets_support_real_time_polling_updates(): void
+    {
+        $this->actingAs($this->admin);
+
+        // Act: Initial render
+        $helpdeskComponent = Livewire::test(HelpdeskStatsOverview::class);
+        $loanComponent = Livewire::test(AssetLoanStatsOverview::class);
+        $chartComponent = Livewire::test(CrossModuleIntegrationChart::class);
+
+        // Assert: Initial render successful
+        $helpdeskComponent->assertOk();
+        $loanComponent->assertOk();
+        $chartComponent->assertOk();
+
+        // Arrange: Add new data
+        HelpdeskTicket::factory()->count(5)->create();
+        LoanApplication::factory()->count(3)->create();
+
+        // Clear cache to simulate polling
+        \Illuminate\Support\Facades\Cache::flush();
+
+        // Act: Simulate polling refresh
+        $helpdeskComponent->call('$refresh');
+        $loanComponent->call('$refresh');
+        $chartComponent->call('$refresh');
+
+        // Assert: Widgets still render after refresh
+        $helpdeskComponent->assertOk();
+        $loanComponent->assertOk();
+        $chartComponent->assertOk();
+    }
+
+    #[Test]
+    public function widgets_display_comprehensive_bahasa_melayu_labels(): void
+    {
+        $this->actingAs($this->admin);
+
+        // Act & Assert: Verify comprehensive BM labels in helpdesk widget
+        Livewire::test(HelpdeskStatsOverview::class)
+            ->assertOk()
+            ->assertSee('Jumlah Tiket')
+            ->assertSee('Tiket Tetamu')
+            ->assertSee('Tiket Berdaftar')
+            ->assertSee('Pecah SLA')
+            ->assertSee('Pematuhan SLA');
+
+        // Act & Assert: Verify comprehensive BM labels in loan widget
+        Livewire::test(AssetLoanStatsOverview::class)
+            ->assertOk()
+            ->assertSee('Jumlah Permohonan')
+            ->assertSee('Permohonan Tetamu')
+            ->assertSee('Permohonan Berdaftar')
+            ->assertSee('Kadar Penggunaan Aset');
+
+        // Act & Assert: Verify BM labels in integration chart
+        Livewire::test(CrossModuleIntegrationChart::class)
+            ->assertOk()
+            ->assertSee('Integrasi Silang Modul');
+    }
 }
