@@ -124,8 +124,8 @@ return [
     'include_helpers' => false,
 
     'helper_files' => [
-        base_path() . '/vendor/laravel/framework/src/Illuminate/Support/helpers.php',
-        base_path() . '/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php',
+        base_path().'/vendor/laravel/framework/src/Illuminate/Support/helpers.php',
+        base_path().'/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php',
     ],
 
     /*
@@ -198,6 +198,7 @@ return [
     'ignored_facades' => [
         'PDF', // Ignore PDF facade to avoid conflict with Pdf
         'Pdf', // Ignore Pdf facade to avoid conflict with PDF
+        'Barryvdh\DomPDF\Facade\Pdf', // Ignore full class name
     ],
 
     'magic' => [],

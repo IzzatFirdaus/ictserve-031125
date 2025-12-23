@@ -23240,20 +23240,6 @@ namespace Barryvdh\DomPDF\Facade {
      * @method static BasePDF setProtocol(string $protocol)
      * @method static BasePDF setTree(\Dompdf\Frame\FrameTree $tree)
      */
-    /**
-     * @method static BasePDF setBaseHost(string $baseHost)
-     * @method static BasePDF setBasePath(string $basePath)
-     * @method static BasePDF setCanvas(\Dompdf\Canvas $canvas)
-     * @method static BasePDF setCallbacks(array<string, mixed> $callbacks)
-     * @method static BasePDF setCss(\Dompdf\Css\Stylesheet $css)
-     * @method static BasePDF setDefaultView(string $defaultView, array<string, mixed> $options)
-     * @method static BasePDF setDom(\DOMDocument $dom)
-     * @method static BasePDF setFontMetrics(\Dompdf\FontMetrics $fontMetrics)
-     * @method static BasePDF setHttpContext(resource|array<string, mixed> $httpContext)
-     * @method static BasePDF setPaper(string|float[] $paper, string $orientation = 'portrait')
-     * @method static BasePDF setProtocol(string $protocol)
-     * @method static BasePDF setTree(\Dompdf\Frame\FrameTree $tree)
-     */
     class Pdf {
         /**
          * Get the DomPDF instance
@@ -28752,7 +28738,6 @@ namespace Illuminate\Testing {
             }
     }
 
-
 namespace  {
     class App extends \Illuminate\Support\Facades\App {}
     class Arr extends \Illuminate\Support\Arr {}
@@ -34100,6 +34085,8 @@ namespace  {
     class View extends \Illuminate\Support\Facades\View {}
     class Vite extends \Illuminate\Support\Facades\Vite {}
     class EloquentSerialize extends \AnourValar\EloquentSerialize\Facades\EloquentSerializeFacade {}
+
+    class Pdf extends \Barryvdh\DomPDF\Facade\Pdf {}
     class Ollama extends \Cloudstudio\Ollama\Facades\Ollama {}
     class Horizon extends \Laravel\Horizon\Horizon {}
     class Pulse extends \Laravel\Pulse\Facades\Pulse {}
@@ -34109,12 +34096,9 @@ namespace  {
     class Google2FA extends \PragmaRX\Google2FALaravel\Facade {}
 }
 
-
 namespace Facades\Livewire\Features\SupportFileUploads {
     /**
      * @mixin \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl     */
     class GenerateSignedUploadUrl extends \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl {}
 }
-
-
 
