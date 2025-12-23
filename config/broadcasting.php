@@ -85,6 +85,9 @@ return [
             'driver' => 'redis',
             'connection' => env('BROADCAST_REDIS_CONNECTION', 'default'),
             'queue' => env('BROADCAST_REDIS_QUEUE', 'broadcast'),
+
+            // Use dedicated broadcast queue connection (Requirements 3.4, 7.3)
+            'queue_connection' => 'broadcast',
         ],
 
         'ably' => [
