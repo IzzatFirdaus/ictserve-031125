@@ -51,7 +51,7 @@ return [
     | Updated for XAMPP environment with WSL Redis integration
     */
 
-    'use' => 'default',
+    'use' => 'horizon',
 
     /*
     |--------------------------------------------------------------------------
@@ -61,7 +61,7 @@ return [
 
     'prefix' => Env::get(
         'HORIZON_PREFIX',
-        Str::slug((string) Env::get('APP_NAME', 'ictserve'), '_').'_horizon:'
+        Str::slug((string) Env::get('APP_NAME', 'ictserve'), '_') . '_horizon:'
     ),
 
     /*
