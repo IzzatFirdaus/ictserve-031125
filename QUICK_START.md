@@ -106,6 +106,7 @@ ICTServe supports two development configurations:
 ### Prerequisites
 
 #### For Laragon Setup
+
 - **Laragon**: Latest version with PHP 8.2.12+, MySQL 8.0+
 - **Node.js**: 22.12+ (for Vite 7.0.7 compatibility)
 - **Composer**: Latest version
@@ -113,6 +114,7 @@ ICTServe supports two development configurations:
 - **Redis**: WSL Redis recommended for full features
 
 #### For Docker Setup
+
 - **Docker Desktop**: Latest version with WSL2 backend
 - **Windows**: Windows 10/11 with WSL2 enabled
 - **Node.js**: 22.12+ (for local development tools)
@@ -375,6 +377,7 @@ docker compose exec app sh
 ### Access URLs
 
 #### Laragon URLs
+
 - **Application**: <http://127.0.0.1:8000>
 - **Admin Panel**: <http://127.0.0.1:8000/admin>
 - **Helpdesk**: <http://127.0.0.1:8000/helpdesk/create>
@@ -384,6 +387,7 @@ docker compose exec app sh
 - **Ollama API**: <http://127.0.0.1:11434> (AI Profile Only)
 
 #### Docker URLs
+
 - **Application**: <http://localhost:8000>
 - **Admin Panel**: <http://localhost:8000/admin>
 - **Helpdesk**: <http://localhost:8000/helpdesk/create>
@@ -443,14 +447,16 @@ docker compose down -v
 
 ### When to Use Each Environment
 
-#### Use Laragon When:
+#### Use Laragon When
+
 - Working on a single machine
 - Need maximum performance
 - Debugging complex issues
 - Working with local tools
 - Limited system resources
 
-#### Use Docker When:
+#### Use Docker When
+
 - Working in a team
 - Need consistent environment
 - Deploying to containers
