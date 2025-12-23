@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Livewire\Concerns\ListensForBroadcasts;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -31,6 +32,8 @@ use Livewire\Component;
  */
 class RealtimeNotificationListener extends Component
 {
+    use ListensForBroadcasts;
+
     /**
      * Connection status for UI feedback.
      */
@@ -42,11 +45,11 @@ class RealtimeNotificationListener extends Component
     public ?string $lastNotificationAt = null;
 
     /**
-     * Get Echo listeners for real-time updates via Laravel Reverb.
+     * Get additional component-specific listeners for RealtimeNotificationListener.
      *
      * @return array<string, string>
      */
-    public function getListeners(): array
+    protected function getAdditionalListeners(): array
     {
         $user = Auth::user();
 
@@ -69,12 +72,11 @@ class RealtimeNotificationListener extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:ticket.status.changed')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleTicketStatusChanged(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleTicketStatusChanged(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 
@@ -104,12 +106,11 @@ public function handleTicketStatusChanged(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:loan.status.changed')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleLoanStatusChanged(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleLoanStatusChanged(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 
@@ -139,12 +140,11 @@ public function handleLoanStatusChanged(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:notification.created')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleNotificationCreated(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleNotificationCreated(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 
@@ -168,12 +168,11 @@ public function handleNotificationCreated(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:status.updated')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleStatusUpdated(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleStatusUpdated(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 
@@ -197,12 +196,11 @@ public function handleStatusUpdated(array $event): void
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:comment.posted')]
-    
 
-/**
- * @param array<string, mixed> $event
- */
-public function handleCommentPosted(array $event): void
+    /**
+     * @param  array<string, mixed>  $event
+     */
+    public function handleCommentPosted(array $event): void
     {
         $this->lastNotificationAt = now()->toISOString();
 
