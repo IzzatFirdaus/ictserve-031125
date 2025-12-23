@@ -50,7 +50,7 @@ class AdminDashboardLayoutTest extends TestCase
     }
 
     #[Test]
-    public function test_footer_contains_expected_graph_widgets(): void
+    public function footer_contains_expected_graph_widgets(): void
     {
         // Note: This test verifies that dashboard widgets are properly configured
         // The actual footer widget configuration depends on the AdminDashboard implementation
@@ -63,7 +63,7 @@ class AdminDashboardLayoutTest extends TestCase
     }
 
     #[Test]
-    public function test_charts_are_responsive_two_column_on_large(): void
+    public function charts_are_responsive_two_column_on_large(): void
     {
         // Ensure chart widgets use a responsive column span with two columns on large screens
         $ticketWidget = app(TicketVolumeChart::class);
