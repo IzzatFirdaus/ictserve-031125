@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature\Portal;
 
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PortalLayoutComponentsTest extends TestCase
 {
-    public function test_portal_layout_renders_core_regions(): void
+    #[Test]
+    public function portal_layout_renders_core_regions(): void
     {
         $view = $this->view('portal.layouts.app', [
             'breadcrumbs' => [
@@ -24,7 +26,8 @@ class PortalLayoutComponentsTest extends TestCase
         $view->assertSee('main-content');
     }
 
-    public function test_portal_data_rights_pages_render_with_layout(): void
+    #[Test]
+    public function portal_data_rights_pages_render_with_layout(): void
     {
         $indexView = $this->view('portal.data-rights.index');
         $indexView->assertSee('portal-primary-navigation');
