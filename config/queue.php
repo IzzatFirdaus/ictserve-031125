@@ -93,6 +93,30 @@ return [
             'retry_after' => (int) env('REDIS_BROADCAST_RETRY_AFTER', 60),
             'block_for' => null,
             'after_commit' => false,
+
+            // Broadcasting-specific configuration (Requirements 3.4, 7.3)
+            'timeout' => (int) env('BROADCAST_TIMEOUT', 30),
+            'max_tries' => (int) env('BROADCAST_MAX_TRIES', 3),
+            'backoff' => [
+                (int) env('BROADCAST_BACKOFF_FIRST', 10),
+                (int) env('BROADCAST_BACKOFF_SECOND', 30),
+                (int) env('BROADCAST_BACKOFF_THIRD', 60),
+            ],
+
+            // High volume handling configuration (Requirement 7.3)
+            'processes' => (int) env('BROADCAST_PROCESSES', 3),
+            'max_jobs' => (int) env('BROADCAST_MAX_JOBS', 1000),
+            'memory' => (int) env('BROADCAST_MEMORY', 128),
+            'sleep' => (int) env('BROADCAST_SLEEP', 3),
+            'rest' => (int) env('BROADCAST_REST', 0),
+
+            // Performance monitoring (Requirement 7.5)
+            'monitoring' => [
+                'enabled' => env('BROADCAST_MONITORING_ENABLED', true),
+                'slow_threshold' => (int) env('BROADCAST_SLOW_THRESHOLD', 1000), // milliseconds
+                'failed_threshold' => (int) env('BROADCAST_FAILED_THRESHOLD', 5),
+                'alert_email' => env('BROADCAST_ALERT_EMAIL', env('QUEUE_ADMIN_EMAIL')),
+            ],
         ],
 
         'deferred' => [

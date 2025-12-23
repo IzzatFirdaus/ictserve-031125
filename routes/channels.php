@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Hash;
  *
  * @see D03 SRS-FR-008, D04 §5.3 (Requirements 6.1, 6.2, 8.1)
  */
-Broadcast::channel('user.{userId}', function (User $user, string $userId): bool {
+Broadcast::channel('private-user.{userId}', function (User $user, string $userId): bool {
     return (int) $user->id === (int) $userId;
 });
 
@@ -39,7 +39,7 @@ Broadcast::channel('user.{userId}', function (User $user, string $userId): bool 
  *
  * @see Requirements 8.1, 8.2 - High-priority ticket broadcast, SLA breach notification
  */
-Broadcast::channel('admin.notifications', function (User $user): bool {
+Broadcast::channel('private-admin.notifications', function (User $user): bool {
     return $user->hasAdminAccess();
 });
 
@@ -49,13 +49,14 @@ Broadcast::channel('admin.notifications', function (User $user): bool {
  * @see D16_BROADCASTING_SETUP.md §6.1 - Hybrid channel authorization
  * @see Requirements 2.1, 2.3 - Status checking and notifications
  */
-Broadcast::channel('ticket.{uuid}', function (?User $user, string $uuid): bool {
+Broadcast::channel('private-ticket.{uuid}', function (?User $user, string $uuid): bool {
     $ticket = HelpdeskTicket::where('uuid', $uuid)->first();
 
     if (! $ticket) {
         return false;
     }
 
+    // Check for status token in query parameters for guest access
     $statusToken = request()->query('status_token');
     if ($statusToken && $ticket->status_token_hash) {
         if (Hash::check($statusToken, $ticket->status_token_hash)) {
@@ -63,7 +64,8 @@ Broadcast::channel('ticket.{uuid}', function (?User $user, string $uuid): bool {
         }
     }
 
-    if ($user?->can('view', $ticket)) {
+    // Authenticated user access - check policy
+    if ($user && $user->can('view', $ticket)) {
         return true;
     }
 
@@ -76,13 +78,14 @@ Broadcast::channel('ticket.{uuid}', function (?User $user, string $uuid): bool {
  * @see D16_BROADCASTING_SETUP.md §6.1 - Hybrid channel authorization
  * @see Requirements 4.5, 8.3 - Loan notifications and overdue reminders
  */
-Broadcast::channel('loan.{uuid}', function (?User $user, string $uuid): bool {
+Broadcast::channel('private-loan.{uuid}', function (?User $user, string $uuid): bool {
     $loan = LoanApplication::where('uuid', $uuid)->first();
 
     if (! $loan) {
         return false;
     }
 
+    // Check for status token in query parameters for guest access
     $statusToken = request()->query('status_token');
     if ($statusToken && $loan->status_token_hash) {
         if (Hash::check($statusToken, $loan->status_token_hash)) {
@@ -90,7 +93,8 @@ Broadcast::channel('loan.{uuid}', function (?User $user, string $uuid): bool {
         }
     }
 
-    if ($user?->can('view', $loan)) {
+    // Authenticated user access - check policy
+    if ($user && $user->can('view', $loan)) {
         return true;
     }
 
@@ -246,4 +250,45 @@ Broadcast::channel('dashboard.widgets.{widgetId}', function (User $user, string 
 
     // Staff can access general widgets
     return $user->hasRole(['staff', 'admin', 'superuser']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| AI Conversation Broadcasting Channels - v3.6.0 Real-Time AI Streaming
+|--------------------------------------------------------------------------
+|
+| Channels for AI conversation streaming including response chunks,
+| completion events, and error handling. Supports both authenticated
+| and guest access patterns for hybrid architecture.
+|
+| @see Requirements 6.1, 6.2, 6.3, 6.5 - AI streaming responses
+| @see D18 AI Chatbot Ollama-Bedrock integration
+|
+*/
+
+/**
+ * AI conversation channel for streaming responses
+ *
+ * @see Requirements 6.1, 7.1 - AI streaming and channel authorization
+ * @see D18 AI Chatbot integration - Hybrid access pattern
+ */
+Broadcast::channel('conversation.{conversationId}', function (?User $user, string $conversationId): bool {
+    $conversation = \App\Models\BedrockConversation::find((int) $conversationId);
+
+    if (! $conversation) {
+        return false;
+    }
+
+    // Authenticated user access - verify ownership
+    if ($user && $conversation->user_id) {
+        return (int) $user->id === (int) $conversation->user_id;
+    }
+
+    // Guest access - for now, allow access to conversations without user_id
+    // In future implementation, this would validate session_token when that field is added
+    if (! $user && ! $conversation->user_id) {
+        return true;
+    }
+
+    return false;
 });

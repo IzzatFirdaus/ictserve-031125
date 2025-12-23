@@ -36,10 +36,15 @@ if (isset($_ENV['CODESPACES']) && file_exists('/tmp/vendor/autoload.php')) {
     require __DIR__.'/../../../vendor/autoload.php';
 }
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
+use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -70,8 +75,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Register custom middleware aliases
         $middleware->alias([
-            'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
-            'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
+            /** @see \Laravel\Sanctum\Http\Middleware\CheckAbilities */
+            'abilities' => CheckAbilities::class,
+            /** @see \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility */
+            'ability' => CheckForAnyAbility::class,
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'permission' => \App\Http\Middleware\PermissionMiddleware::class,
             'staff' => \App\Http\Middleware\EnsureStaffRole::class,
@@ -84,6 +91,20 @@ return Application::configure(basePath: dirname(__DIR__))
             'two-factor' => \App\Http\Middleware\TwoFactorVerify::class,
             'recaptcha' => \App\Http\Middleware\VerifyRecaptcha::class,
         ]);
+
+        // Configure rate limiting for broadcasting auth endpoint
+        // Requirement 7.4: Limit to 60 requests per minute per IP
+        RateLimiter::for('broadcasting', function (Request $request) {
+            /** @var \Illuminate\Cache\RateLimiting\Limit $limit */
+            return Limit::perMinute(60)
+                ->by($request->ip())
+                ->response(function (Request $request, array $headers) {
+                    return response()->json([
+                        'message' => 'Terlalu banyak percubaan pengesahan. Sila tunggu sebentar.',
+                        'retry_after' => $headers['Retry-After'] ?? 60,
+                    ], 429, $headers);
+                });
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
