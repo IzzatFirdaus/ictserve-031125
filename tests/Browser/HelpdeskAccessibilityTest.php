@@ -8,7 +8,6 @@ use App\Models\Division;
 use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -45,13 +44,15 @@ class HelpdeskAccessibilityTest extends DuskTestCase
 
     /**
      * Ensure the guest helpdesk wizard passes axe-core audits for WCAG 2.2 AA.
+     * Verifies Bahasa Melayu content accessibility.
      */
     #[Test]
     public function guest_helpdesk_form_has_no_serious_axe_violations(): void
     {
         $this->browse(function (Browser $browser): void {
             $browser->visit('/helpdesk/submit')
-                ->waitForText('Submit Helpdesk Ticket');
+                ->waitForText(__('helpdesk.submit_ticket')) // 'Hantar Tiket Helpdesk'
+                ->assertSee(__('helpdesk.ticket_information')); // 'Maklumat Tiket'
 
             // Inject axe-core from CDN once
             $browser->script(<<<'JS'
@@ -103,13 +104,16 @@ class HelpdeskAccessibilityTest extends DuskTestCase
 
     /**
      * Verify that the guest helpdesk wizard supports keyboard-only navigation.
+     * Verifies Bahasa Melayu content accessibility.
      */
     #[Test]
     public function guest_helpdesk_form_supports_keyboard_navigation(): void
     {
         $this->browse(function (Browser $browser): void {
             $browser->visit('/helpdesk/submit')
-                ->waitFor('input[name="guest_name"]');
+                ->waitFor('input[name="guest_name"]')
+                ->assertSee(__('helpdesk.submit_ticket')) // 'Hantar Tiket Helpdesk'
+                ->assertSee(__('forms.guest_name')); // 'Nama Tetamu'
 
             // Move focus through the first-step inputs via keyboard
             $browser->keys('body', ['{tab}'])
@@ -135,13 +139,15 @@ class HelpdeskAccessibilityTest extends DuskTestCase
 
     /**
      * Confirm validation errors are announced through screen reader friendly alerts.
+     * Verifies Bahasa Melayu error messages.
      */
     #[Test]
     public function guest_helpdesk_form_announces_validation_errors(): void
     {
         $this->browse(function (Browser $browser): void {
             $browser->visit('/helpdesk/submit')
-                ->waitForText('Submit Helpdesk Ticket')
+                ->waitForText(__('helpdesk.submit_ticket')) // 'Hantar Tiket Helpdesk'
+                ->assertSee(__('forms.required_fields')) // 'Medan yang diperlukan'
                 ->click('button[wire\\:click="nextStep"]')
                 ->pause(400);
 
@@ -149,22 +155,24 @@ class HelpdeskAccessibilityTest extends DuskTestCase
                 ->assertScript('return Array.from(document.querySelectorAll("[role=\\"alert\\"]")).some(el => el.getAttribute("aria-live") === "assertive");');
 
             $browser->with('[role="alert"]', function (Browser $alert): void {
-                $alert->assertSee('Full name is required')
-                    ->assertSee('Email address is required')
-                    ->assertSee('Phone number is required');
+                $alert->assertSee(__('validation.required', ['attribute' => __('forms.full_name')])) // 'Nama penuh diperlukan'
+                    ->assertSee(__('validation.required', ['attribute' => __('forms.email_address')])) // 'Alamat e-mel diperlukan'
+                    ->assertSee(__('validation.required', ['attribute' => __('forms.phone_number')])); // 'Nombor telefon diperlukan'
             });
         });
     }
 
     /**
      * Validate Core Web Vitals budgets (LCP, FID, CLS) for the helpdesk submission view.
+     * Verifies Bahasa Melayu content accessibility.
      */
     #[Test]
     public function guest_helpdesk_form_meets_core_web_vitals_targets(): void
     {
         $this->browse(function (Browser $browser): void {
             $browser->visit('/helpdesk/submit')
-                ->waitForText('Submit Helpdesk Ticket');
+                ->waitForText(__('helpdesk.submit_ticket')) // 'Hantar Tiket Helpdesk'
+                ->assertSee(__('helpdesk.ticket_information')); // 'Maklumat Tiket'
 
             /** @var array<string, mixed> $metrics */
             $metrics = $browser->script(<<<'JS'
@@ -204,6 +212,7 @@ class HelpdeskAccessibilityTest extends DuskTestCase
 
     /**
      * Authenticated users should experience the same accessibility guarantees.
+     * Verifies Bahasa Melayu content accessibility.
      */
     #[Test]
     public function authenticated_helpdesk_form_keyboard_flow(): void
@@ -217,6 +226,8 @@ class HelpdeskAccessibilityTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/helpdesk/create')
                 ->waitFor('input[name="guest_name"]') // Authenticated view reuses component
+                ->assertSee(__('helpdesk.create_ticket')) // 'Cipta Tiket Helpdesk'
+                ->assertSee(__('forms.ticket_details')) // 'Butiran Tiket'
                 ->keys('body', ['{tab}', '{tab}'])
                 ->assertFocused('input[name="guest_name"]');
 
