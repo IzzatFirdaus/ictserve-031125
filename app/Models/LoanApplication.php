@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
+use App\Observers\LoanApplicationObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +26,7 @@ use function random_int;
 
 /**
  * Enhanced Loan Application Model with ICTServe Integration
- * 
+ *
  * Supports hybrid architecture (guest + authenticated), email-based approval workflows,
  * and cross-module integration with helpdesk system.
  *
@@ -32,6 +34,7 @@ use function random_int;
  * @see D03-FR-002.1 Email approval workflow
  * @see D03-FR-016.1 Cross-module integration
  * @see D04 §2.2 Model relationships
+ *
  * @property int $id
  * @property string $application_number
  * @property int|null $user_id
@@ -124,6 +127,7 @@ use function random_int;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoanTransaction> $transactions
  * @property-read int|null $transactions_count
  * @property-read \App\Models\User|null $user
+ *
  * @method static Builder<static>|LoanApplication byApprovalToken(string $tokenHash)
  * @method static Builder<static>|LoanApplication byStatusToken(string $tokenHash)
  * @method static \Database\Factories\LoanApplicationFactory factory($count = null, $state = [])
@@ -207,8 +211,10 @@ use function random_int;
  * @method static Builder<static>|LoanApplication whereUserId($value)
  * @method static Builder<static>|LoanApplication withTrashed(bool $withTrashed = true)
  * @method static Builder<static>|LoanApplication withoutTrashed()
+ *
  * @mixin \Eloquent
  */
+#[ObservedBy([LoanApplicationObserver::class])]
 class LoanApplication extends Model implements Auditable
 {
     /** @use HasFactory<\Database\Factories\LoanApplicationFactory> */

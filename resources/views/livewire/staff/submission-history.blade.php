@@ -1,10 +1,9 @@
 <?php
 
-use App\Models\Submission;
-use Illuminate\Pagination\Paginator;
+use App\Models\HelpdeskTicket;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Volt\Component;
-
-use function Livewire\Volt\computed;
+use Livewire\Attributes\Computed;
 
 new class extends Component
 {
@@ -17,12 +16,12 @@ new class extends Component
     public int $perPage = 10;
 
     #[Computed]
-    public function submissions(): Paginator
+    public function submissions(): LengthAwarePaginator
     {
-        return Submission::query()
+        return HelpdeskTicket::query()
             ->where('user_id', auth()->id())
             ->when($this->search, function ($query) {
-                $query->where('title', 'like', "%{$this->search}%")
+                $query->where('subject', 'like', "%{$this->search}%")
                     ->orWhere('ticket_number', 'like', "%{$this->search}%");
             })
             ->orderBy($this->sortBy, $this->sortDirection)
@@ -67,7 +66,7 @@ new class extends Component
                         class="form-input block w-full rounded-lg border border-slate-300 dark:border-slate-600
                                bg-white dark:bg-slate-700 text-slate-900 dark:text-white
                                shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500
-                               focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
+                               focus-visible:outline-none
                                min-h-11 px-4 py-2 pl-10 transition-colors duration-200"
                         aria-label="{{ __('history.search') }}"
                     />
@@ -81,7 +80,7 @@ new class extends Component
                     class="form-select rounded-lg border border-slate-300 dark:border-slate-600
                            bg-white dark:bg-slate-700 text-slate-900 dark:text-white
                            shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500
-                           focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none
+                           focus-visible:outline-none
                            min-h-11 px-3 py-2 transition-colors duration-200"
                     aria-label="{{ __('history.items_per_page') }}">
                     <option value="5">5</option>
@@ -211,7 +210,7 @@ new class extends Component
                                         #{{ $submission->ticket_number }}
                                     </td>
                                     <td class="px-6 py-4 text-slate-900 dark:text-slate-300">
-                                        {{ Str::limit($submission->title, 50) }}
+                                        {{ Str::limit($submission->subject, 50) }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
