@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -58,7 +59,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_admin_can_access_api_token_list(): void
+    #[Test]
+    public function admin_can_access_api_token_list(): void
     {
         $this->actingAs($this->admin);
 
@@ -72,7 +74,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_superuser_can_access_api_token_list(): void
+    #[Test]
+    public function superuser_can_access_api_token_list(): void
     {
         $this->actingAs($this->superuser);
 
@@ -86,7 +89,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_staff_cannot_access_api_token_list(): void
+    #[Test]
+    public function staff_cannot_access_api_token_list(): void
     {
         $this->actingAs($this->staff);
 
@@ -100,7 +104,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_token_list_displays_tokens(): void
+    #[Test]
+    public function token_list_displays_tokens(): void
     {
         $this->actingAs($this->admin);
 
@@ -120,7 +125,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_token_list_can_filter_by_user(): void
+    #[Test]
+    public function token_list_can_filter_by_user(): void
     {
         $this->actingAs($this->admin);
 
@@ -139,7 +145,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.2
      */
-    public function test_token_list_can_filter_expired_tokens(): void
+    #[Test]
+    public function token_list_can_filter_expired_tokens(): void
     {
         $this->actingAs($this->admin);
 
@@ -160,7 +167,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_admin_can_view_token_details(): void
+    #[Test]
+    public function admin_can_view_token_details(): void
     {
         $this->actingAs($this->admin);
 
@@ -178,7 +186,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_admin_can_revoke_token_from_list(): void
+    #[Test]
+    public function admin_can_revoke_token_from_list(): void
     {
         $this->actingAs($this->admin);
 
@@ -199,7 +208,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_admin_can_revoke_token_from_view_page(): void
+    #[Test]
+    public function admin_can_revoke_token_from_view_page(): void
     {
         $this->actingAs($this->admin);
 
@@ -220,7 +230,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_navigation_badge_shows_active_token_count(): void
+    #[Test]
+    public function navigation_badge_shows_active_token_count(): void
     {
         $service = app(ApiTokenService::class);
         $service->createToken($this->admin, 'Token 1', ['*'], 30);
@@ -240,7 +251,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.2
      */
-    public function test_navigation_badge_color_changes_for_expiring_tokens(): void
+    #[Test]
+    public function navigation_badge_color_changes_for_expiring_tokens(): void
     {
         // No expiring tokens - should be success
         $color = ApiTokenResource::getNavigationBadgeColor();
@@ -258,7 +270,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_resource_is_in_system_cluster(): void
+    #[Test]
+    public function resource_is_in_system_cluster(): void
     {
         $cluster = ApiTokenResource::getCluster();
 
@@ -270,7 +283,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_resource_has_correct_navigation_icon(): void
+    #[Test]
+    public function resource_has_correct_navigation_icon(): void
     {
         $icon = ApiTokenResource::getNavigationIcon();
 
@@ -282,7 +296,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_resource_slug_is_api_tokens(): void
+    #[Test]
+    public function resource_slug_is_api_tokens(): void
     {
         $slug = ApiTokenResource::getSlug();
 
@@ -294,7 +309,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_can_view_any_returns_false_for_staff(): void
+    #[Test]
+    public function can_view_any_returns_false_for_staff(): void
     {
         $this->actingAs($this->staff);
 
@@ -306,7 +322,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_can_view_any_returns_true_for_admin(): void
+    #[Test]
+    public function can_view_any_returns_true_for_admin(): void
     {
         $this->actingAs($this->admin);
 
@@ -318,7 +335,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_can_create_returns_true_for_admin(): void
+    #[Test]
+    public function can_create_returns_true_for_admin(): void
     {
         $this->actingAs($this->admin);
 
@@ -330,7 +348,8 @@ class ApiTokenResourceTest extends TestCase
      *
      * @trace Requirement 37.1
      */
-    public function test_should_register_navigation_returns_false_for_staff(): void
+    #[Test]
+    public function should_register_navigation_returns_false_for_staff(): void
     {
         $this->actingAs($this->staff);
 

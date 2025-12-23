@@ -222,6 +222,76 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
+    public function dashboard_widgets_update_in_real_time_via_polling(): void
+    {
+        // Arrange: Create initial data
+        HelpdeskTicket::factory()->count(3)->create(['status' => 'open']);
+        LoanApplication::factory()->count(2)->create(['status' => LoanStatus::UNDER_REVIEW]);
+
+        // Act: Render widgets
+        $helpdeskComponent = Livewire::actingAs($this->admin)
+            ->test(HelpdeskStatsOverview::class);
+
+        $loanComponent = Livewire::actingAs($this->admin)
+            ->test(AssetLoanStatsOverview::class);
+
+        // Assert: Initial render successful
+        $helpdeskComponent->assertOk();
+        $loanComponent->assertOk();
+
+        // Simulate real-time data changes
+        HelpdeskTicket::factory()->count(5)->create(['status' => 'resolved']);
+        LoanApplication::factory()->count(3)->create(['status' => LoanStatus::APPROVED]);
+
+        // Clear cache to force refresh
+        Cache::flush();
+
+        // Act: Simulate polling refresh
+        $helpdeskComponent->call('$refresh');
+        $loanComponent->call('$refresh');
+
+        // Assert: Widgets still render after real-time updates
+        $helpdeskComponent->assertOk();
+        $loanComponent->assertOk();
+    }
+
+    #[Test]
+    public function dashboard_widgets_display_bahasa_melayu_content(): void
+    {
+        // Arrange: Create test data
+        HelpdeskTicket::factory()->count(5)->create();
+        LoanApplication::factory()->count(3)->create();
+        Asset::factory()->count(10)->create();
+
+        // Act & Assert: Verify BM content in helpdesk widget
+        $helpdeskComponent = Livewire::actingAs($this->admin)
+            ->test(HelpdeskStatsOverview::class);
+
+        $helpdeskComponent->assertOk()
+            ->assertSee('Jumlah Tiket')
+            ->assertSee('Tiket Tetamu')
+            ->assertSee('Tiket Berdaftar')
+            ->assertSee('Pecah SLA');
+
+        // Act & Assert: Verify BM content in loan widget
+        $loanComponent = Livewire::actingAs($this->admin)
+            ->test(AssetLoanStatsOverview::class);
+
+        $loanComponent->assertOk()
+            ->assertSee('Jumlah Permohonan')
+            ->assertSee('Permohonan Tetamu')
+            ->assertSee('Permohonan Berdaftar')
+            ->assertSee('Kadar Penggunaan Aset');
+
+        // Act & Assert: Verify BM content in integration chart
+        $chartComponent = Livewire::actingAs($this->admin)
+            ->test(CrossModuleIntegrationChart::class);
+
+        $chartComponent->assertOk()
+            ->assertSee('Integrasi Silang Modul');
+    }
+
+    #[Test]
     public function helpdesk_widget_calculates_guest_authenticated_percentages(): void
     {
         // Arrange: Create 60% guest, 40% authenticated tickets

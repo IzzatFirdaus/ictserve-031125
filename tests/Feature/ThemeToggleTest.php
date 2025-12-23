@@ -56,8 +56,8 @@ class ThemeToggleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertSee('localStorage.getItem(\'theme\')', false);
-        $response->assertSee('theme_preference', false);
+        $response->assertSee('localStorage.getItem(STORAGE_KEY)', false);
+        $response->assertSee('STORAGE_KEY = \'theme\'', false);
         $response->assertSee('document.documentElement', false);
         $response->assertSee('data-theme', false);
     }
