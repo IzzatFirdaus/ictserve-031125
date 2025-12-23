@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use Illuminate\Support\Env;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class HorizonConfigTest extends TestCase
 {
-    public function test_horizon_config_values_have_expected_types(): void
+    #[Test]
+    public function horizon_config_values_have_expected_types(): void
     {
         $this->assertIsString(config('horizon.name'));
         $this->assertIsString(config('horizon.path'));
