@@ -1,7 +1,8 @@
 # D03 DOKUMEN SPESIFIKASI KEPERLUAN SISTEM (SRS)
 
-**SISTEM ICTSERVE**  
-**Platform Pengurusan Helpdesk & Pinjaman Aset ICT**
+**SISTEM ICTSERVE**
+
+*(Sistem Pengurusan Helpdesk dan Pinjaman Aset ICT)*
 
 | | |
 | :--- | :--- |
@@ -1468,9 +1469,6 @@ Semua keperluan SRS dipetakan kepada:
 
 ---
 
-**TAMAT DOKUMEN D03**
+**TAMAT DOKUMEN / END OF DOCUMENT**
 
-**Disediakan oleh:** Pasukan Pembangunan BPM MOTAC  
-**Tarikh:** 17 Disember 2025  
-**Versi:** 3.6.1  
-**Status:** Aktif
+*Dokumen ini adalah hak milik Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) dan tertakluk kepada Akta Rahsia Rasmi 1972.*
