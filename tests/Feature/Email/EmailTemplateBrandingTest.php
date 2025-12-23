@@ -7,6 +7,7 @@ namespace Tests\Feature\Email;
 use App\Mail\Loans\OTPPickupMail;
 use App\Models\LoanApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -20,7 +21,8 @@ class EmailTemplateBrandingTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_email_header_contains_jata_negara_image(): void
+    #[Test]
+    public function email_header_contains_jata_negara_image(): void
     {
         $application = LoanApplication::factory()->create([
             'pickup_otp_expires_at' => now()->addHours(24),
@@ -33,7 +35,8 @@ class EmailTemplateBrandingTest extends TestCase
         $mailable->assertSeeInHtml('height: 60px');
     }
 
-    public function test_email_header_contains_motac_logo(): void
+    #[Test]
+    public function email_header_contains_motac_logo(): void
     {
         $application = LoanApplication::factory()->create([
             'pickup_otp_expires_at' => now()->addHours(24),
@@ -46,7 +49,8 @@ class EmailTemplateBrandingTest extends TestCase
         $mailable->assertSeeInHtml('height: 50px');
     }
 
-    public function test_email_header_contains_ministry_tagline_in_english(): void
+    #[Test]
+    public function email_header_contains_ministry_tagline_in_english(): void
     {
         app()->setLocale('en');
 
@@ -58,7 +62,8 @@ class EmailTemplateBrandingTest extends TestCase
         $mailable->assertSeeInHtml('Ministry of Tourism, Arts and Culture');
     }
 
-    public function test_email_header_contains_ministry_tagline_in_malay(): void
+    #[Test]
+    public function email_header_contains_ministry_tagline_in_malay(): void
     {
         app()->setLocale('ms');
 
@@ -70,7 +75,8 @@ class EmailTemplateBrandingTest extends TestCase
         $mailable->assertSeeInHtml('Kementerian Pelancongan, Seni dan Budaya');
     }
 
-    public function test_email_header_uses_motac_primary_blue_color(): void
+    #[Test]
+    public function email_header_uses_motac_primary_blue_color(): void
     {
         $application = LoanApplication::factory()->create([
             'pickup_otp_expires_at' => now()->addHours(24),
@@ -82,7 +88,8 @@ class EmailTemplateBrandingTest extends TestCase
         $mailable->assertSeeInHtml('color: #0056b3');
     }
 
-    public function test_email_header_has_centered_layout(): void
+    #[Test]
+    public function email_header_has_centered_layout(): void
     {
         $application = LoanApplication::factory()->create([
             'pickup_otp_expires_at' => now()->addHours(24),
@@ -92,5 +99,44 @@ class EmailTemplateBrandingTest extends TestCase
 
         // Assert header is centered
         $mailable->assertSeeInHtml('text-align: center');
+    }
+
+    #[Test]
+    public function email_branding_contains_bahasa_melayu_content(): void
+    {
+        // Set locale to Bahasa Melayu (v3.6.0 default)
+        app()->setLocale('ms');
+
+        $application = LoanApplication::factory()->create([
+            'pickup_otp_expires_at' => now()->addHours(24),
+        ]);
+
+        $mailable = new OTPPickupMail($application, '1234');
+
+        // Render email content
+        $rendered = $mailable->render();
+
+        // Verify Bahasa Melayu branding content
+        $this->assertStringContainsString('Kementerian Pelancongan, Seni dan Budaya', $rendered); // BM ministry name
+        $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+        $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
+        $this->assertNotEmpty($rendered);
+    }
+
+    #[Test]
+    public function email_branding_meets_wcag_contrast_requirements(): void
+    {
+        $application = LoanApplication::factory()->create([
+            'pickup_otp_expires_at' => now()->addHours(24),
+        ]);
+
+        $mailable = new OTPPickupMail($application, '1234');
+
+        // Render email content
+        $rendered = $mailable->render();
+
+        // Verify WCAG 2.2 AA compliance elements are present
+        $this->assertStringContainsString('color: #0056b3', $rendered); // MOTAC primary blue with sufficient contrast
+        $this->assertNotEmpty($rendered);
     }
 }

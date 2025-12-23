@@ -9,10 +9,20 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Branding Tests
+ *
+ * @trace Requirements 1.1, 3.1
+ */
 final class BrandingTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Test that auth header uses MOTAC branding with BM content
+     *
+     * @trace Requirements 1.1, 3.1
+     */
     #[Test]
     public function auth_header_uses_motac_branding(): void
     {
@@ -24,6 +34,11 @@ final class BrandingTest extends TestCase
             ->assertSee(__('common.motac_logo'), false);
     }
 
+    /**
+     * Test that application logo component renders MOTAC asset with BM alt text
+     *
+     * @trace Requirements 1.1, 3.1
+     */
     #[Test]
     public function application_logo_component_renders_motac_asset(): void
     {
@@ -32,6 +47,11 @@ final class BrandingTest extends TestCase
             ->assertSee(__('common.motac_logo'), false);
     }
 
+    /**
+     * Test that mail header component uses MOTAC logo with BM content
+     *
+     * @trace Requirements 1.1, 3.1
+     */
     #[Test]
     public function mail_header_component_uses_motac_logo(): void
     {
@@ -44,6 +64,11 @@ final class BrandingTest extends TestCase
         $this->assertStringContainsString(__('common.motac_logo'), $html);
     }
 
+    /**
+     * Test that government header displays Jata Negara and MOTAC branding in BM
+     *
+     * @trace Requirements 1.1, 3.1
+     */
     #[Test]
     public function gov_header_displays_jata_negara_and_motac_branding(): void
     {
@@ -54,6 +79,34 @@ final class BrandingTest extends TestCase
             ->assertSee(__('common.motac_logo'), false)
             ->assertSee(__('common.motac_full_name'), false)
             ->assertSee(__('common.bpm_full_name'), false);
+    }
+
+    /**
+     * Test that branding displays proper BM ministry names
+     *
+     * @trace Requirements 1.1, 3.1
+     */
+    #[Test]
+    public function branding_displays_bm_ministry_names(): void
+    {
+        $this->blade('<x-layout.gov-header />')
+            ->assertSee('Kementerian Pelancongan, Seni dan Budaya Malaysia') // MOTAC full name in BM
+            ->assertSee('Bahagian Pengurusan Maklumat'); // BPM full name in BM
+    }
+
+    /**
+     * Test that footer displays BM copyright and disclaimer
+     *
+     * @trace Requirements 1.1, 3.1
+     */
+    #[Test]
+    public function footer_displays_bm_copyright_and_disclaimer(): void
+    {
+        $this->blade('<x-layout.gov-footer />')
+            ->assertSee('Hak Cipta Terpelihara') // All Rights Reserved in BM
+            ->assertSee('Kerajaan Malaysia') // Government of Malaysia in BM
+            ->assertSee('Penafian') // Disclaimer in BM
+            ->assertSee(date('Y'), false); // Current year
     }
 
     #[Test]

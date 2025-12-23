@@ -170,8 +170,11 @@ class EmailSystemIntegrationTest extends TestCase
     }
 
     #[Test]
-    public function email_templates_support_bilingual_content(): void
+    public function email_templates_support_bahasa_melayu_content(): void
     {
+        // Set locale to Bahasa Melayu (v3.6.0 default)
+        app()->setLocale('ms');
+
         $division = Division::factory()->create();
         $application = LoanApplication::factory()->create([
             'user_id' => $this->user->id,
@@ -185,16 +188,57 @@ class EmailSystemIntegrationTest extends TestCase
         // Create mailable
         $mail = new OtpGeneratedMail($application, $otp);
 
-        // Verify envelope uses translation
+        // Verify envelope uses Bahasa Melayu subject
         $envelope = $mail->envelope();
         $this->assertNotEmpty($envelope->subject);
 
-        // Verify content uses translation keys
+        // Verify content uses correct template
         $content = $mail->content();
         $this->assertEquals('emails.loan.otp-generated', $content->markdown);
         $this->assertArrayHasKey('application', $content->with);
         $this->assertArrayHasKey('otp', $content->with);
         $this->assertEquals($otp, $content->with['otp']);
+
+        // Render and verify Bahasa Melayu content
+        $rendered = $mail->render();
+        $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+        $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
+        $this->assertNotEmpty($rendered);
+    }
+
+    #[Test]
+    public function status_update_emails_contain_bahasa_melayu_content(): void
+    {
+        app()->setLocale('ms');
+
+        $division = Division::factory()->create();
+        $application = LoanApplication::factory()->create([
+            'user_id' => $this->user->id,
+            'applicant_email' => $this->user->email,
+            'division_id' => $division->id,
+            'status' => LoanStatus::SUBMITTED,
+        ]);
+
+        // Change status
+        $application->update(['status' => LoanStatus::UNDER_REVIEW]);
+
+        // Trigger notification
+        $service = app(LoanNotificationService::class);
+        $service->sendStatusUpdate($application, LoanStatus::SUBMITTED->value);
+
+        // Assert status update email was queued with BM content
+        Mail::assertQueued(LoanStatusUpdated::class, function ($mail) use ($application) {
+            $rendered = $mail->render();
+
+            // Verify Bahasa Melayu content
+            $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+            $this->assertStringContainsString('status', $rendered); // Status term
+            $this->assertStringContainsString('permohonan', $rendered); // Application term
+            $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
+
+            return $mail->application->id === $application->id
+                && $mail->previousStatus === LoanStatus::SUBMITTED->value;
+        });
     }
 
     #[Test]
