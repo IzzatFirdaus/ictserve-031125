@@ -3,6 +3,17 @@ window.axios = axios;
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
+// Configure CSRF token for axios requests (including broadcasting auth)
+// Requirement 7.1: Ensure auth endpoint validates CSRF token
+const token = document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+	window.axios.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
+} else {
+	console.error(
+		"CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token"
+	);
+}
+
 /**
  * Alpine.js Configuration
  *
@@ -25,7 +36,7 @@ window.Alpine = Alpine;
  * Echo allows you to easily build real-time event-driven applications.
  * We'll use Laravel Reverb as the WebSocket server for broadcasting.
  *
- * @trace D03 SRS-FR-008, D04 §5.3 (Requirements 6.1, 6.2)
+ * @trace D03 SRS-FR-008, D04 §5.3 (Requirements 5.1, 5.2, 1.5)
  */
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
@@ -49,15 +60,34 @@ if (reverbAppKey && reverbHost) {
 		authorizer: (channel) => {
 			return {
 				authorize: (socketId, callback) => {
+					// Include status token for guest channel authorization
+					const statusToken =
+						new URLSearchParams(window.location.search).get("status_token") ||
+						sessionStorage.getItem("status_token") ||
+						localStorage.getItem("status_token");
+
+					const authData = {
+						socket_id: socketId,
+						channel_name: channel.name,
+					};
+
+					// Add status token for guest channels
+					if (
+						statusToken &&
+						(channel.name.includes("ticket.") ||
+							channel.name.includes("loan.") ||
+							channel.name.includes("conversation."))
+					) {
+						authData.status_token = statusToken;
+					}
+
 					window.axios
-						.post("/broadcasting/auth", {
-							socket_id: socketId,
-							channel_name: channel.name,
-						})
+						.post("/broadcasting/auth", authData)
 						.then((response) => {
 							callback(null, response.data);
 						})
 						.catch((error) => {
+							console.error("Echo authorization failed:", error);
 							callback(error);
 						});
 				},

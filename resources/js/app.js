@@ -8,6 +8,10 @@ import "./aria-announcements";
 import "./keyboard-navigation";
 import "./performance-monitor";
 import "./script-loader";
+import "./echo-handlers";
+import "./components/notification-bell";
+import "./components/status-display";
+import "./components/ai-streaming-display";
 
 // Theme preference application function (used by event listeners)
 function applyThemePreference(theme) {
