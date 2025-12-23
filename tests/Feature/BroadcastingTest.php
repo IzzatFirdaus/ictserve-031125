@@ -28,25 +28,13 @@ final class BroadcastingTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        config([
-            'broadcasting.default' => 'pusher',
-            'broadcasting.connections.pusher.key' => 'test-key',
-            'broadcasting.connections.pusher.secret' => 'test-secret',
-            'broadcasting.connections.pusher.app_id' => 'test-app-id',
-        ]);
-    }
-
     #[Test]
     public function authorizes_private_user_channel_for_owner(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
-            ->post('/broadcasting/auth', [
+            ->postJson('/broadcasting/auth', [
                 'socket_id' => '123.456',
                 'channel_name' => 'private-user.'.$user->id,
             ]);
@@ -61,7 +49,7 @@ final class BroadcastingTest extends TestCase
         $otherUser = User::factory()->create();
 
         $response = $this->actingAs($user)
-            ->post('/broadcasting/auth', [
+            ->postJson('/broadcasting/auth', [
                 'socket_id' => '123.456',
                 'channel_name' => 'private-user.'.$otherUser->id,
             ]);
