@@ -22,6 +22,7 @@ use Illuminate\Support\Collection;
 
 class AssetsTable
 {
+    // @intelephense-ignore
     public static function configure(Table $table): Table
     {
         return $table
