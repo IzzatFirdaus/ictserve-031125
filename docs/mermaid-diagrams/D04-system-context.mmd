@@ -1,0 +1,38 @@
+graph TB
+    subgraph EXTERNAL["External Systems"]
+        SMTP[SMTP Server<br/>Email Notifications]
+        S3[S3/MinIO<br/>File Storage]
+        SIEM[SIEM System<br/>Audit Streaming]
+    end
+    
+    subgraph USERS["Users"]
+        GUEST[Guest Users<br/>Quick Access]
+        STAFF[MOTAC Staff<br/>@motac.gov.my]
+        ADMIN[Admin/Superuser<br/>BPM ICT Team]
+        APPROVER[Approvers<br/>Grade 41+]
+    end
+    
+    subgraph ICTSERVE["ICTServe System v3.6.1"]
+        PORTAL[Hybrid Portal<br/>Livewire 3.7.3 + Volt 1.10.1]
+        FILAMENT[Admin Panel<br/>Filament 4.3.1]
+        BACKEND[Backend Services<br/>Laravel 12.43.1]
+        DB[(MySQL 8.0<br/>Database)]
+        REDIS[(Redis 7.0<br/>Cache/Queue)]
+        REVERB[WebSocket Server<br/>Laravel Reverb 1.6.3]
+    end
+    
+    GUEST --> PORTAL
+    STAFF --> PORTAL
+    ADMIN --> FILAMENT
+    APPROVER --> BACKEND
+    
+    PORTAL --> BACKEND
+    FILAMENT --> BACKEND
+    BACKEND --> DB
+    BACKEND --> REDIS
+    BACKEND --> REVERB
+    BACKEND --> SMTP
+    BACKEND --> S3
+    BACKEND --> SIEM
+    
+    REVERB --> FILAMENT

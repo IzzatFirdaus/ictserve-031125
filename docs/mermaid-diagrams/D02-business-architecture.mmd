@@ -1,0 +1,93 @@
+graph TB
+    subgraph MEDIUM["MEDIUM PERKHIDMATAN"]
+        M1[Aplikasi Web]
+        M2[Portal Dalaman]
+        M3[E-mel]
+        M4[Notifikasi Push]
+        M5[API Future]
+    end
+    
+    subgraph PENGGUNA["PENGGUNA PERKHIDMATAN"]
+        P1[Warga MOTAC Staff/Guest]
+        P2[Admin]
+        P3[Superuser]
+        P4[Pegawai Kelulusan]
+    end
+    
+    subgraph PERKHIDMATAN["PERKHIDMATAN UTAMA"]
+        S1[Pengurusan Helpdesk]
+        S2[Pengurusan Pinjaman Aset]
+        S3[Pemantauan Prestasi]
+        S4[Pengurusan Pengguna]
+        S5[Audit & Keselamatan]
+        S6[Laporan & Dashboard]
+    end
+    
+    subgraph APLIKASI["SISTEM APLIKASI"]
+        subgraph HELPDESK["Modul Helpdesk"]
+            H1[Hybrid Submission]
+            H2[SLA Management]
+            H3[Real-time Notifications]
+            H4[Status Tracking]
+        end
+        
+        subgraph LOAN["Modul Pinjaman Aset"]
+            L1[Hybrid Application]
+            L2[Email Approval Workflow]
+            L3[Asset Check-out/Check-in]
+            L4[Conflict Detection]
+        end
+        
+        subgraph USER["Modul Pengguna"]
+            U1[Self-Registration]
+            U2[Flexible Login]
+            U3[Account Linking]
+            U4[Profile Management]
+        end
+        
+        subgraph MONITOR["Modul Pemantauan"]
+            MO1[Laravel Pulse Dashboard]
+            MO2[Laravel Telescope]
+            MO3[Dual Audit]
+            MO4[Performance Monitoring]
+        end
+        
+        subgraph API["Modul API"]
+            A1[Laravel Sanctum]
+            A2[Google Workspace SSO]
+            A3[Token Management]
+        end
+        
+        subgraph REPORT["Modul Laporan"]
+            R1[Real-time Widgets]
+            R2[KPI Metrics]
+            R3[Export Reports]
+        end
+    end
+    
+    subgraph DATA["MAKLUMAT DATA"]
+        D1[Pengguna]
+        D2[Tiket]
+        D3[Aset]
+        D4[Pinjaman]
+        D5[Audit]
+        D6[Performance Metrics]
+        D7[Google Workspace SSO]
+        D8[Email Gateway]
+    end
+    
+    subgraph TECH["TEKNOLOGI"]
+        T1[Laravel 12.43.1]
+        T2[PHP 8.2.12]
+        T3[MySQL 8.0]
+        T4[Redis 7.0]
+        T5[Livewire 3.7.3]
+        T6[Filament 4.3.1]
+        T7[Laravel Reverb 1.6.3]
+    end
+    
+    MEDIUM --> PENGGUNA
+    PENGGUNA --> PERKHIDMATAN
+    PERKHIDMATAN --> APLIKASI
+    APLIKASI --> DATA
+    DATA --> TECH

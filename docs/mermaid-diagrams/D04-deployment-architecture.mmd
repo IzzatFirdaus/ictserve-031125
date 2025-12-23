@@ -1,0 +1,73 @@
+graph TB
+    subgraph INTERNET["Internet"]
+        USERS[Users<br/>Guest/Staff/Admin]
+    end
+    
+    subgraph SECURITY["Security Layer"]
+        WAF[Web Application Firewall<br/>DDoS Protection]
+        LB[Load Balancer<br/>Nginx 1.24]
+    end
+    
+    subgraph APP_TIER["Application Tier"]
+        APP1[App Server 1<br/>PHP-FPM 8.2.12<br/>Laravel 12.43.1]
+        APP2[App Server 2<br/>PHP-FPM 8.2.12<br/>Laravel 12.43.1]
+        REVERB_SERVER[WebSocket Server<br/>Laravel Reverb 1.6.3<br/>Port 8080]
+    end
+    
+    subgraph WORKER_TIER["Worker Tier"]
+        WORKER1[Queue Worker 1<br/>Supervisor]
+        WORKER2[Queue Worker 2<br/>Supervisor]
+        SCHEDULER[Task Scheduler<br/>Laravel Cron]
+    end
+    
+    subgraph DATA_TIER["Data Tier"]
+        MYSQL_MASTER[(MySQL 8.0 Master<br/>Read/Write)]
+        MYSQL_REPLICA[(MySQL 8.0 Replica<br/>Read Only)]
+        REDIS[(Redis 7.0<br/>Cache/Queue/Sessions)]
+    end
+    
+    subgraph STORAGE_TIER["Storage Tier"]
+        S3[S3/MinIO<br/>File Attachments<br/>Presigned URLs]
+        BACKUP[Backup Storage<br/>Daily/Hourly Backups]
+    end
+    
+    subgraph MONITORING["Monitoring & Logging"]
+        PROMETHEUS[Prometheus<br/>Metrics Collection]
+        GRAFANA[Grafana<br/>Dashboards]
+        ELK[ELK Stack<br/>Log Aggregation]
+        SENTRY[Sentry<br/>Error Tracking]
+    end
+    
+    USERS --> WAF
+    WAF --> LB
+    LB --> APP1
+    LB --> APP2
+    LB --> REVERB_SERVER
+    
+    APP1 --> MYSQL_MASTER
+    APP2 --> MYSQL_MASTER
+    APP1 --> MYSQL_REPLICA
+    APP2 --> MYSQL_REPLICA
+    APP1 --> REDIS
+    APP2 --> REDIS
+    APP1 --> S3
+    APP2 --> S3
+    
+    WORKER1 --> REDIS
+    WORKER2 --> REDIS
+    WORKER1 --> MYSQL_MASTER
+    WORKER2 --> MYSQL_MASTER
+    SCHEDULER --> MYSQL_MASTER
+    
+    REVERB_SERVER --> REDIS
+    
+    MYSQL_MASTER --> BACKUP
+    S3 --> BACKUP
+    
+    APP1 --> PROMETHEUS
+    APP2 --> PROMETHEUS
+    PROMETHEUS --> GRAFANA
+    APP1 --> ELK
+    APP2 --> ELK
+    APP1 --> SENTRY
+    APP2 --> SENTRY
