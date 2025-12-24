@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Unit\UnitTestCase;
 
 /**
  * SetLocaleMiddleware Unit Tests
@@ -33,7 +33,7 @@ use Tests\TestCase;
  * Requirements: 20.1, 20.2, 20.4, 14.3, 15.1, 15.2
  * Standards: D03-FR-020, D04 §7.3, D10 §5.2, D11 §6.1
  */
-class SetLocaleMiddlewareTest extends TestCase
+class SetLocaleMiddlewareTest extends UnitTestCase
 {
     protected SetLocaleMiddleware $middleware;
 
@@ -41,6 +41,9 @@ class SetLocaleMiddlewareTest extends TestCase
     {
         parent::setUp();
         $this->middleware = new SetLocaleMiddleware;
+
+        // Don't refresh database for middleware tests
+        $this->refreshApplication();
     }
 
     /**
@@ -57,7 +60,7 @@ class SetLocaleMiddlewareTest extends TestCase
         $request->headers->set('Accept-Language', 'en-US,en;q=0.9'); // Header should be ignored
 
         // Act
-        $this->middleware->handle($request, fn($req) => response('OK'));
+        $this->middleware->handle($request, fn ($req) => response('OK'));
 
         // Assert
         $this->assertEquals('ms', App::currentLocale());
@@ -76,7 +79,7 @@ class SetLocaleMiddlewareTest extends TestCase
         $request->headers->set('Accept-Language', 'en-US,en;q=0.9'); // Header should be ignored
 
         // Act
-        $this->middleware->handle($request, fn($req) => response('OK'));
+        $this->middleware->handle($request, fn ($req) => response('OK'));
 
         // Assert
         $this->assertEquals('ms', App::currentLocale());
@@ -94,7 +97,7 @@ class SetLocaleMiddlewareTest extends TestCase
         $request->headers->set('Accept-Language', 'ms-MY,ms;q=0.9,en;q=0.8');
 
         // Act
-        $this->middleware->handle($request, fn($req) => response('OK'));
+        $this->middleware->handle($request, fn ($req) => response('OK'));
 
         // Assert
         $this->assertEquals('ms', App::currentLocale());
@@ -105,7 +108,7 @@ class SetLocaleMiddlewareTest extends TestCase
         $request2->headers->set('Accept-Language', 'en-US,en;q=0.9');
 
         // Act
-        $this->middleware->handle($request2, fn($req) => response('OK'));
+        $this->middleware->handle($request2, fn ($req) => response('OK'));
 
         // Assert - v3.6.0 is BM-only, should default to 'ms'
         $this->assertEquals('ms', App::currentLocale());
@@ -113,7 +116,7 @@ class SetLocaleMiddlewareTest extends TestCase
 
     /**
      * Test fallback to config default when no preference is set.
-     * 
+     *
      * @traceability Requirement 1.1 - BM-only locale in v3.6.0
      */
     #[Test]
@@ -126,7 +129,7 @@ class SetLocaleMiddlewareTest extends TestCase
         // No session, cookie, or Accept-Language header
 
         // Act
-        $this->middleware->handle($request, fn($req) => response('OK'));
+        $this->middleware->handle($request, fn ($req) => response('OK'));
 
         // Assert - v3.6.0 is BM-only
         $this->assertEquals('ms', App::currentLocale());
@@ -134,7 +137,7 @@ class SetLocaleMiddlewareTest extends TestCase
 
     /**
      * Test that invalid locale is rejected.
-     * 
+     *
      * @traceability Requirement 1.1 - BM-only locale in v3.6.0
      */
     #[Test]
@@ -148,7 +151,7 @@ class SetLocaleMiddlewareTest extends TestCase
         $request->session()->put('locale', 'fr'); // Invalid locale
 
         // Act
-        $this->middleware->handle($request, fn($req) => response('OK'));
+        $this->middleware->handle($request, fn ($req) => response('OK'));
 
         // Assert - Should fallback to BM default
         $this->assertEquals('ms', App::currentLocale());
@@ -166,7 +169,7 @@ class SetLocaleMiddlewareTest extends TestCase
         $request->session()->put('locale', 'ms');
 
         // Act
-        $this->middleware->handle($request, fn($req) => response('OK'));
+        $this->middleware->handle($request, fn ($req) => response('OK'));
 
         // Assert
         $this->assertEquals('ms', App::currentLocale());
@@ -175,7 +178,7 @@ class SetLocaleMiddlewareTest extends TestCase
 
     /**
      * Test that supported locales configuration is respected.
-     * 
+     *
      * @traceability Requirement 1.1 - BM-only locale in v3.6.0
      */
     #[Test]
@@ -188,7 +191,7 @@ class SetLocaleMiddlewareTest extends TestCase
         $request->session()->put('locale', 'ms');
 
         // Act
-        $this->middleware->handle($request, fn($req) => response('OK'));
+        $this->middleware->handle($request, fn ($req) => response('OK'));
 
         // Assert
         $this->assertEquals('ms', App::currentLocale());
@@ -196,7 +199,7 @@ class SetLocaleMiddlewareTest extends TestCase
 
     /**
      * Test BM-only locale enforcement in v3.6.0
-     * 
+     *
      * @traceability Requirement 1.1 - BM-only locale in v3.6.0
      */
     #[Test]
@@ -210,7 +213,7 @@ class SetLocaleMiddlewareTest extends TestCase
         $request->session()->put('locale', 'en'); // Should be rejected
 
         // Act
-        $this->middleware->handle($request, fn($req) => response('OK'));
+        $this->middleware->handle($request, fn ($req) => response('OK'));
 
         // Assert - Should fallback to BM
         $this->assertEquals('ms', App::currentLocale());

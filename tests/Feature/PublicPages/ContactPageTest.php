@@ -363,7 +363,14 @@ class ContactPageTest extends TestCase
     {
         $response = $this->get(route('contact'));
 
-        // Check for x-ui.card component usage
-        $response->assertSee('x-ui.card', false);
+        // Check for card component structure (rendered HTML from x-ui.card)
+        $response->assertSee('bg-white dark:bg-gray-800 rounded-lg shadow-card border border-gray-200 dark:border-gray-700 overflow-hidden', false);
+
+        // Check for multiple card instances (contact info cards)
+        $response->assertSeeInOrder([
+            'Alamat Pejabat',
+            'Saluran Hubungan',
+            'Waktu Operasi',
+        ]);
     }
 }

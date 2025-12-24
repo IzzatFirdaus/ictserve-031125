@@ -156,10 +156,10 @@ class TestCountPreservationPropertyTest extends TestCase
         $content = file_get_contents($filePath);
         $this->assertNotFalse($content, "Could not read file: {$filePath}");
 
-        // Verify class extends TestCase or DuskTestCase (for Browser tests)
+        // Verify class extends TestCase, UnitTestCase, or DuskTestCase (for Browser tests)
         $this->assertTrue(
-            preg_match('/class\s+\w+.*extends\s+(TestCase|DuskTestCase)/s', $content) === 1,
-            "File {$filePath} should contain a test class extending TestCase"
+            preg_match('/class\s+\w+.*extends\s+(TestCase|UnitTestCase|DuskTestCase)/s', $content) === 1,
+            "File {$filePath} should contain a test class extending TestCase, UnitTestCase, or DuskTestCase"
         );
 
         // Verify proper namespace

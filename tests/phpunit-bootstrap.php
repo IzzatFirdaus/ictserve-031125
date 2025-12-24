@@ -16,17 +16,18 @@ if (file_exists($cachedConfig)) {
 // Ensure common testing env vars are set (phpunit.xml should already set them, but be explicit)
 putenv('APP_ENV=testing');
 
-// Use MySQL database for testing (same as development for now)
+// Use MySQL database for testing with a dedicated test database
+// IMPORTANT: Tests must run sequentially (not in parallel) to avoid race conditions
 putenv('DB_CONNECTION=mysql');
-putenv('DB_DATABASE=ictserve');
+putenv('DB_DATABASE=ictserve_test');
 
 // Also set superglobals used by bootstrap/app.php (_ENV/_SERVER) so it does not override to 'local'
 $_ENV['APP_ENV'] = 'testing';
 $_SERVER['APP_ENV'] = 'testing';
 $_ENV['DB_CONNECTION'] = 'mysql';
-$_ENV['DB_DATABASE'] = 'ictserve';
+$_ENV['DB_DATABASE'] = 'ictserve_test';
 $_SERVER['DB_CONNECTION'] = 'mysql';
-$_SERVER['DB_DATABASE'] = 'ictserve';
+$_SERVER['DB_DATABASE'] = 'ictserve_test';
 
 // Allow tests to detect this bootstrap ran
 if (! defined('TEST_BOOTSTRAP_RAN')) {

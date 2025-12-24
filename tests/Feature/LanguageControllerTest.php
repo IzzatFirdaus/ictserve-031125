@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -31,8 +30,6 @@ use Tests\TestCase;
  */
 class LanguageControllerTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /**
      * Test default locale is Bahasa Melayu in v3.6.0.
      */

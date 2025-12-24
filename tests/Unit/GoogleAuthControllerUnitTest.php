@@ -25,7 +25,6 @@ use App\Contracts\SsoHealthCheckInterface;
 use App\Events\GoogleSsoLinked;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Event;
 use Laravel\Socialite\Facades\Socialite;
@@ -39,8 +38,6 @@ use Tests\TestCase;
 
 class GoogleAuthControllerUnitTest extends TestCase
 {
-    use RefreshDatabase;
-
     private GoogleAuthController $controller;
 
     private GoogleSsoServiceInterface $ssoService;
