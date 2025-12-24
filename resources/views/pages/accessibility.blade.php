@@ -17,7 +17,7 @@
     {{-- NOTE: Skip links are provided by layouts.landing --}}
 
     {{-- Page Header with MOTAC Branding --}}
-    <section class="bg-primary-600 dark:bg-primary-700 text-white py-12 md:py-16 theme-transition" role="banner"
+    <section class="bg-primary-600 dark:bg-primary-700 motac-blue text-white py-12 md:py-16 theme-transition" role="banner"
         aria-labelledby="page-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Breadcrumbs per D12 §6.1 --}}
@@ -26,7 +26,7 @@
                     <li>
                         <a href="{{ route('welcome') }}"
                             class="text-primary-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded px-1">
-                            {{ __('Utama') }}
+                            {{ __('common.home') }}
                         </a>
                     </li>
                     <li aria-hidden="true" class="text-primary-200">
@@ -34,7 +34,7 @@
                     </li>
                     <li>
                         <span class="text-white font-medium" aria-current="page">
-                            {{ __('Kebolehcapaian') }}
+                            {{ __('pages.accessibility.breadcrumb') }}
                         </span>
                     </li>
                 </ol>
@@ -42,7 +42,7 @@
 
             {{-- Page Title --}}
             <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
-                {{ __('Pernyataan Kebolehcapaian') }}
+                {{ __('pages.accessibility.title') }}
             </h1>
             <p class="text-lg md:text-xl text-primary-100 max-w-2xl leading-relaxed">
                 {{ __('Kemas kini terakhir') }}: {{ now()->format('d F Y') }}
@@ -60,20 +60,20 @@
             <article
                 class="bg-white dark:bg-slate-900 rounded-lg shadow-card dark:shadow-list border border-slate-200 dark:border-slate-700 p-6 md:p-8 theme-transition">
                 <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-slate-100 mb-4">
-                    {{ __('Komitmen Kami') }}
+                    {{ __('pages.accessibility.commitment_title') }}
                 </h2>
                 <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
-                    {{ __('Bahagian Pengurusan Maklumat (BPM) MOTAC komited untuk memastikan laman web ICTServe boleh diakses oleh semua pengguna, termasuk mereka yang mempunyai keperluan khas. Kami berusaha untuk mematuhi piawaian kebolehcapaian antarabangsa dan tempatan.') }}
+                    {{ __('pages.accessibility.commitment_text') }}
                 </p>
             </article>
 
             {{-- Standards Section --}}
             <article>
                 <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-gray-100 mb-6">
-                    {{ __('Piawaian yang Dipatuhi') }}
+                    {{ __('pages.accessibility.standards_title') }}
                 </h2>
                 <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {{ __('Laman web ini dibangunkan mengikut piawaian berikut:') }}
+                    {{ __('pages.accessibility.standards_intro') }}
                 </p>
 
                 <div class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4 md:gap-6">
@@ -86,10 +86,10 @@
                                 <x-heroicon-o-check-badge class="h-6 w-6 text-primary-600 dark:text-primary-400" />
                             </div>
                             <div>
-                                <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100 mb-2">WCAG
-                                    2.2 Level AA</h3>
+                                <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                                    {{ __('pages.accessibility.wcag_title') }}</h3>
                                 <p class="text-sm text-slate-700 dark:text-slate-300">
-                                    {{ __('Garis Panduan Kebolehcapaian Kandungan Web versi 2.2 pada tahap AA.') }}</p>
+                                    {{ __('pages.accessibility.wcag_description') }}</p>
                             </div>
                         </div>
                     </div>
@@ -103,10 +103,10 @@
                                 <x-heroicon-o-check-badge class="h-6 w-6 text-primary-600 dark:text-primary-400" />
                             </div>
                             <div>
-                                <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100 mb-2">ISO
-                                    9241</h3>
+                                <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                                    {{ __('pages.accessibility.iso_title') }}</h3>
                                 <p class="text-sm text-gray-700 dark:text-gray-300">
-                                    {{ __('Piawaian ergonomik untuk interaksi manusia-sistem.') }}</p>
+                                    {{ __('pages.accessibility.iso_description') }}</p>
                             </div>
                         </div>
                     </div>
@@ -120,10 +120,10 @@
                                 <x-heroicon-o-shield-check class="h-6 w-6 text-primary-600 dark:text-primary-400" />
                             </div>
                             <div>
-                                <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 mb-2">PDPA
-                                    2010</h3>
+                                <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                    {{ __('pages.accessibility.pdpa_title') }}</h3>
                                 <p class="text-sm text-gray-700 dark:text-gray-300">
-                                    {{ __('Akta Perlindungan Data Peribadi Malaysia 2010.') }}
+                                    {{ __('pages.accessibility.pdpa_description') }}
                                 </p>
                             </div>
                         </div>
@@ -135,50 +135,45 @@
             <article
                 class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 md:p-8 theme-transition">
                 <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-gray-100 mb-6">
-                    {{ __('Ciri-ciri Kebolehcapaian') }}
+                    {{ __('pages.accessibility.features_title') }}
                 </h2>
                 <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {{ __('Laman web ini menyediakan ciri-ciri kebolehcapaian berikut:') }}
+                    {{ __('pages.accessibility.features_intro') }}
                 </p>
 
                 <ul class="space-y-3" role="list">
                     <li class="flex items-start gap-3">
                         <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                        <span
-                            class="text-gray-700">{{ __('Navigasi papan kekunci penuh untuk semua fungsi interaktif') }}</span>
+                        <span class="text-gray-700">{{ __('pages.accessibility.feature_keyboard') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span class="text-gray-700">{{ __('pages.accessibility.feature_screen_reader') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span class="text-gray-700">{{ __('pages.accessibility.feature_contrast') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span class="text-gray-700 dark:text-gray-300">{{ __('pages.accessibility.feature_touch') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span class="text-gray-700 dark:text-gray-300">{{ __('pages.accessibility.feature_aria') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span class="text-gray-700">{{ __('pages.accessibility.feature_bilingual') }}</span>
                     </li>
                     <li class="flex items-start gap-3">
                         <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
                         <span
-                            class="text-gray-700">{{ __('Keserasian dengan pembaca skrin (NVDA, JAWS, VoiceOver)') }}</span>
+                            class="text-gray-700 dark:text-gray-300">{{ __('pages.accessibility.feature_responsive') }}</span>
                     </li>
                     <li class="flex items-start gap-3">
                         <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                        <span
-                            class="text-gray-700">{{ __('Kontras warna minimum 4.5:1 untuk teks dan 3:1 untuk komponen UI') }}</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                        <span
-                            class="text-gray-700 dark:text-gray-300">{{ __('Sasaran sentuh minimum 44x44 piksel') }}</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                        <span
-                            class="text-gray-700 dark:text-gray-300">{{ __('Atribut ARIA untuk teknologi bantuan') }}</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                        <span class="text-gray-700">{{ __('Antaramuka Bahasa Melayu sepenuhnya') }}</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                        <span
-                            class="text-gray-700 dark:text-gray-300">{{ __('Reka bentuk responsif untuk semua saiz skrin') }}</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                        <span class="text-gray-700 dark:text-gray-300">{{ __('Pautan langkau ke kandungan utama') }}</span>
+                        <span class="text-gray-700 dark:text-gray-300">{{ __('pages.accessibility.feature_skip') }}</span>
                     </li>
                 </ul>
             </article>
@@ -188,30 +183,27 @@
             <article
                 class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 md:p-8 theme-transition">
                 <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-gray-100 mb-6">
-                    {{ __('Had yang Diketahui') }}
+                    {{ __('pages.accessibility.limitations_title') }}
                 </h2>
                 <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {{ __('Walaupun kami berusaha untuk memastikan kebolehcapaian penuh, beberapa had mungkin wujud:') }}
+                    {{ __('pages.accessibility.limitations_intro') }}
                 </p>
 
                 <ul class="space-y-3" role="list">
                     <li class="flex items-start gap-3">
                         <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-warning shrink-0 mt-0.5"
                             aria-hidden="true" />
-                        <span
-                            class="text-gray-700">{{ __('Dokumen PDF yang dimuat naik oleh pengguna mungkin tidak sepenuhnya boleh diakses') }}</span>
+                        <span class="text-gray-700">{{ __('pages.accessibility.limitation_pdf') }}</span>
                     </li>
                     <li class="flex items-start gap-3">
                         <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-warning shrink-0 mt-0.5"
                             aria-hidden="true" />
-                        <span
-                            class="text-gray-700">{{ __('Kandungan pihak ketiga mungkin tidak mematuhi piawaian kebolehcapaian kami') }}</span>
+                        <span class="text-gray-700">{{ __('pages.accessibility.limitation_third_party') }}</span>
                     </li>
                     <li class="flex items-start gap-3">
                         <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-warning shrink-0 mt-0.5"
                             aria-hidden="true" />
-                        <span
-                            class="text-gray-700">{{ __('Pelayar web lama mungkin tidak menyokong semua ciri kebolehcapaian') }}</span>
+                        <span class="text-gray-700">{{ __('pages.accessibility.limitation_legacy') }}</span>
                     </li>
                 </ul>
             </article>
@@ -219,10 +211,10 @@
             {{-- Supported Technologies --}}
             <article>
                 <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-gray-100 mb-6">
-                    {{ __('Teknologi yang Disokong') }}
+                    {{ __('pages.accessibility.technologies_title') }}
                 </h2>
                 <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {{ __('Laman web ini telah diuji dan disokong pada teknologi berikut:') }}
+                    {{ __('pages.accessibility.technologies_intro') }}
                 </p>
 
                 <div class="grid grid-cols-4 md:grid-cols-8 gap-4 md:gap-6">
@@ -232,10 +224,10 @@
                         <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 mb-4">
                             {{ __('Pelayar Web') }}</h3>
                         <ul class="space-y-2 text-sm text-gray-700" role="list">
-                            <li>Google Chrome (versi terkini)</li>
-                            <li>Mozilla Firefox (versi terkini)</li>
-                            <li>Apple Safari (versi terkini)</li>
-                            <li>Microsoft Edge (versi terkini)</li>
+                            <li>{{ __('pages.accessibility.browser_chrome') }}</li>
+                            <li>{{ __('pages.accessibility.browser_firefox') }}</li>
+                            <li>{{ __('pages.accessibility.browser_safari') }}</li>
+                            <li>{{ __('pages.accessibility.browser_edge') }}</li>
                         </ul>
                     </div>
 
@@ -245,9 +237,9 @@
                         <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 mb-4">
                             {{ __('Pembaca Skrin') }}</h3>
                         <ul class="space-y-2 text-sm text-gray-700" role="list">
-                            <li>NVDA (Windows)</li>
-                            <li>JAWS (Windows)</li>
-                            <li>VoiceOver (macOS/iOS)</li>
+                            <li>{{ __('pages.accessibility.screen_reader_nvda') }}</li>
+                            <li>{{ __('pages.accessibility.screen_reader_jaws') }}</li>
+                            <li>{{ __('pages.accessibility.screen_reader_voiceover') }}</li>
                             <li>TalkBack (Android)</li>
                         </ul>
                     </div>
@@ -257,10 +249,10 @@
             {{-- Contact Section --}}
             <article class="bg-primary-600 dark:bg-primary-700 rounded-lg p-6 md:p-8 text-white theme-transition">
                 <h2 class="text-2xl font-heading font-bold mb-4">
-                    {{ __('Maklum Balas Kebolehcapaian') }}
+                    {{ __('pages.accessibility.contact_title') }}
                 </h2>
                 <p class="text-primary-100 dark:text-primary-50 mb-6 leading-relaxed">
-                    {{ __('Jika anda menghadapi sebarang masalah kebolehcapaian atau mempunyai cadangan untuk penambahbaikan, sila hubungi kami:') }}
+                    {{ __('pages.accessibility.contact_intro') }}
                 </p>
 
                 <div class="grid grid-cols-4 md:grid-cols-8 gap-4 md:gap-6 mb-6">
@@ -279,9 +271,9 @@
                         <x-heroicon-o-phone class="h-6 w-6 text-primary-200 shrink-0 mt-0.5" aria-hidden="true" />
                         <div>
                             <h3 class="font-semibold text-white mb-1">{{ __('Telefon') }}</h3>
-                            <a href="tel:+60388917000"
+                            <a href="tel:+60312345678"
                                 class="text-primary-100 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded">
-                                +603-8891 7000
+                                +60 3-1234 5678
                             </a>
                         </div>
                     </div>
@@ -321,7 +313,7 @@
                     </li>
                     <li>
                         <a href="{{ route('contact') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus:ring focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-phone class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0"
                                 aria-hidden="true" />
                             <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Hubungi Kami') }}</span>
