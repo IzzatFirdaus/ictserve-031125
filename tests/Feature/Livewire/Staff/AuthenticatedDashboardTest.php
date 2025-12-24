@@ -7,7 +7,6 @@ namespace Tests\Feature\Livewire\Staff;
 use App\Livewire\Staff\AuthenticatedDashboard;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
@@ -16,8 +15,6 @@ use Tests\TestCase;
 
 class AuthenticatedDashboardTest extends TestCase
 {
-    use DatabaseMigrations;
-
     #[Test]
     public function it_counts_open_tickets_including_assigned_and_pending_user_statuses(): void
     {

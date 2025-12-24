@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Livewire\Volt\Volt;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PasswordConfirmationTest extends TestCase
 {
-    use DatabaseMigrations;
-
     #[Test]
     public function confirm_password_screen_can_be_rendered(): void
     {

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\File;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    use RefreshDatabase; // Run migrations for in-memory SQLite database
+    use DatabaseTransactions; // Use transactions instead of refreshing database
 
     /** @var bool Prevent automatic database seeding for all tests */
     protected $seed = false;
