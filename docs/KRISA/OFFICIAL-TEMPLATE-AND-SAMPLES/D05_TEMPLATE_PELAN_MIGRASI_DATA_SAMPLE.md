@@ -342,7 +342,7 @@ Selepas migrasi selesai, laporan menyeluruh akan disediakan meliputi:
 - **Isu dan Resolusi:** Masalah ditemukan dan cara diselesaikan
 - **Pembelajaran:** Pelajaran untuk proyék masa depan
 - **Rekomendasi:** Langkah tindakan untuk peningkatan
-- **Tanda Tangan:** Persetujuan pengurusan dan pemilik bisnis
+- **Tanda Tangan:** Persetujuan pengurusan dan pemilik bisnes
 
 ### 10.2 Dokumentasi Teknikal
 
@@ -363,7 +363,7 @@ Dokumentasi berikut akan diperbarui:
 | Ketua Projek Migrasi | __________________ | __________________ | ________ |
 | Pengurus Data | __________________ | __________________ | ________ |
 | Ketua IT | __________________ | __________________ | ________ |
-| Pengelolaan Bisnis | __________________ | __________________ | ________ |
+| Pengelolaan Bisnes | __________________ | __________________ | ________ |
 
 ---
 
