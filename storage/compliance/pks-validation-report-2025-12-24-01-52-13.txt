@@ -1,0 +1,167 @@
+PKS COMPLIANCE VALIDATION REPORT
+Generated: 2025-12-24 01:52:13
+==================================================
+
+Document: D01
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+Document: D02
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+Document: D03
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (7):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+  - Missing data sovereignty compliance per PKS 9.2.1 & 4.2
+
+Document: D04
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+Document: D05
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+Document: D06
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+Document: D07
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+Document: D08
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (7):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+  - Missing data sovereignty compliance per PKS 9.2.1 & 4.2
+
+Document: D09
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+Document: D10
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+Document: D15
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+Document: D17
+--------------------
+Status: NON-COMPLIANT
+Compliance Score: 0%
+PKS References Found: 
+Violations (6):
+  - Missing PKS section 5.2.1 reference: Accountability and Non-repudiation principles
+  - Missing PKS section 9.2.1 reference: Data transfer procedures and confidentiality protection
+  - Missing PKS section 4.2 reference: Data sovereignty and jurisdiction requirements
+  - Missing PKS section 5.4.3 reference: Password policy requirements (8 chars, 90-day expiry, 3 attempts)
+  - PKS 5.2.1 violation: Found guest/anonymous access reference
+  - Missing proper authentication specification per PKS 5.2.1
+
+SUMMARY
+====================
+Total Documents: 12
+Total Violations: 74
+Overall Status: NON-COMPLIANT

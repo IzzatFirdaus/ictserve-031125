@@ -1,0 +1,160 @@
+CROSS-REFERENCE VALIDATION REPORT
+Generated: 2025-12-24 01:52:35
+==================================================
+
+Document: D01
+--------------------
+Status: INVALID
+Version: 3.6
+References Found: D00, D14, D18, D02, D03, D04, D09, D10, D05, D06, D07
+Reference Count: 11
+Violations (5):
+  - Missing expected reference to D17
+  - Reference to non-existent document: D00
+  - Reference to non-existent document: D14
+  - Reference to non-existent document: D18
+  - Missing reference to complete D01-D17 documentation series
+
+Document: D02
+--------------------
+Status: INVALID
+Version: 3.6
+References Found: D00, D18, D32, D84
+Reference Count: 4
+Violations (6):
+  - Missing expected reference to D03
+  - Reference to non-existent document: D00
+  - Reference to non-existent document: D18
+  - Reference to non-existent document: D32
+  - Reference to non-existent document: D84
+  - Missing traceability references to requirements or design properties
+
+Document: D03
+--------------------
+Status: INVALID
+Version: 3.6
+References Found: D00, D14, D18, D01, D02, D04, D09, D11, D12
+Reference Count: 9
+Violations (6):
+  - Reference to non-existent document: D00
+  - Reference to non-existent document: D14
+  - Reference to non-existent document: D18
+  - Reference to non-existent document: D11
+  - Reference to non-existent document: D12
+  - Missing traceability references to requirements or design properties
+
+Document: D04
+--------------------
+Status: INVALID
+Version: UNKNOWN
+References Found: D00, D14, D02, D03, D05, D06, D07, D08
+Reference Count: 8
+Violations (4):
+  - Missing expected reference to D09
+  - Reference to non-existent document: D00
+  - Reference to non-existent document: D14
+  - Missing traceability references to requirements or design properties
+
+Document: D05
+--------------------
+Status: INVALID
+Version: 3.6
+References Found: D00, D04, D06, D09
+Reference Count: 4
+Violations (1):
+  - Reference to non-existent document: D00
+
+Document: D06
+--------------------
+Status: INVALID
+Version: 3.6
+References Found: D05, D00, D09
+Reference Count: 3
+Violations (1):
+  - Reference to non-existent document: D00
+
+Document: D07
+--------------------
+Status: VALID
+Version: 3.6
+References Found: D04, D08
+Reference Count: 2
+
+Document: D08
+--------------------
+Status: INVALID
+Version: 3.7
+References Found: D00, D18, D07, D11
+Reference Count: 4
+Violations (3):
+  - Reference to non-existent document: D00
+  - Reference to non-existent document: D18
+  - Reference to non-existent document: D11
+
+Document: D09
+--------------------
+Status: INVALID
+Version: 3.6
+References Found: D00, D14, D18, D08
+Reference Count: 4
+Violations (3):
+  - Reference to non-existent document: D00
+  - Reference to non-existent document: D14
+  - Reference to non-existent document: D18
+
+Document: D10
+--------------------
+Status: INVALID
+Version: UNKNOWN
+References Found: D00, D14, D18, D03, D04, D09
+Reference Count: 6
+Violations (3):
+  - Reference to non-existent document: D00
+  - Reference to non-existent document: D14
+  - Reference to non-existent document: D18
+
+Document: D15
+--------------------
+Status: VALID
+Version: 3.6
+References Found: 
+Reference Count: 0
+
+Document: D17
+--------------------
+Status: INVALID
+Version: 3.6
+References Found: D00, D03, D15, D18
+Reference Count: 4
+Violations (5):
+  - Missing expected reference to D01
+  - Missing expected reference to D02
+  - Missing expected reference to D04
+  - Reference to non-existent document: D00
+  - Reference to non-existent document: D18
+
+DOCUMENT VERSIONS
+====================
+D01: 3.6
+D02: 3.6
+D03: 3.6
+D04: UNKNOWN
+D05: 3.6
+D06: 3.6
+D07: 3.6
+D08: 3.7
+D09: 3.6
+D10: UNKNOWN
+D15: 3.6
+D17: 3.6
+
+ORPHANED DOCUMENTS (Never Referenced)
+========================================
+- D17
+
+SUMMARY
+====================
+Total Documents: 12
+Total Violations: 37
+Orphaned Documents: 1
+Overall Status: INVALID
