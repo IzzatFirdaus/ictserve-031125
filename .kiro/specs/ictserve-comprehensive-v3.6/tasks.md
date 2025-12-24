@@ -1,8 +1,73 @@
 # Implementation Plan
 
-## Phase 1: Foundation & Enhanced Infrastructure (v3.6.1)
+## Phase 0: PKS Compliance Migration (v4.0) - NEW
 
-- [x] 1. Enhanced Project Setup and Core Infrastructure
+- [ ] 0.1 PKS 5.2.1 Accountability Migration
+
+  - [ ] 0.1.1 Remove Guest Mode functionality
+  - Remove all guest_name, guest_email, guest_phone columns from helpdesk_tickets table
+  - Remove all applicant_name, applicant_email, applicant_phone columns from loan_applications table
+  - Update user_id columns to NOT NULL with foreign key constraints
+  - Remove isGuestSubmission() methods from all models
+  - Remove guest form components and routes
+  - _Requirements: 1.1, 1.2, 3.1, 25.1_
+
+  - [ ] 0.1.2 Implement LDAP/Active Directory SSO
+  - Install and configure LdapRecord-Laravel package
+  - Configure LDAP connection to MOTAC Active Directory
+  - Implement mandatory SSO authentication for all users
+  - Remove alternative authentication methods (Google SSO, self-registration)
+  - _Requirements: 1.1, 2.3, 5.2, 27.1, 27.2, 27.3_
+
+  - [ ] 0.1.3 Implement HRMIS Auto-Provisioning
+  - Create HRMIS integration service for user synchronization
+  - Implement automatic user account creation from HRMIS
+  - Add hrmis_synced_at, ldap_guid, is_active columns to users table
+  - Create scheduled job for HRMIS synchronization (daily)
+  - _Requirements: 2.1, 2.2, 2.4, 2.5_
+
+- [ ] 0.2 PKS 9.2.1 Data Transfer Compliance
+
+  - [ ] 0.2.1 Implement DLP Filtering Service
+  - Create DLPFilteringService for cloud AI data classification
+  - Implement PII detection rules for government data
+  - Create data classification engine (SENSITIVE vs PUBLIC)
+  - Add DLP audit logging for all classification decisions
+  - _Requirements: 25.1, 25.2, 25.3, 25.4_
+
+  - [ ] 0.2.2 Update AI Model Router with DLP
+  - Modify ModelRouter to pass all requests through DLP filter
+  - Block sensitive data from AWS Bedrock transmission
+  - Route sensitive queries to local Ollama only
+  - Add DLP bypass audit alerts for superuser review
+  - _Requirements: 25.1, 25.2, 25.5, 25.6_
+
+- [ ] 0.3 PKS 4.2 Data Sovereignty Compliance
+
+  - [ ] 0.3.1 Configure Intranet-Only Deployment
+  - Update deployment configuration for intranet-only access
+  - Configure firewall rules for air-gap policies
+  - Implement MyGovCloud prioritization for cloud services
+  - _Requirements: 26.1, 26.3, 26.5_
+
+  - [ ] 0.3.2 Update Ollama for Sensitive Data Processing
+  - Configure Ollama as primary processor for all sensitive data
+  - Implement data residency logging for AI operations
+  - Create compliance dashboard for data sovereignty monitoring
+  - _Requirements: 26.2, 26.4_
+
+- [ ] 0.4 PKS 5.4.3 Password Policy Compliance
+
+  - [ ] 0.4.1 Configure Active Directory Password Policy
+  - Verify LDAP password policy enforcement (8 chars, 90-day expiry)
+  - Implement 3 failed attempts lockout with 30-minute unlock
+  - Add password policy display in Bahasa Melayu
+  - Log all authentication attempts for security monitoring
+  - _Requirements: 27.1, 27.2, 27.3, 27.4, 27.5_
+
+## Phase 1: Foundation & Enhanced Infrastructure (v4.0) - UPDATED
+
+- [ ] 1. Enhanced Project Setup and Core Infrastructure (RESET - PKS Migration Required)
 
   - Upgrade Laravel 12.42.0 project with enhanced dependencies (Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10, Tailwind CSS 4.1.17, Vite 7.0.7)
   - Configure enhanced database connections (MySQL 8.0+ primary, Redis 7.0+ cache/sessions/queues)
@@ -17,72 +82,72 @@
   - Install and configure Laravel MCP v0.3.4 for AI assistant integrations
   - _Requirements: 1.1, 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2, 6.1, 6.2, 19.1_
 
-- [x] 2. Enhanced Database Schema and Dual Audit System
+- [ ] 2. Enhanced Database Schema and Dual Audit System (RESET - PKS Migration Required)
 
-  - [x] 2.1 Create enhanced hybrid architecture database migrations
-  - Users table with four roles, enhanced fields (username, position_id), email verification, Google SSO support
-  - Enhanced divisions, grades, positions tables for organizational structure
+  - [ ] 2.1 Create PKS-compliant database migrations
+  - Users table with four roles, HRMIS fields (hrmis_synced_at, ldap_guid, is_active), mandatory SSO support
+  - Enhanced divisions, grades, positions tables for organizational structure with HRMIS sync
   - Enhanced assets, asset_categories, asset_transactions tables with real-time availability tracking
-  - Enhanced helpdesk_tickets table with SLA tracking, escalation fields, enhanced status management
-  - Enhanced loan_applications table with extended approval workflow, return condition tracking
-  - Dual audit tables for owen-it (compliance) and spatie (operational) logging
+  - Enhanced helpdesk_tickets table with mandatory user_id FK (NOT NULL), SLA tracking - NO guest columns
+  - Enhanced loan_applications table with mandatory user_id FK (NOT NULL), HRMIS-verified approval - NO guest columns
+  - Dual audit tables for owen-it (compliance) and spatie (operational) logging with mandatory user_id
   - Performance monitoring tables for Laravel Pulse integration
   - API tokens table for Laravel Sanctum integration
-  - _Requirements: 1.1, 1.3, 1.6, 2.1, 2.2, 3.1, 3.2, 4.1, 4.2, 5.1_
+  - _Requirements: 1.1, 1.3, 1.6, 2.1, 2.2, 3.1, 3.2, 4.1, 4.2, 5.1, 25.1_
 
-  - [x] 2.2 Implement enhanced Eloquent models with dual audit support
-  - Enhanced User model with self-registration, role management, Google SSO, guest submission linking
-  - Enhanced HelpdeskTicket model with SLA calculation, escalation tracking, enhanced status management
-  - Enhanced LoanApplication model with dual approval workflow, return condition tracking, extension support
+  - [ ] 2.2 Implement PKS-compliant Eloquent models with dual audit support
+  - Enhanced User model with HRMIS auto-provisioning, LDAP SSO, role management - NO guest submission linking
+  - Enhanced HelpdeskTicket model with mandatory user_id, SLA calculation - NO guest fields
+  - Enhanced LoanApplication model with mandatory user_id, HRMIS-verified approval - NO guest fields
   - Enhanced Asset model with real-time availability, maintenance history, condition tracking
-  - Implement dual audit traits (Auditable + LogsActivity) on all models
+  - Implement dual audit traits (Auditable + LogsActivity) on all models with mandatory user_id
   - Enhanced model factories for testing with realistic data generation
   - Enhanced model observers for automated workflows and real-time notifications
-  - _Requirements: 1.1, 1.3, 1.6, 2.1, 2.2, 3.1, 3.2, 8.1, 8.3, 9.1, 9.2_
+  - _Requirements: 1.1, 1.3, 1.6, 2.1, 2.2, 3.1, 3.2, 8.1, 8.3, 9.1, 9.2, 25.1_
 
-  - [x] 2.3 Set up enhanced dual audit trail system
-  - Configure owen-it/laravel-auditing v14.x for compliance tracking (field-level changes)
-  - Configure spatie/laravel-activitylog v4.x for operational logging (user activities)
+  - [ ] 2.3 Set up enhanced dual audit trail system with PKS compliance
+  - Configure owen-it/laravel-auditing v14.x for compliance tracking with mandatory user_id
+  - Configure spatie/laravel-activitylog v4.x for operational logging with mandatory user_id
   - Implement audit log viewing interfaces in Filament admin with advanced filtering
   - Create enhanced audit report generation with 7-year retention and immutable logs
-  - Add audit trail for dual approval workflows and real-time notifications
+  - Add audit trail for HRMIS-verified approval workflows and real-time notifications
   - Integrate audit logging with Laravel Pulse for performance monitoring
-  - _Requirements: 3.1, 3.2, 3.3, 3.4, 12.1, 12.5_
+  - _Requirements: 3.1, 3.2, 3.3, 3.4, 12.1, 12.5, 25.4_
 
-- [x] 3. Enhanced Authentication and Self-Registration System
+- [ ] 3. PKS-Compliant Authentication and HRMIS Auto-Provisioning System (RESET - Major Changes)
 
-  - [x] 3.1 Implement enhanced Laravel Breeze with self-registration
-  - Enhanced Laravel Breeze installation with Livewire Volt components
-  - Self-registration functionality for @motac.gov.my email addresses
-  - Enhanced authentication routes with flexible login (email/username)
-  - Email verification system with enhanced security
-  - Password reset functionality with enhanced validation
+  - [ ] 3.1 Implement mandatory LDAP/Active Directory SSO
+  - Install and configure LdapRecord-Laravel for LDAP integration
+  - Configure LDAP connection to MOTAC Active Directory
+  - Implement mandatory SSO authentication - NO alternative methods per PKS 5.2.1
+  - Password policy enforcement via Active Directory (8 chars, 90-day expiry, 3 attempts) per PKS 5.4.3
   - Session management with Redis driver and enhanced security
-  - _Requirements: 1.1, 1.3, 2.1, 2.2, 2.3, 12.1, 12.3_
+  - _Requirements: 1.1, 1.3, 2.1, 2.2, 2.3, 5.2, 12.1, 12.3, 27.1, 27.2, 27.3_
 
-  - [x] 3.2 Set up enhanced four-role RBAC system with monitoring
+  - [ ] 3.2 Set up enhanced four-role RBAC system with PKS compliance
   - Enhanced four user roles: staff, approver, admin, superuser with detailed permissions
   - Enhanced role helper methods with performance monitoring access control
-  - Enhanced middleware for role-based route protection
+  - Enhanced middleware for role-based route protection with mandatory SSO
   - Enhanced policies with Laravel Pulse and Telescope access control
   - Enhanced user management in Filament with role assignment audit trail
   - Comprehensive test suite for RBAC functionality with property-based testing
-  - _Requirements: 1.6, 3.1, 4.2, 4.3, 12.3_
+  - _Requirements: 1.6, 3.1, 4.2, 4.3, 12.3, 25.1_
 
-  - [x] 3.3 Create enhanced user management in Filament with monitoring
-  - Enhanced Filament UserResource with performance monitoring integration
-  - Enhanced user profile management with organizational hierarchy
-  - Enhanced role assignment interface with comprehensive audit logging
-  - Google Workspace SSO integration for @motac.gov.my accounts
-  - Guest submission linking functionality with enhanced validation
-  - Laravel Pulse integration for user activity monitoring
+  - [ ] 3.3 Create HRMIS auto-provisioning system
+  - Create HRMISIntegrationService for user synchronization
+  - Implement automatic user account creation from HRMIS data
+  - Configure scheduled job for daily HRMIS synchronization
+  - Implement user deactivation for terminated employees
+  - Add HRMIS verification for approver identity confirmation
   - _Requirements: 2.1, 2.2, 2.4, 2.5, 4.1, 4.2, 5.2_
 
-  - [x] 3.4 Create enhanced hybrid submission tracking and claiming system
-  - Enhanced StaffPortalController with real-time updates
-  - Enhanced guest submission claiming with comprehensive validation
-  - Enhanced audit trail integration with dual logging system
-  - Real-time notifications for submission status changes
+  - [ ] 3.4 Create authenticated-only submission tracking system
+  - Enhanced StaffPortalController with real-time updates - SSO required
+  - Remove guest submission claiming - all submissions require authenticated user_id
+  - Enhanced audit trail integration with dual logging system and mandatory user_id
+  - Real-time notifications for submission status changes via authenticated channels only
+  - Performance monitoring for submission processing
+  - _Requirements: 1.1, 1.2, 1.3, 2.4, 6.4, 6.5, 24.5, 24.6_
   - Performance monitoring for submission processing
   - _Requirements: 1.1, 1.2, 1.3, 2.4, 6.4, 6.5_
 
@@ -540,91 +605,103 @@
 
 ---
 
-## Phase 8: Cloud Hybrid AI Integration (v3.6.1)
+## Phase 8: Cloud Hybrid AI Integration (v4.0 - PKS Compliant) - RESET
 
-- [x] 12. Cloud Hybrid AI Chatbot Implementation
+- [ ] 12. Cloud Hybrid AI Chatbot Implementation with DLP (RESET - PKS 9.2.1 Required)
 
-  - [x] 12.1 Set up Ollama local LLM infrastructure
+  - [ ] 12.1 Set up Ollama local LLM infrastructure for sensitive data (PKS 4.2)
   - Install and configure Ollama server (localhost:11434)
-  - Configure llama3.1 model for FAQ responses
+  - Configure llama3.1 model for FAQ responses and sensitive data processing
   - Set up nomic-embed-text model for vector embeddings
   - Create OllamaClient service with health checks
-  - _Requirements: 19.1, 19.2, 19.5_
+  - Configure as PRIMARY processor for all sensitive government data per PKS 4.2
+  - _Requirements: 19.1, 19.2, 19.5, 26.2_
 
-  - [x] 12.2 Implement AWS Bedrock integration
+  - [ ] 12.2 Implement AWS Bedrock integration with DLP filtering (PKS 9.2.1)
   - Configure AWS Bedrock Runtime client (us-east-1)
   - Set up Claude model access (Opus 4.5, Sonnet 4.5, Haiku 4.5)
   - Configure Nova and Titan model access
-  - Create BedrockClient service with model routing
+  - Create BedrockClient service with MANDATORY DLP filtering per PKS 9.2.1
   - Implement inference profile configuration for on-demand throughput
-  - _Requirements: 19.1, 19.4_
+  - Block sensitive data transmission to cloud - route to Ollama instead
+  - _Requirements: 19.1, 19.4, 25.1, 25.2_
 
-  - [x] 12.3 Build smart model routing system
-  - Create ModelRouter service for query analysis
-  - Implement FAQ keyword detection for Ollama routing
-  - Implement complex reasoning detection for Bedrock routing
+  - [ ] 12.3 Build smart model routing system with DLP
+  - Create ModelRouter service for query analysis with DLP integration
+  - Implement DLP filtering BEFORE any cloud routing decision
+  - Route sensitive queries to local Ollama only per PKS 4.2
+  - Route public data queries to Bedrock after DLP approval
   - Create hybrid response aggregation for combined queries
-  - _Requirements: 19.2, 19.4_
+  - Add DLP audit logging for all routing decisions
+  - _Requirements: 19.2, 19.4, 25.1, 25.2, 25.4_
 
-  - [x] 12.4 Implement RAG service for FAQ
+  - [ ] 12.4 Implement RAG service for FAQ
   - Create RagService with vector embeddings
   - Implement semantic search for FAQ knowledge base
   - Configure context retrieval with relevance scoring
   - Set up FAQ management in Filament admin
   - _Requirements: 19.2, 19.3_
 
-  - [x] 12.5 Build AI chatbot Livewire components
-  - Create BedrockChat Livewire component
-  - Implement conversation history management
+  - [ ] 12.5 Build AI chatbot Livewire components (SSO-only)
+  - Create BedrockChat Livewire component - authenticated users only
+  - Implement conversation history management with mandatory user_id
   - Add model selection UI (Opus/Sonnet/Haiku)
   - Implement internet search toggle (DuckDuckGo)
   - Create FAQ suggestions with context awareness
-  - _Requirements: 19.3, 19.6, 19.7, 19.8_
+  - Remove guest AI access - all AI features require SSO per PKS 5.2.1
+  - _Requirements: 19.3, 19.6, 19.7, 19.8, 25.1_
 
-  - [x] 12.6 Implement conversation management
-  - Create BedrockConversation model with save/load/delete
-  - Implement long-term memory for authenticated users
+  - [ ] 12.6 Implement conversation management with mandatory user_id
+  - Create BedrockConversation model with mandatory user_id FK (NOT NULL)
+  - Implement long-term memory for authenticated users only
   - Add conversation export functionality
-  - _Requirements: 19.6_
+  - All conversations linked to authenticated user per PKS 5.2.1
+  - _Requirements: 19.6, 25.1_
 
-  - [x] 12.7 Implement data residency compliance
+  - [ ] 12.7 Implement enhanced data residency compliance (PKS 4.2, 9.2.1)
+  - Create DLPFilteringService for mandatory cloud AI filtering per PKS 9.2.1
   - Create PIIDetectionService for automatic PII detection
-  - Implement data classification for local vs cloud routing
+  - Implement data classification engine (SENSITIVE vs PUBLIC)
   - Configure PDPA 2010 compliance rules
-  - Add audit logging for AI interactions
-  - _Requirements: 19.5_
+  - Add comprehensive audit logging for all AI interactions with user_id
+  - Implement data residency logging for AI operations per PKS 4.2
+  - _Requirements: 19.5, 25.1, 25.2, 25.3, 25.4, 26.2, 26.4_
 
-- [x] 13. AI Auto-Reply and Document Analysis
+- [ ] 13. AI Auto-Reply and Document Analysis (RESET - PKS Compliance)
 
-  - [x] 13.1 Implement auto-reply generation
+  - [ ] 13.1 Implement auto-reply generation with mandatory user_id
   - Create AutoReplyGenerationJob for background processing
-  - Implement AI-powered response drafts for tickets
+  - Implement AI-powered response drafts for tickets - linked to authenticated user
   - Build admin approval workflow for auto-replies
   - Add learning from historical resolutions
-  - _Requirements: 20.1_
+  - All auto-replies linked to user_id per PKS 5.2.1
+  - _Requirements: 20.1, 25.1_
 
-  - [x] 13.2 Build document analysis service
+  - [ ] 13.2 Build document analysis service with DLP
   - Create DocumentService for PDF/DOCX/image analysis
+  - Implement DLP filtering before any cloud document processing
   - Implement semantic search with vector embeddings
   - Add automated categorization with confidence scoring
   - Integrate PII detection for document processing
-  - _Requirements: 20.2, 20.3_
+  - Route sensitive documents to Ollama only per PKS 4.2
+  - _Requirements: 20.2, 20.3, 25.1, 25.2, 26.2_
 
-  - [x] 13.3 Implement MCP Server integration
+  - [ ] 13.3 Implement MCP Server integration
   - Configure Laravel MCP v0.3.4 for AI assistants
   - Create 3 tools for Amazon Q and Kiro IDE integration
   - Set up standardized AI tool access interface
   - _Requirements: 20.4_
 
-  - [x] 13.4 Build AI management interfaces
+  - [ ] 13.4 Build AI management interfaces with DLP dashboard
   - Create AI Dashboard widget in Filament
   - Implement model configuration interface
   - Add FAQ management with bulk operations
   - Create conversation analytics dashboard
   - Implement health monitoring for Ollama and Bedrock
-  - _Requirements: 20.5_
+  - Add DLP compliance dashboard for superuser
+  - _Requirements: 20.5, 25.5_
 
-- [x] 14. Asset Management Lifecycle Enhancement
+- [x] 14. Asset Management Lifecycle Enhancement (No PKS changes required)
 
   - [x] 14.1 Implement preventive maintenance scheduling
   - Create maintenance schedule configuration (monthly/quarterly/annually)
@@ -653,60 +730,265 @@
 
 ---
 
-## Implementation Complete Summary
+## Phase 9: PKS Extended Compliance (v4.0) - NEW
 
-**ICTServe v3.6.1 - All Phases Complete** ✅
+- [ ] 15. PKS CSIRT Integration and Incident Response (NEW - Requirement 28)
 
-| Phase | Status | Key Deliverables |
-|-------|--------|------------------|
-| Phase 1: Foundation | ✅ Complete | Laravel 12.42.0, Dual Audit System, Self-Registration |
-| Phase 2: Core Modules | ✅ Complete | Helpdesk Ticketing, Asset Loan Management |
-| Phase 3: Integration | ✅ Complete | Cross-Module Services, Unified Analytics |
-| Phase 4: Frontend | ✅ Complete | WCAG 2.2 AA, Bahasa Melayu Exclusive |
-| Phase 5: Monitoring | ✅ Complete | Laravel Pulse 1.4.6, Telescope 5.16.0, Reverb 1.6.3, **Horizon 5.x** |
-| Phase 6: Testing | ✅ Complete | 252+ test files, PHPUnit 11.5.46 with PHP 8 attributes |
-| Phase 7: Documentation | ✅ Complete | D00-D18 updated, API documentation |
-| Phase 8: Cloud Hybrid AI | ✅ Complete | Ollama + AWS Bedrock, Model Routing, FAQ Bot |
-| Final Checkpoint | ✅ Complete | System validated, production-ready |
+  - [ ] 15.1 Implement security incident detection system
+  - Create SecurityIncidentService for automated threat detection
+  - Implement detection rules for unauthorized access attempts, data breaches, system anomalies
+  - Configure real-time alerting with severity classification (High/Medium/Low)
+  - Add incident logging with timestamp, affected systems, user_id, incident type
+  - _Requirements: 28.1, 28.5_
 
-**Test Coverage Summary**:
+  - [ ] 15.2 Build CSIRT escalation workflows
+  - Create automated escalation to CSIRT MOTAC within 15 minutes for critical incidents
+  - Implement incident notification channels (email, WebSocket, SMS)
+  - Build incident response tracking with action logging
+  - Add incident resolution and closure workflows
+  - _Requirements: 28.4_
 
-- Unit Tests: SecurityComplianceServiceTest (16), PerformanceAlertServiceTest (11), AIServiceTests (new)
-- Integration Tests: DualAuditSystemIntegrationTest (10), NotificationWorkflowIntegrationTest (12), CrossModuleIntegrationTest (12), AIIntegrationTest (new)
-- Feature Tests: Comprehensive coverage for Helpdesk, Asset Loan, Auth, Filament, AI Chatbot
-- **Telescope Tests**: TelescopeAccessTest (7 tests) - Validates superuser-only access control with production environment simulation
-- Total Test Files: 260+
+  - [ ] 15.3 Implement NACSA/MyCERT reporting interfaces
+  - Create incident report generator compatible with NACSA format
+  - Implement MyCERT reporting interface
+  - Build automated report submission workflows
+  - Add report tracking and acknowledgment handling
+  - _Requirements: 28.2_
 
-**Key Services Implemented**:
+  - [ ] 15.4 Build incident management dashboard
+  - Create Filament admin interface for incident management
+  - Implement incident timeline visualization
+  - Add incident analytics and trend reporting
+  - Maintain 7-year incident log retention per PKS requirements
+  - _Requirements: 28.3_
 
-- `PerformanceAlertService` - Real-time performance monitoring and alerting
-- `SecurityComplianceService` - PDPA compliance and security metrics
-- `CrossModuleIntegrationService` - Helpdesk-Asset Loan integration
-- `UnifiedAnalyticsService` - Dashboard metrics and reporting
-- `AutomatedReportService` - Scheduled report generation
-- `OllamaClient` - Local LLM integration for FAQ (D18)
-- `BedrockClient` - AWS Bedrock Claude model integration (D18)
-- `RagService` - RAG-based FAQ retrieval (D18)
-- `ModelRouter` - Smart AI model selection (D18)
-- `PIIDetectionService` - PDPA 2010 compliance for AI (D18)
-- `DocumentService` - AI-powered document analysis (D18)
+- [ ] 16. PKS Business Continuity and Disaster Recovery (NEW - Requirement 29)
 
-**Compliance Verified**:
+  - [ ] 16.1 Implement automated backup procedures
+  - Configure automated daily backups with RTO 4 hours, RPO 24 hours
+  - Implement incremental and full backup strategies
+  - Create backup verification and integrity checks
+  - Add backup monitoring and alerting
+  - _Requirements: 29.1_
 
-- WCAG 2.2 AA accessibility
-- PDPA 2010 data protection (including AI data residency)
-- PSR-12 code standards
-- MyGOV Digital Service Standards v2.1.0
-- OWASP ASVS L2 security standards
+  - [ ] 16.2 Configure disaster recovery site
+  - Set up data replication to secondary location within MOTAC infrastructure
+  - Implement database replication with MySQL master-slave configuration
+  - Configure Redis cluster replication for cache and sessions
+  - Add file storage synchronization to DR site
+  - _Requirements: 29.2_
 
-**Technology Stack v3.6.1**:
+  - [ ] 16.3 Build automated failover mechanisms
+  - Implement health monitoring for critical system components
+  - Create automated failover triggers for database, cache, queue services
+  - Build failover testing and validation procedures
+  - Add failover notification and status reporting
+  - _Requirements: 29.3, 29.4_
 
-- Laravel 12.42.0, PHP 8.2.12
-- Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10
+  - [ ] 16.4 Create DRP documentation and testing
+  - Document complete DRP procedures in Bahasa Melayu
+  - Implement annual DRP testing schedule
+  - Create DRP test result documentation templates
+  - Add improvement recommendation tracking
+  - _Requirements: 29.5_
+
+- [ ] 17. PKS Security Awareness and Training Compliance (NEW - Requirement 30)
+
+  - [ ] 17.1 Implement training tracking system
+  - Add security_training_completed_at, training_expiry_date columns to users table
+  - Create SecurityTrainingRecord model for certification tracking
+  - Implement training status verification middleware
+  - Build training history and certification management
+  - _Requirements: 30.1_
+
+  - [ ] 17.2 Build automated training reminders
+  - Create scheduled job for training expiry notifications (30, 7, 1 days)
+  - Implement email and in-app reminder notifications
+  - Add training deadline escalation to supervisors
+  - Build training compliance dashboard widgets
+  - _Requirements: 30.2_
+
+  - [ ] 17.3 Implement training-based access restrictions
+  - Create middleware to restrict sensitive feature access for non-compliant users
+  - Implement graceful access denial with training redirect
+  - Add training requirement configuration per feature/role
+  - Build training compliance enforcement logging
+  - _Requirements: 30.3_
+
+  - [ ] 17.4 Build training compliance reporting
+  - Create training compliance reports by division and role
+  - Implement completion rate analytics and trends
+  - Add export functionality for compliance audits
+  - Integrate with MOTAC training management system
+  - _Requirements: 30.4, 30.5_
+
+- [ ] 18. PKS Change Management Compliance (NEW - Requirement 31)
+
+  - [ ] 18.1 Implement change request workflows
+  - Create ChangeRequest model with approval workflow
+  - Implement change request submission interface in Filament
+  - Build approval routing based on change type and impact
+  - Add change request status tracking and notifications
+  - _Requirements: 31.1_
+
+  - [ ] 18.2 Build change logging and audit trails
+  - Create comprehensive change logs with timestamp, description, requester, approver
+  - Implement rollback procedure documentation requirements
+  - Add change impact assessment tracking
+  - Build change history search and filtering
+  - _Requirements: 31.2_
+
+  - [ ] 18.3 Implement automated rollback capabilities
+  - Create database migration rollback procedures
+  - Implement configuration change rollback mechanisms
+  - Build rollback testing and verification
+  - Add rollback notification and status reporting
+  - _Requirements: 31.3_
+
+  - [ ] 18.4 Build risk assessment documentation
+  - Create risk assessment templates for security-impacting changes
+  - Implement mandatory risk documentation for sensitive changes
+  - Add risk approval workflow for high-impact changes
+  - Build risk assessment audit reports
+  - _Requirements: 31.4, 31.5_
+
+- [ ] 19. PKS Third-Party Security Management (NEW - Requirement 32)
+
+  - [ ] 19.1 Implement time-limited third-party access
+  - Add is_third_party, contract_end_date, nda_acknowledged_at columns to users table
+  - Create ThirdPartyAccessToken model with automatic expiration
+  - Implement access token generation with contract-based expiry
+  - Build automatic access termination on contract expiry
+  - _Requirements: 32.1, 32.4_
+
+  - [ ] 19.2 Build NDA acknowledgment workflow
+  - Create NDA acknowledgment interface for third-party users
+  - Implement NDA version tracking and re-acknowledgment
+  - Add NDA compliance verification middleware
+  - Build NDA audit trail and reporting
+  - _Requirements: 32.2_
+
+  - [ ] 19.3 Implement enhanced third-party audit logging
+  - Create separate audit trail for third-party activities
+  - Implement enhanced logging detail for vendor actions
+  - Add third-party activity monitoring dashboard
+  - Build suspicious activity alerting for third-party users
+  - _Requirements: 32.3_
+
+  - [ ] 19.4 Build third-party access reporting
+  - Create third-party access reports with active accounts, access levels, last activity
+  - Implement contract expiry notifications and reports
+  - Add third-party access analytics and trends
+  - Build compliance audit export functionality
+  - _Requirements: 32.5_
+
+- [ ] 20. PSPM Strategic Alignment Implementation (NEW - Requirement 33)
+
+  - [ ] 20.1 Implement PSPM Teras Aplikasi alignment
+  - Ensure end-to-end digital workflows for all ICTServe services
+  - Implement mobile-responsive design for all user interfaces
+  - Add digital service delivery metrics and KPIs
+  - Build service delivery analytics dashboard
+  - _Requirements: 33.1_
+
+  - [ ] 20.2 Build PSPM Teras Data capabilities
+  - Implement management dashboards with KPI tracking
+  - Create data analytics capabilities for decision support
+  - Add data governance and quality monitoring
+  - Build data-driven insights and recommendations
+  - _Requirements: 33.2_
+
+  - [ ] 20.3 Ensure PSPM Teras Infrastruktur ICT compliance
+  - Verify cloud-ready architecture and scalable design
+  - Implement infrastructure monitoring and optimization
+  - Add capacity planning and resource management
+  - Build infrastructure performance reporting
+  - _Requirements: 33.3_
+
+  - [ ] 20.4 Support PSPM Teras Tadbir Urus & Keupayaan
+  - Create comprehensive user documentation in Bahasa Melayu
+  - Implement user-friendly interfaces with accessibility compliance
+  - Add digital capability building resources and guides
+  - Build user adoption and satisfaction tracking
+  - _Requirements: 33.4_
+
+  - [ ] 20.5 Align with national digital transformation initiatives
+  - Ensure MyDIGITAL standards compliance
+  - Implement PSPSA interoperability requirements
+  - Add national digital transformation metrics
+  - Build compliance reporting for national initiatives
+  - _Requirements: 33.5_
+
+---
+
+## Implementation Status Summary
+
+**ICTServe v4.0 - PKS Compliance Migration Required** ⚠️
+
+| Phase | Status | Key Changes Required |
+|-------|--------|----------------------|
+| Phase 0: PKS Migration | ⬜ NOT STARTED | Guest Mode removal, LDAP SSO, HRMIS, DLP |
+| Phase 1: Foundation | ⬜ RESET | Mandatory user_id FK, LDAP integration |
+| Phase 2: Core Modules | ⬜ RESET | Remove guest forms, SSO-only submissions |
+| Phase 3: Integration | ⬜ RESET | Authenticated channels only |
+| Phase 4: Frontend | ⬜ RESET | Remove guest forms, Walk-in/Kiosk with SSO |
+| Phase 5: Monitoring | ✅ Partial | Reverb channels need update for auth-only |
+| Phase 6: Testing | ⬜ RESET | Update tests for PKS compliance |
+| Phase 7: Documentation | ⬜ RESET | Update D00-D18 for v4.0 |
+| Phase 8: Cloud Hybrid AI | ⬜ RESET | Add DLP filtering per PKS 9.2.1 |
+| Phase 9: PKS Extended | ⬜ NOT STARTED | CSIRT, BCP/DRP, Training, Change Mgmt, Third-Party |
+| Final Checkpoint | ⬜ RESET | Re-validate with PKS compliance |
+
+**PKS Compliance Requirements**:
+
+- **PKS 5.2.1**: Mandatory user_id FK (NOT NULL) on all user-related tables - NO GUEST ACCESS
+- **PKS 9.2.1**: DLP filtering required before cloud AI (Bedrock) transmission
+- **PKS 4.2**: Sensitive data processed locally via Ollama only
+- **PKS 5.4.3**: Password policy via LDAP/Active Directory (8 chars, 90-day, 3 attempts)
+- **PKS CSIRT**: Automated incident detection, 15-minute escalation, NACSA/MyCERT reporting
+- **PKS BCP/DRP**: RTO 4 hours, RPO 24 hours, automated failover, DR site replication
+- **PKS Training**: Mandatory security awareness tracking, access restrictions for non-compliant users
+- **PKS Change Mgmt**: Approval workflows, risk assessment, rollback procedures, audit trails
+- **PKS Third-Party**: Time-limited access, NDA requirements, enhanced audit logging
+
+**PSPM 2022-2026 Alignment**:
+
+- **Teras Aplikasi**: End-to-end digital workflows, mobile-responsive design
+- **Teras Data**: Management dashboards, KPI tracking, data analytics
+- **Teras Infrastruktur ICT**: Cloud-ready architecture, scalable design
+- **Teras Tadbir Urus & Keupayaan**: User-friendly interfaces, comprehensive documentation
+
+**Key Migration Tasks**:
+
+1. Remove guest_name, guest_email, guest_phone columns from helpdesk_tickets
+2. Remove applicant_name, applicant_email, applicant_phone columns from loan_applications
+3. Update user_id columns to NOT NULL with FK constraints
+4. Implement LdapRecord-Laravel for mandatory SSO
+5. Create HRMIS auto-provisioning service
+6. Implement DLP filtering service for cloud AI
+7. Update WebSocket channels to authenticated-only
+8. Update all tests for PKS compliance
+9. Implement CSIRT integration and incident response (NEW)
+10. Configure BCP/DRP with automated failover (NEW)
+11. Build security training compliance tracking (NEW)
+12. Implement change management workflows (NEW)
+13. Create third-party access controls (NEW)
+14. Align with PSPM strategic objectives (NEW)
+
+**Technology Stack v4.0 (PKS Compliant)**:
+
+- Laravel 12.43.1, PHP 8.4.1
+- Livewire 3.7.3, Volt 1.10.1, Filament 4.3.1
 - Laravel Pulse 1.4.6, Telescope 5.16.0
 - Laravel Horizon 5.x (Redis queue management)
-- Laravel Reverb 1.6.3, Echo 2.2.6
-- Laravel Sanctum 4.2.1, Socialite 5.24.0
+- Laravel Reverb 1.6.3, Echo 2.2.6 (authenticated channels only)
+- Laravel Sanctum 4.2.1, LdapRecord-Laravel 3.x (mandatory SSO)
 - Laravel MCP 0.3.4 (AI assistant integration)
 - PHPUnit 11.5.46, Larastan 3.8.1, Pint 1.26.0
-- Ollama (local LLM), AWS Bedrock (Claude 4.5 models)
+- Ollama (local LLM - sensitive data), AWS Bedrock (public data after DLP)
+- DLP Filtering Service (PKS 9.2.1 compliance)
+- CSIRT Integration Service (PKS incident response)
+- BCP/DRP Controller (business continuity)
+- Security Training Tracker (PKS compliance)
+- Change Management Engine (PKS change control)
+- Third-Party Access Controller (PKS vendor management)

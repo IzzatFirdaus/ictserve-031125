@@ -2,15 +2,28 @@
 
 ## Overview
 
-The ICTServe System v3.6.1 is designed as a comprehensive, integrated digital platform for managing ICT services within MOTAC BPM using a **True Hybrid Architecture** that combines guest-accessible public forms with an authenticated internal portal for MOTAC staff. The system provides flexibility by allowing quick guest submissions without login while also offering enhanced features through an authenticated portal for staff who prefer comprehensive submission management. The system now includes **Cloud Hybrid AI Architecture** integrating Ollama (local LLM) with AWS Bedrock (Claude models) for intelligent assistance.
+The ICTServe System v4.0 is designed as a comprehensive, integrated digital platform for managing ICT services within MOTAC BPM using a **PKS-Compliant SSO-Only Architecture** with **mandatory LDAP/Active Directory authentication** for ALL users, ensuring full accountability per PKS 5.2.1. The system provides intranet-only deployment with mandatory SSO authentication, eliminating guest access entirely. The system includes **Cloud Hybrid AI Architecture** integrating Ollama (local LLM for sensitive data per PKS 4.2) with AWS Bedrock (Claude models for public data only after DLP filtering per PKS 9.2.1) for intelligent assistance.
 
-**Critical Design Principle v3.6.1**: The system operates on a **True Hybrid Architecture with Bahasa Melayu exclusive interface and Cloud Hybrid AI**:
+**Critical Design Principle v4.0 (PKS Compliant)**: The system operates on a **PKS-Compliant SSO-Only Architecture with Bahasa Melayu exclusive interface and Cloud Hybrid AI with DLP**:
 
-1. **Guest Access (No Login)**: Public forms for quick helpdesk tickets and asset loan applications, accessible to all MOTAC staff without authentication, with **AI-powered FAQ Bot** using smart model routing
-2. **Authenticated Portal (Login Required)**: Internal portal for staff to view submission history, manage profiles, add comments, track status, and access **enhanced AI features** including document analysis, conversation management, and personalized responses
+1. **Walk-in/Kiosk Mode (SSO Required)**: Kiosk terminals for quick helpdesk tickets and asset loan applications using SSO LDAP/Active Directory authentication - **NO GUEST ACCESS** per PKS 5.2.1
+2. **Authenticated Portal (SSO Required)**: Internal portal for staff to view submission history, manage profiles, add comments, track status, and access **enhanced AI features** including document analysis, conversation management, and personalized responses
 3. **Admin Access (Filament Panel)**: Backend management accessible to four roles: staff (own submissions), approver (Grade 41+ approval rights), admin (operational management), and superuser (full governance), with **AI configuration and monitoring** capabilities
 
-The design emphasizes **Bahasa Melayu exclusive UI** (language switcher disabled), dual-path workflows (guest + authenticated), email-based approvals for Grade 41+ officers, unified frontend components, seamless module integration, modern web technologies (Laravel 12.42.0, Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10, Laravel Breeze 2.3.8), responsive UI/UX following **WCAG 2.2 Level AA standards**, **Core Web Vitals performance targets**, self-registration capability, dual audit system, comprehensive monitoring with Laravel Pulse 1.4.6 and Telescope 5.16.0, and **Cloud Hybrid AI integration** (Ollama + AWS Bedrock) per D18 v1.0.1.
+The design emphasizes **Bahasa Melayu exclusive UI** (language switcher disabled), **mandatory SSO authentication** for all access paths, **HRMIS auto-provisioning** replacing manual registration, email-based approvals for Grade 41+ officers with HRMIS verification, unified frontend components, seamless module integration, modern web technologies (Laravel 12.43.1, Livewire 3.7.3, Volt 1.10.1, Filament 4.3.1, Laravel Breeze 2.3.8), responsive UI/UX following **WCAG 2.2 Level AA standards**, **Core Web Vitals performance targets**, dual audit system with mandatory user_id linkage, comprehensive monitoring with Laravel Pulse 1.4.6 and Telescope 5.16.0, and **Cloud Hybrid AI integration** (Ollama + AWS Bedrock with DLP) per D18 v1.0.1 and PKS compliance.
+
+**PKS Compliance Design Principles**:
+
+- **PKS 5.2.1 (Accountability)**: All database tables with user interactions have mandatory user_id FK (NOT NULL) - no nullable user references
+- **PKS 9.2.1 (Data Transfer)**: DLP filtering service mandatory before any cloud AI (Bedrock) processing
+- **PKS 4.2 (Data Sovereignty)**: Sensitive data processed locally via Ollama only, intranet deployment
+- **PKS 5.4.3 (Password Policy)**: Enforced via LDAP/Active Directory integration (8 chars, 90-day expiry, 3 attempts)
+- **PKS CSIRT Integration**: Automated incident detection, NACSA/MyCERT reporting, 15-minute escalation SLA
+- **PKS BCP/DRP**: RTO 4 hours, RPO 24 hours, automated failover, DR site replication
+- **PKS Security Training**: Mandatory training tracking, access restrictions for non-compliant users
+- **PKS Change Management**: Approval workflows, risk assessment, rollback procedures, audit trails
+- **PKS Third-Party Security**: Time-limited access, NDA requirements, enhanced audit logging
+- **PSPM Alignment**: Digital service integration across all four strategic pillars
 
 ## Architecture
 
@@ -18,73 +31,95 @@ The design emphasizes **Bahasa Melayu exclusive UI** (language switcher disabled
 
 ```mermaid
 graph TB
-    subgraph "Public Interface Layer - GUEST ACCESS (Bahasa Melayu Sahaja)"
-        PublicForms[Guest Public Forms - No Authentication Required]
+    subgraph "Walk-in/Kiosk Interface Layer - SSO REQUIRED (Bahasa Melayu Sahaja)"
+        KioskForms[Walk-in/Kiosk Forms - SSO Authentication Required]
         ResponsiveUI[Responsive Mobile/Desktop Interface - WCAG 2.2 AA]
         ComponentLibrary[Unified Component Library - Compliant Colors]
-        EmailLinks[Email-Based Approval Links - No Login Required]
+        EmailLinks[Email-Based Approval Links - HRMIS Verification Required]
     end
 
     subgraph "Authenticated Interface Layer - STAFF PORTAL (Bahasa Melayu Sahaja)"
-        StaffPortal[Authenticated Staff Portal - Laravel Breeze]
-        SelfRegistration[Self-Registration @motac.gov.my]
-        StaffAuth[Staff Authentication & Profile Management]
+        StaffPortal[Authenticated Staff Portal - Laravel Breeze + SSO]
+        HRMISProvisioning[HRMIS Auto-Provisioning - Replaces Manual Registration]
+        StaffAuth[Staff Authentication via LDAP/Active Directory]
         StaffDashboard[Staff Dashboard - Submission History & Tracking]
-        PortalApproval[Portal-Based Approval - Grade 41+ Officers]
-        GoogleSSO[Optional Google Workspace SSO]
+        PortalApproval[Portal-Based Approval - Grade 41+ Officers with HRMIS Verification]
+        MandatorySSO[Mandatory SSO - NO Alternative Authentication]
     end
 
     subgraph "Admin Interface Layer - FILAMENT PANEL (Bahasa Melayu Sahaja)"
         FilamentAdmin[Filament Admin Panel - 4 Roles: Staff/Approver/Admin/Superuser]
-        AdminAuth[Role-Based Access Control - RBAC]
+        AdminAuth[Role-Based Access Control - RBAC with SSO]
         AdminDashboard[Unified Admin Dashboard - WCAG 2.2 AA]
         LaravelPulse[Laravel Pulse - Performance Monitoring]
         LaravelTelescope[Laravel Telescope - System Debugging]
     end
 
     subgraph "Application Layer"
-        Helpdesk[Enhanced Helpdesk Module - Guest + Authenticated + Admin]
-        AssetLoan[Enhanced Asset Loan Module - Guest + Authenticated + Admin]
+        Helpdesk[Enhanced Helpdesk Module - SSO Only + Admin]
+        AssetLoan[Enhanced Asset Loan Module - SSO Only + Admin]
         Integration[Module Integration Layer]
-        EmailWorkflow[Email-Based Workflow Engine - Primary Communication]
+        EmailWorkflow[Email-Based Workflow Engine - HRMIS Verification]
         ComponentSystem[Livewire/Volt Component System - Performance Optimized]
-        RealtimeComm[Laravel Reverb + Echo - Real-time Communication]
+        RealtimeComm[Laravel Reverb + Echo - Real-time Communication - Authenticated Only]
+    end
+
+    subgraph "PKS Compliance Layer"
+        DLPFilter[DLP Filtering Service - PKS 9.2.1]
+        DataClassifier[Data Classification Engine - Sensitive vs Public]
+        AuditEnforcer[Mandatory User ID Enforcer - PKS 5.2.1]
+        DataSovereignty[Data Sovereignty Controller - PKS 4.2]
+        CSIRTIntegration[CSIRT Integration - Incident Response]
+        BCPDRPController[BCP/DRP Controller - Business Continuity]
+        TrainingCompliance[Security Training Compliance Tracker]
+        ChangeManagement[Change Management Workflow Engine]
+        ThirdPartyAccess[Third-Party Access Controller]
     end
 
     subgraph "Business Logic Layer"
-        HybridDataMgmt[True Hybrid Data Management - Guest + Authenticated Users]
+        SSODataMgmt[SSO-Only Data Management - Mandatory User Linkage]
         AssetMgmt[Enhanced Asset Management - Multi-Role Access]
         TicketMgmt[Enhanced Ticket Management - Multi-Role Access]
-        DualApprovalFlow[Dual Approval Workflows - Email + Portal]
+        HRMISApprovalFlow[HRMIS-Verified Approval Workflows - Email + Portal]
         ReportEngine[Enhanced Reporting Engine - Role-Based Access]
-        DualAuditEngine[Dual Audit Engine - owen-it + spatie]
+        DualAuditEngine[Dual Audit Engine - owen-it + spatie with Mandatory user_id]
         APILayer[Laravel Sanctum - API Authentication]
     end
 
     subgraph "Data Layer"
-        MySQL[(MySQL Database)]
+        MySQL[(MySQL Database - user_id NOT NULL)]
         Redis[(Redis Cache & Sessions)]
         FileStorage[File Storage]
-        AuditDB[(Dual Audit Database)]
+        AuditDB[(Dual Audit Database - 7 Year Retention)]
     end
 
     subgraph "External Systems"
         EmailSMTP[Email Server - Primary Communication Channel]
-        HRMIS[HRMIS Integration - Optional Staff Data Lookup]
-        GoogleWorkspace[Google Workspace - Optional SSO]
+        HRMIS[HRMIS Integration - Auto-Provisioning & Verification]
+        LDAP[LDAP/Active Directory - Mandatory SSO]
+        CSIRTMOTAC[CSIRT MOTAC - Incident Response Coordination]
+        NACSA[NACSA/MyCERT - National Incident Reporting]
+        TrainingSystem[MOTAC Training Management System]
+        DRSite[Disaster Recovery Site - Secondary Location]
     end
 
-    PublicForms --> ComponentLibrary
+    subgraph "AI Layer - PKS Compliant"
+        OllamaLocal[Ollama Local LLM - Sensitive Data Only - PKS 4.2]
+        BedrockCloud[AWS Bedrock - Public Data Only After DLP - PKS 9.2.1]
+        ModelRouter[Smart Model Router with DLP Check]
+    end
+
+    KioskForms --> ComponentLibrary
     ResponsiveUI --> ComponentLibrary
     ComponentLibrary --> ComponentSystem
-    EmailLinks --> DualApprovalFlow
+    EmailLinks --> HRMISApprovalFlow
 
-    StaffPortal --> SelfRegistration
-    SelfRegistration --> StaffAuth
+    StaffPortal --> HRMISProvisioning
+    HRMISProvisioning --> StaffAuth
     StaffAuth --> StaffDashboard
     StaffDashboard --> Integration
-    PortalApproval --> DualApprovalFlow
-    GoogleSSO --> StaffAuth
+    PortalApproval --> HRMISApprovalFlow
+    MandatorySSO --> StaffAuth
 
     FilamentAdmin --> AdminAuth
     AdminAuth --> AdminDashboard
@@ -92,8 +127,8 @@ graph TB
     LaravelPulse --> AdminDashboard
     LaravelTelescope --> AdminDashboard
 
-    PublicForms --> Helpdesk
-    PublicForms --> AssetLoan
+    KioskForms --> Helpdesk
+    KioskForms --> AssetLoan
     StaffPortal --> Helpdesk
     StaffPortal --> AssetLoan
     ComponentSystem --> Helpdesk
@@ -101,53 +136,61 @@ graph TB
     RealtimeComm --> Helpdesk
     RealtimeComm --> AssetLoan
 
-    Helpdesk --> HybridDataMgmt
+    Helpdesk --> SSODataMgmt
     AssetLoan --> AssetMgmt
     Integration --> TicketMgmt
-    Integration --> DualApprovalFlow
-    EmailWorkflow --> DualApprovalFlow
+    Integration --> HRMISApprovalFlow
+    EmailWorkflow --> HRMISApprovalFlow
 
-    HybridDataMgmt --> MySQL
+    SSODataMgmt --> AuditEnforcer
+    AuditEnforcer --> MySQL
     AssetMgmt --> MySQL
     TicketMgmt --> MySQL
-    DualApprovalFlow --> Redis
+    HRMISApprovalFlow --> Redis
     ReportEngine --> MySQL
     DualAuditEngine --> AuditDB
     APILayer --> MySQL
 
     EmailWorkflow --> EmailSMTP
-    HybridDataMgmt --> HRMIS
-    DualApprovalFlow --> EmailSMTP
-    GoogleSSO --> GoogleWorkspace
+    SSODataMgmt --> HRMIS
+    HRMISApprovalFlow --> EmailSMTP
+    StaffAuth --> LDAP
     RealtimeComm --> Redis
+
+    ModelRouter --> DLPFilter
+    DLPFilter --> DataClassifier
+    DataClassifier --> OllamaLocal
+    DataClassifier --> BedrockCloud
+    DataSovereignty --> OllamaLocal
 ```
 
-### Technology Stack v3.6.1
+### Technology Stack v4.0 (PKS Compliant)
 
 | Layer | Technology | Version | Purpose |
 |-------|------------|---------|---------|
-| **Backend Framework** | Laravel | 12.42.0 | Core application framework |
-| **Language** | PHP | 8.2.12+ | Server-side programming |
-| **Authentication** | Laravel Breeze | 2.3.8 | Staff portal authentication |
-| **Frontend Framework** | Livewire | 3.7.1 | Dynamic UI components |
+| **Backend Framework** | Laravel | 12.43.1 | Core application framework |
+| **Language** | PHP | 8.4.1 | Server-side programming |
+| **Authentication** | Laravel Breeze + LDAP | 2.3.8 | Mandatory SSO authentication per PKS 5.2.1 |
+| **Frontend Framework** | Livewire | 3.7.3 | Dynamic UI components |
 | **Single-File Components** | Volt | 1.10.1 | Simplified component development |
-| **Admin Panel** | Filament | 4.1.10 | Administrative interface (4 roles) |
+| **Admin Panel** | Filament | 4.3.1 | Administrative interface (4 roles) |
 | **Templating** | Blade | - | Server-side templating |
-| **CSS Framework** | Tailwind CSS | 4.1.17 | Utility-first styling with compliant colors |
+| **CSS Framework** | Tailwind CSS | 4.1.18 | Utility-first styling with compliant colors |
 | **Build Tool** | Vite | 7.0.7 | Asset compilation and optimization |
-| **Database** | MySQL | 8.0+ | Primary data storage |
+| **Database** | MySQL | 8.0+ | Primary data storage with mandatory user_id FK |
 | **Cache/Sessions** | Redis | 7.0+ | Caching and session management |
 | **Queue System** | Laravel Horizon | 5.x | Redis queue dashboard and monitoring |
 | **Performance Monitoring** | Laravel Pulse | 1.4.6 | Real-time performance metrics |
 | **System Debugging** | Laravel Telescope | 5.16.0 | System debugging (superuser only) |
 | **API Authentication** | Laravel Sanctum | 4.2.1 | API token authentication |
-| **SSO Integration** | Laravel Socialite | 5.24.0 | Google Workspace SSO |
-| **Real-time Communication** | Laravel Reverb | 1.6.3 | WebSocket server (Redis scaling, Pulse/Telescope integration) |
-| **WebSocket Client** | Laravel Echo | 2.2.6 | Client-side WebSocket communication with reconnection handling |
-| **Compliance Audit** | owen-it/laravel-auditing | 14.x | Field-level audit tracking |
-| **Operational Logging** | spatie/laravel-activitylog | 4.x | User activity logging |
-| **Local AI (LLM)** | Ollama | Latest | Local LLM server for FAQ (data sovereignty) |
-| **Cloud AI** | AWS Bedrock | - | Claude Opus/Sonnet/Haiku 4.5, Nova, Titan models |
+| **SSO Integration** | LdapRecord-Laravel | 3.x | LDAP/Active Directory SSO per PKS 5.2.1 |
+| **Real-time Communication** | Laravel Reverb | 1.6.3 | WebSocket server (authenticated channels only) |
+| **WebSocket Client** | Laravel Echo | 2.2.6 | Client-side WebSocket communication |
+| **Compliance Audit** | owen-it/laravel-auditing | 14.x | Field-level audit tracking with mandatory user_id |
+| **Operational Logging** | spatie/laravel-activitylog | 4.x | User activity logging with mandatory user_id |
+| **Local AI (LLM)** | Ollama | Latest | Local LLM server for sensitive data (PKS 4.2) |
+| **Cloud AI** | AWS Bedrock | - | Claude models for public data only (PKS 9.2.1) |
+| **DLP Filtering** | Custom Service | - | Data Loss Prevention per PKS 9.2.1 |
 | **MCP Server** | Laravel MCP | 0.3.4 | Model Context Protocol for AI assistants |
 | **Testing** | PHPUnit | 11.5.46 | Unit and feature testing |
 | **Static Analysis** | Larastan | 3.8.1 | PHPStan Level 9 analysis |
@@ -155,13 +198,16 @@ graph TB
 
 ### Design Patterns
 
-- **True Hybrid Access Pattern**: Enhanced dual-path access supporting both guest (no login) and authenticated (login required) workflows with self-registration
+- **PKS-Compliant SSO-Only Pattern**: Mandatory SSO authentication for ALL users, eliminating guest access per PKS 5.2.1
+- **Mandatory User Linkage Pattern**: All database records with user interactions have user_id as NOT NULL FK
+- **HRMIS Auto-Provisioning Pattern**: Automatic user account creation synchronized with HR System
+- **DLP-First AI Pattern**: All cloud AI requests pass through DLP filtering before transmission per PKS 9.2.1
+- **Data Sovereignty Pattern**: Sensitive data routed to local Ollama only per PKS 4.2
 - **Bahasa Melayu Exclusive UI**: Single language interface with disabled language switcher
-- **Email-First Communication**: Primary interaction through automated email workflows for both guest and authenticated users
-- **Dual Approval Pattern**: Support for both email-based approvals (no login) and portal-based approvals (authenticated)
-- **Dual Audit Pattern**: Simultaneous compliance auditing and operational logging
-- **Cloud Hybrid AI Pattern**: Smart routing between local Ollama (FAQ, data sovereignty) and cloud Bedrock (complex reasoning)
-- **Model Routing Pattern**: Automatic AI model selection based on task complexity and cost optimization
+- **Email-First Communication**: Primary interaction through automated email workflows with HRMIS verification
+- **HRMIS-Verified Approval Pattern**: Approver identity verification via HRMIS before processing
+- **Dual Audit Pattern**: Simultaneous compliance auditing and operational logging with mandatory user_id
+- **Cloud Hybrid AI Pattern**: Smart routing between local Ollama (sensitive) and cloud Bedrock (public after DLP)
 - **MVC (Model-View-Controller)**: Laravel's core architectural pattern
 - **Repository Pattern**: Data access abstraction for testability
 - **Service Layer Pattern**: Business logic encapsulation
@@ -173,13 +219,14 @@ graph TB
 
 ## Components and Interfaces
 
-### Core Components v3.6.1
+### Core Components v4.0 (PKS Compliant)
 
-#### 1. Enhanced Authentication Component with Self-Registration
+#### 1. PKS-Compliant Authentication Component with HRMIS Auto-Provisioning
 
 ```php
-// TRUE HYBRID ARCHITECTURE - Four-Role RBAC System with Self-Registration
+// PKS 5.2.1 COMPLIANT ARCHITECTURE - Four-Role RBAC System with HRMIS Auto-Provisioning
 // Roles: staff (portal access), approver (Grade 41+ approval), admin (operational), superuser (governance)
+// NO GUEST ACCESS - All users MUST authenticate via LDAP/Active Directory
 
 class User extends Authenticatable
 {
@@ -187,10 +234,11 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name', 'email', 'username', 'password', 'role', 'staff_id', 
-        'grade_id', 'division_id', 'position_id', 'email_verified_at'
+        'grade_id', 'division_id', 'position_id', 'email_verified_at',
+        'hrmis_synced_at', 'ldap_guid', 'is_active'
     ];
 
-    // Four roles in the true hybrid system
+    // Four roles in the PKS-compliant SSO-only system
     public function isStaff(): bool
     {
         return $this->role === 'staff';
@@ -232,10 +280,16 @@ class User extends Authenticatable
         return in_array($this->role, ['admin', 'superuser']);
     }
 
-    // Self-registration validation
-    public function isValidMotacEmail(): bool
+    // HRMIS Auto-Provisioning - replaces manual registration
+    public function isHRMISSynced(): bool
     {
-        return str_ends_with($this->email, '@motac.gov.my');
+        return $this->hrmis_synced_at !== null;
+    }
+
+    // LDAP/Active Directory validation
+    public function isLDAPAuthenticated(): bool
+    {
+        return $this->ldap_guid !== null;
     }
 
     // Relationships for authenticated users
@@ -264,37 +318,28 @@ class User extends Authenticatable
         return $this->hasMany(LoanApplication::class);
     }
 
-    // Guest submission linking
-    public function linkGuestSubmissions(): int
-    {
-        $linkedTickets = HelpdeskTicket::where('guest_email', $this->email)
-            ->whereNull('user_id')
-            ->update(['user_id' => $this->id]);
-
-        $linkedApplications = LoanApplication::where('applicant_email', $this->email)
-            ->whereNull('user_id')
-            ->update(['user_id' => $this->id]);
-
-        return $linkedTickets + $linkedApplications;
-    }
+    // NO guest submission linking - all submissions require authenticated user_id
 }
 ```
 
-#### 2. Enhanced Helpdesk Module Component
+#### 2. PKS-Compliant Helpdesk Module Component
 
 ```php
-// Enhanced Helpdesk Ticket Model - Supports both guest and authenticated submissions with SLA tracking
+// PKS 5.2.1 Compliant Helpdesk Ticket Model - SSO-Only, Mandatory user_id
 class HelpdeskTicket extends Model
 {
     use Auditable, LogsActivity;
 
     protected $fillable = [
-        'ticket_number', 'user_id', 'guest_name', 'guest_email', 'guest_phone',
+        'ticket_number', 
+        'user_id', // MANDATORY - NOT NULL per PKS 5.2.1
         'staff_id', 'division_id', 'category_id', 'priority', 'subject',
         'description', 'status', 'assigned_to_division', 'assigned_to_agency',
         'assigned_to_user', 'asset_id', 'admin_notes', 'sla_due_at', 
         'escalated_at', 'resolved_at', 'closed_at'
     ];
+
+    // REMOVED: guest_name, guest_email, guest_phone - NO GUEST ACCESS per PKS 5.2.1
 
     protected $casts = [
         'created_at' => 'datetime',
@@ -320,7 +365,7 @@ class HelpdeskTicket extends Model
     const PRIORITY_HIGH = 'high';
     const PRIORITY_CRITICAL = 'critical';
 
-    // HYBRID SUPPORT - Optional user relationship for authenticated submissions
+    // MANDATORY user relationship - NOT NULL per PKS 5.2.1
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -361,20 +406,16 @@ class HelpdeskTicket extends Model
         return $this->hasMany(HelpdeskAttachment::class);
     }
 
-    // Enhanced helper methods
-    public function isGuestSubmission(): bool
-    {
-        return is_null($this->user_id);
-    }
+    // REMOVED: isGuestSubmission() - NO GUEST SUBMISSIONS per PKS 5.2.1
 
     public function getSubmitterNameAttribute(): string
     {
-        return $this->user ? $this->user->name : $this->guest_name;
+        return $this->user->name; // Always from authenticated user
     }
 
     public function getSubmitterEmailAttribute(): string
     {
-        return $this->user ? $this->user->email : $this->guest_email;
+        return $this->user->email; // Always from authenticated user
     }
 
     public function generateTicketNumber(): string
@@ -425,21 +466,25 @@ class HelpdeskTicket extends Model
 }
 ```
 
-#### 3. Enhanced Asset Loan Module Component
+#### 3. PKS-Compliant Asset Loan Module Component
 
 ```php
-// Enhanced Loan Application Model - Supports both guest and authenticated submissions with dual approval paths
+// PKS 5.2.1 Compliant Loan Application Model - SSO-Only, Mandatory user_id, HRMIS-Verified Approval
 class LoanApplication extends Model
 {
     use Auditable, LogsActivity;
 
     protected $fillable = [
-        'application_number', 'user_id', 'applicant_name', 'applicant_email', 'applicant_phone',
+        'application_number', 
+        'user_id', // MANDATORY - NOT NULL per PKS 5.2.1
         'staff_id', 'grade_id', 'division_id', 'position_id', 'asset_id', 'purpose',
         'start_date', 'end_date', 'status', 'approver_id', 'approver_name', 'approver_email',
         'approval_token', 'token_expires_at', 'approval_remarks', 'approval_method',
-        'approved_at', 'rejected_at', 'extended_until', 'returned_at', 'return_condition'
+        'approved_at', 'rejected_at', 'extended_until', 'returned_at', 'return_condition',
+        'hrmis_verified_at' // HRMIS verification timestamp for approver
     ];
+
+    // REMOVED: applicant_name, applicant_email, applicant_phone - NO GUEST ACCESS per PKS 5.2.1
 
     protected $casts = [
         'start_date' => 'date',
@@ -448,6 +493,7 @@ class LoanApplication extends Model
         'rejected_at' => 'datetime',
         'token_expires_at' => 'datetime',
         'returned_at' => 'datetime',
+        'hrmis_verified_at' => 'datetime',
     ];
 
     // Enhanced status constants
@@ -469,7 +515,7 @@ class LoanApplication extends Model
     const CONDITION_DAMAGED = 'damaged';
     const CONDITION_FAULTY = 'faulty';
 
-    // HYBRID SUPPORT - Optional user relationships for authenticated submissions
+    // MANDATORY user relationship - NOT NULL per PKS 5.2.1
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -505,23 +551,19 @@ class LoanApplication extends Model
         return $this->hasOne(AssetTransaction::class);
     }
 
-    // Enhanced helper methods
-    public function isGuestSubmission(): bool
-    {
-        return is_null($this->user_id);
-    }
+    // REMOVED: isGuestSubmission() - NO GUEST SUBMISSIONS per PKS 5.2.1
 
     public function getApplicantNameAttribute(): string
     {
-        return $this->user ? $this->user->name : $this->attributes['applicant_name'];
+        return $this->user->name; // Always from authenticated user
     }
 
     public function getApplicantEmailAttribute(): string
     {
-        return $this->user ? $this->user->email : $this->attributes['applicant_email'];
+        return $this->user->email; // Always from authenticated user
     }
 
-    // Enhanced approval token management
+    // Enhanced approval token management with HRMIS verification
     public function generateApprovalToken(): string
     {
         $this->approval_token = Str::random(64);
@@ -536,6 +578,12 @@ class LoanApplication extends Model
         return $this->approval_token === $token
             && $this->token_expires_at > now()
             && $this->status === self::STATUS_PENDING_APPROVAL;
+    }
+
+    // HRMIS verification check
+    public function isHRMISVerified(): bool
+    {
+        return $this->hrmis_verified_at !== null;
     }
 
     public function generateApplicationNumber(): string
@@ -881,21 +929,21 @@ class EnhancedDualApprovalService
 
 *A property is a characteristic or behavior that should hold true across all valid executions of a system—essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
 
-### Property 1: Hybrid Access Consistency
-*For any* MOTAC staff member, accessing the system should provide consistent functionality whether using guest forms or authenticated portal, with authenticated access providing additional features without losing core functionality.
-**Validates: Requirements 1.1, 1.3**
+### Property 1: PKS 5.2.1 Mandatory User Linkage
+*For any* system submission (helpdesk ticket, loan application, AI conversation), the user_id field MUST be NOT NULL and linked to an authenticated user via SSO - NO GUEST SUBMISSIONS allowed.
+**Validates: Requirements 1.1, 1.3, 3.1, 25.1**
 
 ### Property 2: Bahasa Melayu Interface Exclusivity
 *For any* user interface component, all text content should be exclusively in Bahasa Melayu with no language switching capability available to end users.
 **Validates: Requirements 7.1, 7.2, 7.4**
 
-### Property 3: Self-Registration Email Domain Validation
-*For any* registration attempt, the system should only accept email addresses ending with @motac.gov.my and reject all other domains.
-**Validates: Requirements 2.1, 2.2**
+### Property 3: HRMIS Auto-Provisioning Synchronization
+*For any* user account, the account MUST be created through HRMIS auto-provisioning and authenticated via LDAP/Active Directory - NO manual registration or alternative authentication methods.
+**Validates: Requirements 2.1, 2.2, 2.3, 27.1**
 
-### Property 4: Dual Audit Trail Completeness
-*For any* system action (guest submission, authenticated action, admin operation), both compliance audit (owen-it) and operational log (spatie) entries should be created simultaneously.
-**Validates: Requirements 3.1, 3.2, 3.3**
+### Property 4: Dual Audit Trail with Mandatory User ID
+*For any* system action, both compliance audit (owen-it) and operational log (spatie) entries MUST be created with mandatory user_id linkage per PKS 5.2.1.
+**Validates: Requirements 3.1, 3.2, 3.3, 25.1**
 
 ### Property 5: Role-Based Access Control Enforcement
 *For any* user with a specific role, access to system features should be strictly limited to those authorized for that role level (staff < approver < admin < superuser).
@@ -905,25 +953,25 @@ class EnhancedDualApprovalService
 *For any* user attempting to access Laravel Pulse, access should only be granted to users with admin or superuser roles, while Laravel Telescope access should be restricted to superuser only.
 **Validates: Requirements 4.1, 4.2**
 
-### Property 7: Real-Time Notification Delivery
-*For any* status change event, notifications should be delivered through all configured channels (email, database, WebSocket) within 60 seconds.
-**Validates: Requirements 6.1, 6.4, 6.5**
+### Property 7: Real-Time Notification via Authenticated Channels Only
+*For any* status change event, notifications should be delivered through authenticated WebSocket channels only (user.{userId}) - NO guest/UUID-based channels per PKS 5.2.1.
+**Validates: Requirements 6.1, 6.4, 6.5, 24.5, 24.6**
 
-### Property 8: Guest Submission Linking Accuracy
-*For any* authenticated user, linking guest submissions should only connect submissions with matching email addresses and should not link submissions from different email addresses.
-**Validates: Requirements 2.4, 1.3**
+### Property 8: PKS 9.2.1 DLP Filtering for Cloud AI
+*For any* AI query routed to AWS Bedrock, the query MUST pass through DLP filtering first - sensitive data MUST be blocked and routed to local Ollama instead.
+**Validates: Requirements 25.1, 25.2, 25.3**
 
 ### Property 9: SLA Calculation Consistency
 *For any* helpdesk ticket, SLA due date calculation should be consistent based on priority level and should trigger appropriate alerts at 25% remaining time.
 **Validates: Requirements 8.3, 13.2**
 
-### Property 10: Dual Approval Workflow Integrity
-*For any* asset loan application, approval through either email-based or portal-based methods should result in identical status updates and notification delivery.
-**Validates: Requirements 9.2, 1.6**
+### Property 10: HRMIS-Verified Approval Workflow
+*For any* asset loan application, approval through either email-based or portal-based methods MUST verify approver identity via HRMIS before processing.
+**Validates: Requirements 9.2, 1.6, 2.4**
 
 ### Property 11: Asset-Ticket Integration Automation
-*For any* asset returned with damaged or faulty condition, a maintenance ticket should be automatically created within 5 seconds with proper asset linkage.
-**Validates: Requirements 9.4, 10.2**
+*For any* asset returned with damaged or faulty condition, a maintenance ticket should be automatically created within 5 seconds with proper asset linkage and mandatory user_id.
+**Validates: Requirements 9.4, 10.2, 25.1**
 
 ### Property 12: WCAG 2.2 AA Compliance Verification
 *For any* user interface component, color contrast ratios should meet or exceed 4.5:1 for text and 3.1 for UI components, with proper ARIA attributes and keyboard navigation support.
@@ -945,9 +993,37 @@ class EnhancedDualApprovalService
 *For any* queued job in the system, Laravel Horizon should process the job within the configured timeout, retry failed jobs with exponential backoff, and maintain accurate metrics for monitoring.
 **Validates: Requirements 23.1, 23.4, 23.6**
 
-### Property 17: Queue Supervisor Auto-Scaling
-*For any* queue workload increase, Laravel Horizon supervisors should automatically scale worker processes within configured min/max bounds while maintaining job processing throughput.
-**Validates: Requirements 23.3, 23.5**
+### Property 17: PKS 4.2 Data Sovereignty Compliance
+*For any* sensitive government data, processing MUST occur locally via Ollama within Malaysian jurisdiction - NO transmission to cloud services without DLP approval.
+**Validates: Requirements 26.1, 26.2, 26.4**
+
+### Property 18: PKS 5.4.3 Password Policy Enforcement
+*For any* authentication attempt, password policy MUST be enforced via LDAP/Active Directory (8 chars minimum, 90-day expiry, 3 failed attempts lockout).
+**Validates: Requirements 27.1, 27.2, 27.3**
+
+### Property 19: PKS CSIRT Incident Response Automation
+*For any* security incident detected (unauthorized access, data breach, system anomaly), the system MUST automatically alert CSIRT MOTAC within 15 minutes and generate NACSA/MyCERT compatible incident reports with mandatory user_id linkage.
+**Validates: Requirements 28.1, 28.2, 28.4, 28.5**
+
+### Property 20: PKS BCP/DRP Recovery Compliance
+*For any* system failure or disaster scenario, the system MUST achieve RTO of 4 hours and RPO of 24 hours with automated failover mechanisms and data replication to secondary site within MOTAC infrastructure.
+**Validates: Requirements 29.1, 29.2, 29.3, 29.4**
+
+### Property 21: PKS Security Training Access Control
+*For any* user attempting to access sensitive features, the system MUST verify security training completion status and restrict access for users with expired or incomplete training per PKS requirements.
+**Validates: Requirements 30.1, 30.2, 30.3, 30.4**
+
+### Property 22: PKS Change Management Workflow Enforcement
+*For any* system configuration change, the change MUST be approved through the change management workflow with risk assessment documentation, rollback procedures, and complete audit trail with requester and approver user_id.
+**Validates: Requirements 31.1, 31.2, 31.3, 31.4, 31.5**
+
+### Property 23: PKS Third-Party Access Control
+*For any* third-party user (vendor/contractor), access MUST be time-limited with automatic expiration, require NDA acknowledgment, and maintain separate enhanced audit trails per PKS requirements.
+**Validates: Requirements 32.1, 32.2, 32.3, 32.4, 32.5**
+
+### Property 24: PSPM Strategic Alignment Compliance
+*For any* digital service feature, the implementation MUST align with PSPM 2022-2026 strategic objectives across all four pillars (Aplikasi, Data, Infrastruktur ICT, Tadbir Urus & Keupayaan) and national digital transformation initiatives.
+**Validates: Requirements 33.1, 33.2, 33.3, 33.4, 33.5**
 
 ## Error Handling
 

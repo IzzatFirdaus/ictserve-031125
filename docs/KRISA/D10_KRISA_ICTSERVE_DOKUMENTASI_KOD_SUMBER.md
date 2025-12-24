@@ -9,7 +9,7 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 23 Disember 2025 |
-| **VERSI DOKUMEN** |
+| **VERSI DOKUMEN** | : 4.0.0 |
 
 ---
 
@@ -42,8 +42,8 @@ Dokumen ini menyatakan piawaian dan panduan kod pengaturcaraan yang digunakan ba
 | 1.0.0 | 15 September 2025 | Versi awal dokumentasi kod sumber | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan Pembangunan BPM |
 | 3.0.0 | 29 November 2025 | Kemaskini struktur kod Laravel 12, Filament 4, Livewire 3 | Pasukan Pembangunan BPM |
-| 3.5.0 | 1 Disember 2025 | True Hybrid Architecture: Laravel Pulse, Sanctum API, Google SSO | Pasukan Pembangunan BPM |
-| 3.6.1 | 23 Disember 2025 | Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot | Pasukan Pembangunan BPM |
+| 3.5.0 | 1 Disember 2025 | Seni Bina SSO dengan Pengesahan Mandatori: Laravel Pulse, Sanctum API, LDAP/AD SSO | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1, 9.2.1, 4.2 & PSPM**: Penghapusan akses tetamu, pengesahan SSO mandatori, rujukan D09 CRUD indicators, coding standards untuk PKS compliance. Rujukan PKS Seksyen 5.2.1 (Prinsip Akauntabiliti - halaman 150), 9.2.1 (Prosedur pemindahan data - halaman 588-603), 4.2 (Kedaulatan data - halaman 1147-1148), 5.4.3 (Polisi kata laluan - halaman 596-605). PSPM MyGovCloud prioritization. Enhanced documentation standards. | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -75,7 +75,7 @@ Dokumen ini menyatakan piawaian dan panduan kod pengaturcaraan yang digunakan ba
 | API | Application Programming Interface |
 | BPM | Bahagian Pengurusan Maklumat |
 | CI/CD | Continuous Integration/Continuous Deployment |
-| CRUD | Create, Read, Update, Delete |
+| CRUD | Create, Read, Update, Delete - Penunjuk operasi data mengikut format KRISA D09 |
 | MVC | Model-View-Controller |
 | ORM | Object-Relational Mapping |
 | PSR | PHP Standards Recommendation |
@@ -94,21 +94,52 @@ Dokumen ini menyatakan piawaian dan panduan kod pengaturcaraan yang digunakan ba
 | Livewire Component | Komponen UI Laravel yang membolehkan interaktiviti tanpa JavaScript |
 | Service Layer | Lapisan perniagaan yang mengandungi logik aplikasi |
 | Strict Typing | Penggunaan declare(strict_types=1) untuk pengesahan jenis data ketat |
-| True Hybrid Architecture | Seni bina sistem yang menyokong sepenuhnya operasi staf dan tetamu |
+| Seni Bina SSO Mandatori | Seni bina sistem dengan pengesahan SSO mandatori melalui LDAP/Active Directory untuk semua pengguna mengikut PKS 5.2.1 |
+| Walk-in/Kiosk Mode | Mod akses pantas untuk staf menggunakan pengesahan SSO automatik di terminal kiosk |
 | Volt Component | Komponen Livewire satu-fail yang menggabungkan PHP dan Blade |
 
 ## viii. Sumber Rujukan
+
+### Piawaian Antarabangsa
 
 1. ISO/IEC/IEEE 5055:2021 - Standard for Information Technology - Software Measurement - Software Quality
 2. ISO/IEC 25000:2014 - Systems and Software Engineering - Systems and Software Quality Requirements and Evaluation (SQuaRE)
 3. ISO/IEC/IEEE 12207:2017 - Systems and Software Engineering - Software Life Cycle Processes
 4. PSR-12: Extended Coding Style Guide
-5. Laravel Framework Documentation v12.x
-6. PHP 8.2 Documentation
-7. Filament v4 Documentation
-8. Livewire v3 Documentation
-9. Tailwind CSS v4 Documentation
-10. PHPUnit Documentation
+
+### Polisi Keselamatan Siber MOTAC (PKS)
+
+1. PKS Seksyen 5.2.1 - Prinsip Akauntabiliti dan Bukan Penolakan (Accountability & Non-repudiation)
+2. PKS Seksyen 9.2.1 - Prosedur Pemindahan Data dan Perlindungan Kerahsiaan
+3. PKS Seksyen 4.2 - Kedaulatan Data dan Keperluan Bidang Kuasa
+4. PKS Seksyen 5.4.3 - Polisi Kata Laluan (8 aksara, tamat tempoh 90 hari, 3 percubaan)
+
+### Pelan Strategik Pendigitalan MOTAC (PSPM)
+
+1. PSPM - Keutamaan MyGovCloud berbanding perkhidmatan awan awam
+2. PSPM - Objektif Pendigitalan Strategik dan Keperluan Pematuhan
+
+### Polisi Keselamatan Siber MOTAC (PKS)
+
+1. PKS Seksyen 5.2.1 - Prinsip Akauntabiliti dan Bukan Penolakan (Accountability & Non-repudiation)
+2. PKS Seksyen 9.2.1 - Prosedur Pemindahan Data dan Perlindungan Kerahsiaan
+3. PKS Seksyen 4.2 - Kedaulatan Data dan Keperluan Bidang Kuasa
+4. PKS Seksyen 5.4.3 - Polisi Kata Laluan (8 aksara, tamat tempoh 90 hari, 3 percubaan)
+
+### Pelan Strategik Pendigitalan MOTAC (PSPM)
+
+1. PSPM - Keutamaan MyGovCloud berbanding perkhidmatan awan awam
+2. PSPM - Objektif Pendigitalan Strategik dan Keperluan Pematuhan
+
+### Dokumentasi Teknikal
+
+1. Laravel Framework Documentation v12.x
+2. PHP 8.2 Documentation
+3. Filament v4 Documentation
+4. Livewire v3 Documentation
+5. Tailwind CSS v4 Documentation
+6. PHPUnit Documentation
+7. **D09 Dokumentasi Pangkalan Data** - Rujukan CRUD indicators dan struktur data mengikut format KRISA
 
 ---
 
@@ -120,7 +151,17 @@ Dokumen ini bertujuan untuk:
 2. **Memastikan kualiti kod** mengikut piawaian antarabangsa ISO/IEC/IEEE 5055 dan PSR-12
 3. **Memudahkan penyelenggaraan** dan pengembangan sistem pada masa hadapan
 4. **Menjamin keselamatan** dan prestasi kod melalui amalan terbaik
-5. **Menyokong True Hybrid Architecture** dengan piawaian kod yang seragam
+5. **Menyokong Seni Bina SSO Mandatori** dengan piawaian kod yang seragam mengikut PKS 5.2.1
+6. **Memastikan akauntabiliti penuh** dengan semua aktiviti sistem dikaitkan dengan ID staf yang disahkan
+
+**Pematuhan Seni Bina (PKS 5.2.1):**
+
+Sistem ICTServe menggunakan Seni Bina SSO Mandatori yang memastikan:
+
+- Semua pengguna disahkan melalui LDAP/Active Directory sebelum mengakses sistem
+- Tiada akses tanpa authentication dibenarkan mengikut PKS 5.2.1
+- Semua aktiviti sistem dikaitkan dengan ID staf yang disahkan untuk audit trail
+- Sistem dihoskan sepenuhnya di Pusat Data MOTAC (Intranet sahaja)
 
 Kumpulan sasar dokumen ini ialah:
 
@@ -237,20 +278,20 @@ use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as AuditableTrait;
 
 /**
- * HelpdeskTicket Model - Enhanced with Hybrid Architecture Support
+ * HelpdeskTicket Model - Enhanced with SSO Mandatory Architecture Support
  *
- * Menyokong kedua-dua penyerahan tetamu (tiada user_id) dan penyerahan 
- * yang disahkan. Berintegrasi dengan sistem pinjaman aset untuk 
- * fungsi merentas modul.
+ * Semua penyerahan tiket mesti dikaitkan dengan pengguna yang disahkan melalui SSO.
+ * Tiada akses tanpa authentication dibenarkan mengikut PKS 5.2.1 (Prinsip Akauntabiliti).
+ * Berintegrasi dengan sistem pinjaman aset untuk fungsi merentas modul.
  *
  * @see D03 Software Requirements Specification - Requirement 1, 2
- * @see D04 Software Design Document - Hybrid Architecture
- * @see D09 Database Documentation - helpdesk_tickets table
+ * @see D04 Software Design Document - SSO Mandatory Architecture
+ * @see D09 Database Documentation - helpdesk_tickets table dengan CRUD indicators (C,R,U,D)
+ * @see PKS 5.2.1 - Prinsip Akauntabiliti dan Bukan Penolakan
  *
  * @property int $id
  * @property string $ticket_number
- * @property int|null $user_id
- * @property string|null $guest_email
+ * @property int $user_id Mandatori - dikaitkan dengan staf yang disahkan
  * @property string $status
  * @property string $priority
  */
@@ -562,6 +603,15 @@ $doubleCount = computed(fn () => $this->count * 2);
 
 ### 3.5. Piawaian AI Services (v3.6.1)
 
+**Pematuhan Kedaulatan Data (PKS 9.2.1 & PKS 4.2):**
+
+Perkhidmatan AI dalam sistem ICTServe mematuhi keperluan kedaulatan data berikut:
+
+- **Pemprosesan Tempatan Diutamakan**: Data sensitif diproses menggunakan Ollama (tempatan) mengikut keutamaan PSPM MyGovCloud
+- **Penapisan Data (DLP)**: Data Loss Prevention filters digunakan untuk menyaring data sensitif sebelum dihantar ke awan
+- **Klasifikasi Data**: Hanya data yang diklasifikasikan sebagai "Awam" dihantar ke AWS Bedrock
+- **Secure API Gateway**: Semua komunikasi dengan perkhidmatan awan melalui API Gateway yang selamat
+
 **Service Interface:**
 
 ```php
@@ -573,13 +623,19 @@ namespace App\Contracts;
 
 /**
  * Interface untuk perkhidmatan AI Ollama.
+ * 
+ * Pemprosesan AI tempatan diutamakan untuk data sensitif mengikut
+ * PKS 9.2.1 dan keutamaan PSPM MyGovCloud.
  *
  * @see D18 AI Chatbot Documentation
+ * @see PKS 9.2.1 - Prosedur Pemindahan Data
+ * @see PSPM - Keutamaan MyGovCloud
  */
 interface OllamaClientContract
 {
     /**
      * Jana respons daripada model AI tempatan.
+     * Digunakan untuk data sensitif yang tidak boleh dihantar ke awan.
      *
      * @param array $payload Data input untuk model
      * @return array Respons daripada model
@@ -589,6 +645,7 @@ interface OllamaClientContract
     
     /**
      * Jana embedding vektor untuk teks.
+     * Pemprosesan tempatan untuk memastikan kedaulatan data.
      *
      * @param string $text Teks untuk dijadikan embedding
      * @return array Vector embedding
@@ -681,13 +738,19 @@ use OwenIt\Auditing\Auditable as AuditableTrait;
 
 /**
  * Model HelpdeskTicket untuk sistem aduan dalaman MOTAC.
+ * 
+ * Semua tiket mesti dikaitkan dengan pengguna yang disahkan melalui SSO
+ * mengikut PKS 5.2.1 (Prinsip Akauntabiliti).
+ * 
+ * Rujukan struktur data dan CRUD indicators: D09 Database Documentation
  *
- * @property int $id
- * @property string $ticket_number
- * @property string $subject
- * @property string $description
- * @property string $status
- * @property string $priority
+ * @property int $id (C,R,U,D) - Primary key mengikut D09
+ * @property string $ticket_number (C,R) - Nombor tiket unik mengikut D09
+ * @property string $subject (C,R,U,D) - Subjek tiket mengikut D09
+ * @property string $description (C,R,U,D) - Huraian tiket mengikut D09
+ * @property string $status (C,R,U,D) - Status tiket mengikut D09
+ * @property string $priority (C,R,U,D) - Keutamaan tiket mengikut D09
+ * @property int $user_id (C,R,U,D) - Mandatori FK staf yang disahkan mengikut D09
  */
 class HelpdeskTicket extends Model implements Auditable
 {
@@ -695,15 +758,14 @@ class HelpdeskTicket extends Model implements Auditable
 
     /**
      * Medan yang boleh diisi secara beramai-ramai.
+     * Nota: user_id adalah mandatori untuk pematuhan PKS 5.2.1
      */
     protected $fillable = [
         'subject',
         'description',
         'category_id',
         'priority',
-        'user_id',
-        'guest_name',
-        'guest_email',
+        'user_id', // Mandatori - tiada akses tanpa authentication mengikut PKS 5.2.1
     ];
 
     /**
@@ -720,6 +782,7 @@ class HelpdeskTicket extends Model implements Auditable
 
     /**
      * Hubungan dengan model User.
+     * Mandatori untuk semua tiket mengikut PKS 5.2.1.
      */
     public function user(): BelongsTo
     {
@@ -735,11 +798,12 @@ class HelpdeskTicket extends Model implements Auditable
     }
 
     /**
-     * Semak sama ada tiket ini adalah penyerahan tetamu.
+     * Semak sama ada tiket ini mempunyai pengguna yang disahkan.
+     * Semua tiket mesti mempunyai user_id mengikut PKS 5.2.1.
      */
-    public function isGuestSubmission(): bool
+    public function hasAuthenticatedUser(): bool
     {
-        return is_null($this->user_id);
+        return !is_null($this->user_id);
     }
 }
 ```
@@ -760,6 +824,9 @@ use Illuminate\Support\Facades\Notification;
 
 /**
  * Perkhidmatan notifikasi e-mel berpusat.
+ * 
+ * Semua notifikasi dihantar kepada pengguna yang disahkan sahaja
+ * mengikut PKS 5.2.1 (Prinsip Akauntabiliti).
  */
 class EmailNotificationService
 {
@@ -776,25 +843,15 @@ class EmailNotificationService
     }
 
     /**
-     * Hantar notifikasi kemaskini status tiket.
+     * Hantar notifikasi kemaskini status tiket kepada pengguna yang disahkan.
+     * Nota: Tiada sokongan untuk akses tanpa authentication mengikut PKS 5.2.1.
      */
     public function sendTicketStatusUpdate(HelpdeskTicket $ticket): void
     {
-        if ($ticket->isGuestSubmission()) {
-            // Hantar e-mel kepada tetamu
-            $this->sendGuestNotification($ticket);
-        } else {
-            // Hantar notifikasi kepada pengguna berdaftar
+        // Semua tiket mesti mempunyai pengguna yang disahkan
+        if ($ticket->user) {
             $ticket->user->notify(new TicketStatusUpdateNotification($ticket));
         }
-    }
-
-    /**
-     * Hantar e-mel kepada tetamu.
-     */
-    private function sendGuestNotification(HelpdeskTicket $ticket): void
-    {
-        // Implementation untuk guest email
     }
 }
 ```

@@ -9,13 +9,17 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 23 Disember 2025 |
-| **VERSI DOKUMEN** | : 3.6.1 |
+| **VERSI DOKUMEN** | : 4.0.0 |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menyediakan panduan lengkap untungguna Sistem ICTServe yang merangkumi prosedur penggunaan, fungsi sistem, dan arahan langkah demi langkah untuk mengakses dan menggunakan sistem. Manual ini disediakan mengikut piawaian WCAG 2.2 AA untuk kebolehcapaian dan mematuhi garis panduan kegunaan sistem kerajaan Malaysia.
+Dokumen ini menyediakan panduan lengkap untuk pengguna Sistem ICTServe yang merangkumi prosedur penggunaan, fungsi sistem, dan arahan langkah demi langkah untuk mengakses dan menggunakan sistem. Manual ini disediakan mengikut piawaian WCAG 2.2 AA untuk kebolehcapaian dan mematuhi garis panduan kegunaan sistem kerajaan Malaysia.
+
+**Sistem ini mematuhi Polisi Keselamatan Siber (PKS) MOTAC** dengan **SSO Authentication wajib** menggunakan LDAP/Active Directory untuk memastikan akauntabiliti penuh mengikut PKS 5.2.1. **HRMIS-integrated auto-provisioning** menggantikan manual registration untuk memastikan hanya staf aktif yang dapat mengakses sistem.
+
+**PENTING**: Sistem ini **tidak lagi menyokong akses tetamu (Guest Mode)**. Semua pengguna mesti melalui **"Walk-in/Kiosk Mode using SSO authentication"** untuk memastikan setiap aktiviti dapat dikesan kepada staf yang bertanggungjawab.
 
 ## ii. Kawalan Dokumen
 
@@ -27,6 +31,7 @@ Dokumen ini menyediakan panduan lengkap untungguna Sistem ICTServe yang merangku
 | 2.0.0 | 17 Oktober 2025 | Kemaskini untuk True Hybrid Architecture | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025 | Tambah panduan Google SSO dan self-registration | Pasukan Pembangunan BPM |
 | 3.6.1 | 23 Disember 2025 | Integrasi AI Chatbot dan Bahasa Melayu sahaja | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1**: Penghapusan sepenuhnya akses tetamu, SSO mandatori untuk semua pengguna, HRMIS auto-provisioning | Pasukan Pembangunan BPM |
 
 ## iii. Kandungan
 
@@ -66,10 +71,12 @@ Manual Pengguna Sistem ICTServe mengandungi semua maklumat penting bagi pengguna
 
 **Skop:**
 
-- Panduan untuk staf MOTAC (pengguna berdaftar)
-- Panduan untuk tetamu (pengguna tidak berdaftar)
+- Panduan untuk staf MOTAC (pengguna berdaftar dengan SSO authentication)
+- Panduan untuk Walk-in/Kiosk Mode (menggunakan SSO authentication)
 - Panduan untuk pentadbir sistem
 - Penggunaan AI Chatbot untuk FAQ dan sokongan
+
+**PENTING**: Manual ini **tidak lagi merangkumi akses tetamu** kerana sistem telah dikemaskini untuk mematuhi PKS 5.2.1 yang memerlukan akauntabiliti penuh. Semua pengguna mesti menggunakan SSO authentication melalui LDAP/Active Directory MOTAC.
 
 ### 1.2. Organisasi Manual
 
@@ -99,6 +106,18 @@ Manual ini disusun mengikut aliran penggunaan sistem:
 
 Dokumen berkaitan yang boleh dirujuk:
 
+- **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
+- **D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md** - Keperluan perniagaan
+- **D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md** - Keperluan perisian
+- **D04_SYSTEM_DESIGN_SPECIFICATION.md** - Spesifikasi rekabentuk sistem
+
+### 1.5. Sumber Rujukan Keselamatan
+
+1. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
+2. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation dengan pematuhan eksplisit
+3. **WCAG 2.2 AA** - Web Content Accessibility Guidelines Level AA
+4. **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards
+
 - D00_SYSTEM_OVERVIEW.md - Gambaran keseluruhan sistem
 - D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md - Keperluan sistem
 - D15_LANGUAGE_MS_EN.md - Panduan bahasa (Bahasa Melayu sahaja)
@@ -110,14 +129,14 @@ Sistem ICTServe menyokong operasi harian BPM MOTAC melalui:
 
 **Pengurusan Helpdesk:**
 
-- Penyerahan tiket aduan ICT
+- Penyerahan tiket aduan ICT (melalui SSO authentication)
 - Penjejakan status tiket
 - Komunikasi dengan pentadbir
 - Penyelesaian masalah teknikal
 
 **Pengurusan Pinjaman Aset:**
 
-- Permohonan pinjaman peralatan ICT
+- Permohonan pinjaman peralatan ICT (melalui SSO authentication)
 - Proses kelulusan bertingkat
 - Penjejakan status permohonan
 - Pengurusan pemulangan aset
@@ -129,18 +148,19 @@ Sistem ICTServe menyokong operasi harian BPM MOTAC melalui:
 - Cadangan penyelesaian masalah
 - Sokongan 24/7
 
+**PERUBAHAN PENTING**: Sistem kini menggunakan **"Walk-in/Kiosk Mode with SSO authentication"** menggantikan akses tetamu untuk memastikan akauntabiliti penuh mengikut PKS 5.2.1.
+
 ### 1.6. Glosari
 
 | Istilah | Definisi |
 | :--- | :--- |
 | **AI Chatbot** | Sistem kecerdasan buatan untuk menjawab soalan dan memberikan sokongan |
 | **Helpdesk** | Sistem sokongan teknikal untuk mengendalikan aduan dan masalah ICT |
-| **Hybrid Architecture** | Seni bina sistem yang menyokong pengguna berdaftar dan tetamu |
-| **Self-Registration** | Pendaftaran automatik untuk staf dengan e-mel @motac.gov.my |
-| **SSO** | Single Sign-On - log masuk sekali untuk akses berbilang sistem |
-| **Staf MOTAC** | Pegawai MOTAC yang mempunyai e-mel rasmi @motac.gov.my |
-| **Tetamu** | Pengguna yang menggunakan sistem tanpa pendaftaran akaun |
-| **Tiket** | Rekod aduan atau permintaan sokongan teknikal |
+| **HRMIS Auto-Provisioning** | Sistem pendaftaran automatik yang menyegerakkan dengan HR System untuk pengesahan status pekerjaan aktif |
+| **SSO Authentication** | Single Sign-On - log masuk sekali menggunakan LDAP/Active Directory MOTAC untuk akses sistem |
+| **Staf MOTAC** | Pegawai MOTAC yang mempunyai akaun LDAP/Active Directory yang sah |
+| **Walk-in/Kiosk Mode** | Mod akses untuk pengguna walk-in yang masih memerlukan SSO authentication (menggantikan Guest Mode) |
+| **Tiket** | Rekod aduan atau permintaan sokongan teknikal yang dikaitkan dengan staff ID |
 
 ## 2. OVERVIEW SISTEM
 
@@ -156,13 +176,13 @@ Sistem ICTServe dibangunkan untuk:
 
 ### 2.2. Keterangan Sistem
 
-Sistem ICTServe menggunakan True Hybrid Architecture yang membolehkan:
+Sistem ICTServe menggunakan **Intranet-Only Architecture dengan Mandatory Authentication** yang membolehkan:
 
-**Akses Fleksibel:**
+**Akses Terkawal:**
 
-- Staf MOTAC boleh log masuk dengan akaun rasmi
-- Tetamu boleh menggunakan sistem tanpa pendaftaran
-- Sokongan Google SSO untuk kemudahan akses
+- Staf MOTAC boleh log masuk dengan akaun LDAP/Active Directory
+- Walk-in/Kiosk Mode menggunakan SSO authentication untuk pengguna sementara
+- **HRMIS Auto-Provisioning** untuk pengesahan status pekerjaan aktif
 
 **Fungsi Utama:**
 
@@ -173,11 +193,11 @@ graph TD
     A --> D[AI Chatbot]
     A --> E[Panel Pentadbir]
     
-    B --> B1[Hantar Tiket]
+    B --> B1[Hantar Tiket - SSO Required]
     B --> B2[Jejak Status]
     B --> B3[Komunikasi]
     
-    C --> C1[Mohon Pinjaman]
+    C --> C1[Mohon Pinjaman - SSO Required]
     C --> C2[Proses Kelulusan]
     C --> C3[Pengurusan Aset]
     
@@ -194,10 +214,12 @@ graph TD
 
 | Jenis Pengguna | Akses | Fungsi Utama |
 | :--- | :--- | :--- |
-| **Tetamu** | Tanpa log masuk | Hantar tiket, mohon pinjaman, semak status |
-| **Staf MOTAC** | Log masuk dengan @motac.gov.my | Semua fungsi tetamu + dashboard peribadi |
+| **Walk-in/Kiosk Mode** | SSO authentication diperlukan | Hantar tiket, mohon pinjaman, semak status |
+| **Staf MOTAC** | Log masuk dengan LDAP/Active Directory | Semua fungsi + dashboard peribadi |
 | **Pentadbir** | Log masuk dengan kebenaran admin | Urus tiket, kelulusan, laporan |
 | **Superuser** | Log masuk dengan kebenaran penuh | Semua fungsi + konfigurasi sistem |
+
+**PERUBAHAN PENTING**: **Akses tetamu telah dihapuskan** mengikut PKS 5.2.1. Semua pengguna mesti melalui SSO authentication untuk memastikan akauntabiliti penuh.
 
 ## 3. KETERANGAN FUNGSI SISTEM
 
@@ -205,16 +227,18 @@ graph TD
 
 | Fungsi | Pengguna | Keterangan |
 | :--- | :--- | :--- |
-| **Penyerahan Tiket Helpdesk** | Semua | Hantar aduan atau permintaan sokongan ICT |
-| **Penjejakan Status Tiket** | Semua | Semak status dan kemajuan tiket |
-| **Permohonan Pinjaman Aset** | Semua | Mohon pinjaman peralatan ICT |
-| **Penjejakan Status Pinjaman** | Semua | Semak status permohonan pinjaman |
-| **AI FAQ Bot** | Semua | Dapatkan jawapan pantas untuk soalan biasa |
+| **Penyerahan Tiket Helpdesk** | Staf MOTAC (SSO) | Hantar aduan atau permintaan sokongan ICT dengan SSO authentication |
+| **Penjejakan Status Tiket** | Staf MOTAC (SSO) | Semak status dan kemajuan tiket melalui dashboard peribadi |
+| **Permohonan Pinjaman Aset** | Staf MOTAC (SSO) | Mohon pinjaman peralatan ICT dengan pengesahan HRMIS |
+| **Penjejakan Status Pinjaman** | Staf MOTAC (SSO) | Semak status permohonan pinjaman melalui dashboard |
+| **AI FAQ Bot** | Staf MOTAC (SSO) | Dapatkan jawapan pantas untuk soalan biasa |
 | **Dashboard Peribadi** | Staf/Admin | Lihat ringkasan tiket dan pinjaman peribadi |
 | **Pengurusan Tiket** | Admin | Proses dan selesaikan tiket helpdesk |
 | **Kelulusan Pinjaman** | Admin | Luluskan atau tolak permohonan pinjaman |
 | **Pengurusan Aset** | Admin | Urus inventori dan status aset |
 | **Laporan dan Analitik** | Admin | Jana laporan prestasi dan statistik |
+
+**PERUBAHAN PENTING**: Semua fungsi kini memerlukan SSO authentication. **Akses tetamu tidak lagi disokong** mengikut keperluan PKS 5.2.1.
 
 ### 3.2. Perincian Keterangan bagi Fungsi Sistem
 
@@ -222,7 +246,7 @@ graph TD
 
 **Tujuan:** Membolehkan pengguna menghantar aduan atau permintaan sokongan ICT
 
-**Pengawalan:** Tiada had bilangan tiket untuk staf, had 5 tiket sehari untuk tetamu
+**Pengawalan:** Tiada had bilangan tiket untuk staf yang disahkan melalui SSO authentication
 
 **Input yang diperlukan:**
 
@@ -237,8 +261,8 @@ graph TD
 **Output yang dijangka:**
 
 - Nombor tiket unik (format: HD[YYYY][MM][0001-9999])
-- E-mel pengesahan
-- Token semakan status (untuk tetamu)
+- E-mel pengesahan kepada staf yang disahkan
+- Pautan ke dashboard peribadi untuk penjejakan status
 
 **Hubungan dengan fungsi lain:**
 
@@ -290,42 +314,45 @@ graph TD
 
 ### 4.1. Log Masuk Sistem
 
-#### 4.1.1. Akses Sebagai Tetamu
+**PENTING**: Sistem ICTServe kini **memerlukan SSO authentication untuk semua pengguna**. Akses tetamu tidak lagi disokong mengikut PKS 5.2.1.
+
+#### 4.1.1. Akses Walk-in/Kiosk Mode (Menggantikan Guest Mode)
 
 1. **Buka pelayar web** dan navigasi ke alamat sistem ICTServe
-2. **Pilih "Gunakan Sebagai Tetamu"** di halaman utama
-3. **Pilih perkhidmatan** yang diperlukan:
+2. **Pilih "Walk-in/Kiosk Mode"** di halaman utama
+3. **Log masuk menggunakan SSO** - masukkan kredensial LDAP/Active Directory MOTAC
+4. **Pilih perkhidmatan** yang diperlukan:
    - Hantar Tiket Helpdesk
    - Mohon Pinjaman Aset
-   - Semak Status (dengan token)
+   - Semak Status
    - Tanya AI Chatbot
+
+**CATATAN**: Walk-in/Kiosk Mode masih memerlukan authentication yang sah untuk memastikan akauntabiliti mengikut PKS 5.2.1.
 
 #### 4.1.2. Log Masuk Staf MOTAC
 
-**Kaedah 1: Self-Registration**
+**Kaedah 1: HRMIS Auto-Provisioning (Disyorkan)**
 
-1. **Klik "Daftar Akaun Baharu"** di halaman log masuk
-2. **Masukkan e-mel rasmi** (@motac.gov.my)
-3. **Lengkapkan maklumat profil**:
-   - Nama penuh
-   - Nombor staf (opsional)
-   - Bahagian/Unit
-   - Jawatan
-4. **Sahkan e-mel** melalui pautan yang dihantar
-5. **Log masuk** dengan e-mel dan kata laluan
+1. **Navigasi ke sistem ICTServe**
+2. **Klik "Log Masuk dengan SSO"**
+3. **Masukkan kredensial LDAP/Active Directory** MOTAC
+4. **Sistem akan auto-provision akaun** berdasarkan data HRMIS:
+   - Pengesahan status pekerjaan aktif
+   - Auto-populate maklumat profil
+   - Penetapan peranan berdasarkan jawatan
+5. **Akses dashboard** peribadi
 
-**Kaedah 2: Google SSO**
+**Kaedah 2: Log Masuk Biasa**
 
-1. **Klik "Log Masuk dengan Google"**
-2. **Pilih akaun Google** yang berkaitan dengan @motac.gov.my
-3. **Berikan kebenaran** untuk akses sistem
-4. **Lengkapkan profil** jika kali pertama
-
-**Kaedah 3: Log Masuk Biasa**
-
-1. **Masukkan e-mel** dan **kata laluan**
+1. **Masukkan e-mel** dan **kata laluan** LDAP/Active Directory
 2. **Klik "Log Masuk"**
 3. **Akses dashboard** peribadi
+
+**PERUBAHAN PENTING**:
+
+- **Manual registration dengan @motac.gov.my telah dihapuskan**
+- **Google SSO tidak lagi disokong** - hanya LDAP/Active Directory MOTAC
+- **Self-registration telah digantikan** dengan HRMIS auto-provisioning
 
 ### 4.2. Proses Pengoperasian Sistem
 
@@ -333,8 +360,8 @@ graph TD
 
 **Langkah 1: Akses Borang Tiket**
 
-- Tetamu: Klik "Hantar Tiket" di halaman utama
-- Staf: Klik "Tiket Baharu" di dashboard
+- Staf: Log masuk dengan SSO dan klik "Tiket Baharu" di dashboard
+- Walk-in/Kiosk Mode: Log masuk dengan SSO dan pilih "Hantar Tiket"
 
 **Langkah 2: Isi Maklumat Asas**
 
@@ -364,7 +391,8 @@ Keterangan: [Terangkan masalah dengan terperinci]
 
 - Semak semula maklumat
 - Klik "Hantar Tiket"
-- Catat nombor tiket dan token status (untuk tetamu)
+- Catat nombor tiket untuk rujukan
+- Akses dashboard peribadi untuk penjejakan status
 
 #### 4.2.2. Memohon Pinjaman Aset
 
@@ -372,16 +400,19 @@ Keterangan: [Terangkan masalah dengan terperinci]
 
 - Klik "Mohon Pinjaman Aset" di halaman utama atau dashboard
 
-**Langkah 2: Maklumat Pemohon**
+**Langkah 2: Maklumat Pemohon (Auto-filled via HRMIS Integration)**
 
 ```
-Nama: [Nama penuh pemohon]
-E-mel: [E-mel rasmi @motac.gov.my]
-Nombor Staf: [Nombor staf MOTAC]
-Jawatan: [Jawatan semasa]
-Bahagian: [Bahagian/Unit kerja]
-Gred: [Gred jawatan]
+Nama: [Auto-filled dari HRMIS via SSO]
+E-mel: [Auto-filled dari LDAP/Active Directory]
+Nombor Staf: [Auto-filled dari HRMIS]
+Jawatan: [Auto-filled dari HRMIS]
+Bahagian: [Auto-filled dari HRMIS]
+Gred: [Auto-filled dari HRMIS untuk approval routing]
+Status Pekerjaan: [Verified aktif via HRMIS]
 ```
+
+**PERUBAHAN PENTING**: Semua maklumat pemohon kini auto-filled dari HRMIS melalui SSO authentication untuk memastikan ketepatan data dan akauntabiliti penuh mengikut PKS 5.2.1.
 
 **Langkah 3: Butiran Permohonan**
 
@@ -394,16 +425,20 @@ Tujuan: [Terangkan tujuan penggunaan]
 Lokasi: [Tempat penggunaan aset]
 ```
 
-**Langkah 4: Pegawai Bertanggungjawab**
+**Langkah 4: Pegawai Bertanggungjawab (HR System Verified)**
 
 - Pilih "Saya sendiri" atau nyatakan pegawai lain
-- Jika pegawai lain, masukkan maklumat lengkap
+- Jika pegawai lain, sistem akan auto-verify melalui HRMIS untuk memastikan pegawai tersebut wujud dan aktif
+- Sistem akan auto-populate maklumat pegawai dari HRMIS
+- Approval routing akan auto-determine berdasarkan organizational hierarchy dari HRMIS
 
-**Langkah 5: Hantar Permohonan**
+**Langkah 5: Hantar Permohonan (Dengan Full Audit Trail)**
 
-- Semak semula maklumat
+- Semak semula maklumat (semua data telah verified dengan HRMIS)
 - Klik "Hantar Permohonan"
+- Sistem akan create audit trail dengan user_id linked untuk akauntabiliti PKS 5.2.1
 - Catat nombor permohonan
+- E-mel approval akan dihantar kepada pegawai kelulusan dengan identity verification
 
 #### 4.2.3. Menggunakan AI Chatbot
 
@@ -430,17 +465,12 @@ Contoh soalan yang boleh ditanya:
 
 #### 4.2.4. Menyemak Status
 
-**Untuk Tetamu:**
+**Untuk Semua Pengguna (SSO Authentication Diperlukan):**
 
-1. Klik "Semak Status" di halaman utama
-2. Masukkan token status yang diterima melalui e-mel
-3. Lihat kemajuan tiket atau permohonan
-
-**Untuk Staf:**
-
-1. Log masuk ke dashboard
+1. Log masuk ke dashboard dengan SSO authentication
 2. Lihat senarai tiket dan permohonan di halaman utama
 3. Klik pada item untuk melihat butiran
+4. Gunakan fungsi carian untuk mencari tiket atau permohonan tertentu
 
 ### 4.3. Penamatan dan Pengoperasi Semula Sistem
 
@@ -452,10 +482,11 @@ Contoh soalan yang boleh ditanya:
 2. Pilih "Log Keluar"
 3. Sistem akan kembali ke halaman utama
 
-**Tetamu:**
+**Walk-in/Kiosk Mode:**
 
-- Tutup pelayar atau navigasi ke laman web lain
-- Tiada proses log keluar khusus diperlukan
+- Klik "Log Keluar" selepas selesai menggunakan sistem
+- Sistem akan kembali ke halaman log masuk SSO
+- Pastikan log keluar untuk keselamatan akaun
 
 #### 4.3.2. Sesi Tamat Tempoh
 
@@ -486,19 +517,49 @@ Jika sesi terputus secara tidak dijangka:
 | **E006** | "Akses ditolak" | Tiada kebenaran akses | Hubungi pentadbir untuk kebenaran |
 | **E007** | "Sistem dalam penyelenggaraan" | Sistem sedang dikemaskini | Cuba lagi kemudian atau hubungi sokongan |
 | **E008** | "Rangkaian terputus" | Masalah sambungan internet | Semak sambungan internet dan cuba lagi |
+| **E009** | "SSO Authentication gagal" | Kredensial LDAP/Active Directory tidak sah | Pastikan username/password MOTAC betul, hubungi IT support jika masih gagal |
+| **E010** | "HRMIS verification gagal" | Status pekerjaan tidak aktif atau tidak dijumpai | Hubungi HR untuk kemaskini status pekerjaan |
+| **E011** | "LDAP server tidak tersedia" | Perkhidmatan SSO tidak dapat dihubungi | Tunggu beberapa minit dan cuba lagi, hubungi Helpdesk BPM jika berterusan |
+| **E012** | "Akses ditolak - PKS 5.2.1" | Pengguna tidak mempunyai akses yang sah | Pastikan akaun LDAP/Active Directory aktif, hubungi pentadbir sistem |
 
 ### 5.2. Langkah Penyelesaian Masalah
 
-#### 5.2.1. Masalah Log Masuk
+#### 5.2.1. Masalah SSO Authentication dan LDAP
 
-**Masalah:** Tidak dapat log masuk
+**Masalah:** SSO Authentication gagal
 **Penyelesaian:**
 
-1. Pastikan e-mel dan kata laluan betul
+1. Pastikan username dan password LDAP/Active Directory MOTAC betul
 2. Semak caps lock tidak aktif
-3. Cuba reset kata laluan
-4. Bersihkan cache pelayar
-5. Hubungi pentadbir jika masih gagal
+3. Pastikan akaun tidak dikunci (hubungi IT support jika dikunci)
+4. Cuba log masuk dari komputer lain untuk test
+5. Hubungi Helpdesk BPM jika masih gagal
+
+**Masalah:** LDAP server tidak tersedia
+**Penyelesaian:**
+
+1. Tunggu 2-3 minit dan cuba lagi (mungkin maintenance sementara)
+2. Semak sambungan rangkaian intranet
+3. Hubungi Helpdesk BPM untuk status LDAP server
+4. **PENTING**: Tiada akses alternatif - mesti tunggu LDAP pulih mengikut PKS 5.2.1
+
+**Masalah:** HRMIS verification gagal
+**Penyelesaian:**
+
+1. Hubungi Bahagian HR untuk kemaskini status pekerjaan
+2. Pastikan maklumat peribadi dalam HRMIS adalah terkini
+3. Jika baru bertugas, tunggu HRMIS update (biasanya 1-2 hari kerja)
+4. Hubungi pentadbir sistem jika masalah berterusan
+
+#### 5.2.2. Masalah Log Masuk Biasa
+
+**Masalah:** Tidak dapat log masuk selepas SSO berjaya
+**Penyelesaian:**
+
+1. Bersihkan cache dan cookies pelayar
+2. Cuba gunakan pelayar lain (Chrome, Firefox, Edge)
+3. Pastikan JavaScript enabled
+4. Hubungi pentadbir jika masih gagal
 
 **Masalah:** E-mel pengesahan tidak diterima
 **Penyelesaian:**
@@ -508,7 +569,7 @@ Jika sesi terputus secara tidak dijangka:
 3. Minta hantar semula e-mel pengesahan
 4. Hubungi IT support jika masih tiada
 
-#### 5.2.2. Masalah Penyerahan Borang
+#### 5.2.3. Masalah Penyerahan Borang
 
 **Masalah:** Borang tidak dapat dihantar
 **Penyelesaian:**

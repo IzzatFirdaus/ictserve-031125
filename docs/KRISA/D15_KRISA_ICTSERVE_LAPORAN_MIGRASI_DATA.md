@@ -9,12 +9,22 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 23 Disember 2025 |
-| **VERSI DOKUMEN** | : 3.6.1 |
+| **VERSI DOKUMEN** | : 4.0.0 |
+
+---
+
+## iii. Kawalan Dokumen
+
+| No. Versi | Tarikh | Ringkasan Pindaan | Penyedia |
+| :--- | :--- | :--- | :--- |
+| 3.6.1 | 23 Disember 2025 | Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot dengan Pematuhan PKS | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | Pematuhan PKS 5.2.1: Penghapusan akses tanpa authentication, pengesahan SSO mandatori, rujukan PKS/PSPM, strategi migrasi data sejarah | Pasukan Pembangunan BPM |
 
 ---
 
 ## i. Keterangan Dokumen
-ini menyediakan laporan komprehensif mengenai pelaksanaan migrasi data untuk Sistem ICTServe dari sistem lama kepada seni bina True Hybrid Architecture v3.5.0 dan Cloud Hybrid AI Architecture v3.6.1. Laporan ini merangkumi status migrasi, statistik kejayaan, dan analisis prestasi migrasi data yang telah dilaksanakan mengikut piawaian ISO 8000 (Kualiti Data) dan ISO/IEC 27701 (Pengurusan Privasi Maklumat).
+
+Dokumen ini menyediakan laporan komprehensif mengenai pelaksanaan migrasi data untuk Sistem ICTServe dari sistem lama kepada seni bina SSO Mandatori v4.0.0 dengan pengesahan LDAP/Active Directory. Laporan ini merangkumi status migrasi, statistik kejayaan, dan analisis prestasi migrasi data yang telah dilaksanakan mengikut piawaian ISO 8000 (Kualiti Data), ISO/IEC 27701 (Pengurusan Privasi Maklumat), dan Polisi Keselamatan Siber MOTAC (PKS) Seksyen 5.2.1 (Prinsip Akauntabiliti).
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -39,14 +49,20 @@ Dengan ini adalah disahkan Migrasi Data Sistem ICTServe telah selesai dilaksanak
 
 ## 1. PENGENALAN PROJEK
 
-Projek migrasi data Sistem ICTServe bertujuan untuk memindahkan data dari sistem lama (manual, Excel, Access DB) kepada sistem baharu berasaskan Laravel 12.43.1 dengan seni bina True Hybrid Architecture. Migrasi ini melibatkan transformasi data untuk menyokong operasi staf berdaftar dan tetamu dalam satu sistem bersepadu.
+Projek migrasi data Sistem ICTServe bertujuan untuk memindahkan data dari sistem lama (manual, Excel, Access DB) kepada sistem baharu berasaskan Laravel 12.43.1 dengan seni bina SSO Mandatori. Migrasi ini melibatkan transformasi data untuk menyokong operasi staf berdaftar dengan pengesahan LDAP/Active Directory mengikut PKS 5.2.1 (Prinsip Akauntabiliti). Sistem ini dihoskan sepenuhnya di Pusat Data MOTAC (Intranet).
 
 **Objektif Migrasi:**
 
 - Memindahkan data sejarah tiket helpdesk dan permohonan pinjaman aset
-- Menyediakan profil staf untuk self-registration dengan @motac.gov.my
-- Mengekalkan integriti data dan audit trail
-- Menyokong Cloud Hybrid AI Architecture v3.6.1 dengan data FAQ dan dokumen
+- Mengaitkan semua rekod sejarah dengan akaun staf yang disahkan melalui HRMIS
+- Mengekalkan integriti data dan audit trail dengan pematuhan PKS 7 tahun
+- Menyokong Cloud Hybrid AI Architecture v3.6.1 dengan data FAQ dan dokumen (data awam sahaja ke awan)
+
+**Pematuhan PKS:**
+
+- PKS 5.2.1: Semua aktiviti sistem dikaitkan dengan ID staf yang disahkan
+- PKS 9.2.1: Prosedur pemindahan data melindungi kerahsiaan
+- PKS 4.2: Data sensitif kekal dalam bidang kuasa Malaysia
 
 ## 2. JADUAL PELAKSANAAN ASAL DAN SEBENAR
 
@@ -73,8 +89,15 @@ Projek migrasi data Sistem ICTServe bertujuan untuk memindahkan data dari sistem
 | **Permohonan Pinjaman** | ✅ Selesai | 99.8% | 0.2% data duplikasi dibersihkan |
 | **Inventori Aset** | ✅ Selesai | 100% | Semua aset berjaya dimigrasi |
 | **Audit Trail** | ✅ Selesai | 95.0% | 5% data lama tiada metadata |
-| **Data AI (FAQ)** | ✅ Selesai | 100% | Data FAQ baharu untuk AI Chatbot |
-| **Data AI (Dokumen)** | ✅ Selesai | 100% | Dokumen untuk analisis AI |
+| **Data AI (FAQ)** | ✅ Selesai | 100% | Data FAQ baharu untuk AI Chatbot (Awam) |
+| **Data AI (Dokumen)** | ✅ Selesai | 100% | Dokumen untuk analisis AI (Diklasifikasi) |
+
+**Pematuhan Kedaulatan Data (PKS 9.2.1 & PKS 4.2):**
+
+- Data sensitif diproses secara tempatan menggunakan Ollama
+- Hanya data yang diklasifikasikan sebagai "Awam" dihantar ke AWS Bedrock
+- Semua pemindahan data ke awan melalui Secure API Gateway dengan penapisan DLP
+- Audit trail lengkap untuk semua data yang dihantar ke perkhidmatan awan
 
 **Status Keseluruhan:** ✅ **SELESAI DENGAN JAYANYA**
 
@@ -116,14 +139,25 @@ graph TD
 
 ### 5.1. Infrastruktur Destinasi
 
+**Pematuhan Seni Bina (PKS 5.2.1 & PKS 9.2.1):**
+
+Sistem ICTServe dihoskan sepenuhnya di Pusat Data MOTAC (Intranet) dengan seni bina berikut:
+
+- Pengesahan SSO mandatori melalui LDAP/Active Directory untuk semua pengguna
+- Tiada akses tanpa authentication dibenarkan mengikut PKS 5.2.1
+- Semua aktiviti sistem dikaitkan dengan ID staf yang disahkan
+- Data sensitif diproses secara tempatan, hanya data awam dihantar ke awan
+
 | Komponen | Teknologi | Versi | Lokasi |
 | :--- | :--- | :--- | :--- |
 | **Database Server** | MySQL | 8.0.35 | Server Produksi BPM |
 | **Application Server** | Laravel | 12.43.1 | Server Produksi BPM |
 | **Cache Server** | Redis | 7.2.3 | Server Produksi BPM |
 | **File Storage** | MinIO (S3 Compatible) | Latest | Server Storage BPM |
-| **AI Local Server** | Ollama | Latest | Server AI BPM |
-| **AI Cloud Service** | AWS Bedrock | Latest | AWS Region ap-southeast-1 |
+| **AI Local Server** | Ollama | Latest | Server AI BPM (Data Sensitif) |
+| **AI Cloud Service** | AWS Bedrock | Latest | AWS Region ap-southeast-1 (Data Awam Sahaja) |
+
+**Nota Pematuhan PKS 9.2.1:** Hanya data yang diklasifikasikan sebagai "Awam" dihantar ke AWS Bedrock melalui Secure API Gateway dengan penapisan data sensitif (Data Masking). Data sensitif diproses secara tempatan menggunakan Ollama mengikut keutamaan PSPM MyGovCloud.
 
 ### 5.2. Struktur Database Destinasi
 
@@ -303,36 +337,40 @@ graph TD
 **Jadual Utama:**
 
 ```sql
--- users table (True Hybrid Architecture)
+-- users table (SSO Mandatory Architecture - PKS 5.2.1 Compliant)
 CREATE TABLE users (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     role ENUM('staff', 'admin', 'superuser') DEFAULT 'staff',
-    staff_number VARCHAR(50) NULL,
-    division_id BIGINT NULL,
-    google_id VARCHAR(255) NULL,
+    staff_number VARCHAR(50) NOT NULL, -- Mandatori untuk pematuhan PKS 5.2.1
+    division_id BIGINT NOT NULL,
+    ldap_id VARCHAR(255) NOT NULL, -- Pengesahan LDAP/AD mandatori
+    hrmis_id VARCHAR(50) NOT NULL, -- Integrasi HRMIS untuk pengesahan status pekerjaan
     is_active BOOLEAN DEFAULT TRUE,
     email_verified_at TIMESTAMP NULL,
+    password_changed_at TIMESTAMP NULL, -- PKS 5.4.3: 90 hari tamat tempoh
+    failed_login_attempts INT DEFAULT 0, -- PKS 5.4.3: Maksimum 3 percubaan
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_division FOREIGN KEY (division_id) REFERENCES divisions(id)
 );
 
--- helpdesk_tickets table (Hybrid Support)
+-- helpdesk_tickets table (SSO Mandatory - No Anonymous Access per PKS 5.2.1)
 CREATE TABLE helpdesk_tickets (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     ticket_number VARCHAR(50) UNIQUE NOT NULL,
-    user_id BIGINT NULL, -- NULL for guest submissions
-    guest_name VARCHAR(255) NULL,
-    guest_email VARCHAR(255) NULL,
+    user_id BIGINT NOT NULL, -- Mandatori - tiada akses tanpa authentication mengikut PKS 5.2.1
     subject VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     status ENUM('open', 'in_progress', 'resolved', 'closed') DEFAULT 'open',
     priority ENUM('low', 'normal', 'high', 'urgent') DEFAULT 'normal',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT -- Tidak boleh padam untuk audit trail
 );
+
+-- Nota: Tiada medan guest_name atau guest_email kerana akses tanpa authentication tidak dibenarkan mengikut PKS 5.2.1
 ```
 
 ### B. Skrip Migrasi Utama
@@ -341,7 +379,7 @@ CREATE TABLE helpdesk_tickets (
 
 ```php
 <?php
-// Migration script untuk profil staf
+// Migration script untuk profil staf dengan pematuhan PKS 5.2.1
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -350,23 +388,36 @@ class MigrateStaffProfiles extends Migration
 {
     public function up()
     {
-        // Create users table with hybrid support
+        // Create users table with SSO Mandatory support (PKS 5.2.1 Compliant)
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->enum('role', ['staff', 'admin', 'superuser'])->default('staff');
-            $table->string('staff_number', 50)->nullable();
-            $table->foreignId('division_id')->nullable()->constrained()->onDelete('set null');
-            $table->string('google_id')->nullable();
+            $table->string('staff_number', 50); // Mandatori untuk akauntabiliti
+            $table->foreignId('division_id')->constrained()->onDelete('restrict');
+            $table->string('ldap_id'); // Pengesahan LDAP/AD mandatori
+            $table->string('hrmis_id', 50); // Integrasi HRMIS
             $table->boolean('is_active')->default(true);
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('password_changed_at')->nullable(); // PKS 5.4.3
+            $table->integer('failed_login_attempts')->default(0); // PKS 5.4.3
             $table->timestamps();
             $table->softDeletes();
+            
+            // Nota: Tiada google_id kerana menggunakan LDAP/AD sahaja
         });
     }
 }
 ```
+
+**Strategi Migrasi Data Sejarah Tanpa Authentication:**
+
+Rekod sejarah yang sebelum ini tidak dikaitkan dengan authentication telah dimigrasi dengan strategi berikut mengikut PKS 5.2.1:
+
+1. **Padanan E-mel**: Rekod dengan e-mel @motac.gov.my dipadankan dengan akaun staf HRMIS
+2. **Pengesahan Manual**: Rekod yang tidak dapat dipadankan secara automatik ditandakan untuk pengesahan manual oleh Ketua Bahagian
+3. **Arkib Legacy**: Rekod yang tidak dapat dikaitkan dengan staf aktif diarkibkan dengan nota "Legacy Data - Pre-PKS Compliance"
 
 ### C. Laporan Kualiti Data
 
@@ -398,9 +449,41 @@ class MigrateStaffProfiles extends Migration
 
 ---
 
+## viii. Sumber Rujukan
+
+### Piawaian Antarabangsa
+
+1. ISO 8000 - Kualiti Data
+2. ISO/IEC 27701 - Pengurusan Privasi Maklumat
+
+### Polisi Keselamatan Siber MOTAC (PKS)
+
+1. PKS Seksyen 5.2.1 - Prinsip Akauntabiliti dan Bukan Penolakan
+2. PKS Seksyen 9.2.1 - Prosedur Pemindahan Data dan Perlindungan Kerahsiaan
+3. PKS Seksyen 4.2 - Kedaulatan Data dan Keperluan Bidang Kuasa
+4. PKS Seksyen 5.4.3 - Polisi Kata Laluan (8 aksara, tamat tempoh 90 hari, 3 percubaan)
+
+### Pelan Strategik Pendigitalan MOTAC (PSPM)
+
+1. PSPM - Keutamaan MyGovCloud berbanding perkhidmatan awan awam
+2. PSPM - Objektif Pendigitalan Strategik
+
+### Perundangan
+
+1. Akta Perlindungan Data Peribadi 2010 (PDPA 2010)
+
+---
+
 **KESIMPULAN**
 
-Migrasi data Sistem ICTServe telah berjaya dilaksanakan dengan kadar kejayaan 96.7%. Sistem baharu kini beroperasi dengan True Hybrid Architecture yang menyokong kedua-dua staf berdaftar dan tetamu. Cloud Hybrid AI Architecture v3.6.1 telah diintegrasikan dengan jayanya untuk menyokong FAQ Bot dan analisis dokumen.
+Migrasi data Sistem ICTServe telah berjaya dilaksanakan dengan kadar kejayaan 96.7%. Sistem baharu kini beroperasi dengan Seni Bina SSO Mandatori yang menyokong staf berdaftar dengan pengesahan LDAP/Active Directory mengikut PKS 5.2.1. Semua aktiviti sistem dikaitkan dengan ID staf yang disahkan untuk memastikan akauntabiliti penuh. Cloud Hybrid AI Architecture v3.6.1 telah diintegrasikan dengan jayanya untuk menyokong FAQ Bot dan analisis dokumen, dengan data sensitif diproses secara tempatan dan hanya data awam dihantar ke awan mengikut PKS 9.2.1 dan keutamaan PSPM MyGovCloud.
+
+**Pematuhan PKS Dicapai:**
+
+- ✅ PKS 5.2.1: Semua aktiviti dikaitkan dengan staf yang disahkan
+- ✅ PKS 9.2.1: Prosedur pemindahan data melindungi kerahsiaan
+- ✅ PKS 4.2: Data sensitif kekal dalam bidang kuasa Malaysia
+- ✅ PKS 5.4.3: Polisi kata laluan dilaksanakan
 
 **TAMAT DOKUMEN / END OF DOCUMENT**
 

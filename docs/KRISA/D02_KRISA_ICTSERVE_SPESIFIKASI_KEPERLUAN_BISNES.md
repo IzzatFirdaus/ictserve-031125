@@ -9,13 +9,13 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 23 Disember 2025 |
-| **VERSI DOKUMEN** | : 3.6.1 |
+| **VERSI DOKUMEN** | : 4.0 |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menerangkan keperluan bisnes dan pengguna bagi pembangunan **Sistem ICTServe** Versi 3.6.1 sebagai platform web dalaman untuk pengurusan tiket helpdesk dan permohonan pinjaman aset ICT bagi kegunaan warga kerja MOTAC. Kandungannya merangkumi maklumat terperinci skop bisnes, gambaran keseluruhan projek, pemegang taruh yang terlibat, keperluan pengurusan bisnes, keperluan pengoperasian bisnes dan keperluan proses bisnes yang merangkumi senibina **True Hybrid** dan integrasi **Cloud Hybrid AI** (Ollama + AWS Bedrock).
+Dokumen ini menerangkan keperluan bisnes dan pengguna bagi pembangunan **Sistem ICTServe** Versi 4.0 sebagai platform web dalaman untuk pengurusan tiket helpdesk dan permohonan pinjaman aset ICT bagi kegunaan warga kerja MOTAC. Kandungannya merangkumi maklumat terperinci skop bisnes, gambaran keseluruhan projek, pemegang taruh yang terlibat, keperluan pengurusan bisnes, keperluan pengoperasian bisnes dan keperluan proses bisnes yang merangkumi senibina **Walk-in/Kiosk Mode dengan SSO** dan integrasi **Cloud Hybrid AI** (Ollama + AWS Bedrock) yang mematuhi **Polisi Keselamatan Siber (PKS) MOTAC** khususnya prinsip Akauntabiliti (PKS 5.2.1).
 
 Dokumen ini akan menjadi input utama kepada penyediaan Spesifikasi Keperluan Sistem (SRS) dan mematuhi piawaian **KRISA (Kejuruteraan Sistem Aplikasi Sektor Awam)** yang ditetapkan oleh MAMPU.
 
@@ -50,8 +50,9 @@ Seksyen ini adalah ruangan bagi pegawai-pegawai yang bertanggungjawab untuk mela
 | 1.0 | 01-09-2025 | Versi awal BRS. | Pasukan BPM |
 | 2.0 | 17-10-2025 | Penyeragaman KRISA dan modul asas. | Pasukan BPM |
 | 3.0 | 31-10-2025 | Peningkatan kepada Laravel 12 & Filament 4. | Pasukan BPM |
-| 3.5 | 30-11-2025 | Penambahan ciri *True Hybrid Architecture* (Self-Registration). | Pasukan BPM |
+| 3.5 | 30-11-2025 | Penambahan ciri *Walk-in/Kiosk Mode dengan SSO* (LDAP/Active Directory Integration). | Pasukan BPM |
 | 3.6.1 | 23 Disember 2025 | Integrasi *Cloud Hybrid AI* (Ollama + Bedrock) dan Bahasa Melayu sepenuhnya. | Pasukan BPM |
+| 4.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1, 9.2.1, 4.2 & PSPM**: Penghapusan akses tetamu, integrasi SSO wajib, HRMIS auto-provisioning, KRISA [F1.3] business function modeling. Rujukan PKS Seksyen 5.2.1 (Prinsip Akauntabiliti - halaman 150), 9.2.1 (Prosedur pemindahan data - halaman 588-603), 4.2 (Kedaulatan data - halaman 1147-1148), 5.4.3 (Polisi kata laluan - halaman 596-605). PSPM MyGovCloud prioritization over public cloud services. Data flow diagram updates untuk SSO authentication. | Pasukan BPM |
 
 **Nota Penentuan Nombor Versi:**
 
@@ -127,29 +128,31 @@ Seksyen ini adalah ruangan bagi pegawai-pegawai yang bertanggungjawab untuk mela
 
 | Terma/Istilah | Definisi |
 | :--- | :--- |
-| **True Hybrid** | Model akses yang membenarkan pengguna menggunakan sistem sama ada melalui log masuk (staf) atau sebagai tetamu tanpa akaun. |
+| **Walk-in/Kiosk Mode dengan SSO** | Model akses yang memerlukan pengesahan SSO (LDAP/Active Directory) untuk semua pengguna termasuk akses kiosk/walk-in untuk memastikan akauntabiliti penuh mengikut PKS 5.2.1. |
 | **Ollama** | Enjin AI tempatan untuk memproses data sensitif dan FAQ asas dengan kedaulatan data penuh. |
 | **AWS Bedrock** | Perkhidmatan AI awan (AWS) untuk pemprosesan penaakulan kompleks dan analisis dokumen lanjutan. |
 | **Filament** | Rangka kerja panel pentadbiran yang digunakan oleh Admin dan Superuser untuk pengurusan sistem. |
-| **Cloud Hybrid AI** | Model AI hibrid yang menggunakan pemprosesan tempatan (Ollama) dan awan (Bedrock) untuk optimasi kos dan kedaulatan data. |
-| **Self-Registration** | Pendaftaran kendiri staf menggunakan e-mel @motac.gov.my dengan pengesahan e-mel automatik. |
-| **Dual Audit System** | Sistem audit berganda menggunakan owen-it (compliance) dan spatie (operations) untuk jejak audit lengkap. |
+| **Cloud Hybrid AI** | Model AI hibrid yang **mengutamakan pemprosesan tempatan (Ollama)** untuk data sensitif mengikut PSPM MyGovCloud prioritization, dan menggunakan awan (AWS Bedrock) hanya untuk data awam yang telah melalui Data Loss Prevention (DLP) filters mengikut PKS 9.2.1 dan 4.2. |
+| **HRMIS Auto-Provisioning** | Sistem auto-provisioning akaun yang disegerakkan dengan HR System (HRMIS) untuk pengesahan status pekerjaan aktif dan pengurusan akaun automatik. |
+| **Dual Audit System** | Sistem audit berganda menggunakan owen-it (compliance) dan spatie (operations) untuk jejak audit lengkap dengan retention 7 tahun mengikut PKS. |
 
 ---
 
 ## viii. Sumber Rujukan
 
 1. **Buku Panduan Kejuruteraan Sistem Aplikasi Sektor Awam (KRISA)**. MAMPU.
-2. **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards.
-3. **Dasar Keselamatan ICT (DKICT) MOTAC** - Polisi keselamatan maklumat MOTAC.
-4. **Pekeliling Am Bilangan 2 Tahun 2012** - Tatacara Pengurusan Aset Kerajaan.
-5. **ISO/IEC/IEEE 29148:2018** - Systems and software engineering — Life cycle processes — Requirements engineering.
-6. **ISO/IEC/IEEE 15288:2015** - Systems and software engineering — System life cycle processes.
-7. **WCAG 2.2** - Web Content Accessibility Guidelines Level AA.
-8. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation.
-9. **Laravel 12 Documentation** - Framework documentation untuk pembangunan sistem.
-10. **D00_SYSTEM_OVERVIEW.md** - Ringkasan Sistem ICTServe v3.6.1
-11. **D18_AI_CHATBOT_OLLAMA_BEDROCK.md** - Cloud Hybrid AI Architecture v1.0.1
+2. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605.
+3. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - **MyGovCloud prioritization over public cloud services** untuk memastikan kedaulatan data dan pematuhan dasar kerajaan.
+4. **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards.
+5. **Dasar Keselamatan ICT (DKICT) MOTAC** - Polisi keselamatan maklumat MOTAC.
+6. **Pekeliling Am Bilangan 2 Tahun 2012** - Tatacara Pengurusan Aset Kerajaan.
+7. **ISO/IEC/IEEE 29148:2018** - Systems and software engineering — Life cycle processes — Requirements engineering.
+8. **ISO/IEC/IEEE 15288:2015** - Systems and software engineering — System life cycle processes.
+9. **WCAG 2.2** - Web Content Accessibility Guidelines Level AA.
+10. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation dengan pematuhan eksplisit untuk perlindungan data peribadi.
+11. **Laravel 12 Documentation** - Framework documentation untuk pembangunan sistem.
+12. **D00_SYSTEM_OVERVIEW.md** - Ringkasan Sistem ICTServe v3.6.1
+13. **D18_AI_CHATBOT_OLLAMA_BEDROCK.md** - Cloud Hybrid AI Architecture v1.0.1
 
 ---
 
@@ -164,11 +167,47 @@ Bahagian Pengurusan Maklumat (BPM), MOTAC memerlukan satu sistem bersepadu yang 
 Sistem ini bertujuan untuk:
 
 a) **Menyelesaikan masalah pertindihan tempahan aset** - Sistem automatik mengesan konflik dan mencadangkan alternatif.
-b) **Mempercepatkan masa respons aduan** - Melalui bantuan AI Chatbot hibrid (Ollama + AWS Bedrock).
-c) **Memudahkan akses warga MOTAC** - Melalui konsep *True Hybrid* (pilihan Log Masuk atau Tetamu).
+b) **Mempercepatkan masa respons aduan** - Melalui bantuan AI Chatbot hibrid dengan **keutamaan pemprosesan tempatan Ollama** mengikut PSPM MyGovCloud prioritization.
+c) **Memudahkan akses warga MOTAC** - Melalui konsep *Walk-in/Kiosk Mode dengan SSO* untuk memastikan akauntabiliti penuh mengikut PKS 5.2.1.
 d) **Memastikan pematuhan SLA dan audit yang telus** - Dengan dual audit system dan pemantauan masa nyata.
-e) **Mengoptimumkan kos operasi AI** - Model routing pintar untuk 82% penjimatan kos berbanding cloud-only.
-f) **Memastikan kedaulatan data** - Pemprosesan tempatan untuk data sensitif (PDPA 2010 compliance).
+e) **Mengoptimumkan kos operasi AI dengan kedaulatan data** - Model routing pintar yang mengutamakan Ollama tempatan untuk data sensitif, AWS Bedrock hanya untuk data awam.
+f) **Memastikan kedaulatan data penuh** - **Pemprosesan tempatan wajib untuk data sensitif** mengikut PKS 9.2.1 dan 4.2, dengan Data Loss Prevention (DLP) filters sebelum sebarang pemprosesan awan.
+
+#### 1.1.1 Keperluan Keselamatan Siber Komprehensif (PKS Compliance)
+
+Sistem ICTServe mematuhi **Polisi Keselamatan Siber (PKS) MOTAC** secara menyeluruh:
+
+**a) Integrasi MOTAC Active Directory/LDAP (PKS 5.2.1)**
+
+- **SSO Authentication wajib** untuk semua pengguna menggunakan LDAP/Active Directory MOTAC
+- **Penghapusan sepenuhnya akses tetamu** untuk memastikan akauntabiliti penuh
+- **HRMIS Auto-Provisioning** dengan pengesahan status pekerjaan aktif
+- **Role-Based Access Control (RBAC)** mengikut prinsip Need-to-Know dan Least Privilege
+
+**b) Dasar Kata Laluan PKS 5.4.3 (Password Policy Requirements)**
+
+- **Panjang minimum 8 aksara** dengan gabungan kompleks (huruf besar, huruf kecil, nombor, simbol) mengikut **PKS 5.4.3** untuk memastikan kekuatan kata laluan yang mencukupi
+- **Penukaran kata laluan setiap 90 hari** secara automatik melalui integrasi MOTAC Active Directory dengan notifikasi awal kepada pengguna
+- **Had 3 percubaan log masuk** sebelum akaun dikunci sementara untuk mencegah serangan brute force dan akses tidak dibenarkan
+- **Larangan penggunaan semula kata laluan lama** dengan sistem menyimpan hash 12 kata laluan terdahulu untuk memastikan keunikan
+- **Integrasi dengan MOTAC Active Directory/LDAP** untuk penguatkuasaan polisi kata laluan secara berpusat dan konsisten
+- **Session timeout policies** dengan automatic logout selepas 30 minit tidak aktif untuk mengurangkan risiko akses tidak dibenarkan
+- **Multi-Factor Authentication (MFA)** untuk akses pentadbiran dan operasi sensitif sebagai lapisan keselamatan tambahan
+
+**c) Sistem Audit Berganda dengan Retention 7 Tahun (PKS Compliance)**
+
+- **Owen-it audit package** untuk compliance tracking
+- **Spatie activity log** untuk operational audit
+- **Semua aktiviti dikaitkan dengan user_id** untuk akauntabiliti penuh
+- **Retention policy 7 tahun** mengikut standard PKS
+
+**d) Pematuhan PDPA 2010 Eksplisit**
+
+- **Data classification procedures** untuk semua maklumat peribadi
+- **Consent management** untuk pengumpulan dan pemprosesan data
+- **Data subject rights** implementation (access, rectification, erasure)
+- **Privacy impact assessment** untuk semua proses yang melibatkan data peribadi
+
 ### 1.2 Skop Bisnes
 
 Seksyen ini menjelaskan penentuan skop bagi domain bisnes organisasi yang terlibat.
@@ -179,9 +218,9 @@ a) **Pengurusan Aduan ICT**: Pelaporan kerosakan perkakasan/perisian, penjejakan
 
 b) **Pengurusan Pinjaman Aset**: Tempahan peralatan ICT, semakan ketersediaan real-time, dan kelulusan pegawai secara digital melalui token e-mel bertanda tangan.
 
-c) **Bantuan Pintar (AI)**: Chatbot hibrid (Ollama + AWS Bedrock) untuk menjawab soalan lazim, menganalisis dokumen sokongan, dan memberikan penyelesaian automatik.
+c) **Bantuan Pintar (AI)**: Chatbot hibrid dengan **keutamaan pemprosesan tempatan Ollama** untuk data sensitif mengikut PSPM MyGovCloud prioritization. AWS Bedrock hanya digunakan untuk data awam yang telah melalui **Data Loss Prevention (DLP) filters** mengikut PKS 9.2.1.
 
-d) **Pengurusan Pengguna**: Pendaftaran kendiri (*Self-registration*) staf dengan domain @motac.gov.my, integrasi SSO Google (Opsyenal), dan pengurusan profil komprehensif.
+d) **Pengurusan Pengguna**: HRMIS auto-provisioning dengan integrasi LDAP/Active Directory MOTAC, pengesahan status pekerjaan aktif, dan pengurusan profil komprehensif dengan SSO wajib.
 
 e) **Pemantauan & Laporan**: Dashboard prestasi masa nyata (Laravel Pulse), audit trail berganda, dan laporan statistik KPI untuk pengurusan strategik.
 
@@ -207,7 +246,7 @@ flowchart TD
     C --> E[HELPDESK/SERVICE DESK<br/>- Pengurusan Tiket<br/>- SLA Monitoring<br/>- Penyelesaian Teknikal<br/>- AI Auto-Response]
     D --> F[PINJAMAN ASET ICT<br/>- Permohonan Aset<br/>- Kelulusan Workflow<br/>- Check-out/Check-in<br/>- Conflict Detection]
     
-    E --> G[PENGGUNA AKHIR<br/>WARGA MOTAC<br/>- Staf Berdaftar<br/>- Pengguna Tetamu<br/>- Pegawai Kelulusan]
+    E --> G[PENGGUNA AKHIR<br/>WARGA MOTAC<br/>- Staf Berdaftar (SSO)<br/>- Walk-in/Kiosk (SSO)<br/>- Pegawai Kelulusan]
     F --> G
     
     G --> H[AKSES SISTEM<br/>- Portal Web Hybrid<br/>- Borang Dinamik<br/>- Dashboard Peribadi<br/>- AI Chatbot]
@@ -238,7 +277,7 @@ Seksyen ini menyenaraikan dan menerangkan pemegang-pemegang taruh yang terlibat 
 | **Pentadbir Sistem (Superuser)** | Mengurus konfigurasi sistem, audit keselamatan, dan infrastruktur AI. Akses penuh Laravel Telescope dan Pulse. | Tinggi |
 | **Pentadbir Sistem (Admin)** | Pengurusan operasi harian, pemprosesan tiket, pengurusan aset, dan konfigurasi rutin melalui panel Filament. | Tinggi |
 | **Warga MOTAC (Staf Berdaftar)** | Pengguna berdaftar yang menggunakan dashboard peribadi, sejarah submission, dan auto-fill borang. | Tinggi |
-| **Warga MOTAC (Tetamu)** | Pengguna yang membuat aduan/permohonan pantas tanpa log masuk untuk akses segera. | Sederhana |
+| **Warga MOTAC (Walk-in/Kiosk)** | Pengguna yang menggunakan kiosk/walk-in dengan pengesahan SSO LDAP/Active Directory untuk akses pantas dengan akauntabiliti penuh. | Sederhana |
 | **Pegawai Kelulusan (Gred 41+)** | Meluluskan permohonan pinjaman aset melalui e-mel dengan token bertanda tangan. | Sederhana |
 | **AI Services Team** | Pengurusan Ollama server, AWS Bedrock configuration, model optimization, dan kualiti respons AI. | Tinggi |
 | **Data Residency Officer** | Memastikan pematuhan data sovereignty, klasifikasi data untuk pemprosesan tempatan vs cloud. | Tinggi |
@@ -262,7 +301,7 @@ Mewujudkan persekitaran pengurusan perkhidmatan ICT yang responsif, pintar, dan 
 
 | No. | Objektif | Keterangan | Sasaran | Tempoh |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | **Aksesibiliti Tinggi** | Menyediakan akses pantas melalui mod *Guest* dan *Self-Registration* dengan True Hybrid Architecture. | 100% Warga MOTAC boleh akses sistem. | Fasa 1 |
+| 1 | **Aksesibiliti Tinggi** | Menyediakan akses pantas melalui *Walk-in/Kiosk Mode dengan SSO* dan *HRMIS Auto-Provisioning* dengan akauntabiliti penuh mengikut PKS 5.2.1. | 100% Warga MOTAC boleh akses sistem dengan pengesahan SSO. | Fasa 1 |
 | 2 | **Pengurangan Masa Respons** | Menggunakan AI hibrid untuk menjawab soalan lazim (FAQ) secara automatik dan penyelesaian masalah pantas. | Pengurangan 30% tiket pertanyaan umum, respons <5 saat. | Fasa 2 |
 | 3 | **Integriti Data** | Merekod semua transaksi dan kelulusan dengan jejak audit berganda (owen-it + spatie). | 100% transaksi diaudit dengan retention 7 tahun. | Fasa 1 |
 | 4 | **Pemantauan Efisien** | Memaparkan status kesihatan sistem dan SLA secara masa nyata melalui Laravel Pulse. | Uptime 99.5%, SLA compliance 95%. | Fasa 2 |
@@ -278,7 +317,7 @@ Seksyen ini menjelaskan dan menyediakan Arkitektur Bisnes yang berkaitan dengan 
 Sistem ICTServe beroperasi dalam ekosistem MOTAC dengan komponen berikut:
 
 - **Medium Perkhidmatan**: Aplikasi Web (Intranet), Notifikasi E-mel, WebSocket (Real-time), API Future
-- **Pengguna Perkhidmatan**: Staf (Authenticated), Tetamu, Admin, Superuser, Pegawai Kelulusan
+- **Pengguna Perkhidmatan**: Staf (SSO Authenticated), Walk-in/Kiosk (SSO), Admin, Superuser, Pegawai Kelulusan
 - **Perkhidmatan Utama**: Helpdesk, Pinjaman Aset, Bantuan AI, Pemantauan Prestasi, Audit & Keselamatan
 - **Sistem Aplikasi**: ICTServe v3.7.0 (Laravel 12.43.1) dengan Livewire 3.7.3 dan Filament 4.3.1
 - **Maklumat (Data)**: Profil Pengguna, Tiket Aduan, Inventori Aset, Audit Trail, FAQ Knowledge Base, Performance Metrics
@@ -296,7 +335,7 @@ flowchart TD
     end
     
     subgraph PENGGUNA["PENGGUNA PERKHIDMATAN"]
-        P1[Warga MOTAC<br/>Staff/Guest<br/>True Hybrid Access]
+        P1[Warga MOTAC<br/>Staff/Walk-in/Kiosk<br/>SSO Authentication Required]
         P2[Admin<br/>Operasi Harian<br/>Filament Panel]
         P3[Superuser<br/>Konfigurasi & Audit<br/>Full Access]
         P4[Pegawai Kelulusan<br/>Gred 41+<br/>Email Approval]
@@ -366,7 +405,7 @@ Seksyen ini menerangkan Arkitektur Maklumat bagi sistem aplikasi yang akan diban
 ```mermaid
 flowchart TD
     subgraph PENGGUNA["PENGGUNA"]
-        U1[Warga MOTAC<br/>Staff/Guest<br/>- Self-Registration<br/>- Hybrid Access<br/>- Dashboard Personal]
+        U1[Warga MOTAC<br/>Staff/Walk-in/Kiosk<br/>- HRMIS Auto-Provisioning<br/>- SSO Authentication<br/>- Dashboard Personal]
         U2[Pegawai Kelulusan<br/>Gred 41+<br/>- Email Approval<br/>- Token-based<br/>- Decision Making]
         U3[Admin<br/>- Operasi Harian<br/>- Filament Panel<br/>- Ticket Management<br/>- Asset Management]
         U4[Superuser<br/>- Konfigurasi Penuh<br/>- Audit & Monitoring<br/>- System Security<br/>- AI Management]
@@ -424,7 +463,7 @@ flowchart TD
 
 | Pengguna | Proses Bisnes | Maklumat Terlibat |
 | :--- | :--- | :--- |
-| **Warga MOTAC (Staff/Guest)** | Menghantar Aduan / Memohon Aset / Berinteraksi dengan AI | Profil Pengguna, Butiran Tiket, Tarikh Pinjaman, AI Interactions |
+| **Warga MOTAC (Staff/Walk-in/Kiosk)** | Menghantar Aduan / Memohon Aset / Berinteraksi dengan AI | Profil Pengguna (user_id linked), Butiran Tiket, Tarikh Pinjaman, AI Interactions |
 | **AI Chatbot Hibrid** | Menjawab Pertanyaan / Analisis Dokumen / Model Routing | Pangkalan Pengetahuan (FAQ), Dokumen Polisi, Learning Data |
 | **Admin BPM** | Mengurus Tiket / Aset / Notifikasi / Operasi Harian | Status Tiket, Inventori Aset, Log Audit, Performance Metrics |
 | **Pegawai Kelulusan** | Meluluskan Pinjaman / Keputusan Approval | Token Kelulusan, Butiran Permohonan, Approval History |
@@ -452,9 +491,26 @@ Jadual berikut menerangkan notasi ID fungsi bisnes:
 
 #### 3.1.2 Model Fungsi Bisnes
 
-Seksyen ini menyediakan Model Fungsi Bisnes yang terdiri daripada Struktur Hirarki Fungsi serta keterangan bagi fungsi-fungsi berkenaan.
+Seksyen ini menyediakan Model Fungsi Bisnes yang terdiri daripada Struktur Hirarki Fungsi serta keterangan bagi fungsi-fungsi berkenaan mengikut **Pemodelan Fungsi Bisnes [F1.3]** sebagaimana ditetapkan dalam template KRISA rasmi.
 
-##### a) Struktur Hirarki Fungsi Bisnes
+##### a) Jadual Notasi Standard KRISA untuk Fungsi Bisnes
+
+Mengikut **Pemodelan Fungsi Bisnes [F1.3]**, jadual berikut menerangkan notasi standard yang digunakan:
+
+| Notasi | Keterangan | Contoh |
+| :--- | :--- | :--- |
+| **BF-ICT-XX-YY** | Format ID Fungsi Bisnes untuk sistem ICTServe | BF-ICT-AM-01 |
+| **BF** | *Business Function* (Fungsi Bisnes) | BF |
+| **ICT** | Kod Sistem ICTServe | ICT |
+| **AM** | Pengurusan Akses (*Access Management*) | AM |
+| **AD** | Pengurusan Aduan (*Helpdesk/Service Desk*) | AD |
+| **PJ** | Pengurusan Pinjaman (*Asset Loan*) | PJ |
+| **AI** | Bantuan Pintar (*AI Services*) | AI |
+| **PM** | Pemantauan & Audit (*Performance Monitoring*) | PM |
+| **JL** | Dashboard & Laporan (*Reports & Analytics*) | JL |
+| **01, 02, 03** | Kod Sub-fungsi berurutan | 01, 02, 03 |
+
+##### b) Struktur Hirarki Fungsi Bisnes
 
 **Rajah 4: Hirarki Fungsi Bisnes**
 
@@ -469,9 +525,9 @@ flowchart TD
     A --> F[BF-ICT-JL<br/>Dashboard & Laporan<br/>Reports & Analytics]
     A --> G[BF-ICT-AI<br/>Cloud Hybrid AI<br/>AI Services]
     
-    B --> B1[BF-ICT-AM-01<br/>Self-Registration<br/>@motac.gov.my]
-    B --> B2[BF-ICT-AM-02<br/>Flexible Login<br/>Email/Username]
-    B --> B3[BF-ICT-AM-03<br/>Account Linking<br/>Guest to Staff]
+    B --> B1[BF-ICT-AM-01<br/>HRMIS Auto-Provisioning<br/>@motac.gov.my + LDAP]
+    B --> B2[BF-ICT-AM-02<br/>SSO Authentication<br/>LDAP/Active Directory]
+    B --> B3[BF-ICT-AM-03<br/>Account Management<br/>HRMIS Sync + Status Check]
     B --> B4[BF-ICT-AM-04<br/>Profile Management<br/>User Settings]
     
     C --> C1[BF-ICT-AD-01<br/>Ticket Management<br/>Issue Tracking]
@@ -507,50 +563,58 @@ flowchart TD
     style G fill:#b3e5fc,stroke:#0277bd,stroke-width:2px
 ```
 
-##### b) Keterangan Fungsi Bisnes
+##### c) Keterangan Fungsi Bisnes mengikut Standard KRISA
 
 **Jadual 3.1: Keterangan Fungsi Bisnes**
 
-| ID Fungsi | Nama Fungsi | Keterangan | Pengguna Terlibat |
-| :--- | :--- | :--- | :--- |
-| **BF-ICT-AM** | **Pengurusan Akses** | Mengurus pendaftaran diri, log masuk hibrid, dan profil pengguna dengan True Hybrid Architecture. | Semua Pengguna |
-| **BF-ICT-AD** | **Pengurusan Aduan** | Menghantar, memantau, dan menyelesaikan tiket kerosakan ICT dengan sokongan AI auto-response. | Warga MOTAC, Admin |
-| **BF-ICT-PJ** | **Pengurusan Pinjaman** | Memohon peralatan, menyemak stok, meluluskan, dan memulangkan aset dengan workflow automatik. | Warga MOTAC, Admin, Pelulus |
-| **BF-ICT-AI** | **Bantuan Pintar** | Menjawab pertanyaan (FAQ) dan analisis dokumen menggunakan AI Hibrid dengan optimasi kos. | Semua Pengguna |
-| **BF-ICT-PM** | **Pemantauan & Audit** | Mengurus pemantauan prestasi, audit keselamatan, dan compliance dengan dual audit system. | Admin, Superuser |
-| **BF-ICT-JL** | **Dashboard & Laporan** | Mengurus data rujukan, inventori, audit, dan menjana laporan prestasi untuk pengurusan strategik. | Admin, Superuser |
+| ID Fungsi | Nama Fungsi | Keterangan | Pengguna Terlibat | Rujukan KRISA |
+| :--- | :--- | :--- | :--- | :--- |
+| **BF-ICT-AM** | **Pengurusan Akses** | Mengurus HRMIS auto-provisioning, SSO authentication, dan profil pengguna dengan akauntabiliti penuh mengikut PKS 5.2.1. | Semua Pengguna | [F1.3] |
+| **BF-ICT-AD** | **Pengurusan Aduan** | Menghantar, memantau, dan menyelesaikan tiket kerosakan ICT dengan sokongan AI auto-response dan user_id wajib. | Warga MOTAC, Admin | [F1.3] |
+| **BF-ICT-PJ** | **Pengurusan Pinjaman** | Memohon peralatan, menyemak stok, meluluskan, dan memulangkan aset dengan workflow automatik dan user_id linked. | Warga MOTAC, Admin, Pelulus | [F1.3] |
+| **BF-ICT-AI** | **Bantuan Pintar** | Menjawab pertanyaan (FAQ) dan analisis dokumen menggunakan AI Hibrid dengan optimasi kos dan user_id tracking. | Semua Pengguna | [F1.3] |
+| **BF-ICT-PM** | **Pemantauan & Audit** | Mengurus pemantauan prestasi, audit keselamatan, dan compliance dengan dual audit system dan PKS compliance. | Admin, Superuser | [F1.3] |
+| **BF-ICT-JL** | **Dashboard & Laporan** | Mengurus data rujukan, inventori, audit, dan menjana laporan prestasi untuk pengurusan strategik dengan user_id traceability. | Admin, Superuser | [F1.3] |
 
-#### 3.1.3 Senarai Pengguna
+#### 3.1.3 Senarai Pengguna mengikut PKS 5.2.1
 
-Seksyen ini menyenaraikan senarai pengguna-pengguna yang terlibat secara langsung dengan fungsi bisnes.
+Seksyen ini menyenaraikan senarai pengguna-pengguna yang terlibat secara langsung dengan fungsi bisnes dengan penekanan kepada akauntabiliti penuh mengikut **Polisi Keselamatan Siber (PKS) MOTAC Seksyen 5.2.1**.
 
-| Pengguna | Peranan | Tanggungjawab | Fungsi Terlibat |
-| :--- | :--- | :--- | :--- |
-| **Staf (Authenticated)** | Pengguna Berdaftar | Membuat permohonan, melihat sejarah dashboard, menguruskan profil peribadi. | Semua Modul |
-| **Tetamu (Guest)** | Pengguna Tidak Berdaftar | Membuat aduan/permohonan pantas, semakan status via token, akses AI chatbot. | Aduan, Pinjaman, AI |
-| **Admin** | Pegawai Operasi | Memproses tiket, menyediakan aset, memantau SLA, pengurusan notifikasi. | Semua Modul kecuali Superuser functions |
-| **Superuser** | Pentadbir Teknikal | Konfigurasi sistem, audit log, pemantauan AI, akses Laravel Telescope dan Pulse. | Pentadbiran Penuh |
-| **Pegawai Kelulusan** | Pembuat Keputusan | Meluluskan/menolak permohonan pinjaman aset melalui email approval workflow. | Pinjaman Aset |
+| Pengguna | Peranan | Tanggungjawab | Fungsi Terlibat | PKS Compliance |
+| :--- | :--- | :--- | :--- | :--- |
+| **Staf (SSO Authenticated)** | Pengguna Berdaftar | Membuat permohonan, melihat sejarah dashboard, menguruskan profil peribadi dengan user_id linked. | Semua Modul | PKS 5.2.1 ✓ |
+| **Walk-in/Kiosk (SSO)** | Pengguna Kiosk/Walk-in | Membuat aduan/permohonan pantas dengan pengesahan SSO, semakan status, akses AI chatbot dengan user_id linked. | Aduan, Pinjaman, AI | PKS 5.2.1 ✓ |
+| **Admin** | Pegawai Operasi | Memproses tiket, menyediakan aset, memantau SLA, pengurusan notifikasi dengan full audit trail. | Semua Modul kecuali Superuser functions | PKS 5.2.1 ✓ |
+| **Superuser** | Pentadbir Teknikal | Konfigurasi sistem, audit log, pemantauan AI, akses Laravel Telescope dan Pulse dengan comprehensive logging. | Pentadbiran Penuh | PKS 5.2.1 ✓ |
+| **Pegawai Kelulusan** | Pembuat Keputusan | Meluluskan/menolak permohonan pinjaman aset melalui email approval workflow dengan decision audit trail. | Pinjaman Aset | PKS 5.2.1 ✓ |
+
+**Nota PKS 5.2.1 Compliance:**
+
+- Semua pengguna WAJIB melalui pengesahan SSO LDAP/Active Directory MOTAC
+- Tiada akses tanpa akaun (anonymous/guest access) dibenarkan
+- Semua aktiviti sistem dikaitkan dengan user_id untuk akauntabiliti penuh
+- Jejak audit lengkap disimpan untuk semua tindakan pengguna
 
 ### 3.2 Keperluan Proses Bisnes
 
-#### 3.2.1 Penggunaan Notasi
+#### 3.2.1 Penggunaan Notasi mengikut Standard KRISA
 
-Seksyen ini menyenaraikan notasi-notasi yang akan digunakan untuk menyediakan Model Proses.
+Seksyen ini menyenaraikan notasi-notasi yang akan digunakan untuk menyediakan Model Proses mengikut **Pemodelan Proses Bisnes [F1.4]** sebagaimana ditetapkan dalam template KRISA rasmi.
 
-Menggunakan notasi standard carta alir (*Flowchart*) dan Rajah Aliran Proses (PFD) dengan simbol-simbol berikut:
+Menggunakan notasi standard carta alir (*Flowchart*) dan Rajah Aliran Proses (PFD) dengan simbol-simbol berikut mengikut **[F1.4]**:
 
-| Simbol | Keterangan |
-| :--- | :--- |
-| Oval | Titik mula atau tamat proses |
-| Segi empat tepat | Aktiviti atau proses yang dilaksanakan |
-| Berlian | Titik keputusan dengan pilihan Ya/Tidak |
-| Parallelogram | Input atau output data |
-| Anak panah | Arah aliran proses |
+| Simbol | Keterangan | Rujukan KRISA |
+| :--- | :--- | :--- |
+| Oval | Titik mula atau tamat proses | [F1.4] |
+| Segi empat tepat | Aktiviti atau proses yang dilaksanakan | [F1.4] |
+| Berlian | Titik keputusan dengan pilihan Ya/Tidak | [F1.4] |
+| Parallelogram | Input atau output data | [F1.4] |
+| Anak panah | Arah aliran proses | [F1.4] |
+| Segi empat tepat bulat | Sub-proses atau rujukan proses lain | [F1.4] |
 
-#### 3.2.2 Model Proses Bisnes
+#### 3.2.2 Model Proses Bisnes mengikut KRISA [F1.4]
 
-Seksyen ini menyediakan Model Proses Bisnes yang merangkumi Aliran Proses Bisnes dan Definisi Fungsi Bisnes.
+Seksyen ini menyediakan Model Proses Bisnes yang merangkumi Aliran Proses Bisnes dan Definisi Fungsi Bisnes mengikut **Pemodelan Proses Bisnes [F1.4]** dengan penekanan kepada akauntabiliti penuh mengikut PKS 5.2.1.
 
 ##### a) Proses Pengurusan Aduan (Helpdesk)
 
@@ -560,13 +624,27 @@ Seksyen ini menyediakan Model Proses Bisnes yang merangkumi Aliran Proses Bisnes
 flowchart TD
     Start([Mula<br/>Pengguna Akses Sistem]) 
     
-    Start --> Check{Pengguna<br/>Log Masuk?}
+    Start --> SSO[SSO Authentication WAJIB<br/>LANGKAH PERTAMA MANDATORI<br/>LDAP/Active Directory<br/>MOTAC Credentials Required<br/>PKS 5.2.1 Compliance]
     
-    Check -->|Ya| AuthForm[Borang Authenticated<br/>- Auto-fill dari Profile<br/>- user_id linked<br/>- Dashboard access]
-    Check -->|Tidak| GuestForm[Borang Tetamu<br/>- Manual Entry<br/>- user_id = NULL<br/>- Token tracking]
+    SSO --> AuthCheck{Authentication<br/>Successful?}
     
-    AuthForm --> FillForm[Isi Maklumat Tiket<br/>- Kategori Masalah<br/>- Keterangan Detail<br/>- Lampiran Bukti]
-    GuestForm --> FillForm
+    AuthCheck -->|Tidak| AuthError[Ralat: Pengesahan Gagal<br/>Sila cuba semula dengan<br/>kredensial MOTAC yang sah<br/>TIADA AKSES TANPA SSO<br/>PKS 5.2.1 ENFORCEMENT]
+    AuthError --> SSO
+    
+    AuthCheck -->|Ya| HRMISCheck[Pengesahan HRMIS AUTOMATIK<br/>- Semak status pekerjaan aktif<br/>- Verify employment status<br/>- Auto-provision if first login<br/>- Link user_id to HRMIS<br/>- MANDATORY for all users]
+    
+    HRMISCheck --> HRMISValid{Status HRMIS<br/>Aktif?}
+    
+    HRMISValid -->|Tidak| HRMISError[Ralat: Status Tidak Aktif<br/>Hubungi HR untuk kemaskini<br/>status pekerjaan<br/>Akses ditolak<br/>Audit log created]
+    HRMISError --> End1([Tamat])
+    
+    HRMISValid -->|Ya| UserType{Jenis<br/>Pengguna?}
+    
+    UserType -->|Staff| AuthForm[Borang Staff<br/>- Auto-fill dari HRMIS<br/>- user_id WAJIB linked<br/>- Dashboard access<br/>- Employment verified<br/>- Full audit trail]
+    UserType -->|Walk-in/Kiosk| KioskForm[Borang Walk-in/Kiosk<br/>- Manual Entry DENGAN SSO<br/>- user_id WAJIB linked via SSO<br/>- Token tracking<br/>- HRMIS verified<br/>- NO ANONYMOUS ACCESS]
+    
+    AuthForm --> FillForm[Isi Maklumat Tiket<br/>- Kategori Masalah<br/>- Keterangan Detail<br/>- Lampiran Bukti<br/>- user_id auto-linked<br/>- Authenticated user only]
+    KioskForm --> FillForm
     
     FillForm --> Validate[Validasi Data<br/>- Required Fields<br/>- File Size Check<br/>- Email Format]
     
@@ -587,7 +665,7 @@ flowchart TD
     
     SaveTicket --> GenToken[Jana Status Token<br/>- SHA-512 Hash<br/>- Email tracking<br/>- Secure access]
     
-    GenToken --> DualAudit[Rekod Dual Audit<br/>- owen-it compliance<br/>- spatie operations<br/>- Timestamp all actions]
+    GenToken --> DualAudit[Rekod Dual Audit<br/>- owen-it compliance<br/>- spatie operations<br/>- user_id WAJIB linked<br/>- PKS 5.2.1 compliance]
     
     DualAudit --> SendEmail[Hantar E-mel Pengesahan<br/>- Ticket number<br/>- Status tracking link<br/>- Expected SLA]
     
@@ -607,7 +685,7 @@ flowchart TD
     style AICheck fill:#ff9800,stroke:#f57c00,stroke-width:2px
     style AISolved fill:#ff9800,stroke:#f57c00,stroke-width:2px
     style AuthForm fill:#2196f3,stroke:#1976d2,stroke-width:2px
-    style GuestForm fill:#2196f3,stroke:#1976d2,stroke-width:2px
+    style KioskForm fill:#2196f3,stroke:#1976d2,stroke-width:2px
     style DualAudit fill:#9c27b0,stroke:#7b1fa2,stroke-width:2px
     style AIProcess fill:#00bcd4,stroke:#0097a7,stroke-width:2px
     style AISuccess fill:#00bcd4,stroke:#0097a7,stroke-width:2px
@@ -620,14 +698,16 @@ flowchart TD
 | **Nama Fungsi** | Pengurusan Aduan Helpdesk |
 | **Nama Aktiviti** | **PFD-ICT-AD-01: Menghantar Aduan Kerosakan ICT** |
 | **Keterangan** | Pengguna melaporkan masalah ICT melalui borang dalam talian dengan sokongan AI untuk penyelesaian automatik |
-| **Aktor** | Warga MOTAC (Staf/Tetamu), AI Chatbot Hibrid |
-| **Prasyarat** | Akses rangkaian Intranet/Internet, sistem AI tersedia (Ollama/Bedrock) |
+| **Aktor** | Warga MOTAC (Staf/Walk-in/Kiosk dengan SSO), AI Chatbot Hibrid |
+| **Prasyarat** | Akses rangkaian Intranet, sistem AI tersedia (Ollama/Bedrock), pengesahan SSO LDAP/Active Directory |
 | **Input** | Nama, E-mel, Bahagian, Kategori Masalah, Keterangan Detail, Lampiran (optional) |
 | **Output** | Nombor Tiket, E-mel Notifikasi, AI Response (jika berkenaan), Status Tracking Token |
 | **Aliran Utama** | 1. Pengguna akses borang<br>2. Sistem semak status log masuk (Auto-fill jika authenticated)<br>3. Pengguna isi butiran kerosakan<br>4. AI cuba berikan penyelesaian pantas melalui model routing<br>5. Jika AI tidak dapat selesai, hantar sebagai tiket manual<br>6. Sistem simpan dan jana No. Tiket dengan dual audit |
 | **Aliran Alternatif** | Jika AI berjaya selesaikan masalah, tiket tidak perlu dijana dan pengguna dapat penyelesaian segera |
 | **Aliran Pengecualian** | Jika lampiran melebihi 10MB, AI tidak tersedia, atau reCAPTCHA gagal, proses manual dengan notifikasi ralat |
-| **Syarat Pasca** | Tiket direkod dalam pangkalan data, e-mel notifikasi dihantar, audit trail lengkap, SLA ditetapkan |
+| **Pengendalian Ralat SSO/LDAP** | **Jika SSO/LDAP tidak tersedia**: Sistem papar mesej ralat "Perkhidmatan pengesahan tidak tersedia. Sila cuba lagi atau hubungi Helpdesk BPM." TIADA AKSES ALTERNATIF dibenarkan mengikut PKS 5.2.1. Sistem log semua percubaan akses yang gagal untuk audit keselamatan. **FALLBACK PROCEDURES**: 1) Sistem akan cuba reconnect ke LDAP server setiap 30 saat, 2) Admin akan dinotifikasi melalui SMS/email jika LDAP down >5 minit, 3) Pengguna diarahkan hubungi Helpdesk BPM untuk sokongan manual, 4) Semua aktiviti semasa LDAP outage diaudit dengan ketat. |
+| **Aktiviti Sebelum** | Pengguna mempunyai akses rangkaian intranet dan kredensial SSO LDAP/Active Directory yang sah. **MANDATORY**: Pengguna MESTI melalui SSO authentication sebagai langkah pertama - tiada pengecualian. |
+| **Aktiviti Selepas** | Tiket direkod dalam pangkalan data dengan user_id WAJIB linked, e-mel notifikasi dihantar kepada authenticated user, audit trail lengkap dengan user_id untuk akauntabiliti PKS 5.2.1, SLA ditetapkan berdasarkan authenticated user profile |
 
 ##### b) Proses Pinjaman Aset ICT
 
@@ -637,13 +717,27 @@ flowchart TD
 flowchart TD
     Start([Mula<br/>Permohonan Pinjaman Aset]) 
     
-    Start --> Check{Pengguna<br/>Log Masuk?}
+    Start --> SSO[SSO Authentication WAJIB<br/>LANGKAH PERTAMA MANDATORI<br/>LDAP/Active Directory<br/>MOTAC Credentials Required<br/>PKS 5.2.1 Compliance]
     
-    Check -->|Ya| AuthApp[Permohonan Authenticated<br/>- Auto-fill dari Profile<br/>- user_id linked<br/>- History tracking]
-    Check -->|Tidak| GuestApp[Permohonan Tetamu<br/>- Manual Entry<br/>- user_id = NULL<br/>- Token tracking]
+    SSO --> AuthCheck{Authentication<br/>Successful?}
     
-    AuthApp --> SelectAsset[Pilih Aset & Tarikh<br/>- Browse inventory<br/>- Check real-time availability<br/>- Set loan period<br/>- Select accessories]
-    GuestApp --> SelectAsset
+    AuthCheck -->|Tidak| AuthError[Ralat: Pengesahan Gagal<br/>Sila cuba semula dengan<br/>kredensial MOTAC yang sah<br/>TIADA AKSES TANPA SSO<br/>PKS 5.2.1 ENFORCEMENT]
+    AuthError --> End1([Tamat])
+    
+    AuthCheck -->|Ya| HRMISVerify[Pengesahan HRMIS AUTOMATIK<br/>- Semak status pekerjaan aktif<br/>- Verify employment status<br/>- Auto-provision if first login<br/>- Link user_id to HRMIS<br/>- MANDATORY for all users]
+    
+    HRMISVerify --> HRMISValid{Status HRMIS<br/>Aktif?}
+    
+    HRMISValid -->|Tidak| HRMISError[Ralat: Status Tidak Aktif<br/>Hubungi HR untuk kemaskini<br/>status pekerjaan<br/>Akses ditolak<br/>Audit log created]
+    HRMISError --> End1
+    
+    HRMISValid -->|Ya| UserType{Jenis<br/>Pengguna?}
+    
+    UserType -->|Staff| AuthApp[Permohonan Staff<br/>- Auto-fill dari HRMIS<br/>- user_id WAJIB linked<br/>- History tracking<br/>- Full audit trail]
+    UserType -->|Walk-in/Kiosk| KioskApp[Permohonan Walk-in/Kiosk<br/>- Manual Entry DENGAN SSO<br/>- user_id WAJIB linked via SSO<br/>- Token tracking<br/>- NO ANONYMOUS ACCESS]
+    
+    AuthApp --> SelectAsset[Pilih Aset & Tarikh<br/>- Browse inventory<br/>- Check real-time availability<br/>- Set loan period<br/>- Select accessories<br/>- Authenticated user only]
+    KioskApp --> SelectAsset
     
     SelectAsset --> ConflictCheck{Konflik<br/>Tempahan<br/>Wujud?}
     
@@ -672,7 +766,7 @@ flowchart TD
     Rejected --> NotifyUser
     Expired --> NotifyUser
     
-    NotifyUser --> DualAudit[Rekod Dual Audit<br/>- owen-it compliance<br/>- spatie operations<br/>- Full transaction log<br/>- Decision rationale]
+    NotifyUser --> DualAudit[Rekod Dual Audit<br/>- owen-it compliance<br/>- spatie operations<br/>- user_id WAJIB linked<br/>- PKS 5.2.1 compliance]
     
     DualAudit --> CheckStatus{Status<br/>Diluluskan?}
     
@@ -705,14 +799,16 @@ flowchart TD
 | **Nama Fungsi** | Pengurusan Pinjaman Aset ICT |
 | **Nama Aktiviti** | **PFD-ICT-PJ-01: Memohon Pinjaman Aset ICT** |
 | **Keterangan** | Pengguna memohon peralatan ICT dengan workflow kelulusan automatik dan pengesanan konflik real-time |
-| **Aktor** | Warga MOTAC (Staf/Tetamu), Pegawai Kelulusan (Gred 41+), Admin Asset |
-| **Prasyarat** | Aset tersedia pada tarikh dipilih, pegawai pelulus dikenal pasti, policy compliance |
+| **Aktor** | Warga MOTAC (Staf/Walk-in/Kiosk dengan SSO), Pegawai Kelulusan (Gred 41+), Admin Asset |
+| **Prasyarat** | Aset tersedia pada tarikh dipilih, pegawai pelulus dikenal pasti, policy compliance, pengesahan SSO |
 | **Input** | Jenis Aset, Tarikh Mula/Tamat, Tujuan, Lokasi, Pegawai Pelulus, Justifikasi |
 | **Output** | Status Permohonan, E-mel Kelulusan, Pickup OTP (jika diluluskan), Tracking Token |
 | **Aliran Utama** | 1. Pengguna pilih aset & tarikh dengan semakan real-time<br>2. Sistem semak konflik dan cadang alternatif jika perlu<br>3. Hantar permohonan dengan butiran lengkap<br>4. E-mel token bertanda tangan kepada pelulus<br>5. Pelulus buat keputusan melalui secure link<br>6. Notifikasi kepada pemohon dan asset team |
 | **Aliran Alternatif** | Jika aset tidak tersedia, sistem cadang tarikh/aset alternatif dengan notification queue |
 | **Aliran Pengecualian** | Jika tiada pelulus, token tamat tempoh, atau policy violation, permohonan ditolak automatik |
-| **Syarat Pasca** | Permohonan direkod, status dikemaskini, audit trail lengkap, asset reservation (jika diluluskan) |
+| **Pengendalian Ralat SSO/LDAP** | **Jika SSO/LDAP tidak tersedia**: Sistem papar mesej ralat "Perkhidmatan pengesahan tidak tersedia. Sila cuba lagi atau hubungi Helpdesk BPM." TIADA AKSES ALTERNATIF dibenarkan mengikut PKS 5.2.1. Sistem log semua percubaan akses yang gagal untuk audit keselamatan. **FALLBACK PROCEDURES**: 1) Sistem akan cuba reconnect ke LDAP server setiap 30 saat, 2) Admin akan dinotifikasi melalui SMS/email jika LDAP down >5 minit, 3) Pengguna diarahkan hubungi Helpdesk BPM untuk sokongan manual, 4) Semua aktiviti semasa LDAP outage diaudit dengan ketat. |
+| **Aktiviti Sebelum** | Pengguna mempunyai akses rangkaian intranet, kredensial SSO yang sah, dan aset tersedia pada tarikh dipilih. **MANDATORY**: Pengguna MESTI melalui SSO authentication sebagai langkah pertama - tiada pengecualian. |
+| **Aktiviti Selepas** | Permohonan direkod dengan user_id WAJIB linked, status dikemaskini dengan authenticated user info, audit trail lengkap untuk akauntabiliti PKS 5.2.1, asset reservation (jika diluluskan) dengan full traceability |
 
 ##### c) Proses Bantuan Pintar (AI Chatbot)
 
@@ -800,7 +896,8 @@ flowchart TD
 | **Aliran Utama** | 1. Pengguna input pertanyaan dengan context awareness<br>2. Model Router analisis kompleksiti dan sensitiviti data<br>3. Jika sensitif/mudah → Ollama local (RM0.00)<br>4. Jika kompleks/awam → Bedrock cloud (~RM0.10) dengan budget check<br>5. Jana dan stream respons dengan quality assurance<br>6. Log interaksi untuk pembelajaran dan cost optimization |
 | **Aliran Alternatif** | Jika budget habis atau cloud tidak tersedia, fallback ke Ollama dengan notification |
 | **Aliran Pengecualian** | Jika kedua-dua AI gagal atau quality tidak mencukupi, escalate ke manusia dengan context preservation |
-| **Syarat Pasca** | Respons dijana, kos direkod, knowledge base dikemaskini, performance metrics updated |
+| **Aktiviti Sebelum** | Pengguna mempunyai akses rangkaian intranet, kredensial SSO yang sah, dan sistem AI tersedia |
+| **Aktiviti Selepas** | Respons dijana dengan user_id tracking, kos direkod, knowledge base dikemaskini, performance metrics updated |
 
 ### 3.3 Pengiraan Saiz Sistem Aplikasi
 

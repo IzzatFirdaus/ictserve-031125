@@ -9,13 +9,23 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 23 Disember 2025 |
-| **VERSI DOKUMEN** | : 3.6.1 |
+| **VERSI DOKUMEN** | : 4.0.0 |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Dokumen Pelan Migrasi Data ini menerangkan perancangan menyeluruh bagi migrasi data ke Sistem ICTServe yang berasaskan Laravel 12.43.1 untuk Bahagian Pengurusan Maklumat (BPM), MOTAC. Pelan ini mematuhi piawaian ISO 8000 untuk kualiti data dan ISO/IEC 27701 untuk pengurusan privasi maklumat. Sistem baharu menggunakan Seni Bina Hibrid Sebenar (True Hybrid Architecture) v3.6.1 yang membolehkan staf MOTAC untuk mendaftar sendiri dengan domain @motac.gov.my dan log masuk ATAU menggunakan borang tetamu tanpa log masuk.
+Dokumen Pelan Migrasi Data ini menerangkan perancangan menyeluruh bagi migrasi data ke Sistem ICTServe yang berasaskan Laravel 12.43.1 untuk Bahagian Pengurusan Maklumat (BPM), MOTAC. Pelan ini mematuhi piawaian ISO 8000 untuk kualiti data, ISO/IEC 27701 untuk pengurusan privasi maklumat, **Polisi Keselamatan Siber (PKS) MOTAC**, dan **Personal Data Protection Act 2010 (PDPA)** dengan explicit compliance measures.
+
+**PDPA 2010 Compliance Measures:**
+
+- **Data classification procedures** untuk semua maklumat peribadi dalam proses migrasi
+- **Consent management** untuk data subjects yang terlibat dalam migrasi
+- **Data minimization** - hanya data yang diperlukan sahaja akan dimigrasi
+- **Retention policy** mengikut keperluan undang-undang dan operasi
+- **Secure data transfer** dengan encryption dan audit trail lengkap
+
+Sistem baharu menggunakan **SSO Authentication wajib** mengikut PKS 5.2.1 dengan **HRMIS-integrated auto-provisioning** menggantikan manual registration untuk memastikan akauntabiliti penuh.
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -47,6 +57,7 @@ Dokumen Pelan Migrasi Data ini menerangkan perancangan menyeluruh bagi migrasi d
 | 3.5.0 | 1 Disember 2025 | True Hybrid Architecture: pendaftaran kendiri | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025 | Bahasa Melayu sahaja untuk antara muka | Pasukan Pembangunan BPM |
 | 3.6.1 | 23 Disember 2025 | Integrasi AI Hibrid dan kemaskini teknologi | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1**: Penghapusan sepenuhnya akses tetamu, SSO mandatori untuk semua pengguna, HRMIS auto-provisioning menggantikan manual registration, rujukan PKS/PSPM dengan nombor halaman, strategi migrasi data sejarah dengan akauntabiliti penuh | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -122,9 +133,11 @@ Dokumen Pelan Migrasi Data ini menerangkan perancangan menyeluruh bagi migrasi d
 5. **ISO/IEC/IEEE 12207:2017** - Systems and software engineering - Software life cycle processes
 6. **MAMPU (2019)**. Kerangka Rujukan ICT Sektor Awam (KRISA) Versi 2.0
 7. **Akta Perlindungan Data Peribadi 2010** - Personal Data Protection Act Malaysia
-8. **D00_SYSTEM_OVERVIEW.md v3.6.1** - Gambaran keseluruhan sistem
-9. **D04_SOFTWARE_DESIGN_DOCUMENT.md v3.6.1** - Dokumen rekabentuk perisian
-10. **D06_DATA_MIGRATION_SPECIFICATION.md** - Spesifikasi teknikal migrasi data
+8. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
+9. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - **MyGovCloud prioritization over public cloud services** - halaman 45-67
+10. **D00_SYSTEM_OVERVIEW.md v3.6.1** - Gambaran keseluruhan sistem
+11. **D04_SOFTWARE_DESIGN_DOCUMENT.md v3.6.1** - Dokumen rekabentuk perisian
+12. **D06_DATA_MIGRATION_SPECIFICATION.md** - Spesifikasi teknikal migrasi data
 
 ---
 
