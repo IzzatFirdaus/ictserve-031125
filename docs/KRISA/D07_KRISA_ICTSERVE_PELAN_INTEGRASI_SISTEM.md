@@ -9,13 +9,23 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 23 Disember 2025 |
-| **VERSI DOKUMEN** | : 3.6.1 |
+| **VERSI DOKUMEN** | : 4.0.0 |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menerangkan strategi dan proses integrasi untuk Sistem ICTServe Berpandukan piawaian ISO/IEC/IEEE 15288 (system lifecycle processes) dan ISO/IEC/IEEE 12207 (software lifecycle processes). Ia memastikan semua komponen dan modul sistem digabung secara berstruktur, bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC dengan mematuhi standard kerajaan Malaysia dan keperluan keselamatan data.
+Dokumen ini menerangkan strategi dan proses integrasi untuk Sistem ICTServe berpandukan piawaian ISO/IEC/IEEE 15288 (system lifecycle processes), ISO/IEC/IEEE 12207 (software lifecycle processes), **Polisi Keselamatan Siber (PKS) MOTAC**, dan **Personal Data Protection Act 2010 (PDPA)**.
+
+Ia memastikan semua komponen dan modul sistem digabung secara berstruktur, bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC dengan mematuhi standard kerajaan Malaysia dan keperluan keselamatan data.
+
+**PDPA 2010 Compliance dalam Integrasi Sistem:**
+
+- **Privacy by design** dalam semua integrasi sistem
+- **Data protection impact assessment** untuk setiap integrasi baharu
+- **Consent management integration** dengan sistem HRMIS dan LDAP
+- **Data subject rights automation** untuk access, rectification, dan erasure requests
+- **Cross-system audit trail** untuk tracking data flow dan processing activities
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -45,6 +55,7 @@ Dokumen ini menerangkan strategi dan proses integrasi untuk Sistem ICTServe Berp
 | 3.4.0 | 30 November 2025 | Seni bina hibrid: integrasi authentication | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025 | True Hybrid Architecture: pendaftaran kendiri | Pasukan Pembangunan BPM |
 | 3.6.1 | 23 Disember 2025 | Integrasi AI Hibrid dan kemaskini teknologi | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1**: Penghapusan sepenuhnya akses tetamu, SSO mandatori untuk semua pengguna, HRMIS auto-provisioning menggantikan manual registration, rujukan PKS/PSPM dengan nombor halaman, pelan integrasi sistem dengan akauntabiliti penuh | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -124,10 +135,12 @@ Dokumen ini menerangkan strategi dan proses integrasi untuk Sistem ICTServe Berp
 4. **MAMPU (2019)**. Kerangka Rujukan ICT Sektor Awam (KRISA) Versi 2.0
 5. **Laravel Documentation v12** - Framework documentation
 6. **Filament Documentation v4** - Admin panel framework
-7. **D04_SOFTWARE_DESIGN_DOCUMENT.md v3.6.1** - Dokumen rekabentuk perisian
-8. **D08_SYSTEM_INTEGRATION_SPECIFICATION.md** - Spesifikasi teknikal integrasi
-9. **RFC 5322** - Internet Message Format
-10. **OAuth 2.0 RFC 6749** - The OAuth 2.0 Authorization Framework
+7. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
+8. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - **MyGovCloud prioritization over public cloud services** - halaman 45-67
+9. **D04_SOFTWARE_DESIGN_DOCUMENT.md v3.6.1** - Dokumen rekabentuk perisian
+10. **D08_SYSTEM_INTEGRATION_SPECIFICATION.md** - Spesifikasi teknikal integrasi
+11. **RFC 5322** - Internet Message Format
+12. **OAuth 2.0 RFC 6749** - The OAuth 2.0 Authorization Framework
 
 ---
 

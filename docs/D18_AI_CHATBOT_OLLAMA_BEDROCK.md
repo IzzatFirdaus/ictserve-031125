@@ -88,6 +88,9 @@
 | **Laravel Horizon** | Dashboard pengurusan queue v5.41.0. **DIPASANG** dalam repo v3.6.1; dashboard tersedia di `/horizon` untuk superuser/admin |
 | **Laravel Pulse** | Dashboard pemantauan prestasi masa nyata |
 | **Laravel Telescope** | Alat debugging untuk Laravel (superuser sahaja) |
+| **Data_Sovereignty_Classification** | Sistem klasifikasi automatik data berdasarkan sensitiviti untuk menentukan pemprosesan tempatan (Ollama) vs awan (AWS Bedrock) mengikut PKS 4.2 |
+| **DLP_Filters** | Data Loss Prevention filters yang wajib untuk semua data sebelum pemprosesan awan mengikut PKS 9.2.1 |
+| **PSPM_MyGovCloud_Priority** | Keutamaan kepada perkhidmatan awan kerajaan (MyGovCloud) berbanding perkhidmatan awan awam mengikut PSPM 2022-2026 |
 
 ---
 
@@ -100,10 +103,12 @@ ICTServe melaksanakan **True Hybrid AI Architecture** yang menggabungkan AWS Bed
 ### 2.2 Prinsip Utama (Key Principles)
 
 - **Antara Muka Tunggal**: Pengguna berinteraksi dengan SATU sistem chat
-- **Penghalaan Pintar**: Sistem memutuskan AI mana yang digunakan berdasarkan analisis pertanyaan
-- **Respons Hibrid**: Menggabungkan Ollama (pengetahuan FAQ) + Bedrock (penaakulan)
+- **Penghalaan Pintar dengan Kedaulatan Data**: Sistem memutuskan AI mana yang digunakan berdasarkan **klasifikasi sensitiviti data** mengikut PKS 9.2.1 dan 4.2
+- **Keutamaan Pemprosesan Tempatan**: **Ollama diutamakan untuk data sensitif** mengikut PSPM MyGovCloud prioritization
+- **Data Loss Prevention (DLP) Wajib**: **Penapisan data sensitif wajib** sebelum pemprosesan AWS Bedrock mengikut PKS 9.2.1
+- **Respons Hibrid**: Menggabungkan Ollama (pengetahuan FAQ) + Bedrock (penaakulan) dengan pematuhan kedaulatan data
 - **Pengalaman Lancar**: Pengguna tidak perlu tahu AI mana yang menjawab
-- **Pengoptimuman Kos**: Ollama percuma dahulu, Bedrock mahal apabila diperlukan
+- **Pengoptimuman Kos dengan Keselamatan**: Ollama percuma dahulu untuk data sensitif, Bedrock mahal hanya untuk data awam yang telah melalui DLP
 
 ### 2.3 Ciri Utama v3.6.1 (Key Features)
 
@@ -115,16 +120,16 @@ ICTServe melaksanakan **True Hybrid AI Architecture** yang menggabungkan AWS Bed
 | Web-Augmented Responses | Integrasi DuckDuckGo untuk konteks terkini | ✅ Selesai |
 | Enhanced Conversation Management | Model BedrockConversation dengan save/load/delete | ✅ Selesai |
 | MCP Server Integration | 3 tools untuk AI assistants (Amazon Q, Kiro) | ✅ Selesai |
-| Data Residency Compliance | Klasifikasi data automatik untuk pemprosesan tempatan vs cloud | ✅ Selesai |
+| Data Residency Compliance | **Klasifikasi data automatik untuk pemprosesan tempatan vs cloud** mengikut PKS 4.2 dan PSPM MyGovCloud prioritization | ✅ Selesai |
 | Bahasa Melayu Sahaja | Antara muka AI tanpa penukar bahasa (D15 v3.6.0) | ✅ Selesai |
 
 ### 2.4 Konteks Integrasi Kritikal
 
 Integrasi **Cloud Hybrid AI Architecture** mesti selaras dengan **True Hybrid Architecture** ICTServe v3.6.0:
 
-1. **Akses Tetamu (Tanpa Log Masuk)**: FAQ Bot berkuasa AI dengan model routing pintar boleh diakses pada borang awam untuk sokongan pantas tanpa pengesahan
-2. **Portal Authenticated (Log Masuk Diperlukan)**: Ciri AI dipertingkat untuk staf termasuk analisis dokumen dengan web-augmented responses, conversation management dengan memori jangka panjang, dan respons peribadi menggunakan multi-model intelligence
-3. **Akses Admin (Panel Filament)**: Antara muka pengurusan AI hibrid untuk peranan admin dan superuser termasuk konfigurasi model (Ollama vs Bedrock), aliran kerja kelulusan auto-reply dengan streaming responses, pengurusan FAQ, dan ingestion dokumen dengan model selection berdasarkan jenis kandungan
+1. **Akses Tetamu (Tanpa Log Masuk)**: FAQ Bot berkuasa AI dengan **model routing pintar berdasarkan klasifikasi data** boleh diakses pada borang awam untuk sokongan pantas tanpa pengesahan. **Data sensitif diproses melalui Ollama tempatan sahaja**.
+2. **Portal Authenticated (Log Masuk Diperlukan)**: Ciri AI dipertingkat untuk staf termasuk analisis dokumen dengan **DLP filters wajib** sebelum pemprosesan awan, conversation management dengan memori jangka panjang, dan respons peribadi menggunakan multi-model intelligence dengan **pematuhan kedaulatan data**.
+3. **Akses Admin (Panel Filament)**: Antara muka pengurusan AI hibrid untuk peranan admin dan superuser termasuk konfigurasi model (Ollama vs Bedrock), aliran kerja kelulusan auto-reply dengan streaming responses, pengurusan FAQ, dan ingestion dokumen dengan **model selection berdasarkan sensitiviti kandungan** mengikut PKS 9.2.1.
 
 ### 2.5 Penekanan Utama
 
@@ -133,7 +138,8 @@ Integrasi **Cloud Hybrid AI Architecture** mesti selaras dengan **True Hybrid Ar
 - **Sasaran prestasi Core Web Vitals** yang dipertingkat (LCP <2.5s, FID <100ms, CLS <0.1)
 - **Antara muka Bahasa Melayu sahaja** (v3.6.0)
 - **Jejak audit komprehensif** dengan pengekalan 7 tahun untuk pematuhan
-- **Data residensi Malaysia** untuk pemprosesan cloud
+- **Data residensi Malaysia** untuk pemprosesan cloud dengan **DLP filters wajib**
+- **Pematuhan PKS 9.2.1 dan 4.2** untuk kedaulatan data dan prosedur pemindahan data
 
 ---
 
@@ -335,63 +341,65 @@ Integrasi **Cloud Hybrid AI Architecture** mesti selaras dengan **True Hybrid Ar
 
 ---
 
-## 5. Strategi Penghalaan Pertanyaan (Query Routing Strategy)
+## 5. Strategi Penghalaan Pertanyaan dengan Kedaulatan Data (Query Routing Strategy with Data Sovereignty)
 
-### 5.1 Klasifikasi Pertanyaan (Query Classification)
+### 5.1 Klasifikasi Pertanyaan dan Data (Query and Data Classification)
 
-Sistem mengklasifikasikan pertanyaan masuk kepada tiga kategori:
+Sistem mengklasifikasikan pertanyaan masuk berdasarkan **dua kriteria utama**:
 
-#### 5.1.1 Pertanyaan Khusus FAQ (`faq_specific`)
+1. **Jenis pertanyaan** (FAQ, kompleks, hibrid)
+2. **Sensitiviti data** (sensitif, awam) mengikut PKS 9.2.1 dan 4.2
+
+#### 5.1.1 Pertanyaan Khusus FAQ dengan Data Sensitif (`faq_sensitive`)
 
 **Ciri-ciri:**
 
 - Mengandungi kata kunci khusus ICTServe
-- Bertanya tentang helpdesk, pinjaman aset, prosedur sistem
-- Soalan fakta dengan jawapan definitif
+- Bertanya tentang helpdesk, pinjaman aset, prosedur sistem dalaman
+- **Data sensitif**: Maklumat dalaman MOTAC, prosedur keselamatan, data peribadi staf
 
-**Kata Kunci:**
+**Kata Kunci Sensitif:**
 
 ```php
-$faqKeywords = [
+$sensitiveFaqKeywords = [
     'tiket', 'helpdesk', 'pinjaman', 'aset', 'status',
     'permohonan', 'sistem', 'ictserve', 'motac', 'bpm',
-    'kelulusan', 'gred', 'pegawai', 'borang', 'sla'
+    'kelulusan', 'gred', 'pegawai', 'borang', 'sla',
+    'staf', 'peribadi', 'dalaman', 'keselamatan'
 ];
 ```
 
-**Penghalaan:** → Ollama RAG Service
+**Penghalaan:** → **Ollama Local SAHAJA** (PKS 4.2 compliance)
 
-#### 5.1.2 Pertanyaan Penaakulan Kompleks (`complex_reasoning`)
+#### 5.1.2 Pertanyaan Awam FAQ (`faq_public`)
+
+**Ciri-ciri:**
+
+- Soalan umum tentang perkhidmatan MOTAC
+- Maklumat awam yang boleh dikongsi
+- **Data awam**: Maklumat yang telah disahkan untuk pendedahan awam
+
+**Penghalaan:** → Ollama Local (keutamaan) atau AWS Bedrock (selepas DLP)
+
+#### 5.1.3 Pertanyaan Penaakulan Kompleks dengan Data Sensitif (`complex_sensitive`)
+
+**Ciri-ciri:**
+
+- Memerlukan analisis tetapi melibatkan data sensitif
+- Soalan strategik dalaman MOTAC
+- **Data sensitif**: Analisis yang melibatkan maklumat sulit
+
+**Penghalaan:** → **Ollama Local SAHAJA** (PKS 4.2 compliance)
+
+#### 5.1.4 Pertanyaan Penaakulan Kompleks Awam (`complex_public`)
 
 **Ciri-ciri:**
 
 - Memerlukan analisis, perbandingan, atau pemikiran kreatif
 - Soalan pengetahuan umum
-- Permintaan strategik atau nasihat
+- **Data awam**: Tidak melibatkan maklumat sensitif
 
-**Kata Kunci:**
-
-```php
-$complexKeywords = [
-    'analisis', 'bandingkan', 'jelaskan', 'mengapa',
-    'bagaimana jika', 'strategi', 'cadangan', 'pendapat',
-    'kelebihan', 'kekurangan', 'implikasi'
-];
-```
-
-**Penghalaan:** → AWS Bedrock Claude
-
-#### 5.1.3 Pertanyaan Hibrid (`hybrid`)
-
-**Ciri-ciri:**
-
-- Mengandungi kedua-dua kata kunci FAQ dan kompleks
-- Memerlukan pengetahuan fakta + penaakulan
-- Soalan "mengapa" tentang prosedur ICTServe
-
-**Contoh:** "Mengapa sistem pinjaman aset perlu kelulusan Gred 41?"
-
-**Penghalaan:** → Ollama (fakta) + Bedrock (penaakulan)
+**Penghalaan:** → **DLP Filters** → AWS Bedrock Claude (selepas penapisan)
 
 ### 5.2 Algoritma Analisis Pertanyaan
 
@@ -2041,6 +2049,322 @@ Route::get('/health/hybrid-ai', function () {
 ---
 
 ## 15. Pematuhan D00-D18 v3.6.1 (Compliance)
+
+### 15.1 Cadangan Kedaulatan Data dan Alternatif (Data Sovereignty Recommendations and Alternatives)
+
+#### 15.1.1. Analisis Risiko Kedaulatan Data Semasa
+
+**Risiko Kritikal yang Dikenal Pasti:**
+
+Sistem AI hibrid semasa menggunakan AWS Bedrock (US-East-1) untuk pemprosesan data awam, yang menimbulkan risiko kedaulatan data berikut:
+
+1. **Pelanggaran PKS 4.2**: Data kerajaan Malaysia diproses di luar bidang kuasa Malaysia, walaupun telah melalui DLP filtering.
+
+2. **Risiko Air-Gap Policy**: Sambungan internet ke AWS mewujudkan jambatan yang berpotensi memintas dasar intranet air-gap MOTAC.
+
+3. **Audit Trail Gaps**: Pemprosesan cloud mungkin tidak mempunyai audit trail yang memenuhi standard forensik kerajaan Malaysia.
+
+4. **Vendor Dependency**: Kebergantungan kepada AWS mewujudkan risiko strategic autonomy untuk infrastruktur AI kritikal kerajaan.
+
+#### 15.1.2. Cadangan Alternatif Kedaulatan Data Penuh
+
+**Alternatif 1: MyGovCloud AI Services Integration**
+
+Mengikut **PSPM (Pelan Strategik Pendigitalan MOTAC) 2022-2026** yang mengutamakan MyGovCloud:
+
+```yaml
+# Enhanced AI Configuration untuk MyGovCloud
+ai_services:
+  primary:
+    provider: "mygov_cloud"
+    endpoint: "https://ai.mygov.my/api/v1"
+    models:
+      - "llama3.1-70b-instruct-my"
+      - "claude-3-sonnet-gov-my"
+      - "gemini-pro-malaysia"
+    data_residency: "malaysia_only"
+    compliance: ["PKS_4.2", "PKS_9.2.1", "PDPA_2010"]
+    
+  fallback:
+    provider: "ollama_local"
+    endpoint: "http://localhost:11434"
+    models: ["llama3.1:8b-instruct-q4_K_M"]
+    data_residency: "motac_datacenter"
+    compliance: ["PKS_4.2", "PKS_9.2.1"]
+```
+
+**Kelebihan MyGovCloud Integration:**
+
+- **100% Data Sovereignty**: Semua AI processing dalam bidang kuasa Malaysia
+- **Government-Grade Security**: Multi-layer security dengan encryption standard kerajaan
+- **Full PKS Compliance**: Memenuhi PKS 4.2 dan 9.2.1 tanpa pengecualian
+- **Local Support**: 24/7 technical support dalam Bahasa Malaysia
+- **Strategic Independence**: Mengurangkan kebergantungan kepada vendor asing
+
+**Alternatif 2: On-Premise High-Performance AI Cluster**
+
+```yaml
+# On-Premise GPU Cluster Configuration
+gpu_cluster:
+  architecture: "distributed_inference"
+  nodes:
+    - name: "ai-gpu-01"
+      hardware: "NVIDIA A100 80GB x4"
+      ram: "512GB DDR4 ECC"
+      storage: "10TB NVMe SSD"
+      network: "100Gbps InfiniBand"
+      
+    - name: "ai-gpu-02"
+      hardware: "NVIDIA A100 80GB x4"
+      ram: "512GB DDR4 ECC"
+      storage: "10TB NVMe SSD"
+      network: "100Gbps InfiniBand"
+      
+    - name: "ai-gpu-03"
+      hardware: "NVIDIA A100 80GB x4"
+      ram: "512GB DDR4 ECC"
+      storage: "10TB NVMe SSD"
+      network: "100Gbps InfiniBand"
+      
+  models:
+    high_performance: "llama3.1-70b-instruct-fp16"
+    balanced: "llama3.1-13b-instruct-q4_K_M"
+    fast_response: "llama3.1-8b-instruct-q4_K_M"
+    
+  load_balancing: "intelligent_routing"
+  failover: "automatic_redundancy"
+  data_residency: "motac_datacenter_only"
+```
+
+**Spesifikasi Teknikal On-Premise Cluster:**
+
+| Komponen | Spesifikasi | Kuantiti | Anggaran Kos (RM) | Justifikasi |
+|----------|-------------|----------|-------------------|-------------|
+| **AI GPU Servers** | NVIDIA A100 80GB x4 per server | 3 servers | 450,000 | High-performance inference |
+| **CPU Servers** | Intel Xeon Gold 6348 (28 cores) | 3 servers | 90,000 | Orchestration & preprocessing |
+| **Memory** | 512GB DDR4 ECC per server | 3 sets | 60,000 | Large model loading |
+| **Storage** | 10TB NVMe SSD per server | 3 sets | 45,000 | Fast model access |
+| **Networking** | 100Gbps InfiniBand switch | 1 set | 30,000 | Low-latency communication |
+| **Infrastructure** | UPS, cooling, racks | 1 set | 75,000 | Reliability & uptime |
+| **Software Licensing** | Enterprise AI stack | 1 set | 50,000 | Production support |
+| **Total Investment** | | | **800,000** | 3-year ROI |
+
+#### 15.1.3. Hybrid Sovereign Architecture (Recommended)
+
+**Optimal Solution: Three-Tier Sovereign AI Architecture**
+
+```mermaid
+graph TB
+    subgraph "Tier 1: MOTAC Data Center (Sensitive Data)"
+        A[Ollama Local LLM<br/>Llama3.1-8B<br/>PKS 4.2 Compliant<br/>Official Secrets Processing]
+        B[Internal Knowledge Base<br/>MOTAC Procedures<br/>Staff Information<br/>Classified Documents]
+        C[Data Classification Engine<br/>Automatic Sensitivity Detection<br/>PKS 9.2.1 Compliance<br/>Real-time Filtering]
+    end
+    
+    subgraph "Tier 2: MyGovCloud Malaysia (Government Data)"
+        D[High-Performance Government LLM<br/>Llama3.1-70B / Claude-Gov<br/>Government-Grade Security<br/>Public Sector Procedures]
+        E[Malaysian Government KB<br/>Public Sector Knowledge<br/>Inter-Agency Procedures<br/>Government Standards]
+        F[Secure Government Gateway<br/>GovNet Connectivity<br/>Audit Trail Compliant<br/>Forensic Ready]
+    end
+    
+    subgraph "Tier 3: Controlled External (Public Data Only)"
+        G[Enhanced DLP Gateway<br/>Advanced Data Filtering<br/>Zero-Trust Architecture<br/>Continuous Monitoring]
+        H[External AI Services<br/>AWS Bedrock (Fallback)<br/>Public Data Only<br/>Emergency Use]
+    end
+    
+    subgraph "User Interface Layer"
+        I[ICTServe AI Interface<br/>Seamless User Experience<br/>Transparent Routing<br/>Context-Aware]
+    end
+    
+    I --> C
+    C -->|Sensitive/Official| A
+    C -->|Government/Public Sector| D
+    C -->|Public/Technical| G
+    A --> B
+    D --> E
+    D --> F
+    G --> H
+    
+    style A fill:#ff9999,stroke:#ff0000,stroke-width:3px
+    style B fill:#ff9999,stroke:#ff0000,stroke-width:3px
+    style C fill:#ffcc99,stroke:#ff6600,stroke-width:2px
+    style D fill:#99ccff,stroke:#0066cc,stroke-width:2px
+    style E fill:#99ccff,stroke:#0066cc,stroke-width:2px
+    style F fill:#99ccff,stroke:#0066cc,stroke-width:2px
+    style G fill:#ffff99,stroke:#cccc00,stroke-width:2px
+    style H fill:#cccccc,stroke:#666666,stroke-width:1px
+```
+
+#### 15.1.4. Implementation Roadmap untuk Data Sovereignty
+
+**Phase 1: Enhanced DLP & Compliance (0-3 bulan)**
+
+```yaml
+immediate_actions:
+  dlp_enhancement:
+    - advanced_pii_detection: "PDPA 2010 compliant"
+    - official_secrets_scanner: "Automatic classification"
+    - motac_data_identifier: "Internal information detection"
+    - real_time_filtering: "Pre-processing validation"
+    
+  audit_enhancement:
+    - forensic_logging: "7-year retention"
+    - data_lineage_tracking: "End-to-end traceability"
+    - compliance_reporting: "Automated PKS compliance"
+    - incident_response: "Real-time alerting"
+    
+  risk_mitigation:
+    - data_classification_ml: "Machine learning classification"
+    - zero_trust_gateway: "Enhanced security controls"
+    - continuous_monitoring: "24/7 compliance monitoring"
+```
+
+**Phase 2: MyGovCloud Integration (3-6 bulan)**
+
+```yaml
+mygov_integration:
+  pilot_deployment:
+    - service_evaluation: "MyGovCloud AI services assessment"
+    - performance_testing: "Benchmark against current system"
+    - security_validation: "PKS compliance verification"
+    - staff_training: "Technical team upskilling"
+    
+  gradual_migration:
+    - non_sensitive_workloads: "Public information processing"
+    - government_procedures: "Inter-agency knowledge sharing"
+    - performance_optimization: "Response time improvement"
+    - cost_optimization: "Budget efficiency analysis"
+```
+
+**Phase 3: Full Sovereignty Implementation (6-12 bulan)**
+
+```yaml
+full_sovereignty:
+  infrastructure_deployment:
+    - on_premise_cluster: "High-performance GPU deployment"
+    - mygov_integration: "Complete government cloud integration"
+    - aws_decommission: "Gradual external dependency removal"
+    - disaster_recovery: "Sovereign backup systems"
+    
+  operational_excellence:
+    - staff_expertise: "In-house AI operations capability"
+    - maintenance_procedures: "Preventive maintenance protocols"
+    - security_hardening: "Defense-in-depth implementation"
+    - compliance_certification: "Third-party audit validation"
+```
+
+#### 15.1.5. Cost-Benefit Analysis untuk Data Sovereignty
+
+**Total Cost of Ownership (5 Years):**
+
+| Solution | Setup Cost (RM) | Annual Operational (RM) | 5-Year Total (RM) | Sovereignty Level |
+|----------|-----------------|-------------------------|-------------------|-------------------|
+| **Current (AWS Bedrock)** | 0 | 120,000 | 600,000 | 60% |
+| **MyGovCloud Only** | 100,000 | 250,000 | 1,350,000 | 95% |
+| **On-Premise Only** | 800,000 | 200,000 | 1,800,000 | 100% |
+| **Hybrid Sovereign** | 500,000 | 225,000 | 1,625,000 | 100% |
+
+**Return on Investment (ROI) Analysis:**
+
+```yaml
+roi_factors:
+  compliance_value:
+    - pks_compliance: "Eliminates regulatory risk"
+    - audit_readiness: "Reduces compliance cost"
+    - data_protection: "PDPA 2010 full compliance"
+    
+  strategic_value:
+    - vendor_independence: "Reduces external dependency"
+    - technology_sovereignty: "National AI capability"
+    - security_enhancement: "Government-grade protection"
+    
+  operational_value:
+    - performance_improvement: "Faster response times"
+    - customization_capability: "Tailored AI models"
+    - integration_efficiency: "Seamless government systems"
+```
+
+#### 15.1.6. Recommended Implementation Strategy
+
+**Immediate Recommendation (Next 30 Days):**
+
+1. **Enhanced DLP Implementation**: Upgrade current DLP filters dengan advanced detection untuk Official Secrets dan PDPA data.
+
+2. **Risk Documentation**: Comprehensive documentation of current data sovereignty risks dan mitigation strategies.
+
+3. **MyGovCloud Evaluation**: Initiate evaluation of MyGovCloud AI services availability dan capabilities.
+
+**Short-term Recommendation (3-6 Months):**
+
+1. **Pilot MyGovCloud Integration**: Deploy pilot system menggunakan MyGovCloud AI services untuk non-sensitive workloads.
+
+2. **On-Premise Feasibility Study**: Detailed technical dan financial analysis untuk on-premise GPU cluster.
+
+3. **Hybrid Architecture Design**: Finalize three-tier sovereign architecture design dengan detailed implementation plan.
+
+**Long-term Recommendation (6-12 Months):**
+
+1. **Full Sovereign Deployment**: Complete migration ke hybrid sovereign architecture dengan 100% data sovereignty.
+
+2. **AWS Bedrock Decommission**: Gradual phase-out of AWS Bedrock dependency dengan full local/MyGovCloud replacement.
+
+3. **Center of Excellence**: Establish MOTAC AI Center of Excellence untuk government AI sovereignty leadership.
+
+#### 15.1.7. Strategic Impact Assessment
+
+**National Security Benefits:**
+
+- **Data Sovereignty**: 100% Malaysian jurisdiction untuk semua government AI processing
+- **Strategic Autonomy**: Independence dari foreign AI service providers
+- **Security Enhancement**: Government-grade security untuk sensitive AI workloads
+- **Compliance Assurance**: Full PKS dan PDPA compliance tanpa pengecualian
+
+**Economic Benefits:**
+
+- **Local Capability Building**: Development of in-house AI expertise
+- **Technology Transfer**: Knowledge transfer dari international best practices
+- **Innovation Catalyst**: Foundation untuk future government AI initiatives
+- **Cost Predictability**: Stable long-term operational costs
+
+**Operational Benefits:**
+
+- **Performance Optimization**: Tailored AI models untuk government use cases
+- **Integration Efficiency**: Seamless integration dengan existing government systems
+- **Customization Capability**: Ability to customize AI behavior untuk specific requirements
+- **Disaster Recovery**: Robust backup dan recovery systems dalam Malaysian jurisdiction
+
+#### 15.1.8. Conclusion dan Final Recommendation
+
+**Executive Summary:**
+
+Berdasarkan comprehensive analysis of data sovereignty risks dan strategic requirements, adalah **sangat disyorkan** untuk MOTAC melaksanakan **Hybrid Sovereign AI Architecture** yang menggabungkan:
+
+1. **On-premise Ollama** untuk sensitive data processing (PKS 4.2 compliance)
+2. **MyGovCloud AI services** untuk government procedures (PSPM alignment)
+3. **Enhanced DLP gateway** untuk controlled external access (PKS 9.2.1 compliance)
+
+**Key Success Factors:**
+
+- **Phased Implementation**: Gradual migration untuk minimize disruption
+- **Staff Development**: Comprehensive training untuk in-house AI operations
+- **Vendor Collaboration**: Strategic partnership dengan MyGovCloud providers
+- **Continuous Monitoring**: Real-time compliance dan performance monitoring
+
+**Expected Outcomes:**
+
+- **100% Data Sovereignty** untuk semua government AI processing
+- **Full PKS Compliance** tanpa regulatory risks
+- **Enhanced Security Posture** dengan government-grade protection
+- **Strategic Independence** dari foreign AI service dependencies
+- **Innovation Foundation** untuk future government AI initiatives
+
+**Final Recommendation:**
+
+**Ideally, replace AWS Bedrock completely dengan local high-performance LLMs hosted on MyGovCloud atau on-premise GPU servers untuk achieve complete data sovereignty sambil maintaining advanced AI capabilities yang diperlukan untuk modern government operations.**
+
+---
+
+## 16. Pematuhan D00-D18 v3.6.1 (Compliance)
 
 ### 15.1 Matriks Pematuhan (Compliance Matrix)
 

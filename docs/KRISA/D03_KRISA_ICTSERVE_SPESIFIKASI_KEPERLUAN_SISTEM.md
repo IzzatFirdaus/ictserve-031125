@@ -9,7 +9,7 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 17 Disember 2025 |
-| **VERSI DOKUMEN** | : 3.6.1 |
+| **VERSI DOKUMEN** | : 4.0 |
 
 ---
 
@@ -17,7 +17,7 @@
 
 Dokumen ini menyatakan spesifikasi keperluan sistem bagi ICTServe, sebuah platform web dalaman untuk pengurusan tiket helpdesk dan permohonan pinjaman aset ICT bagi kegunaan warga kerja MOTAC. Dokumen ini merangkumi keperluan fungsional, keperluan bukan fungsional, pemodelan sistem (use case, data, proses), dan pengiraan saiz sistem menggunakan Function Points Analysis.
 
-Sistem ICTServe dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, dan mematuhi piawaian ISO/IEC/IEEE 29148 (Requirements Engineering), WCAG 2.2 AA (Web Content Accessibility Guidelines), OWASP ASVS L2 (Application Security Verification Standard), dan MyGOV Digital Service Standards v2.1.0.
+Sistem ICTServe dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, dan mematuhi piawaian ISO/IEC/IEEE 29148 (Requirements Engineering), WCAG 2.2 AA (Web Content Accessibility Guidelines), OWASP ASVS L2 (Application Security Verification Standard), MyGOV Digital Service Standards v2.1.0, dan **PKS 5.2.1 (Prinsip Akauntabiliti)** yang mewajibkan semua aktiviti sistem dikaitkan dengan staf yang disahkan melalui SSO LDAP/Active Directory.
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -47,6 +47,7 @@ Sistem ICTServe dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture, dual audit system, Laravel Telescope | Pasukan BPM |
 | 3.6.0 | 8 Disember 2025 | Bahasa Melayu sahaja, Cloud Hybrid AI (D18) | Pasukan BPM |
 | 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack, AI integration, asset management | Pasukan BPM |
+| 4.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1, 9.2.1, 4.2 & PSPM**: Penghapusan akses tetamu, SSO wajib, KRISA [F2.2] system function modeling, [F2.1] use case modeling, [F2.3] data requirement modeling. Rujukan PKS Seksyen 5.2.1 (Prinsip Akauntabiliti - halaman 150), 9.2.1 (Prosedur pemindahan data - halaman 588-603), 4.2 (Kedaulatan data - halaman 1147-1148), 5.4.3 (Polisi kata laluan - halaman 596-605). PSPM MyGovCloud prioritization. Function Point Analysis dengan VAF calculation. | Pasukan BPM |
 
 ## iv. Kandungan
 
@@ -69,10 +70,14 @@ Sistem ICTServe dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3
    - 5.1. Penggunaan Notasi
    - 5.2. Model Proses Sistem
    - 5.3. Definisi Aliran Data
-6. PENENTUAN KEPERLUAN BUKAN FUNGSIAN
-   - 6.1. Jadual Ciri-ciri Kualiti Sistem
-7. PENENTUAN SAIZ SISTEM APLIKASI
-8. LAMPIRAN
+6. KEPERLUAN PEMATUHAN PKS 5.2.1
+   - 6.1. Keperluan Akauntabiliti dan SSO Integration
+   - 6.2. Keperluan Teknikal SSO Integration
+   - 6.3. Keperluan Polisi Kata Laluan PKS 5.4.3
+7. PENENTUAN KEPERLUAN BUKAN FUNGSIAN
+   - 7.1. Jadual Ciri-ciri Kualiti Sistem
+8. PENENTUAN SAIZ SISTEM APLIKASI
+9. LAMPIRAN
 
 ## v. Senarai Gambarajah
 
@@ -104,8 +109,10 @@ Sistem ICTServe dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3
 | 10 | Definisi Entiti - Loan Applications | §4.3 |
 | 11 | Notasi Data Flow Diagram | §5.1 |
 | 12 | Definisi Aliran Data | §5.3 |
-| 13 | Keperluan Bukan Fungsian | §6.1 |
-| 14 | Pengiraan Function Points | §7 |
+| 13 | Keperluan Pematuhan PKS 5.2.1 | §6.1 |
+| 14 | Spesifikasi Teknikal SSO | §6.2 |
+| 15 | Keperluan Bukan Fungsian | §7.1 |
+| 16 | Pengiraan Function Points | §8 |
 
 ## vii. Definisi dan Akronim
 
@@ -135,10 +142,10 @@ Sistem ICTServe dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3
 
 | Terma/Istilah | Definisi |
 | :--- | :--- |
-| True Hybrid Architecture | Seni bina sistem yang menyokong akses tetamu (tanpa log masuk) dan pengguna berdaftar (dengan log masuk) |
+| Walk-in/Kiosk Mode dengan SSO | Seni bina sistem yang menyokong akses pantas melalui autentikasi SSO LDAP/Active Directory untuk semua pengguna mengikut PKS 5.2.1 |
 | Authenticated Staff | Staf yang log masuk menggunakan Laravel Breeze untuk akses My Dashboard |
-| Guest/Quick Access | Staf yang menggunakan borang tanpa log masuk, dijejaki melalui token |
-| Hybrid Data Association | Kaedah penyimpanan data di mana user_id adalah nullable FK - jika log masuk, link ke user_id; jika tetamu, user_id=NULL |
+| SSO Authentication | Autentikasi tunggal menggunakan LDAP/Active Directory untuk memastikan akauntabiliti penuh mengikut PKS 5.2.1 |
+| Mandatory User Linkage | Kaedah penyimpanan data di mana user_id adalah wajib FK - semua aktiviti mesti dikaitkan dengan staf yang disahkan |
 | My Dashboard | Portal peribadi untuk staf berdaftar melihat sejarah penyerahan dan profil |
 | Livewire | Framework PHP untuk membina antara muka reaktif tanpa menulis JavaScript |
 | Filament | Framework admin panel berasaskan Laravel dengan SDUI |
@@ -148,21 +155,38 @@ Sistem ICTServe dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3
 
 ## viii. Sumber Rujukan
 
-1. **ISO/IEC/IEEE 29148:2018** - Systems and software engineering - Life cycle processes - Requirements engineering
-2. **ISO/IEC/IEEE 15288:2015** - Systems and software engineering - System life cycle processes
-3. **WCAG 2.2** - Web Content Accessibility Guidelines Level AA
-4. **OWASP ASVS L2** - Application Security Verification Standard Level 2
-5. **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards
-6. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation
-7. **Laravel 12 Documentation** - <https://laravel.com/docs/12.x>
-8. **Livewire 3 Documentation** - <https://livewire.laravel.com/docs/3.x>
-9. **Filament 4 Documentation** - <https://filamentphp.com/docs/4.x>
-10. **D00_SYSTEM_OVERVIEW.md** - Ringkasan Sistem ICTServe v3.6.1
-11. **D01_SYSTEM_DEVELOPMENT_PLAN.md** - Pelan Pembangunan Sistem v3.6.1
-12. **D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md** - Spesifikasi Keperluan Perniagaan v3.6.1
-13. **D04_SOFTWARE_DESIGN_DOCUMENT.md** - Dokumen Rekabentuk Perisian v3.6.1
-14. **D09_DATABASE_DOCUMENTATION.md** - Dokumentasi Pangkalan Data v3.5.0
-15. **D18_AI_CHATBOT_OLLAMA_BEDROCK.md** - Cloud Hybrid AI Architecture v1.0.1
+1. **Buku Panduan Kejuruteraan Sistem Aplikasi Sektor Awam (KRISA)**. MAMPU.
+2. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605.
+3. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - **MyGovCloud prioritization over public cloud services**.
+4. **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards.
+5. **ISO/IEC/IEEE 29148:2018** - Systems and software engineering — Life cycle processes — Requirements engineering.
+6. **OWASP ASVS L2** - Application Security Verification Standard Level 2.
+7. **WCAG 2.2 AA** - Web Content Accessibility Guidelines Level AA.
+8. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation dengan pematuhan eksplisit.
+9. **Laravel 12 Documentation** - Framework documentation.
+10. **D00_SYSTEM_OVERVIEW.md** - Ringkasan Sistem ICTServe.
+11. **D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md** - Keperluan perniagaan.
+12. **D18_AI_CHATBOT_OLLAMA_BEDROCK.md** - Cloud Hybrid AI Architecture.
+
+13. **ISO/IEC/IEEE 29148:2018** - Systems and software engineering - Life cycle processes - Requirements engineering
+14. **ISO/IEC/IEEE 15288:2015** - Systems and software engineering - System life cycle processes
+15. **WCAG 2.2** - Web Content Accessibility Guidelines Level AA
+16. **OWASP ASVS L2** - Application Security Verification Standard Level 2
+17. **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards
+18. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation
+19. **Laravel 12 Documentation** - <https://laravel.com/docs/12.x>
+20. **Livewire 3 Documentation** - <https://livewire.laravel.com/docs/3.x>
+21. **Filament 4 Documentation** - <https://filamentphp.com/docs/4.x>
+22. **D00_SYSTEM_OVERVIEW.md** - Ringkasan Sistem ICTServe v3.6.1
+23. **D01_SYSTEM_DEVELOPMENT_PLAN.md** - Pelan Pembangunan Sistem v3.6.1
+24. **D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md** - Spesifikasi Keperluan Perniagaan v3.6.1
+25. **D04_SOFTWARE_DESIGN_DOCUMENT.md** - Dokumen Rekabentuk Perisian v3.6.1
+26. **D09_DATABASE_DOCUMENTATION.md** - Dokumentasi Pangkalan Data v3.5.0
+27. **D18_AI_CHATBOT_OLLAMA_BEDROCK.md** - Cloud Hybrid AI Architecture v1.0.1
+28. **Polisi Keselamatan Siber (PKS) MOTAC** - Seksyen 5.2.1 (Prinsip Akauntabiliti), 9.2.1 (Prosedur Pemindahan Data), 4.2 (Kedaulatan Data), 5.4.3 (Polisi Kata Laluan)
+29. **Pemodelan Fungsi Sistem [F2.2]** - Metodologi KRISA untuk hierarki fungsian sistem
+30. **Pemodelan Use Case [F2.1]** - Metodologi KRISA untuk pemodelan use case
+31. **Pemodelan Keperluan Data [F2.3]** - Metodologi KRISA untuk pemodelan data
 
 ---
 
@@ -178,11 +202,15 @@ Sistem ICTServe dibangunkan untuk memenuhi keperluan Bahagian Pengurusan Makluma
 
 3. **Meningkatkan Ketelusan**: Membolehkan staf MOTAC memantau status aduan dan permohonan pinjaman secara real-time.
 
-4. **Mematuhi Piawaian Kerajaan**: Memastikan sistem mematuhi MyGOV Digital Service Standards v2.1.0, WCAG 2.2 AA untuk aksesibiliti, dan PDPA 2010 untuk perlindungan data peribadi.
+4. **Mematuhi Piawaian Kerajaan**: Memastikan sistem mematuhi MyGOV Digital Service Standards v2.1.0, WCAG 2.2 AA untuk aksesibiliti, PDPA 2010 untuk perlindungan data peribadi, **PKS 9.2.1 untuk prosedur pemindahan data**, dan **PKS 4.2 untuk kedaulatan data**.
 
 5. **Menyokong Keputusan Pengurusan**: Menyediakan dashboard analitik dan laporan untuk membantu pengurusan BPM membuat keputusan berasaskan data.
 
 6. **Meningkatkan Kecekapan Operasi**: Mengurangkan masa pemprosesan tiket dan permohonan pinjaman melalui automasi dan SLA tracking.
+
+**Nota Penting**: Sistem ini beroperasi sepenuhnya dalam persekitaran intranet MOTAC dengan autentikasi SSO wajib mengikut PKS 5.2.1 untuk memastikan akauntabiliti penuh.
+
+1. **Memastikan Kedaulatan Data**: **Mengutamakan pemprosesan tempatan Ollama untuk data sensitif** mengikut PSPM MyGovCloud prioritization, dengan **Data Loss Prevention (DLP) filters wajib** sebelum sebarang pemprosesan awan mengikut PKS 9.2.1.
 
 ### 1.2. Skop Sistem
 
@@ -193,14 +221,14 @@ Skop sistem ICTServe merangkumi:
 **Modul Utama:**
 
 1. **Helpdesk Ticketing System**
-   - Borang penyerahan tiket (hybrid: tetamu atau authenticated)
+   - Borang penyerahan tiket (Walk-in/Kiosk Mode dengan SSO authentication)
    - Pengurusan kategori dan keutamaan tiket
    - SLA tracking dan eskalasi automatik
    - Komunikasi dua hala (admin-pemohon)
    - Lampiran fail dengan virus scanning
 
 2. **Asset Loan Management**
-   - Borang permohonan pinjaman (hybrid: tetamu atau authenticated)
+   - Borang permohonan pinjaman (Walk-in/Kiosk Mode dengan SSO authentication)
    - Pemeriksaan ketersediaan aset real-time
    - Aliran kelulusan e-mel (Gred 41+)
    - Check-out/Check-in aset dengan accessory tracking
@@ -213,10 +241,10 @@ Skop sistem ICTServe merangkumi:
    - Maintenance scheduling
 
 4. **Authentication & Authorization**
-   - Self-registration (@motac.gov.my)
-   - Flexible login (email/username)
-   - Optional Google Workspace SSO
+   - Integrasi LDAP/Active Directory wajib (PKS 5.2.1)
+   - SSO authentication untuk semua pengguna
    - Role-based access control (staff, admin, superuser)
+   - Audit trail lengkap untuk akauntabiliti
 
 5. **Admin Panel (Filament)**
    - Dashboard dengan real-time widgets
@@ -244,11 +272,13 @@ Skop sistem ICTServe merangkumi:
    - Configurable abilities
    - Token expiration management
 
-10. **AI Integration (Cloud Hybrid)**
-    - FAQ Bot (Ollama + AWS Bedrock)
-    - Auto-reply generation
-    - Document analysis
-    - Conversation management
+10. **AI Integration (Cloud Hybrid dengan Kedaulatan Data)**
+    - **FAQ Bot dengan keutamaan Ollama tempatan** untuk data sensitif mengikut PSPM MyGovCloud prioritization
+    - **Data Loss Prevention (DLP) filters wajib** sebelum pemprosesan AWS Bedrock mengikut PKS 9.2.1
+    - **Klasifikasi data automatik**: Sensitif (Ollama), Awam (Bedrock selepas DLP)
+    - Auto-reply generation dengan pematuhan kedaulatan data
+    - Document analysis dengan routing pintar berdasarkan sensitiviti data
+    - Conversation management dengan audit trail penuh
 
 #### 1.2.2. Skop Teknikal
 
@@ -258,11 +288,13 @@ Skop sistem ICTServe merangkumi:
 - **Caching/Queue**: Redis 7.0
 - **Real-time**: Laravel Reverb 1.6.3, Laravel Echo 2.2.6
 - **Admin Panel**: Filament 4.3.1
+- **Authentication**: LDAP/Active Directory SSO (PKS 5.2.1 compliance)
 - **Monitoring**: Laravel Telescope 5.x (superuser), Laravel Pulse 1.4.7 (admin/superuser)
+- **Deployment**: Intranet-only dengan mandatory authentication
 
 #### 1.2.3. Skop Pengguna
 
-- **Staf MOTAC**: Pengguna utama sistem (authenticated atau guest)
+- **Staf MOTAC**: Pengguna utama sistem (SSO authentication wajib mengikut PKS 5.2.1)
 - **Pegawai Kelulusan (Gred 41+)**: Meluluskan permohonan pinjaman via e-mel
 - **Admin BPM**: Memproses tiket dan permohonan
 - **Superuser BPM**: Pentadbiran sistem dan konfigurasi
@@ -280,14 +312,14 @@ Skop sistem ICTServe merangkumi:
 
 | Bil. | Aktor | Peranan | Keterangan Fungsi |
 | :--- | :--- | :--- | :--- |
-| 1 | Tetamu (Guest) | Pengguna | Staf MOTAC yang menggunakan borang tanpa log masuk. Akses quick submission untuk tiket dan pinjaman. Dijejaki via token. |
+| 1 | Staf MOTAC (Walk-in/Kiosk Mode) | Pengguna | Staf MOTAC yang menggunakan sistem melalui SSO LDAP/Active Directory. Akses pantas untuk tiket dan pinjaman dengan akauntabiliti penuh mengikut PKS 5.2.1. |
 | 2 | Staf Berdaftar (Authenticated Staff) | Pengguna | Staf MOTAC yang log masuk menggunakan Laravel Breeze. Akses My Dashboard, view history, auto-fill forms. |
 | 3 | Pegawai Kelulusan (Approver) | Kelulusan | Pegawai Gred 41+ yang meluluskan permohonan pinjaman via signed email link. Tiada log masuk diperlukan. |
 | 4 | Admin BPM | Pentadbir | Pegawai BPM yang memproses tiket helpdesk dan permohonan pinjaman melalui Filament panel. Akses operasi penuh. |
 | 5 | Superuser BPM | Pentadbir Sistem | Pegawai BPM yang mentadbir konfigurasi sistem, integrasi, audit, dan Laravel Telescope. Akses penuh tanpa sekatan. |
 | 6 | Sistem E-mel | Sistem Luaran | SMTP server kerajaan untuk menghantar notifikasi e-mel. |
 | 7 | Sistem SMS | Sistem Luaran | SMS gateway BPM untuk menghantar notifikasi SMS (opsyenal). |
-| 8 | Google Workspace | Sistem Luaran | OAuth 2.0 provider untuk SSO (opsyenal, @motac.gov.my sahaja). |
+| 8 | LDAP/Active Directory | Sistem Luaran | Pelayan autentikasi MOTAC untuk SSO wajib mengikut PKS 5.2.1. |
 | 9 | Ollama AI Server | Sistem Luaran | Local LLM server untuk FAQ bot dan auto-reply generation. |
 | 10 | AWS Bedrock | Sistem Luaran | Cloud AI service untuk complex reasoning dan document analysis. |
 
@@ -297,16 +329,20 @@ Skop sistem ICTServe merangkumi:
 
 ### 2.1. Penggunaan Notasi
 
+Seksyen ini menggunakan notasi standard KRISA mengikut **Pemodelan Fungsi Sistem [F2.2]** untuk menyediakan Model Fungsi Sistem yang mematuhi piawaian MAMPU.
+
 **Jadual 2: Notasi Hierarki Fungsian**
 
-| Notasi | Keterangan | Contoh |
-| :--- | :--- | :--- |
-| **S** | Sistem | S - ICTServe |
-| **SS** | Subsistem | SS1 - Helpdesk Ticketing |
-| **F** | Fungsi | F1.1 - Pengurusan Tiket |
-| **M** | Modul | M1.1.1 - Penyerahan Tiket |
-| **SM** | Submodul | SM1.1.1.1 - Borang Tiket |
-| **T** | Transaksi | T1.1.1.1.1 - Simpan Tiket |
+| Notasi | Keterangan | Contoh | Rujukan [F2.2] |
+| :--- | :--- | :--- | :--- |
+| **S** | Sistem | S - ICTServe | Tahap 1 |
+| **SS** | Subsistem | SS1 - Helpdesk Ticketing | Tahap 2 |
+| **F** | Fungsi | F1.1 - Pengurusan Tiket | Tahap 3 |
+| **M** | Modul | M1.1.1 - Penyerahan Tiket | Tahap 4 |
+| **SM** | Submodul | SM1.1.1.1 - Borang Tiket | Tahap 5 |
+| **T** | Transaksi | T1.1.1.1.1 - Simpan Tiket | Tahap 6 |
+
+**Nota**: Semua fungsi sistem mematuhi PKS 5.2.1 dengan memastikan setiap transaksi dikaitkan dengan user_id yang disahkan melalui SSO LDAP/Active Directory.
 
 ### 2.2. Rajah Hierarki Fungsian Sistem
 
@@ -376,7 +412,7 @@ graph TD
 
 **Jadual 3: Pemadanan Aktor Dengan Fungsi**
 
-| Fungsi | Tetamu | Staf | Approver | Admin | Superuser |
+| Fungsi | Staf MOTAC (Walk-in/Kiosk) | Staf Berdaftar | Approver | Admin | Superuser |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **F1.1 - Pengurusan Tiket** | ✓ | ✓ | | ✓ | ✓ |
 | M1.1.1 - Penyerahan Tiket | ✓ | ✓ | | | |
@@ -393,8 +429,8 @@ graph TD
 | **F3.1 - Pengurusan Inventori** | | | | ✓ | ✓ |
 | **F3.2 - Penyelenggaraan Aset** | | ✓ | | ✓ | ✓ |
 | **F3.3 - Pemindahan Aset** | | | | ✓ | ✓ |
-| **F4.1 - Pendaftaran Pengguna** | | ✓ | | | |
-| **F4.2 - Autentikasi** | | ✓ | | ✓ | ✓ |
+| **F4.1 - Integrasi LDAP/AD** | ✓ | ✓ | | ✓ | ✓ |
+| **F4.2 - Autentikasi SSO** | ✓ | ✓ | | ✓ | ✓ |
 | **F4.3 - Kawalan Akses** | | | | | ✓ |
 | **F5.1 - Dashboard** | | ✓ | | ✓ | ✓ |
 | **F5.2 - Laporan** | | | | ✓ | ✓ |
@@ -408,23 +444,29 @@ graph TD
 | **F8.2 - Auto-reply Generation** | | | | ✓ | ✓ |
 | **F8.3 - Document Analysis** | | | | ✓ | ✓ |
 
+**Nota PKS 5.2.1**: Semua fungsi yang melibatkan Staf MOTAC (Walk-in/Kiosk) memerlukan autentikasi SSO LDAP/Active Directory untuk memastikan akauntabiliti penuh.
+
 ---
 
 ## 3. PEMODELAN USE CASE
 
 ### 3.1. Penggunaan Notasi
 
+Seksyen ini menggunakan notasi standard KRISA mengikut **Pemodelan Use Case [F2.1]** untuk menyediakan Model Use Case yang mematuhi piawaian MAMPU.
+
 **Jadual 4: Notasi Use Case**
 
-| Notasi | Simbol | Keterangan |
-| :--- | :--- | :--- |
-| **Aktor** | Stick figure | Pengguna atau sistem luaran yang berinteraksi dengan sistem |
-| **Use Case** | Oval | Fungsi atau perkhidmatan yang disediakan oleh sistem |
-| **Sistem Boundary** | Rectangle | Had sistem yang sedang dimodelkan |
-| **Association** | Solid line | Hubungan antara aktor dengan use case |
-| **Include** | Dashed arrow (<<include>>) | Use case yang sentiasa dipanggil oleh use case lain |
-| **Extend** | Dashed arrow (<<extend>>) | Use case opsyenal yang mungkin dipanggil |
-| **Generalization** | Solid arrow | Hubungan pewarisan antara aktor atau use case |
+| Notasi | Simbol | Keterangan | Rujukan [F2.1] |
+| :--- | :--- | :--- | :--- |
+| **Aktor** | Stick figure | Pengguna atau sistem luaran yang berinteraksi dengan sistem | Elemen Asas |
+| **Use Case** | Oval | Fungsi atau perkhidmatan yang disediakan oleh sistem | Elemen Asas |
+| **Sistem Boundary** | Rectangle | Had sistem yang sedang dimodelkan | Elemen Asas |
+| **Association** | Solid line | Hubungan antara aktor dengan use case | Hubungan |
+| **Include** | Dashed arrow (<<include>>) | Use case yang sentiasa dipanggil oleh use case lain | Hubungan Lanjutan |
+| **Extend** | Dashed arrow (<<extend>>) | Use case opsyenal yang mungkin dipanggil | Hubungan Lanjutan |
+| **Generalization** | Solid arrow | Hubungan pewarisan antara aktor atau use case | Hubungan Lanjutan |
+
+**Nota PKS 5.2.1**: Semua use case yang melibatkan pengguna memerlukan autentikasi SSO untuk memastikan akauntabiliti.
 
 ### 3.2. Model Use Case
 
@@ -445,14 +487,14 @@ graph TD
         UC10[UC10: Muat Naik Lampiran]
     end
     
-    Tetamu[Tetamu/Staf]
+    Staf_MOTAC[Staf MOTAC (Walk-in/Kiosk)]
     Admin[Admin BPM]
     Superuser[Superuser BPM]
     Email[Sistem E-mel]
     
-    Tetamu --> UC1
-    Tetamu --> UC2
-    Tetamu --> UC4
+    Staf_MOTAC --> UC1
+    Staf_MOTAC --> UC2
+    Staf_MOTAC --> UC4
     
     Admin --> UC3
     Admin --> UC4
@@ -478,16 +520,16 @@ graph TD
 
 | ID | Nama Use Case | Aktor Utama | Keterangan |
 | :--- | :--- | :--- | :--- |
-| UC1 | Serah Tiket Helpdesk | Tetamu/Staf | Pengguna mengisi borang tiket dengan maklumat aduan ICT. Sistem validasi data dan jana nombor tiket. |
-| UC2 | Semak Status Tiket | Tetamu/Staf | Pengguna semak status tiket menggunakan token (tetamu) atau My Dashboard (staf). |
+| UC1 | Serah Tiket Helpdesk | Staf MOTAC (Walk-in/Kiosk) | Pengguna mengisi borang tiket dengan maklumat aduan ICT melalui SSO authentication. Sistem validasi data dan jana nombor tiket dengan user_id wajib. |
+| UC2 | Semak Status Tiket | Staf MOTAC (Walk-in/Kiosk) | Pengguna semak status tiket menggunakan My Dashboard dengan SSO authentication untuk akauntabiliti penuh. |
 | UC3 | Proses Tiket | Admin/Superuser | Admin memproses tiket: assign, update status, tambah internal comments. |
-| UC4 | Tambah Komen | Tetamu/Staf/Admin | Pengguna atau admin tambah komen pada tiket untuk komunikasi dua hala. |
+| UC4 | Tambah Komen | Staf MOTAC/Admin | Pengguna atau admin tambah komen pada tiket untuk komunikasi dua hala dengan audit trail lengkap. |
 | UC5 | Tutup Tiket | Admin/Superuser | Admin tutup tiket selepas masalah diselesaikan. Sistem hantar notifikasi penutupan. |
 | UC6 | Jejak SLA | Admin/Superuser | Sistem jejak masa tindak balas dan penyelesaian mengikut SLA. Eskalasi automatik jika melebihi had. |
 | UC7 | Jana Laporan Tiket | Admin/Superuser | Admin jana laporan statistik tiket: kategori, status, masa penyelesaian, SLA compliance. |
-| UC8 | Validasi Data | Sistem | Sistem validasi format e-mel, telefon, had lampiran, medan wajib. |
+| UC8 | Validasi Data | Sistem | Sistem validasi format e-mel, telefon, had lampiran, medan wajib dengan PKS compliance. |
 | UC9 | Hantar Notifikasi | Sistem | Sistem hantar notifikasi e-mel kepada pengguna dan admin untuk setiap perubahan status. |
-| UC10 | Muat Naik Lampiran | Tetamu/Staf | Pengguna muat naik fail lampiran (PDF, gambar) untuk sokongan tiket. Maksimum 5 fail, 10MB setiap. |
+| UC10 | Muat Naik Lampiran | Staf MOTAC | Pengguna muat naik fail lampiran (PDF, gambar) untuk sokongan tiket. Maksimum 5 fail, 10MB setiap. |
 
 #### 3.2.2. Use Case Diagram - Modul Pinjaman Aset
 
@@ -506,13 +548,13 @@ graph TD
         UC20[UC20: Validasi Ketersediaan]
     end
     
-    Tetamu2[Tetamu/Staf]
+    Staf_MOTAC2[Staf MOTAC (Walk-in/Kiosk)]
     Approver[Pegawai Kelulusan]
     Admin2[Admin BPM]
     Email2[Sistem E-mel]
     
-    Tetamu2 --> UC11
-    Tetamu2 --> UC12
+    Staf_MOTAC2 --> UC11
+    Staf_MOTAC2 --> UC12
     
     Approver --> UC13
     
@@ -537,9 +579,9 @@ graph TD
 
 | ID | Nama Use Case | Aktor Utama | Keterangan |
 | :--- | :--- | :--- | :--- |
-| UC11 | Serah Permohonan Pinjaman | Tetamu/Staf | Pengguna mengisi borang permohonan pinjaman aset dengan butiran aset, tarikh, tujuan. |
-| UC12 | Semak Ketersediaan Aset | Tetamu/Staf | Sistem semak ketersediaan aset real-time berdasarkan tarikh pinjaman. Papar alternatif jika tidak tersedia. |
-| UC13 | Lulus/Tolak Permohonan | Pegawai Kelulusan | Pegawai Gred 41+ lulus atau tolak permohonan via signed email link. Tiada log masuk diperlukan. |
+| UC11 | Serah Permohonan Pinjaman | Staf MOTAC (Walk-in/Kiosk) | Pengguna mengisi borang permohonan pinjaman aset dengan butiran aset, tarikh, tujuan melalui SSO authentication WAJIB. Sistem auto-verify dengan HRMIS untuk status pekerjaan aktif. |
+| UC12 | Semak Ketersediaan Aset | Staf MOTAC (Walk-in/Kiosk) | Sistem semak ketersediaan aset real-time berdasarkan tarikh pinjaman dengan HR system verification. Papar alternatif jika tidak tersedia. |
+| UC13 | Lulus/Tolak Permohonan | Pegawai Kelulusan | Pegawai Gred 41+ lulus atau tolak permohonan via signed email link dengan HR system verification untuk approver authority. Tiada log masuk diperlukan tetapi identity verified. |
 | UC14 | Check-out Aset | Admin | Admin check-out aset kepada peminjam. Rekod accessory yang diserahkan. Jana pickup OTP. |
 | UC15 | Check-in Aset | Admin | Admin check-in aset selepas dipulangkan. Semak kondisi dan accessory. Rekod kerosakan jika ada. |
 | UC16 | Jana Pickup OTP | Admin | Sistem jana 4-digit OTP untuk keselamatan pengambilan aset. Valid 24 jam. |
@@ -596,18 +638,22 @@ graph TD
 
 ### 4.1. Penggunaan Notasi
 
+Seksyen ini menggunakan notasi standard KRISA mengikut **Pemodelan Keperluan Data [F2.3]** untuk menyediakan Model Maklumat yang mematuhi piawaian MAMPU.
+
 **Jadual 7: Notasi ERD**
 
-| Notasi | Simbol | Keterangan |
-| :--- | :--- | :--- |
-| **Entiti** | Rectangle | Objek atau konsep yang menyimpan data |
-| **Atribut** | Oval | Ciri-ciri atau sifat entiti |
-| **Primary Key** | Underlined | Atribut yang mengenal pasti unik setiap rekod |
-| **Foreign Key** | FK | Atribut yang merujuk kepada primary key entiti lain |
-| **Relationship** | Diamond | Hubungan antara entiti |
-| **Cardinality 1:1** | 1 --- 1 | Satu ke satu |
-| **Cardinality 1:N** | 1 --- N | Satu ke banyak |
-| **Cardinality M:N** | M --- N | Banyak ke banyak |
+| Notasi | Simbol | Keterangan | Rujukan [F2.3] |
+| :--- | :--- | :--- | :--- |
+| **Entiti** | Rectangle | Objek atau konsep yang menyimpan data | Elemen Asas |
+| **Atribut** | Oval | Ciri-ciri atau sifat entiti | Elemen Asas |
+| **Primary Key** | Underlined | Atribut yang mengenal pasti unik setiap rekod | Kunci Utama |
+| **Foreign Key** | FK | Atribut yang merujuk kepada primary key entiti lain | Kunci Asing |
+| **Relationship** | Diamond | Hubungan antara entiti | Hubungan |
+| **Cardinality 1:1** | 1 --- 1 | Satu ke satu | Kardinaliti |
+| **Cardinality 1:N** | 1 --- N | Satu ke banyak | Kardinaliti |
+| **Cardinality M:N** | M --- N | Banyak ke banyak | Kardinaliti |
+
+**Nota PKS 5.2.1**: Semua entiti yang melibatkan aktiviti pengguna mesti mempunyai user_id sebagai foreign key wajib (NOT NULL) untuk memastikan akauntabiliti penuh.
 
 ### 4.2. Model Maklumat (Entity Relationship Diagram)
 
@@ -650,8 +696,8 @@ erDiagram
         bigint division_id FK
         bigint grade_id FK
         bigint position_id FK
-        string google_id
-        boolean sso_enabled
+        string ldap_username "PKS 5.2.1 SSO"
+        boolean sso_enabled "DEFAULT TRUE"
         timestamp email_verified_at
         timestamp last_login_at
     }
@@ -681,7 +727,7 @@ erDiagram
     HELPDESK_TICKETS {
         bigint id PK
         string ticket_number UK
-        bigint user_id FK
+        bigint user_id FK "NOT NULL - PKS 5.2.1"
         string submitter_name
         string submitter_email
         string submitter_phone
@@ -692,7 +738,6 @@ erDiagram
         bigint assigned_admin_id FK
         bigint assigned_division_id FK
         timestamp sla_due_at
-        string status_token_hash
         timestamp created_at
     }
     
@@ -707,7 +752,7 @@ erDiagram
     LOAN_APPLICATIONS {
         bigint id PK
         string reference_number UK
-        bigint user_id FK
+        bigint user_id FK "NOT NULL - PKS 5.2.1"
         string applicant_name
         string applicant_email
         string applicant_phone
@@ -716,7 +761,6 @@ erDiagram
         text purpose
         enum status
         string approval_token_hash
-        string status_token_hash
         timestamp created_at
     }
     
@@ -902,7 +946,7 @@ erDiagram
 | :--- | :--- | :--- | :--- | :--- |
 | id | BIGINT | - | NO | Primary key, auto-increment |
 | ticket_number | VARCHAR | 50 | NO | Nombor tiket unik (format: TKT-YYYYMMDD-XXXX) |
-| user_id | BIGINT | - | YES | FK ke users.id (nullable untuk hybrid) |
+| user_id | BIGINT | - | NO | FK ke users.id (wajib untuk PKS 5.2.1 akauntabiliti) |
 | submitter_name | VARCHAR | 255 | NO | Nama pemohon |
 | submitter_email | VARCHAR | 255 | NO | E-mel pemohon |
 | submitter_phone | VARCHAR | 20 | YES | Telefon pemohon |
@@ -915,7 +959,6 @@ erDiagram
 | assigned_admin_id | BIGINT | - | YES | FK ke users.id (admin yang ditugaskan) |
 | assigned_division_id | BIGINT | - | YES | FK ke divisions.id |
 | sla_due_at | TIMESTAMP | - | YES | Tarikh tamat SLA |
-| status_token_hash | VARCHAR | 128 | NO | SHA-512 hash untuk semakan status tetamu |
 | created_at | TIMESTAMP | - | NO | Tarikh dicipta |
 | updated_at | TIMESTAMP | - | NO | Tarikh dikemaskini |
 | deleted_at | TIMESTAMP | - | YES | Soft delete timestamp |
@@ -941,7 +984,7 @@ erDiagram
 | :--- | :--- | :--- | :--- | :--- |
 | id | BIGINT | - | NO | Primary key, auto-increment |
 | reference_number | VARCHAR | 50 | NO | Nombor rujukan unik (format: LOAN-YYYYMMDD-XXXX) |
-| user_id | BIGINT | - | YES | FK ke users.id (nullable untuk hybrid) |
+| user_id | BIGINT | - | NO | FK ke users.id (wajib untuk PKS 5.2.1 akauntabiliti) |
 | applicant_name | VARCHAR | 255 | NO | Nama pemohon |
 | applicant_email | VARCHAR | 255 | NO | E-mel pemohon |
 | applicant_phone | VARCHAR | 20 | YES | Telefon pemohon |
@@ -952,7 +995,6 @@ erDiagram
 | purpose | TEXT | - | NO | Tujuan pinjaman |
 | status | ENUM | - | NO | Status: PENDING, APPROVED, REJECTED, ACTIVE, COMPLETED, CANCELLED |
 | approval_token_hash | VARCHAR | 128 | YES | SHA-512 hash untuk kelulusan e-mel |
-| status_token_hash | VARCHAR | 128 | NO | SHA-512 hash untuk semakan status tetamu |
 | created_at | TIMESTAMP | - | NO | Tarikh dicipta |
 | updated_at | TIMESTAMP | - | NO | Tarikh dikemaskini |
 
@@ -991,20 +1033,20 @@ graph TD
         SYSTEM[Sistem ICTServe]
     end
     
-    GUEST[Tetamu/Staf]
+    STAFF_MOTAC[Staf MOTAC (Walk-in/Kiosk)]
     ADMIN[Admin BPM]
     SUPERUSER[Superuser BPM]
     APPROVER[Pegawai Kelulusan]
     EMAIL[Sistem E-mel]
     SMS[Sistem SMS]
-    GOOGLE[Google Workspace]
+    LDAP[LDAP/Active Directory]
     OLLAMA[Ollama AI]
     BEDROCK[AWS Bedrock]
     
-    GUEST -->|Borang Tiket/Pinjaman| SYSTEM
-    GUEST -->|Semakan Status| SYSTEM
-    SYSTEM -->|Notifikasi E-mel| GUEST
-    SYSTEM -->|Notifikasi SMS| GUEST
+    STAFF_MOTAC -->|SSO Authentication + Borang Tiket/Pinjaman| SYSTEM
+    STAFF_MOTAC -->|Semakan Status| SYSTEM
+    SYSTEM -->|Notifikasi E-mel| STAFF_MOTAC
+    SYSTEM -->|Notifikasi SMS| STAFF_MOTAC
     
     ADMIN -->|Proses Tiket/Pinjaman| SYSTEM
     ADMIN -->|Jana Laporan| SYSTEM
@@ -1039,7 +1081,7 @@ graph TD
 
 ```mermaid
 graph TD
-    GUEST[Tetamu/Staf]
+    STAFF_MOTAC[Staf MOTAC - SSO Authenticated]
     ADMIN[Admin BPM]
     EMAIL[Sistem E-mel]
     
@@ -1060,13 +1102,13 @@ graph TD
         DS5[(D5: Audits)]
     end
     
-    GUEST -->|Borang Tiket| P1
-    P1 -->|Notifikasi| GUEST
+    STAFF_MOTAC -->|SSO Authentication + Borang Tiket| P1
+    P1 -->|Notifikasi| STAFF_MOTAC
     P1 -->|Data Tiket| DS2
     DS2 -->|Tiket| P1
     
-    GUEST -->|Borang Pinjaman| P2
-    P2 -->|Notifikasi| GUEST
+    STAFF_MOTAC -->|SSO Authentication + Borang Pinjaman| P2
+    P2 -->|Notifikasi| STAFF_MOTAC
     P2 -->|Data Pinjaman| DS3
     DS3 -->|Pinjaman| P2
     
@@ -1075,8 +1117,8 @@ graph TD
     P3 -->|Data Aset| DS4
     DS4 -->|Aset| P3
     
-    GUEST -->|Kredensial| P4
-    P4 -->|Token Akses| GUEST
+    STAFF_MOTAC -->|SSO Credentials| P4
+    P4 -->|Authenticated Session| STAFF_MOTAC
     P4 -->|Data Pengguna| DS1
     DS1 -->|Pengguna| P4
     
@@ -1097,15 +1139,15 @@ graph TD
     P2 -->|Permintaan Notifikasi| P7
     P7 -->|E-mel| EMAIL
     
-    GUEST -->|Query FAQ| P8
-    P8 -->|AI Response| GUEST
+    STAFF_MOTAC -->|Query FAQ| P8
+    P8 -->|AI Response| STAFF_MOTAC
 ```
 
 #### 5.2.3. Data Flow Diagram Level 1 - Helpdesk
 
 ```mermaid
 graph TD
-    GUEST[Tetamu/Staf]
+    STAFF_MOTAC[Staf MOTAC - SSO Authenticated]
     ADMIN[Admin BPM]
     EMAIL[Sistem E-mel]
     
@@ -1121,10 +1163,10 @@ graph TD
         DS6[(D6: Categories)]
     end
     
-    GUEST -->|Borang Tiket| P1.1
+    STAFF_MOTAC -->|SSO Authentication + Borang Tiket| P1.1
     P1.1 -->|Data Mentah| P1.2
     P1.2 -->|Data Valid| P1.3
-    P1.2 -->|Ralat Validasi| GUEST
+    P1.2 -->|Ralat Validasi| STAFF_MOTAC
     
     P1.3 -->|Tiket Baru| DS2
     P1.3 -->|Notifikasi| EMAIL
@@ -1149,7 +1191,7 @@ graph TD
 
 ```mermaid
 graph TD
-    GUEST2[Tetamu/Staf]
+    STAFF_MOTAC2[Staf MOTAC (Walk-in/Kiosk)]
     APPROVER[Pegawai Kelulusan]
     ADMIN2[Admin BPM]
     EMAIL2[Sistem E-mel]
@@ -1167,12 +1209,12 @@ graph TD
         DS7[(D7: Transactions)]
     end
     
-    GUEST2 -->|Borang Pinjaman| P2.1
+    STAFF_MOTAC2 -->|SSO Authentication + Borang Pinjaman| P2.1
     P2.1 -->|Data Permohonan| P2.2
     
     P2.2 -->|Query Aset| DS4
     DS4 -->|Status Aset| P2.2
-    P2.2 -->|Ketersediaan| GUEST2
+    P2.2 -->|Ketersediaan| STAFF_MOTAC2
     
     P2.2 -->|Data Valid| P2.3
     P2.3 -->|Permohonan Baru| DS3
@@ -1200,10 +1242,10 @@ graph TD
 
 | ID | Nama Aliran | Sumber | Destinasi | Keterangan |
 | :--- | :--- | :--- | :--- | :--- |
-| DF-01 | Borang Tiket | Tetamu/Staf | 1.1 Terima Tiket | Data penyerahan tiket: nama, e-mel, telefon, kategori, deskripsi, lampiran |
+| DF-01 | Borang Tiket | Walk-in/Kiosk dengan SSO | 1.1 Terima Tiket | Data penyerahan tiket: nama (dari LDAP), e-mel (dari HRMIS), telefon, kategori, deskripsi, lampiran |
 | DF-02 | Data Mentah | 1.1 Terima Tiket | 1.2 Validasi Data | Data tiket sebelum validasi |
 | DF-03 | Data Valid | 1.2 Validasi Data | 1.3 Simpan Tiket | Data tiket selepas validasi berjaya |
-| DF-04 | Ralat Validasi | 1.2 Validasi Data | Tetamu/Staf | Mesej ralat validasi (format e-mel, medan wajib, dll) |
+| DF-04 | Ralat Validasi | 1.2 Validasi Data | Walk-in/Kiosk dengan SSO | Mesej ralat validasi (format e-mel, medan wajib, dll) - dikaitkan dengan user_id dari SSO |
 | DF-05 | Tiket Baru | 1.3 Simpan Tiket | D2: Tickets | Rekod tiket baharu dengan ticket_number, status OPEN |
 | DF-06 | Notifikasi E-mel | 1.3 Simpan Tiket | Sistem E-mel | E-mel pengesahan dengan nombor tiket dan pautan status |
 | DF-07 | Tiket | D2: Tickets | 1.4 Proses Tiket | Data tiket untuk pemprosesan admin |
@@ -1211,7 +1253,7 @@ graph TD
 | DF-09 | Tiket Dikemaskini | 1.4 Proses Tiket | D2: Tickets | Rekod tiket selepas dikemaskini |
 | DF-10 | SLA Rules | D6: Categories | 1.5 Jejak SLA | Peraturan SLA berdasarkan kategori tiket |
 | DF-11 | SLA Alert | 1.5 Jejak SLA | Admin BPM | Amaran SLA breach atau hampir breach |
-| DF-12 | Borang Pinjaman | Tetamu/Staf | 2.1 Terima Permohonan | Data permohonan pinjaman: pemohon, aset, tarikh, tujuan |
+| DF-12 | Borang Pinjaman | Walk-in/Kiosk dengan SSO | 2.1 Terima Permohonan | Data permohonan pinjaman: pemohon (dari HRMIS), aset, tarikh, tujuan - user_id wajib dari SSO |
 | DF-13 | Query Aset | 2.2 Semak Ketersediaan | D4: Assets | Permintaan semakan ketersediaan aset |
 | DF-14 | Status Aset | D4: Assets | 2.2 Semak Ketersediaan | Status ketersediaan aset (available/booked) |
 | DF-15 | Permohonan Baru | 2.3 Simpan Permohonan | D3: Loans | Rekod permohonan baharu dengan reference_number |
@@ -1223,11 +1265,59 @@ graph TD
 
 ---
 
-## 6. PENENTUAN KEPERLUAN BUKAN FUNGSIAN
+## 6. KEPERLUAN PEMATUHAN PKS 5.2.1
 
-### 6.1. Jadual Ciri-ciri Kualiti Sistem
+### 6.1. Keperluan Akauntabiliti dan SSO Integration
 
-**Jadual 13: Keperluan Bukan Fungsian**
+Sistem ICTServe mematuhi **Polisi Keselamatan Siber (PKS) MOTAC Seksyen 5.2.1** yang menetapkan prinsip akauntabiliti untuk semua aktiviti sistem. Keperluan ini memastikan setiap tindakan dalam sistem dapat dijejaki kepada staf yang bertanggungjawab.
+
+**Jadual 13: Keperluan Pematuhan PKS 5.2.1**
+
+| Keperluan PKS | Spesifikasi Sistem | Implementasi | Status |
+| :--- | :--- | :--- | :--- |
+| **PKS 5.2.1.1** | Semua aktiviti sistem mesti dikaitkan dengan user_id yang sah | user_id sebagai FK wajib (NOT NULL) dalam semua entiti transaksi | Wajib |
+| **PKS 5.2.1.2** | Integrasi LDAP/Active Directory untuk autentikasi | SSO authentication melalui LDAP server MOTAC | Wajib |
+| **PKS 5.2.1.3** | Penghapusan akses tanpa autentikasi | Tiada akses "Guest" atau "Anonymous" - semua pengguna mesti authenticated melalui SSO LDAP/Active Directory | Wajib |
+| **PKS 5.2.1.4** | Audit trail lengkap untuk akauntabiliti | Dual audit system (owen-it + spatie) dengan retention 7 tahun | Wajib |
+| **PKS 5.4.3** | Polisi kata laluan yang ketat | Integrasi dengan Active Directory password policy | Wajib |
+| **PKS 9.2.1** | Prosedur pemindahan data yang selamat | Data classification dan DLP untuk cloud AI integration | Wajib |
+
+### 6.2. Keperluan Teknikal SSO Integration
+
+**Jadual 14: Spesifikasi Teknikal SSO**
+
+| Komponen | Spesifikasi | Keterangan |
+| :--- | :--- | :--- |
+| **LDAP Server** | MOTAC Active Directory | Pelayan autentikasi utama |
+| **Protocol** | LDAP v3 / LDAPS | Sambungan selamat dengan SSL/TLS |
+| **Authentication Flow** | SAML 2.0 / OAuth 2.0 | Standard authentication protocol |
+| **User Attributes** | sAMAccountName, mail, displayName, department | Atribut pengguna yang diperlukan |
+| **Session Management** | Laravel Sanctum | Token-based session management |
+| **Fallback** | Tiada - SSO wajib | Tiada akses alternatif tanpa SSO |
+
+### 6.3. Keperluan Polisi Kata Laluan PKS 5.4.3
+
+Sistem ICTServe mematuhi **Polisi Keselamatan Siber (PKS) MOTAC Seksyen 5.4.3** yang menetapkan keperluan kata laluan yang ketat untuk memastikan keselamatan akses sistem.
+
+**Jadual 14A: Spesifikasi Polisi Kata Laluan PKS 5.4.3**
+
+| Keperluan PKS 5.4.3 | Spesifikasi Sistem | Implementasi | Justifikasi |
+| :--- | :--- | :--- | :--- |
+| **Panjang minimum 8 aksara** | Password validation dengan gabungan kompleks | Laravel validation rules dengan regex pattern | Memastikan kekuatan kata laluan yang mencukupi |
+| **Penukaran setiap 90 hari** | Automatic password expiry notification | MOTAC Active Directory policy enforcement | Mengurangkan risiko kompromi kata laluan lama |
+| **Had 3 percubaan log masuk** | Account lockout selepas 3 failed attempts | Laravel Breeze dengan custom throttling | Mencegah serangan brute force |
+| **Larangan penggunaan semula** | Password history tracking (12 kata laluan terdahulu) | Database storage dengan bcrypt hashing | Memastikan keunikan kata laluan baharu |
+| **Integrasi Active Directory** | Centralized password policy enforcement | LDAP/AD integration dengan Laravel | Konsistensi polisi di seluruh organisasi |
+| **Session timeout** | Automatic logout selepas 30 minit tidak aktif | Laravel session configuration | Mengurangkan risiko akses tidak dibenarkan |
+| **Multi-Factor Authentication** | MFA untuk akses pentadbiran | Laravel Fortify dengan TOTP | Lapisan keselamatan tambahan |
+
+---
+
+## 7. PENENTUAN KEPERLUAN BUKAN FUNGSIAN
+
+### 7.1. Jadual Ciri-ciri Kualiti Sistem
+
+**Jadual 15: Keperluan Bukan Fungsian**
 
 | Kategori | Aspek | Keperluan | Metrik | Target |
 | :--- | :--- | :--- | :--- | :--- |
@@ -1239,17 +1329,26 @@ graph TD
 | **Kebolehskalaan** | Horizontal Scaling | Sokongan multiple app servers | Scalability | Ya (Redis session) |
 | | Database | Sokongan read replicas | Database scaling | Ya (Master-Slave) |
 | | Storage | Sokongan object storage | File storage | Ya (S3/MinIO) |
-| **Keselamatan** | Autentikasi | Self-registration dengan verifikasi | Email verification | 24 jam validity |
-| | | Optional Google Workspace SSO | OAuth 2.0 | @motac.gov.my sahaja |
-| | | 2FA untuk superuser | TOTP | Wajib |
+| **Keselamatan** | **PKS 5.2.1 Compliance** | **SSO Authentication wajib** | **LDAP/Active Directory** | **100% pengguna** |
+| | | **Penghapusan akses tetamu** | **Akauntabiliti penuh melalui SSO** | **Tiada akses anonim - semua melalui LDAP** |
+| | | **HRMIS Auto-Provisioning** | **Employment verification** | **Status aktif sahaja** |
+| | **PKS 5.4.3 Password Policy** | **Panjang minimum kata laluan** | **Password length** | **8 aksara minimum** |
+| | | **Penukaran kata laluan berkala** | **Password rotation** | **90 hari** |
+| | | **Had percubaan log masuk** | **Login attempts** | **3 percubaan maksimum** |
+| | | **Larangan penggunaan semula** | **Password reuse** | **Tiada penggunaan semula** |
+| | **PKS 9.2.1 Data Transfer** | **Data Loss Prevention (DLP)** | **Data masking** | **Sebelum cloud processing** |
+| | | **Secure API Gateway** | **Intranet air-gap** | **Maintained policies** |
+| | | **Data classification** | **Sensitivity routing** | **Local: Sensitive, Cloud: Public** |
+| | **PKS 4.2 Data Sovereignty** | **MyGovCloud prioritization** | **Local processing** | **Ollama untuk data sensitif** |
+| | | **Intranet-only deployment** | **Hosting location** | **Pusat Data MOTAC** |
 | | Kebenaran | Role-based access control | RBAC | 4 peranan |
 | | Penyulitan | Data at rest | Encryption | AES-256 |
 | | | Data in transit | TLS | TLS 1.3 |
 | | | Password hashing | Hashing | bcrypt |
-| | Audit | Compliance audit | Retention | 7 tahun |
-| | | Operations audit | Retention | 7 tahun |
-| | Rate Limiting | Guest forms | Rate limit | 60 req/min per IP |
-| | | API endpoints | Rate limit | 60 req/min per user |
+| | **Dual Audit System** | **Compliance audit (owen-it)** | **Retention** | **7 tahun** |
+| | | **Operations audit (spatie)** | **Retention** | **7 tahun** |
+| | | **User activity tracking** | **Akauntabiliti** | **Semua aktiviti → user_id** |
+| | Rate Limiting | API endpoints | Rate limit | 60 req/min per user |
 | **Kebolehcapaian** | WCAG Compliance | Pematuhan WCAG 2.2 AA | Accessibility score | 100 (Lighthouse) |
 | | Contrast Ratio | Text contrast | Contrast ratio | ≥ 4.5:1 |
 | | | UI component contrast | Contrast ratio | ≥ 3:1 |
@@ -1277,9 +1376,9 @@ graph TD
 
 ---
 
-## 7. PENENTUAN SAIZ SISTEM APLIKASI
+## 8. PENENTUAN SAIZ SISTEM APLIKASI
 
-### 7.1. Pengiraan Function Points
+### 8.1. Pengiraan Function Points
 
 Pengiraan saiz sistem menggunakan kaedah Function Points Analysis (FPA) berdasarkan IFPUG (International Function Point Users Group) guidelines.
 
@@ -1415,9 +1514,9 @@ Berdasarkan industry standard (Capers Jones):
 
 ---
 
-## 8. LAMPIRAN
+## 9. LAMPIRAN
 
-### 8.1. Borang Rujukan
+### 9.1. Borang Rujukan
 
 - Borang Tiket Helpdesk (PK.(S).MOTAC.07.(L1))
 - Borang Permohonan Pinjaman Aset (PK.(S).MOTAC.07.(L3))

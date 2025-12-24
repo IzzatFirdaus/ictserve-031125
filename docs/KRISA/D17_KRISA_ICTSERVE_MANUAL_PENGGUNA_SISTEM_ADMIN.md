@@ -17,6 +17,10 @@
 
 Manual ini adalah panduan rasmi **Pentadbir Sistem (Admin/Superuser)** untuk ICTServe versi 3.6.1. Ia menerangkan operasi harian menggunakan panel pentadbiran Filament, meliputi pengurusan tiket aduan, pinjaman aset, inventori, peranan pengguna, automasi AI hibrid (Ollama + Bedrock), laporan, serta pemantauan prestasi. Dokumen ini disediakan mengikut piawaian KRISA MAMPU dan garis panduan keselamatan sistem kerajaan Malaysia.
 
+**Sistem ini mematuhi Polisi Keselamatan Siber (PKS) MOTAC** dengan **SSO Authentication wajib** mengikut PKS 5.2.1 untuk memastikan akauntabiliti penuh. **HRMIS-integrated auto-provisioning** menggantikan manual registration untuk memastikan hanya staf aktif yang dapat mengakses sistem.
+
+**PENTING**: Sistem ini **tidak lagi menyokong akses tetamu (Guest Mode)**. Semua pengguna mesti melalui **"Walk-in/Kiosk Mode using SSO authentication"** untuk memastikan setiap aktiviti dapat dikesan kepada staf yang bertanggungjawab mengikut PKS 5.2.1.
+
 ## ii. Semakan dan Pengesahan Dokumen
 
 **SEMAKAN DOKUMEN**
@@ -100,12 +104,23 @@ Manual ini adalah panduan rasmi **Pentadbir Sistem (Admin/Superuser)** untuk ICT
 | **Cloud Hybrid AI** | Seni bina AI yang menggunakan model tempatan (Ollama) dan awan (AWS Bedrock) |
 | **Dual Audit** | Gabungan log aktiviti dan log audit bagi mematuhi integriti data |
 | **Filament Panel** | Antara muka pentadbiran (Filament v4) untuk menguruskan sistem |
-| **Hybrid Access** | Model akses yang membenarkan staf dan tetamu menggunakan sistem |
+| **HRMIS Auto-Provisioning** | Sistem pendaftaran automatik yang menyegerakkan dengan HR System untuk pengesahan status pekerjaan aktif |
 | **Laravel Pulse** | Sistem pemantauan prestasi dan kesihatan aplikasi Laravel |
+| **SSO Authentication** | Single Sign-On - log masuk sekali menggunakan LDAP/Active Directory MOTAC untuk akses sistem |
 | **Superuser** | Peranan pentadbir dengan akses penuh termasuk konfigurasi sistem |
-| **True Hybrid Architecture** | Seni bina yang menyokong sepenuhnya operasi staf dan tetamu |
+| **True Hybrid Architecture** | Seni bina yang menyokong sepenuhnya operasi staf dan Walk-in/Kiosk Mode dengan SSO authentication |
+| **Walk-in/Kiosk Mode** | Mod akses untuk pengguna walk-in yang masih memerlukan SSO authentication (menggantikan Guest Mode) |
 
 ## viii. Sumber Rujukan
+
+### a. Sumber Rujukan Keselamatan
+
+1. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
+2. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation dengan pematuhan eksplisit
+3. **WCAG 2.2 AA** - Web Content Accessibility Guidelines Level AA
+4. **MyGOV Digital Service Standards v2.1.0** - Malaysian Government Digital Service Standards
+
+### b. Sumber Rujukan Teknikal
 
 1. D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md - Spesifikasi Keperluan Sistem
 2. D04_SOFTWARE_DESIGN_DOCUMENT.md - Dokumen Rekabentuk Sistem
@@ -182,7 +197,7 @@ Dokumen berkaitan yang perlu dirujuk:
 | **Superuser** | Semua fungsi sistem | Laravel Telescope, Pulse, konfigurasi sistem |
 | **Admin** | Pengurusan operasi harian | Tiket, aset, pinjaman, pengguna, laporan |
 | **Staff** | Akses terhad | Dashboard peribadi, penyerahan borang |
-| **Guest** | Akses asas | Penyerahan tiket dan permohonan sahaja |
+| **Walk-in/Kiosk Mode** | SSO authentication diperlukan | Penyerahan tiket dan permohonan dengan SSO sahaja |
 
 ### 1.6. Glosari
 
@@ -377,7 +392,7 @@ graph TD
 graph TD
     A[Superuser] --> B[Admin]
     B --> C[Staff]
-    C --> D[Guest]
+    C --> D[Walk-in/Kiosk Mode (SSO Required)]
     
     A --> A1[Semua Kebenaran]
     A --> A2[Konfigurasi Sistem]
@@ -391,16 +406,16 @@ graph TD
     C --> C1[Dashboard Peribadi]
     C --> C2[Penyerahan Borang]
     
-    D --> D1[Akses Tetamu]
+    D --> D1[SSO Authentication Required]
     D --> D2[Borang Sahaja]
 ```
 
 **Kebenaran Mengikut Peranan:**
 
-| Fungsi | Guest | Staff | Admin | Superuser |
+| Fungsi | Walk-in/Kiosk Mode | Staff | Admin | Superuser |
 | :--- | :---: | :---: | :---: | :---: |
-| **Hantar Tiket** | ✅ | ✅ | ✅ | ✅ |
-| **Mohon Pinjaman** | ✅ | ✅ | ✅ | ✅ |
+| **Hantar Tiket** | ✅ (SSO Required) | ✅ | ✅ | ✅ |
+| **Mohon Pinjaman** | ✅ (SSO Required) | ✅ | ✅ | ✅ |
 | **Dashboard Peribadi** | ❌ | ✅ | ✅ | ✅ |
 | **Urus Tiket** | ❌ | ❌ | ✅ | ✅ |
 | **Urus Aset** | ❌ | ❌ | ✅ | ✅ |

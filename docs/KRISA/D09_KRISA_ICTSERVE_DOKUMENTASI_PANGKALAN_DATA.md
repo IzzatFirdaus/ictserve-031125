@@ -9,13 +9,15 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 23 Disember
-| **VERSI DOKUMEN** | : 3.6.1 |
+| **VERSI DOKUMEN** | : 4.0 |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menyediakan dokumentasi komprehensif bagi struktur pangkalan data Sistem ICTServe yang dibangunkan mengikut piawaian ISO 8000 (Kualiti Data), IEEE 1016:2009 (Huraian Reka Bentuk Perisian), ISO/IEC 27701 (Pengurusan Privasi), dan garis panduan KRISA MAMPU. Dokumen ini merangkumi definisi jadual, hubungan data, piawaian kualiti, dan prosedur pengurusan pangkalan data untuk sistem dalaman MOTAC.
+Dokumen ini menyediakan dokumentasi komprehensif bagi struktur pangkalan data Sistem ICTServe yang dibangunkan mengikut piawaian ISO 8000 (Kualiti Data), IEEE 1016:2009 (Huraian Reka Bentuk Perisian), ISO/IEC 27701 (Pengurusan Privasi), **Polisi Keselamatan Siber (PKS) MOTAC**, dan garis panduan KRISA MAMPU.
+
+Dokumen ini merangkumi definisi jadual, hubungan data, piawaian kualiti, dan prosedur pengurusan pangkalan data untuk sistem dalaman MOTAC dengan **pematuhan PKS 5.2.1** yang mewajibkan **user_id sebagai mandatory foreign key** untuk memastikan semua aktiviti sistem dikaitkan dengan staf yang disahkan melalui SSO LDAP/Active Directory. **Dual audit system dengan retention 7 tahun** dilaksanakan mengikut standard PKS untuk compliance dan operational tracking.
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -44,6 +46,7 @@ Dokumen ini menyediakan dokumentasi komprehensif bagi struktur pangkalan data Si
 | 3.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.43.1, Filament 4.3.1, MySQL 8.0 | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025 | True Hybrid Architecture: Tambah jadual Sanctum, Pulse, Google SSO | Pasukan Pembangunan BPM |
 | 3.6.1 | 23 Disember 2025 | Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot, tambah jadual AI | Pasukan Pembangunan BPM |
+| 4.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1, 9.2.1, 4.2 & PSPM**: user_id mandatory FK, penghapusan akses tetamu, SSO wajib, CRUD indicators mengikut KRISA template. Rujukan PKS Seksyen 5.2.1 (Prinsip Akauntabiliti - halaman 150), 9.2.1 (Prosedur pemindahan data - halaman 588-603), 4.2 (Kedaulatan data - halaman 1147-1148), 5.4.3 (Polisi kata laluan - halaman 596-605). PSPM MyGovCloud prioritization. Dual audit system dengan 7-year retention. | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -91,37 +94,47 @@ Dokumen ini menyediakan dokumentasi komprehensif bagi struktur pangkalan data Si
 
 | Terma/Istilah | Definisi |
 | :--- | :--- |
-| Cloud Hybrid AI | Seni bina AI hibrid yang menggunakan model tempatan (Ollama) dan awan (AWS Bedrock) |
+| Cloud Hybrid AI | Seni bina AI hibrid yang menggunakan model tempatan (Ollama) dan awan (AWS Bedrock) dengan kedaulatan data |
 | Dual Audit System | Sistem audit dwi-lapisan menggunakan owen-it/laravel-auditing dan spatie/laravel-activitylog |
 | Embedding Vector | Representasi vektor bagi teks untuk carian semantik |
-| Guest Submission | Penyerahan borang oleh pengguna tanpa akaun berdaftar |
-| Hybrid Architecture | Seni bina sistem yang menyokong pengguna berdaftar dan tetamu |
-| Nullable FK | Foreign Key yang membenarkan nilai NULL untuk sokongan tetamu |
+| Walk-in/Kiosk Mode dengan SSO | Seni bina sistem yang memerlukan SSO authentication untuk semua pengguna mengikut PKS 5.2.1 |
+| Mandatory FK | Foreign Key yang WAJIB untuk semua aktiviti sistem (user_id tidak boleh NULL) |
 | Polymorphic Relationship | Hubungan pangkalan data yang membolehkan satu model berkaitan dengan pelbagai model lain |
-| True Hybrid | Seni bina yang menyokong sepenuhnya operasi staf dan tetamu dalam satu sistem |
+| SSO Authentication | Pengesahan tunggal menggunakan LDAP/Active Directory untuk akauntabiliti penuh |
 
 ## viii. Sumber Rujukan
 
 1. ISO 8000:2022 - Data Quality Management Systems
-2. IEEE 1016:2009 - Standard for Information Technology - Systems Design - Software Design Descriptions
-3. ISO/IEC 27701:2019 - Privacy Information Management Systems
-4. ISO/IEC 38505-1:2017 - Information Technology Governance
-5. Garis Panduan KRISA MAMPU v2.1.0
-6. Manual Reka Bentuk Digital Kerajaan Malaysia (MDGDM)
-7. Digital Document Standard Architecture (DDSA)
-8. Laravel Framework Documentation v12.x
-9. MySQL 8.0 Reference Manual
-10. Personal Data Protection Act 2010 (PDPA)
+2. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
+3. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation dengan pematuhan eksplisit
+4. IEEE 1016:2009 - Standard for Information Technology - Systems Design - Software Design Descriptions
+5. ISO/IEC 27701:2019 - Security techniques — Extension to ISO/IEC 27001 and ISO/IEC 27002 for privacy information management
+6. **MAMPU (2019)**. Kerangka Rujukan ICT Sektor Awam (KRISA) Versi 2.0
+7. Laravel Documentation v12 - Database: Migrations, Eloquent ORM
+8. MySQL 8.0 Documentation - Reference Manual
+9. **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
+10. **D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md** - Keperluan perniagaan
+11. **D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md** - Keperluan perisian
+12. **D04_SYSTEM_DESIGN_SPECIFICATION.md** - Spesifikasi rekabentuk sistem
+13. IEEE 1016:2009 - Standard for Information Technology - Systems Design - Software Design Descriptions
+14. ISO/IEC 27701:2019 - Privacy Information Management Systems
+15. ISO/IEC 38505-1:2017 - Information Technology Governance
+16. Garis Panduan KRISA MAMPU v2.1.0
+17. Manual Reka Bentuk Digital Kerajaan Malaysia (MDGDM)
+18. Digital Document Standard Architecture (DDSA)
+19. Laravel Framework Documentation v12.x
+20. MySQL 8.0 Reference Manual
+21. Personal Data Protection Act 2010 (PDPA)
 
 ---
 
 ## 1. PENGENALAN
 
-Sistem ICTServe merupakan sistem pengurusan helpdesk dan pinjaman aset dalaman yang dibangunkan khusus untuk Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC). Sistem ini menggunakan seni bina Cloud Hybrid AI yang menggabungkan teknologi tempatan dan awan untuk menyediakan perkhidmatan yang cekap dan selamat.
+Sistem ICTServe merupakan sistem pengurusan helpdesk dan pinjaman aset dalaman yang dibangunkan khusus untuk Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC). Sistem ini menggunakan seni bina Cloud Hybrid AI yang menggabungkan teknologi tempatan dan awan untuk menyediakan perkhidmatan yang cekap dan selamat dengan **akauntabiliti penuh mengikut PKS 5.2.1**.
 
-Dokumen ini menerangkan struktur pangkalan data fizikal yang menyokong operasi sistem, termasuk jadual utama, hubungan data, piawaian kualiti, dan prosedur pengurusan. Pangkalan data direka bentuk mengikut prinsip True Hybrid Architecture yang menyokong kedua-dua pengguna berdaftar (staf MOTAC) dan tetamu dalam satu sistem bersepadu.
+Dokumen ini menerangkan struktur pangkalan data fizikal yang menyokong operasi sistem, termasuk jadual utama, hubungan data, piawaian kualiti, dan prosedur pengurusan. Pangkalan data direka bentuk mengikut prinsip **Walk-in/Kiosk Mode dengan SSO** yang memerlukan authentication wajib untuk semua pengguna dengan **user_id sebagai mandatory foreign key** untuk memastikan traceability penuh.
 
-Sistem ini dilengkapi dengan kemampuan AI hibrid melalui integrasi D18 AI Chatbot yang menggunakan model tempatan (Ollama) untuk operasi asas dan model awan (AWS Bedrock) untuk analisis kompleks, sambil mematuhi keperluan keselamatan dan privasi data kerajaan Malaysia.
+Sistem ini dilengkapi dengan kemampuan AI hibrid melalui integrasi D18 AI Chatbot yang menggunakan model tempatan (Ollama) untuk operasi asas dan model awan (AWS Bedrock) untuk analisis kompleks, sambil mematuhi keperluan keselamatan dan privasi data kerajaan Malaysia dengan **Data Loss Prevention (DLP) filters** mengikut PKS 9.2.1.
 
 ## 2. RINGKASAN MAKLUMAT PANGKALAN DATA FIZIKAL YANG DIBANGUNKAN
 
@@ -282,7 +295,6 @@ graph TB
 | loan_transactions | Pengeluaran dan pemulangan aset | Transaksi |
 | loan_transaction_accessories | Aksesori check-out/check-in | Transaksi |
 | loan_approvals | Rekod kelulusan e-mel | Transaksi |
-| status_tokens | Token semakan status tetamu | Sistem |
 | personal_access_tokens | Token API Sanctum | Sistem |
 | audits | Jejak audit peringkat medan | Audit |
 | activity_log | Log aktiviti pengguna | Audit |
@@ -371,97 +383,95 @@ DELIMITER ;
 ```mermaid
 erDiagram
     USERS {
-        bigint id PK
-        string name
-        string email UK
-        string role
-        string staff_number
-        bigint division_id FK
-        string google_id
-        boolean is_active
-        timestamp created_at
-        timestamp updated_at
+        bigint id PK "(C,R,U,D)"
+        string name "(C,R,U,D)"
+        string email UK "(C,R,U,D)"
+        string role "(C,R,U,D)"
+        string staff_number "(C,R,U,D)"
+        bigint division_id FK "(C,R,U,D)"
+        string google_id "(C,R,U,D)"
+        boolean is_active "(C,R,U,D)"
+        timestamp created_at "(C,R)"
+        timestamp updated_at "(R,U)"
     }
     
     DIVISIONS {
-        bigint id PK
-        string code UK
-        string name_ms
-        string name_en
-        bigint parent_id FK
-        boolean is_active
-        timestamp created_at
-        timestamp updated_at
+        bigint id PK "(C,R,U,D)"
+        string code UK "(C,R,U,D)"
+        string name_ms "(C,R,U,D)"
+        string name_en "(C,R,U,D)"
+        bigint parent_id FK "(C,R,U,D)"
+        boolean is_active "(C,R,U,D)"
+        timestamp created_at "(C,R)"
+        timestamp updated_at "(R,U)"
     }
     
     HELPDESK_TICKETS {
-        bigint id PK
-        string ticket_number UK
-        string form_reference_code
-        bigint user_id FK
-        string guest_name
-        string guest_email
-        bigint division_id FK
-        string subject
-        text description
-        string status
-        string priority
-        timestamp created_at
-        timestamp updated_at
+        bigint id PK "(C,R,U,D)"
+        string ticket_number UK "(C,R)"
+        string form_reference_code "(C,R)"
+        bigint user_id FK_MANDATORY "(C,R,U,D)"
+        bigint division_id FK "(C,R,U,D)"
+        string subject "(C,R,U,D)"
+        text description "(C,R,U,D)"
+        string status "(C,R,U,D)"
+        string priority "(C,R,U,D)"
+        timestamp created_at "(C,R)"
+        timestamp updated_at "(R,U)"
     }
     
     LOAN_APPLICATIONS {
-        bigint id PK
-        string application_number UK
-        string form_reference_code
-        bigint user_id FK
-        string applicant_name
-        string applicant_email
-        bigint division_id FK
-        text purpose
-        date loan_start_date
-        date loan_end_date
-        string status
-        timestamp created_at
-        timestamp updated_at
+        bigint id PK "(C,R,U,D)"
+        string application_number UK "(C,R)"
+        string form_reference_code "(C,R)"
+        bigint user_id FK_MANDATORY "(C,R,U,D)"
+        string applicant_name "(C,R,U,D)"
+        string applicant_email "(C,R,U,D)"
+        bigint division_id FK "(C,R,U,D)"
+        text purpose "(C,R,U,D)"
+        date loan_start_date "(C,R,U,D)"
+        date loan_end_date "(C,R,U,D)"
+        string status "(C,R,U,D)"
+        timestamp created_at "(C,R)"
+        timestamp updated_at "(R,U)"
     }
     
     FAQS {
-        bigint id PK
-        bigint user_id FK
-        text question
-        text answer
-        string category
-        json tags
-        boolean is_active
-        integer priority
-        timestamp created_at
-        timestamp updated_at
+        bigint id PK "(C,R,U,D)"
+        bigint user_id FK_MANDATORY "(C,R,U,D)"
+        text question "(C,R,U,D)"
+        text answer "(C,R,U,D)"
+        string category "(C,R,U,D)"
+        json tags "(C,R,U,D)"
+        boolean is_active "(C,R,U,D)"
+        integer priority "(C,R,U,D)"
+        timestamp created_at "(C,R)"
+        timestamp updated_at "(R,U)"
     }
     
     DOCUMENTS {
-        bigint id PK
-        bigint user_id FK
-        string title
-        string filename
-        string path
-        string mime_type
-        bigint size_bytes
-        string status
-        text summary
-        json key_topics
-        timestamp created_at
-        timestamp updated_at
+        bigint id PK "(C,R,U,D)"
+        bigint user_id FK_MANDATORY "(C,R,U,D)"
+        string title "(C,R,U,D)"
+        string filename "(C,R,U,D)"
+        string path "(C,R,U,D)"
+        string mime_type "(C,R,U,D)"
+        bigint size_bytes "(C,R,U,D)"
+        string status "(C,R,U,D)"
+        text summary "(C,R,U,D)"
+        json key_topics "(C,R,U,D)"
+        timestamp created_at "(C,R)"
+        timestamp updated_at "(R,U)"
     }
     
     EMBEDDINGS {
-        bigint id PK
-        string embeddable_type
-        bigint embeddable_id
-        string model_name
-        json vector
-        integer dimensions
-        timestamp created_at
+        bigint id PK "(C,R,U,D)"
+        string embeddable_type "(C,R,U,D)"
+        bigint embeddable_id "(C,R,U,D)"
+        string model_name "(C,R,U,D)"
+        json vector "(C,R,U,D)"
+        integer dimensions "(C,R,U,D)"
+        timestamp created_at "(C,R)"
     }
     
     USERS ||--o{ HELPDESK_TICKETS : "submits"

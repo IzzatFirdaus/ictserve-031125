@@ -9,13 +9,26 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 23 Disember 2025 |
-| **VERSI DOKUMEN** | : 3.7.0 |
+| **VERSI DOKUMEN** | : 4.0.0 |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menyatakan spesifikasi integrasi data sistem ICTServe yang akan dirujuk semasa fasa pembangunan sistem. Ia bertujuan untuk menerangkan secara terperinci tujuan, skop, gambaran keseluruhan, analisis-analisis keperluan sistem, maklumat dan proses bagi perisian yang akan dibangunkan. Dokumen ini mematuhi piawaian ISO/IEC/IEEE 15288:2015 (Systems and software engineering — System life cycle processes), ISO/IEC/IEEE 15289:2019 (Systems and software engineering — Content of life-cycle information items), dan ISO/IEC TS 24748-6:2016 (Systems and software engineering — Life cycle management — Part 6: System integration).
+Dokumen ini menyatakan spesifikasi integrasi data sistem ICTServe yang akan dirujuk semasa fasa pembangunan sistem. Ia bertujuan untuk menerangkan secara terperinci tujuan, skop, gambaran keseluruhan, analisis-analisis keperluan sistem, maklumat dan proses bagi perisian yang akan dibangunkan.
+
+Dokumen ini mematuhi piawaian ISO/IEC/IEEE 15288:2015 (Systems and software engineering — System life cycle processes), ISO/IEC/IEEE 15289:2019 (Systems and software engineering — Content of life-cycle information items), ISO/IEC TS 24748-6:2016 (Systems and software engineering — Life cycle management — Part 6: System integration), **Polisi Keselamatan Siber (PKS) MOTAC**, dan **Personal Data Protection Act 2010 (PDPA)**.
+
+**PDPA 2010 Compliance dalam Integrasi Data:**
+
+- **Intranet-only deployment dengan mandatory authentication** - Sistem beroperasi sepenuhnya dalam rangkaian dalaman MOTAC mengikut PKS 4.2
+- **Secure API Gateway configuration** yang mengekalkan intranet air-gap policies mengikut PKS 9.2.1
+- **Network security measures** - Segmentasi rangkaian, firewall berlapis, dan pemantauan trafik berterusan
+- **Data Loss Prevention (DLP) filters** untuk automatic data masking sebelum cloud processing
+- **Data classification procedures** untuk routing berdasarkan sensitivity level
+- **Audit requirements** untuk tracking semua data yang dihantar ke external cloud services
+- **Privacy-preserving data integration** dengan encryption dan access controls
+- **Documented exceptions untuk secure cloud API access** - Hanya akses cloud AI yang diluluskan dengan audit penuh
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -49,6 +62,7 @@ Dokumen ini menyatakan spesifikasi integrasi data sistem ICTServe yang akan diru
 | 3.5.0 | 1 Disember 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login, optional guest-to-account linking, dual audit system, enhanced features | Pasukan BPM |
 | 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0 | Pasukan BPM |
 | 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah spesifikasi integrasi AI (Ollama API, AWS Bedrock API, model routing, RAG pipeline, streaming responses, MCP server) | Pasukan BPM |
+| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1**: Penghapusan sepenuhnya akses tetamu, SSO mandatori untuk semua pengguna, HRMIS auto-provisioning menggantikan manual registration, rujukan PKS/PSPM dengan nombor halaman, spesifikasi integrasi data dengan akauntabiliti penuh, secure API gateway configuration | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -127,13 +141,15 @@ Dokumen ini menyatakan spesifikasi integrasi data sistem ICTServe yang akan diru
 1. ISO/IEC/IEEE 15288:2015 - Systems and software engineering — System life cycle processes
 2. ISO/IEC/IEEE 15289:2019 - Systems and software engineering — Content of life-cycle information items (documentation)
 3. ISO/IEC TS 24748-6:2016 - Systems and software engineering — Life cycle management — Part 6: System integration
-4. D00_SYSTEM_OVERVIEW.md - Gambaran Keseluruhan Sistem ICTServe
-5. D07_SYSTEM_INTEGRATION_PLAN.md - Pelan Integrasi Sistem
-6. D11_TECHNICAL_DESIGN_DOCUMENTATION.md - Dokumentasi Rekabentuk Teknikal
-7. D18_AI_CHATBOT_OLLAMA_BEDROCK.md - Integrasi AI Chatbot (Cloud Hybrid AI)
-8. Laravel Framework Documentation v12.x
-9. Filament Admin Panel Documentation v4.x
-10. Livewire Documentation v3.x
+4. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)**, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)**
+5. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - **MyGovCloud prioritization over public cloud services**
+6. D00_SYSTEM_OVERVIEW.md - Gambaran Keseluruhan Sistem ICTServe
+7. D07_SYSTEM_INTEGRATION_PLAN.md - Pelan Integrasi Sistem
+8. D11_TECHNICAL_DESIGN_DOCUMENTATION.md - Dokumentasi Rekabentuk Teknikal
+9. D18_AI_CHATBOT_OLLAMA_BEDROCK.md - Integrasi AI Chatbot (Cloud Hybrid AI)
+10. Laravel Framework Documentation v12.x
+11. Filament Admin Panel Documentation v4.x
+12. Livewire Documentation v3.x
 
 ---
 
@@ -227,16 +243,16 @@ Sistem ICTServe memerlukan integrasi yang komprehensif antara modul dalaman dan 
 
 ### 3.3. Integrasi AI Chatbot (Cloud Hybrid)
 
-**Servis Integrasi Ollama + AWS Bedrock:**
+**Servis Integrasi Ollama + AWS Bedrock dengan Kedaulatan Data:**
 
 | Perkara | Perincian |
 | :--- | :--- |
-| **Nama Servis** | HybridAIChatbotService |
-| **Keterangan** | Menyediakan respons automatik menggunakan model AI tempatan (Ollama) dan awan (AWS Bedrock) |
-| **Kaedah Integrasi** | HTTP API + Model Context Protocol (MCP) |
-| **URL Web Service** | `/api/v1/ollama/faq/query` |
-| **Request** | `POST {"query": "Bagaimana cara memohon pinjaman laptop?", "context": "faq"}` |
-| **Respond** | `{"response": "Untuk memohon pinjaman laptop...", "model_used": "ollama:llama3.2", "confidence": 0.95}` |
+| **Nama Servis** | DataSovereignAIChatbotService |
+| **Keterangan** | Menyediakan respons automatik dengan **keutamaan pemprosesan tempatan Ollama** untuk data sensitif mengikut PSPM MyGovCloud prioritization, dan **Data Loss Prevention (DLP) filters wajib** sebelum pemprosesan AWS Bedrock mengikut PKS 9.2.1 |
+| **Kaedah Integrasi** | **Secure API Gateway** + HTTP API + Model Context Protocol (MCP) |
+| **URL Web Service** | `/api/v1/ai/secure-query` (melalui API Gateway dengan DLP) |
+| **Request** | `POST {"query": "Bagaimana cara memohon pinjaman laptop?", "context": "faq", "data_classification": "auto"}` |
+| **Respond** | `{"response": "Untuk memohon pinjaman laptop...", "model_used": "ollama:llama3.2", "confidence": 0.95, "data_route": "local", "dlp_status": "passed"}` |
 
 **Data yang terlibat:**
 
@@ -246,7 +262,8 @@ Sistem ICTServe memerlukan integrasi yang komprehensif antara modul dalaman dan 
 | context | string | 50 | Yes | in:faq,helpdesk,general |
 | session_id | string | 100 | Yes | uuid |
 | user_id | integer | 11 | Yes | exists:users,id |
-| model_preference | string | 50 | Yes | in:ollama,bedrock,auto |
+| data_classification | string | 20 | Yes | in:sensitive,public,auto |
+| dlp_bypass | boolean | - | No | default:false,admin_only |
 
 ## 4. PEMETAAN DATA
 
@@ -316,40 +333,47 @@ graph TD
     style I fill:#fff3e0
 ```
 
-### 5.3. Aliran Proses AI Chatbot (Cloud Hybrid)
+### 5.3. Aliran Proses AI Chatbot dengan Kedaulatan Data (PKS 9.2.1 & 4.2)
 
 ```mermaid
 graph TD
-    A[Pengguna Hantar Query] --> B[Analisis Query]
-    B --> C{Jenis Query}
-    C -->|FAQ Mudah| D[Ollama Local Model]
-    C -->|Kompleks| E[AWS Bedrock Model]
-    C -->|Campuran| F[Hybrid Processing]
-    D --> G[Generate Response]
-    E --> G
-    F --> G
-    G --> H[Validate Response]
-    H --> I{Confidence > 0.8?}
-    I -->|Ya| J[Hantar Response]
-    I -->|Tidak| K[Escalate to Human]
-    J --> L[Log Interaction]
-    K --> L
-    L --> M[Selesai]
+    A[Pengguna Hantar Query] --> B[Secure API Gateway]
+    B --> C[Data Classification Engine]
+    C --> D{Klasifikasi Data}
+    D -->|Data Sensitif| E[Ollama Local Model<br/>PSPM MyGovCloud Priority]
+    D -->|Data Awam| F[Data Loss Prevention DLP<br/>PKS 9.2.1 Filters]
+    F --> G{DLP Status}
+    G -->|Passed| H[AWS Bedrock Model]
+    G -->|Blocked| I[Escalate to Ollama]
+    E --> J[Generate Response]
+    H --> J
+    I --> J
+    J --> K[Validate Response]
+    K --> L{Confidence > 0.8?}
+    L -->|Ya| M[Hantar Response]
+    L -->|Tidak| N[Escalate to Human]
+    M --> O[Log Interaction + Audit Trail]
+    N --> O
+    O --> P[Selesai]
     
     style A fill:#e1f5fe
-    style D fill:#e8f5e8
-    style E fill:#fff3e0
-    style F fill:#f3e5f5
-    style J fill:#e8f5e8
+    style B fill:#fff3e0
+    style E fill:#e8f5e8
+    style F fill:#ffebee
+    style H fill:#fff3e0
+    style M fill:#e8f5e8
 ```
 
-**Peraturan Pertukaran Data:**
+**Peraturan Pertukaran Data (PKS 9.2.1 & 4.2 Compliance):**
 
 1. **Validasi Data**: Semua data mesti lulus validasi Laravel sebelum disimpan
 2. **Transactional Integrity**: Operasi rentas modul menggunakan database transactions
 3. **Rate Limiting**: API calls terhad kepada 100 requests/minute per token
 4. **Error Handling**: Automatic retry untuk failed integrations dengan exponential backoff
 5. **Audit Compliance**: Semua pertukaran data dilog untuk audit trail
+6. **Data Sovereignty (PKS 4.2)**: **Data sensitif wajib diproses secara tempatan melalui Ollama**
+7. **Data Transfer Protection (PKS 9.2.1)**: **DLP filters wajib untuk semua data yang dihantar ke awan**
+8. **MyGovCloud Priority (PSPM)**: **Keutamaan kepada pemprosesan tempatan berbanding perkhidmatan awan awam**
 
 ## 6. REKA BENTUK SENIBINA INTEGRASI
 
@@ -465,13 +489,124 @@ graph TB
 - VPN access untuk remote administration
 - Bandwidth minimum 100 Mbps untuk optimal performance
 
-**Keselamatan Integrasi:**
+**Keselamatan Integrasi dan Rangkaian:**
 
-- API rate limiting (100 requests/minute)
-- Token-based authentication (Laravel Sanctum)
-- Data encryption at-rest dan in-transit
-- Regular security audits dan penetration testing
-- OWASP compliance untuk web application security
+- **Intranet-Only Deployment**: Sistem beroperasi sepenuhnya dalam rangkaian dalaman MOTAC mengikut PKS 4.2
+- **Secure API Gateway Configuration**: Gateway selamat yang mengekalkan intranet air-gap policies mengikut PKS 9.2.1
+- **Network Security Measures**: Segmentasi rangkaian, firewall berlapis, dan pemantauan trafik berterusan
+- **Data Loss Prevention (DLP) Filters**: Automatic data masking sebelum cloud processing
+- **Documented Exceptions untuk Secure Cloud API Access**: Hanya akses cloud AI yang diluluskan dengan audit penuh
+- **API rate limiting** (100 requests/minute)
+- **Token-based authentication** (Laravel Sanctum)
+- **Data encryption** at-rest dan in-transit
+- **Regular security audits** dan penetration testing
+- **OWASP compliance** untuk web application security
+
+### 6.4. Keselamatan Rangkaian dan Deployment Intranet
+
+**Intranet-Only Deployment dengan Mandatory Authentication (PKS 4.2 & 9.2.1):**
+
+Sistem integrasi data ICTServe dilaksanakan dengan **intranet-only deployment dengan mandatory authentication** mengikut PKS 4.2 (Kedaulatan data dan bidang kuasa) dan PKS 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan):
+
+#### 6.4.1. Seni Bina Keselamatan Integrasi
+
+```mermaid
+graph TB
+    subgraph "MOTAC Internal Network"
+        subgraph "ICTServe Integration Layer"
+            API[API Gateway]
+            AUTH[Authentication Service]
+            DLP[DLP Filter Engine]
+            AUDIT[Audit Service]
+        end
+        
+        subgraph "Internal Systems"
+            HRMIS[HRMIS System]
+            LDAP[LDAP/Active Directory]
+            EMAIL[Email System]
+        end
+        
+        subgraph "Data Processing"
+            LOCAL[Ollama Local AI]
+            DB[(Database)]
+            CACHE[Redis Cache]
+        end
+    end
+    
+    subgraph "Secure Cloud Gateway"
+        GW[Secure Gateway]
+        FILTER[Data Filter]
+        LOG[Audit Logger]
+    end
+    
+    subgraph "External Cloud (Restricted)"
+        BEDROCK[AWS Bedrock API]
+    end
+    
+    API --> AUTH
+    AUTH --> LDAP
+    API --> HRMIS
+    API --> EMAIL
+    
+    API --> DLP
+    DLP -->|Sensitive Data| LOCAL
+    DLP -->|Public Data Only| GW
+    
+    GW --> FILTER
+    FILTER --> LOG
+    LOG --> BEDROCK
+    
+    API --> AUDIT
+    LOCAL --> DB
+    CACHE --> DB
+```
+
+#### 6.4.2. Kawalan Keselamatan Integrasi Data
+
+**Network Segmentation untuk Integrasi:**
+
+- **Integration DMZ**: API gateway dan authentication services
+- **Internal Services**: HRMIS, LDAP, dan email integration
+- **Data Processing**: Local AI dan database services
+- **Cloud Gateway**: Secure gateway untuk external API calls
+
+**Data Flow Security:**
+
+- **Input Validation**: Semua data input melalui validation layer
+- **Data Classification**: Automatic classification berdasarkan content
+- **DLP Filtering**: Real-time filtering sebelum external transmission
+- **Audit Trail**: Comprehensive logging untuk semua data movements
+
+**API Security Controls:**
+
+- **Mutual Authentication**: Certificate-based authentication
+- **Request Signing**: Cryptographic signatures untuk integrity
+- **Rate Limiting**: Per-endpoint rate limiting dengan burst control
+- **Circuit Breaker**: Automatic failover untuk external services
+
+#### 6.4.3. Audit Requirements untuk External Cloud Services
+
+**Tracking Semua Data ke External Cloud Services:**
+
+- **Request Logging**: Full request/response logging untuk cloud API calls
+- **Data Classification Audit**: Record classification decisions dan reasoning
+- **Compliance Monitoring**: Real-time PKS 9.2.1 compliance checking
+- **Incident Detection**: Automatic alerts untuk policy violations
+
+**Audit Trail Format:**
+
+```json
+{
+  "timestamp": "2025-12-24T10:30:00Z",
+  "user_id": "staff123@motac.gov.my",
+  "request_type": "ai_query",
+  "data_classification": "public",
+  "dlp_status": "filtered",
+  "external_service": "aws_bedrock",
+  "compliance_status": "pks_9_2_1_compliant",
+  "audit_hash": "sha256:abc123..."
+}
+```
 
 ---
 

@@ -9,13 +9,23 @@
 | **NAMA AGENSI** | : Bahagian Pengurusan Maklumat (BPM) |
 | **NAMA AGENSI INDUK** | : Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) |
 | **TARIKH DOKUMEN** | : 23 Disember 2025 |
-| **VERSI DOKUMEN** | : 3.6.1 |
+| **VERSI DOKUMEN** | : 4.0.0 |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menyatakan Spesifikasi Migrasi Data yang akan dirujuk semasa fasa pembangunan Sistem ICTServe. Ia bertujuan untuk menerangkan secara terperinci tujuan, maklumat sistem yang terlibat, maklumat data serta rangkaian sistem legasi, pemetaan data, pemetaan kod rujukan dan peraturan bisnes. Dokumen ini mematuhi piawaian ISO 8000 untuk kualiti data dan ISO/IEC 38505-1 untuk tadbir urus data, serta keperluan PDPA 2010 Malaysia untuk perlindungan data peribadi.
+Dokumen ini menyatakan Spesifikasi Migrasi Data yang akan dirujuk semasa fasa pembangunan Sistem ICTServe. Ia bertujuan untuk menerangkan secara terperinci tujuan, maklumat sistem yang terlibat, maklumat data serta rangkaian sistem legasi, pemetaan data, pemetaan kod rujukan dan peraturan bisnes.
+
+Dokumen ini mematuhi piawaian ISO 8000 untuk kualiti data, ISO/IEC 38505-1 untuk tadbir urus data, **Polisi Keselamatan Siber (PKS) MOTAC**, dan **Personal Data Protection Act 2010 (PDPA)** Malaysia untuk perlindungan data peribadi dengan explicit compliance measures:
+
+**PDPA 2010 Compliance dalam Migrasi Data:**
+
+- **Data subject rights implementation** - access, rectification, erasure rights
+- **Privacy impact assessment** untuk semua proses migrasi yang melibatkan data peribadi
+- **Data breach notification procedures** sekiranya berlaku insiden semasa migrasi
+- **Cross-border data transfer restrictions** - semua data kekal dalam Pusat Data MOTAC
+- **Audit trail requirements** untuk semua aktiviti migrasi data peribadi
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -45,6 +55,7 @@ Dokumen ini menyatakan Spesifikasi Migrasi Data yang akan dirujuk semasa fasa pe
 | 3.4.0 | 29 November 2025 | Seni bina hibrid: migrasi staf ke jadual users | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025 | True Hybrid Architecture: pendaftaran kendiri | Pasukan Pembangunan BPM |
 | 3.6.1 | 23 Disember 2025 | Integrasi AI Hibrid dan kemaskini teknologi | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1**: Penghapusan sepenuhnya akses tetamu, SSO mandatori untuk semua pengguna, HRMIS auto-provisioning menggantikan manual registration, rujukan PKS/PSPM dengan nombor halaman, spesifikasi migrasi data dengan akauntabiliti penuh | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -105,7 +116,9 @@ Dokumen ini menyatakan Spesifikasi Migrasi Data yang akan dirujuk semasa fasa pe
 2. **ISO/IEC 38505-1:2017** - Governance of data
 3. **Akta Perlindungan Data Peribadi 2010** - Personal Data Protection Act Malaysia
 4. **MAMPU (2019)**. Kerangka Rujukan ICT Sektor Awam (KRISA) Versi 2.0
-5. **D05_PELAN_MIGRASI_DATA.md v3.6.1** - Pelan migrasi data
+5. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
+6. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - **MyGovCloud prioritization over public cloud services** - halaman 45-67
+7. **D05_PELAN_MIGRASI_DATA.md v3.6.1** - Pelan migrasi data
 
 ---
 
