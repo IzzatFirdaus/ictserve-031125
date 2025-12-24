@@ -1,12 +1,12 @@
 # Ringkasan Sistem (System Overview)
 
 **Sistem ICTServe**  
-**Versi:** 3.6.1 (SemVer)  
-**Tarikh Kemaskini:** 17 Disember 2025  
-**Status:** Aktif  
+**Versi:** 4.0.0 (SemVer)  
+**Tarikh Kemaskini:** 24 Disember 2025  
+**Status:** Aktif — PKS-Compliant SSO-Only Architecture  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC 33063:2015, MyGovEA 18 Prinsip, OWASP Transport Security
+**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC 33063:2015, MyGovEA 18 Prinsip, OWASP ASVS L2, **PKS 5.2.1 / 9.2.1 / 4.2 / 5.4.3**, PSPM MyGovCloud
 
 ---
 
@@ -14,11 +14,11 @@
 
 | Atribut              | Nilai                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------- |
-| **Versi**            | 3.6.1                                                                                       |
-| **Tarikh Kemaskini** | 17 Disember 2025                                                                            |
-| **Status**           | Aktif                                                                                       |
+| **Versi**            | 4.0.0                                                                                       |
+| **Tarikh Kemaskini** | 24 Disember 2025                                                                            |
+| **Status**           | Aktif — PKS-Compliant SSO-Only Architecture                                                 |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
-| **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC 33063:2015, MyGovEA 18 Prinsip, OWASP Transport Security |
+| **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC 33063:2015, MyGovEA 18 Prinsip, OWASP ASVS L2, **PKS 5.2.1 / 9.2.1 / 4.2 / 5.4.3**, PSPM MyGovCloud |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                                   |
 
 > Notis Penggunaan Dalaman: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam (internal use only).
@@ -27,8 +27,9 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                | Penulis                 |
-| ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                                                                                                                     | Penulis                 |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 4.0.0 | 24 Disember 2025 | **PKS Compliance Migration (v4.0)**: Seni bina **SSO-Only (LDAP/AD) + HRMIS auto-provisioning**, tiada akses tetamu; `user_id` diwajibkan (NOT NULL) untuk semua rekod; buang kolum `guest_*`/`applicant_*`; **PKS 9.2.1 DLP Filtering + Data Classification** (SENSITIVE → Ollama tempatan, PUBLIC → Bedrock melalui gateway selamat, audit laluan data); **PKS 4.2 Data Sovereignty** (intranet-only, MyGovCloud keutamaan); **PKS 5.4.3 Password Policy** melalui Active Directory; saluran Reverb terhad kepada pengguna diautentikasi; kemaskini rujukan KRISA/PSPM. | Pasukan Pembangunan BPM |
 | 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Filament 4.3.1, Laravel Horizon 5.41.0. **Cloud Hybrid AI Integration**: Kemaskini §3.2 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah model routing pintar, streaming responses, web-augmented responses, conversation management. Kemaskini §7 dengan AI Assistant comprehensive features dan Asset Management lifecycle. Cross-reference D18 v1.0.1. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | **Bahasa Melayu sahaja untuk antara muka pengguna**: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Dokumentasi D00-D17 dikemaskini. Rujuk D15 v3.6.0 untuk butiran penuh. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0 (performance monitoring untuk admin/superuser), Laravel Sanctum v4.0 (API token authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen untuk @motac.gov.my). Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases.                        | Pasukan Pembangunan BPM |
@@ -73,67 +74,67 @@
 
 ## Ringkasan Eksekutif (Executive Summary)
 
-ICTServe beroperasi sebagai platform dalaman (internal-only) untuk warga kerja MOTAC. Akses adalah melalui portal intranet dengan pengesahan (Login) dan kawalan berasaskan peranan (RBAC) bagi staf, pegawai gred, pentadbir, dan penyelia. Modul utama ialah Helpdesk (aduan ICT) dan Pinjaman Aset ICT; kedua-duanya berjalan dalam ekosistem Laravel 12 + Livewire v3 + Filament v4 dengan jejak audit (audit trail), pematuhan aksesibiliti WCAG 2.2 AA, dan standard keselamatan dalaman.
+ICTServe beroperasi sebagai platform dalaman (intranet-only) untuk warga kerja MOTAC dengan **seni bina PKS-Compliant SSO-Only**: semua akses memerlukan **SSO LDAP/Active Directory** dengan akaun yang diselaraskan melalui **HRMIS auto-provisioning**. Tiada akses tetamu atau akaun manual; setiap aktiviti mesti dipautkan kepada `user_id` (NOT NULL) bagi pematuhan **PKS 5.2.1**.
 
-Ekosistem ini digerakkan oleh Laravel 12 + Livewire v3, memanfaatkan audit trail menyeluruh (D09), automasi notifikasi berasaskan queue, dan garis panduan aksesibiliti & prestasi terkini daripada pakej dokumen pematuhan v2.1.0.
+Modul utama ialah Helpdesk (aduan ICT) dan Pinjaman Aset ICT, ditadbir melalui portal staf dan panel Filament dengan empat peranan (`staff`, `approver`, `admin`, `superuser`). Jejak audit dwilapis (owen-it + spatie) dikekalkan 7 tahun, antaramuka eksklusif Bahasa Melayu, pematuhan WCAG 2.2 AA, dan pemantauan prestasi melalui Laravel Pulse. Integrasi AI hibrid mematuhi **PKS 9.2.1/4.2** dengan penapisan DLP dan penghalaan Ollama (sensitif) vs Bedrock (awam sahaja).
 
 ---
 
-## 1. Modul Helpdesk ICT (Hybrid Access)
+## 1. Modul Helpdesk ICT (SSO Sahaja)
 
-Modul helpdesk digunakan oleh staf MOTAC dengan pilihan log masuk (untuk Dashboard/Profile) atau borang tetamu.
+Modul helpdesk memerlukan **SSO LDAP/Active Directory** untuk semua penyerahan (Walk-in/Kiosk dan portal staf). `user_id` adalah wajib (NOT NULL) dan disegerakkan dengan HRMIS.
 
 ### 1.1. Fungsi Utama Helpdesk
 
-- **Borang Hybrid WCAG 2.2 AA**  
-  Livewire v3 mengekalkan borang bertahap (progressive disclosure) dengan pemeriksaan masa nyata, sasaran sentuh yang sesuai, dan fokus visual mengikut D12–D14.
-- **Pilihan Akses Pengguna**  
-  Staf boleh log masuk (user_id auto-fill) ATAU gunakan borang tetamu (manual input). Nullable user_id FK dalam helpdesk_tickets (rujuk `app/Livewire/Helpdesk/TicketForm.php`, `database/migrations/2025_11_03_043924_create_helpdesk_tickets_table.php`).
+- **Borang WCAG 2.2 AA (SSO diperlukan)**  
+  Livewire v3 mengekalkan borang bertahap dengan validasi masa nyata, sasaran sentuh 44×44px, dan fokus visual mengikut D12–D14. Tiada borang tetamu.
+- **Pautan Identiti Mandatori**  
+  `helpdesk_tickets.user_id` wajib dan disahkan melalui LDAP/AD; data staf (bahagian/gred) diselaraskan melalui HRMIS.
 - **Lampiran & Bukti**  
-  Sehingga 5 fail (gambar, PDF) disokong, dengan penukaran automatik kepada WebP apabila sesuai (rujuk `app/Services/ImageOptimizationService.php`).
-- **Notifikasi E-mel Automatik**  
-  Tetamu menerima pengesahan, manakala `admin` menerima ping melalui queue. Status tiket diterjemahkan kepada e-mel triage & SLA (rujuk D11 §6).
+  Sehingga 5 fail (gambar, PDF) dengan penukaran automatik WebP dan imbasan virus ClamAV.
+- **Notifikasi Automatik**  
+  E-mel + WebSocket (Reverb) dihantar kepada staf yang diautentikasi dan `admin`; SLA diurus melalui queue Horizon.
 - **Laluan Penyelesaian (Resolution Paths)**  
-  Tugas ditugaskan kepada `admin` melalui Filament. `superuser` memantau SLA, audit, dan eskalasi.
+  Tugas ditugaskan melalui Filament; `superuser` memantau SLA, audit, dan eskalasi dengan Pulse/Telescope.
 - **Dashboard Operasi Filament**  
-  Hanya boleh diakses oleh `admin` & `superuser`. Paparan menyokong laporan SLA, ringkasan backlog, dan rekod audit.
+  Akses `admin`/`superuser` sahaja; menyokong laporan SLA, backlog, audit, dan Pulse metrics.
 
 ### 1.2. Manfaat untuk BPM
 
-- **Tanggungjawab Berlapik**  
-  Audit trail menyimpan identiti pengguna dalaman, masa tindakan, dan catatan dalaman.
-- **Saluran Tunggal**  
-  Semua aduan ditapis melalui borang dalaman; tiada lagi tiket manual.
+- **Akauntabiliti Penuh (PKS 5.2.1)**  
+  Semua tiket dipautkan kepada staf diautentikasi; tiada rekod tanpa `user_id`.
+- **Saluran Tunggal & Selamat**  
+  Semua aduan melalui SSO; kelulusan/eskalasi dilog oleh dual-audit.
 - **Prestasi Boleh Ukur**  
-  Panel Filament menyediakan metrik SLA, kekerapan kategori, dan purata masa pemulihan.
+  Pulse + Filament menyediakan metrik SLA, kekerapan kategori, dan purata masa pemulihan.
 
 ---
 
-## 2. Modul Peminjaman Aset ICT (Hybrid Access)
+## 2. Modul Peminjaman Aset ICT (SSO Sahaja)
 
-Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
+Modul pinjaman memerlukan **SSO LDAP/Active Directory** untuk semua permohonan (Walk-in/Kiosk & portal). `loan_applications.user_id` wajib dan disahkan melalui HRMIS; kelulusan mesti diverifikasi pegawai Gred 41+.
 
 ### 2.1. Fungsi Utama Asset Loan
 
-- **Borang Permohonan Hybrid**  
-  Staf boleh log masuk (auto-fill) atau gunakan borang tetamu. Validasi stok dan konflik tarikh dilakukan masa nyata. Nullable user_id FK dalam loan_applications (rujuk `app/Livewire/Forms/LoanApplicationForm.php`, `database/migrations/2025_11_03_043935_create_loan_applications_table.php`).
-- **Kelulusan Melalui Pautan E-mel**  
-  Sistem menjana permintaan kelulusan untuk Ketua Bahagian (≥ Gred 41) menggunakan token bertanda masa. Pengesahan dibuat melalui klik pautan yang mengesahkan e-mel, gred, dan keputusan (APPROVE / REJECT) tanpa log masuk.
+- **Permohonan SSO + WCAG**  
+  Livewire borang berbilang langkah dengan validasi stok/konflik tarikh masa nyata; tiada borang tetamu. `user_id` wajib (NOT NULL).
+- **Kelulusan Disahkan HRMIS**  
+  Pautan e-mel bertanda masa dan portal kelulusan memerlukan pengesahan gred/identiti melalui HRMIS sebelum keputusan (APPROVE/REJECT). Token masa tamat 7 hari.
 - **Pengurusan Kitaran Hidup Aset**  
-  `admin` merekod pengeluaran, pemulangan, kerosakan, dan audit menggunakan modul Filament. `superuser` menyelaras audit berkala.
+  `admin` merekod pengeluaran, pemulangan, kerosakan; `superuser` menyelaras audit berkala dan pematuhan.
 - **Notifikasi & Peringatan**  
-  Penyewaan menghampiri tarikh tamat memicu e-mel & SMS (gateway MCMC) kepada peminjam tetamu, dengan salinan kepada `admin`.
+  E-mel/WebSocket dihantar kepada peminjam yang diautentikasi; SMS opsyenal melalui gateway BPM. SLA pinjaman diselia oleh queue Horizon.
 - **Rekod Automatik & Audit**  
-  Setiap keputusan kelulusan, ubah status aset, dan catatan pulangan dicap masa dan disimpan dalam `loan_transactions` + `loan_audits`.
+  Semua keputusan kelulusan, perubahan status, dan catatan pulangan dilog dalam `loan_transactions` + `loan_audits` dengan `user_id` wajib.
 
 ### 2.2. Manfaat untuk BPM
 
-- **Ketelusan Kelulusan**  
-  Rantaian kelulusan dapat ditelusuri tanpa memerlukan akaun serantau.
+- **Ketelusan & Akauntabiliti**  
+  Semua permohonan dipautkan kepada staf; jejak audit penuh dengan identiti teresah.
 - **Penguatkuasaan Polisi**  
-  Polisi gred, tempoh, dan catuan aset dikuatkuasa oleh peraturan backend.
+  Matriks gred/tempoh/catuan aset dikuatkuasa; kelulusan sah selepas HRMIS verification.
 - **Analitik Aset**  
-  Laporan penggunaan aset, kadar kerosakan, dan backlog permohonan disediakan dalam Filament.
+  Laporan penggunaan, kerosakan, backlog disediakan dalam Filament; data menyokong Pulse/Telescope untuk prestasi.
 
 ---
 
@@ -148,80 +149,41 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **Analitik Gabungan**  
   `superuser` mengakses papan pemuka yang menggabungkan data tiket dan pinjaman untuk analisa trend (contoh, aset dengan kadar kerosakan tinggi).
 
-### 3.2. Integrasi AI & Automasi (v3.6.1) - Cloud Hybrid Architecture
+### 3.2. Integrasi AI & Automasi (v4.0) - Cloud Hybrid + DLP
 
-**Cloud Hybrid AI Integration** - Sistem ICTServe melaksanakan **True Hybrid AI Architecture** yang menggabungkan Ollama (local LLM) dengan AWS Bedrock (cloud AI) untuk memberikan pengalaman AI yang optimum dengan penghalaan pintar berdasarkan jenis pertanyaan. Rujuk **D18 v1.0.1** untuk dokumentasi teknikal penuh.
+**PKS-Compliant Cloud Hybrid AI** — Semua permintaan AI mesti melalui **DLP Filtering Service** (PKS 9.2.1) yang mengklasifikasikan data:
 
-#### 3.2.1. Seni Bina Hibrid AI (Hybrid AI Architecture)
+- **SENSITIVE** → Ollama (on-prem, PKS 4.2) dengan log residensi data
+- **PUBLIC** → AWS Bedrock (Claude) melalui Secure API Gateway dengan audit laluan data
+- Semua permintaan dilog dengan `user_id`, klasifikasi, keputusan routing, dan cap masa; akses AI hanya untuk pengguna yang diautentikasi (Walk-in/Kiosk SSO & portal staf).
 
-- **Antara Muka Tunggal**: Pengguna berinteraksi dengan SATU sistem chat yang menghalakan pertanyaan secara automatik
-- **Penghalaan Pintar**: Sistem menganalisis pertanyaan dan memilih AI yang optimum:
-  - **FAQ Queries** → Ollama RAG (percuma, pantas, data sovereignty)
-  - **Complex Reasoning** → AWS Bedrock Claude (berbayar, kualiti tinggi)
-  - **Hybrid Queries** → Kedua-dua sistem (fakta + analisis)
-- **Respons Hibrid**: Menggabungkan pengetahuan tempatan dengan keupayaan penaakulan cloud
-- **Pengoptimuman Kos**: 82% penjimatan kos dengan penggunaan Ollama untuk FAQ
-- **Multi-Model Intelligence**: Claude Opus 4.5 (complex), Sonnet 4.5 (balanced), Haiku 4.5 (fast), Nova Pro/Lite/Micro
-- **Data Residency Compliance**: Klasifikasi automatik untuk pemprosesan tempatan vs cloud (PDPA 2010)
+#### 3.2.1. Seni Bina AI (DLP-First)
 
-#### 3.2.2. Komponen AI Utama
+- **ModelRouter + DLPFilteringService**: Menjalankan PII/government data detection sebelum sebarang panggilan cloud. Blok automatik jika SENSITIVE.
+- **Data Classification Engine**: Menentukan laluan Ollama vs Bedrock; rekod audit per keputusan.
+- **Data Residency Logging**: Mencatat lokasi pemprosesan (tempatan vs awan) untuk pematuhan PKS 4.2 / PSPM MyGovCloud.
+- **Queue + Reverb**: Kerja AI (ingest, embeddings, auto-reply) diproses melalui Redis/Horizon; status dihantar melalui Reverb saluran diautentikasi.
 
-- **FAQ Bot (Cloud Hybrid)**
-  - Accessible untuk guest dan authenticated users melalui `/ai/chat`
-  - **Model Routing**: Ollama (FAQ) + AWS Bedrock Claude (complex queries)
-  - **Multi-Model Intelligence**: Opus 4.5 (complex), Sonnet 4.5 (balanced), Haiku 4.5 (fast), Nova Pro/Lite/Micro
-  - Response time < 5 saat dengan confidence scoring dan source attribution
-  - **Enhanced Conversation Management**: Save/load/delete conversations dengan memori jangka panjang
-  - **Web-Augmented Responses**: Integrasi DuckDuckGo untuk konteks terkini
-  - **Streaming Responses**: Server-Sent Events (SSE) untuk pengalaman responsif (future)
+#### 3.2.2. Ciri AI Utama
 
-- **Auto-Reply Generation (AI-Enhanced)**
-  - **Streaming Responses**: Server-Sent Events (SSE) untuk pengalaman responsif (future)
-  - AI-generated response drafts menggunakan model routing pintar
-  - Admin review dan approve melalui aliran kerja kelulusan
-  - Learning dari historical resolutions dengan pattern recognition
-  - **Token-based Approval**: Email approval tanpa login untuk department heads
-
-- **Document Analysis (Multi-Modal)**
-  - AI-powered parsing untuk PDF/DOCX/images menggunakan AWS Bedrock Nova Pro
-  - **Semantic Search**: Vector embeddings untuk carian dokumen yang cerdas
-  - Automated categorization dengan confidence scoring
-  - **Data Classification**: Automatik untuk pemprosesan tempatan vs cloud
-  - **PII Detection**: Automatic sanitization untuk PDPA 2010 compliance
-
-- **MCP Server Integration**
-  - 3 tools untuk AI assistants: Amazon Q, Kiro IDE, external integrations
-  - Standardized interface untuk AI tool access
-  - **API Gateway**: Unified access untuk multiple AI services
-  - **Health Monitoring**: Multi-system status (Ollama + Bedrock + DuckDuckGo)
+- **AI Chat (Portal/SSO)**: FAQ + reasoning dengan streaming SSE; sumber dirujuk, masa sasaran <5s (Ollama) / <15s (Bedrock).
+- **Auto-Reply Drafts**: Draf jawapan tiket/permohonan untuk semakan `admin`/`superuser`; semua draf dilog.
+- **Document Analysis**: Bedrock multimodal untuk dokumen awam sahaja selepas DLP; fail sensitif diproses Ollama tempatan.
+- **Conversation Management**: Simpan/muat/arkib per pengguna diautentikasi; audit jejak penuh.
 
 #### 3.2.3. Pematuhan & Keselamatan
 
-- **Data Residency**: Klasifikasi automatik untuk pemprosesan Malaysia vs cloud
-- **PDPA 2010 Compliance**: PII detection dan sanitization
-- **Audit Trail**: Comprehensive logging untuk semua AI interactions
-- **Content Filtering**: Government communication guidelines compliance
-- **Rate Limiting**: Per-user dan per-model untuk cost control
+- **PKS 9.2.1**: DLP wajib, audit keputusan, dan amaran jika percubaan menghantar data sensitif ke awan.
+- **PKS 4.2**: Keutamaan MyGovCloud; laluan Ollama untuk data sensitif; log residensi data.
+- **PDPA 2010**: PII detection, sanitasi, dan hak subjek data dihormati.
+- **Audit Dwilapis**: Semua interaksi AI dicatat dalam owen-it + activitylog dengan `user_id` mandatori.
 
-#### 3.2.4. Pengurusan Admin (Filament Integration)
+#### 3.2.4. Pengurusan Admin (Filament)
 
-- **AI Dashboard**: Real-time metrics untuk penggunaan model dan kos
-- **Model Configuration**: Parameter tuning untuk Ollama dan Bedrock models
-- **FAQ Management**: Bulk operations untuk knowledge base
-- **Conversation Analytics**: Usage patterns dan performance insights
-- **Health Monitoring**: Multi-system status (Ollama + Bedrock + DuckDuckGo)
-
-**Technical Architecture** (D18 v1.0.1):
-
-- **Local**: Ollama server (localhost:11434) untuk FAQ dan data sovereignty
-- **Cloud**: AWS Bedrock (us-east-1) untuk complex reasoning dan multimodal tasks
-- **Models**: llama3.1 (Ollama), Claude Opus/Sonnet/Haiku 4.5, Nova Pro/Lite/Micro, Titan Text Express/Lite (Bedrock)
-- **Storage**: Enhanced tables dengan conversation management dan vector embeddings
-- **API**: `/api/v1/bedrock/*` dan `/api/v1/ollama/*` (documented dalam D18)
-- **Integration**: MCP servers untuk external AI tool access
-- **Monitoring**: Laravel Pulse + Telescope + health checks untuk multi-system status
-- **Queue**: Laravel Queue (Redis) untuk AI job processing (document ingestion, embeddings, auto-reply). **Laravel Horizon 5.41.0 DIPASANG** dalam repo v3.6.1 dengan dashboard di `/horizon`.
-- **Real-time**: Laravel Reverb untuk AI notifications dan streaming responses
+- **AI Dashboard**: Metrik penggunaan/model/kos, ralat, dan keputusan DLP.
+- **Konfigurasi Model**: Had akses per peranan, tetapan Ollama/Bedrock, dan kawalan gateway.
+- **DLP Rules**: Pengurusan peraturan klasifikasi, senarai hitam istilah sensitif, serta log semakan.
+- **Health Monitoring**: Pulse/Telescope memantau status Ollama, Bedrock, Reverb, dan Horizon.
 
 ---
 
@@ -248,12 +210,12 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 **Komponen Utama:**
 
-- **Frontend Tetamu**  
-  Laravel 12 + Livewire v3 + Volt dengan layout `resources/views/layouts/guest.blade.php`. Tiada modul log masuk awam; penyimpanan status menggunakan Session + Cookie.
+- **Portal Staf / Kiosk SSO**  
+  Livewire v3 + Volt menggunakan layout portal; semua akses melalui **LDAP/AD SSO** dengan akaun yang disegerakkan HRMIS (tiada borang tetamu atau self-registration). Walk-in/Kiosk menggunakan sesi SSO yang sama; `user_id` diwajibkan.
 - **Backend Filament v4**  
-  Panel pentadbiran tunggal (`/admin`) dengan SSO larangan; hanya `admin` & `superuser` (rujuk D11 §2). Peranan sistem diurus menggunakan Spatie Permission untuk **empat peranan** (`staff`, `approver`, `admin`, `superuser`) bersama Laravel Policies.
+  Panel pentadbiran tunggal (`/admin`) dengan SSO; peranan diurus Spatie Permission untuk **empat peranan** (`staff`, `approver`, `admin`, `superuser`) + Laravel Policies. HRMIS metadata (gred/bahagian) digunakan untuk kawalan kelayakan.
 - **Servis Notifikasi & Kelulusan**  
-  Queue Laravel mengendalikan e-mel, SMS (melalui gateway BPM), dan pautan kelulusan bertanda tangan (JWT + hashed token). Lihat D04 §4.2 serta D11 §6.
+  Queue Laravel mengendalikan e-mel, SMS (gateway BPM), dan pautan kelulusan bertanda tangan (JWT + hashed token) yang masih memerlukan pengesahan identiti/gred melalui HRMIS sebelum keputusan direkod.
 - **Audit & Logging (Dual System)**
   - `owen-it/laravel-auditing` v14.x merekod jejak audit field-level (old/new values) untuk pematuhan PDPA dan audit 7 tahun
   - `spatie/laravel-activitylog` v4.x merekod aktiviti pengguna untuk dashboard dan laporan operasi
@@ -268,23 +230,14 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
   - Configurable abilities: `read:tickets`, `write:tickets`, `read:loans`, `write:loans`, `admin:all`
   - Token expiration management dan usage logging
   - Rate limiting 60 requests/minute untuk API endpoints
-- **Google Workspace SSO (Opsyen)**
-  - Laravel Socialite v5.24.0 untuk OAuth 2.0 integration dengan Google Workspace
-  - Domain validation: hanya `@motac.gov.my` dibenarkan
-  - Auto-account creation untuk pengguna baharu, account linking untuk pengguna sedia ada
-  - Audit logging untuk semua OAuth events
+- **Google Workspace SSO (Sekunder, diluluskan admin)**  
+  Laravel Socialite v5.24.0 sebagai **opsyen sekunder** selepas LDAP/AD; hanya domain `@motac.gov.my`, dinyahaktif secara lalai dan diaktifkan melalui keputusan `superuser`/BPM. Tiada auto-registration; akaun mesti wujud/di-provision melalui HRMIS/AD dahulu (link-only).
 - **Keselamatan**  
-  CSRF untuk borang tetamu, rate limiting, reCAPTCHA Enterprise (mode invisible) untuk mencegah spam, sanitasi input ketat bagi lampiran, 2FA berasaskan TOTP untuk akaun `superuser` pada panel Filament, serta imbasan virus fail menggunakan ClamAV sebelum disimpan.
+  CSRF untuk semua borang, rate limiting, sanitasi input lampiran, 2FA berasaskan TOTP untuk akaun `superuser` pada panel Filament, imbasan virus ClamAV sebelum simpan, dan pematuhan PKS 5.4.3 melalui polisi kata laluan AD. Tiada reCAPTCHA tetamu kerana tiada borang awam.
 - **Real-time Communication (D16)**  
-  Laravel Reverb 1.6.3 (WebSocket server) untuk real-time updates dengan dual channel strategy: `private-user.{id}` untuk authenticated users dan `private-ticket.{uuid}`/`private-loan.{uuid}` untuk guests. Laravel Echo 2.2.6 untuk client-side event handling. Sokongan notifikasi AI (status/alert/performance/approval) melalui channel seperti `private-ai-status`, `private-ai-alerts`, `private-ai-performance`, `private-ai-approvals` (rujuk D16 v3.6.1).
-- **Laravel Telescope**  
-  Alat debugging dan monitoring untuk `superuser` sahaja. Akses penuh tanpa sekatan kepada semua ciri: requests, commands, jobs, exceptions, logs, queries, models, events, mail, notifications, cache, dan Redis.
-- **Pendaftaran Sendiri (Self-Registration)**  
-  Staf MOTAC boleh mendaftar akaun menggunakan e-mel `@motac.gov.my`. Pengesahan e-mel diperlukan sebelum akses penuh. Selepas pendaftaran, staf boleh log masuk menggunakan e-mel penuh (`user@motac.gov.my`) atau nama pengguna pendek (`user`).
-- **Google Workspace SSO (Opsyen)**  
-  Staf MOTAC boleh log masuk menggunakan akaun Google Workspace `@motac.gov.my` sebagai alternatif kepada Laravel Breeze. Sistem akan auto-create akaun baharu atau link ke akaun sedia ada.
+  Laravel Reverb 1.6.3 (WebSocket server) dengan **saluran diautentikasi sahaja**: `private-user.{id}` dan saluran sumber (`private-ticket.{id}`, `private-loan.{id}`, `private-approval.{id}`) yang memerlukan `user_id` sah atau token bertanda masa + verifikasi HRMIS. Laravel Echo 2.2.6 untuk client-side event handling. AI/Reverb notifikasi hanya untuk pengguna diautentikasi.
 - **Queue Management (D17)**  
-  Laravel Queue dengan Redis backend untuk pemprosesan asinkron (**Laravel Horizon 5.41.0 dipasang** dengan dashboard `/horizon`). Queue name yang digunakan oleh job sebenar termasuk `default`, `notifications`, `emails`, `digests`, `documents`, `embeddings`, dan `auto-reply`. Rujuk D17 v3.6.1 untuk arahan worker dan katalog job.
+  Laravel Queue dengan Redis backend untuk pemprosesan asinkron (**Laravel Horizon 5.41.0 dipasang** dengan dashboard `/horizon`). Queue name yang digunakan: `default`, `notifications`, `emails`, `digests`, `documents`, `embeddings`, dan `auto-reply`. Rujuk D17 v3.6.1 untuk arahan worker dan katalog job.
 
 ### 4.2. Database Design
 
@@ -293,23 +246,23 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 **Model Eloquent Utama** (berdasarkan `application-info`):
 
 - **`User`** (`App\Models\User`)  
-  Menyimpan akaun `staff`, `admin` dan `superuser`. Medan `role` diset `staff`, `admin` atau `superuser`. Staf MOTAC yang log masuk ke My Dashboard direkod sebagai `staff`, manakala tetamu kekal tanpa akaun (submissions dengan `user_id` = NULL).
+  Menyimpan akaun `staff`, `approver`, `admin`, `superuser` yang disegerakkan melalui LDAP/AD + HRMIS (tiada tetamu). `role` dikawal Spatie Permission; medan HRMIS seperti gred/bahagian disimpan untuk kawalan kelayakan.
 - **`HelpdeskTicket`** (`App\Models\HelpdeskTicket`)  
-  Menyimpan data tiket; `user_id` adalah nullable. Data tetamu disimpan dalam kolum `guest_*` (contoh `guest_email`) dan diakses di aplikasi melalui accessor `submitter_*` untuk konsistensi UI/komponen.
+  Menyimpan tiket dengan `user_id` **NOT NULL** (FK `users.id`). Tiada kolum `guest_*`; semua metadata pengadu diambil dari HRMIS/AD dan disegerakkan pada waktu SSO.
 - **`HelpdeskComment`** (`App\Models\HelpdeskComment`)  
-  Menyimpan komen dalaman untuk tiket helpdesk.
+  Menyimpan komen dalaman; `user_id` wajib.
 - **`LoanApplication`** (`App\Models\LoanApplication`)  
-  Menyimpan permohonan, item, dan kelulusan e-mel. `loan_approvals` mengekalkan `approver_email`, `approver_grade`, `signed_token`, dan cap masa.
+  Menyimpan permohonan pinjaman dengan `user_id` **NOT NULL**. Jadual `loan_approvals` merekod `approver_id` (FK users), `approver_grade`, `signed_token`, cap masa, dan status; gred disahkan melalui HRMIS.
 - **Audit Tables**  
-  `loan_audits`, `audits`, `activity_log` menyokong keperluan D09 untuk jejak audit.
+  `loan_audits`, `audits`, `activity_log` menyokong keperluan D09 untuk jejak audit 7 tahun.
 
 **Ciri Database:**
 
 - Soft Deletes untuk logical deletion
 - UUID/ULID support via Laravel traits
 - Foreign key constraints dengan cascade
-- Full-text search indexes
 - Composite indexes untuk query optimization
+- `user_id` wajib (NOT NULL) untuk semua rekod domain (tiket, pinjaman, approval, audit)
 
 ---
 
@@ -319,19 +272,19 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 | Peranan       | Tanggungjawab                                                                                                                                                                                                                        |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **admin**     | Menjalankan triage tiket, mengurus inventori aset, memproses permohonan, memantau SLA harian, dan mengekalkan kandungan borang tetamu.                                                                                               |
+| **admin**     | Menjalankan triage tiket, mengurus inventori aset, memproses permohonan, memantau SLA harian, dan memastikan data HRMIS/AD konsisten untuk operasi.                                                                                   |
 | **superuser** | Mentadbir konfigurasi sistem, pengurusan akaun pentadbir, menyemak audit & keselamatan, meluluskan konfigurasi modul, mengurus integrasi, bertindak sebagai pegawai pematuhan, dan akses penuh Laravel Telescope. **Tiada sekatan.** |
 
 ---
 
-## 6. Saluran Interaksi Awam
+## 6. Saluran Interaksi (SSO Sahaja)
 
-- **Borang Helpdesk (`/helpdesk`)**  
-  Tetamu menghantar tiket; sistem balas dengan nombor rujukan dan e-mel PDF ringkas.
-- **Borang Peminjaman (`/loan`)**  
-  Tetamu menghantar permohonan; status dihantar melalui e-mel, manakala kelulusan disempurnakan melalui pautan khas.
-- **Penjejakan Status**  
-  Tetamu menggunakan URL status khas dengan token (tiada log masuk) untuk menyemak perkembangan tiket atau permohonan.
+- **Portal Staf / Kiosk (SSO LDAP/AD)**  
+  Semua penyerahan tiket/pinjaman melalui SSO; Walk-in/Kiosk menggunakan sesi SSO yang sama. `user_id` wajib dan disahkan HRMIS/AD.
+- **Kelulusan Berpaut Token (Bersyarat)**  
+  Pautan kelulusan bertanda masa memerlukan pengesahan identiti/gred melalui HRMIS sebelum keputusan direkod; tiada akses anonim.
+- **Penjejakan Status Authenticated**  
+  Sejarah tiket/pinjaman disemak melalui My Dashboard (SSO) sahaja; tiada URL status awam bertoken.
 
 ---
 
@@ -339,22 +292,22 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 | Modul                      | Deskripsi                                                                     | Peranan Backend                                                                                          |
 | -------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Helpdesk Guest Form        | Borang aduan, pengurusan SLA, lampiran, e-mel tetamu                          | `admin` memproses tiket melalui Filament                                                                 |
-| Asset Loan Guest Form      | Borang pinjaman, kelulusan e-mel, rekod transaksi                             | `admin` mengurus permohonan & aset                                                                       |
-| My Dashboard (Portal Staf) | Paparan sejarah tiket/permohonan, profil, dan notifikasi untuk staf berdaftar | `staff` (role='staff') melalui guard `web`; data diambil dari users, helpdesk_tickets, loan_applications |
-| AI Assistant (Cloud Hybrid) | Cloud Hybrid AI dengan model routing pintar, streaming responses, web-augmented answers, conversation management, document analysis, auto-reply generation | Ollama + AWS Bedrock; `admin` urus model configuration, conversation analytics, FAQ management, health monitoring melalui Filament (D18 v1.0.1) |
-| Asset Management           | Pengurusan lifecycle aset: registration, tracking, maintenance, transfers     | `admin` urus aset inventory, preventive maintenance schedules, inter-department transfers                |
+| Helpdesk (SSO)             | Borang aduan SSO, pengurusan SLA, lampiran, notifikasi Reverb                | `admin` memproses tiket melalui Filament                                                                 |
+| Asset Loan (SSO)           | Borang pinjaman SSO, kelulusan berverifikasi HRMIS, rekod transaksi           | `admin` mengurus permohonan & aset                                                                       |
+| My Dashboard (Portal Staf) | Sejarah tiket/permohonan, profil, notifikasi untuk staf diautentikasi         | `staff` melalui guard `web`; data dari users/helpdesk_tickets/loan_applications                          |
+| AI Assistant (Cloud Hybrid + DLP) | DLP-first routing, streaming SSE, conversation management, document analysis, auto-reply | Ollama (sensitif) + Bedrock (awam) melalui gateway; dikawal `admin`/`superuser` dalam Filament           |
+| Asset Management           | Pengurusan lifecycle aset: pendaftaran, tracking, penyelenggaraan, pindahan   | `admin` urus aset inventory, preventive maintenance, inter-department transfers                          |
 | Filament Admin             | Dashboard operasi, laporan gabungan, pengurusan aset                          | `admin` & `superuser` sahaja                                                                             |
-| Sistem Audit & Notifikasi  | Queue e-mel/SMS, log audit, pemantauan                                        | `superuser` memantau, `admin` bertindak                                                                  |
+| Sistem Audit & Notifikasi  | Queue e-mel/SMS, log audit dwilapis, pemantauan                               | `superuser` memantau, `admin` bertindak                                                                  |
 | Performance Monitoring     | Laravel Pulse dashboard untuk prestasi sistem masa nyata                      | `admin` & `superuser` sahaja melalui `/pulse`                                                            |
-| API Authentication         | Token-based API access untuk integrasi luaran                                 | `admin` & `superuser` mengurus token melalui Filament                                                    |
+| API Authentication         | Token-based API access untuk integrasi dalaman (berkemampuan Sanctum)         | `admin` & `superuser` mengurus token melalui Filament                                                    |
 
 ---
 
 ## 8. Konteks MOTAC
 
 - Menyokong inisiatif **Digital MOTAC 2025** dengan fokus perkhidmatan awam digital.
-- Menggantikan sistem dalaman lama (intranet/Excel) dengan borang awam yang boleh diakses dari intranet & Internet.
+- Menggantikan sistem dalaman lama (intranet/Excel) dengan portal intranet/SSO (MyGovCloud keutamaan); tiada akses awam.
 - Mematuhi polisi PDPA, garis panduan MCMC untuk SMS OTP, dan keperluan Arkib Negara untuk rekod digital.
 
 ---
@@ -366,7 +319,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - Mematuhi D12–D14 serta bukti ujian aksesibiliti (rujuk `tests/e2e/accessibility.comprehensive.spec.ts` dan `tests/e2e/ACCESSIBILITY_TEST_RESULTS.md`).
 - Palet baharu: Primary `#0056B3`, Secondary `#0B4D8F`, Success `#1B7C54`, Warning `#CC7700`, Danger `#B3002D`.
 - Inline focus ring 3px warna `#0B4D8F`, jarak minimum 16px.
-- Layout asas `resources/views/layouts/guest.blade.php` menggunakan `aria` landmarks (`header`, `main`, `footer`, `nav`).
+- Layout asas `resources/views/layouts/guest.blade.php` (diguna sebagai kerangka portal SSO) menggunakan `aria` landmarks (`header`, `main`, `footer`, `nav`).
 - **Bahasa Melayu sahaja** (v3.6.0): Sistem menggunakan Bahasa Melayu secara eksklusif untuk semua antara muka pengguna. Language switcher telah dilumpuhkan dan semua komponen UI menggunakan `lang="ms"`. Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal sahaja. Komponen yang dilumpuhkan: `LanguageSwitcher`, `BilingualSupportService`, `SetLocale` middleware, `ictserve_locale` cookie (rujuk D15 v3.6.0).
 - Semua komponen diuji melalui suite E2E aksesibiliti serta audit prestasi (rujuk `tests/e2e/accessibility.comprehensive.spec.ts`, `tests/e2e/performance/core-web-vitals.spec.ts`).
 
@@ -374,7 +327,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 - Navigasi breadcrumb ringkas tanpa menu pengguna.
 - Borang berbilang langkah dengan status indicator.
-- Komponen tetingkap modal untuk status kelulusan (untuk tetamu) dengan tumpuan (focus trap) mematuhi ARIA.
+- Komponen tetingkap modal untuk status kelulusan (pengguna SSO) dengan tumpuan (focus trap) mematuhi ARIA.
 
 ### 9.3. Implementasi Bahasa (Language Implementation) - D15 v3.6.0
 
@@ -399,7 +352,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 
 ---
 
-## 10. Komunikasi Masa Nyata & Penyiaran (Real-time Communication & Broadcasting) - D16 v3.6.0
+## 10. Komunikasi Masa Nyata & Penyiaran (Real-time Communication & Broadcasting) - D16 v4.0
 
 ### 10.1. Seni Bina Penyiaran (Broadcasting Architecture)
 
@@ -408,39 +361,36 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **Penyedia Utama**: Laravel Reverb 1.6.3 sebagai WebSocket server rasmi Laravel
 - **Konfigurasi**: `BROADCAST_CONNECTION=reverb` dengan sokongan horizontal scaling via Redis
 - **Performance**: Dioptimumkan untuk 100+ concurrent connections dengan low latency
-- **Security**: Private channel authorization dengan token-based access untuk guests
+- **Security**: Private channel authorization berasaskan sesi SSO (Laravel auth) atau token bertanda masa untuk kelulusan yang tetap memerlukan `user_id` sah; **tiada saluran tetamu**.
 
-### 10.2. Strategi Saluran Dwi (Dual Channel Strategy)
+### 10.2. Strategi Saluran Authenticated
 
-**True Hybrid Architecture Support:**
+- **Pengguna Diautentikasi**: `private-user.{userId}` untuk notifikasi peribadi; `private-ticket.{ticketId}`, `private-loan.{loanId}`, `private-approval.{approvalId}` untuk status domain; `private-ai.{conversationId}` untuk AI streaming.
+- **Kawalan Akses**: Setiap saluran memerlukan `user_id` dan semakan kelayakan (HRMIS gred untuk kelulusan/eskalasi).
 
-- **Authenticated Users**: Listen pada `private-user.{userId}` untuk personalized notifications
-- **Guest Users**: Listen pada `private-ticket.{ticketUuid}` atau `private-loan.{loanUuid}` dengan status token authorization
-- **AI Conversations**: Listen pada `private-conversation.{conversationUuid}` untuk AI streaming responses
-
-### 10.3. Acara Penyiaran Sedia Ada (Broadcasting Events)
+### 10.3. Acara Penyiaran Sedia Ada (Authenticated Only)
 
 **Core System Events:**
 
-| Acara | Saluran Auth | Saluran Guest | Tujuan |
-|-------|-------------|---------------|---------|
-| `NotificationCreated` | `private-user.{id}` | `private-ticket.{uuid}` | Notifikasi baharu |
-| `StatusUpdated` | `private-user.{id}` | `private-ticket.{uuid}` | Kemaskini status |
-| `CommentPosted` | `private-user.{id}` | `private-submission.{type}.{id}` | Ulasan baharu |
-| `AssetReturnedDamaged` | `private-user.{id}` | `private-loan.{uuid}` | Aset rosak |
-| `EmailVerified` | `private-user.{id}` | N/A | Email disahkan |
-| `AccountLinked` | `private-user.{id}` | N/A | Akaun dipautkan |
+| Acara | Saluran Auth | Tujuan |
+|-------|--------------|--------|
+| `NotificationCreated` | `private-user.{id}` | Notifikasi baharu |
+| `StatusUpdated` | `private-user.{id}` / `private-ticket.{id}` | Kemaskini status |
+| `CommentPosted` | `private-user.{id}` / `private-ticket.{id}` | Ulasan baharu |
+| `AssetReturnedDamaged` | `private-user.{id}` / `private-loan.{id}` | Aset rosak |
+| `EmailVerified` | `private-user.{id}` | Email disahkan |
+| `AccountLinked` | `private-user.{id}` | Akaun dipautkan |
 
 **AI Real-time Events (D18 Integration):**
 
-| Acara AI | Saluran Auth | Saluran Guest | Tujuan |
-|----------|-------------|---------------|---------|
-| `AiStreamingStarted` | `private-user.{id}` | `private-conversation.{uuid}` | AI streaming dimulakan |
-| `AiStreamingChunk` | `private-user.{id}` | `private-conversation.{uuid}` | Chunk respons AI |
-| `AiStreamingCompleted` | `private-user.{id}` | `private-conversation.{uuid}` | AI streaming selesai |
-| `AiModelSwitched` | `private-user.{id}` | `private-conversation.{uuid}` | Model AI ditukar |
-| `AiWebSearchStarted` | `private-user.{id}` | `private-conversation.{uuid}` | Web search dimulakan |
-| `AiErrorOccurred` | `private-user.{id}` | `private-conversation.{uuid}` | Ralat AI berlaku |
+| Acara AI | Saluran Auth | Tujuan |
+|----------|--------------|--------|
+| `AiStreamingStarted` | `private-ai.{id}` | AI streaming dimulakan |
+| `AiStreamingChunk` | `private-ai.{id}` | Chunk respons AI |
+| `AiStreamingCompleted` | `private-ai.{id}` | AI streaming selesai |
+| `AiModelSwitched` | `private-ai.{id}` | Model AI ditukar |
+| `AiWebSearchStarted` | `private-ai.{id}` | Web search dimulakan |
+| `AiErrorOccurred` | `private-ai.{id}` | Ralat AI berlaku |
 
 ### 10.4. Integrasi Frontend (Frontend Integration)
 
@@ -451,21 +401,19 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **Event Handling**: Livewire v3 integration dengan `#[On]` attributes untuk real-time updates
 - **Error Handling**: Automatic reconnection dengan exponential backoff
 
-**JavaScript Implementation:**
+**JavaScript Implementation (Authenticated):**
 
 ```javascript
-// Authenticated users
 if (window.userId) {
   window.Echo.private(`user.${window.userId}`)
     .listen('.notification.created', handleNotification)
     .listen('.status.updated', updateStatus);
-}
 
-// Guest users dengan token authorization
-if (window.ticketUuid && window.statusToken) {
-  window.Echo.private(`ticket.${window.ticketUuid}`)
-    .listen('.notification.created', handleNotification)
-    .listen('.status.updated', updateStatus);
+  if (window.ticketId) {
+    window.Echo.private(`ticket.${window.ticketId}`)
+      .listen('.status.updated', updateStatus)
+      .listen('.comment.posted', handleComment);
+  }
 }
 ```
 
@@ -486,13 +434,13 @@ if (window.ticketUuid && window.statusToken) {
 
 **Core Application Jobs (5 jobs):**
 
-| Pekerjaan | Tujuan | Hybrid Support |
-|-----------|---------|----------------|
-| `SendTicketCreatedEmail` | Email pengesahan tiket | Conditional: DB+Email or Email-only |
-| `SendLoanApprovedEmail` | Email kelulusan pinjaman | Conditional: DB+Email or Email-only |
-| `SendAssetOverdueEmail` | Email peringatan tertunggak | Conditional: DB+Email or Email-only |
-| `RetryFailedEmail` | Retry email gagal | Email-only retry mechanism |
-| `ExportSubmissionsJob` | Export data submissions | Authenticated users only |
+| Pekerjaan | Tujuan | Nota |
+|-----------|--------|------|
+| `SendTicketCreatedEmail` | Email pengesahan tiket | SSO sahaja; rekod dalam notifications DB |
+| `SendLoanApprovedEmail` | Email kelulusan pinjaman | SSO sahaja; kelulusan sah selepas verifikasi HRMIS |
+| `SendAssetOverdueEmail` | Email peringatan tertunggak | SSO sahaja; disalurkan ke peminjam diautentikasi |
+| `RetryFailedEmail` | Retry email gagal | Mekanisme retry standard |
+| `ExportSubmissionsJob` | Export data submissions | Untuk pengguna diautentikasi sahaja |
 
 **Job Sistem (berdasarkan `app/Jobs/`):**
 
@@ -514,11 +462,11 @@ if (window.ticketUuid && window.statusToken) {
 
 ### 11.3. Notifikasi Bergilir (Queued Notifications)
 
-**Hybrid Notification Logic:**
+**SSO-Only Notification Logic:**
 
-- **Authenticated Users**: Database Notification + Email via `User::notify()`
-- **Guest Users**: Email Only via `Mail::to()->send()`
-- **Decision Tree**: Check `user_id` existence untuk determine notification channels
+- Semua notifikasi dihantar kepada pengguna diautentikasi (`user_id` wajib) melalui database notification + e-mel.
+- Kelulusan melalui pautan bertanda masa masih memerlukan verifikasi identiti/gred HRMIS sebelum tindakan disahkan.
+- Tiada mod e-mel sahaja kerana semua aliran memerlukan SSO.
 
 **Notification Types (25+ notifications):**
 
@@ -552,22 +500,27 @@ numprocs=2
 
 | Sistem                         | Tujuan                                       | Integrasi                                                                   |
 | ------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------- |
-| SMTP / GOV Mail                | Penghantaran e-mel tetamu & pautan kelulusan | Laravel queue + MOU BPM                                                     |
+| LDAP/Active Directory (Mandatori) | Identiti utama & SSO                        | Laravel auth + SSO; polisi kata laluan PKS 5.4.3; provisioning disegerak HRMIS |
+| HRMIS                          | Penyelarasan data staf (gred/bahagian)       | Sync atribut semasa login untuk kawalan kelayakan dan audit                 |
+| SMTP / GOV Mail                | Penghantaran e-mel & pautan kelulusan        | Laravel queue + MOU BPM                                                     |
 | SMS Gateway BPM                | Peringatan due date & OTP (opsyen)           | REST API (token service)                                                    |
 | MyIdentity (Opsyen Masa Depan) | Pengesahan identiti pegawai Gred 41          | Belum diaktifkan; memerlukan MAMPU clearance                                |
-| Google Workspace SSO (Opsyen)  | Log masuk menggunakan akaun Google @motac.gov.my | Laravel Socialite v5.x OAuth 2.0                                         |
-| API External (Future-Ready)    | Integrasi dengan aplikasi mobile/luaran      | Laravel Sanctum v4.0 token authentication                                   |
-| Tiada LDAP                     | Not applicable                               | Semua tetamu tanpa log masuk; admin Filament guna credential dalaman atau Google SSO |
+| Google Workspace SSO (Sekunder) | Log masuk alternatif (domain @motac.gov.my)  | Laravel Socialite v5.x; diaktifkan oleh `superuser`, tiada auto-registration |
+| API External (Future-Ready)    | Integrasi dengan aplikasi mobile/luaran      | Laravel Sanctum v4.0 token authentication (internal-first)                  |
 
-Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman ke jadual baharu dengan memetakan `staff_no` lama kepada metadata tetamu (rujuk D05 & D06). Tiada migrasi akaun pengguna.
+Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman ke jadual baharu dengan memetakan `staff_no` lama kepada `users.id` melalui HRMIS. Tiada konsep tetamu; semua rekod mesti dipautkan kepada pengguna sah.
 
 ---
 
 ## 13. Pematuhan Piawaian (Standards Compliance)
 
+- **PKS 5.2.1** – Akauntabiliti identiti: `user_id` wajib, SSO LDAP/AD + HRMIS auto-provisioning; tiada tetamu/akaun manual.
+- **PKS 9.2.1** – DLP wajib untuk semua permintaan AI; audit keputusan routing (Ollama vs Bedrock) dan amaran percubaan data sensitif ke awan.
+- **PKS 4.2** – Keutamaan MyGovCloud dan residensi data tempatan; laluan Ollama untuk data sensitif dengan log residensi.
+- **PKS 5.4.3** – Polisi kata laluan AD diguna pakai; 2FA TOTP untuk `superuser` Filament.
+- **PDPA 2010 & Audit 7 Tahun** – Dual-audit (owen-it + activitylog) dengan retention minimum 7 tahun.
 - **WCAG 2.2 AA** – Lihat `docs/D12_UI_UX_DESIGN_GUIDE.md`, `docs/D14_UI_UX_STYLE_GUIDE.md`, dan bukti ujian di `tests/e2e/ACCESSIBILITY_TEST_RESULTS.md`.
 - **Performance Optimisation** – Rujuk `docs/reference/performance-optimization-guide.md` serta ujian `tests/e2e/performance/core-web-vitals.spec.ts`.
-- **Security & Audit** – D09 (audit trail), D11 §8 (security design).
 - **Documentation Traceability** – D01 §9.3 memastikan semua perubahan direkod.
 - **MyGOV Digital Service Standards v2.1.0** – Bukti pematuhan UI/komponen Filament dan audit prestasi dirujuk dalam `docs/reference/FILAMENT_UPDATE_STATUS.md` serta `docs/reference/performance-optimization-guide.md`.
 
@@ -588,13 +541,13 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 - **Frontend**: Laravel served via Nginx/Apache, Vite build assets, HTTP/2, Brotli compression
 - **Backend**: PHP-FPM 8.2.12, Supervisor queue workers untuk notifikasi
 - **Database**: MySQL 8 dengan replikasi read-only (opsyen), backup automatik harian
-- **Object Storage**: MinIO/S3 untuk lampiran tetamu dengan polisi retention
+- **Object Storage**: MinIO/S3 untuk lampiran pengguna dengan polisi retention
 - **WebSocket**: Laravel Reverb untuk real-time communication
 
 ### 13a.2. Keselamatan Penempatan (Deployment Security)
 
 - Enforce HTTPS + HSTS
-- WAF menapis trafik robot/spam ke borang tetamu
+- WAF menapis trafik robot/spam ke borang SSO (portal/kiosk)
 - Secrets diurus melalui `.env` & Azure Key Vault (perancangan)
 - Audit log disalurkan ke SIEM BPM setiap 15 minit
 - Docker secrets management untuk sensitive data
@@ -608,23 +561,23 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 | Istilah                  | Takrif                                                                      |
 | ------------------------ | --------------------------------------------------------------------------- |
-| **Tetamu (Guest)**       | Pengguna awam yang mengisi borang tanpa log masuk.                          |
 | **Admin**                | Pegawai BPM yang memproses tiket & permohonan melalui Filament.             |
 | **Superuser**            | Pegawai pengurusan BPM yang mentadbir konfigurasi, keselamatan, dan audit.  |
-| **Signed Approval Link** | Pautan e-mel ber-token yang membolehkan kelulusan tanpa log masuk.          |
-| `resources/views/layouts/guest.blade.php`      | Layout utama untuk semua paparan tetamu.                                    |
+| **LDAP/AD SSO**          | Mekanisme autentikasi utama; semua pengguna mesti log masuk melalui AD.      |
+| **HRMIS Sync**           | Penyelarasan gred/bahagian pengguna semasa log masuk untuk kawalan kelayakan.|
+| **Signed Approval Link** | Pautan e-mel ber-token untuk kelulusan; sah selepas verifikasi HRMIS/AD.    |
+| **DLP Filtering Service**| Komponen yang mengklasifikasi data (PKS 9.2.1) sebelum pemprosesan AI.       |
 | **Livewire**             | Full-stack framework untuk dynamic interfaces dengan server-side rendering. |
 | **Volt**                 | Single-file Livewire components dengan simplified syntax.                   |
 | **Filament**             | Server-Driven UI (SDUI) framework untuk admin panel.                        |
 | **Reverb**               | Laravel WebSocket server untuk real-time communication.                     |
 | **Pulse**                | Laravel performance monitoring dashboard untuk admin/superuser.             |
 | **Sanctum**              | Laravel API token authentication system.                                    |
-| **Socialite**            | Laravel OAuth 2.0 library untuk Google Workspace SSO.                       |
+| **Socialite (Sekunder)** | Laravel OAuth 2.0 library untuk Google Workspace SSO (diaktifkan jika diluluskan). |
 | **API Token**            | Token Sanctum untuk akses API dengan abilities dan expiration.              |
 | **Broadcasting**         | Laravel real-time event system menggunakan WebSocket.                       |
 | **Queue Worker**         | Background process yang memproses queued jobs secara asinkron.              |
-| **Private Channel**      | WebSocket channel dengan authorization untuk authenticated/guest users.     |
-| **Dual Channel Strategy** | Hybrid approach: private-user.{id} untuk auth, private-ticket.{uuid} untuk guest. |
+| **Private Channel**      | WebSocket channel dengan authorization untuk pengguna diautentikasi.        |
 | **AI Streaming**         | Real-time AI response delivery menggunakan Server-Sent Events.              |
 | **Bahasa Melayu Sahaja** | Monolingual implementation - UI menggunakan Bahasa Melayu eksklusif.        |
 
@@ -663,10 +616,8 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 ## Kesimpulan (Conclusion)
 
-Peralihan kepada seni bina hybrid (guest-first + portal staf) memastikan ICTServe memenuhi mandat BPM untuk menyediakan perkhidmatan digital yang boleh diakses umum sambil mengekalkan kawalan ketat di peringkat pentadbiran. Staf MOTAC yang berdaftar boleh log masuk melalui Laravel Breeze atau Google Workspace SSO (opsyen) untuk menggunakan My Dashboard, manakala tetamu kekal menggunakan borang tetamu sebagai pintu masuk utama. Akaun pentadbir kekal terhad kepada `admin` dan `superuser` dengan 2FA berasaskan TOTP untuk `superuser`, dan semua interaksi penting direkodkan dalam jejak audit.
+Seni bina **SSO-Only** berasaskan LDAP/AD + HRMIS memastikan setiap rekod dipautkan kepada `user_id` yang sah, mematuhi **PKS 5.2.1** dan menyingkirkan aliran tetamu. Integrasi AI hibrid kini **DLP-first (PKS 9.2.1)** dengan laluan sensitif → Ollama (on-prem) dan awam → Bedrock melalui gateway diaudit, sejajar dengan **PKS 4.2** dan keutamaan MyGovCloud. Polisi kata laluan dan 2FA mengikuti **PKS 5.4.3**, manakala audit dwilapis dikekalkan selama 7 tahun.
 
-Sistem kini dilengkapi dengan Laravel Pulse untuk pemantauan prestasi masa nyata, Laravel Sanctum untuk API authentication (future-ready untuk aplikasi mobile), dan Laravel Socialite untuk Google Workspace SSO sebagai alternatif log masuk.
+Laravel Pulse, Reverb, Horizon, dan Sanctum terus menyokong operasi dalaman yang dipantau dengan rapi; Google Workspace SSO dikekalkan sebagai opsyen sekunder yang diaktifkan hanya dengan kelulusan `superuser`. Antaramuka kekal monolingual Bahasa Melayu (v3.6.0) dengan pematuhan WCAG 2.2 AA.
 
-**Kemaskini v3.6.0** memperkenalkan implementasi **Bahasa Melayu sahaja** (D15) dengan language switcher dilumpuhkan, **Laravel Reverb WebSocket** (D16) untuk komunikasi masa nyata dengan dual channel strategy, dan **sistem queue management** (D17) yang komprehensif dengan sokongan 29+ jenis pekerjaan termasuk 12 AI-specific jobs. Real-time broadcasting menyokong AI streaming responses, notification updates, dan status changes untuk kedua-dua authenticated users dan guests.
-
-Kesemua ciri baharu ini menyokong visi Digital MOTAC 2025 dan pematuhan MyGOV Digital Service Standards v2.1.0 dengan penekanan kepada pengalaman pengguna yang responsif, komunikasi masa nyata, dan pemprosesan latar belakang yang cekap.
+Keseluruhan kemaskini v4.0 ini menegaskan kedudukan ICTServe sebagai platform intranet BPM MOTAC yang patuh PKS, berasaskan SSO, berjejak audit penuh, dan bersedia untuk pengembangan terkawal melalui MyGovCloud.

@@ -1,8 +1,8 @@
 # Pelan Pembangunan Sistem (System Development Plan - SDP)
 
 **Sistem ICTServe**  
-**Versi:** 3.6.1 (SemVer)  
-**Tarikh Kemaskini:** 17 Disember 2025  
+**Versi:** 4.0.0 (SemVer)  
+**Tarikh Kemaskini:** 24 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.6.1                                     |
-| **Tarikh Kemaskini** | 17 Disember 2025                          |
+| **Versi**            | 4.0.0                                     |
+| **Tarikh Kemaskini** | 24 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO/IEC/IEEE 12207, ISO/IEC/IEEE 15289:2019, ISO/IEC TS 24748-6, IEEE 1016:2009 |
@@ -27,8 +27,9 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis     |
-| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                                                                                   | Penulis     |
+| ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 4.0.0 | 24 Disember 2025 | **PKS v4.0 (SSO-Only, DLP-First, Intranet)**: Nyahaktif self-registration/guest/hybrid flows; hanya SSO LDAP/AD + auto-provision HRMIS (accountability PKS 5.2.1, user_id wajib). Google Workspace SSO dijadikan sekunder/disabled-by-default (opt-in ops). Reverb auth-only; intranet/MyGovCloud sahaja (PKS 4.2). **AI & DLP**: DLP-first routing (PKS 9.2.1) — data sensitif → Ollama tempatan; awam → Bedrock melalui gateway dengan audit/residensi log. **Password & Security**: Dasar kata laluan ikut polisi AD (PKS 5.4.3); BM-only UI + WCAG 2.2 AA; logging audit jejak pengguna. Jadual, skop, risiko, pematuhan dikemas kini kepada SSO-only/DLP-first. | Pasukan BPM |
 | 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. **Cloud Hybrid AI Integration**: Kemaskini pelan pembangunan dengan integrasi D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah fasa pembangunan AI: model routing pintar, streaming responses, web-augmented responses, conversation management. Kemaskini metodologi pembangunan dengan AI-enhanced workflows dan testing strategies. Cross-reference D18 v1.0.1. | Pasukan BPM |
 | 3.6.0 | 8 Disember 2025  | **Penyeragaman Dokumentasi v3.6.0:** Bahasa Melayu sahaja untuk antara muka pengguna. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Penyeragaman versi semua dokumen D00-D18 kepada v3.6.0 dengan integrasi Cloud Hybrid AI (D18 v1.0.0). Penyelarasan dokumentasi lengkap. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). Penambahan Laravel Pulse v1.3.0 (performance monitoring), Laravel Sanctum v4.0 (API authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen). Spec files: 38 requirements, 100 correctness properties, 19 implementation phases. | Pasukan BPM |
@@ -70,7 +71,7 @@ Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembanguna
 
 - Sistem web berasaskan **Laravel 12.43.1** dengan **Livewire 3.7.3**, **Filament 4.3.1**, dan **Volt 1.10.1** untuk pengurusan tiket aduan ICT & permohonan pinjaman aset ICT.
 - **Pengguna Sasaran:** Staf MOTAC, Pegawai ICT BPM, Ketua Bahagian, Admin BPM.
-- **Platform:** Web-based intranet MOTAC (akses dalaman sahaja).
+- **Platform:** Web-based intranet MOTAC / MyGovCloud (akses dalaman sahaja; tiada akses awam) selari PKS 4.2.
 - **Stack Teknologi:** PHP 8.2.12, MySQL 8.0, Alpine.js 3, Tailwind CSS 4.1.18, Laravel Reverb 1.6.3, Laravel Pulse 1.4.7, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, Laravel MCP 0.3.4, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0.
 
 ### 2.2. Modul Utama
@@ -78,13 +79,13 @@ Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembanguna
 1. **Helpdesk Ticketing** - Pengurusan aduan dan masalah ICT dengan internal comments
 2. **Asset Loan** - Permohonan dan pengurusan pinjaman peralatan ICT dengan dual approval
 3. **Inventory Management** - Pengurusan inventori aset ICT
-4. **Authentication & Authorization** - Hybrid login: Staff optional (Laravel Breeze), Admin/Superuser required (Laravel Breeze 2.3.8), role-based access control (Spatie Permissions), Google Workspace SSO (opsyen via Laravel Socialite v5.x), API token authentication (Laravel Sanctum v4.0).
+4. **Authentication & Authorization (SSO-Only)** - SSO LDAP/AD (intranet) dengan auto-provision HRMIS; tiada self-registration/guest. Role-based access control (Spatie Permissions). Google Workspace SSO hanya pilihan sekunder (disabled by default). Pematuhan PKS 5.2.1 (akauntabiliti, `user_id` wajib) dan dasar kata laluan PKS 5.4.3 (turut AD).
 5. **Reporting & Dashboard** - Laporan dan analitik dengan Filament widgets
-6. **Audit Trail** - Logging dan audit compliance dengan owen-it/laravel-auditing
-7. **Real-time Communication** - WebSocket dengan Laravel Reverb 1.6.3 dan Laravel Echo 2.2.6
+6. **Audit Trail** - Logging dan audit compliance dengan owen-it/laravel-auditing + activity log; semua rekod mesti berangka `user_id` (non-null) untuk jejak akauntabiliti.
+7. **Real-time Communication** - WebSocket dengan Laravel Reverb 1.6.3 (auth-only channels; tiada tetamu/anon) dan Laravel Echo 2.2.6 pada intranet/MyGovCloud.
 8. **Performance Monitoring** - Laravel Pulse v1.4.7 untuk real-time performance dashboard (admin/superuser)
-9. **API Authentication** - Laravel Sanctum v4.2.1 untuk token-based API access (future mobile/external integrations)
-10. **Cloud Hybrid AI** - Ollama (local) + AWS Bedrock (cloud) untuk FAQ Bot, Document Analysis, Auto-Reply (D18 v1.0.0)
+9. **API Authentication** - Laravel Sanctum v4.2.1 untuk token-based API access (system-to-system). Token diikat kepada identiti SSO, abilities terhad, rate limiting 60/min.
+10. **AI & DLP** - DLP-first: PIIDetection & data classification; data sensitif→Ollama tempatan; data awam→AWS Bedrock melalui gateway dengan audit/residensi log. BM-only UI, WCAG 2.2 AA.
 
 **Rujukan:** Lihat **[D00_SYSTEM_OVERVIEW.md]** untuk ringkasan modul dan **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** untuk spesifikasi fungsional lengkap.
 
@@ -117,24 +118,16 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 
 ### 4.2. Rekabentuk Sistem (System Design)
 
-- **Architecture**: MVC + SDUI (Server-Driven UI) dengan Filament 4.3.1, modular, scalable.
-- **Database Design**: Entity Relationship Diagram (ERD) untuk users, tickets, assets, loans. MySQL 8.0 dengan foreign key constraints.
+- **Architecture**: MVC + SDUI (Server-Driven UI) dengan Filament 4.3.1, modular, scalable; dihos intranet/MyGovCloud (PKS 4.2) dengan Reverb auth-only & DLP-first AI routing.
+- **Database Design**: Entity Relationship Diagram (ERD) untuk users, tickets, assets, loans dengan `user_id` NOT NULL (tiada tetamu). MySQL 8.0 dengan foreign key constraints.
 - **Interface Design**: Wireframe untuk semua modul utama, responsive dengan Tailwind CSS 4.1.18, komponen Filament, dan Alpine.js 3.
-- **Real-time Design**: WebSocket architecture dengan Laravel Reverb untuk live updates.
+- **Real-time Design**: WebSocket architecture dengan Laravel Reverb (auth-only channels, tiada guest/anon, intranet/MyGovCloud sahaja) untuk live updates.
 
 ### 4.3. Pembangunan (Implementation)
 
 - **Setup Environment**: Docker Compose untuk development (app + db containers), Vite 7.0.7 untuk HMR.
-- **Authentication**: Laravel Breeze 2.3.8 untuk staff, admin, dan superuser (akaun pangkalan data).
-  - **Self-Registration**: Staf boleh mendaftar dengan e-mel @motac.gov.my
-  - **Login Flexibility**: E-mel penuh ATAU nama pengguna pendek (selepas pendaftaran)
-  - **Email Verification**: Diperlukan sebelum akses penuh
-  - **Google Workspace SSO (Opsyen)**: Laravel Socialite v5.x untuk OAuth 2.0 dengan Google (@motac.gov.my sahaja)
-  - Spatie Laravel Permission 6.23 untuk role-based access control
-- **API Authentication**: Laravel Sanctum v4.0 untuk token-based API access
-  - Configurable abilities: `read:tickets`, `write:tickets`, `read:loans`, `write:loans`, `admin:all`
-  - Token expiration management dan usage logging
-  - Rate limiting 60 requests/minute untuk API endpoints
+- **Authentication (SSO-Only)**: Integrasi SSO LDAP/AD (intranet) dengan auto-provision HRMIS; tiada Laravel Breeze self-registration atau akaun pangkalan data. Google Workspace SSO kekal opsyen sekunder (disabled by default, domain @motac.gov.my sahaja). Pematuhan PKS 5.2.1: semua rekod mesti berangka `user_id` (non-null). Dasar kata laluan ikut AD (PKS 5.4.3). Role-based access control dengan Spatie Laravel Permission 6.23.
+- **API Authentication**: Laravel Sanctum v4.2.1 untuk token-based API access (system-to-system sahaja), diikat kepada identiti SSO. Abilities terhad (`read:tickets`, `write:tickets`, `read:loans`, `write:loans`, `admin:all`), audit + rate limiting 60/min.
 - **Laravel 12 Architecture**:
   - Struktur ringkas (Laravel 12): Tiada Kernel HTTP dalam `app/`, middleware didaftarkan dalam `bootstrap/app.php`
   - Struktur ringkas (Laravel 12): Tiada Kernel Console dalam `app/`, commands auto-register dari `app/Console/Commands/`
@@ -148,7 +141,7 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 - **Livewire Components**: Reactive components dengan Livewire 3.7.3 + Volt 1.10.1 untuk single-file components.
 - **Filament Resources**: Admin panel dengan Filament 4.3.1 untuk CRUD operations.
 - **Relational Models**: Eloquent relationships (User, HelpdeskTicket, HelpdeskComment, LoanApplication), Soft Deletes, UUID/ULID support.
-- **Real-time Features**: Laravel Reverb 1.6.3 + Laravel Echo 2.2.6 untuk WebSocket communication.
+- **Real-time Features**: Laravel Reverb 1.6.3 + Laravel Echo 2.2.6 untuk WebSocket communication (auth-only channels; tiada tetamu/anon; deployed intranet/MyGovCloud sahaja).
 - **Audit Trail (Dual System)**:
   - `owen-it/laravel-auditing` v14.x untuk field-level audit trail (compliance, PDPA)
   - `spatie/laravel-activitylog` v4.x untuk user activity logging (operations, dashboard)
@@ -164,6 +157,7 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 
 - **Unit Testing**: PHPUnit 11.5.46 untuk model, service classes, validation.
 - **Feature Testing**: Laravel testing untuk workflow penuh borang aduan & pinjaman.
+- **Security & DLP Testing**: SSO/LDAP flows, AD password policy, DLP gateway classification (sensitif→Ollama, awam→Bedrock), Reverb auth-only channels.
 - **E2E Testing**: Playwright untuk end-to-end testing dengan browser automation.
 - **Accessibility Testing**: Axe-core 4.11.0 untuk WCAG 2.2 AA compliance.
 - **Static Analysis**: Larastan 3.8.1 (PHPStan untuk Laravel) untuk type safety.
@@ -182,7 +176,7 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
   - Vite asset optimization dengan code splitting
   - Database query optimization dengan eager loading
 - **Log & Monitoring**: storage/logs, audit trail dengan owen-it/laravel-auditing, backup DB automatik.
-- **Security**: HTTPS enforcement, CSRF protection, rate limiting, input sanitization.
+- **Security**: HTTPS enforcement, CSRF protection, rate limiting, input sanitization, data residency intranet/MyGovCloud (PKS 4.2), DLP gateway enforcement sebelum egress/Bedrock, audit trail aktif.
 
 ---
 
@@ -190,11 +184,13 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 
 - **Pematuhan ISO/IEC/IEEE 12207**: Setiap fasa documented & traceable.
 - **Pematuhan WCAG 2.2 AA**: Accessibility compliance untuk semua UI components.
-- **Security**:
+- **Security (SSO/DLP-first)**:
+  - SSO LDAP/AD sahaja; tiada self-registration/guest; `user_id` NOT NULL enforced untuk audit (PKS 5.2.1)
   - CSRF protection untuk semua forms
   - Input validation dengan Laravel Form Requests
-  - Role-based access control dengan Spatie Laravel Permission 6.23
-  - Rate limiting untuk API endpoints
+  - Role-based access control dengan Spatie Laravel Permission 6.23 + dasar kata laluan AD (PKS 5.4.3)
+  - DLP gateway sebelum AI/egress (PKS 9.2.1); Reverb auth-only pada intranet/MyGovCloud (PKS 4.2)
+  - Rate limiting untuk API endpoints dengan usage logging
   - Secure environment configuration
 - **Code Standards**:
   - PSR-12 compliance dengan Laravel Pint 1.26.0
@@ -219,24 +215,25 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 
 ## 6. JADUAL & MILESTONE (Schedule & Milestones)
 
-| Fasa                 | Tempoh     | Deliverable                                          |
-| -------------------- | ---------- | ---------------------------------------------------- |
-| Inisiasi & Keperluan | 2 minggu   | D02, D03, ERD                                        |
-| Rekabentuk Sistem    | 2 minggu   | D04, Wireframe, Database Schema                      |
-| Setup Development    | 1 minggu   | Docker environment, CI/CD pipeline                   |
-| Pembangunan Core     | 4 minggu   | Authentication, Models, Migrations                   |
-| Pembangunan Modules  | 6 minggu   | Helpdesk, Asset Loan, Filament Admin                 |
-| Real-time Features   | 2 minggu   | Laravel Reverb integration                           |
-| Performance & API    | 2 minggu   | Laravel Pulse, Sanctum API, Google SSO (opsyen)      |
-| UI/UX Implementation | 3 minggu   | Livewire components, Tailwind styling, Accessibility |
-| Ujian & UAT          | 3 minggu   | PHPUnit, Playwright, Accessibility tests, UAT        |
-| Documentation        | 2 minggu   | D09-D14, User Manual, API docs                       |
-| Deployment           | 1 minggu   | Production deployment, monitoring setup              |
-| Maintenance          | Berterusan | Patch, backup, support, monitoring                   |
+| Fasa                 | Tempoh     | Deliverable                                                                                                  |
+| -------------------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
+| Inisiasi & Keperluan | 2 minggu   | D02, D03, ERD, penjajaran PKS (5.2.1 akauntabiliti, 9.2.1 DLP, 4.2 data residency, 5.4.3 kata laluan AD)    |
+| Rekabentuk Sistem    | 2 minggu   | D04, Wireframe, Database Schema (`user_id` NOT NULL, tiada guest), arkitektur SSO-only & DLP-first           |
+| Setup Development    | 1 minggu   | Docker environment, CI/CD pipeline, sambungan SSO/LDAP/HRMIS untuk staging                                   |
+| Pembangunan Core     | 4 minggu   | SSO LDAP/AD + auto-provision HRMIS, RBAC, dasar kata laluan AD (PKS 5.4.3)                                    |
+| Pembangunan Modules  | 6 minggu   | Helpdesk, Asset Loan, Filament Admin (auth-only)                                                              |
+| Real-time Features   | 2 minggu   | Laravel Reverb auth-only (intranet/MyGovCloud), Laravel Echo                                                  |
+| Performance & API    | 2 minggu   | Laravel Pulse, Sanctum system-to-system tokens (rate limiting, audit)                                         |
+| DLP & AI Guardrails  | 2 minggu   | DLP Gateway, PIIDetectionService, ModelRouter (Ollama-first; Bedrock via gateway dengan audit/residensi log)  |
+| UI/UX Implementation | 3 minggu   | Livewire components, Tailwind styling, BM-only UI, WCAG 2.2 AA                                                |
+| Ujian & UAT          | 3 minggu   | PHPUnit, Playwright, Accessibility tests, UAT, regresi SSO/DLP                                                |
+| Documentation        | 2 minggu   | D09-D14, User Manual, API docs                                                                                |
+| Deployment           | 1 minggu   | Production deployment (intranet/MyGovCloud), monitoring setup                                                 |
+| Maintenance          | Berterusan | Patch, backup, support, monitoring                                                                            |
 
 ### 6.1. Fasa Pembangunan AI (AI Development Phases)
 
-> **Trace:** D18 v1.0.1 (Cloud Hybrid AI Architecture), 13 fasa pelaksanaan komprehensif
+> **Trace:** D18 v1.0.1 (Cloud Hybrid AI Architecture) dengan DLP-first (PKS 9.2.1) — klasifikasi & logging sebelum egress ke Bedrock, 13 fasa pelaksanaan komprehensif
 
 | Fasa AI              | Tempoh     | Deliverable                                          | Status      |
 | -------------------- | ---------- | ---------------------------------------------------- | ----------- |
@@ -246,13 +243,13 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 | **Fasa 4:** Background Jobs | 1 minggu | DocumentIngestJob, EmbeddingJob, queue setup | ✅ Selesai |
 | **Fasa 5:** API Endpoints | 1 minggu | FaqController, DocumentController, routes | ✅ Selesai |
 | **Fasa 6:** Filament Admin | 1 minggu | FaqResource, DocumentResource, widgets | ✅ Selesai |
-| **Fasa 7:** Security & Compliance | 1 minggu | PIIDetectionService, Policies, audit | ✅ Selesai |
+| **Fasa 7:** Security & Compliance | 1 minggu | PIIDetectionService, DLP Gateway rules (PKS 9.2.1), audit & residency log | ✅ Selesai |
 | **Fasa 8:** Livewire Components | 1 minggu | FaqBot, FaqBotWidget, chat interface | ✅ Selesai |
 | **Fasa 9:** Email Notifications | 1 minggu | ApprovalEmailToken, signed URLs | ✅ Selesai |
 | **Fasa 10:** Performance Optimization | 1 minggu | Redis caching, Laravel Pulse integration | ✅ Selesai |
 | **Fasa 11:** Testing & Documentation | 1 minggu | PHPUnit 12 tests, API documentation | ✅ Selesai |
 | **Fasa 12:** Deployment & Monitoring | 1 minggu | Health checks, alerting, production setup | ✅ Selesai |
-| **Fasa 13:** Cloud Hybrid AI (Bedrock) | 2 minggu | BedrockService, ModelRouter, hybrid responses | ✅ Selesai |
+| **Fasa 13:** Cloud Hybrid AI (Bedrock via DLP Gateway) | 2 minggu | BedrockService, ModelRouter (non-sensitif sahaja), audit/residensi log | ✅ Selesai |
 
 **Total Tempoh AI:** 14 minggu (termasuk dalam jadual utama)
 
@@ -260,29 +257,27 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 
 ## 7. RISIKO & MITIGASI (Risks & Mitigation)
 
-| Risiko                        | Strategi Mitigasi                                     |
-| ----------------------------- | ----------------------------------------------------- |
-| Kelewatan keperluan pengguna  | Weekly review, early prototype dengan Livewire        |
-| Perubahan scope               | Change request & impact analysis, SemVer              |
-| Isu integrasi sistem legacy   | Early integration testing, API documentation          |
-| Kerosakan/kehilangan data     | Automated backup, audit trail, soft deletes           |
-| Masalah keselamatan           | Security audit, dependency updates, Larastan analysis |
-| Kekurangan dokumentasi        | Dedicated documentation phase (D00-D14)               |
-| Performance issues            | Load testing, query optimization, caching             |
-| Accessibility non-compliance  | Automated Axe-core testing, manual WCAG audit         |
-| Docker environment issues     | Documented setup scripts, fallback to manual setup    |
-| Real-time connection failures | Graceful degradation, polling fallback                |
-| API token misuse              | Rate limiting, token expiration, usage logging        |
-| Google SSO unavailability     | Fallback to Laravel Breeze login                      |
-| Performance monitoring gaps   | Laravel Pulse dengan 7-day retention, alerts          |
-| **AI Service Failures**       | **Multi-system fallback: Ollama → Bedrock → static FAQ** |
-| **AWS Bedrock Cost Overrun**   | **Cost monitoring, rate limiting, Ollama prioritization** |
-| **Ollama Server Crashes**      | **Health monitoring, auto-restart, graceful degradation** |
-| **Model Access Denied**        | **Inference profile format, model access verification** |
-| **Data Residency Violations**  | **Automatic data classification, local-first processing** |
-| **AI Response Quality Issues** | **Content filtering, confidence scoring, human review** |
-| **Vector Embedding Failures**  | **Fallback to keyword search, embedding regeneration** |
-| **MCP Server Integration**      | **Standardized interface, error handling, monitoring** |
+| Risiko                                   | Strategi Mitigasi                                                                                     |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Kelewatan keperluan pengguna             | Weekly review, early prototype dengan Livewire                                                        |
+| Perubahan scope                          | Change request & impact analysis, SemVer                                                              |
+| Isu integrasi sistem legacy              | Early integration testing, API documentation                                                          |
+| Kerosakan/kehilangan data                | Automated backup, audit trail, soft deletes                                                           |
+| Masalah keselamatan                      | Security audit, dependency updates, Larastan analysis; enforce AD password policy (PKS 5.4.3)         |
+| Kekurangan dokumentasi                   | Dedicated documentation phase (D00-D14)                                                               |
+| Performance issues                       | Load testing, query optimization, caching                                                             |
+| Accessibility non-compliance             | Automated Axe-core testing, manual WCAG audit                                                         |
+| Docker environment issues                | Documented setup scripts, fallback to manual setup                                                    |
+| Real-time connection failures            | Graceful degradation, polling fallback; Reverb auth-only hardening                                    |
+| API token misuse                         | Rate limiting, token expiration, usage logging, least-privilege abilities                             |
+| SSO/LDAP outage                          | Fail-safe login banner; allow request capture offline; monitor LDAP health and alerting               |
+| Audit gap (`user_id` null)               | DB constraint `user_id` NOT NULL; migration to populate legacy; request rejection tanpa identiti       |
+| DLP misclassification/latency            | Manual override queue; caching classification; clear error messaging                                   |
+| Data residency violations (PKS 4.2)      | DLP gateway, residency logging, block egress ke Bedrock jika sensitif                                 |
+| AWS Bedrock cost overrun                 | Cost monitoring, rate limiting, Ollama-first routing                                                  |
+| AI Service Failures                      | Multi-system fallback: Ollama → Bedrock → static FAQ                                                  |
+| Model access denied (Bedrock)            | Inference profile validation, pre-flight health checks                                                |
+| Vector embedding failures                | Fallback ke keyword search, embedding regeneration                                                    |
 
 ---
 
@@ -294,6 +289,10 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 - **ISO/IEC/IEEE 12207**: Software lifecycle processes
 - **ISO 8000**: Data quality
 - **ISO/IEC 27701**: Privacy information management
+- **PKS 5.2.1**: Akauntabiliti & identiti sah (`user_id` wajib, audit trail)
+- **PKS 9.2.1**: DLP-first untuk data sensitif sebelum egress/AI
+- **PKS 4.2**: Kedaulatan data (intranet/MyGovCloud, tiada public internet)
+- **PKS 5.4.3**: Dasar kata laluan AD (complexity, rotation, lockout)
 
 ### 8.2. Proses Kawalan Kualiti
 
