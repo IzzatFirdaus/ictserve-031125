@@ -2,9 +2,9 @@
 
 ## Overview
 
-This design document outlines the integration of Percy visual testing platform with the ICTServe Laravel application. The solution provides comprehensive visual regression testing capabilities for both Playwright and Laravel Dusk test frameworks, enabling automated detection of UI changes and visual regressions across different browsers and viewport sizes.
+This design document outlines the integration of Percy visual testing platform with the ICTServe v3.6.1 Laravel application. The solution provides comprehensive visual regression testing capabilities for the existing Playwright 1.56.1 test framework, enabling automated detection of UI changes and visual regressions across different browsers and viewport sizes.
 
-The integration leverages Percy's modern CLI-based architecture and supports both standalone Percy testing and Percy on Automate for enhanced cross-browser testing capabilities.
+The integration leverages Percy's modern CLI-based architecture and supports both standalone Percy testing and Percy on Automate for enhanced cross-browser testing capabilities. The design aligns with ICTServe's True Hybrid Architecture, supporting both authenticated and guest user workflows, and integrates seamlessly with the existing comprehensive E2E test suite.
 
 ## Architecture
 
@@ -12,23 +12,32 @@ The integration leverages Percy's modern CLI-based architecture and supports bot
 
 ```mermaid
 graph TB
-    subgraph "Development Environment"
+    subgraph "ICTServe v3.6.1 Development Environment"
         DEV[Developer]
-        TESTS[Test Suites]
+        TESTS[E2E Test Suite - 16+ Files]
     end
     
-    subgraph "Test Frameworks"
-        PW[Playwright Tests]
-        DUSK[Laravel Dusk Tests]
+    subgraph "Laravel 12.43.1 Application Stack"
+        LV[Livewire 3.7.3 Components]
+        FIL[Filament 4.3.1 Admin]
+        HYBRID[True Hybrid Architecture]
+        BM[Bahasa Melayu Interface]
+    end
+    
+    subgraph "Playwright 1.56.1 Test Framework"
+        PW[Existing Playwright Tests]
+        ACC[Accessibility Tests]
+        PERF[Performance Tests]
+        CROSS[Cross-Browser Tests]
     end
     
     subgraph "Percy Integration Layer"
         CLI[Percy CLI]
         PWI[Playwright Integration]
-        DI[Dusk Integration]
+        CONFIG[v3.6.1 Configuration]
     end
     
-    subgraph "BrowserStack Platform"
+    subgraph "BrowserStack MCP Platform"
         BS_API[BrowserStack API]
         BS_DEVICES[Real Devices]
         BS_TM[Test Management]
@@ -48,11 +57,14 @@ graph TB
     
     DEV --> TESTS
     TESTS --> PW
-    TESTS --> DUSK
+    TESTS --> ACC
+    TESTS --> PERF
+    TESTS --> CROSS
     PW --> PWI
-    DUSK --> DI
+    ACC --> PWI
+    PERF --> PWI
+    CROSS --> PWI
     PWI --> CLI
-    DI --> CLI
     CLI --> API
     CLI --> BS_API
     API --> DASH
@@ -62,6 +74,10 @@ graph TB
     BS_API --> BS_A11Y
     GHA --> CLI
     ENV --> CLI
+    LV --> PW
+    FIL --> PW
+    HYBRID --> PW
+    BM --> PW
 ```
 
 ### Component Architecture
@@ -118,14 +134,15 @@ module.exports = {
 
 ### Playwright Integration Component
 
-**Purpose**: Integrate Percy visual testing with existing Playwright test suite
-**Dependencies**: `@percy/playwright`, `@playwright/test`
+**Purpose**: Integrate Percy visual testing with existing Playwright 1.56.1 test suite
+**Dependencies**: `@percy/playwright`, `@playwright/test`, existing E2E test infrastructure
 
 **Key Functions**:
 
-- Snapshot capture during Playwright tests
+- Snapshot capture during existing Playwright tests
 - Custom snapshot naming and configuration
 - Integration with existing test workflows
+- Support for ICTServe's True Hybrid Architecture testing
 
 **Installation**:
 
@@ -138,56 +155,113 @@ npm install --save-dev @percy/playwright
 ```typescript
 import { percySnapshot } from '@percy/playwright';
 
-// Basic snapshot
-await percySnapshot(page, 'Homepage');
+// Basic snapshot for existing tests
+await percySnapshot(page, 'Dashboard - Authenticated User');
 
-// Advanced snapshot with options
-await percySnapshot(page, 'Login Form', {
-  widths: [768, 1280],
+// Advanced snapshot with v3.6.1 specific options
+await percySnapshot(page, 'Helpdesk Form - Guest User', {
+  widths: [375, 768, 1280, 1920],
   minHeight: 800,
-  percyCSS: '.ads { display: none; }',
+  percyCSS: '.dynamic-timestamp { display: none; }',
   scope: '#main-content'
+});
+
+// Bahasa Melayu interface testing
+await percySnapshot(page, 'Borang Helpdesk - Bahasa Melayu', {
+  widths: [768, 1280],
+  percyCSS: '.language-switcher { display: none; }'
 });
 ```
 
-### Laravel Dusk Integration Component
+### Existing Test Integration Component
 
-**Purpose**: Extend Laravel Dusk with Percy visual testing capabilities
-**Dependencies**: `laravel/dusk`, `stechstudio/laravel-visual-testing`
+**Purpose**: Integrate Percy visual testing with existing ICTServe v3.6.1 Playwright test suite
+**Dependencies**: Existing Playwright tests, Percy CLI, `@percy/playwright`
 
 **Key Functions**:
 
-- Snapshot capture during Dusk browser tests
-- Laravel-specific configuration management
-- Integration with existing Dusk test patterns
+- Enhance existing responsive layout tests with visual validation
+- Add visual snapshots to form testing workflows
+- Replace basic screenshots with Percy visual comparisons
+- Integrate visual testing with accessibility compliance verification
+- Add cross-browser visual consistency testing
+- Support True Hybrid Architecture testing (authenticated + guest workflows)
+- Handle Bahasa Melayu interface visual validation
 
-**Installation**:
+**Integration Strategy**:
 
-```bash
-composer require --dev laravel/dusk
-composer require --dev stechstudio/laravel-visual-testing
-npm install --save-dev @percy/agent
+```typescript
+// Example: Enhanced dashboard test with Percy for v3.6.1
+import { percySnapshot } from '@percy/playwright';
+import { test, expect } from './fixtures/ictserve-fixtures';
+
+test('01 - Mobile: Single column layout with Percy', async ({ authenticatedPage, staffDashboardPage }) => {
+    await authenticatedPage.setViewportSize({ width: 375, height: 667 });
+    await staffDashboardPage.goto();
+    await staffDashboardPage.verifyDashboardLoaded();
+
+    // Existing functionality validation
+    const statsGrid = authenticatedPage.locator('[data-testid="dashboard-stats-grid"]');
+    await expect.soft(statsGrid).toBeVisible();
+
+    // Enhanced with Percy visual validation for v3.6.1
+    await percySnapshot(authenticatedPage, 'Dashboard Mobile Layout - v3.6.1', {
+        widths: [375],
+        minHeight: 667,
+        percyCSS: `
+            .dynamic-timestamp { display: none !important; }
+            .language-switcher { display: none !important; }
+        `
+    });
+});
+
+// Example: Hybrid Architecture testing
+test('Guest vs Authenticated User Visual Comparison', async ({ page }) => {
+    // Test guest workflow
+    await page.goto('/helpdesk');
+    await percySnapshot(page, 'Helpdesk Form - Guest User', {
+        widths: [768, 1280],
+        percyCSS: '.dynamic-content { display: none !important; }'
+    });
+    
+    // Test authenticated workflow (if applicable)
+    // Implementation would depend on authentication state
+});
 ```
 
-**Interface**:
+**Test Enhancement Patterns**:
 
-```php
-// In Dusk test
-$browser->visit('/dashboard')
-    ->snapshot('Dashboard Overview');
+- **Responsive Tests**: Add Percy snapshots at different viewport sizes
+- **Form Tests**: Capture visual states before/after form interactions
+- **Flow Tests**: Add visual checkpoints at key user journey steps
+- **Accessibility Tests**: Combine axe-core with Percy visual compliance
+- **Cross-browser Tests**: Add Percy visual consistency validation
+- **Hybrid Architecture Tests**: Test both guest and authenticated user interfaces
+- **Bahasa Melayu Tests**: Validate Bahasa Melayu interface consistency
 
-// With options
-$browser->visit('/profile')
-    ->snapshot('User Profile', [
-        'widths' => [768, 1024, 1280],
-        'minHeight' => 800
-    ]);
-```
+**Existing Test Files to Enhance**:
 
-### Configuration Management Component
+- `dashboard.spec.ts`: Responsive layout testing with visual validation
+- `helpdesk.spec.ts`: Form testing with visual state capture
+- `loan-module.spec.ts`: Application flow testing with visual checkpoints
+- `loan.spec.ts`: Loan processing workflow visual validation
+- `guest-flow-screenshots.spec.ts`: Replace basic screenshots with Percy comparisons
+- `accessibility.comprehensive.spec.ts`: Visual compliance verification
+- `accessibility.interactions.spec.ts`: Interactive accessibility visual testing
+- `guest-landing-accessibility.spec.ts`: Guest page visual compliance validation
+- `cross-browser.spec.ts`: Visual consistency across browsers
+- `staff-flow.spec.ts`: Complete user journey visual validation
+- `branding-smoke.spec.ts`: Brand consistency visual validation
+- `ollama-accessibility.spec.ts`: AI component visual accessibility testing
+- `devtools.integration.spec.ts`: Development tools visual validation
+- `filament.components.debug.spec.ts`: Admin component visual testing
+- `helpdesk-performance.spec.ts`: Performance testing with visual validation
+- `loan-module-performance.spec.ts`: Loan module performance visual testing
 
-**Purpose**: Manage Percy configuration across different environments
-**Dependencies**: Environment variables, configuration files
+### Laravel Configuration Component
+
+**Purpose**: Manage Percy configuration within Laravel 12.43.1 application structure
+**Dependencies**: Environment variables, Laravel configuration system
 
 **Environment Variables**:
 
@@ -195,27 +269,34 @@ $browser->visit('/profile')
 # Required
 PERCY_TOKEN=your_percy_token_here
 
-# Optional
+# Optional - v3.6.1 specific
 PERCY_BRANCH=main
 PERCY_TARGET_BRANCH=main
 PERCY_PARALLEL_NONCE=build_identifier
 PERCY_PARALLEL_TOTAL=4
+PERCY_PROJECT=ictserve-v3.6.1-visual-testing
 ```
 
 **Laravel Configuration**:
 
 ```php
-// config/percy.php
+// config/percy.php - Laravel 12.43.1 compatible
 return [
     'token' => env('PERCY_TOKEN'),
-    'project' => env('PERCY_PROJECT', 'ictserve-visual-testing'),
+    'project' => env('PERCY_PROJECT', 'ictserve-v3.6.1-visual-testing'),
     'enabled' => env('PERCY_ENABLED', true),
     'widths' => [375, 768, 1024, 1280, 1920],
     'min_height' => 1024,
     'css' => [
         '.dynamic-timestamp { display: none !important; }',
-        '.loading-spinner { visibility: hidden !important; }'
-    ]
+        '.loading-spinner { visibility: hidden !important; }',
+        '.language-switcher { display: none !important; }', // v3.6.0+ Bahasa Melayu only
+    ],
+    'hybrid_architecture' => [
+        'guest_selectors' => ['.guest-form', '.guest-status'],
+        'auth_selectors' => ['.dashboard', '.profile'],
+        'admin_selectors' => ['.filament-admin', '.admin-panel'],
+    ],
 ];
 ```
 
@@ -365,6 +446,15 @@ interface PercyBuild {
   createdAt: Date;
   finishedAt?: Date;
   webUrl: string;
+  // v3.6.1 specific fields
+  projectName: string;
+  buildName: string;
+  environment: 'development' | 'staging' | 'production';
+  hybridArchitecture: {
+    guestSnapshots: number;
+    authenticatedSnapshots: number;
+    adminSnapshots: number;
+  };
 }
 ```
 
@@ -382,6 +472,20 @@ interface SnapshotConfig {
     selector: string;
     type: 'ignore' | 'consider';
   }>;
+  // v3.6.1 specific configuration
+  hybridArchitecture?: {
+    userType: 'guest' | 'authenticated' | 'admin';
+    userRole?: 'staff' | 'admin' | 'superuser';
+  };
+  bahasaMelayuInterface?: {
+    validateLanguage: boolean;
+    excludeLanguageSwitcher: boolean;
+  };
+  wcagCompliance?: {
+    level: 'AA' | 'AAA';
+    validateContrast: boolean;
+    validateFocusIndicators: boolean;
+  };
 }
 ```
 
@@ -404,6 +508,17 @@ interface BrowserStackConfig {
     projectId?: string;
     folderId?: string;
     enabled: boolean;
+  };
+  // v3.6.1 specific configuration
+  accessibilityTesting: {
+    enabled: boolean;
+    wcagLevel: 'AA' | 'AAA';
+    scanTypes: Array<'automated' | 'manual' | 'expert'>;
+  };
+  visualTesting: {
+    percyIntegration: boolean;
+    crossBrowserBaseline: boolean;
+    deviceSpecificBaselines: boolean;
   };
 }
 ```
@@ -428,7 +543,72 @@ interface TestExecution {
       sessionUrl: string;
       logs: string[];
       screenshots: string[];
+      accessibilityResults?: {
+        wcagLevel: string;
+        violations: number;
+        passes: number;
+        reportUrl: string;
+      };
     };
+  };
+  // v3.6.1 specific execution data
+  ictserveContext: {
+    testSuite: 'e2e' | 'accessibility' | 'performance' | 'cross-browser';
+    applicationVersion: string;
+    technologyStack: {
+      laravel: string;
+      livewire: string;
+      filament: string;
+      playwright: string;
+      tailwind: string;
+    };
+    hybridArchitectureTest: {
+      guestWorkflow: boolean;
+      authenticatedWorkflow: boolean;
+      adminWorkflow: boolean;
+    };
+  };
+}
+```
+
+### ICTServe v3.6.1 Integration Model
+
+```typescript
+interface ICTServeIntegration {
+  applicationVersion: '3.6.1';
+  technologyStack: {
+    laravel: '12.43.1';
+    livewire: '3.7.3';
+    filament: '4.3.1';
+    playwright: '1.56.1';
+    tailwind: '4.1.18';
+    phpunit: '11.5.46';
+  };
+  testSuiteIntegration: {
+    existingTests: Array<{
+      fileName: string;
+      testType: 'responsive' | 'accessibility' | 'performance' | 'cross-browser' | 'flow';
+      percyEnhanced: boolean;
+      errorStatus: 'validated' | 'errors_found' | 'fixed' | 'pending';
+    }>;
+    totalTestFiles: number;
+    percyIntegratedFiles: number;
+  };
+  hybridArchitecture: {
+    guestUserSupport: boolean;
+    authenticatedUserSupport: boolean;
+    adminPanelSupport: boolean;
+    nullableUserIdFK: boolean;
+  };
+  bahasaMelayuInterface: {
+    exclusiveLanguage: boolean;
+    languageSwitcherDisabled: boolean;
+    interfaceVersion: '3.6.0+';
+  };
+  wcagCompliance: {
+    level: 'AA';
+    version: '2.2';
+    validationRequired: boolean;
   };
 }
 ```
@@ -439,7 +619,7 @@ interface TestExecution {
 
 ### Property Reflection
 
-After analyzing all acceptance criteria, several properties can be consolidated to eliminate redundancy while maintaining comprehensive coverage:
+After analyzing all acceptance criteria from the updated v3.6.1 requirements, several properties can be consolidated to eliminate redundancy while maintaining comprehensive coverage:
 
 - **Authentication properties** (1.2, 4.1, 8.3) can be combined into a comprehensive authentication validation property
 - **Error handling properties** (1.4, 4.3, 8.4) can be consolidated into a unified error messaging property
@@ -458,21 +638,21 @@ Property 2: **Configuration Validation and Error Reporting**
 *For any* Percy configuration scenario (missing, invalid, or incomplete), the Visual Testing System should provide helpful error messages with specific guidance for resolving configuration issues
 **Validates: Requirements 1.4, 4.3, 8.4**
 
-Property 3: **Multi-Framework Integration Compatibility**
-*For any* existing test suite (Playwright or Dusk), integrating Percy visual testing should not break existing test functionality and should maintain backward compatibility
-**Validates: Requirements 2.4, 3.4**
+Property 3: **Playwright Integration Compatibility**
+*For any* existing Playwright 1.56.1 test in the ICTServe v3.6.1 test suite, integrating Percy visual testing should not break existing test functionality and should maintain backward compatibility
+**Validates: Requirements 2.4**
 
 Property 4: **Universal Snapshot Capture**
-*For any* test framework (Playwright or Dusk) with Percy enabled, the system should successfully capture visual snapshots during test execution
-**Validates: Requirements 2.1, 3.1**
+*For any* Playwright test with Percy enabled, the system should successfully capture visual snapshots during test execution
+**Validates: Requirements 2.1**
 
 Property 5: **Graceful Percy Degradation**
 *For any* test execution with Percy disabled (via configuration or command-line options), tests should run normally without visual captures and without errors
-**Validates: Requirements 2.5, 3.5**
+**Validates: Requirements 2.5**
 
 Property 6: **Snapshot Configuration Flexibility**
 *For any* snapshot capture request, the system should support custom names, viewport widths, CSS injection, ignore regions, and both full-page and element-specific captures
-**Validates: Requirements 2.2, 2.3, 3.2, 3.3, 5.1, 5.2, 5.3, 5.4**
+**Validates: Requirements 2.2, 2.3, 5.1, 5.2, 5.3, 5.4**
 
 Property 7: **Build Lifecycle Management**
 *For any* Percy-enabled test run, the system should automatically create builds, upload all captured snapshots, and finalize builds with appropriate status reporting and review links
@@ -498,9 +678,13 @@ Property 12: **Visual Comparison Accuracy**
 *For any* Percy build, the system should support accurate base build selection and provide consistent snapshot timing to ensure reliable visual comparisons
 **Validates: Requirements 5.5, 6.4**
 
+Property 13: **ICTServe v3.6.1 Architecture Integration**
+*For any* test execution within the ICTServe v3.6.1 system, Percy visual testing should correctly handle True Hybrid Architecture workflows (guest and authenticated users), Bahasa Melayu interface elements, and Laravel 12.43.1 + Livewire 3.7.3 + Filament 4.3.1 technology stack
+**Validates: Requirements 3.1, 3.2, 3.3, 3.4, 3.5**
+
 Property 14: **Existing Test Suite Integration**
-*For any* existing Playwright test in the ICTServe v3.6.1 test suite, integrating Percy visual testing should enhance the test with visual validation while maintaining all existing functionality and assertions
-**Validates: Requirements 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9, 10.10, 10.11, 10.12, 10.13, 10.14, 10.15, 10.16**
+*For any* existing Playwright test in the ICTServe v3.6.1 test suite (16+ test files), integrating Percy visual testing should enhance the test with visual validation while maintaining all existing functionality and assertions
+**Validates: Requirements 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9, 10.10, 10.11, 10.12, 10.13, 10.14, 10.15, 10.16, 10.17, 10.18**
 
 Property 15: **Comprehensive Test Validation and Error Correction**
 *For any* Playwright test file (existing or newly created), the system should systematically execute, validate, identify errors, apply fixes, and re-validate to ensure all tests are error-free and reliable before and after Percy integration
@@ -511,7 +695,7 @@ Property 16: **BrowserStack Cross-Platform Integration**
 **Validates: Requirements 12.1, 12.2, 12.3, 12.7, 12.9, 12.10**
 
 Property 17: **Accessibility and Visual Compliance Integration**
-*For any* accessibility testing requirement, the system should combine BrowserStack's WCAG compliance scanning with Percy's visual validation to provide comprehensive accessibility and visual regression testing
+*For any* accessibility testing requirement, the system should combine BrowserStack's WCAG 2.2 AA compliance scanning with Percy's visual validation to provide comprehensive accessibility and visual regression testing
 **Validates: Requirements 12.4, 12.6**
 
 Property 18: **Live Session Visual Debugging**
@@ -591,8 +775,9 @@ The Percy visual testing integration will be validated through both unit tests a
 
 - Configuration parsing with various input formats
 - Error message formatting and content validation
-- Integration points between test frameworks and Percy
+- Integration points between Playwright 1.56.1 and Percy
 - Specific failure scenarios and recovery mechanisms
+- ICTServe v3.6.1 specific scenarios (True Hybrid Architecture, Bahasa Melayu interface)
 
 **Property-Based Tests**: Verify universal properties across all inputs
 
@@ -600,6 +785,7 @@ The Percy visual testing integration will be validated through both unit tests a
 - Configuration handling across all valid and invalid scenarios
 - Snapshot capture behavior across different test contexts
 - Performance characteristics across various load conditions
+- Cross-browser visual consistency across BrowserStack devices
 
 ### Property-Based Testing Configuration
 
@@ -624,14 +810,31 @@ test('Feature: percy-visual-testing-integration, Property 4: Universal Snapshot 
       snapshotName: fc.string({ minLength: 1, maxLength: 100 }),
       options: fc.record({
         widths: fc.array(fc.integer({ min: 320, max: 1920 })),
-        minHeight: fc.integer({ min: 400, max: 2000 })
+        minHeight: fc.integer({ min: 400, max: 2000 }),
+        // v3.6.1 specific options
+        hybridArchitecture: fc.record({
+          userType: fc.constantFrom('guest', 'authenticated', 'admin'),
+          userRole: fc.option(fc.constantFrom('staff', 'admin', 'superuser'))
+        }),
+        bahasaMelayuInterface: fc.record({
+          validateLanguage: fc.boolean(),
+          excludeLanguageSwitcher: fc.boolean()
+        })
       })
     }),
     async ({ url, snapshotName, options }) => {
-      // Property test implementation
+      // Property test implementation for v3.6.1
       const result = await captureSnapshot(url, snapshotName, options);
       expect(result.success).toBe(true);
       expect(result.snapshotId).toBeDefined();
+      
+      // Validate v3.6.1 specific requirements
+      if (options.bahasaMelayuInterface?.validateLanguage) {
+        expect(result.languageValidation).toBe('ms');
+      }
+      if (options.hybridArchitecture?.userType) {
+        expect(result.userContext).toBe(options.hybridArchitecture.userType);
+      }
     }
   ), { numRuns: 100 });
 });
@@ -658,7 +861,20 @@ class PercyConfigurationPropertyTest extends TestCase
                     Generator::constant('')
                 ),
                 'project' => Generator::string(),
-                'enabled' => Generator::bool()
+                'enabled' => Generator::bool(),
+                // v3.6.1 specific configuration
+                'ictserve_version' => Generator::constant('3.6.1'),
+                'technology_stack' => Generator::associative([
+                    'laravel' => Generator::constant('12.43.1'),
+                    'livewire' => Generator::constant('3.7.3'),
+                    'filament' => Generator::constant('4.3.1'),
+                    'playwright' => Generator::constant('1.56.1')
+                ]),
+                'hybrid_architecture' => Generator::associative([
+                    'guest_support' => Generator::bool(),
+                    'authenticated_support' => Generator::bool(),
+                    'admin_support' => Generator::bool()
+                ])
             ])
         )->then(function ($config) {
             $validator = new PercyConfigurationValidator();
@@ -666,9 +882,16 @@ class PercyConfigurationPropertyTest extends TestCase
             
             if ($result->isValid()) {
                 $this->assertNotEmpty($result->getValidatedConfig());
+                // Validate v3.6.1 specific requirements
+                $this->assertEquals('3.6.1', $result->getValidatedConfig()['ictserve_version']);
+                $this->assertArrayHasKey('hybrid_architecture', $result->getValidatedConfig());
             } else {
                 $this->assertNotEmpty($result->getErrorMessages());
                 $this->assertTrue($result->hasResolutionSteps());
+                // Ensure error messages are in Bahasa Melayu for v3.6.0+
+                foreach ($result->getErrorMessages() as $message) {
+                    $this->assertStringNotContainsString('English', $message);
+                }
             }
         });
     }
@@ -677,11 +900,14 @@ class PercyConfigurationPropertyTest extends TestCase
 
 ### Integration Testing Strategy
 
-1. **End-to-End Tests**: Full workflow testing from test execution to Percy dashboard
-2. **Cross-Browser Testing**: Validate Percy integration across different browsers
-3. **Environment Testing**: Test across development, staging, and CI environments
-4. **Performance Testing**: Measure impact on test execution times
+1. **End-to-End Tests**: Full workflow testing from test execution to Percy dashboard with v3.6.1 stack
+2. **Cross-Browser Testing**: Validate Percy integration across different browsers using BrowserStack
+3. **Environment Testing**: Test across development, staging, and CI environments with Laravel 12.43.1
+4. **Performance Testing**: Measure impact on test execution times with Playwright 1.56.1
 5. **Failure Simulation**: Test error handling and recovery mechanisms
+6. **Hybrid Architecture Testing**: Test both guest and authenticated user workflows
+7. **Bahasa Melayu Interface Testing**: Validate visual consistency for Bahasa Melayu UI elements
+8. **WCAG 2.2 AA Compliance Testing**: Combine accessibility validation with visual regression testing
 
 ### BrowserStack Integration Testing
 

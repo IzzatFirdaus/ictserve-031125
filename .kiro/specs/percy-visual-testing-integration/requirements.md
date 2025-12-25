@@ -62,15 +62,15 @@ This specification defines the requirements for integrating Percy visual testing
 4. WHEN testing Livewire 3.7.3 components, THE Visual_Testing_System SHALL handle dynamic content appropriately
 5. THE Visual_Testing_System SHALL integrate with Filament 4.3.1 admin panel testing
 
-### Requirement 4: Configuration Management
+### Requirement 4: Configuration Management for v3.6.1 Stack
 
-**User Story:** As a system administrator, I want to configure Percy settings through environment variables and configuration files, so that I can manage visual testing across different environments.
+**User Story:** As a system administrator, I want to configure Percy settings through environment variables and configuration files compatible with Laravel 12.43.1, so that I can manage visual testing across different environments.
 
 #### Acceptance Criteria
 
 1. THE Visual_Testing_System SHALL read Percy_Token from environment variables
-2. THE Visual_Testing_System SHALL support environment-specific configuration files
-3. WHEN configuration is missing, THE Visual_Testing_System SHALL provide helpful setup guidance
+2. THE Visual_Testing_System SHALL support environment-specific configuration files compatible with Laravel 12.43.1
+3. WHEN configuration is missing, THE Visual_Testing_System SHALL provide helpful setup guidance in Bahasa Melayu
 4. THE Visual_Testing_System SHALL support configuration of snapshot options, widths, and comparison settings
 5. THE Visual_Testing_System SHALL allow disabling Percy integration for local development
 
@@ -134,9 +134,9 @@ This specification defines the requirements for integrating Percy visual testing
 4. THE Visual_Testing_System SHALL provide options to limit snapshot capture for faster feedback loops
 5. THE Visual_Testing_System SHALL cache Percy CLI and dependencies for faster subsequent runs
 
-### Requirement 10: Integration with Existing ICTServe v3.6.1 Test Suite
+### Requirement 10: Integration with Existing ICTServe v3.6.1 E2E Test Suite
 
-**User Story:** As a developer, I want to integrate Percy visual testing with our existing Playwright test suite, so that I can enhance current tests with visual regression detection without rewriting them.
+**User Story:** As a developer, I want to integrate Percy visual testing with our existing comprehensive Playwright test suite, so that I can enhance current tests with visual regression detection without rewriting the 16+ existing test files.
 
 #### Acceptance Criteria
 
@@ -156,6 +156,8 @@ This specification defines the requirements for integrating Percy visual testing
 14. THE Visual_Testing_System SHALL integrate with filament.components.debug.spec.ts for admin component visual testing
 15. THE Visual_Testing_System SHALL enhance performance tests (helpdesk-performance.spec.ts, loan-module-performance.spec.ts) with visual performance validation
 16. WHEN integrating with existing tests, THE Visual_Testing_System SHALL maintain backward compatibility with current test functionality
+17. THE Visual_Testing_System SHALL support WCAG 2.2 AA visual compliance validation
+18. THE Visual_Testing_System SHALL handle Bahasa Melayu interface elements in visual comparisons
 
 ### Requirement 12: BrowserStack Integration for Enhanced Cross-Platform Testing
 
