@@ -3,20 +3,25 @@
 declare(strict_types=1);
 
 // name: AuthenticatedDashboard
-// description: Enhanced authenticated staff dashboard with real-time statistics, role-specific widgets, and activity feed
+// description: PKS 5.2.1 Compliant authenticated staff dashboard with real-time statistics and role-specific widgets
 // author: dev-team@motac.gov.my
-// trace: D03 SRS-FR-006, D04 §5.1, D12 §3 (Requirements 1.1-1.5, 5.5, 8.1-8.5)
-// last-updated: 2025-11-06
+// trace: D03 SRS-FR-006, D04 §5.1, D12 §3 (Requirements 1.1-1.5, 5.5, 8.1-8.5, 25.1)
+// last-updated: 2025-12-25
+// pks-compliance: PKS 5.2.1 - SSO-only architecture, no guest access
 
 namespace App\Livewire;
 
 use App\Services\DashboardService;
-use App\Services\GuestSubmissionClaimService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
+/**
+ * PKS 5.2.1 Compliant Authenticated Dashboard
+ *
+ * SSO-only architecture - all users must be authenticated via LDAP/AD.
+ * Guest submission claiming functionality has been removed per PKS 5.2.1.
+ */
 class AuthenticatedDashboard extends Component
 {
     /**
@@ -34,42 +39,24 @@ class AuthenticatedDashboard extends Component
     public ?array $roleWidgets = null;
 
     /**
-     * Claimable submissions count.
-     *
-     * @var array{tickets:int, loans:int, total:int}
-     */
-    public array $claimableSubmissions = [
-        'tickets' => 0,
-        'loans' => 0,
-        'total' => 0,
-    ];
-
-    /**
-     * Indicates whether to show claim banner.
-     */
-    public bool $showClaimBanner = false;
-
-    /**
      * Last refresh timestamp.
      */
     public ?string $lastRefresh = null;
 
     /**
      * Mount component and load initial data.
+     * PKS 5.2.1: Requires authenticated user - no guest access.
      */
-    public function mount(
-        DashboardService $dashboardService,
-        GuestSubmissionClaimService $claimService
-    ): void {
+    public function mount(DashboardService $dashboardService): void
+    {
         $user = Auth::user();
 
         if (! $user) {
-            abort(403, 'Unauthorized');
+            abort(403, 'Unauthorized - PKS 5.2.1 requires authenticated access');
         }
 
         $this->loadStatistics($dashboardService);
         $this->loadRoleSpecificWidgets($dashboardService);
-        $this->loadClaimableSubmissions($claimService);
         $this->lastRefresh = now()->toIso8601String();
     }
 
@@ -104,26 +91,6 @@ class AuthenticatedDashboard extends Component
     }
 
     /**
-     * Load claimable guest submissions.
-     */
-    public function loadClaimableSubmissions(GuestSubmissionClaimService $claimService): void
-    {
-        $user = Auth::user();
-        if (! $user) {
-            abort(403, 'Unauthorized');
-        }
-        $claimableTotal = (int) $claimService->getClaimableCount($user);
-
-        $this->claimableSubmissions = [
-            'tickets' => 0,
-            'loans' => 0,
-            'total' => $claimableTotal,
-        ];
-
-        $this->showClaimBanner = $this->claimableSubmissions['total'] > 0;
-    }
-
-    /**
      * Refresh statistics (called by wire:poll or manual refresh).
      */
     public function refreshStatistics(DashboardService $dashboardService): void
@@ -133,14 +100,6 @@ class AuthenticatedDashboard extends Component
         $this->lastRefresh = now()->toIso8601String();
 
         $this->dispatch('statistics-refreshed');
-    }
-
-    /**
-     * Dismiss claim banner.
-     */
-    public function dismissClaimBanner(): void
-    {
-        $this->showClaimBanner = false;
     }
 
     /**
@@ -161,8 +120,6 @@ class AuthenticatedDashboard extends Component
             'user' => Auth::user(),
             'statistics' => $this->statistics,
             'roleWidgets' => $this->roleWidgets,
-            'claimableSubmissions' => $this->claimableSubmissions,
-            'showClaimBanner' => $this->showClaimBanner,
             'lastRefresh' => $this->lastRefresh,
         ]);
     }

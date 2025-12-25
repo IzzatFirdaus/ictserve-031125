@@ -1,67 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
-use App\Models\LoanApplication;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+/**
+ * Guest Loan Tracking Component - PKS 5.2.1 Compliant
+ *
+ * Note: This is a stub class. The actual implementation should be created
+ * as part of the loan tracking feature development.
+ *
+ * PKS 5.2.1: Loan tracking requires authenticated user access.
+ */
 class GuestLoanTracking extends Component
 {
-    public string $applicationNumber = '';
+    public ?string $applicationNumber = null;
 
-    public string $email = '';
-
-    public $application = null;
-
-    public bool $searched = false;
-
-    public function mount($ref = null): void
+    public function mount(?string $applicationNumber = null): void
     {
-        if ($ref) {
-            $this->applicationNumber = $ref;
-            $this->track();
-        }
+        $this->applicationNumber = $applicationNumber;
     }
 
-    public function track(): void
-    {
-        $this->validate([
-            'applicationNumber' => 'required|string|min:5',
-        ]);
-
-        $this->searched = true;
-
-        $this->application = LoanApplication::where('application_number', $this->applicationNumber)
-            ->with(['loanItems', 'division'])
-            ->first();
-
-        if (! $this->application) {
-            $this->addError('applicationNumber', __('loan.messages.application_not_found'));
-        }
-    }
-
-    public function trackByToken(): void
-    {
-        $this->validate([
-            'applicationNumber' => 'required|string|min:5',
-            'email' => 'required|email',
-        ]);
-
-        $this->searched = true;
-
-        $this->application = LoanApplication::where('application_number', $this->applicationNumber)
-            ->where('applicant_email', $this->email)
-            ->with(['loanItems', 'division'])
-            ->first();
-
-        if (! $this->application) {
-            $this->addError('applicationNumber', __('loan.messages.application_not_found'));
-        }
-    }
-
-    #[Layout('layouts.front')]
-    public function render(): \Illuminate\View\View
+    public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.guest-loan-tracking');
     }

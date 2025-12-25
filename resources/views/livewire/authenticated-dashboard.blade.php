@@ -1,58 +1,15 @@
 {{--
     name: authenticated-dashboard.blade.php
-    description: Main staff dashboard view with real-time statistics and activity feed
+    description: PKS 5.2.1 Compliant staff dashboard - SSO-only architecture
     author: dev-team@motac.gov.my
-    trace: D03 SRS-FR-006, D12 §3, D14 §9 (Requirements 1.1-1.4, WCAG 2.2 AA)
-    last-updated: 2025-12-06
+    trace: D03 SRS-FR-006, D12 §3, D14 §9 (Requirements 1.1-1.4, 25.1, WCAG 2.2 AA)
+    last-updated: 2025-12-25
     wcag: 2.2 AA compliant - color contrast 4.5:1, touch targets 44px, focus indicators
     myds: Uses MyDS design tokens from D13 §2.2-2.7
+    pks-compliance: PKS 5.2.1 - SSO-only architecture, no guest access
 --}}
 
 <div wire:poll.300s="refreshStatistics" class="space-y-6">
-    {{-- Claim Banner (if guest submissions exist) --}}
-    @if ($showClaimBanner && $claimableSubmissions['total'] > 0)
-        <div role="alert" aria-live="polite"
-            class="bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 rounded-lg p-4 flex items-start justify-between">
-            <div class="flex items-start gap-3">
-                <svg class="w-5 h-5 text-warning-600 dark:text-warning-400 mt-0.5 shrink-0" fill="currentColor"
-                    viewBox="0 0 20 20" aria-hidden="true">
-                    <path fill-rule="evenodd"
-                        d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.19-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-                        clip-rule="evenodd" />
-                </svg>
-                <div>
-                    <h3 class="text-sm font-semibold text-warning-800 dark:text-warning-200">
-                        {{ __('staff.dashboard.claim_banner.title') }}
-                    </h3>
-                    <p class="mt-1 text-sm text-warning-700 dark:text-warning-300">
-                        {{ __('staff.dashboard.claim_banner.message', [
-                            'total' => $claimableSubmissions['total'],
-                            'tickets' => $claimableSubmissions['tickets'],
-                            'loans' => $claimableSubmissions['loans'],
-                        ]) }}
-                    </p>
-                    <a href="{{ route('staff.claim-submissions') }}"
-                        class="mt-2 inline-flex items-center text-sm font-medium text-warning-700 dark:text-warning-300 hover:text-warning-900 dark:hover:text-warning-100 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-warning-500 focus-visible:ring-offset-2 rounded min-h-11 min-w-11">
-                        {{ __('staff.dashboard.claim_banner.cta') }}
-                        <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <button wire:click="dismissClaimBanner" type="button"
-                class="min-h-11 min-w-11 flex items-center justify-center p-2 rounded-lg text-warning-500 hover:text-warning-700 dark:text-warning-400 dark:hover:text-warning-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-warning-500 focus-visible:ring-offset-2 transition-colors duration-200"
-                aria-label="{{ __('staff.dashboard.claim_banner.close') }}">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fill-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd" />
-                </svg>
-            </button>
-        </div>
-    @endif
-
     {{-- Dashboard Header --}}
     <div class="flex items-center justify-between">
         <h1 class="text-2xl font-bold font-heading text-gray-900 dark:text-gray-100">
@@ -158,7 +115,8 @@
 {{-- Module Statistics - MyDS shadow-card per D14 §7.5 --}}
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {{-- Helpdesk Statistics --}}
-    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-card theme-transition" aria-labelledby="helpdesk-stats-title">
+    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-card theme-transition"
+        aria-labelledby="helpdesk-stats-title">
         <div class="p-6">
             <h2 id="helpdesk-stats-title"
                 class="text-lg font-semibold font-heading text-gray-900 dark:text-gray-100 mb-4">
@@ -195,10 +153,10 @@
     </section>
 
     {{-- Loan Statistics --}}
-    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-card theme-transition" aria-labelledby="loan-stats-title">
+    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-card theme-transition"
+        aria-labelledby="loan-stats-title">
         <div class="p-6">
-            <h2 id="loan-stats-title"
-                class="text-lg font-semibold font-heading text-gray-900 dark:text-gray-100 mb-4">
+            <h2 id="loan-stats-title" class="text-lg font-semibold font-heading text-gray-900 dark:text-gray-100 mb-4">
                 {{ __('staff.dashboard.loans.title') }}
             </h2>
             <dl class="space-y-3">
