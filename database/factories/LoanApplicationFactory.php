@@ -18,10 +18,11 @@ use Illuminate\Support\Str;
 /**
  * Loan Application Factory
  *
- * Comprehensive factory with realistic data and state variations for testing.
+ * PKS 5.2.1 Compliant - All applications require authenticated user_id.
+ * Guest submission functionality has been removed per PKS Accountability requirements.
  *
- * @see D03-FR-005.1 Model factories for testing
- * @see D04 §2.2 Model relationships
+ * @see D03-FR-001.4 (Authenticated loan application submission)
+ * @see D04 §6.2 (Authentication Architecture)
  *
  * @extends Factory<LoanApplication>
  */
@@ -70,6 +71,9 @@ class LoanApplicationFactory extends Factory
     /**
      * Define the model's default state.
      *
+     * PKS 5.2.1: All loan applications must have authenticated user_id (NOT NULL).
+     * Guest submission functionality has been removed per PKS Accountability requirements.
+     *
      * @return array<string, mixed>
      */
     public function definition(): array
@@ -77,25 +81,16 @@ class LoanApplicationFactory extends Factory
         $positions = ['Pegawai Tadbir', 'Penolong Pegawai Tadbir', 'Pembantu Tadbir', 'Juruteknik'];
         $grades = ['41', '44', '48', '52', '54'];
         $locations = ['Putrajaya', 'Kuala Lumpur', 'Cyberjaya', 'Shah Alam'];
-        $firstNames = ['Ahmad', 'Siti', 'Mohd', 'Fatimah', 'Ali', 'Nur', 'Hassan', 'Zainab', 'Ibrahim', 'Aisha'];
-        $lastNames = ['Abdullah', 'Bin Khalid', 'Mat Said', 'Binti Ahmad', 'Zainal', 'Ismail', 'Osman', 'Rahman', 'Hasan', 'Ibrahim'];
 
         $startDate = now()->addDays(\random_int(1, 30));
         $endDate = (clone $startDate)->addDays(\random_int(1, 60));
 
-        $firstNameIdx = \array_rand($firstNames);
-        $lastNameIdx = \array_rand($lastNames);
-        $email = \strtolower(\str_replace(' ', '.', $firstNames[$firstNameIdx].'.'.$lastNames[$lastNameIdx])).'.motac@gov.my';
-
         return [
             'application_number' => LoanApplication::generateApplicationNumber(),
-            'user_id' => null, // Default to guest submission
-            // Guest applicant fields (always populated)
-            'applicant_name' => $firstNames[$firstNameIdx].' '.$lastNames[$lastNameIdx],
+            'user_id' => User::factory(), // PKS 5.2.1: Mandatory authenticated user
+            // Applicant details (populated from authenticated user)
             'applicant_position' => $positions[\array_rand($positions)],
             'applicant_grade' => $grades[\array_rand($grades)],
-            'applicant_email' => $email,
-            'applicant_phone' => '01'.\random_int(100, 199).'-'.\random_int(1000, 9999).' '.\random_int(1000, 9999),
             'staff_id' => 'MOTAC'.\random_int(1000, 9999),
             'grade' => $grades[\array_rand($grades)],
             'division_id' => Division::factory(),
@@ -131,22 +126,12 @@ class LoanApplicationFactory extends Factory
     }
 
     /**
-     * State: Authenticated submission (with user_id)
+     * State: With specific user
      */
-    public function authenticated(): static
+    public function forUser(User $user): static
     {
         return $this->state(fn (array $attributes) => [
-            'user_id' => User::factory(),
-        ]);
-    }
-
-    /**
-     * State: Guest submission (no user_id)
-     */
-    public function guest(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'user_id' => null,
+            'user_id' => $user->id,
         ]);
     }
 

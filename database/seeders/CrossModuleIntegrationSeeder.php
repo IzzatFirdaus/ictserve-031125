@@ -39,16 +39,13 @@ class CrossModuleIntegrationSeeder extends Seeder
             return;
         }
 
-        // Create a loan application for the asset
+        // PKS 5.2.1: Create a loan application for the asset (authenticated user only)
         $loanApplication = LoanApplication::firstOrCreate(
             ['application_number' => LoanApplication::generateApplicationNumber()],
             [
                 'user_id' => $user->id,
-                'applicant_name' => $user->name,
                 'applicant_position' => 'Pegawai Tadbir',
                 'applicant_grade' => '44',
-                'applicant_email' => $user->email,
-                'applicant_phone' => $user->mobile ?? '012-3456789',
                 'staff_id' => $user->staff_id,
                 'grade' => '44',
                 'division_id' => $user->division_id,
@@ -73,7 +70,7 @@ class CrossModuleIntegrationSeeder extends Seeder
         if (! $helpdeskTicket) {
             // Create a new ticket if none exists
             /** @var object{id: int}|null $category */
-        $category = DB::table('ticket_categories')->where('code', 'MAINTENANCE')->first();
+            $category = DB::table('ticket_categories')->where('code', 'MAINTENANCE')->first();
 
             $helpdeskTicket = HelpdeskTicket::firstOrCreate(
                 ['ticket_number' => HelpdeskTicket::generateTicketNumber()],

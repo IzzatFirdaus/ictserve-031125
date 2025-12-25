@@ -130,20 +130,10 @@ class LoanModuleSeeder extends Seeder
         // Create loan applications in various states
         $this->command->info('Creating sample loan applications...');
 
-        // Guest submissions (5)
-        foreach (range(1, 5) as $i) {
+        // PKS 5.2.1: All submissions require authenticated users (no guest mode)
+        // Authenticated submissions (10)
+        foreach (range(1, 10) as $i) {
             LoanApplication::factory()
-                ->guest()
-                ->submitted()
-                ->create([
-                    'division_id' => $divisions->random()->id,
-                ]);
-        }
-
-        // Authenticated submissions (5)
-        foreach (range(1, 5) as $i) {
-            LoanApplication::factory()
-                ->authenticated()
                 ->submitted()
                 ->create([
                     'user_id' => $users->random()->id,
@@ -156,6 +146,7 @@ class LoanModuleSeeder extends Seeder
             LoanApplication::factory()
                 ->underReview()
                 ->create([
+                    'user_id' => $users->random()->id,
                     'division_id' => $divisions->random()->id,
                 ]);
         }
@@ -165,6 +156,7 @@ class LoanModuleSeeder extends Seeder
             $application = LoanApplication::factory()
                 ->approved()
                 ->create([
+                    'user_id' => $users->random()->id,
                     'division_id' => $divisions->random()->id,
                 ]);
 
@@ -183,6 +175,7 @@ class LoanModuleSeeder extends Seeder
             $application = LoanApplication::factory()
                 ->inUse()
                 ->create([
+                    'user_id' => $users->random()->id,
                     'division_id' => $divisions->random()->id,
                 ]);
 
@@ -214,6 +207,7 @@ class LoanModuleSeeder extends Seeder
             $application = LoanApplication::factory()
                 ->overdue()
                 ->create([
+                    'user_id' => $users->random()->id,
                     'division_id' => $divisions->random()->id,
                 ]);
 
@@ -234,6 +228,7 @@ class LoanModuleSeeder extends Seeder
             $application = LoanApplication::factory()
                 ->returned()
                 ->create([
+                    'user_id' => $users->random()->id,
                     'division_id' => $divisions->random()->id,
                 ]);
 
@@ -275,6 +270,7 @@ class LoanModuleSeeder extends Seeder
             $application = LoanApplication::factory()
                 ->completed()
                 ->create([
+                    'user_id' => $users->random()->id,
                     'division_id' => $divisions->random()->id,
                 ]);
 
@@ -308,6 +304,7 @@ class LoanModuleSeeder extends Seeder
 
         // Rejected applications (2)
         LoanApplication::factory()->count(2)->rejected()->create([
+            'user_id' => $users->random()->id,
             'division_id' => $divisions->random()->id,
         ]);
 
@@ -317,6 +314,7 @@ class LoanModuleSeeder extends Seeder
                 ->returned()
                 ->withHelpdeskIntegration()
                 ->create([
+                    'user_id' => $users->random()->id,
                     'division_id' => $divisions->random()->id,
                 ]);
 
