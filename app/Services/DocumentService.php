@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\DlpAuditLog;
 use App\Models\Document;
 use App\Models\DocumentChunk;
 use Illuminate\Http\UploadedFile;
@@ -22,18 +23,23 @@ use Spatie\PdfToText\Pdf;
  * Mengendalikan upload, ekstraksi teks, chunking, dan PII detection
  * untuk dokumen dalam sistem ICTServe v3.6.0.
  *
+ * PKS 5.2.1 Compliance: All operations require authenticated user_id
+ * PKS 9.2.1 Compliance: DLP filtering applied before cloud AI processing
+ *
  * @version 3.6.0
  *
  * @author Pasukan Pembangunan BPM MOTAC
  *
  * @compliance D10 Source Code Documentation v3.6.0
  *
- * @requirements 2.1, 2.3, 6.2
+ * @requirements 2.1, 2.3, 6.2, 25.1
  */
 class DocumentService
 {
     /**
      * Konfigurasi perkhidmatan
+     *
+     * @var array<string, mixed>
      */
     private array $config;
 
@@ -43,11 +49,17 @@ class DocumentService
     private EmbeddingService $embeddingService;
 
     /**
+     * DLP Filtering Service untuk PKS 9.2.1 compliance
+     */
+    private DlpFilteringService $dlpService;
+
+    /**
      * Konstruktor
      */
-    public function __construct(EmbeddingService $embeddingService)
+    public function __construct(EmbeddingService $embeddingService, ?DlpFilteringService $dlpService = null)
     {
         $this->embeddingService = $embeddingService;
+        $this->dlpService = $dlpService ?? app(DlpFilteringService::class);
         $this->config = config('ollama.document', [
             'max_file_size' => 10485760, // 10MB
             'allowed_types' => ['pdf', 'docx', 'txt'],
@@ -60,15 +72,21 @@ class DocumentService
 
     /**
      * Upload dan proses dokumen
+     * PKS 5.2.1 - Requires authenticated user_id (mandatory)
      *
      * @param  UploadedFile  $file  Fail yang dimuat naik
-     * @param  int|null  $uploadedBy  ID pengguna yang memuat naik (nullable untuk tetamu)
+     * @param  int  $uploadedBy  ID pengguna yang memuat naik (MANDATORY per PKS 5.2.1)
      * @return Document Model dokumen yang dicipta
      *
-     * @throws \InvalidArgumentException Jika fail tidak sah
+     * @throws \InvalidArgumentException Jika fail tidak sah atau user_id tidak disediakan
      */
-    public function uploadDocument(UploadedFile $file, ?int $uploadedBy = null): Document
+    public function uploadDocument(UploadedFile $file, int $uploadedBy): Document
     {
+        // PKS 5.2.1 - Validate mandatory user_id
+        if ($uploadedBy <= 0) {
+            throw new \InvalidArgumentException('PKS 5.2.1: user_id adalah mandatori untuk muat naik dokumen');
+        }
+
         try {
             // Validasi fail
             $this->validateFile($file);
@@ -76,7 +94,7 @@ class DocumentService
             // Simpan fail ke storage
             $filename = $this->storeFile($file);
 
-            // Cipta record dokumen
+            // Cipta record dokumen with mandatory user_id
             $document = Document::create([
                 'filename' => $file->getClientOriginalName(),
                 'metadata' => [
@@ -87,7 +105,7 @@ class DocumentService
                     'extension' => $file->getClientOriginalExtension(),
                     'uploaded_at' => now()->toISOString(),
                 ],
-                'uploaded_by' => $uploadedBy,
+                'uploaded_by' => $uploadedBy, // MANDATORY per PKS 5.2.1
                 'status' => Document::STATUS_PENDING,
             ]);
 
@@ -99,7 +117,6 @@ class DocumentService
             ]);
 
             return $document;
-
         } catch (\Exception $e) {
             Log::error('Document upload failed', [
                 'filename' => $file->getClientOriginalName(),
@@ -114,6 +131,7 @@ class DocumentService
 
     /**
      * Proses dokumen untuk ekstraksi teks dan chunking
+     * PKS 9.2.1 - DLP filtering applied to determine processing route
      *
      * @param  Document  $document  Model dokumen untuk diproses
      * @return bool Status pemprosesan
@@ -131,37 +149,51 @@ class DocumentService
                 throw new \RuntimeException('Gagal mengekstrak teks dari dokumen');
             }
 
+            // PKS 9.2.1 - Apply DLP filtering to determine processing route
+            $dlpAnalysis = $this->dlpService->classifyData($text, $document->uploaded_by);
+
+            // Log DLP decision for audit trail
+            $this->logDlpDecision($dlpAnalysis, $document, $text);
+
             // Deteksi dan sanitasi PII
             $sanitizedText = $this->detectAndSanitizePii($text);
 
             // Buat chunks dari teks
             $chunks = $this->createChunks($sanitizedText);
 
-            // Simpan chunks ke database
-            $this->saveChunks($document, $chunks);
+            // Simpan chunks ke database with DLP classification
+            $this->saveChunks($document, $chunks, $dlpAnalysis);
 
-            // Jana embeddings untuk chunks
+            // Jana embeddings untuk chunks (local processing only per PKS 9.2.1)
             $this->generateChunkEmbeddings($document);
 
-            // Update status ke completed
-            $document->update(['status' => Document::STATUS_COMPLETED]);
+            // Update status ke completed with DLP metadata
+            $document->update([
+                'status' => Document::STATUS_COMPLETED,
+                'metadata' => [...($document->metadata ?? []), ...[
+                    'dlp_classification' => $dlpAnalysis['classification'],
+                    'dlp_risk_score' => $dlpAnalysis['risk_score'],
+                    'dlp_routing' => $dlpAnalysis['routing_decision'],
+                    'processed_at' => now()->toISOString(),
+                ]],
+            ]);
 
             Log::info('Document processed successfully', [
                 'document_id' => $document->id,
-                'chunks_created' => count($chunks),
-                'text_length' => strlen($text),
+                'chunks_created' => \count($chunks),
+                'text_length' => \strlen($text),
+                'dlp_classification' => $dlpAnalysis['classification'],
             ]);
 
             return true;
-
         } catch (\Exception $e) {
             // Update status ke failed
             $document->update([
                 'status' => Document::STATUS_FAILED,
-                'metadata' => array_merge($document->metadata ?? [], [
+                'metadata' => [...($document->metadata ?? []), ...[
                     'error' => $e->getMessage(),
                     'failed_at' => now()->toISOString(),
-                ]),
+                ]],
             ]);
 
             Log::error('Document processing failed', [
@@ -174,6 +206,37 @@ class DocumentService
     }
 
     /**
+     * Log DLP decision for audit trail per PKS 9.2.1
+     *
+     * @param  array<string, mixed>  $analysis
+     */
+    private function logDlpDecision(array $analysis, Document $document, string $content): void
+    {
+        try {
+            DlpAuditLog::create([
+                'user_id' => $document->uploaded_by,
+                'classification' => $analysis['classification'],
+                'routing_decision' => $analysis['routing_decision'],
+                'risk_score' => $analysis['risk_score'],
+                'content_hash' => sha1($content),
+                'content_length' => \strlen($content),
+                'detected_patterns' => json_encode($analysis['detected_patterns']),
+                'source' => 'document_service',
+                'target_provider' => DlpAuditLog::PROVIDER_OLLAMA, // Always local for document processing
+                'metadata' => json_encode([
+                    'document_id' => $document->id,
+                    'filename' => $document->filename,
+                ]),
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('Failed to log DLP decision in DocumentService', [
+                'error' => $e->getMessage(),
+                'document_id' => $document->id,
+            ]);
+        }
+    }
+
+    /**
      * Validasi fail yang dimuat naik
      */
     private function validateFile(UploadedFile $file): void
@@ -182,7 +245,7 @@ class DocumentService
         if ($file->getSize() > $this->config['max_file_size']) {
             throw new \InvalidArgumentException(
                 'Saiz fail melebihi had maksimum '.
-                number_format($this->config['max_file_size'] / 1024 / 1024, 1).'MB'
+                    number_format($this->config['max_file_size'] / 1024 / 1024, 1).'MB'
             );
         }
 
@@ -191,7 +254,7 @@ class DocumentService
         if (! in_array($extension, $this->config['allowed_types'])) {
             throw new \InvalidArgumentException(
                 'Jenis fail tidak disokong. Hanya '.
-                implode(', ', $this->config['allowed_types']).' dibenarkan'
+                    implode(', ', $this->config['allowed_types']).' dibenarkan'
             );
         }
 
@@ -283,7 +346,6 @@ class DocumentService
             }
 
             return trim(implode("\n", array_filter($textParts)));
-
         } catch (\Exception $e) {
             Log::error('DOCX text extraction failed', [
                 'file_path' => $filePath,
@@ -314,7 +376,6 @@ class DocumentService
             }
 
             return trim($content);
-
         } catch (\Exception $e) {
             Log::error('TXT text extraction failed', [
                 'file_path' => $filePath,
@@ -428,14 +489,12 @@ class DocumentService
     }
 
     /**
-     * Simpan chunks ke database
+     * Simpan chunks ke database with DLP classification
+     *
+     * @param  array<int, array<string, mixed>>  $chunks
+     * @param  array<string, mixed>|null  $dlpAnalysis
      */
-    
-
-/**
- * @param array<string, mixed> $chunks
- */
-private function saveChunks(Document $document, array $chunks): void
+    private function saveChunks(Document $document, array $chunks, ?array $dlpAnalysis = null): void
     {
         foreach ($chunks as $chunk) {
             DocumentChunk::create([
@@ -444,6 +503,10 @@ private function saveChunks(Document $document, array $chunks): void
                 'chunk_index' => $chunk['index'],
                 'source' => $document->filename,
                 'embedding' => [], // Akan diisi kemudian
+                'metadata' => $dlpAnalysis ? [
+                    'dlp_classification' => $dlpAnalysis['classification'],
+                    'dlp_routing' => $dlpAnalysis['routing_decision'],
+                ] : null,
             ]);
         }
     }
@@ -475,7 +538,6 @@ private function saveChunks(Document $document, array $chunks): void
                     'chunk_id' => $chunk->id,
                     'chunk_index' => $chunk->chunk_index,
                 ]);
-
             } catch (\Exception $e) {
                 Log::error('Failed to generate embedding for chunk', [
                     'document_id' => $document->id,
@@ -537,7 +599,6 @@ private function saveChunks(Document $document, array $chunks): void
             ]);
 
             return true;
-
         } catch (\Exception $e) {
             Log::error('Failed to delete document', [
                 'document_id' => $document->id,

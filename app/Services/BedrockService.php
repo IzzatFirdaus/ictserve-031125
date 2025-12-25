@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\BedrockModelConfig;
 use App\Models\BedrockUsageLog;
+use App\Models\DlpAuditLog;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -18,6 +19,9 @@ use Laravel\Pulse\Facades\Pulse;
  * Provides access to Claude Opus 4.5, Sonnet 4.5, and Haiku 4.5 models
  * via AWS Bedrock with inference profile support, cost tracking, and
  * comprehensive error handling.
+ *
+ * PKS 9.2.1 Compliance: All requests are filtered through DLP service
+ * before cloud transmission. Sensitive data is blocked from Bedrock.
  *
  * trace: D03-SRS-AI-002 (Auto-Reply), D03-SRS-AI-003 (Document Analysis)
  * trace: D03-SRS-AI-012 (Multi-Model), D03-SRS-AI-017 (Cost Optimization)
@@ -35,17 +39,41 @@ class BedrockService
     /**
      * @param  array<string, mixed>  $context
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function invoke(string $prompt, int $maxTokens = 1000, ?string $modelId = null, array $context = []): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function invoke(string $prompt, int $maxTokens = 1000, ?string $modelId = null, array $context = []): array
     {
-        $requestId = is_string($context['request_id'] ?? null) ? (string) $context['request_id'] : (string) Str::uuid();
+        $requestId = \is_string($context['request_id'] ?? null) ? (string) $context['request_id'] : (string) Str::uuid();
         $startedAt = microtime(true);
 
         try {
+            // PKS 9.2.1 - Apply DLP filtering before cloud transmission
+            $dlpResult = $this->applyDlpFiltering($prompt, $context);
+            if ($dlpResult['blocked']) {
+                $this->logUsage(
+                    requestId: $requestId,
+                    modelId: (string) ($modelId ?? config('bedrock.model_id')),
+                    inputTokens: 0,
+                    outputTokens: 0,
+                    costEstimate: null,
+                    responseTimeMs: $this->durationMs($startedAt),
+                    success: false,
+                    errorMessage: $dlpResult['reason'],
+                    context: $context,
+                );
+
+                return [
+                    'success' => false,
+                    'content' => $dlpResult['reason'],
+                    'usage' => [],
+                    'error_code' => 'DLP_BLOCKED',
+                    'error' => $dlpResult['reason'],
+                    'dlp_classification' => $dlpResult['classification'] ?? 'SENSITIVE',
+                ];
+            }
+
             $maxPromptChars = (int) config('bedrock.routing.max_prompt_chars', 10000);
             if ($maxPromptChars > 0 && $this->safeStrlen($prompt) > $maxPromptChars) {
                 $this->logUsage(
@@ -262,12 +290,11 @@ public function invoke(string $prompt, int $maxTokens = 1000, ?string $modelId =
     /**
      * @param  array<string, mixed>  $context
      */
-    
 
-/**
- * @param array<string, mixed> $context
- */
-private function logUsage(
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    private function logUsage(
         string $requestId,
         string $modelId,
         int $inputTokens,
@@ -340,10 +367,110 @@ private function logUsage(
 
     private function safeStrlen(string $value): int
     {
-        if (function_exists('mb_strlen')) {
+        if (\function_exists('mb_strlen')) {
             return (int) mb_strlen($value);
         }
 
-        return strlen($value);
+        return \strlen($value);
+    }
+
+    /**
+     * Apply DLP filtering per PKS 9.2.1 compliance.
+     *
+     * @param  array<string, mixed>  $context
+     * @return array{blocked: bool, reason: string|null, classification: string|null}
+     */
+    private function applyDlpFiltering(string $prompt, array $context = []): array
+    {
+        try {
+            /** @var DlpFilteringService $dlpService */
+            $dlpService = app(DlpFilteringService::class);
+            $analysis = $dlpService->classifyData($prompt, $context['user_id'] ?? Auth::id());
+
+            // Log DLP decision for audit trail
+            $this->logDlpDecision($analysis, $prompt, $context);
+
+            if ($analysis['classification'] === DlpFilteringService::CLASSIFICATION_SENSITIVE) {
+                return [
+                    'blocked' => true,
+                    'reason' => 'PKS 9.2.1: Data sensitif dikesan. Pemprosesan cloud tidak dibenarkan. Sila gunakan pemprosesan tempatan.',
+                    'classification' => $analysis['classification'],
+                ];
+            }
+
+            return [
+                'blocked' => false,
+                'reason' => null,
+                'classification' => $analysis['classification'],
+            ];
+        } catch (\Throwable $e) {
+            Log::warning('DLP filtering failed in BedrockService, using conservative approach', [
+                'error' => $e->getMessage(),
+            ]);
+
+            // Conservative approach - check for basic PII patterns
+            if ($this->containsBasicPii($prompt)) {
+                return [
+                    'blocked' => true,
+                    'reason' => 'PKS 9.2.1: PII dikesan (fallback). Pemprosesan cloud tidak dibenarkan.',
+                    'classification' => 'SENSITIVE',
+                ];
+            }
+
+            return [
+                'blocked' => false,
+                'reason' => null,
+                'classification' => 'PUBLIC',
+            ];
+        }
+    }
+
+    /**
+     * Log DLP decision for audit trail per PKS 9.2.1.
+     *
+     * @param  array<string, mixed>  $analysis
+     * @param  array<string, mixed>  $context
+     */
+    private function logDlpDecision(array $analysis, string $prompt, array $context): void
+    {
+        try {
+            DlpAuditLog::create([
+                'user_id' => $context['user_id'] ?? Auth::id(),
+                'classification' => $analysis['classification'],
+                'routing_decision' => $analysis['routing_decision'],
+                'risk_score' => $analysis['risk_score'],
+                'content_hash' => sha1($prompt),
+                'content_length' => $this->safeStrlen($prompt),
+                'detected_patterns' => json_encode($analysis['detected_patterns']),
+                'source' => 'bedrock_service',
+                'target_provider' => $analysis['routing_decision'] === DlpFilteringService::ROUTE_LOCAL_ONLY
+                    ? DlpAuditLog::PROVIDER_OLLAMA
+                    : DlpAuditLog::PROVIDER_BEDROCK,
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('Failed to log DLP decision in BedrockService', [
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Basic PII detection fallback when DLP service is unavailable.
+     */
+    private function containsBasicPii(string $text): bool
+    {
+        $patterns = [
+            '/\d{6}-\d{2}-\d{4}/',  // Malaysian IC
+            '/\+?60\d{9,10}/',      // Malaysian phone
+            '/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/',  // Email
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $text) === 1) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

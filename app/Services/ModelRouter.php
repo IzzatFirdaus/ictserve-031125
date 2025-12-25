@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Contracts\OllamaClientContract;
 use App\Models\BedrockUsageLog;
+use App\Models\DlpAuditLog;
 use Illuminate\Cache\TaggableStore;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -67,19 +68,22 @@ class ModelRouter
      * Tentukan laluan untuk penjanaan teks (Bedrock/Ollama) berdasarkan prompt.
      *
      * @param  array{session_id?: string|null, user_id?: int|null, is_malaysia_resident?: bool|null, operation_type?: string|null, data_classification?: string|null, has_cloud_consent?: bool|null}  $context
-      * @param array<string, mixed> $context
-
+     * @param  array<string, mixed>  $context
      * @return array{provider: 'bedrock'|'ollama', model_id?: string|null, model_key?: string|null, reason: string}
      */
-    
 
-/**
-  * @param array<string, mixed> $context
-
- * @return array<string, mixed>
- */
-public function routeTextGeneration(string $prompt, array $context = []): array
+    /**
+     * @param  array<string, mixed>  $context
+     * @return array<string, mixed>
+     */
+    public function routeTextGeneration(string $prompt, array $context = []): array
     {
+        // PKS 9.2.1 - Apply DLP filtering FIRST before any routing decision
+        $dlpResult = $this->applyDlpFilter($prompt, $context);
+        if ($dlpResult !== null) {
+            return $dlpResult;
+        }
+
         $configService = app(BedrockRoutingConfigurationService::class);
         $bedrockConfig = $configService->getConfiguration();
 
@@ -222,18 +226,15 @@ public function routeTextGeneration(string $prompt, array $context = []): array
      * Select provider and model tier by task with config-aware fallbacks and caching.
      *
      * @param  array{query?: string, force_model_tier?: string|null}  $context
-      * @param array<string, mixed> $context
-
+     * @param  array<string, mixed>  $context
      * @return array{provider: string, model_tier: string|null, model_id?: string|null, reason: string, cost_estimate: float}
      */
-    
 
-/**
-  * @param array<string, mixed> $context
-
- * @return array<string, mixed>
- */
-public function selectModel(string $task, array $context = []): array
+    /**
+     * @param  array<string, mixed>  $context
+     * @return array<string, mixed>
+     */
+    public function selectModel(string $task, array $context = []): array
     {
         $query = is_string($context['query'] ?? null) ? (string) $context['query'] : '';
         $bedrockConfig = config('bedrock', []);
@@ -337,12 +338,11 @@ public function selectModel(string $task, array $context = []): array
      *
      * @param  array{query?: string}  $context
      */
-    
 
-/**
- * @param array<string, mixed> $context
- */
-public function analyzeComplexity(array $context): string
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    public function analyzeComplexity(array $context): string
     {
         $q = is_string($context['query'] ?? null) ? (string) $context['query'] : '';
         if ($q === '') {
@@ -355,11 +355,35 @@ public function analyzeComplexity(array $context): string
 
         // Count distinct technical terms
         $techTerms = [
-            'server', 'database', 'authentication', 'error', 'api', 'http',
-            'json', 'token', 'php', 'sql', 'encrypt', 'hash', 'regex',
-            'class', 'function', 'variable', 'firewall', 'ssl', 'tls',
-            'permission', 'access', 'configuration', 'debug', 'troubleshoot',
-            'network', 'security', 'policy', 'restart', 'update',
+            'server',
+            'database',
+            'authentication',
+            'error',
+            'api',
+            'http',
+            'json',
+            'token',
+            'php',
+            'sql',
+            'encrypt',
+            'hash',
+            'regex',
+            'class',
+            'function',
+            'variable',
+            'firewall',
+            'ssl',
+            'tls',
+            'permission',
+            'access',
+            'configuration',
+            'debug',
+            'troubleshoot',
+            'network',
+            'security',
+            'policy',
+            'restart',
+            'update',
         ];
 
         $termCount = 0;
@@ -401,12 +425,11 @@ public function analyzeComplexity(array $context): string
      *
      * @param  array{query?: string, max_tokens?: int}  $context
      */
-    
 
-/**
- * @param array<string, mixed> $context
- */
-public function estimateRequestCost(string $modelTier, array $context): float
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    public function estimateRequestCost(string $modelTier, array $context): float
     {
         $pricing = [
             self::MODEL_HAIKU => ['prompt' => 0.00025, 'completion' => 0.0005],
@@ -429,12 +452,11 @@ public function estimateRequestCost(string $modelTier, array $context): float
      *
      * @return array{total_requests:int, successful_requests:int, success_rate:float, by_model:array}
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getRoutingStatistics(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRoutingStatistics(): array
     {
         try {
             $total = (int) BedrockUsageLog::count();
@@ -487,12 +509,11 @@ public function getRoutingStatistics(): array
      *
      * @return array{bedrock_enabled:bool, rate_limits:array, models:array, model_costs:array, task_types:array}
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getRoutingConfig(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRoutingConfig(): array
     {
         $cfg = config('bedrock', []);
 
@@ -533,12 +554,11 @@ public function getRoutingConfig(): array
     /**
      * @param  array{has_cloud_consent?: bool|null}  $context
      */
-    
 
-/**
- * @param array<string, mixed> $context
- */
-private function hasCloudConsent(array $context): bool
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    private function hasCloudConsent(array $context): bool
     {
         return ($context['has_cloud_consent'] ?? false) === true;
     }
@@ -546,12 +566,11 @@ private function hasCloudConsent(array $context): bool
     /**
      * @param  array<string, mixed>  $bedrockConfig
      */
-    
 
-/**
- * @param array<string, mixed> $bedrockConfig
- */
-private function isBudgetHardStopped(array $bedrockConfig): bool
+    /**
+     * @param  array<string, mixed>  $bedrockConfig
+     */
+    private function isBudgetHardStopped(array $bedrockConfig): bool
     {
         $budgets = is_array($bedrockConfig['budgets'] ?? null) ? $bedrockConfig['budgets'] : [];
 
@@ -579,12 +598,11 @@ private function isBudgetHardStopped(array $bedrockConfig): bool
     /**
      * @param  array<string, mixed>  $bedrockConfig
      */
-    
 
-/**
- * @param array<string, mixed> $bedrockConfig
- */
-private function resolveBedrockModelId(string $modelKey, array $bedrockConfig): string
+    /**
+     * @param  array<string, mixed>  $bedrockConfig
+     */
+    private function resolveBedrockModelId(string $modelKey, array $bedrockConfig): string
     {
         $models = is_array($bedrockConfig['models'] ?? null) ? $bedrockConfig['models'] : [];
 
@@ -600,12 +618,11 @@ private function resolveBedrockModelId(string $modelKey, array $bedrockConfig): 
      * @param  array<string, mixed>  $bedrockConfig
      * @param  array<string, mixed>  $context
      */
-    
 
-/**
- * @param array<string, mixed> $context
- */
-private function chooseBedrockModelKey(string $prompt, array $bedrockConfig = [], array $context = []): string
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    private function chooseBedrockModelKey(string $prompt, array $bedrockConfig = [], array $context = []): string
     {
         $text = $this->safeStrtolower($prompt);
         $length = $this->safeStrlen($prompt);
@@ -660,12 +677,11 @@ private function chooseBedrockModelKey(string $prompt, array $bedrockConfig = []
     /**
      * @param  array<string, mixed>  $bedrockConfig
      */
-    
 
-/**
- * @param array<string, mixed> $context
- */
-private function getCachedModelKey(string $prompt, array $bedrockConfig, array $context = []): string
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    private function getCachedModelKey(string $prompt, array $bedrockConfig, array $context = []): string
     {
         $routing = is_array($bedrockConfig['routing'] ?? null) ? $bedrockConfig['routing'] : [];
         $ttl = (int) ($routing['cache_ttl_seconds'] ?? 3600);
@@ -693,12 +709,11 @@ private function getCachedModelKey(string $prompt, array $bedrockConfig, array $
      *
      * @param  array{session_id?: string|null, user_id?: int|null}  $context
      */
-    
 
-/**
- * @param array<string, mixed> $bedrockConfig
- */
-private function isRateLimited(string $modelKey, array $context, array $bedrockConfig): bool
+    /**
+     * @param  array<string, mixed>  $bedrockConfig
+     */
+    private function isRateLimited(string $modelKey, array $context, array $bedrockConfig): bool
     {
         $rateLimits = is_array($bedrockConfig['rate_limits'] ?? null) ? $bedrockConfig['rate_limits'] : [];
 
@@ -772,6 +787,85 @@ private function isRateLimited(string $modelKey, array $context, array $bedrockC
             }
 
             return false;
+        }
+    }
+
+    /**
+     * Apply DLP filtering per PKS 9.2.1 compliance.
+     *
+     * @param  array<string, mixed>  $context
+     * @return array<string, mixed>|null Returns routing decision if blocked, null to continue normal routing
+     */
+    private function applyDlpFilter(string $prompt, array $context = []): ?array
+    {
+        try {
+            /** @var DlpFilteringService $dlpService */
+            $dlpService = app(DlpFilteringService::class);
+            $dlpAnalysis = $dlpService->classifyData($prompt, $context['user_id'] ?? null);
+
+            // Log the DLP decision for audit trail (PKS 9.2.1 requirement)
+            $this->logDlpDecision($dlpAnalysis, $prompt, $context);
+
+            // If content is SENSITIVE, route to Ollama only (block cloud)
+            if ($dlpAnalysis['classification'] === DlpFilteringService::CLASSIFICATION_SENSITIVE) {
+                return [
+                    'provider' => 'ollama',
+                    'model_id' => null,
+                    'model_key' => null,
+                    'reason' => 'PKS 9.2.1: Data sensitif dikesan. Pemprosesan tempatan sahaja.',
+                    'dlp_classification' => $dlpAnalysis['classification'],
+                    'dlp_risk_score' => $dlpAnalysis['risk_score'],
+                ];
+            }
+
+            // Content is PUBLIC, continue with normal routing
+            return null;
+        } catch (\Throwable $e) {
+            // If DLP service fails, log and continue with normal routing
+            // but apply conservative approach - check for basic PII
+            Log::warning('DLP service unavailable, using fallback PII check', [
+                'error' => $e->getMessage(),
+            ]);
+
+            if ($this->containsPii($prompt)) {
+                return [
+                    'provider' => 'ollama',
+                    'model_id' => null,
+                    'model_key' => null,
+                    'reason' => 'PKS 9.2.1: PII dikesan (fallback). Pemprosesan tempatan sahaja.',
+                ];
+            }
+
+            return null;
+        }
+    }
+
+    /**
+     * Log DLP decision to audit log per PKS 9.2.1.
+     *
+     * @param  array<string, mixed>  $dlpAnalysis
+     * @param  array<string, mixed>  $context
+     */
+    private function logDlpDecision(array $dlpAnalysis, string $prompt, array $context): void
+    {
+        try {
+            DlpAuditLog::logDecision($dlpAnalysis, [
+                'user_id' => $context['user_id'] ?? null,
+                'session_id' => $context['session_id'] ?? null,
+                'content_length' => $this->safeStrlen($prompt),
+                'content_hash' => sha1($prompt),
+                'target_provider' => $dlpAnalysis['classification'] === DlpFilteringService::CLASSIFICATION_SENSITIVE
+                    ? DlpAuditLog::PROVIDER_OLLAMA
+                    : DlpAuditLog::PROVIDER_BEDROCK,
+                'operation_type' => $context['operation_type'] ?? 'text_generation',
+                'source_component' => 'ModelRouter',
+            ]);
+        } catch (\Throwable $e) {
+            // Don't fail routing if audit logging fails
+            Log::error('Failed to log DLP decision', [
+                'error' => $e->getMessage(),
+                'classification' => $dlpAnalysis['classification'] ?? 'unknown',
+            ]);
         }
     }
 }

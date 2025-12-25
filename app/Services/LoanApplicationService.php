@@ -9,18 +9,19 @@ use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Models\LoanItem;
 use App\Models\User;
-use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Loan Application Service
+ * PKS 5.2.1 Compliant Loan Application Service
  *
- * Handles creation and management of loan applications with hybrid architecture support.
+ * SSO-only architecture - all loan applications require authenticated users.
+ * Guest submission functionality has been removed per PKS 5.2.1 Accountability requirements.
  *
- * @see D03-FR-001.1 Hybrid application creation
- * @see D03-FR-001.2 Guest and authenticated submissions
+ * @see D03-FR-001.1 Application creation (authenticated only)
  * @see D04 §2.1 Business logic services
+ *
+ * @trace Requirements 1.4, 1.5, 9.1, 25.1
  */
 class LoanApplicationService
 {
@@ -30,37 +31,32 @@ class LoanApplicationService
     ) {}
 
     /**
-     * Create hybrid loan application (guest or authenticated)
+     * Create loan application (authenticated users only)
      *
-     * @param  array  $data  Application data
-     * @param  User|null  $user  Authenticated user (null for guest)
+     * PKS 5.2.1: All applications MUST have a mandatory user_id (NOT NULL).
+     *
+     * @param  array<string, mixed>  $data  Application data
+     * @param  User  $user  Authenticated user (REQUIRED)
      *
      * @throws \Exception
+     *
+     * @trace Requirements 1.4, 1.5, 9.1, 25.1
      */
-    
-
-/**
- * @param array<string, mixed> $data
- */
-public function createHybridApplication(array $data, ?User $user = null): LoanApplication
+    public function createApplication(array $data, User $user): LoanApplication
     {
         DB::beginTransaction();
 
         try {
-            // Create loan application
+            // Create loan application with mandatory user_id
             $application = LoanApplication::create([
                 'application_number' => LoanApplication::generateApplicationNumber(),
-                'user_id' => $user?->id, // Null for guest applications
-                // Guest fields (always populated)
-                'applicant_name' => $data['applicant_name'],
-                'applicant_email' => $data['applicant_email'],
-                'applicant_phone' => $data['applicant_phone'],
-                'staff_id' => $data['staff_id'],
-                'grade' => $data['grade'],
-                'division_id' => $data['division_id'],
+                'user_id' => $user->id, // MANDATORY per PKS 5.2.1
+                'staff_id' => $data['staff_id'] ?? $user->staff_id,
+                'grade' => $data['grade'] ?? $user->grade,
+                'division_id' => $data['division_id'] ?? $user->division_id,
                 // BAHAGIAN 1: Extended applicant info
-                'applicant_position' => $data['applicant_position'] ?? null,
-                'applicant_grade' => $data['applicant_grade'] ?? null,
+                'applicant_position' => $data['applicant_position'] ?? $user->position ?? null,
+                'applicant_grade' => $data['applicant_grade'] ?? $user->grade ?? null,
                 'purpose' => $data['purpose'],
                 'location' => $data['location'],
                 'loan_start_date' => $data['loan_start_date'],
@@ -75,7 +71,7 @@ public function createHybridApplication(array $data, ?User $user = null): LoanAp
                 'applicant_digital_signature' => $data['applicant_digital_signature'] ?? null,
                 'applicant_declaration_date' => now(),
                 'terms_acknowledged' => $data['terms_acknowledged'] ?? false,
-                // Application details (existing)
+                // Application details
                 'return_location' => $data['return_location'] ?? $data['location'],
                 'loan_end_date' => $data['loan_end_date'] ?? $data['expected_return_date'],
                 'status' => LoanStatus::SUBMITTED,
@@ -97,10 +93,10 @@ public function createHybridApplication(array $data, ?User $user = null): LoanAp
 
             DB::commit();
 
-            Log::info('Loan application created', [
+            Log::info('Loan application created (PKS 5.2.1 compliant)', [
                 'application_number' => $application->application_number,
-                'user_id' => $user?->id,
-                'is_guest' => $application->isGuestSubmission(),
+                'user_id' => $user->id,
+                'user_email' => $user->email,
             ]);
 
             return $application;
@@ -108,6 +104,7 @@ public function createHybridApplication(array $data, ?User $user = null): LoanAp
             DB::rollBack();
             Log::error('Failed to create loan application', [
                 'error' => $e->getMessage(),
+                'user_id' => $user->id,
                 'data' => $data,
             ]);
             throw $e;
@@ -117,22 +114,17 @@ public function createHybridApplication(array $data, ?User $user = null): LoanAp
     /**
      * Create loan items for application
      *
-     * @param  array  $items  Array of asset IDs or asset data
+     * @param  array<int|array<string, mixed>>  $items  Array of asset IDs or asset data
      */
-    
-
-/**
- * @param array<string, mixed> $items
- */
-private function createLoanItems(LoanApplication $application, array $items): void
+    private function createLoanItems(LoanApplication $application, array $items): void
     {
         foreach ($items as $item) {
             // Handle both asset_id format and equipment_type format
-            $assetId = is_array($item) ? ($item['asset_id'] ?? null) : $item;
-            $quantity = is_array($item) ? ($item['quantity'] ?? 1) : 1;
-            $equipmentType = is_array($item) ? ($item['equipment_type'] ?? null) : null;
+            $assetId = \is_array($item) ? ($item['asset_id'] ?? null) : $item;
+            $quantity = \is_array($item) ? ($item['quantity'] ?? 1) : 1;
+            $equipmentType = \is_array($item) ? ($item['equipment_type'] ?? null) : null;
 
-            // For guest applications, use equipment_type (category_id) to find available asset
+            // For equipment_type (category_id), find available asset
             if ($equipmentType && ! $assetId) {
                 $asset = \App\Models\Asset::where('category_id', $equipmentType)
                     ->where('status', 'available')
@@ -244,7 +236,7 @@ private function createLoanItems(LoanApplication $application, array $items): vo
     {
         $application->update([
             'loan_end_date' => $newEndDate,
-            'special_instructions' => trim((string) $application->special_instructions) !== ''
+            'special_instructions' => \trim((string) $application->special_instructions) !== ''
                 ? $application->special_instructions."\nExtension requested: {$justification}"
                 : "Extension requested: {$justification}",
         ]);
@@ -256,29 +248,46 @@ private function createLoanItems(LoanApplication $application, array $items): vo
     }
 
     /**
-     * Claim a guest loan application to an authenticated user account.
+     * Check if user can access loan application
      *
-     * @throws Exception
+     * PKS 5.2.1: Access is based on user_id ownership only.
      */
-    public function claimGuestApplication(LoanApplication $application, User $user): bool
+    public function canUserAccessApplication(LoanApplication $application, User $user): bool
     {
-        if (! $application->isGuestSubmission()) {
-            throw new Exception('Loan application is already linked to an account.');
-        }
+        return $application->user_id === $user->id;
+    }
 
-        if (strtolower($application->applicant_email) !== strtolower($user->email)) {
-            throw new Exception('Email does not match the original applicant.');
-        }
+    /**
+     * Get user's loan applications
+     *
+     * PKS 5.2.1: Returns only applications where user_id matches.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder<LoanApplication>
+     */
+    public function getUserApplications(User $user): \Illuminate\Database\Eloquent\Builder
+    {
+        return LoanApplication::query()
+            ->where('user_id', $user->id)
+            ->with(['loanItems.asset', 'division'])
+            ->orderBy('created_at', 'desc');
+    }
 
-        $application->update(['user_id' => $user->id]);
+    /**
+     * Get loan application statistics for user
+     *
+     * @return array<string, int>
+     */
+    public function getUserApplicationStats(User $user): array
+    {
+        $baseQuery = LoanApplication::query()->where('user_id', $user->id);
 
-        Log::info('Loan application claimed by user', [
-            'application_number' => $application->application_number,
-            'user_id' => $user->id,
-        ]);
-
-        $this->notificationService->sendLoanStatusUpdate($application);
-
-        return true;
+        return [
+            'total' => (clone $baseQuery)->count(),
+            'submitted' => (clone $baseQuery)->where('status', LoanStatus::SUBMITTED)->count(),
+            'approved' => (clone $baseQuery)->where('status', LoanStatus::APPROVED)->count(),
+            'rejected' => (clone $baseQuery)->where('status', LoanStatus::REJECTED)->count(),
+            'in_use' => (clone $baseQuery)->where('status', LoanStatus::IN_USE)->count(),
+            'returned' => (clone $baseQuery)->where('status', LoanStatus::RETURNED)->count(),
+        ];
     }
 }

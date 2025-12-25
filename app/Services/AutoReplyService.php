@@ -8,10 +8,12 @@ use App\Contracts\OllamaClientContract;
 use App\Models\ApprovalEmailToken;
 use App\Models\AutoReplyDraft;
 use App\Models\AutoReplyTemplate;
+use App\Models\DlpAuditLog;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
@@ -23,13 +25,16 @@ use Illuminate\Support\Str;
  * Mengendalikan penjanaan draf respons automatik dengan template,
  * aliran kerja kelulusan, dan notifikasi e-mel untuk sistem ICTServe v3.6.0.
  *
+ * PKS 5.2.1 Compliance: All operations require authenticated user_id
+ * PKS 9.2.1 Compliance: DLP filtering applied before AI processing
+ *
  * @version 3.6.0
  *
  * @author Pasukan Pembangunan BPM MOTAC
  *
  * @compliance D10 Source Code Documentation v3.6.0
  *
- * @requirements 3.1, 3.2, 3.3, 3.4, 3.6
+ * @requirements 3.1, 3.2, 3.3, 3.4, 3.6, 25.1
  */
 class AutoReplyService
 {
@@ -44,7 +49,14 @@ class AutoReplyService
     private RagService $ragService;
 
     /**
+     * DLP Filtering Service untuk PKS 9.2.1 compliance
+     */
+    private DlpFilteringService $dlpService;
+
+    /**
      * Konfigurasi perkhidmatan
+     *
+     * @var array<string, mixed>
      */
     private array $config;
 
@@ -53,10 +65,12 @@ class AutoReplyService
      */
     public function __construct(
         OllamaClientContract $ollamaClient,
-        RagService $ragService
+        RagService $ragService,
+        ?DlpFilteringService $dlpService = null
     ) {
         $this->ollamaClient = $ollamaClient;
         $this->ragService = $ragService;
+        $this->dlpService = $dlpService ?? app(DlpFilteringService::class);
         $this->config = config('ollama.auto_reply', [
             'approval_required' => true,
             'token_validity_days' => 7,
@@ -294,7 +308,7 @@ class AutoReplyService
 
         if (! in_array(get_class($model), $supportedModels)) {
             throw new \InvalidArgumentException(
-                'Model ' . get_class($model) . ' tidak disokong untuk auto-reply'
+                'Model '.get_class($model).' tidak disokong untuk auto-reply'
             );
         }
     }
@@ -302,7 +316,6 @@ class AutoReplyService
     /**
      * Bina konteks untuk penjanaan respons
      */
-
 
     /**
      * @return array<string, mixed>
@@ -342,7 +355,6 @@ class AutoReplyService
      * Ekstrak pembolehubah template dari model
      */
 
-
     /**
      * @return array<string, mixed>
      */
@@ -351,21 +363,23 @@ class AutoReplyService
         $variables = $this->config['default_template_variables'];
 
         if ($replyable instanceof HelpdeskTicket) {
+            // PKS 5.2.1 - Use authenticated user only (no guest fields)
             $variables = array_merge($variables, [
                 'ticket_id' => $replyable->id,
                 'ticket_title' => $replyable->subject,
                 'ticket_category' => $replyable->category_id,
                 'ticket_priority' => $replyable->priority,
                 'ticket_status' => $replyable->status,
-                'submitter_name' => $replyable->guest_name ?? $replyable->user?->name ?? 'Pengguna',
-                'submitter_email' => $replyable->guest_email ?? $replyable->user?->email ?? '',
+                'submitter_name' => $replyable->user?->name ?? 'Pengguna',
+                'submitter_email' => $replyable->user?->email ?? '',
                 'submission_date' => $replyable->created_at->format('d/m/Y'),
             ]);
         } elseif ($replyable instanceof LoanApplication) {
+            // PKS 5.2.1 - Use authenticated user only (no guest fields)
             $variables = array_merge($variables, [
                 'loan_id' => $replyable->id,
-                'applicant_name' => $replyable->applicant_name ?? $replyable->user?->name ?? 'Pemohon',
-                'applicant_email' => $replyable->applicant_email ?? $replyable->user?->email ?? '',
+                'applicant_name' => $replyable->user?->name ?? 'Pemohon',
+                'applicant_email' => $replyable->user?->email ?? '',
                 'loan_purpose' => $replyable->purpose,
                 'loan_status' => $replyable->status instanceof \BackedEnum ? $replyable->status->value : (string) $replyable->status,
                 'application_date' => $replyable->created_at->format('d/m/Y'),
@@ -378,7 +392,6 @@ class AutoReplyService
     /**
      * Dapatkan sejarah replyable untuk konteks
      */
-
 
     /**
      * @return array<string, mixed>
@@ -397,17 +410,17 @@ class AutoReplyService
      * Bina konteks khusus untuk tiket helpdesk
      */
 
-
     /**
      * @return array<string, mixed>
      */
     private function buildTicketContext(HelpdeskTicket $ticket): array
     {
+        // PKS 5.2.1 - Use authenticated user only (no guest fields)
         return [
             'description' => $ticket->description,
             'category' => $ticket->category_id,
             'priority' => $ticket->priority,
-            'department' => $ticket->guest_division ?? $ticket->division?->name ?? '',
+            'department' => $ticket->division?->name ?? '',
             'attachments_count' => $ticket->attachments()->count(),
             'comments_count' => $ticket->comments()->count(),
         ];
@@ -416,7 +429,6 @@ class AutoReplyService
     /**
      * Bina konteks khusus untuk permohonan pinjaman
      */
-
 
     /**
      * @return array<string, mixed>
@@ -436,9 +448,8 @@ class AutoReplyService
      * Jana kandungan draf menggunakan template atau AI
      */
 
-
     /**
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     private function generateDraftContent(array $context, ?int $templateId = null): string
     {
@@ -453,9 +464,8 @@ class AutoReplyService
      * Jana kandungan menggunakan template
      */
 
-
     /**
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     private function generateFromTemplate(array $context, int $templateId): string
     {
@@ -480,16 +490,24 @@ class AutoReplyService
 
     /**
      * Jana kandungan menggunakan AI sahaja
+     * PKS 9.2.1 - DLP filtering applied before AI processing
      */
 
-
     /**
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     private function generateWithAI(array $context): string
     {
         $prompt = $this->buildAIPrompt($context);
 
+        // PKS 9.2.1 - Apply DLP filtering before AI processing
+        $dlpAnalysis = $this->dlpService->classifyData($prompt, Auth::id());
+
+        // Log DLP decision for audit trail
+        $this->logDlpDecision($dlpAnalysis, $prompt);
+
+        // All auto-reply generation uses local Ollama (PKS 9.2.1 compliant)
+        // This ensures sensitive ticket/loan data never leaves the local environment
         $response = $this->ollamaClient->generate([
             'prompt' => $prompt,
             'temperature' => 0.7,
@@ -504,27 +522,53 @@ class AutoReplyService
         }
 
         // Validasi panjang kandungan
-        if (strlen($content) > $this->config['max_content_length']) {
-            $content = substr($content, 0, $this->config['max_content_length']) . '...';
+        if (\strlen($content) > $this->config['max_content_length']) {
+            $content = substr($content, 0, $this->config['max_content_length']).'...';
         }
 
         return trim($content);
     }
 
     /**
-     * Bina prompt AI untuk penjanaan respons
+     * Log DLP decision for audit trail per PKS 9.2.1
+     *
+     * @param  array<string, mixed>  $analysis
      */
-
+    private function logDlpDecision(array $analysis, string $content): void
+    {
+        try {
+            DlpAuditLog::create([
+                'user_id' => Auth::id(),
+                'classification' => $analysis['classification'],
+                'routing_decision' => $analysis['routing_decision'],
+                'risk_score' => $analysis['risk_score'],
+                'content_hash' => sha1($content),
+                'content_length' => \strlen($content),
+                'detected_patterns' => json_encode($analysis['detected_patterns']),
+                'source' => 'auto_reply_service',
+                'target_provider' => DlpAuditLog::PROVIDER_OLLAMA, // Always local for auto-reply
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('Failed to log DLP decision in AutoReplyService', [
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
 
     /**
-     * @param array<string, mixed> $context
+     * Bina prompt AI untuk penjanaan respons
+     * PKS 5.2.1 - Uses authenticated user only (no guest fields)
+     */
+
+    /**
+     * @param  array<string, mixed>  $context
      */
     private function buildAIPrompt(array $context): string
     {
         $type = $context['type'];
         $model = $context['model'];
 
-        $systemPrompt = 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. ' .
+        $systemPrompt = 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. '.
             'Jana respons profesional dalam Bahasa Melayu sahaja untuk ';
 
         if ($type === 'helpdesk_ticket') {
@@ -534,7 +578,8 @@ class AutoReplyService
             $systemPrompt .= "Keutamaan: {$model->priority}\n";
             $systemPrompt .= "Penerangan: {$model->description}\n";
         } elseif ($type === 'loan_application') {
-            $applicantName = $model->applicant_name ?? $model->user?->name ?? 'Pemohon';
+            // PKS 5.2.1 - Use authenticated user only
+            $applicantName = $model->user?->name ?? 'Pemohon';
             $systemPrompt .= "permohonan pinjaman aset berikut:\n\n";
             $systemPrompt .= "Pemohon: {$applicantName}\n";
             $systemPrompt .= "Tujuan: {$model->purpose}\n";
@@ -556,9 +601,8 @@ class AutoReplyService
      * Jana konteks AI untuk template
      */
 
-
     /**
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     private function generateAIContext(array $context): string
     {
@@ -577,9 +621,8 @@ class AutoReplyService
      * Bina query untuk RAG berdasarkan konteks
      */
 
-
     /**
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     private function buildContextQuery(array $context): string
     {
@@ -724,7 +767,7 @@ class AutoReplyService
                 'approver_name' => $approver->name,
                 'reason' => $reason,
             ],
-            'hash' => hash('sha256', $draft->id . $action . $approver->id . now()->timestamp),
+            'hash' => hash('sha256', $draft->id.$action.$approver->id.now()->timestamp),
             'processed_at' => now(),
         ]);
     }
@@ -733,9 +776,8 @@ class AutoReplyService
      * Log penjanaan draf untuk audit
      */
 
-
     /**
-     * @param array<string, mixed> $context
+     * @param  array<string, mixed>  $context
      */
     private function logDraftGeneration(
         string $requestId,
@@ -757,7 +799,7 @@ class AutoReplyService
                 'processing_time' => $processingTime,
                 'content_length' => strlen($draft->draft_content),
             ],
-            'hash' => hash('sha256', $requestId . $draft->draft_content),
+            'hash' => hash('sha256', $requestId.$draft->draft_content),
             'processed_at' => now(),
         ]);
     }

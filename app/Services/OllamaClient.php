@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\OllamaClientContract;
+use App\Models\DataResidencyLog;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Cache;
@@ -57,14 +58,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    
 
-/**
-  * @param array<string, mixed> $payload
-
- * @return array<string, mixed>
- */
-public function generate(array $payload): array
+    /**
+     * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    public function generate(array $payload): array
     {
         $startTime = microtime(true);
 
@@ -121,6 +120,16 @@ public function generate(array $payload): array
                 // Jangan gagalkan permintaan jika event dispatch bermasalah.
             }
 
+            // PKS 4.2 Data Sovereignty - Log data residency
+            $this->logDataResidency(
+                operation: 'generate',
+                dataClassification: $payload['data_classification'] ?? 'PUBLIC',
+                modelId: $payload['model'] ?? $this->config['model'],
+                responseTimeMs: (int) ((microtime(true) - $startTime) * 1000),
+                inputTokens: $response['prompt_eval_count'] ?? null,
+                outputTokens: $response['eval_count'] ?? null,
+            );
+
             return $response;
         } catch (\Exception $e) {
             $this->stats['errors']++;
@@ -153,12 +162,11 @@ public function generate(array $payload): array
     /**
      * {@inheritDoc}
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function embeddings(string $text, ?string $model = null): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function embeddings(string $text, ?string $model = null): array
     {
         $startTime = microtime(true);
 
@@ -229,14 +237,12 @@ public function embeddings(string $text, ?string $model = null): array
     /**
      * {@inheritDoc}
      */
-    
 
-/**
-  * @param array<string, mixed> $options
-
- * @return array<string, mixed>
- */
-public function chat(array $messages, array $options = []): array
+    /**
+     * @param  array<string, mixed>  $options
+     * @return array<string, mixed>
+     */
+    public function chat(array $messages, array $options = []): array
     {
         $startTime = microtime(true);
 
@@ -258,6 +264,16 @@ public function chat(array $messages, array $options = []): array
 
             $this->updateStats($startTime);
 
+            // PKS 4.2 Data Sovereignty - Log data residency for chat
+            $this->logDataResidency(
+                operation: 'chat',
+                dataClassification: $options['data_classification'] ?? 'PUBLIC',
+                modelId: $payload['model'] ?? $this->config['model'],
+                responseTimeMs: (int) ((microtime(true) - $startTime) * 1000),
+                inputTokens: $response['prompt_eval_count'] ?? null,
+                outputTokens: $response['eval_count'] ?? null,
+            );
+
             return $response;
         } catch (\Exception $e) {
             $this->stats['errors']++;
@@ -276,12 +292,11 @@ public function chat(array $messages, array $options = []): array
     /**
      * {@inheritDoc}
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function models(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function models(): array
     {
         $startTime = microtime(true);
 
@@ -383,12 +398,11 @@ public function models(): array
     /**
      * {@inheritDoc}
      */
-    
 
-/**
- * @param array<string, mixed> $response
- */
-public function cacheResponse(string $cacheKey, array $response, int $ttl): void
+    /**
+     * @param  array<string, mixed>  $response
+     */
+    public function cacheResponse(string $cacheKey, array $response, int $ttl): void
     {
         if (! $this->config['cache']['enabled']) {
             return;
@@ -400,12 +414,11 @@ public function cacheResponse(string $cacheKey, array $response, int $ttl): void
     /**
      * {@inheritDoc}
      */
-    
 
-/**
- * @param array<string, mixed> $tags
- */
-public function clearCache(string|array $tags): bool
+    /**
+     * @param  array<string, mixed>  $tags
+     */
+    public function clearCache(string|array $tags): bool
     {
         try {
             if (is_string($tags)) {
@@ -430,12 +443,11 @@ public function clearCache(string|array $tags): bool
     /**
      * {@inheritDoc}
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getPerformanceStats(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getPerformanceStats(): array
     {
         $stats = $this->stats;
 
@@ -481,14 +493,12 @@ public function getPerformanceStats(): array
     /**
      * Membuat permintaan HTTP ke pelayan Ollama
      */
-    
 
-/**
-  * @param array<string, mixed> $payload
-
- * @return array<string, mixed>
- */
-private function makeRequest(string $endpoint, array $payload = []): array
+    /**
+     * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    private function makeRequest(string $endpoint, array $payload = []): array
     {
         $url = $this->config['url'].$endpoint;
         $timeout = $this->config['connection']['timeout'];
@@ -555,12 +565,11 @@ private function makeRequest(string $endpoint, array $payload = []): array
     /**
      * Validasi payload untuk generate
      */
-    
 
-/**
- * @param array<string, mixed> $payload
- */
-private function validateGeneratePayload(array $payload): void
+    /**
+     * @param  array<string, mixed>  $payload
+     */
+    private function validateGeneratePayload(array $payload): void
     {
         if (empty($payload['prompt'])) {
             throw new InvalidArgumentException('Prompt diperlukan untuk generate');
@@ -578,12 +587,11 @@ private function validateGeneratePayload(array $payload): void
     /**
      * Validasi mesej chat
      */
-    
 
-/**
- * @param array<string, mixed> $messages
- */
-private function validateChatMessages(array $messages): void
+    /**
+     * @param  array<string, mixed>  $messages
+     */
+    private function validateChatMessages(array $messages): void
     {
         if (empty($messages)) {
             throw new InvalidArgumentException('Mesej diperlukan untuk chat');
@@ -603,12 +611,11 @@ private function validateChatMessages(array $messages): void
     /**
      * Jana kunci cache
      */
-    
 
-/**
- * @param array<string, mixed> $payload
- */
-private function generateCacheKey(string $operation, array $payload): string
+    /**
+     * @param  array<string, mixed>  $payload
+     */
+    private function generateCacheKey(string $operation, array $payload): string
     {
         $hash = md5(serialize($payload));
 
@@ -635,14 +642,12 @@ private function generateCacheKey(string $operation, array $payload): string
     /**
      * Sanitasi payload untuk logging
      */
-    
 
-/**
-  * @param array<string, mixed> $payload
-
- * @return array<string, mixed>
- */
-private function sanitizePayload(array $payload): array
+    /**
+     * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    private function sanitizePayload(array $payload): array
     {
         // Redaksi maklumat sensitif untuk logging
         $sanitized = $payload;
@@ -705,6 +710,50 @@ private function sanitizePayload(array $payload): array
 
         if ($cachedStats !== null) {
             $this->stats = array_merge($this->stats, $cachedStats);
+        }
+    }
+
+    /**
+     * PKS 4.2 Data Sovereignty - Log data residency for compliance
+     *
+     * All Ollama operations are local processing, ensuring sensitive
+     * data never leaves the local infrastructure.
+     *
+     * @trace Requirements 26.2, 26.4
+     */
+    private function logDataResidency(
+        string $operation,
+        string $dataClassification,
+        string $modelId,
+        int $responseTimeMs,
+        ?int $inputTokens = null,
+        ?int $outputTokens = null,
+    ): void {
+        try {
+            DataResidencyLog::logOperation([
+                'user_id' => auth()->id(),
+                'service' => 'ollama',
+                'operation' => $operation,
+                'data_classification' => $dataClassification,
+                'processing_location' => 'local-server',
+                'is_local_processing' => true,
+                'is_compliant' => true, // Ollama is always compliant (local)
+                'model_id' => $modelId,
+                'input_tokens' => $inputTokens,
+                'output_tokens' => $outputTokens,
+                'response_time_ms' => $responseTimeMs,
+                'metadata' => [
+                    'server_url' => $this->config['url'] ?? 'http://localhost:11434',
+                    'pks_compliance' => 'PKS 4.2',
+                ],
+                'compliance_notes' => 'Pemprosesan tempatan - data tidak meninggalkan infrastruktur',
+            ]);
+        } catch (\Throwable $e) {
+            // Don't fail the request if logging fails
+            Log::warning('Failed to log data residency', [
+                'error' => $e->getMessage(),
+                'operation' => $operation,
+            ]);
         }
     }
 }
