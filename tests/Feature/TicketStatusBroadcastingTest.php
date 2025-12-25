@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Events\TicketStatusChanged;
+use App\Events\StatusUpdated;
 use App\Models\HelpdeskTicket;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -17,10 +17,12 @@ use Tests\TestCase;
  * Tests that ticket status changes automatically dispatch broadcasting events
  * through the HelpdeskTicketObserver.
  *
- * @see app/Observers/HelpdeskTicketObserver.php
- * @see app/Events/TicketStatusChanged.php
+ * PKS 5.2.1 Compliant: Uses StatusUpdated event with authenticated-only channels.
  *
- * @requirements 6.1, 6.2, 6.3, 8.1, 8.2
+ * @see app/Observers/HelpdeskTicketObserver.php
+ * @see app/Events/StatusUpdated.php
+ *
+ * @requirements 6.1, 6.2, 6.3, 8.1, 8.2, PKS 5.2.1
  */
 class TicketStatusBroadcastingTest extends TestCase
 {
@@ -29,7 +31,8 @@ class TicketStatusBroadcastingTest extends TestCase
     #[Test]
     public function observer_integration_works_with_status_updates(): void
     {
-        // Create a ticket with initial status (without Event::fake to allow observer to work)
+        // Create a ticket with initial status BEFORE faking events
+        // This allows the observer to run during creation
         $ticket = HelpdeskTicket::factory()->create([
             'status' => 'open',
         ]);
@@ -38,15 +41,19 @@ class TicketStatusBroadcastingTest extends TestCase
         $this->assertEquals('open', $ticket->status);
         $this->assertNotNull($ticket->ticket_number);
 
+        // Now fake events to capture the status update event
+        Event::fake([StatusUpdated::class]);
+
         // Update the ticket status - this should trigger the observer
         $ticket->update(['status' => 'in_progress']);
 
         // Verify the status was updated
         $this->assertEquals('in_progress', $ticket->fresh()->status);
 
-        // The observer should have been called (we can't easily test the event dispatch
-        // without Event::fake, but we can verify the observer logic works)
-        $this->assertTrue(true);
+        // Verify the StatusUpdated event was dispatched by the observer
+        Event::assertDispatched(StatusUpdated::class, fn ($event) => $event->model->id === $ticket->id
+            && $event->oldStatus === 'open'
+            && $event->newStatus === 'in_progress');
     }
 
     #[Test]
@@ -60,14 +67,12 @@ class TicketStatusBroadcastingTest extends TestCase
         ]);
 
         // Manually dispatch the event (simulating what the observer does)
-        TicketStatusChanged::dispatch($ticket, 'open', 'in_progress');
+        StatusUpdated::dispatch($ticket, 'open', 'in_progress');
 
         // Verify the event was dispatched
-        Event::assertDispatched(TicketStatusChanged::class, function ($event) use ($ticket) {
-            return $event->ticket->id === $ticket->id &&
-                $event->oldStatus === 'open' &&
-                $event->newStatus === 'in_progress';
-        });
+        Event::assertDispatched(StatusUpdated::class, fn ($event) => $event->model->id === $ticket->id
+            && $event->oldStatus === 'open'
+            && $event->newStatus === 'in_progress');
     }
 
     #[Test]
@@ -80,69 +85,65 @@ class TicketStatusBroadcastingTest extends TestCase
         ]);
 
         // Create the event
-        $event = new TicketStatusChanged($ticket, 'open', 'in_progress');
+        $event = new StatusUpdated($ticket, 'open', 'in_progress');
 
         // Test broadcast data
         $broadcastData = $event->broadcastWith();
 
-        $this->assertArrayHasKey('ticket_id', $broadcastData);
+        $this->assertArrayHasKey('model_type', $broadcastData);
+        $this->assertArrayHasKey('model_id', $broadcastData);
+        $this->assertArrayHasKey('entity_type', $broadcastData);
+        $this->assertArrayHasKey('entity_id', $broadcastData);
         $this->assertArrayHasKey('old_status', $broadcastData);
         $this->assertArrayHasKey('new_status', $broadcastData);
-        $this->assertArrayHasKey('subject', $broadcastData);
-        $this->assertArrayHasKey('message', $broadcastData);
 
-        $this->assertEquals($ticket->id, $broadcastData['ticket_id']);
+        $this->assertEquals('HelpdeskTicket', $broadcastData['model_type']);
+        $this->assertEquals($ticket->id, $broadcastData['model_id']);
+        $this->assertEquals('ticket', $broadcastData['entity_type']);
         $this->assertEquals('open', $broadcastData['old_status']);
         $this->assertEquals('in_progress', $broadcastData['new_status']);
-        $this->assertEquals('Test Ticket Subject', $broadcastData['subject']);
     }
 
     #[Test]
     public function event_broadcasts_to_correct_channels(): void
     {
-        // Create a ticket with user
+        // Create a ticket with user (PKS 5.2.1: all tickets have user_id)
         $ticket = HelpdeskTicket::factory()->create();
 
         // Create the event
-        $event = new TicketStatusChanged($ticket);
+        $event = new StatusUpdated($ticket, 'open', 'in_progress');
 
         // Get broadcast channels
         $channels = $event->broadcastOn();
 
-        // Convert to channel names for testing
+        // Convert to channel names for testing (PrivateChannel adds 'private-' prefix)
         $channelNames = array_map(fn ($channel) => $channel->name, $channels);
 
-        // Should include public helpdesk channel
-        $this->assertContains('helpdesk', $channelNames);
+        // PKS 5.2.1: Should include user-specific private channel
+        $this->assertContains("private-user.{$ticket->user_id}", $channelNames);
 
-        // Should include ticket-specific channel
-        $this->assertContains("ticket.{$ticket->id}", $channelNames);
-
-        // Should include user-specific channel if user exists
-        if ($ticket->user_id) {
-            $this->assertContains("user.{$ticket->user_id}", $channelNames);
-        }
+        // PKS 5.2.1: Should include ticket-specific channel with user_id
+        $this->assertContains("private-ticket.{$ticket->user_id}.{$ticket->id}", $channelNames);
     }
 
     #[Test]
-    public function guest_ticket_broadcasts_without_user_channel(): void
+    public function authenticated_ticket_broadcasts_to_user_channel(): void
     {
-        // Create a guest ticket (no user_id)
-        $ticket = HelpdeskTicket::factory()->guest()->create();
+        // PKS 5.2.1: All tickets must have user_id (NOT NULL)
+        // Create an authenticated ticket with user_id
+        $ticket = HelpdeskTicket::factory()->create();
 
         // Create the event
-        $event = new TicketStatusChanged($ticket);
+        $event = new StatusUpdated($ticket, 'open', 'in_progress');
 
         // Get broadcast channels
         $channels = $event->broadcastOn();
         $channelNames = array_map(fn ($channel) => $channel->name, $channels);
 
-        // Should include public channels but not user-specific
-        $this->assertContains('helpdesk', $channelNames);
-        $this->assertContains("ticket.{$ticket->id}", $channelNames);
+        // PKS 5.2.1: All tickets have user_id, so user channel should be included
+        $this->assertContains("private-user.{$ticket->user_id}", $channelNames);
 
-        // Should NOT include user channel for guest tickets
-        $userChannels = array_filter($channelNames, fn ($name) => str_starts_with($name, 'user.'));
-        $this->assertEmpty($userChannels);
+        // PKS 5.2.1: Ticket channel includes user_id for authentication
+        $this->assertContains("private-ticket.{$ticket->user_id}.{$ticket->id}", $channelNames);
     }
 }

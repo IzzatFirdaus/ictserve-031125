@@ -125,8 +125,7 @@ class ReverbIntegrationTest extends TestCase
 
         // Test user channel authorization
         $response = $this->actingAs($user)
-            ->withSession(['_token' => 'test-token'])
-            ->post('/broadcasting/auth', [
+            ->postJson('/broadcasting/auth', [
                 'socket_id' => '123.456',
                 'channel_name' => "private-user.{$user->id}",
             ]);
@@ -143,7 +142,7 @@ class ReverbIntegrationTest extends TestCase
         // User 1 trying to access User 2's channel
         $this->actingAs($user1);
 
-        $response = $this->post('/broadcasting/auth', [
+        $response = $this->postJson('/broadcasting/auth', [
             'socket_id' => '123.456',
             'channel_name' => "private-user.{$user2->id}",
         ]);
@@ -158,7 +157,7 @@ class ReverbIntegrationTest extends TestCase
 
         $this->actingAs($admin);
 
-        $response = $this->post('/broadcasting/auth', [
+        $response = $this->postJson('/broadcasting/auth', [
             'socket_id' => '123.456',
             'channel_name' => 'private-admin.notifications',
         ]);
@@ -173,7 +172,7 @@ class ReverbIntegrationTest extends TestCase
 
         $this->actingAs($staff);
 
-        $response = $this->post('/broadcasting/auth', [
+        $response = $this->postJson('/broadcasting/auth', [
             'socket_id' => '123.456',
             'channel_name' => 'private-admin.notifications',
         ]);
@@ -195,7 +194,7 @@ class ReverbIntegrationTest extends TestCase
         ];
 
         foreach ($aiChannels as $channel) {
-            $response = $this->post('/broadcasting/auth', [
+            $response = $this->postJson('/broadcasting/auth', [
                 'socket_id' => '123.456',
                 'channel_name' => $channel,
             ]);
@@ -211,7 +210,7 @@ class ReverbIntegrationTest extends TestCase
 
         $this->actingAs($approver);
 
-        $response = $this->post('/broadcasting/auth', [
+        $response = $this->postJson('/broadcasting/auth', [
             'socket_id' => '123.456',
             'channel_name' => 'private-ai-approvals',
         ]);
@@ -234,7 +233,7 @@ class ReverbIntegrationTest extends TestCase
         ];
 
         foreach ($aiChannels as $channel) {
-            $response = $this->post('/broadcasting/auth', [
+            $response = $this->postJson('/broadcasting/auth', [
                 'socket_id' => '123.456',
                 'channel_name' => $channel,
             ]);

@@ -141,9 +141,10 @@ class AutoReplyServiceTest extends TestCase
     public function it_can_generate_draft_with_template(): void
     {
         $user = User::factory()->create();
+        // PKS 5.2.1 - Use authenticated user only (no guest fields)
         $ticket = HelpdeskTicket::factory()->create([
             'subject' => 'Test ticket',
-            'guest_name' => 'Test User',
+            'user_id' => $user->id,
         ]);
 
         $template = AutoReplyTemplate::factory()->create([
@@ -246,7 +247,7 @@ class AutoReplyServiceTest extends TestCase
 
         $token = ApprovalEmailToken::create([
             'auto_reply_draft_id' => $draft->id,
-            'token' => 'valid-token-' . uniqid(),
+            'token' => 'valid-token-'.uniqid(),
             'action' => 'approve',
             'expires_at' => now()->addDays(7),
             'used' => false,
@@ -396,12 +397,12 @@ class AutoReplyServiceTest extends TestCase
     #[Test]
     public function it_extracts_template_variables_for_ticket(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['name' => 'John Doe', 'email' => 'john@motac.gov.my']);
+        // PKS 5.2.1 - Use authenticated user only (no guest fields)
         $ticket = HelpdeskTicket::factory()->create([
             'subject' => 'Test Subject',
             'priority' => 'high',
-            'guest_name' => 'John Doe',
-            'guest_email' => 'john@motac.gov.my',
+            'user_id' => $user->id,
         ]);
 
         $template = AutoReplyTemplate::factory()->create([
@@ -419,9 +420,10 @@ class AutoReplyServiceTest extends TestCase
     #[Test]
     public function it_extracts_template_variables_for_loan(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['name' => 'Jane Doe']);
+        // PKS 5.2.1 - Use authenticated user only (no guest fields)
         $loan = LoanApplication::factory()->create([
-            'applicant_name' => 'Jane Doe',
+            'user_id' => $user->id,
             'purpose' => 'Mesyuarat',
         ]);
 

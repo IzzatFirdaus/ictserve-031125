@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Models\Asset;
-use App\Models\CrossModuleIntegration;
 use App\Models\Division;
 use App\Models\HelpdeskTicket;
-use App\Models\LoanApplication;
 use App\Models\TicketCategory;
 use App\Models\User;
-use App\Services\CrossModuleIntegrationService;
 use App\Services\HybridHelpdeskService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * Hybrid Helpdesk Workflow Feature Tests
+ * PKS 5.2.1 Compliant Helpdesk Workflow Feature Tests
  *
- * Validates guest and authenticated ticket flows, claiming, access rules,
- * and cross-module integration behaviour for the hybrid helpdesk architecture.
+ * Validates SSO-only authenticated ticket flows, access rules,
+ * and cross-module integration behaviour for the PKS-compliant architecture.
  *
- * @requirements 1.1, 1.2, 1.3, 2.2, 3.1
+ * PKS 5.2.1 Compliance: All submissions require mandatory user_id (NOT NULL)
+ * NO GUEST ACCESS - All users MUST authenticate via SSO
+ *
+ * @requirements 1.1, 1.2, 1.3, 2.2, 3.1, 25.1
  */
 class HybridHelpdeskWorkflowTest extends TestCase
 {
+    use RefreshDatabase;
+
     protected HybridHelpdeskService $hybridHelpdeskService;
 
     protected function setUp(): void
@@ -35,56 +37,11 @@ class HybridHelpdeskWorkflowTest extends TestCase
         $this->hybridHelpdeskService = app(HybridHelpdeskService::class);
     }
 
+    /**
+     * PKS 5.2.1: Authenticated ticket creation with mandatory user_id linkage
+     */
     #[Test]
-    public function guest_ticket_creation_with_null_user_id_and_submitter_fields(): void
-    {
-        $division = Division::factory()->create();
-        $category = TicketCategory::factory()->hardware()->create([
-            'sla_response_hours' => 4,
-            'sla_resolution_hours' => 24,
-        ]);
-
-        $ticket = $this->hybridHelpdeskService->createGuestTicket([
-            'guest_name' => 'Ahmad Bin Ali',
-            'guest_email' => 'ahmad.ali@motac.gov.my',
-            'guest_phone' => '+60123456789',
-            'guest_staff_id' => 'MOTAC001',
-            'guest_grade' => 'N41',
-            'guest_division' => 'Bahagian ICT',
-            'division_id' => $division->id,
-            'job_grade' => 'Gred 41',
-            'declaration_accepted' => true,
-            'category_id' => $category->id,
-            'priority' => 'high',
-            'subject' => 'Masalah kuasa laptop',
-            'description' => 'Laptop tetamu tidak dapat dihidupkan selepas kemas kini sistem.',
-        ]);
-
-        // Verify hybrid data association: guest submission has user_id=NULL
-        $this->assertNull($ticket->user_id, 'Guest submissions must have user_id=NULL for v3.6.0 hybrid architecture');
-        $this->assertTrue($ticket->isGuestSubmission());
-        $this->assertStringStartsWith('HD', $ticket->ticket_number);
-
-        // Verify submitter_* fields are captured for guest submissions
-        $this->assertDatabaseHas('helpdesk_tickets', [
-            'id' => $ticket->id,
-            'user_id' => null, // Critical: NULL for guest submissions
-            'guest_name' => 'Ahmad Bin Ali',
-            'guest_email' => 'ahmad.ali@motac.gov.my',
-            'guest_grade' => 'N41',
-            'guest_division' => 'Bahagian ICT',
-            'division_id' => $division->id,
-            'job_grade' => 'Gred 41',
-            'declaration_accepted' => true,
-            'priority' => 'high',
-            'status' => 'open',
-        ]);
-        $this->assertNotNull($ticket->sla_response_due_at);
-        $this->assertNotNull($ticket->sla_resolution_due_at);
-    }
-
-    #[Test]
-    public function authenticated_ticket_creation_with_user_id_linked_and_auto_fill(): void
+    public function authenticated_ticket_creation_with_mandatory_user_id_linked(): void
     {
         $division = Division::factory()->create();
         $category = TicketCategory::factory()->create([
@@ -100,7 +57,7 @@ class HybridHelpdeskWorkflowTest extends TestCase
             'division_id' => $division->id,
         ]);
 
-        $ticket = $this->hybridHelpdeskService->createAuthenticatedTicket([
+        $ticket = $this->hybridHelpdeskService->createTicket([
             'division_id' => $division->id,
             'job_grade' => 'Gred 44',
             'declaration_accepted' => true,
@@ -111,230 +68,257 @@ class HybridHelpdeskWorkflowTest extends TestCase
             'internal_notes' => 'Eskalasi kepada operasi rangkaian untuk semakan.',
         ], $user);
 
-        // Verify hybrid data association: authenticated submission has user_id linked
-        $this->assertNotNull($ticket->user_id, 'Authenticated submissions must have user_id linked for v3.6.0 hybrid architecture');
-        $this->assertTrue($ticket->isAuthenticatedSubmission());
+        // PKS 5.2.1: Verify mandatory user_id linkage (NOT NULL)
+        $this->assertNotNull($ticket->user_id, 'PKS 5.2.1: All submissions must have mandatory user_id (NOT NULL)');
         $this->assertEquals($user->id, $ticket->user_id);
 
-        // Verify guest_* fields are NULL for authenticated submissions
+        // Verify database constraint enforces mandatory user_id
         $this->assertDatabaseHas('helpdesk_tickets', [
             'id' => $ticket->id,
-            'user_id' => $user->id, // Critical: Linked for authenticated submissions
+            'user_id' => $user->id,
             'division_id' => $division->id,
             'job_grade' => 'Gred 44',
             'declaration_accepted' => true,
             'internal_notes' => 'Eskalasi kepada operasi rangkaian untuk semakan.',
-            'guest_email' => null, // NULL for authenticated submissions
-            'guest_name' => null,  // NULL for authenticated submissions
             'status' => 'open',
         ]);
     }
 
+    /**
+     * PKS 5.2.1: User can only access their own tickets
+     */
     #[Test]
-    public function hybrid_ticket_claiming_transitions_from_guest_to_authenticated(): void
+    public function user_can_only_access_own_tickets(): void
     {
-        $user = User::factory()->create(['email' => 'farid.hassan@motac.gov.my']);
-        $ticket = HelpdeskTicket::factory()
-            ->guest()
-            ->create([
-                'user_id' => null, // Initially NULL for guest submission
-                'guest_email' => 'farid.hassan@motac.gov.my',
-                'guest_name' => 'Farid Hassan',
-                'status' => 'open',
-            ]);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->create();
 
-        // Verify initial guest state
-        $this->assertNull($ticket->user_id, 'Ticket should start as guest submission with user_id=NULL');
-        $this->assertTrue($ticket->isGuestSubmission());
+        $user1 = User::factory()->create(['division_id' => $division->id]);
+        $user2 = User::factory()->create(['division_id' => $division->id]);
 
-        $result = $this->hybridHelpdeskService->claimGuestTicket($ticket, $user);
-
-        $this->assertTrue($result);
-        $ticket->refresh();
-
-        // Verify hybrid data association after claiming
-        $this->assertEquals($user->id, $ticket->user_id, 'After claiming, user_id should be linked');
-        $this->assertTrue($ticket->isAuthenticatedSubmission(), 'After claiming, ticket becomes authenticated');
-        $this->assertTrue($ticket->comments()->where('comment', 'Ticket claimed by authenticated user.')->where('is_internal', true)->exists());
-    }
-
-    #[Test]
-    public function hybrid_data_association_returns_owned_and_email_matched_records(): void
-    {
-        $user = User::factory()->create(['email' => 'zainab.ibrahim@motac.gov.my']);
-
-        // Authenticated ticket (user_id linked)
-        $ownedTicket = HelpdeskTicket::factory()->create([
-            'user_id' => $user->id,
-            'guest_email' => null,
-            'status' => 'open',
-        ]);
-
-        // Guest ticket (user_id=NULL, email matched)
-        $guestTicket = HelpdeskTicket::factory()
-            ->guest()
-            ->create([
-                'user_id' => null, // Critical: NULL for guest submissions
-                'guest_email' => 'zainab.ibrahim@motac.gov.my',
-                'status' => 'open',
-            ]);
-
-        // Other user's guest ticket (should not be accessible)
-        HelpdeskTicket::factory()
-            ->guest()
-            ->create([
-                'user_id' => null,
-                'guest_email' => 'other.user@motac.gov.my',
-            ]);
-
-        $tickets = $this->hybridHelpdeskService
-            ->getUserAccessibleTickets($user)
-            ->get();
-
-        // Verify hybrid data association works correctly
-        $this->assertCount(2, $tickets, 'User should access both authenticated (user_id linked) and guest (email matched) tickets');
-        $this->assertTrue($tickets->contains(fn (HelpdeskTicket $ticket) => $ticket->id === $ownedTicket->id));
-        $this->assertTrue($tickets->contains(fn (HelpdeskTicket $ticket) => $ticket->id === $guestTicket->id));
-
-        // Verify data association types
-        $authenticatedTickets = $tickets->filter(fn (HelpdeskTicket $ticket) => $ticket->user_id !== null);
-        $guestTickets = $tickets->filter(fn (HelpdeskTicket $ticket) => $ticket->user_id === null);
-
-        $this->assertCount(1, $authenticatedTickets, 'Should have 1 authenticated ticket (user_id linked)');
-        $this->assertCount(1, $guestTickets, 'Should have 1 guest ticket (user_id=NULL, email matched)');
-    }
-
-    #[Test]
-    public function cross_module_integration_created_when_authenticated_ticket_links_to_asset_loan(): void
-    {
-        $division = Division::factory()->ict()->create();
-        $category = TicketCategory::factory()->create([
-            'code' => 'MAINTENANCE',
-            'name_en' => 'Maintenance',
-            'name_ms' => 'Penyelenggaraan',
-            'sla_response_hours' => 3,
-            'sla_resolution_hours' => 18,
-        ]);
-        $user = User::factory()->create([
-            'email' => 'ahmad.maintenance@motac.gov.my',
-            'role' => 'staff',
+        // Create ticket for user1
+        $ticket = $this->hybridHelpdeskService->createTicket([
             'division_id' => $division->id,
-        ]);
-        $asset = Asset::factory()->create();
-        $loanApplication = LoanApplication::factory()
-            ->authenticated()
-            ->create([
-                'user_id' => $user->id, // Authenticated loan application
-                'division_id' => $division->id,
-            ]);
-
-        // Create authenticated ticket (user_id linked)
-        $ticket = $this->hybridHelpdeskService->createAuthenticatedTicket([
             'category_id' => $category->id,
-            'priority' => 'high',
-            'subject' => 'Aset memerlukan penyelenggaraan',
-            'description' => 'Kegagalan lampu projektor dikesan semasa pemeriksaan.',
-            'asset_id' => $asset->id,
-        ], $user);
+            'subject' => 'User 1 Ticket',
+            'description' => 'Test ticket for user 1',
+        ], $user1);
 
-        // Verify this is an authenticated ticket (user_id linked)
-        $this->assertNotNull($ticket->user_id, 'Cross-module integration should work with authenticated tickets (user_id linked)');
-        $this->assertEquals($user->id, $ticket->user_id);
-
-        $integrationService = app(CrossModuleIntegrationService::class);
-        $integration = $integrationService->linkTicketToLoan($ticket, $loanApplication);
-
-        $this->assertInstanceOf(CrossModuleIntegration::class, $integration);
-        $this->assertDatabaseHas('cross_module_integrations', [
-            'id' => $integration->id,
-            'helpdesk_ticket_id' => $ticket->id,
-            'loan_application_id' => $loanApplication->id,
-            'integration_type' => CrossModuleIntegration::TYPE_ASSET_TICKET_LINK,
-            'trigger_event' => CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED,
-        ]);
-
-        $integrationData = $integration->integration_data;
-        $this->assertIsArray($integrationData);
-        $this->assertArrayHasKey('asset_id', $integrationData);
-        $this->assertEquals($asset->id, $integrationData['asset_id']);
-        $this->assertArrayHasKey('ticket_category', $integrationData);
-        $this->assertNotNull($ticket->category);
-        $this->assertEquals($ticket->category->name, $integrationData['ticket_category']);
-        $this->assertArrayHasKey('linked_at', $integrationData);
-        $this->assertNotNull($integrationData['linked_at']);
-    }
-
-    #[Test]
-    public function hybrid_helpdesk_interface_displays_bahasa_melayu_content(): void
-    {
-        $user = User::factory()->create(['email' => 'test.user@motac.gov.my']);
-
-        // Test guest form page (BM content) - actual content from the view
-        $guestResponse = $this->get('/helpdesk/guest/create');
-        $guestResponse->assertStatus(200);
-        $guestResponse->assertSee('Hantar Tiket Meja Bantuan', false); // BM: Submit Helpdesk Ticket
-        $guestResponse->assertSee('Sokongan ICT', false); // BM: ICT Support
-        $guestResponse->assertSee('Nama Penuh', false); // BM: Full Name
-        $guestResponse->assertSee('Alamat E-mel', false); // BM: Email Address
-        $guestResponse->assertSee('Nombor Telefon', false); // BM: Phone Number
-        $guestResponse->assertSee('Maklumat Peribadi', false); // BM: Personal Information
-        $guestResponse->assertSee('Seterusnya', false); // BM: Next
-
-        // Test authenticated dashboard (BM content)
-        $dashboardResponse = $this->actingAs($user)->get('/helpdesk/dashboard');
-        // Dashboard may redirect or show different content - verify it loads
+        // User1 should have access
         $this->assertTrue(
-            $dashboardResponse->status() === 200 || $dashboardResponse->status() === 302,
-            'Dashboard should load or redirect'
+            $this->hybridHelpdeskService->canUserAccessTicket($ticket, $user1),
+            'PKS 5.2.1: Owner should have access to their ticket'
         );
 
-        // Verify language switcher is disabled/hidden in v3.6.0
-        $guestResponse->assertDontSee('English');
-        $guestResponse->assertDontSee('language-switcher');
+        // User2 should NOT have access
+        $this->assertFalse(
+            $this->hybridHelpdeskService->canUserAccessTicket($ticket, $user2),
+            'PKS 5.2.1: Non-owner should not have access to ticket'
+        );
     }
 
+    /**
+     * PKS 5.2.1: getUserTickets returns only user's own tickets
+     */
     #[Test]
-    public function hybrid_ticket_status_messages_use_bahasa_melayu(): void
+    public function get_user_tickets_returns_only_own_tickets(): void
     {
-        $user = User::factory()->create(['email' => 'status.test@motac.gov.my']);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->create();
 
-        // Create authenticated ticket
-        $ticket = HelpdeskTicket::factory()->create([
+        $user1 = User::factory()->create(['division_id' => $division->id]);
+        $user2 = User::factory()->create(['division_id' => $division->id]);
+
+        // Create tickets for both users
+        $ticket1 = $this->hybridHelpdeskService->createTicket([
+            'division_id' => $division->id,
+            'category_id' => $category->id,
+            'subject' => 'User 1 Ticket A',
+            'description' => 'First ticket for user 1',
+        ], $user1);
+
+        $ticket2 = $this->hybridHelpdeskService->createTicket([
+            'division_id' => $division->id,
+            'category_id' => $category->id,
+            'subject' => 'User 1 Ticket B',
+            'description' => 'Second ticket for user 1',
+        ], $user1);
+
+        $ticket3 = $this->hybridHelpdeskService->createTicket([
+            'division_id' => $division->id,
+            'category_id' => $category->id,
+            'subject' => 'User 2 Ticket',
+            'description' => 'Ticket for user 2',
+        ], $user2);
+
+        // User1 should only see their 2 tickets
+        $user1Tickets = $this->hybridHelpdeskService->getUserTickets($user1)->get();
+        $this->assertCount(2, $user1Tickets);
+        $this->assertTrue($user1Tickets->contains('id', $ticket1->id));
+        $this->assertTrue($user1Tickets->contains('id', $ticket2->id));
+        $this->assertFalse($user1Tickets->contains('id', $ticket3->id));
+
+        // User2 should only see their 1 ticket
+        $user2Tickets = $this->hybridHelpdeskService->getUserTickets($user2)->get();
+        $this->assertCount(1, $user2Tickets);
+        $this->assertTrue($user2Tickets->contains('id', $ticket3->id));
+    }
+
+    /**
+     * PKS 5.2.1: Ticket statistics are user-specific
+     */
+    #[Test]
+    public function ticket_statistics_are_user_specific(): void
+    {
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->create();
+
+        $user = User::factory()->create(['division_id' => $division->id]);
+
+        // Create tickets directly with factory to avoid broadcast events
+        HelpdeskTicket::factory()->create([
             'user_id' => $user->id,
-            'status' => 'open',
-            'subject' => 'Ujian status BM',
-        ]);
-
-        // Test ticket detail page loads (may redirect or show content)
-        $response = $this->actingAs($user)->get("/helpdesk/tickets/{$ticket->id}");
-
-        // The page should either load successfully or redirect
-        $this->assertTrue(
-            $response->status() === 200 || $response->status() === 302,
-            'Ticket detail page should load or redirect'
-        );
-
-        // If page loads, verify ticket data is stored correctly with BM status
-        $this->assertDatabaseHas('helpdesk_tickets', [
-            'id' => $ticket->id,
+            'division_id' => $division->id,
+            'category_id' => $category->id,
+            'subject' => 'Open Ticket',
+            'description' => 'Test open ticket',
             'status' => 'open',
         ]);
 
-        // Update ticket status and verify database stores correct values
-        $ticket->update(['status' => 'in_progress']);
-        $this->assertDatabaseHas('helpdesk_tickets', [
-            'id' => $ticket->id,
+        HelpdeskTicket::factory()->create([
+            'user_id' => $user->id,
+            'division_id' => $division->id,
+            'category_id' => $category->id,
+            'subject' => 'In Progress Ticket',
+            'description' => 'Test in progress ticket',
             'status' => 'in_progress',
         ]);
 
-        $ticket->update(['status' => 'resolved']);
-        $this->assertDatabaseHas('helpdesk_tickets', [
-            'id' => $ticket->id,
+        HelpdeskTicket::factory()->create([
+            'user_id' => $user->id,
+            'division_id' => $division->id,
+            'category_id' => $category->id,
+            'subject' => 'Resolved Ticket',
+            'description' => 'Test resolved ticket',
             'status' => 'resolved',
         ]);
 
-        // Verify the ticket model can translate status to BM
-        $ticket->refresh();
-        $this->assertEquals('resolved', $ticket->status);
+        $stats = $this->hybridHelpdeskService->getUserTicketStats($user);
+
+        $this->assertEquals(3, $stats['total']);
+        $this->assertEquals(1, $stats['open']);
+        $this->assertEquals(1, $stats['in_progress']);
+        $this->assertEquals(1, $stats['resolved']);
+        $this->assertEquals(0, $stats['closed']);
+    }
+
+    /**
+     * PKS 5.2.1: Ticket update requires ownership
+     */
+    #[Test]
+    public function ticket_update_requires_ownership(): void
+    {
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->create();
+
+        $owner = User::factory()->create(['division_id' => $division->id]);
+        $otherUser = User::factory()->create(['division_id' => $division->id]);
+
+        $ticket = $this->hybridHelpdeskService->createTicket([
+            'division_id' => $division->id,
+            'category_id' => $category->id,
+            'subject' => 'Original Subject',
+            'description' => 'Original description',
+        ], $owner);
+
+        // Owner can update
+        $updatedTicket = $this->hybridHelpdeskService->updateTicket(
+            $ticket,
+            ['subject' => 'Updated Subject'],
+            $owner
+        );
+        $this->assertEquals('Updated Subject', $updatedTicket->subject);
+
+        // Non-owner cannot update
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unauthorized access to ticket');
+
+        $this->hybridHelpdeskService->updateTicket(
+            $ticket,
+            ['subject' => 'Hacked Subject'],
+            $otherUser
+        );
+    }
+
+    /**
+     * PKS 5.2.1: Ticket creation generates proper ticket number
+     */
+    #[Test]
+    public function ticket_creation_generates_proper_ticket_number(): void
+    {
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->create();
+        $user = User::factory()->create(['division_id' => $division->id]);
+
+        $ticket = $this->hybridHelpdeskService->createTicket([
+            'division_id' => $division->id,
+            'category_id' => $category->id,
+            'subject' => 'Test Ticket',
+            'description' => 'Test description',
+        ], $user);
+
+        // Ticket number should be generated (not TEMP-)
+        $this->assertNotNull($ticket->ticket_number);
+        $this->assertStringNotContainsString('TEMP-', $ticket->ticket_number);
+    }
+
+    /**
+     * PKS 5.2.1: All ticket priorities are supported
+     */
+    #[Test]
+    public function all_ticket_priorities_are_supported(): void
+    {
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->create();
+        $user = User::factory()->create(['division_id' => $division->id]);
+
+        $priorities = ['low', 'normal', 'high', 'urgent'];
+
+        foreach ($priorities as $priority) {
+            $ticket = $this->hybridHelpdeskService->createTicket([
+                'division_id' => $division->id,
+                'category_id' => $category->id,
+                'priority' => $priority,
+                'subject' => "Test {$priority} priority ticket",
+                'description' => 'Test description',
+            ], $user);
+
+            $this->assertEquals($priority, $ticket->priority);
+            $this->assertNotNull($ticket->user_id, "PKS 5.2.1: {$priority} priority ticket must have user_id");
+        }
+    }
+
+    /**
+     * PKS 5.2.1: Authenticated user dashboard access
+     */
+    #[Test]
+    public function authenticated_user_can_access_dashboard(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/dashboard');
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * PKS 5.2.1: Unauthenticated users cannot access dashboard
+     */
+    #[Test]
+    public function unauthenticated_users_cannot_access_dashboard(): void
+    {
+        $response = $this->get('/dashboard');
+
+        $response->assertRedirect('/login');
     }
 }

@@ -100,6 +100,8 @@ class NotificationBroadcastTest extends TestCase
 
     /**
      * Test StatusUpdated event broadcasts with correct payload structure
+     *
+     * PKS 5.2.1: StatusUpdated now broadcasts to both user channel and entity channel
      */
     #[Test]
     public function status_updated_event_broadcasts_correct_payload_for_ticket(): void
@@ -115,14 +117,17 @@ class NotificationBroadcastTest extends TestCase
         $oldStatus = 'open';
         $newStatus = 'in_progress';
 
-        event(new StatusUpdated($ticket, $oldStatus, $newStatus, $this->user->id));
+        event(new StatusUpdated($ticket, $oldStatus, $newStatus));
 
         // Assert event was dispatched
         Event::assertDispatched(StatusUpdated::class, function ($event) use ($ticket, $oldStatus, $newStatus) {
-            // Verify broadcast channel
+            // PKS 5.2.1: Verify broadcast channels - now includes both user and entity channels
             $channels = $event->broadcastOn();
-            $this->assertCount(1, $channels);
-            $this->assertEquals("private-user.{$this->user->id}", $channels[0]->name);
+            $this->assertCount(2, $channels);
+
+            $channelNames = array_map(fn ($ch) => $ch->name, $channels);
+            $this->assertContains("private-user.{$this->user->id}", $channelNames);
+            $this->assertContains("private-ticket.{$this->user->id}.{$ticket->id}", $channelNames);
 
             // Verify broadcast name
             $this->assertEquals('status.updated', $event->broadcastAs());
@@ -180,6 +185,8 @@ class NotificationBroadcastTest extends TestCase
 
     /**
      * Test that broadcast events use private channels for security
+     *
+     * PKS 5.2.1: StatusUpdated now broadcasts to both user channel and entity channel
      */
     #[Test]
     public function broadcast_events_use_private_channels(): void
@@ -199,13 +206,18 @@ class NotificationBroadcastTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Broadcasting\PrivateChannel::class, $channels[0]);
         $this->assertEquals("private-user.{$this->user->id}", $channels[0]->name);
 
-        // Test status update event
+        // Test status update event - PKS 5.2.1: now broadcasts to both user and entity channels
         $ticket = HelpdeskTicket::factory()->create(['user_id' => $this->user->id]);
-        $statusEvent = new StatusUpdated($ticket, 'open', 'closed', $this->user->id);
+        $statusEvent = new StatusUpdated($ticket, 'open', 'closed');
         $statusChannels = $statusEvent->broadcastOn();
 
-        $this->assertCount(1, $statusChannels);
+        // PKS 5.2.1: Should have 2 channels - user channel and entity channel
+        $this->assertCount(2, $statusChannels);
         $this->assertInstanceOf(\Illuminate\Broadcasting\PrivateChannel::class, $statusChannels[0]);
-        $this->assertEquals("private-user.{$this->user->id}", $statusChannels[0]->name);
+        $this->assertInstanceOf(\Illuminate\Broadcasting\PrivateChannel::class, $statusChannels[1]);
+
+        $channelNames = array_map(fn ($ch) => $ch->name, $statusChannels);
+        $this->assertContains("private-user.{$this->user->id}", $channelNames);
+        $this->assertContains("private-ticket.{$this->user->id}.{$ticket->id}", $channelNames);
     }
 }

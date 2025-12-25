@@ -63,7 +63,7 @@ final class BroadcastingTest extends TestCase
         $admin = User::factory()->create(['role' => 'admin']);
 
         $response = $this->actingAs($admin)
-            ->post('/broadcasting/auth', [
+            ->postJson('/broadcasting/auth', [
                 'socket_id' => '123.456',
                 'channel_name' => 'private-admin.notifications',
             ]);
@@ -77,7 +77,7 @@ final class BroadcastingTest extends TestCase
         $superuser = User::factory()->create(['role' => 'superuser']);
 
         $response = $this->actingAs($superuser)
-            ->post('/broadcasting/auth', [
+            ->postJson('/broadcasting/auth', [
                 'socket_id' => '123.456',
                 'channel_name' => 'private-admin.notifications',
             ]);
@@ -91,7 +91,7 @@ final class BroadcastingTest extends TestCase
         $staff = User::factory()->create(['role' => 'staff']);
 
         $response = $this->actingAs($staff)
-            ->post('/broadcasting/auth', [
+            ->postJson('/broadcasting/auth', [
                 'socket_id' => '123.456',
                 'channel_name' => 'private-admin.notifications',
             ]);
@@ -104,12 +104,13 @@ final class BroadcastingTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('/broadcasting/auth', [
+        $response = $this->postJson('/broadcasting/auth', [
             'socket_id' => '123.456',
             'channel_name' => 'private-user.'.$user->id,
         ]);
 
-        $response->assertStatus(403);
+        // Unauthenticated users should get 401 or 403
+        $this->assertTrue(in_array($response->getStatusCode(), [401, 403]));
     }
 
     #[Test]

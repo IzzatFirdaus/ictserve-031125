@@ -9,20 +9,19 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * Channel Authorization Test
+ * Channel Authorization Test - PKS 5.2.1 Compliant
  *
  * Tests the authorization logic for all WebSocket channels defined in routes/channels.php
- * for the ICTServe True Hybrid Architecture.
+ * for the ICTServe v4.0 architecture. All channels require authenticated users per PKS 5.2.1.
  *
  * @see routes/channels.php - Channel definitions
  * @see D16_BROADCASTING_SETUP.md - Channel authorization
  *
- * @requirements 6.1, 6.2, 8.1, 8.2
+ * @requirements 6.1, 6.2, 6.4, 6.5, 8.1, 8.2, 24.5, 24.6, 25.1
  */
 class ChannelAuthorizationTest extends TestCase
 {
@@ -104,63 +103,43 @@ class ChannelAuthorizationTest extends TestCase
         $response->assertForbidden();
     }
 
-    #[Test]
-    public function guest_can_access_ticket_channel_with_valid_status_token(): void
-    {
-        $ticket = HelpdeskTicket::factory()->create([
-            'status_token_hash' => Hash::make('valid-token'),
-        ]);
-
-        $response = $this->postJson('/broadcasting/auth', [
-            'socket_id' => '123.456',
-            'channel_name' => "private-ticket.{$ticket->uuid}",
-        ], [], [
-            'HTTP_REFERER' => 'http://localhost/status?token=valid-token',
-        ]);
-
-        // Note: This test may need adjustment based on how status_token is passed
-        // The actual implementation might use query parameters or headers
-        $this->assertTrue(true); // Placeholder - adjust based on actual implementation
-    }
-
+    /**
+     * PKS 5.2.1: Guest channels are no longer supported
+     * All channels require authenticated user_id
+     */
     #[Test]
     public function authenticated_user_can_access_ticket_channel_if_authorized(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
-        $ticket = HelpdeskTicket::factory()->create();
+        $ticket = HelpdeskTicket::factory()->create(['user_id' => $user->id]);
 
         $this->actingAs($user);
 
+        // PKS 5.2.1: Use new authenticated channel format
         $response = $this->postJson('/broadcasting/auth', [
             'socket_id' => '123.456',
-            'channel_name' => "private-ticket.{$ticket->uuid}",
+            'channel_name' => "ticket.{$user->id}.{$ticket->id}",
         ]);
 
         $response->assertOk();
     }
 
-    #[Test]
-    public function guest_can_access_loan_channel_with_valid_status_token(): void
-    {
-        $loan = LoanApplication::factory()->create([
-            'status_token_hash' => Hash::make('valid-token'),
-        ]);
-
-        // Similar to ticket test - adjust based on actual implementation
-        $this->assertTrue(true); // Placeholder
-    }
-
+    /**
+     * PKS 5.2.1: Guest channels are no longer supported
+     * All channels require authenticated user_id
+     */
     #[Test]
     public function authenticated_user_can_access_loan_channel_if_authorized(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
-        $loan = LoanApplication::factory()->create();
+        $loan = LoanApplication::factory()->create(['user_id' => $user->id]);
 
         $this->actingAs($user);
 
+        // PKS 5.2.1: Use new authenticated channel format
         $response = $this->postJson('/broadcasting/auth', [
             'socket_id' => '123.456',
-            'channel_name' => "private-loan.{$loan->uuid}",
+            'channel_name' => "loan.{$user->id}.{$loan->id}",
         ]);
 
         $response->assertOk();

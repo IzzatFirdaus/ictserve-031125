@@ -48,7 +48,9 @@ class ModelObserverIntegrationTest extends TestCase
     {
         Event::fake([StatusUpdated::class]);
 
-        $loanApplication = LoanApplication::factory()->withoutLoanItems()->create(['status' => 'under_review']);
+        // PKS 5.2.1: All loan applications must have user_id (NOT NULL)
+        $user = User::factory()->create();
+        $loanApplication = LoanApplication::factory()->withoutLoanItems()->for($user)->create(['status' => 'under_review']);
 
         // Update the status
         $loanApplication->update(['status' => 'approved']);
@@ -91,10 +93,11 @@ class ModelObserverIntegrationTest extends TestCase
     }
 
     #[Test]
-    public function status_updated_event_works_for_both_guest_and_authenticated_submissions(): void
+    public function status_updated_event_works_for_authenticated_submissions(): void
     {
         Event::fake([StatusUpdated::class]);
 
+        // PKS 5.2.1: All submissions must have user_id (NOT NULL) - no guest submissions
         // Create pre-existing models to avoid factory-related events
         $user = User::factory()->create();
         $category = \App\Models\TicketCategory::factory()->create();
@@ -102,28 +105,6 @@ class ModelObserverIntegrationTest extends TestCase
 
         // Clear any events that might have been dispatched during setup
         Event::fake([StatusUpdated::class]);
-
-        // Test guest submission - create manually to avoid factory complexity
-        $guestTicket = HelpdeskTicket::create([
-            'ticket_number' => 'HD2025000001',
-            'user_id' => null,
-            'category_id' => $category->id,
-            'subject' => 'Test Guest Ticket',
-            'description' => 'Test Description',
-            'priority' => 'normal',
-            'status' => 'open',
-            'damage_type' => 'hardware',
-            'division_id' => $division->id,
-            'job_grade' => '41',
-            'declaration_accepted' => true,
-            'guest_name' => 'Test Guest',
-            'guest_email' => 'guest@example.com',
-            'guest_phone' => '123456789',
-            'guest_staff_id' => 'MOTAC1234',
-            'guest_grade' => 'N41',
-            'guest_division' => 'ICT',
-        ]);
-        $guestTicket->update(['status' => 'resolved']);
 
         // Test authenticated submission - create manually to avoid factory complexity
         $authTicket = HelpdeskTicket::create([
@@ -142,7 +123,7 @@ class ModelObserverIntegrationTest extends TestCase
 
         $authTicket->update(['status' => 'resolved']);
 
-        // Assert both dispatched events (should be exactly 2)
-        Event::assertDispatchedTimes(StatusUpdated::class, 2);
+        // Assert event was dispatched for authenticated submission
+        Event::assertDispatchedTimes(StatusUpdated::class, 1);
     }
 }

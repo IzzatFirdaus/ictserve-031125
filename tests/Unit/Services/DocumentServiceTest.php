@@ -83,15 +83,15 @@ class DocumentServiceTest extends TestCase
     }
 
     #[Test]
-    public function it_can_upload_document_as_guest(): void
+    public function it_requires_authenticated_user_per_pks_5_2_1(): void
     {
-        $file = UploadedFile::fake()->create('guest-doc.txt', 50, 'text/plain');
+        // PKS 5.2.1 - Document upload requires authenticated user_id
+        $file = UploadedFile::fake()->create('test-doc.txt', 50, 'text/plain');
 
-        $document = $this->documentService->uploadDocument($file, null);
+        $this->expectException(\TypeError::class);
 
-        $this->assertInstanceOf(Document::class, $document);
-        $this->assertNull($document->uploaded_by);
-        $this->assertEquals(Document::STATUS_PENDING, $document->status);
+        // @phpstan-ignore-next-line - Testing that null is rejected
+        $this->documentService->uploadDocument($file, null);
     }
 
     #[Test]
@@ -100,24 +100,26 @@ class DocumentServiceTest extends TestCase
         config(['ollama.document.max_file_size' => 1024]);
         $this->documentService = new DocumentService($this->embeddingServiceMock);
 
+        $user = \App\Models\User::factory()->create();
         $file = UploadedFile::fake()->create('large.txt', 2000, 'text/plain');
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Saiz fail melebihi had maksimum');
 
-        $this->documentService->uploadDocument($file);
+        $this->documentService->uploadDocument($file, $user->id);
     }
 
     #[Test]
     #[DataProvider('unsupportedFileTypesProvider')]
     public function it_validates_file_type(string $filename, string $mimeType): void
     {
+        $user = \App\Models\User::factory()->create();
         $file = UploadedFile::fake()->create($filename, 100, $mimeType);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Jenis fail tidak disokong');
 
-        $this->documentService->uploadDocument($file);
+        $this->documentService->uploadDocument($file, $user->id);
     }
 
     public static function unsupportedFileTypesProvider(): array
@@ -133,21 +135,23 @@ class DocumentServiceTest extends TestCase
     #[Test]
     public function it_stores_file_in_storage(): void
     {
+        $user = \App\Models\User::factory()->create();
         $file = UploadedFile::fake()->create('stored.txt', 100, 'text/plain');
 
-        $document = $this->documentService->uploadDocument($file, null);
+        $document = $this->documentService->uploadDocument($file, $user->id);
 
         $storedName = $document->metadata['stored_name'];
-        Storage::disk('local')->assertExists('documents/'.$storedName);
+        Storage::disk('local')->assertExists("documents/{$storedName}");
     }
 
     #[Test]
     public function it_can_process_txt_document(): void
     {
+        $user = \App\Models\User::factory()->create();
         $content = 'Ini adalah kandungan ujian untuk dokumen TXT.';
         $file = UploadedFile::fake()->createWithContent('test.txt', $content);
 
-        $document = $this->documentService->uploadDocument($file);
+        $document = $this->documentService->uploadDocument($file, $user->id);
 
         $this->embeddingServiceMock
             ->shouldReceive('generateEmbedding')
@@ -164,10 +168,11 @@ class DocumentServiceTest extends TestCase
     #[Test]
     public function it_creates_chunks_with_overlap(): void
     {
+        $user = \App\Models\User::factory()->create();
         $longContent = str_repeat('Ini adalah teks ujian yang panjang. ', 100);
         $file = UploadedFile::fake()->createWithContent('long.txt', $longContent);
 
-        $document = $this->documentService->uploadDocument($file);
+        $document = $this->documentService->uploadDocument($file, $user->id);
 
         $this->embeddingServiceMock
             ->shouldReceive('generateEmbedding')
@@ -187,10 +192,11 @@ class DocumentServiceTest extends TestCase
     #[Test]
     public function it_detects_and_sanitizes_pii(): void
     {
+        $user = \App\Models\User::factory()->create();
         $contentWithPii = 'Nombor IC: 880101-01-1234, Telefon: +60123456789, Email: test@example.com';
         $file = UploadedFile::fake()->createWithContent('pii.txt', $contentWithPii);
 
-        $document = $this->documentService->uploadDocument($file);
+        $document = $this->documentService->uploadDocument($file, $user->id);
 
         $this->embeddingServiceMock
             ->shouldReceive('generateEmbedding')
@@ -208,9 +214,10 @@ class DocumentServiceTest extends TestCase
     #[Test]
     public function it_handles_processing_failure(): void
     {
+        $user = \App\Models\User::factory()->create();
         $file = UploadedFile::fake()->createWithContent('fail.txt', '');
 
-        $document = $this->documentService->uploadDocument($file);
+        $document = $this->documentService->uploadDocument($file, $user->id);
 
         $result = $this->documentService->processDocument($document);
 
@@ -223,9 +230,10 @@ class DocumentServiceTest extends TestCase
     #[Test]
     public function it_can_reprocess_failed_document(): void
     {
+        $user = \App\Models\User::factory()->create();
         $file = UploadedFile::fake()->createWithContent('reprocess.txt', 'Kandungan untuk diproses semula.');
 
-        $document = $this->documentService->uploadDocument($file);
+        $document = $this->documentService->uploadDocument($file, $user->id);
         $document->update(['status' => Document::STATUS_FAILED]);
 
         $this->embeddingServiceMock
@@ -242,8 +250,9 @@ class DocumentServiceTest extends TestCase
     #[Test]
     public function it_throws_exception_when_reprocessing_non_failed_document(): void
     {
+        $user = \App\Models\User::factory()->create();
         $file = UploadedFile::fake()->createWithContent('pending.txt', 'Content');
-        $document = $this->documentService->uploadDocument($file);
+        $document = $this->documentService->uploadDocument($file, $user->id);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Hanya dokumen yang gagal boleh diproses semula');
@@ -254,8 +263,9 @@ class DocumentServiceTest extends TestCase
     #[Test]
     public function it_can_delete_document(): void
     {
+        $user = \App\Models\User::factory()->create();
         $file = UploadedFile::fake()->createWithContent('delete.txt', 'To be deleted');
-        $document = $this->documentService->uploadDocument($file);
+        $document = $this->documentService->uploadDocument($file, $user->id);
         $storedName = $document->metadata['stored_name'];
 
         $result = $this->documentService->deleteDocument($document);
@@ -263,14 +273,15 @@ class DocumentServiceTest extends TestCase
         $this->assertTrue($result);
         // Document uses soft deletes, so check that it's soft deleted
         $this->assertSoftDeleted('documents', ['id' => $document->id]);
-        Storage::disk('local')->assertMissing('documents/'.$storedName);
+        Storage::disk('local')->assertMissing("documents/{$storedName}");
     }
 
     #[Test]
     public function it_deletes_chunks_when_deleting_document(): void
     {
+        $user = \App\Models\User::factory()->create();
         $file = UploadedFile::fake()->createWithContent('with-chunks.txt', 'Content with chunks');
-        $document = $this->documentService->uploadDocument($file);
+        $document = $this->documentService->uploadDocument($file, $user->id);
 
         $this->embeddingServiceMock
             ->shouldReceive('generateEmbedding')

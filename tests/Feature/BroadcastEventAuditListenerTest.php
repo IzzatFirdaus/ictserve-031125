@@ -142,17 +142,21 @@ class BroadcastEventAuditListenerTest extends TestCase
 
         $properties = $activity->properties;
 
-        // Should have exactly one channel for authenticated user
-        $this->assertEquals(1, $properties->get('channel_count'));
-        $this->assertCount(1, $properties->get('channels'));
-        $this->assertEquals("private-user.{$user->id}", $properties->get('channels')[0]);
+        // PKS 5.2.1: StatusUpdated now broadcasts to both user channel and entity channel
+        // Should have two channels: private-user.{userId} and ticket.{userId}.{ticketId}
+        $this->assertEquals(2, $properties->get('channel_count'));
+        $this->assertCount(2, $properties->get('channels'));
+        $this->assertContains("private-user.{$user->id}", $properties->get('channels'));
+        $this->assertContains("private-ticket.{$user->id}.{$ticket->id}", $properties->get('channels'));
     }
 
     #[Test]
-    public function it_handles_guest_channels_correctly(): void
+    public function it_handles_authenticated_channels_correctly(): void
     {
-        // Create test data for guest submission
-        $ticket = HelpdeskTicket::factory()->guest()->create(['status' => 'open']);
+        // PKS 5.2.1: All tickets must have user_id (NOT NULL) - no guest channels
+        // Create test data for authenticated submission
+        $user = User::factory()->create();
+        $ticket = HelpdeskTicket::factory()->for($user)->create(['status' => 'open']);
 
         // Create a broadcast event
         $statusUpdatedEvent = new StatusUpdated($ticket, 'open', 'resolved');
@@ -167,10 +171,9 @@ class BroadcastEventAuditListenerTest extends TestCase
 
         $properties = $activity->properties;
 
-        // Should have exactly one channel for guest
-        $this->assertEquals(1, $properties->get('channel_count'));
-        $this->assertCount(1, $properties->get('channels'));
-        $this->assertStringStartsWith('private-ticket.', $properties->get('channels')[0]);
+        // PKS 5.2.1: All channels are authenticated - should have user channel
+        $this->assertGreaterThan(0, $properties->get('channel_count'));
+        $this->assertContains("private-user.{$user->id}", $properties->get('channels'));
     }
 
     #[Test]
