@@ -104,6 +104,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $sso_audit_logs_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static Builder<static>|User active()
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static Builder<static>|User grade41AndAbove()
@@ -161,6 +162,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User withoutPermission($permissions)
  * @method static Builder<static>|User withoutRole($roles, $guard = null)
  * @method static Builder<static>|User withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements Auditable, FilamentUser, MustVerifyEmail
@@ -184,11 +186,11 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
         'password_changed_at',
         'require_password_change',
         'role',
-        'locale', // v3.5.0 True Hybrid - language preference
+        'locale', // v3.5.0 True Hybrid - language preference (DEPRECATED v4.0 - always 'ms')
         'staff_id',
-        'staff_number', // v3.5.0 True Hybrid - MOTAC staff number
+        'staff_number', // MOTAC staff number
         'division_id',
-        'division_code', // v3.5.0 True Hybrid - division code
+        'division_code', // division code
         'grade',
         'grade_id',
         'position_id',
@@ -199,17 +201,22 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
         'profile_picture',
         'is_active',
         'last_login_at',
-        'last_login_ip', // v3.5.0 True Hybrid - audit trail
-        'guest_submissions_linked', // v3.5.0 True Hybrid - account linking counter
+        'last_login_ip', // audit trail
         'notification_preferences', // Enhanced for hybrid architecture
         'two_factor_secret',
         'two_factor_recovery_codes',
         'two_factor_confirmed_at',
-        // Google OAuth SSO fields (v3.5.0)
-        'google_id',
-        'google_token',
-        'google_refresh_token',
-        // UI Preferences (v3.5.0 Phase 9)
+        // PKS 5.2.1 LDAP/Active Directory fields
+        'hrmis_synced_at',
+        'ldap_guid',
+        // PKS Security Training fields
+        'security_training_completed_at',
+        'training_expiry_date',
+        // PKS Third-Party Access fields
+        'is_third_party',
+        'contract_end_date',
+        'nda_acknowledged_at',
+        // UI Preferences
         'theme_preference',
         'saved_filters',
         'dashboard_layout',
@@ -261,20 +268,23 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed', // Laravel cast type (not credentials - field name and cast definition)
+            'password' => 'hashed',
             'password_changed_at' => 'datetime',
             'require_password_change' => 'boolean',
             'is_active' => 'boolean',
             'last_login_at' => 'datetime',
-            'notification_preferences' => 'array', // Enhanced for hybrid architecture
+            'notification_preferences' => 'array',
             'two_factor_confirmed_at' => 'datetime',
             'two_factor_recovery_codes' => 'encrypted:array',
             'two_factor_secret' => 'encrypted',
-            // v3.5.0 True Hybrid fields
-            'guest_submissions_linked' => 'integer',
-            'google_token' => 'encrypted',
-            'google_refresh_token' => 'encrypted',
-            // UI Preferences (v3.5.0 Phase 9)
+            // PKS 5.2.1 Compliance fields
+            'hrmis_synced_at' => 'datetime',
+            'security_training_completed_at' => 'datetime',
+            'training_expiry_date' => 'date',
+            'is_third_party' => 'boolean',
+            'contract_end_date' => 'date',
+            'nda_acknowledged_at' => 'datetime',
+            // UI Preferences
             'theme_preference' => 'string',
             'saved_filters' => 'array',
             'dashboard_layout' => 'array',
@@ -282,7 +292,59 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
         ];
     }
 
-    // Four-role RBAC methods
+    // PKS 5.2.1 Compliance Methods
+
+    /**
+     * Check if user is synchronized with HRMIS
+     */
+    public function isHRMISSynced(): bool
+    {
+        return $this->hrmis_synced_at !== null;
+    }
+
+    /**
+     * Check if user is authenticated via LDAP/Active Directory
+     */
+    public function isLDAPAuthenticated(): bool
+    {
+        return $this->ldap_guid !== null;
+    }
+
+    /**
+     * Check if user has completed mandatory security training
+     */
+    public function hasCompletedSecurityTraining(): bool
+    {
+        return $this->security_training_completed_at !== null &&
+            ($this->training_expiry_date === null || $this->training_expiry_date > now());
+    }
+
+    /**
+     * Check if user is a third-party (vendor/contractor)
+     */
+    public function isThirdParty(): bool
+    {
+        return $this->is_third_party;
+    }
+
+    /**
+     * Check if third-party access has expired
+     */
+    public function hasThirdPartyAccessExpired(): bool
+    {
+        return $this->is_third_party &&
+            $this->contract_end_date !== null &&
+            $this->contract_end_date < now();
+    }
+
+    /**
+     * Check if user has acknowledged NDA
+     */
+    public function hasAcknowledgedNDA(): bool
+    {
+        return $this->nda_acknowledged_at !== null;
+    }
+
     public function isStaff(): bool
     {
         return $this->role === 'staff' || $this->hasRole('staff');
@@ -510,12 +572,11 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     /**
      * @param  array<string, bool>  $preferences
      */
-    
 
-/**
- * @param array<string, mixed> $preferences
- */
-public function setNotificationPreferences(array $preferences): void
+    /**
+     * @param  array<string, mixed>  $preferences
+     */
+    public function setNotificationPreferences(array $preferences): void
     {
         $normalized = array_map(
             static fn (bool|string|int $value): bool => (bool) $value,
@@ -702,14 +763,6 @@ public function setNotificationPreferences(array $preferences): void
     }
 
     /**
-     * Check if user has linked their Google account
-     */
-    public function isGoogleLinked(): bool
-    {
-        return ! empty($this->google_id);
-    }
-
-    /**
      * Extract username from email (user@motac.gov.my → user)
      */
     public static function extractUsernameFromEmail(string $email): string
@@ -748,13 +801,5 @@ public function setNotificationPreferences(array $preferences): void
     {
         // v3.6.0: No-op - locale is always 'ms'
         // Database value is not updated to preserve historical data
-    }
-
-    /**
-     * Increment guest submissions linked counter
-     */
-    public function incrementGuestSubmissionsLinked(int $count = 1): void
-    {
-        $this->increment('guest_submissions_linked', $count);
     }
 }

@@ -25,22 +25,21 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use function random_int;
 
 /**
- * Enhanced Loan Application Model with ICTServe Integration
+ * Enhanced Loan Application Model - PKS 5.2.1 Compliant (SSO-Only Architecture)
  *
- * Supports hybrid architecture (guest + authenticated), email-based approval workflows,
+ * Supports ONLY authenticated submissions with mandatory user_id per PKS 5.2.1,
+ * email-based approval workflows with HRMIS verification,
  * and cross-module integration with helpdesk system.
+ * NO GUEST ACCESS - All applications require SSO authentication.
  *
- * @see D03-FR-001.2 Hybrid architecture support
- * @see D03-FR-002.1 Email approval workflow
+ * @see D03-FR-001.2 PKS-Compliant SSO-Only architecture
+ * @see D03-FR-002.1 HRMIS-verified approval workflow
  * @see D03-FR-016.1 Cross-module integration
  * @see D04 §2.2 Model relationships
  *
  * @property int $id
  * @property string $application_number
- * @property int|null $user_id
- * @property string $applicant_name
- * @property string $applicant_email
- * @property string $applicant_phone
+ * @property int $user_id MANDATORY - NOT NULL per PKS 5.2.1
  * @property string $staff_id
  * @property string $grade
  * @property int $division_id
@@ -65,7 +64,7 @@ use function random_int;
  * @property bool $maintenance_required
  * @property string $form_reference_code Official MOTAC form reference code
  * @property string|null $tracking_token
- * @property string|null $status_token_hash SHA-512 hash of status token for guest status checking
+ * @property string|null $status_token_hash SHA-512 hash of status token for secure status checking
  * @property string|null $tracking_token_expires_at
  * @property string $applicant_position
  * @property string $applicant_grade
@@ -231,14 +230,8 @@ class LoanApplication extends Model implements Auditable
 
     protected $fillable = [
         'application_number',
-        'user_id',
-        'approval_token_hash', // v3.5.0 True Hybrid - SHA-512 hash for approval workflow
-        'status_token_hash', // v3.5.0 True Hybrid - SHA-512 hash for guest status checking
-        'form_reference_code', // v3.5.0 - Official form code PK.(S).MOTAC.07.(L3)
-        // Guest applicant fields (always populated)
-        'applicant_name',
-        'applicant_email',
-        'applicant_phone',
+        'user_id', // MANDATORY - NOT NULL per PKS 5.2.1
+        'form_reference_code', // Official form code PK.(S).MOTAC.07.(L3)
         'staff_id',
         'grade',
         'division_id',
@@ -304,6 +297,8 @@ class LoanApplication extends Model implements Auditable
         'related_helpdesk_tickets',
         'maintenance_required',
         'accessories',
+        // HRMIS verification
+        'hrmis_verified_at',
     ];
 
     /**
@@ -489,15 +484,22 @@ class LoanApplication extends Model implements Auditable
         return $this->hasMany(HelpdeskTicket::class, 'related_loan_application_id');
     }
 
-    // HYBRID SUPPORT - Helper methods
-    public function isGuestSubmission(): bool
+    // PKS 5.2.1 COMPLIANT - Helper methods
+
+    /**
+     * Get applicant name (authenticated user only)
+     */
+    public function getApplicantName(): string
     {
-        return $this->user_id === null;
+        return $this->user->name;
     }
 
-    public function isAuthenticatedSubmission(): bool
+    /**
+     * Get applicant email (authenticated user only)
+     */
+    public function getApplicantEmail(): string
     {
-        return $this->user_id !== null;
+        return $this->user->email;
     }
 
     // DUAL APPROVAL - Token generation for email-based approval
@@ -624,10 +626,10 @@ class LoanApplication extends Model implements Auditable
         return $otp;
     }
 
-    // v3.5.0 True Hybrid Architecture - Query Scopes
+    // PKS 5.2.1 COMPLIANT - Query Scopes
 
     /**
-     * Scope to filter applications for a specific user (authenticated submissions)
+     * Scope to filter applications for a specific user (authenticated submissions only)
      *
      * @param  Builder<LoanApplication>  $query
      * @return Builder<LoanApplication>
@@ -638,75 +640,27 @@ class LoanApplication extends Model implements Auditable
     }
 
     /**
-     * Scope to find application by approval token hash
+     * Scope to find application by approval token
      *
      * @param  Builder<LoanApplication>  $query
      * @return Builder<LoanApplication>
      */
-    public function scopeByApprovalToken(Builder $query, string $tokenHash): Builder
+    public function scopeByApprovalToken(Builder $query, string $token): Builder
     {
-        return $query->where('approval_token_hash', $tokenHash)
+        return $query->where('approval_token', $token)
             ->where('approval_token_expires_at', '>', now());
     }
 
-    /**
-     * Scope to find application by status token hash
-     *
-     * @param  Builder<LoanApplication>  $query
-     * @return Builder<LoanApplication>
-     */
-    public function scopeByStatusToken(Builder $query, string $tokenHash): Builder
-    {
-        return $query->where('status_token_hash', $tokenHash);
-    }
-
-    // v3.5.0 True Hybrid Architecture - Token Methods
-
-    /**
-     * Generate and set approval token hash (SHA-512)
-     */
-    public function generateApprovalTokenV3(int $expiryHours = 72): string
-    {
-        $token = bin2hex(random_bytes(32)); // 64 character token
-        $this->approval_token_hash = hash('sha512', $token);
-        $this->approval_token_expires_at = now()->addHours($expiryHours);
-        $this->save();
-
-        return $token; // Return plain token for sending to approver
-    }
+    // PKS 5.2.1 COMPLIANT - Token Methods
 
     /**
      * Verify approval token
      */
     public static function findByApprovalToken(string $token): ?self
     {
-        $hash = hash('sha512', $token);
-
-        return static::where('approval_token_hash', $hash)
+        return static::where('approval_token', $token)
             ->where('approval_token_expires_at', '>', now())
             ->first();
-    }
-
-    /**
-     * Generate and set status token hash (SHA-512)
-     */
-    public function generateStatusToken(): string
-    {
-        $token = bin2hex(random_bytes(32)); // 64 character token
-        $this->status_token_hash = hash('sha512', $token);
-        $this->save();
-
-        return $token; // Return plain token for sending to user
-    }
-
-    /**
-     * Verify status token
-     */
-    public static function findByStatusToken(string $token): ?self
-    {
-        $hash = hash('sha512', $token);
-
-        return static::where('status_token_hash', $hash)->first();
     }
 
     /**

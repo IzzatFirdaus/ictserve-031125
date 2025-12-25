@@ -22,25 +22,20 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * HelpdeskTicket Model - Enhanced with Hybrid Architecture Support
- * 
- * Supports both guest submissions (no user_id) and authenticated submissions (with user_id).
- * Integrates with asset loan system for cross-module functionality.
+ * HelpdeskTicket Model - PKS 5.2.1 Compliant (SSO-Only Architecture)
  *
- * @see D03 Software Requirements Specification - Requirement 1, 2
- * @see D04 Software Design Document - Hybrid Architecture
+ * Supports ONLY authenticated submissions with mandatory user_id per PKS 5.2.1.
+ * Integrates with asset loan system for cross-module functionality.
+ * NO GUEST ACCESS - All submissions require SSO authentication.
+ *
+ * @see D03 Software Requirements Specification - Requirement 1, 8, 25
+ * @see D04 Software Design Document - PKS-Compliant SSO-Only Architecture
  * @see D09 Database Documentation - helpdesk_tickets table
- * @property string|null $guest_email
+ *
  * @property int $id
  * @property string $ticket_number
- * @property string|null $status_token_hash SHA-512 hash of status token for guest status checking
  * @property string $form_reference_code Official MOTAC form reference code
- * @property int|null $user_id
- * @property string|null $guest_name
- * @property string|null $guest_phone
- * @property string|null $guest_grade
- * @property string|null $guest_division
- * @property string|null $guest_staff_id
+ * @property int $user_id MANDATORY - NOT NULL per PKS 5.2.1
  * @property string|null $job_grade
  * @property string|null $staff_id
  * @property int|null $division_id
@@ -105,8 +100,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\HelpdeskComment|null $latestComment
  * @property-read \App\Models\Asset|null $relatedAsset
  * @property-read \App\Models\User|null $user
+ *
  * @method static Builder<static>|HelpdeskTicket bySLA(string $slaStatus)
- * @method static Builder<static>|HelpdeskTicket byStatusToken(string $tokenHash)
  * @method static \Database\Factories\HelpdeskTicketFactory factory($count = null, $state = [])
  * @method static Builder<static>|HelpdeskTicket forUser(\App\Models\User $user)
  * @method static Builder<static>|HelpdeskTicket newModelQuery()
@@ -136,12 +131,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static Builder<static>|HelpdeskTicket whereEscalationNotifiedAt($value)
  * @method static Builder<static>|HelpdeskTicket whereFirstResponseAt($value)
  * @method static Builder<static>|HelpdeskTicket whereFormReferenceCode($value)
- * @method static Builder<static>|HelpdeskTicket whereGuestDivision($value)
- * @method static Builder<static>|HelpdeskTicket whereGuestEmail($value)
- * @method static Builder<static>|HelpdeskTicket whereGuestGrade($value)
- * @method static Builder<static>|HelpdeskTicket whereGuestName($value)
- * @method static Builder<static>|HelpdeskTicket whereGuestPhone($value)
- * @method static Builder<static>|HelpdeskTicket whereGuestStaffId($value)
  * @method static Builder<static>|HelpdeskTicket whereId($value)
  * @method static Builder<static>|HelpdeskTicket whereInternalNotes($value)
  * @method static Builder<static>|HelpdeskTicket whereJobGrade($value)
@@ -161,7 +150,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static Builder<static>|HelpdeskTicket whereSource($value)
  * @method static Builder<static>|HelpdeskTicket whereStaffId($value)
  * @method static Builder<static>|HelpdeskTicket whereStatus($value)
- * @method static Builder<static>|HelpdeskTicket whereStatusTokenHash($value)
  * @method static Builder<static>|HelpdeskTicket whereSubject($value)
  * @method static Builder<static>|HelpdeskTicket whereTicketNumber($value)
  * @method static Builder<static>|HelpdeskTicket whereUpdatedAt($value)
@@ -169,6 +157,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static Builder<static>|HelpdeskTicket withCommonRelations()
  * @method static Builder<static>|HelpdeskTicket withTrashed(bool $withTrashed = true)
  * @method static Builder<static>|HelpdeskTicket withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 #[ObservedBy([HelpdeskTicketObserver::class])]
@@ -186,17 +175,8 @@ class HelpdeskTicket extends Model implements Auditable
 
     protected $fillable = [
         'ticket_number',
-        'user_id',
-        'status_token_hash', // v3.5.0 True Hybrid - SHA-512 hash for guest status checking
-        'form_reference_code', // v3.5.0 - Official form code PK.(S).MOTAC.07.(L1)
-
-        // Enhanced guest submission fields for hybrid architecture
-        'guest_name',
-        'guest_email',
-        'guest_phone',
-        'guest_staff_id',
-        'guest_grade',
-        'guest_division',
+        'user_id', // MANDATORY - NOT NULL per PKS 5.2.1
+        'form_reference_code', // Official form code PK.(S).MOTAC.07.(L1)
 
         // Ticket details
         'staff_id',
@@ -306,7 +286,7 @@ class HelpdeskTicket extends Model implements Auditable
         $this->attributes['priority'] = strtolower($value);
     }
 
-    // HYBRID SUPPORT - Relationships
+    // PKS 5.2.1 COMPLIANT - Relationships
     /** @return BelongsTo<User, HelpdeskTicket> */
     public function user(): BelongsTo
     {
@@ -408,64 +388,46 @@ class HelpdeskTicket extends Model implements Auditable
         return $this->hasMany(CrossModuleIntegration::class, 'helpdesk_ticket_id');
     }
 
-    // HYBRID SUPPORT - Helper methods
+    // PKS 5.2.1 COMPLIANT - Helper methods
 
     /**
-     * Check if this is a guest submission (no user_id)
-     */
-    public function isGuestSubmission(): bool
-    {
-        return is_null($this->user_id);
-    }
-
-    /**
-     * Check if this is an authenticated submission (has user_id)
-     */
-    public function isAuthenticatedSubmission(): bool
-    {
-        return ! is_null($this->user_id);
-    }
-
-    /**
-     * Get submitter name (guest or authenticated)
+     * Get submitter name (authenticated user only)
      */
     public function getSubmitterName(): string
     {
-        return $this->isGuestSubmission() ? $this->guest_name : $this->user->name;
+        return $this->user->name;
     }
 
     /**
-     * Get submitter email (guest or authenticated)
+     * Get submitter email (authenticated user only)
      */
     public function getSubmitterEmail(): string
     {
-        return $this->isGuestSubmission() ? $this->guest_email : $this->user->email;
+        return $this->user->email;
     }
 
     /**
-     * Get submitter identifier for tracking
+     * Get submitter identifier for tracking (authenticated user only)
      */
     public function getSubmitterIdentifier(): string
     {
-        return $this->isGuestSubmission()
-            ? "guest:{$this->guest_email}"
-            : "user:{$this->user_id}";
+        return "user:{$this->user_id}";
     }
 
     /**
-     * Get submitter grade (guest or authenticated)
+     * Get submitter grade (authenticated user only)
      */
     public function getSubmitterGrade(): ?string
     {
-        return $this->isGuestSubmission() ? $this->guest_grade : $this->user->grade;
+        return $this->user->grade;
     }
 
     /**
-     * Get submitter division (guest or authenticated)
+     * Get submitter division (authenticated user only)
      */
     public function getSubmitterDivision(): ?string
     {
-        return $this->isGuestSubmission() ? $this->guest_division : $this->user->division;
+        return $this->user->division;
     }
 
     // CROSS-MODULE HELPER METHODS
@@ -486,15 +448,6 @@ class HelpdeskTicket extends Model implements Auditable
         return $this->category_id &&
             $this->category->name === 'maintenance' &&
             $this->hasRelatedAsset();
-    }
-
-    /**
-     * Check if ticket can be claimed by authenticated user
-     */
-    public function canBeClaimedBy(User $user): bool
-    {
-        return $this->isGuestSubmission() &&
-            $this->guest_email === $user->email;
     }
 
     // UTILITY METHODS
@@ -541,10 +494,10 @@ class HelpdeskTicket extends Model implements Auditable
         ];
     }
 
-    // v3.5.0 True Hybrid Architecture - Query Scopes
+    // PKS 5.2.1 COMPLIANT - Query Scopes
 
     /**
-     * Scope to filter tickets for a specific user (authenticated submissions)
+     * Scope to filter tickets for a specific user (authenticated submissions only)
      *
      * @param  Builder<HelpdeskTicket>  $query
      * @return Builder<HelpdeskTicket>
@@ -552,17 +505,6 @@ class HelpdeskTicket extends Model implements Auditable
     public function scopeForUser(Builder $query, User $user): Builder
     {
         return $query->where('user_id', $user->id);
-    }
-
-    /**
-     * Scope to find ticket by status token hash
-     *
-     * @param  Builder<HelpdeskTicket>  $query
-     * @return Builder<HelpdeskTicket>
-     */
-    public function scopeByStatusToken(Builder $query, string $tokenHash): Builder
-    {
-        return $query->where('status_token_hash', $tokenHash);
     }
 
     /**
@@ -587,30 +529,6 @@ class HelpdeskTicket extends Model implements Auditable
                 ->where('sla_resolution_due_at', '>', $now->copy()->addHours(4)),
             default => $query,
         };
-    }
-
-    // v3.5.0 True Hybrid Architecture - Token Methods
-
-    /**
-     * Generate and set status token hash (SHA-512)
-     */
-    public function generateStatusToken(): string
-    {
-        $token = bin2hex(random_bytes(32)); // 64 character token
-        $this->status_token_hash = hash('sha512', $token);
-        $this->save();
-
-        return $token; // Return plain token for sending to user
-    }
-
-    /**
-     * Verify status token
-     */
-    public static function findByStatusToken(string $token): ?self
-    {
-        $hash = hash('sha512', $token);
-
-        return static::where('status_token_hash', $hash)->first();
     }
 
     /**
