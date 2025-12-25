@@ -1,9 +1,9 @@
-# ICTServe Frontend Comprehensive v3.6.1 - Implementation Tasks
+# ICTServe Frontend Comprehensive v4.0 - Implementation Tasks
 
 **Sistem ICTServe**  
-**Versi:** 3.6.1 (SemVer)  
-**Tarikh Kemaskini:** 17 Disember 2025  
-**Status:** Aktif - Updated with D18 Cloud Hybrid AI Architecture  
+**Versi:** 4.0.1 (SemVer)  
+**Tarikh Kemaskini:** 25 Disember 2025  
+**Status:** Aktif - PKS Compliance Migration Phase  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 
 ---
@@ -12,17 +12,22 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Version** | 3.6.1 |
-| **Last Updated** | 17 December 2025 |
-| **Status** | Active - Updated with D18 AI Chatbot Implementation Tasks |
+| **Version** | 4.0.1 |
+| **Last Updated** | 25 December 2025 |
+| **Status** | Active - PKS Compliance Migration with SSO Mandatory Architecture |
 | **Classification** | Restricted - Internal BPM MOTAC |
-| **Dependencies** | requirements.md v3.6.1-r1, design.md v3.6.1-r1 |
+| **Dependencies** | requirements.md v4.0.0, design.md v4.0.0 |
+| **PKS References** | Seksyen 5.2.1, 9.2.1, 4.2, 5.4.3, 10.1, 10.2, 11.1, 12.1 |
+
+> **PENTING - PKS 5.2.1 COMPLIANCE**: Fasa 19 menambah tugas untuk migrasi PKS Compliance termasuk penghapusan Guest Mode dan pelaksanaan SSO Mandatory Architecture.
 
 ---
 
 ## Implementation Plan Overview
 
-This consolidated implementation plan combines all frontend development tasks across the True Hybrid Architecture, including guest forms, authenticated portal, Filament admin panel, and **Cloud Hybrid AI interfaces (D18 v1.0.1)**. Each task builds incrementally and focuses on code implementation, testing, and integration.
+This consolidated implementation plan combines all frontend development tasks across the **SSO Mandatory Architecture** (formerly True Hybrid Architecture), including Walk-in/Kiosk Mode with SSO, authenticated portal, Filament admin panel, and **Cloud Hybrid AI interfaces with DLP filtering (D18 v4.0)**. Each task builds incrementally and focuses on code implementation, testing, and integration.
+
+**CRITICAL PKS 5.2.1 COMPLIANCE**: Guest Mode has been **eliminated**. All users must authenticate via SSO (LDAP/Active Directory) to ensure full accountability and non-repudiation.
 
 **Consolidated Scope:**
 
@@ -31,15 +36,28 @@ This consolidated implementation plan combines all frontend development tasks ac
 - Theme switcher system
 - Unified component library development
 - Figma MCP integration
-- Livewire 3.7.1 and Volt 1.10.1 architecture
+- Livewire 3.7.3 and Volt 1.10.1 architecture
 - Filament admin panel enhancements
 - Authenticated portal development
 - Real-time features and notifications
 - Cross-module integration
 - Performance optimization and accessibility compliance
-- **Cloud Hybrid AI Chat Interface (D18 v1.0.1 - NEW)**
-- **FAQ Bot Widget with Ollama RAG (D18 v1.0.1 - NEW)**
-- **AI Admin Management Interface (D18 v1.0.1 - NEW)**
+- **Cloud Hybrid AI Chat Interface with DLP (D18 v4.0 - UPDATED)**
+- **FAQ Bot Widget with Ollama RAG (authenticated users only)**
+- **AI Admin Management Interface (D18 v4.0)**
+- **PKS Compliance Migration (Phase 19 - NEW)**
+  - SSO Mandatory Authentication (PKS 5.2.1)
+  - Walk-in/Kiosk Mode with SSO
+  - HRMIS Auto-Provisioning
+  - DLP Filtering for Cloud AI (PKS 9.2.1)
+  - Intranet-Only Deployment (PKS 4.2)
+  - Password Policy Compliance (PKS 5.4.3)
+  - Dual Audit System with 7-Year Retention
+  - Incident Response Management (PKS 10.1)
+  - Business Continuity and Disaster Recovery (PKS 10.2)
+  - Third Party Access Management (PKS 11.1)
+  - Security Awareness Training Compliance (PKS 12.1)
+  - PSPM 2022-2026 Strategic Alignment (Teras 1-4)
 
 ---
 
@@ -365,12 +383,18 @@ This consolidated implementation plan combines all frontend development tasks ac
   - Build submission detail view with timeline and comments ✓ (SubmissionDetail component)
   - _Requirements: 9.2, 11.4_
 
-- [x] 8.2.2 Implement guest submission claiming ✓
-  - Create email-based submission matching system ✓ (ClaimSubmissions with searchEmail)
-  - Build claim verification workflow ✓ (claimTickets, claimLoans methods)
-  - Add automatic account linking functionality ✓ (HybridHelpdeskService.claimGuestTicket)
-  - Implement audit logging for claim actions ✓ (Log::error for failures)
-  - _Requirements: 9.5_
+- [ ] 8.2.2 ~~Implement guest submission claiming~~ **REMOVE FOR PKS 5.2.1**
+  - ~~Create email-based submission matching system~~ **REMOVE** - Guest Mode eliminated
+  - ~~Build claim verification workflow~~ **REMOVE** - All submissions require SSO
+  - ~~Add automatic account linking functionality~~ **REMOVE** - No guest submissions to claim
+  - ~~Implement audit logging for claim actions~~ **REMOVE** - Feature deprecated
+  - **PKS 5.2.1 UPDATE**: Remove ClaimSubmissions component entirely
+  - **Files to Update**:
+    - `app/Livewire/Staff/ClaimSubmissions.php` - DELETE
+    - `resources/views/livewire/staff/claim-submissions.blade.php` - DELETE
+    - `tests/Unit/Services/GuestSubmissionClaimServiceTest.php` - DELETE
+    - `app/Services/GuestSubmissionClaimService.php` - DELETE (if exists)
+  - _Requirements: 22.1 (PKS 5.2.1 - Guest Mode elimination)_
 
 ### 8.3 Profile Management
 
@@ -400,12 +424,19 @@ This consolidated implementation plan combines all frontend development tasks ac
 
 ### 9.1 Laravel Reverb WebSocket Integration
 
-- [x] 9.1.1 Configure Laravel Reverb for real-time features ✓
+- [ ] 9.1.1 Configure Laravel Reverb for real-time features **NEEDS PKS UPDATE**
   - Set up WebSocket server configuration ✓ (config/reverb.php, config/broadcasting.php)
-  - Create private channels for user-specific updates ✓ (routes/channels.php - user.{userId}, ticket.{uuid}, loan.{uuid})
+  - Create private channels for user-specific updates ✓ (routes/channels.php - user.{userId})
+  - ~~Create guest UUID channels (ticket.{uuid}, loan.{uuid})~~ **REMOVE** - PKS 5.2.1
   - Implement broadcasting events for status changes ✓ (TicketStatusChanged, LoanStatusChanged with ShouldBroadcast)
   - Add client-side Echo listeners ✓ (resources/js/bootstrap.js with connection state management)
-  - _Requirements: 10.1, 10.3_
+  - **PKS 5.2.1 UPDATE**: Remove guest UUID channel authorization
+  - **Files to Update**:
+    - `routes/channels.php` - Remove `private-ticket.{uuid}` and `private-loan.{uuid}` guest channels
+    - `app/Events/Concerns/BroadcastsToHybridChannels.php` - Remove guest channel logic
+    - `app/Events/CommentPosted.php` - Update for authenticated-only channels
+    - `app/Events/StatusUpdated.php` - Update for authenticated-only channels
+  - _Requirements: 10.1, 10.3, 22.1 (PKS 5.2.1)_
 
 ### 9.2 Notification System
 
@@ -611,23 +642,32 @@ This consolidated implementation plan combines all frontend development tasks ac
 
 ---
 
-## Phase 15: Cloud Hybrid AI Interface (D18 v1.0.1)
+## Phase 15: Cloud Hybrid AI Interface (D18 v4.0 - PKS 9.2.1 DLP)
 
 ### 15.1 AI Chat Interface Implementation
 
-- [x] 15.1.1 Create BedrockChat Livewire component ✓
+- [ ] 15.1.1 Create BedrockChat Livewire component **NEEDS PKS UPDATE**
   - Implement AI chat interface at `/ai/chat` route ✓ (Added route)
   - Add model selection dropdown (Opus 4.5, Sonnet 4.5, Haiku 4.5) ✓ (Existing)
   - Implement query analysis and model routing logic ✓ (Existing)
   - Add conversation history display with markdown rendering ✓ (Existing)
-  - _Requirements: 16.1, 16.2, 16.3_
+  - **PKS 5.2.1 UPDATE**: Require SSO authentication for AI chat access
+  - **PKS 9.2.1 UPDATE**: Add DLP filtering indicator in UI
+  - **Files to Update**:
+    - `app/Livewire/AI/ChatInterface.php` - Add auth middleware, DLP indicator
+    - `resources/views/livewire/ai/chat-interface.blade.php` - Add DLP status display
+  - _Requirements: 16.1, 16.2, 16.3, 22.1 (PKS 5.2.1), 25.1 (PKS 9.2.1)_
 
-- [x] 15.1.2 Implement model routing service ✓
+- [ ] 15.1.2 Implement model routing service with DLP **NEEDS PKS UPDATE**
   - Create ModelRouter service for query classification ✓ (Existing)
   - Implement FAQ keyword detection (tiket, helpdesk, pinjaman, etc.) ✓ (Existing)
   - Add complex reasoning keyword detection (analisis, bandingkan, etc.) ✓ (Existing)
   - Route queries to appropriate backend (Ollama/Bedrock/Both) ✓ (Existing)
-  - _Requirements: 16.2, 16.3_
+  - **PKS 9.2.1 UPDATE**: Add DLP filtering before cloud AI routing
+  - **Files to Update**:
+    - `app/Services/AI/ModelRouter.php` - Add DLP check before Bedrock routing
+    - `app/Services/AI/DlpFilteringService.php` - CREATE for PII detection
+  - _Requirements: 16.2, 16.3, 25.2, 25.3 (PKS 9.2.1)_
 
 - [x] 15.1.3 Add conversation management features ✓
   - Implement BedrockConversation model integration ✓ (Existing)
@@ -643,18 +683,23 @@ This consolidated implementation plan combines all frontend development tasks ac
   - Ensure all responses in Bahasa Melayu ✓ (Existing)
   - _Requirements: 16.5, 16.6, 16.8_
 
-- [ ]* 15.1.5 Write property test for AI query routing
+- [ ]* 15.1.5 Write property test for AI query routing with DLP
   - **Property 21: Cloud Hybrid AI Query Routing**
-  - **Validates: Requirements 16.1, 16.2, 16.3**
+  - **Property 30: DLP Filtering for Cloud AI (PKS 9.2.1)**
+  - **Validates: Requirements 16.1, 16.2, 16.3, 25.1, 25.2, 25.3**
 
 ### 15.2 FAQ Bot Widget Implementation
 
-- [x] 15.2.1 Create FaqBotWidget Livewire component ✓
+- [ ] 15.2.1 Create FaqBotWidget Livewire component **NEEDS PKS UPDATE**
   - Implement floating button (bottom-right, 44×44px) ✓ (Existing)
   - Create expandable chat panel with ARIA dialog pattern ✓ (Existing)
   - Add focus trap for accessibility ✓ (Existing)
   - Implement keyboard navigation (ESC to close, Tab navigation) ✓ (Existing)
-  - _Requirements: 17.1, 17.2, 17.5_
+  - **PKS 5.2.1 UPDATE**: Require SSO authentication - no guest access
+  - **Files to Update**:
+    - `app/Livewire/AI/FaqBotWidget.php` - Add auth check, hide for guests
+    - `resources/views/livewire/ai/faq-bot-widget.blade.php` - Add @auth directive
+  - _Requirements: 17.1, 17.2, 17.5, 22.1 (PKS 5.2.1)_
 
 - [x] 15.2.2 Integrate Ollama RAG service ✓
   - Connect to RagService for FAQ queries ✓ (Existing)
@@ -1034,10 +1079,718 @@ Based on the current progress, the recommended implementation order for remainin
 
 ---
 
-**Document Version**: 3.6.0  
-**Last Updated**: 2025-12-14  
-**Author**: Frontend Engineering Team  
-**Status**: Active Implementation  
-**Total Phases**: 15 phases  
-**Completed Phases**: 10 (Phases 3, 4, 6, 7, 8, 9, 10, 11, 12, 13)  
-**Dependencies**: requirements.md v3.6.0, design.md v3.6.0
+**Document Version**: 4.0.1  
+**Last Updated**: 25 December 2025  
+**Author**: BPM MOTAC Development Team  
+**Status**: Active - PKS Compliance Migration Phase
+
+---
+
+## Phase 19: PKS Compliance Migration (v4.0.0 - KRISA D01-D10, D17 v4.0)
+
+### 19.1 SSO Mandatory Authentication (PKS 5.2.1)
+
+- [ ] 19.1.1 Delete guest-related Livewire components (P0 - Critical)
+  - DELETE `app/Livewire/GuestLoanApplication.php`
+  - DELETE `app/Livewire/Staff/ClaimSubmissions.php`
+  - DELETE `resources/views/livewire/staff/claim-submissions.blade.php`
+  - DELETE `resources/views/livewire/guest-loan-application.blade.php` (if exists)
+  - REMOVE `/claim-submissions` route from `routes/web.php`
+  - _Requirements: 22.1, 22.2_
+
+- [ ] 19.1.2 Delete guest-related test files (P0 - Critical)
+  - DELETE `tests/Feature/GuestLoanApplicationWorkflowTest.php`
+  - DELETE `tests/Feature/Livewire/GuestLoanApplicationTest.php`
+  - DELETE `tests/Feature/Livewire/GuestLoanApplicationEnhancementTest.php` (if exists)
+  - DELETE `tests/Feature/AccountLinkingServiceTest.php` (if exists)
+  - DELETE `tests/Unit/Services/GuestSubmissionClaimServiceTest.php` (if exists)
+  - _Requirements: 22.1_
+
+- [ ] 19.1.3 Update test files to remove guest references (P0 - Critical)
+  - UPDATE `tests/Feature/Performance/LivewireOptimizationTest.php` - Remove GuestLoanApplication imports and tests
+  - UPDATE `tests/Feature/LoanAuthenticatedFormTest.php` - Remove guest-related test cases
+  - UPDATE `tests/Feature/PerformanceIntegrationTest.php` - Remove GuestLoanApplication references
+  - UPDATE `tests/Feature/Livewire/GuestLoanResponsibleOfficerTest.php` - DELETE or convert to authenticated
+  - _Requirements: 22.1_
+
+- [ ] 19.1.4 Eliminate Guest Mode completely
+  - Remove all guest form routes (/helpdesk/create, /loans/create for unauthenticated users)
+  - Update service selection modal to SSO-only (remove "Tidak (Tetamu)" option)
+  - Add PKS 5.2.1 compliance notice to login page
+  - Update landing page CTAs to redirect to SSO login
+  - _Requirements: 22.1, 22.2_
+
+- [ ] 19.1.2 Implement user_id mandatory foreign key
+  - Add migration to make user_id NOT NULL on helpdesk_tickets table
+  - Add migration to make user_id NOT NULL on loan_applications table
+  - Update all form submissions to require authenticated user
+  - Add database constraint validation
+  - _Requirements: 22.3_
+
+- [ ] 19.1.3 Implement authentication event logging
+  - Create AuthenticationEventLogger service
+  - Log all login events (success, failure) with timestamp, IP, user agent
+  - Log all logout events
+  - Implement failed login attempt tracking
+  - _Requirements: 22.4, 22.5_
+
+- [ ]* 19.1.4 Write property test for SSO mandatory authentication
+  - **Property 27: SSO Mandatory Authentication (PKS 5.2.1)**
+  - **Validates: Requirements 22.1, 22.2, 22.3, 22.4, 22.5**
+
+### 19.2 Walk-in/Kiosk Mode with SSO
+
+- [ ] 19.2.1 Create Walk-in/Kiosk Mode interface
+  - Create KioskLogin Livewire component at /kiosk/login route
+  - Implement simplified SSO login form for kiosk terminals
+  - Add prominent "Log Keluar" button in kiosk interface
+  - Implement kiosk-specific styling (larger touch targets, simplified UI)
+  - _Requirements: 23.1, 23.2, 23.5_
+
+- [ ] 19.2.2 Implement kiosk session management
+  - Create KioskSessionMiddleware for 5-minute inactivity timeout
+  - Implement automatic logout on inactivity
+  - Add session warning modal at 4 minutes
+  - Clear session data on logout
+  - _Requirements: 23.3_
+
+- [ ] 19.2.3 Implement LDAP user data pre-population
+  - Create LdapUserDataService for fetching user information
+  - Pre-populate name, email, department, grade from LDAP after authentication
+  - Display read-only user information in forms
+  - Add "Maklumat dari sistem HR" indicator
+  - _Requirements: 23.4_
+
+- [ ]* 19.2.4 Write property test for Walk-in/Kiosk Mode
+  - **Property 28: Walk-in/Kiosk Mode SSO Compliance**
+  - **Validates: Requirements 23.1, 23.2, 23.3, 23.4, 23.5**
+
+### 19.3 HRMIS Auto-Provisioning
+
+- [ ] 19.3.1 Fix HrmisIntegrationService Larastan errors (P1 - High)
+  - Fix property type declarations for `$baseUrl`, `$apiKey`, `$timeout`, `$cacheMinutes`
+  - Add proper return type annotations for all methods
+  - Fix mixed type access issues (30+ errors identified)
+  - Add proper array shape type hints
+  - **File**: `app/Services/HrmisIntegrationService.php`
+  - _Requirements: 24.1, 24.2_
+
+- [ ] 19.3.2 Create HRMIS synchronization service
+  - Create HrmisIntegrationService for user synchronization
+  - Implement daily sync job (HrmisSyncJob) via Laravel scheduler
+  - Add user creation for new employees
+  - Add user deactivation for terminated employees
+  - _Requirements: 24.1, 24.2, 24.3_
+
+- [ ] 19.3.2 Implement user data updates from HRMIS
+  - Update department, grade, position from HRMIS data
+  - Log all user data changes for audit trail
+  - Handle HRMIS sync failures with retry mechanism
+  - Send notification to admin on sync failures
+  - _Requirements: 24.4_
+
+- [ ] 19.3.3 Remove manual registration functionality
+  - Remove /register route and RegisterController
+  - Update authentication flow to HRMIS-only provisioning
+  - Add "Hubungi HR untuk pendaftaran akaun" message for unprovisioned users
+  - Update documentation to reflect HRMIS-only provisioning
+  - _Requirements: 24.5_
+
+- [ ]* 19.3.4 Write property test for HRMIS auto-provisioning
+  - **Property 29: HRMIS Auto-Provisioning Synchronization**
+  - **Validates: Requirements 24.1, 24.2, 24.3, 24.4, 24.5**
+
+### 19.4 DLP Filtering for Cloud AI (PKS 9.2.1)
+
+- [ ] 19.4.1 Create DLP filtering service
+  - Create DlpFilteringService for PII detection
+  - Implement IC number detection and redaction (regex: \d{6}-\d{2}-\d{4})
+  - Implement phone number detection and redaction
+  - Implement email address detection and redaction
+  - _Requirements: 25.1, 25.2_
+
+- [ ] 19.4.2 Implement AI query routing with DLP
+  - Update ModelRouter to check for PII before cloud AI routing
+  - Route PII-containing queries to local Ollama only
+  - Add DLP scan result to query metadata
+  - Display "Data sensitif dikesan - menggunakan AI tempatan" indicator
+  - _Requirements: 25.3_
+
+- [ ] 19.4.3 Implement cloud AI request logging
+  - Create CloudAiRequestLog model and migration
+  - Log all cloud AI requests with data classification (public, internal, confidential)
+  - Add request/response size tracking
+  - Implement log retention policy (7 years)
+  - _Requirements: 25.4_
+
+- [ ] 19.4.4 Implement secure API gateway
+  - Configure TLS 1.3 for all AWS Bedrock communications
+  - Add certificate pinning for Bedrock endpoints
+  - Implement request signing with AWS SigV4
+  - Add connection timeout and retry configuration
+  - _Requirements: 25.5_
+
+- [ ]* 19.4.5 Write property test for DLP filtering
+  - **Property 30: DLP Filtering for Cloud AI (PKS 9.2.1)**
+  - **Validates: Requirements 25.1, 25.2, 25.3, 25.4, 25.5**
+
+### 19.5 Intranet-Only Deployment (PKS 4.2)
+
+- [ ] 19.5.1 Implement network access restrictions
+  - Create IntranetOnlyMiddleware to reject external requests
+  - Configure allowed IP ranges (MOTAC intranet only)
+  - Add appropriate error message for external access attempts
+  - Log all rejected external access attempts
+  - _Requirements: 26.1, 26.2_
+
+- [ ] 19.5.2 Configure data storage restrictions
+  - Verify all database connections point to MOTAC Data Center
+  - Verify all file storage uses local MOTAC storage
+  - Verify all log files stored within MOTAC infrastructure
+  - Add configuration validation on application boot
+  - _Requirements: 26.3_
+
+- [ ] 19.5.3 Configure local AI for data sovereignty
+  - Ensure Ollama LLM runs on MOTAC infrastructure
+  - Configure Ollama as primary AI for sensitive data
+  - Add fallback to Ollama when Bedrock unavailable
+  - Document data sovereignty compliance
+  - _Requirements: 26.4_
+
+- [ ] 19.5.4 Implement network segmentation
+  - Document firewall rules for MOTAC IP ranges
+  - Add network configuration validation
+  - Create network access audit report
+  - Test external access rejection
+  - _Requirements: 26.5_
+
+- [ ]* 19.5.5 Write property test for intranet-only deployment
+  - **Property 31: Intranet-Only Deployment (PKS 4.2)**
+  - **Validates: Requirements 26.1, 26.2, 26.3, 26.4, 26.5**
+
+### 19.6 Password Policy Compliance (PKS 5.4.3)
+
+- [ ] 19.6.1 Implement password policy rules
+  - Create PasswordPolicyService with PKS 5.4.3 rules
+  - Enforce minimum 8-character password length
+  - Add password complexity validation (if required by LDAP)
+  - Display password requirements in Bahasa Melayu
+  - _Requirements: 27.1, 27.5_
+
+- [ ] 19.6.2 Implement password expiry management
+  - Create PasswordExpiryMiddleware for 90-day expiry check
+  - Send notification 14 days before password expiry
+  - Force password change on expired passwords
+  - Track password change history
+  - _Requirements: 27.2_
+
+- [ ] 19.6.3 Implement account lockout
+  - Create AccountLockoutService for failed login tracking
+  - Lock account after 3 consecutive failed attempts
+  - Implement 30-minute lockout duration
+  - Send notification to user on account lockout
+  - _Requirements: 27.3_
+
+- [ ] 19.6.4 Implement password reuse prevention
+  - Create PasswordHistory model and migration
+  - Store hashed passwords for last 12 passwords
+  - Validate new password against history
+  - Display "Kata laluan telah digunakan sebelum ini" error
+  - _Requirements: 27.4_
+
+- [ ]* 19.6.5 Write property test for password policy
+  - **Property 32: Password Policy Compliance (PKS 5.4.3)**
+  - **Validates: Requirements 27.1, 27.2, 27.3, 27.4, 27.5**
+
+### 19.7 Dual Audit System Enhancement
+
+- [ ] 19.7.1 Verify dual audit system configuration
+  - Verify owen-it/laravel-auditing configuration for compliance audit
+  - Verify spatie/laravel-activitylog configuration for operational audit
+  - Ensure both systems log to separate tables
+  - Add audit system health check
+  - _Requirements: 28.1_
+
+- [ ] 19.7.2 Implement 7-year retention policy
+  - Update audit configuration for 7-year retention
+  - Create AuditRetentionJob for old record archival
+  - Implement audit log archival to cold storage
+  - Add retention policy documentation
+  - _Requirements: 28.2_
+
+- [ ] 19.7.3 Enhance audit record completeness
+  - Ensure all CRUD operations logged with before/after values
+  - Add user_id to all audit records
+  - Add IP address and user agent to all audit records
+  - Add timestamp with timezone to all audit records
+  - _Requirements: 28.3, 28.4_
+
+- [ ] 19.7.4 Implement audit search and export
+  - Create AuditLogResource in Filament for admin access
+  - Implement search by user, date range, action type
+  - Add export functionality (CSV, PDF) for compliance reporting
+  - Add audit log dashboard widget
+  - _Requirements: 28.5_
+
+- [ ]* 19.7.5 Write property test for dual audit system
+  - **Property 33: Dual Audit System with 7-Year Retention**
+  - **Validates: Requirements 28.1, 28.2, 28.3, 28.4, 28.5**
+
+### 19.8 PKS Compliance Checkpoint
+
+- [ ] 19.8.1 Checkpoint - Verify PKS 5.2.1 compliance
+  - Verify Guest Mode completely eliminated
+  - Verify all access requires SSO authentication
+  - Verify user_id mandatory FK on all transactional tables
+  - Verify authentication event logging
+  - _Requirements: 22.1-22.5_
+
+- [ ] 19.8.2 Checkpoint - Verify PKS 9.2.1 compliance
+  - Verify DLP filtering active for cloud AI
+  - Verify PII detection and redaction working
+  - Verify cloud AI request logging
+  - Verify TLS 1.3 for Bedrock communications
+  - _Requirements: 25.1-25.5_
+
+- [ ] 19.8.3 Checkpoint - Verify PKS 4.2 and 5.4.3 compliance
+  - Verify intranet-only access restrictions
+  - Verify password policy enforcement
+  - Verify account lockout functionality
+  - Verify dual audit system with 7-year retention
+  - _Requirements: 26.1-26.5, 27.1-27.5, 28.1-28.5_
+
+### 19.9 Incident Response Interface (PKS 10.1)
+
+- [ ] 19.9.1 Create incident reporting form
+  - Create IncidentReport Livewire component at /incidents/report route
+  - Implement mandatory fields (incident type, severity, description, affected systems)
+  - Add incident classification dropdown (Tinggi/Sederhana/Rendah) per PKS severity matrix
+  - Display form in Bahasa Melayu with WCAG 2.2 AA compliance
+  - _Requirements: 29.1, 29.3_
+
+- [ ] 19.9.2 Implement CSIRT notification system
+  - Create IncidentNotificationService for CSIRT team alerts
+  - Implement email notification within 5 minutes of incident report
+  - Add in-app notification via Laravel Reverb WebSocket
+  - Create CSIRT team role and notification preferences
+  - _Requirements: 29.2_
+
+- [ ] 19.9.3 Build incident lifecycle tracking interface
+  - Create IncidentLifecycle Livewire component for status tracking
+  - Implement 7-stage workflow (Pengesanan → Pelaporan → Penilaian → Pembendungan → Pemulihan → Penutupan → Laporan)
+  - Add timeline visualization with status transitions
+  - Implement role-based status update permissions
+  - _Requirements: 29.4_
+
+- [ ] 19.9.4 Create NACSA/MyCERT reporting interface
+  - Create IncidentReportGenerator service for compliance reports
+  - Implement report template with timeline, actions taken, lessons learned
+  - Add export functionality (PDF, CSV) for NACSA/MyCERT submission
+  - Ensure 7-year retention for incident history
+  - _Requirements: 29.5, 29.6_
+
+- [ ]* 19.9.5 Write property test for incident response management
+  - **Property 34: Incident Response Management (PKS 10.1)**
+  - **Validates: Requirements 29.1, 29.2, 29.3, 29.4, 29.5, 29.6**
+
+### 19.10 BCP/DRP Monitoring Dashboard (PKS 10.2)
+
+- [ ] 19.10.1 Create system health dashboard
+  - Create SystemHealthDashboard Filament widget
+  - Display RTO (Recovery Time Objective) and RPO (Recovery Point Objective) metrics
+  - Add system availability percentage with 99.5% threshold indicator
+  - Implement real-time health status via Laravel Pulse integration
+  - _Requirements: 30.1_
+
+- [ ] 19.10.2 Implement backup monitoring interface
+  - Create BackupMonitoringService for automated backup status tracking
+  - Display last backup timestamp on admin dashboard
+  - Implement backup failure alerts via email and in-app notification
+  - Add recovery test results display with pass/fail indicators
+  - _Requirements: 30.2, 30.6_
+
+- [ ] 19.10.3 Build BCP notification system
+  - Create BcpNotificationService for availability alerts
+  - Trigger notification when availability drops below 99.5%
+  - Implement escalation matrix for designated personnel
+  - Add notification history and acknowledgment tracking
+  - _Requirements: 30.3_
+
+- [ ] 19.10.4 Create DRP activation interface
+  - Create DrpActivation Filament page for authorized administrators
+  - Implement DRP activation workflow with confirmation modal
+  - Log all BCP/DRP activities with timestamp and responsible personnel
+  - Add DRP status indicator on admin dashboard
+  - _Requirements: 30.4, 30.5_
+
+- [ ]* 19.10.5 Write property test for BCP/DRP monitoring
+  - **Property 35: Business Continuity Monitoring (PKS 10.2)**
+  - **Validates: Requirements 30.1, 30.2, 30.3, 30.4, 30.5, 30.6**
+
+### 19.11 Third Party Access Management (PKS 11.1)
+
+- [ ] 19.11.1 Create NDA acknowledgment workflow
+  - Create NdaAcknowledgment Livewire component
+  - Implement NDA document display with acceptance checkbox
+  - Store NDA acceptance timestamp and IP address
+  - Block third-party access until NDA acknowledged
+  - _Requirements: 31.1_
+
+- [ ] 19.11.2 Implement time-limited access management
+  - Create ThirdPartyAccessService for vendor access control
+  - Implement access expiration with configurable duration
+  - Add automatic access revocation on contract expiry
+  - Send administrator notification on access expiration
+  - _Requirements: 31.2, 31.4_
+
+- [ ] 19.11.3 Build third-party audit trail
+  - Create ThirdPartyAccessLog model and migration
+  - Log all third-party activities with company name, purpose, access scope
+  - Implement enhanced audit trail with session tracking
+  - Add 7-year retention for third-party access logs
+  - _Requirements: 31.3_
+
+- [ ] 19.11.4 Create third-party access reporting
+  - Create ThirdPartyAccessReport Filament page
+  - Display active vendors, access duration, and activities
+  - Implement filtering by vendor, date range, access type
+  - Add export functionality (CSV, PDF) for compliance reporting
+  - _Requirements: 31.5, 31.6_
+
+- [ ]* 19.11.5 Write property test for third-party access management
+  - **Property 36: Third Party Access Control (PKS 11.1)**
+  - **Validates: Requirements 31.1, 31.2, 31.3, 31.4, 31.5, 31.6**
+
+### 19.12 Security Training Compliance (PKS 12.1)
+
+- [ ] 19.12.1 Create training status display
+  - Add security training completion status to user profile page
+  - Display training completion date and certificate link
+  - Show training expiry countdown (annual requirement)
+  - Implement training status badge on user dashboard
+  - _Requirements: 32.1, 32.6_
+
+- [ ] 19.12.2 Implement training reminder notifications
+  - Create TrainingReminderService for automated notifications
+  - Send reminders at 14 days, 7 days, 1 day before deadline
+  - Implement email and in-app notification channels
+  - Add notification preferences for training reminders
+  - _Requirements: 32.2_
+
+- [ ] 19.12.3 Implement feature restrictions for non-compliant users
+  - Create TrainingComplianceMiddleware for access control
+  - Restrict access to sensitive features for users without training
+  - Display "Sila lengkapkan latihan keselamatan" message
+  - Add grace period configuration for new employees
+  - _Requirements: 32.3_
+
+- [ ] 19.12.4 Build training compliance reporting
+  - Create TrainingComplianceReport Filament page
+  - Display compliance percentage by department
+  - Implement HRMIS integration for training record sync
+  - Add export functionality for compliance reporting
+  - _Requirements: 32.4, 32.5_
+
+- [ ]* 19.12.5 Write property test for security training compliance
+  - **Property 37: Security Training Compliance (PKS 12.1)**
+  - **Validates: Requirements 32.1, 32.2, 32.3, 32.4, 32.5, 32.6**
+
+### 19.13 PSPM Strategic Alignment Dashboard
+
+- [ ] 19.13.1 Implement end-to-end digital services (Teras 1)
+  - Verify all helpdesk and loan processes are fully digital
+  - Remove any remaining paper-based process dependencies
+  - Add digital signature support for approvals
+  - Display "100% Digital" compliance indicator on dashboard
+  - _Requirements: 33.1_
+
+- [ ] 19.13.2 Create data analytics dashboard (Teras 2)
+  - Create PspmAnalyticsDashboard Filament page
+  - Display service metrics (response time, resolution rate, satisfaction)
+  - Implement usage pattern visualization with charts
+  - Add KPI tracking with target vs actual comparison
+  - _Requirements: 33.2, 33.5_
+
+- [ ] 19.13.3 Verify MyGovCloud infrastructure alignment (Teras 3)
+  - Document cloud-ready architecture compliance
+  - Verify containerization support (Docker configuration)
+  - Add infrastructure status indicator on admin dashboard
+  - Create MyGovCloud migration readiness checklist
+  - _Requirements: 33.3_
+
+- [ ] 19.13.4 Implement digital capability building features (Teras 4)
+  - Add contextual help tooltips throughout the application
+  - Create user guides in Bahasa Melayu
+  - Implement onboarding tour for new users
+  - Add FAQ section with searchable knowledge base
+  - _Requirements: 33.4_
+
+- [ ] 19.13.5 Create PSPM compliance reporting
+  - Create PspmComplianceReport Filament page
+  - Track PSPM KPI metrics (service response time, user satisfaction, digital adoption rate)
+  - Generate quarterly ministry reporting format
+  - Add export functionality for PSPM compliance submission
+  - _Requirements: 33.5, 33.6_
+
+- [ ]* 19.13.6 Write property test for PSPM strategic alignment
+  - **Property 38: PSPM Strategic Alignment (Teras 1-4)**
+  - **Validates: Requirements 33.1, 33.2, 33.3, 33.4, 33.5, 33.6**
+
+### 19.14 PKS Extended Compliance Checkpoint
+
+- [ ] 19.14.1 Checkpoint - Verify PKS 10.1 and 10.2 compliance
+  - Verify incident reporting form functional
+  - Verify CSIRT notification within 5 minutes
+  - Verify incident lifecycle tracking
+  - Verify BCP/DRP monitoring dashboard
+  - _Requirements: 29.1-29.6, 30.1-30.6_
+
+- [ ] 19.14.2 Checkpoint - Verify PKS 11.1 and 12.1 compliance
+  - Verify NDA acknowledgment workflow
+  - Verify time-limited third-party access
+  - Verify security training compliance tracking
+  - Verify feature restrictions for non-compliant users
+  - _Requirements: 31.1-31.6, 32.1-32.6_
+
+- [ ] 19.14.3 Checkpoint - Verify PSPM 2022-2026 alignment
+  - Verify end-to-end digital services (Teras 1)
+  - Verify data analytics dashboard (Teras 2)
+  - Verify MyGovCloud readiness (Teras 3)
+  - Verify digital capability features (Teras 4)
+  - _Requirements: 33.1-33.6_
+
+---
+
+## Updated Progress Summary (v4.0.1 - 25 December 2025)
+
+### PKS Compliance Migration Status
+
+| Phase | Status | Priority | Notes |
+|-------|--------|----------|-------|
+| Phase 19.1: SSO Mandatory (PKS 5.2.1) | 🔴 Not Started | P0 Critical | Guest files still exist - require deletion |
+| Phase 19.2: Walk-in/Kiosk Mode | 🔴 Not Started | P1 High | SSO-authenticated kiosk |
+| Phase 19.3: HRMIS Auto-Provisioning | � Partial t| P1 High | Service exists but has 30+ Larastan errors |
+| Phase 19.4: DLP Filtering (PKS 9.2.1) | 🔴 Not Started | P1 High | Service does not exist |
+| Phase 19.5: Intranet-Only (PKS 4.2) | 🔴 Not Started | P2 Medium | Data sovereignty |
+| Phase 19.6: Password Policy (PKS 5.4.3) | 🔴 Not Started | P2 Medium | Service does not exist |
+| Phase 19.7: Dual Audit Enhancement | 🟡 Partial | P2 Medium | Existing audit, needs 7-year config |
+| Phase 19.8: PKS Compliance Checkpoint | 🔴 Not Started | - | Final validation (5.2.1, 9.2.1, 4.2, 5.4.3) |
+| Phase 19.9: Incident Response (PKS 10.1) | 🔴 Not Started | P3 Medium | Components do not exist |
+| Phase 19.10: BCP/DRP Monitoring (PKS 10.2) | 🔴 Not Started | P3 Medium | Dashboard does not exist |
+| Phase 19.11: Third Party Access (PKS 11.1) | 🔴 Not Started | P4 Low | Service does not exist |
+| Phase 19.12: Security Training (PKS 12.1) | 🔴 Not Started | P4 Low | Service does not exist |
+| Phase 19.13: PSPM Strategic Alignment | 🔴 Not Started | P4 Low | Teras Strategik 1-4 dashboard |
+| Phase 19.14: Extended Compliance Checkpoint | 🔴 Not Started | - | Final validation (10.1, 10.2, 11.1, 12.1, PSPM) |
+
+### Immediate Action Items (P0 - Critical)
+
+The following files MUST be deleted immediately per PKS 5.2.1:
+
+```
+# Livewire Components to DELETE
+app/Livewire/GuestLoanApplication.php
+app/Livewire/Staff/ClaimSubmissions.php
+
+# Views to DELETE
+resources/views/livewire/staff/claim-submissions.blade.php
+
+# Test Files to DELETE
+tests/Feature/GuestLoanApplicationWorkflowTest.php
+tests/Feature/Livewire/GuestLoanApplicationTest.php
+
+# Routes to REMOVE (in routes/web.php)
+Route::get('/claim-submissions', ...)
+```
+
+### Tasks Requiring Reset (Affected by PKS Compliance)
+
+The following tasks need to be reset due to PKS compliance changes:
+
+| Task | Previous Status | New Status | Reason |
+|------|-----------------|------------|--------|
+| 8.2.2 Guest Submission Claiming | ✅ Complete | 🔴 REMOVE | PKS 5.2.1 - Guest Mode eliminated |
+| 9.1.1 WebSocket Channels | ✅ Complete | 🟡 Needs Update | Remove guest UUID channels |
+| 15.1 AI Chat Interface | ✅ Complete | 🟡 Needs DLP | Add DLP filtering (PKS 9.2.1) |
+| 15.2 FAQ Bot Widget | ✅ Complete | 🟡 Needs Auth | Require SSO authentication |
+| 16.2 Service Modal | ✅ Complete | 🔴 Needs Update | Remove guest option |
+| 20.1 Guest Helpdesk Form | ✅ Complete | 🔴 REMOVE | Convert to SSO-authenticated |
+
+---
+
+## Files Requiring Updates for PKS v4.0 Compliance
+
+### Category 1: Guest Livewire Components (REMOVE)
+
+| File | Action | PKS Reference |
+|------|--------|---------------|
+| `app/Livewire/GuestLoanApplication.php` | DELETE | PKS 5.2.1 |
+| `app/Livewire/Staff/ClaimSubmissions.php` | DELETE | PKS 5.2.1 |
+| `app/Http/Controllers/GuestLoanApplicationController.php` | DELETE | PKS 5.2.1 |
+| `app/Http/Requests/GuestLoanApplicationRequest.php` | DELETE | PKS 5.2.1 |
+| `resources/views/livewire/guest-loan-application.blade.php` | DELETE | PKS 5.2.1 |
+| `resources/views/livewire/staff/claim-submissions.blade.php` | DELETE | PKS 5.2.1 |
+
+### Category 2: WebSocket Channels (UPDATE)
+
+| File | Action | PKS Reference |
+|------|--------|---------------|
+| `routes/channels.php` | Remove guest UUID channels (`private-ticket.{uuid}`, `private-loan.{uuid}`) | PKS 5.2.1 |
+| `app/Events/Concerns/BroadcastsToHybridChannels.php` | Remove guest channel logic | PKS 5.2.1 |
+| `app/Events/CommentPosted.php` | Update for authenticated-only | PKS 5.2.1 |
+| `app/Events/StatusUpdated.php` | Update for authenticated-only | PKS 5.2.1 |
+
+### Category 3: Test Files (UPDATE/REMOVE)
+
+| File | Action | PKS Reference |
+|------|--------|---------------|
+| `tests/Feature/Livewire/GuestLoanApplicationTest.php` | DELETE | PKS 5.2.1 |
+| `tests/Feature/Livewire/GuestLoanApplicationEnhancementTest.php` | DELETE | PKS 5.2.1 |
+| `tests/Feature/GuestLoanApplicationWorkflowTest.php` | DELETE | PKS 5.2.1 |
+| `tests/Unit/Services/GuestSubmissionClaimServiceTest.php` | DELETE | PKS 5.2.1 |
+| `tests/Unit/Models/HelpdeskTicketHybridTest.php` | UPDATE - Remove guest tests | PKS 5.2.1 |
+| `tests/Unit/Services/TicketStatusTransitionServiceTest.php` | UPDATE - Remove guest_email refs | PKS 5.2.1 |
+| `tests/Unit/Services/CrossModuleIntegrationServiceTest.php` | UPDATE - Remove guest_name refs | PKS 5.2.1 |
+| `tests/Unit/Services/AutoReplyServiceTest.php` | UPDATE - Remove guest refs | PKS 5.2.1 |
+| `tests/Feature/Services/HelpdeskServiceTest.php` | UPDATE - Remove guest tests | PKS 5.2.1 |
+| `tests/Feature/AccountLinkingServiceTest.php` | DELETE | PKS 5.2.1 |
+
+### Category 4: AI Components (UPDATE for DLP)
+
+| File | Action | PKS Reference |
+|------|--------|---------------|
+| `app/Services/AI/ModelRouter.php` | Add DLP filtering before cloud routing | PKS 9.2.1 |
+| `app/Livewire/AI/ChatInterface.php` | Add DLP scan indicator | PKS 9.2.1 |
+| `app/Livewire/AI/FaqBotWidget.php` | Require SSO authentication | PKS 5.2.1 |
+| `resources/views/livewire/ai/faq-bot-widget.blade.php` | Add auth check | PKS 5.2.1 |
+
+### Category 5: Database Migrations (CREATE)
+
+| File | Action | PKS Reference |
+|------|--------|---------------|
+| `database/migrations/xxxx_make_user_id_required_helpdesk_tickets.php` | CREATE - Make user_id NOT NULL | PKS 5.2.1 |
+| `database/migrations/xxxx_make_user_id_required_loan_applications.php` | CREATE - Make user_id NOT NULL | PKS 5.2.1 |
+| `database/migrations/xxxx_create_cloud_ai_request_logs_table.php` | CREATE - DLP audit logging | PKS 9.2.1 |
+
+---
+
+### Completed Phases (v3.6.x - Pre-PKS)
+
+| Phase | Status | Completion Date |
+|-------|--------|-----------------|
+| Phase 1-14 | ✅ Complete | 14 December 2025 |
+| Phase 15: Cloud Hybrid AI | 🟡 Needs PKS Update | 17 December 2025 |
+| Phase 16-17: Final Validation | ✅ Complete | 17 December 2025 |
+| Phase 18: Portal Layout | ✅ Complete | 17 December 2025 |
+
+### Phases Requiring PKS Updates
+
+| Phase | Task | Status | PKS Reference |
+|-------|------|--------|---------------|
+| Phase 8.2 | Guest Submission Claiming | 🔴 REMOVE | PKS 5.2.1 |
+| Phase 9.1 | WebSocket Guest Channels | 🟡 UPDATE | PKS 5.2.1 |
+| Phase 15.1 | AI Chat Interface | 🟡 UPDATE | PKS 5.2.1, 9.2.1 |
+| Phase 15.2 | FAQ Bot Widget | 🟡 UPDATE | PKS 5.2.1 |
+
+---
+
+## Notes
+
+- Tasks marked with `*` are optional property-based tests
+- All tasks reference specific requirements from requirements.md v4.0.0
+- Implementation follows D00-D18 v4.0 and KRISA D01-D10, D17 v4.0 documentation standards
+- Phase 19 (PKS Compliance) tasks are NEW additions per PKS 5.2.1, 9.2.1, 4.2, 5.4.3, 10.1, 10.2, 11.1, 12.1
+- PSPM 2022-2026 alignment tasks support Teras Strategik 1-4 (Aplikasi, Data, Infrastruktur ICT, Tadbir Urus & Keupayaan)
+
+---
+
+**Document Version**: 4.0.1  
+**Last Updated**: 25 December 2025  
+**Author**: BPM MOTAC Development Team  
+**Status**: Active - PKS Compliance Migration Phase  
+**Total Phases**: 19 phases (14 sub-phases in Phase 19)  
+**Completed Phases**: 14 (Phases 1-14, 16-18)  
+**Needs PKS Update**: 4 tasks (8.2.2, 9.1.1, 15.1.1-15.1.2, 15.2.1)  
+**In Progress**: Phase 19 (PKS Compliance Migration)  
+**Dependencies**: requirements.md v4.0.0, design.md v4.0.0  
+**Compliance**: PKS 5.2.1, 9.2.1, 4.2, 5.4.3, 10.1, 10.2, 11.1, 12.1, PSPM 2022-2026
+
+---
+
+## Current Implementation Gap Analysis (25 December 2025)
+
+### Files Verified to Still Exist (Require Deletion per PKS 5.2.1)
+
+| File | Status | Action Required |
+|------|--------|-----------------|
+| `app/Livewire/GuestLoanApplication.php` | ⚠️ EXISTS | DELETE |
+| `app/Livewire/Staff/ClaimSubmissions.php` | ⚠️ EXISTS | DELETE |
+| `resources/views/livewire/staff/claim-submissions.blade.php` | ⚠️ EXISTS | DELETE |
+| `tests/Feature/GuestLoanApplicationWorkflowTest.php` | ⚠️ EXISTS | DELETE |
+| `tests/Feature/Livewire/GuestLoanApplicationTest.php` | ⚠️ EXISTS | DELETE |
+| `tests/Feature/Performance/LivewireOptimizationTest.php` | ⚠️ EXISTS | UPDATE (remove guest refs) |
+| `tests/Feature/LoanAuthenticatedFormTest.php` | ⚠️ EXISTS | UPDATE (remove guest refs) |
+| `routes/web.php` (claim-submissions route) | ⚠️ EXISTS | REMOVE route |
+
+### Services Verified Missing (Require Creation)
+
+| Service | Status | PKS Reference |
+|---------|--------|---------------|
+| `app/Services/DlpFilteringService.php` | ❌ MISSING | PKS 9.2.1 |
+| `app/Services/PasswordPolicyService.php` | ❌ MISSING | PKS 5.4.3 |
+| `app/Services/AccountLockoutService.php` | ❌ MISSING | PKS 5.4.3 |
+| `app/Services/IncidentNotificationService.php` | ❌ MISSING | PKS 10.1 |
+| `app/Services/BcpNotificationService.php` | ❌ MISSING | PKS 10.2 |
+| `app/Services/ThirdPartyAccessService.php` | ❌ MISSING | PKS 11.1 |
+| `app/Services/TrainingReminderService.php` | ❌ MISSING | PKS 12.1 |
+
+### Services Verified Existing (Require Fixes)
+
+| Service | Status | Issue |
+|---------|--------|-------|
+| `app/Services/HrmisIntegrationService.php` | ⚠️ HAS ERRORS | 30+ Larastan type errors |
+
+### Priority Implementation Order
+
+1. **P0 - Critical (PKS 5.2.1)**: Delete guest files, remove guest routes
+2. **P1 - High (PKS 9.2.1)**: Create DLP Filtering Service
+3. **P2 - High (PKS 5.4.3)**: Create Password Policy Service
+4. **P3 - Medium (PKS 10.1)**: Create Incident Response components
+5. **P4 - Medium (PKS 10.2)**: Create BCP/DRP monitoring
+6. **P5 - Low (PKS 11.1, 12.1)**: Third-party access, training compliance
+
+---
+
+## Summary of PKS Compliance Changes Required (Verified 25 December 2025)
+
+### Files to DELETE (Guest Mode Elimination - PKS 5.2.1) - VERIFIED EXISTING
+
+1. `app/Livewire/GuestLoanApplication.php` ✓ EXISTS
+2. `app/Livewire/Staff/ClaimSubmissions.php` ✓ EXISTS
+3. `resources/views/livewire/staff/claim-submissions.blade.php` ✓ EXISTS
+4. `tests/Feature/GuestLoanApplicationWorkflowTest.php` ✓ EXISTS
+5. `tests/Feature/Livewire/GuestLoanApplicationTest.php` ✓ EXISTS
+6. `tests/Feature/Livewire/GuestLoanApplicationEnhancementTest.php` (check if exists)
+7. `tests/Unit/Services/GuestSubmissionClaimServiceTest.php` (check if exists)
+8. `tests/Feature/AccountLinkingServiceTest.php` (check if exists)
+
+### Files to UPDATE (Remove Guest Logic) - VERIFIED EXISTING
+
+1. `routes/web.php` - Remove `/claim-submissions` route (line ~192)
+2. `tests/Feature/Performance/LivewireOptimizationTest.php` - Remove GuestLoanApplication imports (30+ references)
+3. `tests/Feature/LoanAuthenticatedFormTest.php` - Remove guest test cases
+4. `tests/Feature/PerformanceIntegrationTest.php` - Remove GuestLoanApplication references
+5. `tests/Feature/Livewire/GuestLoanResponsibleOfficerTest.php` - DELETE or convert
+
+### Services to CREATE (PKS Compliance)
+
+1. `app/Services/DlpFilteringService.php` - PKS 9.2.1 (PII detection, cloud AI filtering)
+2. `app/Services/PasswordPolicyService.php` - PKS 5.4.3 (8 chars, complexity)
+3. `app/Services/AccountLockoutService.php` - PKS 5.4.3 (3 attempts, 30 min lockout)
+4. `app/Services/IncidentNotificationService.php` - PKS 10.1 (CSIRT alerts)
+5. `app/Services/BcpNotificationService.php` - PKS 10.2 (availability alerts)
+6. `app/Services/ThirdPartyAccessService.php` - PKS 11.1 (vendor access control)
+7. `app/Services/TrainingReminderService.php` - PKS 12.1 (training notifications)
+
+### Services to FIX (Larastan Errors)
+
+1. `app/Services/HrmisIntegrationService.php` - 30+ type errors (property types, return types, mixed access)

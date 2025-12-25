@@ -1,10 +1,11 @@
-# ICTServe Frontend Comprehensive v3.6.1 - Design Document
+# ICTServe Frontend Comprehensive v4.0 - Design Document
 
 **Sistem ICTServe**  
-**Versi:** 3.6.1 (SemVer)  
-**Tarikh Kemaskini:** 17 Disember 2025  
-**Status:** Aktif - Updated with D18 Cloud Hybrid AI Architecture  
+**Versi:** 4.0.0 (SemVer)  
+**Tarikh Kemaskini:** 24 Disember 2025  
+**Status:** Aktif - PKS Compliance Migration with SSO Mandatory Architecture  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Standard Rujukan:** PKS 5.2.1, 9.2.1, 4.2, 5.4.3, PSPM 2022-2026
 
 ---
 
@@ -12,32 +13,46 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Version** | 3.6.1-r1 |
-| **Last Updated** | 17 December 2025 |
-| **Status** | Active - Updated with D18 Cloud Hybrid AI Architecture and technology stack v3.6.1 |
+| **Version** | 4.0.0 |
+| **Last Updated** | 24 December 2025 |
+| **Status** | Active - PKS Compliance Migration with SSO Mandatory Architecture |
 | **Classification** | Restricted - Internal BPM MOTAC |
-| **Dependencies** | requirements.md v3.6.1-r1 |
+| **Dependencies** | requirements.md v4.0.0 |
 | **ISO Document Reference** | PK.(S).MOTAC.07.(L1) - ICTServe Portal |
-| **Source Documents** | D00-D18 v3.6.1, FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md |
+| **Source Documents** | D00-D18 v4.0, KRISA D01-D10, D17 v4.0, FRONTEND-DEVELOPMENT-v3-6-0.md |
+| **PKS References** | Seksyen 5.2.1 (Akauntabiliti), 9.2.1 (DLP), 4.2 (Kedaulatan Data), 5.4.3 (Kata Laluan) |
+
+> **PENTING - PKS 5.2.1 COMPLIANCE**: Sistem ini **tidak lagi menyokong akses tetamu (Guest Mode)**. Semua pengguna mesti melalui **SSO Authentication** menggunakan LDAP/Active Directory MOTAC.
 
 ---
 
 ## Overview
 
-This design document outlines the comprehensive frontend architecture for ICTServe v3.6.1, consolidating all user interface components across the True Hybrid Architecture. The design encompasses guest forms, authenticated staff portal, Filament admin panel, and **Cloud Hybrid AI interfaces** with unified component library, accessibility compliance, performance optimization, and cross-module integration.
+This design document outlines the comprehensive frontend architecture for ICTServe v4.0, consolidating all user interface components across the **SSO Mandatory Architecture** (formerly True Hybrid Architecture). The design encompasses Walk-in/Kiosk Mode with SSO, authenticated staff portal, Filament admin panel, and **Cloud Hybrid AI interfaces with DLP filtering** with unified component library, accessibility compliance, performance optimization, and cross-module integration.
+
+**CRITICAL PKS 5.2.1 COMPLIANCE**: Guest Mode has been **eliminated**. All users must authenticate via SSO (LDAP/Active Directory) to ensure full accountability and non-repudiation.
 
 **Consolidated Design Scope:**
 
-- **Guest Forms**: Public-facing helpdesk and asset loan submission interfaces
+- **Walk-in/Kiosk Mode with SSO**: Replaces deprecated Guest Mode - requires SSO authentication for helpdesk and asset loan submission
 - **Authenticated Portal**: Staff dashboard, submission management, profile, and approval workflows
 - **Filament Admin Panel**: Administrative interface with RBAC, reporting, and system management
-- **Cloud Hybrid AI Interface**: AI chat with model routing (Ollama + AWS Bedrock) per D18 v1.0.1
-- **FAQ Bot Widget**: Floating AI assistant accessible on all pages
-- **Unified Component Library**: Standardized components across all four layers
+- **Cloud Hybrid AI Interface with DLP**: AI chat with model routing (Ollama + AWS Bedrock) with DLP filtering per PKS 9.2.1
+- **FAQ Bot Widget**: Floating AI assistant accessible on all pages (authenticated users only)
+- **Unified Component Library**: Standardized components across all layers
 - **Real-Time Features**: WebSocket integration for live updates, notifications, and AI streaming
 - **Cross-Module Integration**: Deep integration between helpdesk, asset loan, and AI modules
+- **HRMIS Auto-Provisioning**: Automatic user provisioning from HR system
 
-The design integrates Figma MCP workflows, MyDS Design System compliance, Bahasa Melayu exclusive interface, theme switching capabilities, four-role RBAC, Cloud Hybrid AI Architecture (D18), and comprehensive accessibility standards while maintaining optimal performance.
+**Key v4.0 Design Principles (PKS Compliance):**
+
+- **SSO Mandatory**: All access requires LDAP/Active Directory authentication (PKS 5.2.1)
+- **user_id Mandatory FK**: All transactional tables require user_id foreign key for audit trail
+- **DLP Filtering**: Data Loss Prevention for cloud AI communications (PKS 9.2.1)
+- **Intranet-Only**: System deployed exclusively in MOTAC Data Center (PKS 4.2)
+- **Dual Audit System**: owen-it (compliance) + spatie (operational) with 7-year retention
+
+The design integrates Figma MCP workflows, MyDS Design System compliance, Bahasa Melayu exclusive interface, theme switching capabilities, four-role RBAC, Cloud Hybrid AI Architecture with DLP (D18 v4.0), and comprehensive accessibility standards while maintaining optimal performance.
 
 ## Architecture
 
@@ -518,6 +533,66 @@ class FigmaDesignContext
 *For any* portal layout component, the system should implement proper WCAG 2.2 AA landmark structure with role-based navigation, responsive design, and government compliance features including MOTAC branding and PDPA data rights management
 **Validates: Requirements 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7, 19.8**
 
+### Property 27: SSO Mandatory Authentication (PKS 5.2.1)
+
+*For any* system access attempt, the user must be authenticated via SSO (LDAP/Active Directory) before accessing any feature, and all user activities must be linked to authenticated user_id for audit trail
+**Validates: Requirements 22.1, 22.2, 22.3, 22.4, 22.5**
+
+### Property 28: Walk-in/Kiosk Mode SSO Compliance
+
+*For any* walk-in/kiosk terminal access, the system should require SSO authentication, pre-populate user information from LDAP, implement 5-minute inactivity timeout, and provide prominent logout functionality
+**Validates: Requirements 23.1, 23.2, 23.3, 23.4, 23.5**
+
+### Property 29: HRMIS Auto-Provisioning Synchronization
+
+*For any* user account operation, the system should synchronize with HRMIS for automatic provisioning (new employees) and deactivation (terminated employees) within 24 hours, eliminating manual registration
+**Validates: Requirements 24.1, 24.2, 24.3, 24.4, 24.5**
+
+### Property 30: DLP Filtering for Cloud AI (PKS 9.2.1)
+
+*For any* data sent to AWS Bedrock cloud AI service, the system should apply DLP filtering to detect and redact PII, route sensitive queries to local Ollama, and log all cloud AI requests with data classification
+**Validates: Requirements 25.1, 25.2, 25.3, 25.4, 25.5**
+
+### Property 31: Intranet-Only Deployment (PKS 4.2)
+
+*For any* network access attempt, the system should reject external network connections, store all data within MOTAC Data Center, and implement network segmentation restricting access to MOTAC IP ranges
+**Validates: Requirements 26.1, 26.2, 26.3, 26.4, 26.5**
+
+### Property 32: Password Policy Compliance (PKS 5.4.3)
+
+*For any* password operation, the system should enforce minimum 8-character length, 90-day expiry with 14-day notification, 3-attempt lockout for 30 minutes, and prevent reuse of last 12 passwords
+**Validates: Requirements 27.1, 27.2, 27.3, 27.4, 27.5**
+
+### Property 33: Dual Audit System with 7-Year Retention
+
+*For any* data operation, the system should log using dual audit system (owen-it + spatie), retain logs for 7 years, include user_id/IP/timestamp in all records, and provide search/export functionality
+**Validates: Requirements 28.1, 28.2, 28.3, 28.4, 28.5**
+
+### Property 34: Incident Response Management (PKS 10.1)
+
+*For any* security incident report, the system should automatically notify CSIRT team within 5 minutes, classify severity (Tinggi/Sederhana/Rendah), track lifecycle through all stages, and generate reports for NACSA/MyCERT
+**Validates: Requirements 29.1, 29.2, 29.3, 29.4, 29.5, 29.6**
+
+### Property 35: Business Continuity Monitoring (PKS 10.2)
+
+*For any* system availability drop below 99.5%, the system should trigger BCP notification, display RTO/RPO metrics on dashboard, monitor backup status, and log all BCP/DRP activities
+**Validates: Requirements 30.1, 30.2, 30.3, 30.4, 30.5, 30.6**
+
+### Property 36: Third Party Access Control (PKS 11.1)
+
+*For any* third-party user access, the system should require NDA acknowledgment, enforce time-limited access with automatic expiration, log enhanced audit trail, and apply least privilege principle
+**Validates: Requirements 31.1, 31.2, 31.3, 31.4, 31.5, 31.6**
+
+### Property 37: Security Training Compliance (PKS 12.1)
+
+*For any* user account, the system should track security training completion, send reminder notifications before deadline, restrict sensitive features for non-compliant users, and sync with HRMIS training records
+**Validates: Requirements 32.1, 32.2, 32.3, 32.4, 32.5, 32.6**
+
+### Property 38: PSPM Strategic Alignment (Teras 1-4)
+
+*For any* service workflow, the system should implement end-to-end digital processes (Teras 1), provide analytics dashboard (Teras 2), support MyGovCloud infrastructure (Teras 3), and include contextual help in BM (Teras 4)
+**Validates: Requirements 33.1, 33.2, 33.3, 33.4, 33.5, 33.6**
+
 *For any* grade selection dropdown, the component should include all government grades (1-56), JUSA grades (A, B, C), and Turus grades (I, II, III) organized by optgroup for easy navigation
 **Validates: Requirements 20.3**
 
@@ -583,12 +658,12 @@ Based on FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md Section 9:
 </div>
 ```
 
-### Service Selection Modal Design
+### Service Selection Modal Design (PKS 5.2.1 Compliant - SSO Only)
 
-Based on FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md Section 10:
+Based on PKS 5.2.1 compliance requirements - Guest Mode eliminated:
 
 ```blade
-{{-- True Hybrid Architecture Modal --}}
+{{-- SSO Mandatory Architecture Modal (PKS 5.2.1) --}}
 <div x-data="{ showModal: false }"
      @keydown.escape.window="showModal = false">
     
@@ -614,33 +689,41 @@ Based on FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md Section 10:
                         aria-label="Tutup modal">×</button>
             </header>
             
-            {{-- Content: True Hybrid Options --}}
+            {{-- Content: SSO Mandatory (PKS 5.2.1) --}}
             <div class="p-6">
                 <h3 class="text-gray-900 font-medium">
-                    Adakah anda sudah log masuk?
+                    Log Masuk Diperlukan
                 </h3>
                 
-                {{-- Info Box --}}
-                <div class="mt-4 p-4 bg-primary-50 border border-primary-200 rounded-m">
-                    <h4 class="font-semibold text-primary-800">Maklumat Penting</h4>
-                    <ul class="mt-2 text-sm text-primary-700 space-y-1">
-                        <li>• Pengguna tetamu boleh membuat permohonan tanpa log masuk</li>
-                        <li>• Pengguna berdaftar mendapat akses kepada dashboard</li>
-                        <li>• Nombor rujukan dihantar melalui emel</li>
+                {{-- PKS Compliance Info Box --}}
+                <div class="mt-4 p-4 bg-warning-50 border border-warning-200 rounded-m">
+                    <h4 class="font-semibold text-warning-800">
+                        <x-heroicon-o-shield-check class="w-5 h-5 inline" />
+                        Notis Keselamatan (PKS 5.2.1)
+                    </h4>
+                    <ul class="mt-2 text-sm text-warning-700 space-y-1">
+                        <li>• Semua pengguna mesti log masuk menggunakan akaun MOTAC</li>
+                        <li>• Akses tetamu tidak lagi disokong untuk tujuan akauntabiliti</li>
+                        <li>• Maklumat anda akan diisi secara automatik dari sistem HR</li>
                     </ul>
                 </div>
                 
-                {{-- Action Buttons --}}
-                <div class="mt-6 flex gap-3">
-                    <a href="/helpdesk/create" 
-                       class="flex-1 btn-secondary min-h-11">
-                        Tidak (Tetamu)
-                    </a>
+                {{-- Single Action Button - SSO Login --}}
+                <div class="mt-6">
                     <a href="/login?redirect=/helpdesk/create" 
-                       class="flex-1 btn-primary min-h-11">
-                        Ya (Log Masuk)
+                       class="w-full btn-primary min-h-11 flex items-center justify-center gap-2">
+                        <x-heroicon-o-finger-print class="w-5 h-5" />
+                        Log Masuk dengan SSO MOTAC
                     </a>
                 </div>
+                
+                {{-- Walk-in/Kiosk Mode Link --}}
+                <p class="mt-4 text-sm text-gray-600 text-center">
+                    Pengguna kiosk? 
+                    <a href="/kiosk/login" class="text-primary-600 hover:underline">
+                        Gunakan mod kiosk
+                    </a>
+                </p>
             </div>
         </div>
     </div>
@@ -1036,10 +1119,73 @@ class PerformanceTest extends TestCase
 
 ---
 
-**Document Version**: 3.6.0-r3  
-**Last Updated**: 2025-12-14  
-**Author**: Frontend Engineering Team  
-**Status**: Ready for Implementation Phase  
-**Dependencies**: requirements.md v3.6.0-r6  
-**Source Documents**: FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md  
-**Compliance**: D00-D17 v3.6.0, MyDS Design System v2025.2, WCAG 2.2 AA
+## PKS Compliance Architecture (v4.0.0)
+
+### SSO Mandatory Architecture (PKS 5.2.1)
+
+```mermaid
+graph TB
+    subgraph "SSO Mandatory Architecture (PKS 5.2.1)"
+        A[User Access Request] --> B{SSO Authentication}
+        B -->|Authenticated| C[LDAP/Active Directory]
+        B -->|Not Authenticated| D[Redirect to SSO Login]
+        C --> E[User Profile from HRMIS]
+        E --> F[System Access Granted]
+        F --> G[user_id Mandatory FK]
+        G --> H[Audit Trail Logging]
+    end
+    
+    subgraph "Walk-in/Kiosk Mode"
+        I[Kiosk Terminal] --> J[SSO Login Required]
+        J --> K[5-min Inactivity Timeout]
+        K --> L[Auto Logout]
+    end
+    
+    subgraph "Eliminated Features"
+        M[Guest Mode] -->|REMOVED| N[PKS 5.2.1 Non-Compliant]
+        O[Manual Registration] -->|REPLACED| P[HRMIS Auto-Provisioning]
+    end
+```
+
+### DLP Filtering for Cloud AI (PKS 9.2.1)
+
+```mermaid
+graph LR
+    subgraph "DLP Filtering Pipeline"
+        A[User Query] --> B[DLP Scanner]
+        B --> C{PII Detected?}
+        C -->|Yes| D[Redact PII]
+        C -->|No| E[Pass Through]
+        D --> F[Route to Ollama]
+        E --> G[Route to Bedrock]
+        F --> H[Local Response]
+        G --> I[Cloud Response]
+        H --> J[Audit Log]
+        I --> J
+    end
+```
+
+### Dual Audit System Architecture
+
+```mermaid
+graph TB
+    subgraph "Dual Audit System"
+        A[User Action] --> B[owen-it/laravel-auditing]
+        A --> C[spatie/laravel-activitylog]
+        B --> D[Compliance Audit Trail]
+        C --> E[Operational Activity Log]
+        D --> F[7-Year Retention]
+        E --> F
+        F --> G[Search & Export]
+    end
+```
+
+---
+
+**Document Version**: 4.0.0  
+**Last Updated**: 24 December 2025  
+**Author**: BPM MOTAC Development Team  
+**Status**: Active - PKS Compliance Migration Phase  
+**Dependencies**: requirements.md v4.0.0  
+**Source Documents**: D00-D18 v4.0, KRISA D01-D10, D17 v4.0  
+**Compliance**: PKS 5.2.1, 9.2.1, 4.2, 5.4.3, PSPM 2022-2026, MyDS Design System v2025.2, WCAG 2.2 AA

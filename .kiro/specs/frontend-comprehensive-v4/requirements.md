@@ -1,11 +1,11 @@
-# ICTServe Frontend Comprehensive v3.6.1 - Requirements Document
+# ICTServe Frontend Comprehensive v4.0 - Requirements Document
 
 **Sistem ICTServe**  
-**Versi:** 3.6.1 (SemVer)  
-**Tarikh Kemaskini:** 17 Disember 2025  
-**Status:** Aktif  
+**Versi:** 4.0.0 (SemVer)  
+**Tarikh Kemaskini:** 24 Disember 2025  
+**Status:** Aktif - PKS Compliance Migration  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, ISO 9241-210/110/11, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, MyDS Design System v2025.2
+**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, ISO 9241-210/110/11, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, MyDS Design System v2025.2, **Polisi Keselamatan Siber (PKS) MOTAC**, **PSPM 2022-2026**
 
 ---
 
@@ -13,16 +13,19 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Version** | 3.6.1-r1 |
-| **Last Updated** | 17 December 2025 |
-| **Status** | Active - Updated with D18 Cloud Hybrid AI Architecture and technology stack v3.6.1 |
+| **Version** | 4.0.0 |
+| **Last Updated** | 24 December 2025 |
+| **Status** | Active - PKS Compliance Migration with SSO Mandatory Architecture |
 | **Classification** | Restricted - Internal BPM MOTAC |
-| **Compliance** | ISO/IEC/IEEE 15288, 12207, ISO 9241-210/110/11, WCAG 2.2 AA, MyGOV Digital Standards v2.1.0 |
+| **Compliance** | ISO/IEC/IEEE 15288, 12207, ISO 9241-210/110/11, WCAG 2.2 AA, MyGOV Digital Standards v2.1.0, **PKS 5.2.1, 9.2.1, 4.2, 5.4.3**, **PSPM MyGovCloud** |
 | **Language** | Bahasa Melayu (primary), English (technical) |
-| **Source Documents** | D00-D18 v3.6.1, FRONTEND-DEVELOPMENT-v3-6-0.md, FRONTPAGE_DESIGN_ANALYSIS_v3.6.0.md |
+| **Source Documents** | D00-D18 v4.0, KRISA D01-D10, D15, D17, D17_ADMIN v4.0 |
 | **ISO Document Reference** | PK.(S).MOTAC.07.(L1) - ICTServe Portal |
+| **PKS References** | Seksyen 5.2.1 (Akauntabiliti - ms 150), 9.2.1 (Pemindahan Data - ms 588-603), 4.2 (Kedaulatan Data - ms 1147-1148), 5.4.3 (Polisi Kata Laluan - ms 596-605) |
 
 > **Notis Penggunaan Dalaman**: Ini adalah untuk kegunaan warga kerja MOTAC sahaja dan tidak dibuka kepada orang awam (internal use only).
+
+> **PENTING - PKS 5.2.1 COMPLIANCE**: Sistem ini **tidak lagi menyokong akses tetamu (Guest Mode)**. Semua pengguna mesti melalui **SSO Authentication** menggunakan LDAP/Active Directory MOTAC untuk memastikan akauntabiliti penuh.
 
 ---
 
@@ -30,60 +33,93 @@
 
 | Version | Date | Changes | Author |
 |---------|------|---------|--------|
+| 4.0.0 | 24 December 2025 | **PKS Compliance Migration**: Penghapusan sepenuhnya akses tetamu, SSO mandatori untuk semua pengguna (PKS 5.2.1), HRMIS auto-provisioning menggantikan manual registration, Walk-in/Kiosk Mode dengan SSO, DLP filtering untuk Cloud AI (PKS 9.2.1), Intranet-only deployment (PKS 4.2), Password policy compliance (PKS 5.4.3), user_id sebagai mandatory FK, Dual Audit System dengan 7-year retention. Technology stack v4.0: Laravel 12.43.1, PHP 8.4.1, Livewire 3.7.3, Filament 4.3.1. Cross-reference KRISA D01-D10, D17 v4.0. | BPM Development Team |
 | 3.6.1-r1 | 17 December 2025 | **D18 AI Chatbot Integration**: Added Requirement 16 (Cloud Hybrid AI Chat Interface), Requirement 17 (FAQ Bot Widget), Requirement 18 (AI Admin Management Interface). Updated technology stack to v3.6.1 (Laravel 12.42.0, Livewire 3.7.1, Laravel Reverb 1.6.3, etc.). Added AI-related glossary terms. Cross-reference D18 v1.0.1. | BPM Development Team |
 | 3.6.0-r6 | 14 December 2025 | Updated with FRONTPAGE_DESIGN_ANALYSIS_v3.6.0 and FRONTEND-DEVELOPMENT-v3-6-0 findings | BPM Development Team |
 
 ---
 
-## Related Document References (D00-D18)
+## Related Document References (D00-D18 + KRISA v4.0)
 
-- **[D00_SYSTEM_OVERVIEW.md]** - System Overview (v3.6.1) - True Hybrid Architecture + Cloud Hybrid AI
-- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Software Requirements Specification
-- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Software Design Document (v3.6.1)
-- **[D09_DATABASE_DOCUMENTATION.md]** - Database Documentation (Dual Audit System)
+- **[D00_SYSTEM_OVERVIEW.md]** - System Overview (v4.0) - SSO Mandatory Architecture + Cloud Hybrid AI
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Software Requirements Specification (v4.0)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Software Design Document (v4.0) - PKS Compliance
+- **[D09_DATABASE_DOCUMENTATION.md]** - Database Documentation (v4.0) - user_id mandatory FK, Dual Audit System
+- **[D10_SOURCE_CODE_DOCUMENTATION.md]** - Source Code Documentation (v4.0) - PKS Coding Standards
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Technical Design Documentation
-- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX Design Guide (v3.6.1) - Design principles, layouts, components
-- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend Framework (v3.6.1) - Technical implementation
-- **[D14_UI_UX_STYLE_GUIDE.md]** - Style Guide (v3.6.1) - Visual standards, MyDS alignment
-- **[D15_LANGUAGE_MS_EN.md]** - Language Guide (Bahasa Melayu exclusive, v3.6.0+)
-- **[D16_BROADCASTING_SETUP.md]** - Laravel Reverb WebSocket Configuration (v3.6.1)
+- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX Design Guide (v4.0) - SSO-only access patterns
+- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend Framework (v4.0) - Technical implementation
+- **[D14_UI_UX_STYLE_GUIDE.md]** - Style Guide (v4.0) - Visual standards, MyDS alignment
+- **[D15_LANGUAGE_MS_EN.md]** - Language Guide (Bahasa Melayu exclusive, v4.0)
+- **[D16_BROADCASTING_SETUP.md]** - Laravel Reverb WebSocket Configuration (v4.0)
 - **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue Management for Notifications (Laravel Queue + Redis)
-- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.1) - Ollama + AWS Bedrock Integration
+- **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v4.0) - Ollama + AWS Bedrock with DLP
+- **[KRISA D01-D10, D15, D17, D17_ADMIN]** - KRISA ICTServe Documentation v4.0 - PKS Compliance
+
+### PKS Reference Documents
+
+- **Polisi Keselamatan Siber (PKS) MOTAC**:
+  - Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation) - halaman 150
+  - Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan) - halaman 588-603
+  - Seksyen 4.2 (Kedaulatan data dan bidang kuasa) - halaman 1147-1148
+  - Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan) - halaman 596-605
+- **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - MyGovCloud prioritization
+- **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation
 
 ---
 
 ## Introduction
 
-This specification defines the comprehensive requirements for the complete frontend system of ICTServe v3.6.0, consolidating all user interface components across the **True Hybrid Architecture**. This includes guest forms, authenticated staff portal, and Filament admin panel with unified design system, accessibility compliance, and performance optimization.
+This specification defines the comprehensive requirements for the complete frontend system of ICTServe v4.0, consolidating all user interface components across the **SSO Mandatory Architecture** (formerly True Hybrid Architecture). This includes authenticated staff portal, Walk-in/Kiosk Mode with SSO, and Filament admin panel with unified design system, accessibility compliance, and performance optimization.
+
+**CRITICAL PKS 5.2.1 COMPLIANCE**: Guest Mode has been **eliminated**. All users must authenticate via SSO (LDAP/Active Directory) to ensure full accountability and non-repudiation as required by PKS 5.2.1.
 
 **Consolidated Scope:**
 
-- **Guest Forms**: Public-facing helpdesk and asset loan submission forms
+- **Walk-in/Kiosk Mode with SSO**: Replaces deprecated Guest Mode - requires SSO authentication for helpdesk and asset loan submission
 - **Authenticated Portal**: Staff dashboard, submission history, profile management, and approval interface
 - **Filament Admin Panel**: Administrative interface with RBAC, reporting, and system management
-- **Unified Component Library**: Standardized components across all three layers
+- **Unified Component Library**: Standardized components across all layers
 - **Cross-Module Integration**: Deep integration between helpdesk and asset loan modules
+- **HRMIS Auto-Provisioning**: Automatic user provisioning from HR system
 
-**Key v3.6.0 Features:**
+**Key v4.0 Features (PKS Compliance Migration):**
 
+- **SSO Mandatory Authentication**: All users must authenticate via LDAP/Active Directory MOTAC (PKS 5.2.1)
+- **Walk-in/Kiosk Mode with SSO**: Replaces Guest Mode - still requires SSO authentication
+- **HRMIS Auto-Provisioning**: Automatic account creation from HR system, replaces manual @motac.gov.my registration
+- **user_id Mandatory FK**: All activities linked to authenticated users for audit trail
+- **DLP Filtering for Cloud AI**: Data Loss Prevention for AWS Bedrock integration (PKS 9.2.1)
+- **Intranet-Only Deployment**: System hosted in MOTAC Data Center only (PKS 4.2)
+- **Password Policy Compliance**: 8 chars, 90-day expiry, 3 attempts (PKS 5.4.3)
+- **Dual Audit System**: Owen-it (compliance) + Spatie (operational) with 7-year retention
 - **Bahasa Melayu Exclusive UI**: Complete removal of language switcher, BM-only interface per government directive
 - **Theme Switcher**: Light/dark mode toggle with light as immutable default, localStorage persistence, FOUT prevention
 - **MyDS Design System Compliance**: Full alignment with Malaysia Government Design System v2025.2
-- **Figma MCP Integration**: Design-to-code workflow using Figma Model Context Protocol
-- **Enhanced Performance**: Core Web Vitals optimization, Livewire 3.7 patterns, Volt 1.10 components
+- **Technology Stack v4.0**: Laravel 12.43.1, PHP 8.4.1, Livewire 3.7.3, Filament 4.3.1, Tailwind CSS 4.1.18
 - **Four-Role RBAC**: Staff, Approver (Grade 41+), Admin, Superuser with comprehensive authorization
 - **Real-Time Features**: Laravel Reverb WebSocket integration for live updates and notifications
 
 ## Glossary
 
 - **ICTServe**: ICT Service Management System for MOTAC (Ministry of Tourism, Arts and Culture Malaysia)
-- **True_Hybrid_Architecture**: Three-tier system supporting guest forms, authenticated staff portal, and Filament admin (ref: D00 §1, D12 §5.1)
-- **Laravel_12**: Laravel 12.42.0 framework with PHP 8.2.12, modern syntax, and enhanced performance (ref: D00 §4.1 v3.6.1)
-- **Livewire_3**: Livewire 3.7.1 server-driven UI framework with reactive components (ref: D12 §2, D13 §2.1)
+- **SSO_Mandatory_Architecture**: System architecture requiring SSO authentication for ALL users via LDAP/Active Directory MOTAC (PKS 5.2.1 compliant) - replaces True Hybrid Architecture
+- **Walk_in_Kiosk_Mode**: Access mode for walk-in users at kiosk terminals - still requires SSO authentication (replaces deprecated Guest Mode)
+- **HRMIS_Auto_Provisioning**: Automatic user account creation synchronized with HR Management Information System for employment status verification
+- **PKS_5_2_1**: Polisi Keselamatan Siber MOTAC Section 5.2.1 - Accountability and Non-repudiation principle requiring all activities to be traceable to authenticated users
+- **PKS_9_2_1**: Polisi Keselamatan Siber MOTAC Section 9.2.1 - Data transfer procedures and confidentiality protection requiring DLP filtering for cloud services
+- **PKS_4_2**: Polisi Keselamatan Siber MOTAC Section 4.2 - Data sovereignty and jurisdiction requiring intranet-only deployment
+- **PKS_5_4_3**: Polisi Keselamatan Siber MOTAC Section 5.4.3 - Password policy (8 chars, 90-day expiry, 3 attempts)
+- **PSPM**: Pelan Strategik Pendigitalan MOTAC 2022-2026 - Strategic Digitalization Plan prioritizing MyGovCloud
+- **Mandatory_FK_user_id**: Database design pattern where user_id foreign key is required (NOT NULL) for all transactional tables to ensure accountability
+- **Dual_Audit_System**: Combined audit approach using owen-it/laravel-auditing (compliance) and spatie/laravel-activitylog (operational) with 7-year retention
+- **DLP_Filtering**: Data Loss Prevention filtering applied to data before sending to cloud AI services (AWS Bedrock)
+- **Laravel_12**: Laravel 12.43.1 framework with PHP 8.4.1, modern syntax, and enhanced performance (ref: KRISA D10 v4.0)
+- **Livewire_3**: Livewire 3.7.3 server-driven UI framework with reactive components (ref: D12 §2, D13 §2.1)
 - **Volt_1**: Livewire Volt 1.10.1 single-file component API for simplified development (ref: D13 §2.1)
-- **Tailwind_CSS_4**: Tailwind CSS 4.1.17 utility-first CSS framework with @theme configuration (ref: D13 §2.2, D14 §2)
+- **Tailwind_CSS_4**: Tailwind CSS 4.1.18 utility-first CSS framework with @theme configuration (ref: D13 §2.2, D14 §2)
 - **Alpine_js_3**: Alpine.js 3.x lightweight JavaScript framework included with Livewire (ref: D12 §2)
-- **Filament_4**: Filament 4.1.10 Server-Driven UI (SDUI) admin panel framework (ref: D00 §4.1)
+- **Filament_4**: Filament 4.3.1 Server-Driven UI (SDUI) admin panel framework (ref: KRISA D10 v4.0)
 - **WCAG_2_2_AA**: Web Content Accessibility Guidelines Level AA - 4.5:1 text contrast, 3:1 UI contrast, 44×44px touch targets (ref: D12 §4, D14 §10)
 - **MyDS_Design_System**: Malaysia Government Design System v2025.2 - grid, typography, color tokens (ref: D13 §2.2-2.7, D14 §7.4)
 - **Figma_MCP**: Model Context Protocol integration for Figma enabling AI-assisted design-to-code workflows
@@ -94,8 +130,8 @@ This specification defines the comprehensive requirements for the complete front
 - **Cross_Module_Integration**: Deep integration between helpdesk and asset loan modules with shared workflows (ref: D00 §3)
 - **Four_Role_RBAC**: Staff, Approver (Grade 41+), Admin, Superuser with Spatie Permission 6.23 (ref: D00 §5.1)
 - **Laravel_Reverb**: Laravel Reverb 1.6.3 WebSocket server for real-time features (ref: D00 §4.1, D16)
-- **Cloud_Hybrid_AI**: True Hybrid AI Architecture combining Ollama (local LLM) with AWS Bedrock (cloud AI) for intelligent query routing (ref: D18 v1.0.1)
-- **FAQ_Bot**: AI-powered Q&A system accessible via guest forms and authenticated portal with model routing (ref: D18 §2.3)
+- **Cloud_Hybrid_AI**: True Hybrid AI Architecture combining Ollama (local LLM) with AWS Bedrock (cloud AI) with DLP filtering (ref: D18 v4.0, PKS 9.2.1)
+- **FAQ_Bot**: AI-powered Q&A system accessible via authenticated portal with model routing (ref: D18 §2.3)
 - **Multi_Model_Intelligence**: Claude Opus 4.5, Sonnet 4.5, Haiku 4.5, Nova Pro/Lite/Micro for task-specific AI routing (ref: D18 §4.4)
 - **Model_Routing**: Smart query classification (FAQ → Ollama, Complex → Bedrock, Hybrid → Both) for cost optimization (ref: D18 §5)
 - **Streaming_Responses**: Server-Sent Events (SSE) for responsive AI chat experience (ref: D18 §2.3 - future)
@@ -104,9 +140,9 @@ This specification defines the comprehensive requirements for the complete front
 - **Auto_Reply_Generation**: AI-generated response drafts for tickets with admin approval workflow (ref: D18 §3.2.2)
 - **Document_Analysis**: AI-powered PDF/DOCX parsing with semantic search and PII detection (ref: D18 §3.2.2)
 - **Theme_Switcher**: Light/dark mode toggle with light as immutable default, localStorage persistence, FOUT prevention (ref: D12 §6.10, D14 §6.1.2)
-- **BM_Exclusive_UI**: Bahasa Melayu exclusive interface per v3.6.0 government directive (ref: D15 v3.6.0)
+- **BM_Exclusive_UI**: Bahasa Melayu exclusive interface per v3.6.0+ government directive (ref: D15 v4.0)
 - **Filament_Panel**: Admin interface at `/admin` with four-role RBAC and comprehensive resource management
-- **Authenticated_Portal**: Internal staff portal requiring login for enhanced features beyond guest forms
+- **Authenticated_Portal**: Internal staff portal requiring SSO login for all features
 - **Staff_Dashboard**: Personalized dashboard displaying user-specific statistics, recent activity, and quick actions
 - **Approval_Interface**: Dedicated interface for Grade 41+ approvers to review and process loan applications
 - **Internal_Comments**: Staff-only comments on submissions visible only to authenticated users and admins
@@ -114,7 +150,24 @@ This specification defines the comprehensive requirements for the complete front
 - **Notification_Center**: Centralized interface for viewing and managing system notifications
 - **Export_Functionality**: User ability to export submission history and reports in CSV, PDF formats
 - **Activity_Timeline**: Chronological view of all user actions and submission status changes
-- **Guest_Submission_Claiming**: Process for authenticated users to claim their previous guest submissions via email matching
+- **LDAP_Active_Directory**: Microsoft Active Directory / LDAP authentication system used for SSO
+- **PKS_10_1**: Polisi Keselamatan Siber MOTAC Section 10.1 - Incident Response Management requiring systematic detection, reporting, and handling of security incidents via CSIRT
+- **PKS_10_2**: Polisi Keselamatan Siber MOTAC Section 10.2 - Business Continuity Plan (BCP) and Disaster Recovery Plan (DRP) requirements with RTO/RPO metrics
+- **PKS_11_1**: Polisi Keselamatan Siber MOTAC Section 11.1 - Third Party Access Management requiring NDA, time-limited access, and enhanced audit for external vendors
+- **PKS_12_1**: Polisi Keselamatan Siber MOTAC Section 12.1 - Security Awareness Training requirements for all users with annual compliance tracking
+- **CSIRT**: Cyber Security Incident Response Team MOTAC - dedicated team for incident detection, analysis, and response coordination with NACSA/MyCERT
+- **NACSA**: National Cyber Security Agency - national authority for cyber security incident reporting and coordination
+- **MyCERT**: Malaysia Computer Emergency Response Team - national CERT for incident reporting and coordination
+- **BCP**: Business Continuity Plan - documented procedures ensuring critical business functions continue during disruptions
+- **DRP**: Disaster Recovery Plan - technical procedures for recovering IT systems and data after disasters
+- **RTO**: Recovery Time Objective - maximum acceptable time to restore service after disruption
+- **RPO**: Recovery Point Objective - maximum acceptable data loss measured in time (e.g., last backup)
+- **NDA**: Non-Disclosure Agreement - legal agreement required for third-party access to protect confidential information
+- **PSPM_Teras_1**: PSPM Strategic Pillar 1 (Aplikasi) - End-to-end digital services and application modernization
+- **PSPM_Teras_2**: PSPM Strategic Pillar 2 (Data) - Data governance, integration, and analytics for decision-making
+- **PSPM_Teras_3**: PSPM Strategic Pillar 3 (Infrastruktur ICT) - Cloud-ready infrastructure with MyGovCloud prioritization
+- **PSPM_Teras_4**: PSPM Strategic Pillar 4 (Tadbir Urus & Keupayaan) - ICT governance and digital capability building
+- **MyGovCloud**: Malaysian Government Cloud infrastructure for hosting government digital services
 
 ## Requirements
 
@@ -647,7 +700,7 @@ The comprehensive frontend redesign will be considered successful when:
 **Technology Stack**: Laravel 12 | Livewire 3.7 | Volt 1.10 | Tailwind CSS 4.1 | Alpine.js 3.x | Filament 4.1  
 **Consolidates**: figma-ui-redesign, frontend-modernization, frontend-pages-redesign, navigation-redesign-v3.6, theme-switcher-fix, updated-frontend
 
-5. THE ICTServe_System SHALL implement visual regression testing with Playwright screenshots for all critical pages across light/dark themes and responsive breakpoints
+1. THE ICTServe_System SHALL implement visual regression testing with Playwright screenshots for all critical pages across light/dark themes and responsive breakpoints
 
 ---
 
@@ -822,8 +875,215 @@ officer accesses the approval interface, THE ICTServe_System SHALL display pendi
 
 ---
 
-**Document Version**: 3.6.0-r6  
-**Last Updated**: 14 December 2025  
+## PKS Compliance Requirements (v4.0.0 - KRISA D01-D10, D17 v4.0)
+
+### Requirement 22: SSO Mandatory Authentication (PKS 5.2.1)
+
+**User Story:** As a MOTAC security administrator, I want all system access to require SSO authentication via LDAP/Active Directory, so that every user action is traceable and accountable per PKS 5.2.1 Accountability and Non-repudiation principle.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL require SSO authentication via LDAP/Active Directory MOTAC for ALL users including walk-in/kiosk users (PKS 5.2.1)
+2. THE ICTServe_System SHALL eliminate Guest Mode completely - no anonymous access to any system features
+3. THE ICTServe_System SHALL enforce user_id as mandatory foreign key (NOT NULL) for all transactional tables (helpdesk_tickets, loan_applications, audit_logs)
+4. THE ICTServe_System SHALL implement session management with 30-minute timeout and automatic re-authentication prompt
+5. THE ICTServe_System SHALL log all authentication events (login, logout, failed attempts) with timestamp, IP address, and user agent for audit trail
+
+### Requirement 23: Walk-in/Kiosk Mode with SSO
+
+**User Story:** As a walk-in user at a MOTAC kiosk terminal, I want to quickly authenticate using my MOTAC credentials to submit helpdesk tickets or loan applications, so that I can access services while maintaining full accountability.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL provide Walk-in/Kiosk Mode interface optimized for shared terminal usage with SSO authentication
+2. WHEN a walk-in user accesses kiosk terminal, THE ICTServe_System SHALL display SSO login prompt before any form access
+3. THE ICTServe_System SHALL implement automatic session termination after 5 minutes of inactivity on kiosk terminals
+4. THE ICTServe_System SHALL pre-populate user information (name, email, department, grade) from LDAP/Active Directory after authentication
+5. THE ICTServe_System SHALL provide "Log Keluar" (Logout) button prominently displayed for kiosk users to end session
+
+### Requirement 24: HRMIS Auto-Provisioning
+
+**User Story:** As a MOTAC HR administrator, I want user accounts to be automatically provisioned from HRMIS, so that new employees have immediate system access and terminated employees are automatically deactivated.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL synchronize user accounts with HRMIS (HR Management Information System) for automatic provisioning
+2. WHEN a new employee is added to HRMIS, THE ICTServe_System SHALL create corresponding user account within 24 hours
+3. WHEN an employee is terminated in HRMIS, THE ICTServe_System SHALL deactivate user account within 24 hours
+4. THE ICTServe_System SHALL update user information (department, grade, position) from HRMIS on daily synchronization
+5. THE ICTServe_System SHALL eliminate manual @motac.gov.my registration - all accounts provisioned via HRMIS only
+
+### Requirement 25: DLP Filtering for Cloud AI (PKS 9.2.1)
+
+**User Story:** As a security administrator, I want Data Loss Prevention filtering applied to all data sent to cloud AI services, so that sensitive government information is protected per PKS 9.2.1 data transfer procedures.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement DLP filtering for all data sent to AWS Bedrock cloud AI service (PKS 9.2.1)
+2. THE ICTServe_System SHALL detect and redact PII (IC numbers, phone numbers, addresses) before cloud AI transmission
+3. THE ICTServe_System SHALL route sensitive queries to local Ollama LLM instead of cloud AI when PII is detected
+4. THE ICTServe_System SHALL log all cloud AI requests with data classification (public, internal, confidential) for audit
+5. THE ICTServe_System SHALL implement secure API gateway with TLS 1.3 encryption for all cloud AI communications
+
+### Requirement 26: Intranet-Only Deployment (PKS 4.2)
+
+**User Story:** As a MOTAC IT administrator, I want the system deployed exclusively on MOTAC intranet infrastructure, so that data sovereignty and jurisdiction requirements are met per PKS 4.2.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL be deployed exclusively in MOTAC Data Center on intranet infrastructure (PKS 4.2)
+2. THE ICTServe_System SHALL reject all external network access attempts with appropriate error message
+3. THE ICTServe_System SHALL store all data (database, files, logs) within MOTAC Data Center only
+4. THE ICTServe_System SHALL use local Ollama LLM for AI features requiring data sovereignty
+5. THE ICTServe_System SHALL implement network segmentation with firewall rules restricting access to MOTAC IP ranges only
+
+### Requirement 27: Password Policy Compliance (PKS 5.4.3)
+
+**User Story:** As a security administrator, I want password policies enforced per PKS 5.4.3 requirements, so that user accounts are protected with strong authentication.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL enforce minimum 8-character password length (PKS 5.4.3)
+2. THE ICTServe_System SHALL require password change every 90 days with notification 14 days before expiry
+3. THE ICTServe_System SHALL lock user account after 3 consecutive failed login attempts for 30 minutes
+4. THE ICTServe_System SHALL prevent password reuse for last 12 passwords
+5. THE ICTServe_System SHALL display password policy requirements on password change screen in Bahasa Melayu
+
+### Requirement 28: Dual Audit System with 7-Year Retention
+
+**User Story:** As a compliance officer, I want comprehensive audit logging with dual audit system, so that all user activities are traceable for 7 years per government retention requirements.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement dual audit system using owen-it/laravel-auditing (compliance) and spatie/laravel-activitylog (operational)
+2. THE ICTServe_System SHALL retain all audit logs for minimum 7 years per government compliance requirements
+3. THE ICTServe_System SHALL log all CRUD operations on transactional tables with before/after values
+4. THE ICTServe_System SHALL include user_id, IP address, user agent, and timestamp in all audit records
+5. THE ICTServe_System SHALL provide audit log search and export functionality for compliance reporting
+
+### Requirement 29: Incident Response Management (PKS 10.1)
+
+**User Story:** As a CSIRT team member, I want a comprehensive incident response interface, so that security incidents can be detected, reported, and managed efficiently per PKS 10.1 requirements.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL provide incident reporting form accessible to all authenticated users with mandatory fields (incident type, severity, description, affected systems)
+2. WHEN a security incident is reported, THE ICTServe_System SHALL automatically notify CSIRT team members via email and in-app notification within 5 minutes
+3. THE ICTServe_System SHALL implement incident classification (Tinggi/Sederhana/Rendah) based on PKS severity matrix
+4. THE ICTServe_System SHALL track incident lifecycle (Pengesanan → Pelaporan → Penilaian → Pembendungan → Pemulihan → Penutupan → Laporan)
+5. THE ICTServe_System SHALL generate incident reports with timeline, actions taken, and lessons learned for NACSA/MyCERT reporting
+6. THE ICTServe_System SHALL maintain incident history with 7-year retention for compliance audit
+
+### Requirement 30: Business Continuity and Disaster Recovery (PKS 10.2)
+
+**User Story:** As a system administrator, I want BCP/DRP monitoring and management features, so that service continuity is ensured per PKS 10.2 requirements.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL display system health dashboard with RTO (Recovery Time Objective) and RPO (Recovery Point Objective) metrics
+2. THE ICTServe_System SHALL implement automated backup status monitoring with alerts for backup failures
+3. WHEN system availability drops below 99.5%, THE ICTServe_System SHALL trigger BCP notification to designated personnel
+4. THE ICTServe_System SHALL provide DRP activation interface for authorized administrators during disaster scenarios
+5. THE ICTServe_System SHALL log all BCP/DRP related activities with timestamp and responsible personnel
+6. THE ICTServe_System SHALL display last backup timestamp and recovery test results on admin dashboard
+
+### Requirement 31: Third Party Access Management (PKS 11.1)
+
+**User Story:** As a security administrator, I want to manage third-party vendor access with proper controls, so that external access is monitored and compliant with PKS 11.1 requirements.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL require NDA (Non-Disclosure Agreement) acknowledgment before granting third-party access
+2. THE ICTServe_System SHALL implement time-limited access for third-party users with automatic expiration
+3. THE ICTServe_System SHALL log all third-party access activities with enhanced audit trail (company name, purpose, access scope)
+4. WHEN third-party contract expires, THE ICTServe_System SHALL automatically revoke access and notify administrators
+5. THE ICTServe_System SHALL provide third-party access report showing active vendors, access duration, and activities
+6. THE ICTServe_System SHALL enforce principle of least privilege for third-party accounts with role-based access restrictions
+
+### Requirement 32: Security Awareness Training Compliance (PKS 12.1)
+
+**User Story:** As a training administrator, I want to track security awareness training completion, so that all users meet PKS 12.1 training requirements.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL display security training completion status on user profile page
+2. THE ICTServe_System SHALL send reminder notifications to users with incomplete annual security training (14 days, 7 days, 1 day before deadline)
+3. THE ICTServe_System SHALL restrict access to sensitive features for users who have not completed mandatory security training
+4. THE ICTServe_System SHALL provide training completion report for administrators showing compliance percentage by department
+5. THE ICTServe_System SHALL integrate with MOTAC training system (HRMIS) to sync training completion records
+6. THE ICTServe_System SHALL display training certificate download link for completed security awareness courses
+
+### Requirement 33: PSPM Strategic Alignment (Teras Strategik 1-4)
+
+**User Story:** As a MOTAC digital transformation officer, I want the system to align with PSPM 2022-2026 strategic pillars, so that ICTServe contributes to ministry digitalization goals.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL implement end-to-end digital services per PSPM Teras 1 (Aplikasi) - no paper-based processes for helpdesk and loan applications
+2. THE ICTServe_System SHALL provide data analytics dashboard per PSPM Teras 2 (Data) - service metrics, usage patterns, and KPI tracking
+3. THE ICTServe_System SHALL utilize MyGovCloud infrastructure per PSPM Teras 3 (Infrastruktur ICT) - cloud-ready architecture with containerization support
+4. THE ICTServe_System SHALL support digital capability building per PSPM Teras 4 (Tadbir Urus & Keupayaan) - user guides, tooltips, and contextual help in Bahasa Melayu
+5. THE ICTServe_System SHALL track PSPM KPI metrics (service response time, user satisfaction, digital adoption rate) on admin dashboard
+6. THE ICTServe_System SHALL generate PSPM compliance report for quarterly ministry reporting
+
+---
+
+## Implementation Status Summary (v4.0.0)
+
+### PKS Compliance Requirements Status
+
+| Requirement | Status | Notes |
+|-------------|--------|-------|
+| Req 22: SSO Mandatory (PKS 5.2.1) | 🔴 Not Started | Guest Mode elimination, user_id mandatory FK |
+| Req 23: Walk-in/Kiosk Mode with SSO | 🔴 Not Started | Replaces deprecated Guest Mode |
+| Req 24: HRMIS Auto-Provisioning | 🔴 Not Started | Replaces manual registration |
+| Req 25: DLP Filtering (PKS 9.2.1) | 🔴 Not Started | Cloud AI data protection |
+| Req 26: Intranet-Only (PKS 4.2) | 🔴 Not Started | Data sovereignty compliance |
+| Req 27: Password Policy (PKS 5.4.3) | 🔴 Not Started | 8 chars, 90-day expiry, 3 attempts |
+| Req 28: Dual Audit System | 🟡 Partial | Existing audit, needs 7-year retention |
+| Req 29: Incident Response (PKS 10.1) | 🔴 Not Started | CSIRT incident management |
+| Req 30: BCP/DRP (PKS 10.2) | 🔴 Not Started | Business continuity monitoring |
+| Req 31: Third Party Access (PKS 11.1) | 🔴 Not Started | Vendor access management |
+| Req 32: Security Training (PKS 12.1) | 🔴 Not Started | Training compliance tracking |
+| Req 33: PSPM Strategic Alignment | 🔴 Not Started | Teras Strategik 1-4 alignment |
+
+### Completed Requirements (v3.6.0-r6)
+
+| Requirement | Status | Notes |
+|-------------|--------|-------|
+| Req 1: BM Exclusive Interface | ✅ Complete | Language switcher removed, BM-only enforced |
+| Req 2: Theme Switcher | ✅ Complete | Light/dark mode with localStorage persistence |
+| Req 4: MyDS Design System | ✅ Complete | Full token mapping implemented |
+| Req 5: Unified Component Library | ✅ Complete | All component categories created |
+| Req 6: Livewire 3.7/Volt 1.10 | ✅ Complete | OptimizedLivewireComponent trait implemented |
+| Req 7: WCAG 2.2 AA | ✅ Complete | 100% Lighthouse accessibility score |
+| Req 8: Filament Admin Panel | ✅ Complete | Four-role RBAC implemented |
+| Req 9: Authenticated Portal | ✅ Complete | Dashboard, history, profile, approvals |
+| Req 10: Real-Time Features | ✅ Complete | Laravel Reverb WebSocket integration |
+| Req 11: Cross-Module Integration | ✅ Complete | Auto-maintenance tickets, unified search |
+| Req 12: Export/Reporting | ✅ Complete | CSV, Excel, PDF with scheduling |
+| Req 13: Performance | ✅ Complete | Core Web Vitals targets met |
+| Req 14: Security/Audit | ✅ Complete | PDPA compliance, 7-year retention |
+| Req 15: Mobile Optimization | ✅ Complete | Responsive design, touch targets |
+| Req 16: Landing Page | ✅ Complete | Hybrid color scheme, MOTAC branding |
+| Req 17: FAQ Bot | ✅ Complete | Touch targets fixed (44×44px) |
+| Req 18: Service Modal | 🔴 Needs Update | Must update for SSO-only access |
+| Req 19: Status Check Page | 🟡 Partial | Missing translation keys identified |
+| Req 20: Guest Helpdesk Form | 🔴 Needs Update | Must convert to SSO-authenticated form |
+| Req 21: Translation Keys | 🟡 Partial | 6 keys missing in status.php |
+
+### Pending Items
+
+1. **PKS Compliance Migration (Req 22-28)**: Implement SSO mandatory architecture
+2. **Service Modal Update (Req 18)**: Remove guest option, SSO-only access
+3. **Guest Form Conversion (Req 20)**: Convert to Walk-in/Kiosk Mode with SSO
+4. **Translation Keys (Req 21)**: Add missing keys to `lang/ms/status.php`
+5. **Figma MCP Integration (Req 3)**: Optional design-to-code workflow setup
+
+---
+
+**Document Version**: 4.0.0  
+**Last Updated**: 24 December 2025  
 **Author**: BPM MOTAC Development Team  
-**Status**: Active - Ready for Implementation Phase  
-**Compliance**: D00-D17 v3.6.0, MyDS Design System v2025.2, WCAG 2.2 AA
+**Status**: Active - PKS Compliance Migration Phase  
+**Compliance**: D00-D18 v4.0, KRISA D01-D10, D17 v4.0, MyDS Design System v2025.2, WCAG 2.2 AA, PKS 5.2.1, 9.2.1, 4.2, 5.4.3
