@@ -160,6 +160,29 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
         "invoke_claude_sonnet",
         "invoke_claude_haiku"
       ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\XAMPP\\htdocs\\ictserve-031125"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "read_text_file",
+        "read_multiple_files",
+        "list_directory",
+        "list_directory_with_sizes",
+        "directory_tree",
+        "search_files",
+        "get_file_info",
+        "list_allowed_directories",
+        "create_directory",
+        "write_file",
+        "edit_file",
+        "move_file"
+      ]
     }
   }
 }

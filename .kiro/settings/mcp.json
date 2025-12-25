@@ -194,7 +194,8 @@
         "get_file_contents",
         "get_repository",
         "list_repositories",
-        "search_repositories"
+        "search_repositories",
+        "create_repository"
       ]
     }
   }
