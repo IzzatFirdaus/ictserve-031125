@@ -6,7 +6,6 @@ namespace Tests\Browser;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
@@ -51,8 +50,10 @@ class AccessibilityDashboardTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                 ->visit('/dashboard')
-                ->waitForText('Dashboard')
-                ->assertSee($user->name);
+                ->waitForText(__('dashboard.title')) // 'Papan Pemuka'
+                ->assertSee($user->name)
+                ->assertSee(__('dashboard.welcome')) // 'Selamat Datang'
+                ->assertSee(__('dashboard.statistics')); // 'Statistik'
 
             // Test refresh button keyboard accessibility
             $browser->keys('body', ['{tab}']) // Tab to refresh button
@@ -95,6 +96,7 @@ class AccessibilityDashboardTest extends DuskTestCase
      * - Text contrast: minimum 4.5:1
      * - UI component contrast: minimum 3:1
      * - Compliant color palette usage
+     * - Bahasa Melayu content validation
      */
     #[Test]
     public function color_contrast_meets_wcag_aa_standards(): void
@@ -104,7 +106,9 @@ class AccessibilityDashboardTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                 ->visit('/dashboard')
-                ->waitForText('Dashboard');
+                ->waitForText(__('dashboard.title')) // 'Papan Pemuka'
+                ->assertSee(__('dashboard.welcome')) // 'Selamat Datang'
+                ->assertSee(__('dashboard.statistics')); // 'Statistik'
 
             // Check primary text contrast (should be 4.5:1 minimum)
             $headingContrast = $browser->script('
@@ -154,6 +158,7 @@ class AccessibilityDashboardTest extends DuskTestCase
      * - All interactive elements are minimum 44×44px
      * - Buttons, links, and cards meet size requirements
      * - Adequate spacing between touch targets
+     * - Bahasa Melayu content validation
      */
     #[Test]
     public function touch_targets_meet_minimum_size_requirements(): void
@@ -163,7 +168,8 @@ class AccessibilityDashboardTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                 ->visit('/dashboard')
-                ->waitForText('Dashboard');
+                ->waitForText(__('dashboard.title')) // 'Papan Pemuka'
+                ->assertSee(__('dashboard.quick_actions')); // 'Tindakan Pantas'
 
             // Check refresh button size
             $refreshButtonSize = $browser->script('
@@ -227,6 +233,7 @@ class AccessibilityDashboardTest extends DuskTestCase
      * - ARIA roles on lists and regions
      * - ARIA live regions for dynamic updates
      * - Semantic HTML structure (header, main, nav)
+     * - Bahasa Melayu content validation
      */
     #[Test]
     public function aria_attributes_and_semantic_html(): void
@@ -236,7 +243,8 @@ class AccessibilityDashboardTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                 ->visit('/dashboard')
-                ->waitForText('Dashboard');
+                ->waitForText(__('dashboard.title')) // 'Papan Pemuka'
+                ->assertSee(__('dashboard.recent_activity')); // 'Aktiviti Terkini'
 
             // Check refresh button has aria-label
             $browser->assertAttribute('button[wire:click="refreshData"]', 'aria-label');
@@ -280,6 +288,7 @@ class AccessibilityDashboardTest extends DuskTestCase
      * - Descriptive link text (no "click here")
      * - Form labels associated with inputs
      * - Status messages announced via ARIA live regions
+     * - Bahasa Melayu content validation
      */
     #[Test]
     public function screen_reader_compatibility(): void
@@ -289,7 +298,8 @@ class AccessibilityDashboardTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                 ->visit('/dashboard')
-                ->waitForText('Dashboard');
+                ->waitForText(__('dashboard.title')) // 'Papan Pemuka'
+                ->assertSee(__('dashboard.overview')); // 'Gambaran Keseluruhan'
 
             // Check heading hierarchy
             $headings = $browser->script('
@@ -346,6 +356,7 @@ class AccessibilityDashboardTest extends DuskTestCase
      * - Focus order is logical
      * - Skip links are available
      * - Focus returns to appropriate element after modal close
+     * - Bahasa Melayu content validation
      */
     #[Test]
     public function focus_management_and_skip_links(): void
@@ -355,7 +366,8 @@ class AccessibilityDashboardTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                 ->visit('/dashboard')
-                ->waitForText('Dashboard');
+                ->waitForText(__('dashboard.title')) // 'Papan Pemuka'
+                ->assertSee(__('navigation.skip_to_content')); // 'Langkau ke Kandungan'
 
             // Test that focus can move through all interactive elements
             $interactiveElements = $browser->script('
@@ -394,6 +406,7 @@ class AccessibilityDashboardTest extends DuskTestCase
      * - Content reflows without horizontal scrolling
      * - Focus indicators visible at all sizes
      * - Text remains readable (no truncation issues)
+     * - Bahasa Melayu content validation
      */
     #[Test]
     public function responsive_accessibility_across_viewports(): void
@@ -411,7 +424,8 @@ class AccessibilityDashboardTest extends DuskTestCase
                 $browser->loginAs($user)
                     ->resize($viewport['width'], $viewport['height'])
                     ->visit('/dashboard')
-                    ->waitForText('Dashboard');
+                    ->waitForText(__('dashboard.title')) // 'Papan Pemuka'
+                    ->assertSee(__('dashboard.welcome')); // 'Selamat Datang'
 
                 // Check touch targets at this viewport
                 $touchTargets = $browser->script('

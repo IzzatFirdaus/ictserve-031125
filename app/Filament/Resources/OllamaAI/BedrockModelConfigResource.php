@@ -44,7 +44,7 @@ class BedrockModelConfigResource extends Resource
 {
     protected static ?string $model = BedrockModelConfig::class;
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected static ?string $cluster = OllamaAI::class;
 
@@ -56,7 +56,6 @@ class BedrockModelConfigResource extends Resource
     {
         return __('ollama.bedrock.navigation_label');
     }
-
 
     public static function getModelLabel(): string
     {
@@ -166,12 +165,11 @@ class BedrockModelConfigResource extends Resource
                             ->relationship('creator', 'name')
                             ->searchable()
                             ->preload()
-                            ->default(fn() => Auth::id())
-                            ->disabled(fn(?BedrockModelConfig $record) => $record !== null),
+                            ->default(fn () => Auth::id())
+                            ->disabled(fn (?BedrockModelConfig $record) => $record !== null),
                     ]),
             ]);
     }
-
 
     public static function table(Table $table): Table
     {
@@ -192,13 +190,13 @@ class BedrockModelConfigResource extends Resource
                     ->label(__('ollama.bedrock.model_id'))
                     ->searchable()
                     ->limit(40)
-                    ->tooltip(fn(BedrockModelConfig $record): string => $record->model_id)
+                    ->tooltip(fn (BedrockModelConfig $record): string => $record->model_id)
                     ->toggleable(),
 
                 TextColumn::make('provider')
                     ->label(__('ollama.bedrock.provider'))
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'anthropic' => 'primary',
                         'amazon' => 'warning',
                         'meta' => 'info',
@@ -258,13 +256,13 @@ class BedrockModelConfigResource extends Resource
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Actions\Action::make('toggle_enabled')
-                    ->label(fn(BedrockModelConfig $record): string => $record->enabled
+                    ->label(fn (BedrockModelConfig $record): string => $record->enabled
                         ? __('ollama.bedrock.disable')
                         : __('ollama.bedrock.enable'))
-                    ->icon(fn(BedrockModelConfig $record): string => $record->enabled
+                    ->icon(fn (BedrockModelConfig $record): string => $record->enabled
                         ? 'heroicon-o-x-circle'
                         : 'heroicon-o-check-circle')
-                    ->color(fn(BedrockModelConfig $record): string => $record->enabled
+                    ->color(fn (BedrockModelConfig $record): string => $record->enabled
                         ? 'danger'
                         : 'success')
                     ->requiresConfirmation()
@@ -302,7 +300,6 @@ class BedrockModelConfigResource extends Resource
         ];
     }
 
-
     public static function infolist(Schema $schema): Schema
     {
         return $schema
@@ -318,7 +315,7 @@ class BedrockModelConfigResource extends Resource
                             TextEntry::make('provider')
                                 ->label(__('ollama.bedrock.provider'))
                                 ->badge()
-                                ->color(fn(string $state): string => match ($state) {
+                                ->color(fn (string $state): string => match ($state) {
                                     'anthropic' => 'primary',
                                     'amazon' => 'warning',
                                     default => 'gray',
@@ -326,8 +323,8 @@ class BedrockModelConfigResource extends Resource
                             TextEntry::make('enabled')
                                 ->label(__('ollama.bedrock.enabled'))
                                 ->badge()
-                                ->color(fn(bool $state): string => $state ? 'success' : 'danger')
-                                ->formatStateUsing(fn(bool $state): string => $state
+                                ->color(fn (bool $state): string => $state ? 'success' : 'danger')
+                                ->formatStateUsing(fn (bool $state): string => $state
                                     ? __('ollama.bedrock.yes')
                                     : __('ollama.bedrock.no')),
                             TextEntry::make('task_types')

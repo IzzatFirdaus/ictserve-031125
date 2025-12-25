@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Skeleton Card Component
  *
@@ -36,9 +36,9 @@
 
 @php
 $baseClasses = match ($variant) {
-'compact' => 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-(--radius-l) p-4',
+'compact' => 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4',
 default
-=> 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm rounded-(--radius-l)',
+=> 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm rounded-lg',
 };
 @endphp
 
@@ -49,7 +49,7 @@ default
     {{-- Compact variant for smaller cards --}}
     <div class="flex items-center gap-3">
         <div class="shrink-0">
-            <div class="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-(--radius-l) skeleton-pulse"></div>
+            <div class="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-lg skeleton-pulse"></div>
         </div>
         <div class="flex-1 space-y-2">
             <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded-sm w-2/3 skeleton-pulse"></div>
@@ -61,18 +61,18 @@ default
     <div class="p-5">
         <div class="flex items-center">
             <div class="shrink-0">
-                <div class="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-(--radius-l) skeleton-pulse"></div>
+                <div class="h-12 w-12 bg-slate-200 dark:bg-slate-700 rounded-lg skeleton-pulse"></div>
             </div>
             <div class="ml-5 w-0 flex-1">
                 <div class="space-y-3">
-                    <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-sm w-3/4 skeleton-pulse"></div>
-                    <div class="h-8 bg-gray-200 dark:bg-gray-700 rounded-sm w-1/2 skeleton-pulse"></div>
+                    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-sm w-3/4 skeleton-pulse"></div>
+                    <div class="h-8 bg-slate-200 dark:bg-slate-700 rounded-sm w-1/2 skeleton-pulse"></div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="bg-gray-50 dark:bg-gray-900 px-5 py-3">
-        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded-sm w-1/3 skeleton-pulse"></div>
+    <div class="bg-slate-50 dark:bg-slate-900 px-5 py-3">
+        <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-sm w-1/3 skeleton-pulse"></div>
     </div>
     @endif
 

@@ -7,6 +7,7 @@ namespace App\Filament\Widgets;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
 use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Filament\Traits\CacheableWidget;
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use Filament\Widgets\Widget;
@@ -33,6 +34,7 @@ use Illuminate\Support\Facades\Route;
 class CriticalAlertsWidget extends Widget
 {
     use CacheableWidget;
+    use WidgetMetadata;
 
     protected static bool $isLazy = true; // Non-critical - lazy load
 
@@ -50,6 +52,14 @@ class CriticalAlertsWidget extends Widget
      * Sort order - display after overview stats
      */
     protected static ?int $sort = -5;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D16 Broadcasting Setup - Laravel Reverb integration';
+    }
 
     /**
      * @return array<string, mixed>
@@ -141,6 +151,10 @@ class CriticalAlertsWidget extends Widget
      *
      * @param  array<string, mixed>  $params
      */
+
+    /**
+     * @param  array<string, mixed>  $params
+     */
     protected function getHelpdeskIndexUrl(array $params = []): ?string
     {
         if (Route::has('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')) {
@@ -157,6 +171,10 @@ class CriticalAlertsWidget extends Widget
     /**
      * Get the loan applications index URL safely
      *
+     * @param  array<string, mixed>  $params
+     */
+
+    /**
      * @param  array<string, mixed>  $params
      */
     protected function getLoanApplicationIndexUrl(array $params = []): ?string

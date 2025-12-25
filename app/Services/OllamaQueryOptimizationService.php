@@ -50,7 +50,12 @@ class OllamaQueryOptimizationService
      * @param  array<float>  $queryEmbedding
      * @return \Illuminate\Support\Collection<int, Faq>
      */
-    public function searchFaqsBySimilarity(array $queryEmbedding, int $limit = 5): \Illuminate\Support\Collection
+    
+
+/**
+ * @param array<string, mixed> $queryEmbedding
+ */
+public function searchFaqsBySimilarity(array $queryEmbedding, int $limit = 5): \Illuminate\Support\Collection
     {
         $startTime = microtime(true);
         $cacheKey = 'faq_similarity:'.md5(json_encode($queryEmbedding));
@@ -76,7 +81,12 @@ class OllamaQueryOptimizationService
      * @param  array<float>  $queryEmbedding
      * @return array<int, array<string, mixed>>
      */
-    protected function performFaqSimilaritySearch(array $queryEmbedding, int $limit): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function performFaqSimilaritySearch(array $queryEmbedding, int $limit): array
     {
         $faqs = Faq::query()
             ->select(['id', 'question', 'answer', 'tags', 'match_score'])
@@ -111,7 +121,12 @@ class OllamaQueryOptimizationService
      * @param  array<float>  $queryEmbedding
      * @return \Illuminate\Support\Collection<int, DocumentChunk>
      */
-    public function searchDocumentChunksBySimilarity(
+    
+
+/**
+ * @param array<string, mixed> $queryEmbedding
+ */
+public function searchDocumentChunksBySimilarity(
         array $queryEmbedding,
         int $limit = 5,
         ?int $documentId = null
@@ -180,7 +195,12 @@ class OllamaQueryOptimizationService
      *
      * @return \Illuminate\Support\Collection<int, Faq>
      */
-    public function getFaqsWithRelations(array $ids): \Illuminate\Support\Collection
+    
+
+/**
+ * @param array<string, mixed> $ids
+ */
+public function getFaqsWithRelations(array $ids): \Illuminate\Support\Collection
     {
         $startTime = microtime(true);
 
@@ -221,7 +241,12 @@ class OllamaQueryOptimizationService
      * @param  array<float>  $vectorA
      * @param  array<float>  $vectorB
      */
-    public function calculateCosineSimilarity(array $vectorA, array $vectorB): float
+    
+
+/**
+ * @param array<string, mixed> $vectorB
+ */
+public function calculateCosineSimilarity(array $vectorA, array $vectorB): float
     {
         if (count($vectorA) !== count($vectorB) || empty($vectorA)) {
             return 0.0;
@@ -303,7 +328,12 @@ class OllamaQueryOptimizationService
      *
      * @return array<string, mixed>
      */
-    public function getQueryMetrics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getQueryMetrics(): array
     {
         $metrics = Cache::get('ollama:query_metrics', []);
 
@@ -358,7 +388,12 @@ class OllamaQueryOptimizationService
      * Optimumkan indeks untuk carian vektor
      * Optimize indices for vector search
      */
-    public function optimizeIndices(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function optimizeIndices(): array
     {
         $results = [
             'success' => true,

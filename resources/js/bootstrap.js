@@ -3,13 +3,40 @@ window.axios = axios;
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
+// Configure CSRF token for axios requests (including broadcasting auth)
+// Requirement 7.1: Ensure auth endpoint validates CSRF token
+const token = document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+	window.axios.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
+} else {
+	console.error(
+		"CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token"
+	);
+}
+
+/**
+ * Alpine.js Configuration
+ *
+ * Import Alpine.js from Livewire bundle for manual control over initialization.
+ * This allows us to register custom Alpine components and plugins before starting.
+ *
+ * @trace D03-FR-011 (Frontend Interactivity), D13 §3.2 (Alpine.js Integration)
+ */
+import {
+	Livewire,
+	Alpine,
+} from "../../vendor/livewire/livewire/dist/livewire.esm";
+
+// Make Alpine available globally for components
+window.Alpine = Alpine;
+
 /**
  * Laravel Echo Configuration
  *
  * Echo allows you to easily build real-time event-driven applications.
  * We'll use Laravel Reverb as the WebSocket server for broadcasting.
  *
- * @trace D03 SRS-FR-008, D04 §5.3 (Requirements 6.1, 6.2)
+ * @trace D03 SRS-FR-008, D04 §5.3 (Requirements 5.1, 5.2, 1.5)
  */
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
@@ -25,25 +52,45 @@ if (reverbAppKey && reverbHost) {
 		broadcaster: "reverb",
 		key: reverbAppKey,
 		wsHost: reverbHost,
-		wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
-		wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
+		wsPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
+		wssPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
 		forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https",
 		enabledTransports: ["ws", "wss"],
 		disableStats: true,
 		authorizer: (channel) => {
 			return {
 				authorize: (socketId, callback) => {
-					window.axios.post('/broadcasting/auth', {
+					// Include status token for guest channel authorization
+					const statusToken =
+						new URLSearchParams(window.location.search).get("status_token") ||
+						sessionStorage.getItem("status_token") ||
+						localStorage.getItem("status_token");
+
+					const authData = {
 						socket_id: socketId,
-						channel_name: channel.name
-					})
-					.then(response => {
-						callback(null, response.data);
-					})
-					.catch(error => {
-						callback(error);
-					});
-				}
+						channel_name: channel.name,
+					};
+
+					// Add status token for guest channels
+					if (
+						statusToken &&
+						(channel.name.includes("ticket.") ||
+							channel.name.includes("loan.") ||
+							channel.name.includes("conversation."))
+					) {
+						authData.status_token = statusToken;
+					}
+
+					window.axios
+						.post("/broadcasting/auth", authData)
+						.then((response) => {
+							callback(null, response.data);
+						})
+						.catch((error) => {
+							console.error("Echo authorization failed:", error);
+							callback(error);
+						});
+				},
 			};
 		},
 	});
@@ -528,3 +575,99 @@ function showAINotification(type, message, data = {}) {
 
 // Export AI notification function
 window.showAINotification = showAINotification;
+
+/**
+ * Widget Real-Time Broadcasting Integration - v3.6.1
+ *
+ * Initialize widget real-time updates for dashboard widgets including
+ * performance metrics, system statistics, and user-specific data.
+ * Integrates with WidgetRealtimeManager service and provides fallback polling.
+ *
+ * @see resources/js/widget-realtime.js - Widget real-time manager
+ * @see app/Services/WidgetRealtimeManager.php - Backend service
+ * @requirements R8 (Real-time Updates), R19 (Real-Time Widget Updates)
+ */
+
+/**
+ * Initialize widget broadcasting for authenticated users
+ * Called from dashboard pages and admin panel
+ */
+window.initWidgetBroadcasting = function (userRole, userId) {
+	if (!window.Echo) {
+		console.warn(
+			"Widget Broadcasting: Echo not initialized, using polling fallback"
+		);
+		return;
+	}
+
+	const allowedRoles = ["staff", "admin", "superuser"];
+	const adminRoles = ["admin", "superuser"];
+
+	if (!allowedRoles.includes(userRole)) {
+		console.warn(
+			"Widget Broadcasting: User role not authorized for widget updates"
+		);
+		return;
+	}
+
+	// User-specific widget channel for personal dashboard
+	if (userId) {
+		window.Echo.private(`dashboard.widgets.${userId}`).listen(
+			".WidgetDataUpdated",
+			(data) => {
+				console.log("Widget Update (User Channel):", data);
+				window.dispatchEvent(
+					new CustomEvent("widget:update:user", { detail: data })
+				);
+			}
+		);
+
+		console.log(`Widget Broadcasting: Subscribed to user channel ${userId}`);
+	}
+
+	// Global widget channel for admin users
+	if (adminRoles.includes(userRole)) {
+		window.Echo.private("dashboard.widgets.global").listen(
+			".WidgetDataUpdated",
+			(data) => {
+				console.log("Widget Update (Global Channel):", data);
+				window.dispatchEvent(
+					new CustomEvent("widget:update:global", { detail: data })
+				);
+			}
+		);
+
+		console.log("Widget Broadcasting: Subscribed to global admin channel");
+	}
+
+	// Widget-specific channels are handled by the WidgetRealtimeManager
+	// This provides the foundation for targeted widget updates
+};
+
+/**
+ * Auto-initialize widget broadcasting if user data is available
+ */
+document.addEventListener("DOMContentLoaded", function () {
+	// Try to get user data from meta tags
+	const userIdMeta = document.querySelector('meta[name="user-id"]');
+	const userRoleMeta = document.querySelector('meta[name="user-role"]');
+
+	if (userIdMeta && userRoleMeta) {
+		const userId = userIdMeta.getAttribute("content");
+		const userRole = userRoleMeta.getAttribute("content");
+
+		if (userId && userRole) {
+			// Initialize both AI and Widget broadcasting
+			window.initAIBroadcasting?.(userRole);
+			window.initWidgetBroadcasting?.(userRole, userId);
+		}
+	}
+});
+
+/**
+ * Start Livewire
+ *
+ * Initialize Livewire after all Alpine components and Echo configuration is complete.
+ * This ensures proper order of initialization for all frontend components.
+ */
+Livewire.start();

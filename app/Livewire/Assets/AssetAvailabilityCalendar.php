@@ -7,6 +7,7 @@ namespace App\Livewire\Assets;
 use App\Enums\AssetStatus;
 use App\Models\Asset;
 use App\Models\LoanApplication;
+use App\Models\LoanItem;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -95,11 +96,11 @@ class AssetAvailabilityCalendar extends Component
         $loanApplications = LoanApplication::query()
             ->with(['loanItems.asset'])
             ->where(function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('start_date', [$startDate, $endDate])
-                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                $query->whereBetween('loan_start_date', [$startDate, $endDate])
+                    ->orWhereBetween('loan_end_date', [$startDate, $endDate])
                     ->orWhere(function ($q) use ($startDate, $endDate) {
-                        $q->where('start_date', '<=', $startDate)
-                            ->where('end_date', '>=', $endDate);
+                        $q->where('loan_start_date', '<=', $startDate)
+                            ->where('loan_end_date', '>=', $endDate);
                     });
             })
             ->whereIn('status', ['approved', 'active'])
@@ -135,13 +136,13 @@ class AssetAvailabilityCalendar extends Component
             $loanedCount = 0;
             $maintenanceCount = 0;
 
-            /** @var \App\Models\Asset $asset */
+            /** @var Asset $asset */
             foreach ($assets as $asset) {
-                $isLoaned = $loanApplications->contains(function (\App\Models\LoanApplication $loan) use ($asset, $dateStr) {
-                    return $loan->loanItems->contains(function (\App\Models\LoanItem $item) use ($asset, $dateStr, $loan) {
+                $isLoaned = $loanApplications->contains(function (LoanApplication $loan) use ($asset, $dateStr) {
+                    return $loan->loanItems->contains(function (LoanItem $item) use ($asset, $dateStr, $loan) {
                         return $item->asset_id === $asset->id
-                            && $loan->start_date <= $dateStr
-                            && $loan->end_date >= $dateStr;
+                            && $loan->loan_start_date <= $dateStr
+                            && $loan->loan_end_date >= $dateStr;
                     });
                 });
 
@@ -172,7 +173,7 @@ class AssetAvailabilityCalendar extends Component
         return $calendar;
     }
 
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.assets.asset-availability-calendar', [
             'monthName' => Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}")->format('F Y'),
@@ -182,6 +183,10 @@ class AssetAvailabilityCalendar extends Component
     /**
      * Handle an Echo broadcast for asset returned damaged.
      * Will refresh calendar data for the current asset or globally.
+     */
+
+    /**
+     * @param  array<string, mixed>  $event
      */
     public function handleEchoAssetReturnedDamaged(array $event): void
     {

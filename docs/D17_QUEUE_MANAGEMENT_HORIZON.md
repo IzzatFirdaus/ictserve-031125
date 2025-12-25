@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** Laravel Queue, Redis, Supervisor Process Management  
+**Standard Rujukan:** Laravel Queue, Redis, Supervisor Process Management, OWASP Transport Security, TLS 1.3, AES-256  
 
 ---
 
@@ -30,7 +30,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                          | Penulis                 |
 | ----- | ---------------- | -------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 17 Disember 2025 | Selaraskan D17 dengan kod sebenar repo: senarai job/queue sebenar, arahan worker, dan pemantauan. | Pasukan Pembangunan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0, Filament 4.3.1. Selaraskan D17 dengan kod sebenar repo: Laravel Horizon 5.41.0 DIPASANG dan aktif, senarai job/queue sebenar, arahan worker, dan pemantauan. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: tambah pemantauan queue melalui Pulse + Filament Failed Jobs.    | Pasukan Pembangunan BPM |
 | 1.0.0 | 29 November 2025 | Panduan awal untuk pengurusan baris gilir                                                         | Pasukan Pembangunan BPM |
 
@@ -54,7 +54,7 @@ Panduan ini menerangkan:
 - Bagaimana baris gilir (queue) digunakan dalam ICTServe (notifications, emails, AI/RAG, eksport).
 - Senarai job sebenar yang wujud dalam repo (`app/Jobs/`) dan queue yang digunakan.
 - Konfigurasi persekitaran (.env keys) tanpa mendedahkan nilai rahsia (PPDA/PDPA).
-- Cara menjalankan queue worker dalam dev/prod tanpa Laravel Horizon.
+- Cara menjalankan queue worker dalam dev/prod dengan Laravel Horizon atau manual worker.
 - Pemantauan, penyelenggaraan, dan pengendalian failed jobs.
 
 ---
@@ -70,7 +70,7 @@ Termasuk:
 Tidak termasuk:
 
 - Setup Redis/infra secara terperinci (rujuk `docs/redis/` dan panduan penempatan).
-- Laravel Horizon (pakej Horizon **tidak dipasang** dalam repo ICTServe v3.6.1).
+- Laravel Horizon (pakej Horizon **v5.41.0 DIPASANG** dalam repo ICTServe v3.6.1 - rujuk dashboard `/horizon` untuk pemantauan lanjutan).
 
 ---
 
@@ -83,7 +83,8 @@ Tidak termasuk:
 - **Pekerja (worker):** proses daemon `php artisan queue:work`
 - **Storan failed jobs:** jadual `failed_jobs` (driver `database-uuids` dalam `config/queue.php`)
 - **Pemantauan dalaman:** `config/queue.php` (sekysen `monitoring`)
-- **Paparan admin (tanpa Horizon):**
+- **Paparan admin (dengan Laravel Horizon v5.41.0):**
+  - Dashboard Horizon: `/horizon` (superuser/admin access)
   - Failed Jobs: `app/Filament/Resources/FailedJobs/FailedJobResource.php`
   - Pemantauan queue email: `app/Services/EmailQueueMonitoringService.php`
   - Job monitoring: `app/Services/Monitoring/JobMonitoringService.php`
@@ -299,10 +300,10 @@ php artisan queue:monitor default,notifications,emails,digests,documents,embeddi
 php artisan queue:restart
 ```
 
-### 8.2. Laravel Pulse (Tanpa Horizon)
+### 8.2. Laravel Pulse & Horizon Integration
 
-- Konfigurasi: `config/pulse.php`
-- Pulse dashboard path biasanya `/pulse` (ditetapkan oleh `PULSE_PATH`).
+- **Laravel Pulse**: Konfigurasi `config/pulse.php`, dashboard path `/pulse` (ditetapkan oleh `PULSE_PATH`).
+- **Laravel Horizon**: Dashboard `/horizon` untuk pemantauan queue yang lebih komprehensif (superuser/admin access).
 
 ### 8.3. Penyelenggaraan Berkala
 
@@ -362,4 +363,3 @@ Semak perkara berikut:
 ## Pengesahan Dokumen (Document Certification)
 
 Dokumen ini telah disemak supaya selaras dengan struktur projek dan fail sebenar dalam repo ICTServe v3.6.1 (tanpa mendedahkan nilai rahsia/peribadi).
-

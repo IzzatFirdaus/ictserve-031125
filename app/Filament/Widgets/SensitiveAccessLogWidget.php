@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
@@ -11,6 +12,8 @@ use OwenIt\Auditing\Models\Audit;
 
 class SensitiveAccessLogWidget extends TableWidget
 {
+    use WidgetMetadata;
+
     protected static ?string $heading = 'Akses Data Sensitif Terkini';
 
     protected int|string|array $columnSpan = 'full';
@@ -42,5 +45,21 @@ class SensitiveAccessLogWidget extends TableWidget
                 Tables\Columns\TextColumn::make('ip_address')
                     ->label(__('filament.widget.ip_address')),
             ]);
+    }
+
+    /**
+     * Widget roles - restricted access
+     */
+    public static function getWidgetRoles(): array
+    {
+        return ['superuser'];
+    }
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D09 Database Documentation - Dual Audit System';
     }
 }

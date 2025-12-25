@@ -1,0 +1,157 @@
+{
+	"mcpServers": {
+		"memory": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-memory"],
+			"env": {
+				"MEMORY_FILE_PATH": "./storage/mcp/memory.jsonl"
+			},
+			"disabled": false,
+			"autoApprove": [
+				"create_entities",
+				"create_relations",
+				"add_observations",
+				"delete_entities",
+				"delete_observations",
+				"delete_relations",
+				"read_graph",
+				"search_nodes",
+				"open_nodes"
+			]
+		},
+		"sequentialthinking": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+			"env": {
+				"NODE_OPTIONS": "--max-old-space-size=4096"
+			},
+			"disabled": false,
+			"autoApprove": ["sequentialthinking"]
+		},
+		"laravel-boost": {
+			"command": "php",
+			"args": ["artisan", "boost:mcp"],
+			"cwd": ".",
+			"env": {
+				"APP_ENV": "local"
+			},
+			"disabled": false,
+			"autoApprove": [
+				"application-info",
+				"browser-logs",
+				"database-connections",
+				"database-query",
+				"database-schema",
+				"get-absolute-url",
+				"get-config",
+				"last-error",
+				"list-artisan-commands",
+				"list-available-config-keys",
+				"list-available-env-vars",
+				"list-routes",
+				"read-log-entries",
+				"report-feedback",
+				"search-docs",
+				"tinker"
+			]
+		},
+		"ictserve": {
+			"command": "php",
+			"args": ["artisan", "mcp:start", "ictserve"],
+			"cwd": ".",
+			"env": {
+				"APP_ENV": "local"
+			},
+			"disabled": false,
+			"autoApprove": ["query-helpdesk-tickets", "check-asset-status"]
+		},
+		"fetch": {
+			"command": "uvx",
+			"args": ["--native-tls", "mcp-server-fetch"],
+			"disabled": false,
+			"autoApprove": ["fetch"]
+		},
+		"chrome-devtools": {
+			"command": "npx",
+			"args": ["-y", "chrome-devtools-mcp@latest"],
+			"disabled": false,
+			"autoApprove": [
+				"navigate_page",
+				"take_snapshot",
+				"click",
+				"fill",
+				"evaluate_script",
+				"take_screenshot",
+				"list_pages",
+				"new_page",
+				"list_console_messages",
+				"wait_for",
+				"get_console_message"
+			]
+		},
+		"playwright": {
+			"command": "npx",
+			"args": ["-y", "@playwright/mcp@latest"],
+			"disabled": false,
+			"autoApprove": [
+				"browser_navigate",
+				"browser_click",
+				"browser_snapshot",
+				"browser_fill",
+				"browser_evaluate",
+				"browser_close",
+				"browser_take_screenshot",
+				"browser_run_code",
+				"browser_wait_for",
+				"browser_fill_form"
+			]
+		},
+		"context7": {
+			"command": "npx",
+			"args": ["-y", "@upstash/context7-mcp"],
+			"env": {
+				"CONTEXT7_API_KEY": "$env:CONTEXT7_API_KEY"
+			},
+			"disabled": true,
+			"autoApprove": ["resolve-library-id", "get-library-docs"]
+		},
+		"deepl": {
+			"command": "npx",
+			"args": ["-y", "deepl-mcp-server"],
+			"env": {
+				"DEEPL_API_KEY": "$env:DEEPL_API_KEY"
+			},
+			"disabled": true,
+			"autoApprove": [
+				"get-source-languages",
+				"get-target-languages",
+				"translate-text",
+				"rephrase-text"
+			]
+		},
+		"firecrawl": {
+			"command": "npx",
+			"args": ["-y", "firecrawl-mcp"],
+			"env": {
+				"FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
+			},
+			"disabled": true,
+			"autoApprove": []
+		},
+		"github": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-github"],
+			"env": {
+				"GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
+			},
+			"disabled": false,
+			"autoApprove": [
+				"create_or_update_file",
+				"get_file_contents",
+				"get_repository",
+				"list_repositories",
+				"search_repositories"
+			]
+		}
+	}
+}

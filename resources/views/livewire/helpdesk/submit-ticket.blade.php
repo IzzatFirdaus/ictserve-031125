@@ -15,25 +15,25 @@
 
 @php
     $sectionCardClasses =
-        'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
+        'rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-card';
 @endphp
 
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Form Header with ISO Compliance Reference Code --}}
         {{-- @trace Requirement 24.1 - Display form reference code PK.(S).MOTAC.07.(L1) --}}
         <div class="{{ $sectionCardClasses }} mb-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                    <h1 class="text-2xl font-heading font-bold text-slate-900 dark:text-white">
                         {{ __('helpdesk.submit_ticket') }}
                     </h1>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
                         {{ __('helpdesk.submit_ticket_description') }}
                     </p>
                 </div>
                 {{-- ISO Document ID: PK.(S).MOTAC.07.(L1) for ISO 9001:2015 compliance and audit traceability --}}
-                <div class="text-xs text-gray-400 dark:text-gray-500">
+                <div class="text-xs text-slate-400 dark:text-slate-500">
                     <span
                         class="inline-flex items-center px-3 py-1 rounded-full font-mono font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
                         PK.(S).MOTAC.07.(L1)
@@ -69,10 +69,10 @@
                                     <div class="shrink-0">
                                         <button type="button" wire:click="goToStep({{ $step }})"
                                             @class([
-                                                'flex items-center justify-center w-12 h-12 rounded-full border transition-colors duration-200 min-h-11 min-w-11 text-base font-semibold shadow-button focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800',
+                                                'flex items-center justify-center w-12 h-12 rounded-full border transition-colors duration-200 min-h-11 min-w-11 text-base font-semibold shadow-button focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800',
                                                 'bg-primary-600 border-primary-400/70 text-white ring-2 ring-primary-400/40' =>
                                                     $step <= $currentStep,
-                                                'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500' =>
+                                                'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-400 dark:text-slate-500' =>
                                                     $step > $currentStep,
                                             ])
                                             aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
@@ -83,12 +83,12 @@
                                     @if ($step < $totalSteps)
                                         <div class="flex-1 mx-4" aria-hidden="true">
                                             <div
-                                                class="h-1.5 rounded-full transition-colors duration-200 {{ $step < $currentStep ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}">
+                                                class="h-1.5 rounded-full transition-colors duration-200 {{ $step < $currentStep ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-700' }}">
                                             </div>
                                         </div>
                                     @endif
                                 </div>
-                                <p class="mt-3 text-xs font-medium text-gray-600 dark:text-gray-400">
+                                <p class="mt-3 text-xs font-medium text-slate-600 dark:text-slate-400">
                                     {{ $stepTitles[$step] ?? __('helpdesk.wizard_progress') }}
                                 </p>
                             </div>
@@ -107,20 +107,20 @@
                 {{-- Step 1: Personal Information --}}
                 @if ($currentStep === 1)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_1_title') }}">
-                        <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+                        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white mb-4">
                             {{ __('helpdesk.step_1_title') }}
                         </h2>
 
                         <div
-                            class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 shadow-card">
+                            class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6 shadow-card">
                             @auth
                                 {{-- Authenticated User Display --}}
                                 <div class="space-y-4">
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('helpdesk.logged_in_as') }}
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('helpdesk.logged_in_as') }}
                                     </p>
                                     <div class="grid gap-4 sm:grid-cols-2">
                                         <div>
-                                            <p class="font-medium text-gray-600 dark:text-gray-400">
+                                            <p class="font-medium text-slate-600 dark:text-slate-400">
                                                 {{ __('helpdesk.full_name') }}</p>
                                             @php
                                                 $submitterName = auth()->user()?->name ?? null;
@@ -132,26 +132,26 @@
                                                 }
                                                 $submitterName = (string) ($submitterName ?? '');
                                             @endphp
-                                            <p class="mt-1 text-gray-900 dark:text-white">{{ $submitterName }}</p>
+                                            <p class="mt-1 text-slate-900 dark:text-white">{{ $submitterName }}</p>
                                         </div>
                                         <div>
-                                            <p class="font-medium text-gray-600 dark:text-gray-400">
+                                            <p class="font-medium text-slate-600 dark:text-slate-400">
                                                 {{ __('helpdesk.email_address') }}</p>
-                                            <p class="mt-1 text-gray-900 dark:text-white">{{ auth()->user()->email }}</p>
+                                            <p class="mt-1 text-slate-900 dark:text-white">{{ auth()->user()->email }}</p>
                                         </div>
                                         @if (auth()->user()->phone)
                                             <div>
-                                                <p class="font-medium text-gray-600 dark:text-gray-400">
+                                                <p class="font-medium text-slate-600 dark:text-slate-400">
                                                     {{ __('helpdesk.phone_number') }}</p>
-                                                <p class="mt-1 text-gray-900 dark:text-white">{{ auth()->user()->phone }}
+                                                <p class="mt-1 text-slate-900 dark:text-white">{{ auth()->user()->phone }}
                                                 </p>
                                             </div>
                                         @endif
                                         @if (auth()->user()->staff_id)
                                             <div>
-                                                <p class="font-medium text-gray-600 dark:text-gray-400">
+                                                <p class="font-medium text-slate-600 dark:text-slate-400">
                                                     {{ __('helpdesk.staff_id') }}</p>
-                                                <p class="mt-1 text-gray-900 dark:text-white">
+                                                <p class="mt-1 text-slate-900 dark:text-white">
                                                     {{ auth()->user()->staff_id }}</p>
                                             </div>
                                         @endif
@@ -260,9 +260,9 @@
                                         <label class="flex items-start space-x-3 cursor-pointer">
                                             <input type="checkbox" name="declaration_accepted"
                                                 wire:model.live="declaration_accepted"
-                                                class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                                class="mt-1 h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
                                                 required aria-describedby="declaration-help" />
-                                            <span class="text-sm text-gray-700 dark:text-gray-300">
+                                            <span class="text-sm text-slate-700 dark:text-slate-300">
                                                 Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di
                                                 dalam eBorang Laporan Kerosakan ini adalah benar, dan bersetuju menerima
                                                 perkhidmatan Bahagian Pengurusan Maklumat (BPM) berdasarkan Piagam Pelanggan
@@ -281,9 +281,9 @@
                                     <div class="pt-4">
                                         <label class="flex items-start space-x-3 cursor-pointer">
                                             <input type="checkbox" name="terms_accepted" wire:model.live="terms_accepted"
-                                                class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                                class="mt-1 h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
                                                 required aria-describedby="terms-help" />
-                                            <span class="text-sm text-gray-700 dark:text-gray-300">
+                                            <span class="text-sm text-slate-700 dark:text-slate-300">
                                                 {!! __('helpdesk.terms_of_service', ['privacy_url' => route('privacy-policy')]) !!}
                                                 <span class="text-danger-600">*</span>
                                             </span>
@@ -304,14 +304,14 @@
                 {{-- Step 2: Issue Details --}}
                 @if ($currentStep === 2)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_2_title') }}">
-                        <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+                        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white mb-4">
                             {{ __('helpdesk.step_2_title') }}
                         </h2>
 
                         <div
-                            class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 shadow-card space-y-6">
+                            class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6 shadow-card space-y-6">
                             <div wire:loading.delay wire:target="category_id">
-                                <span class="text-sm text-gray-600 dark:text-gray-400" role="status"
+                                <span class="text-sm text-slate-600 dark:text-slate-400" role="status"
                                     aria-live="polite">
                                     {{ __('helpdesk.loading') }}...
                                 </span>
@@ -322,7 +322,7 @@
                                 :options="$categories->pluck('name', 'id')" :placeholder="__('helpdesk.select_category')" />
 
                             <div wire:loading.delay wire:target="priority">
-                                <span class="text-sm text-gray-600 dark:text-gray-400" role="status"
+                                <span class="text-sm text-slate-600 dark:text-slate-400" role="status"
                                     aria-live="polite">
                                     {{ __('helpdesk.loading') }}...
                                 </span>
@@ -368,41 +368,41 @@
                 {{-- Step 3: Attachments --}}
                 @if ($currentStep === 3)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_3_title') }}">
-                        <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+                        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white mb-4">
                             {{ __('helpdesk.step_3_title') }}
                         </h2>
 
                         <div
-                            class="space-y-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 shadow-card">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            class="space-y-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6 shadow-card">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">
                                 {{ __('helpdesk.attachments') }}
-                                <span class="text-gray-500 dark:text-gray-400">({{ __('helpdesk.optional') }})</span>
+                                <span class="text-slate-500 dark:text-slate-400">({{ __('helpdesk.optional') }})</span>
                             </label>
 
                             <div x-data="{ isDragging: false }" @dragover.prevent="isDragging = true"
                                 @dragleave.prevent="isDragging = false"
                                 @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }))"
                                 :class="{ 'border-primary-600 bg-primary-500/10': isDragging }"
-                                class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center transition-colors duration-200">
+                                class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center transition-colors duration-200">
                                 <input type="file" wire:model="attachments" multiple
                                     accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="sr-only" id="attachments"
                                     x-ref="fileInput" aria-describedby="attachments-help" />
 
                                 <label for="attachments" class="cursor-pointer">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500"
+                                    <svg class="mx-auto h-12 w-12 text-slate-400 dark:text-slate-500"
                                         stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                         <path
                                             d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                                         <span
                                             class="font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
                                             {{ __('helpdesk.click_to_upload') }}
                                         </span>
                                         {{ __('helpdesk.or_drag_and_drop') }}
                                     </p>
-                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
                                         {{ __('helpdesk.file_types') }}: JPG, PNG, PDF, DOC, DOCX
                                         ({{ __('helpdesk.max_size') }}: 10MB)
                                     </p>
@@ -410,7 +410,7 @@
                             </div>
 
                             <div wire:loading wire:target="attachments"
-                                class="text-sm text-gray-600 dark:text-gray-400" role="status" aria-live="polite">
+                                class="text-sm text-slate-600 dark:text-slate-400" role="status" aria-live="polite">
                                 {{ __('helpdesk.uploading') }}...
                             </div>
 
@@ -419,12 +419,12 @@
                                     aria-label="{{ __('helpdesk.uploaded_files') }}">
                                     @foreach ($attachments as $index => $attachment)
                                         <li
-                                            class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                            class="flex items-center justify-between p-3 bg-slate-100 dark:bg-slate-700 rounded-lg">
                                             <span
-                                                class="text-sm text-gray-700 dark:text-gray-300">{{ $attachment->getClientOriginalName() }}</span>
+                                                class="text-sm text-slate-700 dark:text-slate-300">{{ $attachment->getClientOriginalName() }}</span>
                                             <button type="button"
                                                 wire:click="$set('attachments.{{ $index }}', null)"
-                                                class="text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300 min-h-11 min-w-11 flex items-center justify-center focus:outline-none focus:ring-3 focus:ring-danger-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded transition-colors duration-200"
+                                                class="text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300 min-h-11 min-w-11 flex items-center justify-center focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800 rounded transition-colors duration-200"
                                                 aria-label="{{ __('helpdesk.remove_file', ['name' => $attachment->getClientOriginalName()]) }}">
                                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor" aria-hidden="true">
@@ -449,7 +449,7 @@
                 @if ($currentStep === 4 && $ticketNumber)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.confirmation') }}">
                         <div
-                            class="space-y-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-8 text-center shadow-card">
+                            class="space-y-6 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-8 text-center shadow-card">
                             <div class="flex justify-center">
                                 <svg class="h-16 w-16 text-success-500" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" aria-hidden="true">
@@ -458,18 +458,18 @@
                                 </svg>
                             </div>
 
-                            <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                            <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white">
                                 {{ __('helpdesk.ticket_submitted') }}
                             </h2>
 
                             <div class="rounded-lg border border-primary-500/30 bg-primary-500/10 p-6">
-                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">
                                     {{ __('helpdesk.ticket_number') }}</p>
                                 <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">
                                     {{ $ticketNumber }}</p>
                             </div>
 
-                            <p class="text-gray-600 dark:text-gray-400">
+                            <p class="text-slate-600 dark:text-slate-400">
                                 {{ __('helpdesk.confirmation_email_sent') }}
                             </p>
 

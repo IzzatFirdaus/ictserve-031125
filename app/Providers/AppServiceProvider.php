@@ -22,8 +22,10 @@ use App\Contracts\TokenServiceInterface;
 use App\Events\AssetReturnedDamaged;
 use App\Events\LoanStatusChanged;
 use App\Events\TicketStatusChanged;
+use App\Listeners\BroadcastEventAuditListener;
 use App\Listeners\CreateMaintenanceTicketForDamagedAsset;
 use App\Listeners\LogFailedLoginAttempt;
+use App\Listeners\NotificationCreatedListener;
 use App\Listeners\SendLoanStatusEmail;
 use App\Listeners\SendTicketStatusEmail;
 use App\Listeners\UpdateEmailLogOnFailure;
@@ -59,8 +61,10 @@ use App\Services\SsoHealthCheck;
 use App\Services\TokenService;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Illuminate\Auth\Events\Failed;
+use Illuminate\Broadcasting\BroadcastEvent;
 use Illuminate\Broadcasting\BroadcastManager as FrameworkBroadcastManager;
 use Illuminate\Mail\Events\MessageSent;
+use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
@@ -70,6 +74,25 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        // Conditionally register development-only service providers
+        // This prevents "ServiceProvider not found" errors when packages are not available
+
+        // Register IDE Helper service provider only in local/development environments
+        if ($this->app->environment('local', 'development') && class_exists(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class)) {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
+
+        // Register Laravel Boost service provider if available (dev dependency)
+        // Only register if the class exists to prevent errors in production/Docker
+        if (class_exists(\Laravel\Boost\BoostServiceProvider::class)) {
+            $this->app->register(\Laravel\Boost\BoostServiceProvider::class);
+        }
+
+        // Register Laravel Pail service provider if available (dev dependency)
+        if (class_exists(\Laravel\Pail\PailServiceProvider::class)) {
+            $this->app->register(\Laravel\Pail\PailServiceProvider::class);
+        }
+
         $this->app->singleton(ChannelRegistrar::class);
 
         $this->app->extend(FrameworkBroadcastManager::class, function ($manager, $app) {
@@ -176,7 +199,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Register model observers
-        HelpdeskTicket::observe(HelpdeskTicketObserver::class);
+        // Note: HelpdeskTicketObserver is registered via #[ObservedBy] attribute on the model
         HelpdeskTicket::observe(HelpdeskTicketCacheObserver::class);
         HelpdeskComment::observe(HelpdeskCommentObserver::class);
         LoanApplication::observe(LoanApplicationCacheObserver::class);
@@ -188,6 +211,10 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(AssetReturnedDamaged::class, CreateMaintenanceTicketForDamagedAsset::class);
         // Log failed login attempts to help debug authentication issues
         Event::listen(Failed::class, LogFailedLoginAttempt::class);
+        // Listen for database notifications to broadcast them via WebSocket
+        Event::listen(NotificationSent::class, NotificationCreatedListener::class);
+        // Listen for broadcast events to log them for audit purposes (Requirements 7.5)
+        Event::listen(BroadcastEvent::class, BroadcastEventAuditListener::class);
 
         // Register email notification listeners
         Event::listen(LoanStatusChanged::class, SendLoanStatusEmail::class);

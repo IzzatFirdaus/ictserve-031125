@@ -247,12 +247,16 @@ class DataResidencyComplianceTest extends TestCase
         $mockClient = $this->createMock(BedrockRuntimeClient::class);
         $mockClient->expects($this->once())
             ->method('__call')
-            ->willReturn([
-                'body' => Utils::streamFor(json_encode([
-                    'content' => [['text' => 'Response']],
-                    'usage' => ['input_tokens' => 10, 'output_tokens' => 20],
-                ])),
-            ]);
+            ->willReturnCallback(function () {
+                // Simulate a small delay to ensure response_time_ms > 0
+                usleep(1000); // 1ms delay
+                return [
+                    'body' => Utils::streamFor(json_encode([
+                        'content' => [['text' => 'Response']],
+                        'usage' => ['input_tokens' => 10, 'output_tokens' => 20],
+                    ])),
+                ];
+            });
 
         $service = new BedrockService($mockClient);
         $service->invoke(

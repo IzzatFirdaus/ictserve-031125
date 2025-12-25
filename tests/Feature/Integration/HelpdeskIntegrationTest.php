@@ -13,7 +13,6 @@ use App\Models\LoanTransaction;
 use App\Models\TicketCategory;
 use App\Models\User;
 use App\Services\HybridHelpdeskService;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -29,8 +28,6 @@ use Tests\TestCase;
  */
 class HelpdeskIntegrationTest extends TestCase
 {
-    use DatabaseMigrations;
-
     private HybridHelpdeskService $service;
 
     protected function setUp(): void

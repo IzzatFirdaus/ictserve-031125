@@ -25,11 +25,16 @@
 
 @php
     $colorClasses = [
-        'blue' => 'bg-blue-500 text-white',
-        'amber' => 'bg-amber-500 text-white',
-        'green' => 'bg-green-500 text-white',
-        'red' => 'bg-red-600 text-white',
-        'indigo' => 'bg-indigo-500 text-white',
+        'blue' => 'bg-primary-500 text-white',
+        'primary' => 'bg-primary-500 text-white',
+        'amber' => 'bg-warning-500 text-white',
+        'warning' => 'bg-warning-500 text-white',
+        'green' => 'bg-success-500 text-white',
+        'success' => 'bg-success-500 text-white',
+        'red' => 'bg-danger-500 text-white',
+        'danger' => 'bg-danger-500 text-white',
+        'indigo' => 'bg-secondary-500 text-white',
+        'secondary' => 'bg-secondary-500 text-white',
     ];
 
     $iconSvgs = [
@@ -41,21 +46,21 @@
     ];
 @endphp
 
-<div {{ $attributes->merge(['class' => 'bg-white dark:bg-gray-800 rounded-lg shadow p-6']) }}>
+<div {{ $attributes->merge(['class' => 'bg-white dark:bg-slate-800 rounded-lg shadow p-6']) }}>
     <div class="flex items-center">
-        <div class="flex-shrink-0 {{ $colorClasses[$color] ?? $colorClasses['blue'] }} rounded-md p-3">
+        <div class="shrink-0 {{ $colorClasses[$color] ?? $colorClasses['blue'] }} rounded-lg p-3">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 {!! $iconSvgs[$icon] ?? $iconSvgs['inbox'] !!}
             </svg>
         </div>
         <div class="ml-4 flex-1">
-            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ $title }}</p>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ $title }}</p>
             <div class="flex items-baseline">
-                <p class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                <p class="text-2xl font-semibold text-slate-900 dark:text-slate-100">
                     {{ $value }}
                 </p>
                 @if($trend)
-                    <span class="ml-2 text-sm font-medium {{ $trendDirection === 'up' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                    <span class="ml-2 text-sm font-medium {{ $trendDirection === 'up' ? 'text-success-500 dark:text-success-400' : 'text-danger-500 dark:text-danger-400' }}">
                         @if($trendDirection === 'up')
                             ↑
                         @elseif($trendDirection === 'down')
@@ -68,3 +73,4 @@
         </div>
     </div>
 </div>
+

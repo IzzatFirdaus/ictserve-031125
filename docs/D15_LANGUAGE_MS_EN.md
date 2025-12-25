@@ -1,7 +1,7 @@
 # Dokumentasi Bahasa Sistem ICTServe
 
 **Versi**: 3.6.1  
-**Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/), [MyGOV Digital Service Standards v2.1.0](https://www.malaysia.gov.my/portal/content/30118), [MYDS Guidelines](https://design.digital.gov.my/)  
+**Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/), [MyGOV Digital Service Standards v2.1.0](https://www.malaysia.gov.my/portal/content/30118), [MYDS Guidelines](https://design.digital.gov.my/), MDGDM (Manual Reka Bentuk Digital Kerajaan Malaysia), DDSA, ISO 9241-210, ISO 27701  
 **Tarikh Kemas Kini Terakhir**: 17 Disember 2025
 
 > **PENTING (v3.6.0+)**: Sistem ICTServe kini menggunakan **Bahasa Melayu sahaja** untuk semua antara muka pengguna termasuk AI Chatbot (v3.6.1). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal dan kemungkinan penggunaan masa depan, tetapi penukar bahasa (language switcher) telah dilumpuhkan.
@@ -30,7 +30,7 @@
 | ------ | ------------ | ------------------------------------ | -------------------------------------------------- |
 | v3.5.0 | November 2025 | Dwibahasa (Bahasa Melayu + Inggeris) | True Hybrid Architecture, Self-Registration        |
 | v3.6.0 | Disember 2025 | Bahasa Melayu sahaja                 | Language Switcher dilumpuhkan, Theme Switcher baru |
-| v3.6.1 | 17 Disember 2025 | Bahasa Melayu sahaja                 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Cloud Hybrid AI Architecture (D18 v1.0.1): AI responses dalam Bahasa Melayu, terminologi AI, FAQ Bot, BedrockChat, lang/en/ technical reference comments, lang/ms/ version headers |
+| v3.6.1 | 17 Disember 2025 | Bahasa Melayu sahaja                 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0, Filament 4.3.1. Cloud Hybrid AI Architecture (D18 v1.0.1): AI responses dalam Bahasa Melayu, terminologi AI, FAQ Bot, BedrockChat, lang/en/ technical reference comments, lang/ms/ version headers |
 
 ---
 

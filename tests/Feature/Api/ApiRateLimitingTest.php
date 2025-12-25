@@ -201,8 +201,8 @@ class ApiRateLimitingTest extends TestCase
         // Note: The response may be 401/403 due to auth, but headers should still be present
         $this->assertTrue(
             $response->headers->has('X-RateLimit-Limit') ||
-            $response->headers->has('X-RateLimit-Remaining') ||
-            $response->getStatusCode() === 429, // Too Many Requests also indicates rate limiting is working
+                $response->headers->has('X-RateLimit-Remaining') ||
+                $response->getStatusCode() === 429, // Too Many Requests also indicates rate limiting is working
             'Rate limiting headers or 429 response should be present'
         );
     }

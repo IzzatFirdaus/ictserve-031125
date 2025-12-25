@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Progress Indicator Volt Component v3.6.0
  *
@@ -140,19 +140,19 @@ on([
     x-transition:leave-end="opacity-0 transform -translate-y-2" class="progress-indicator" role="progressbar"
     aria-valuemin="0" aria-valuemax="{{ $total }}" aria-valuenow="{{ $isIndeterminate ? null : $progress }}"
     aria-valuetext="{{ $message }}" aria-label="Kemajuan operasi">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-card border border-gray-200 dark:border-gray-700 p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-card border border-slate-200 dark:border-slate-700 p-4">
         {{-- Header with message and percentage --}}
         <div class="flex items-center justify-between mb-3">
             <div class="flex-1">
                 {{-- Message with ARIA live region --}}
-                <p class="text-sm font-medium text-gray-900 dark:text-gray-100" role="status" aria-live="polite"
+                <p class="text-sm font-medium text-slate-900 dark:text-slate-100" role="status" aria-live="polite"
                     aria-atomic="true">
                     {{ $message }}
                 </p>
 
                 {{-- Step indicator --}}
                 @if ($this->stepText)
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                         {{ $this->stepText }}
                     </p>
                 @endif
@@ -160,14 +160,14 @@ on([
 
             {{-- Percentage --}}
             @if (!$isIndeterminate)
-                <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-4">
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-4">
                     {{ $this->percentage }}%
                 </span>
             @endif
         </div>
 
         {{-- Progress Bar --}}
-        <div class="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div class="relative h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
             @if ($isIndeterminate)
                 {{-- Indeterminate animation --}}
                 <div @class([
@@ -198,7 +198,7 @@ on([
                         <div @class([
                             'flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium transition-colors',
                             'bg-primary-500 text-white' => $i <= $currentStep,
-                            'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400' =>
+                            'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400' =>
                                 $i > $currentStep,
                         ])>
                             @if ($i < $currentStep)
@@ -218,7 +218,7 @@ on([
                             <div @class([
                                 'w-full h-0.5 mx-2',
                                 'bg-primary-500' => $i < $currentStep,
-                                'bg-gray-200 dark:bg-gray-700' => $i >= $currentStep,
+                                'bg-slate-200 dark:bg-slate-700' => $i >= $currentStep,
                             ])></div>
                         @endif
                     </div>

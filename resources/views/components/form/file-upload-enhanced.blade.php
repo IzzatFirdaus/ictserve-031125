@@ -239,7 +239,7 @@
         {{-- Upload prompt --}}
         <div class="mt-4">
             <label for="{{ $id }}"
-                class="inline-flex items-center justify-center px-4 py-2 min-h-11 min-w-11 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-2 cursor-pointer transition-colors duration-200">
+                class="inline-flex items-center justify-center px-4 py-2 min-h-11 min-w-11 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus-within:ring-3 focus-within:ring-primary-500 focus-within:ring-offset-2 cursor-pointer transition-colors duration-200">
                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -338,7 +338,7 @@
                             </div>
                         </div>
                         <button type="button" @click="removeFile(index)"
-                            class="ml-4 p-2 min-h-11 min-w-11 flex items-center justify-center text-gray-400 hover:text-danger-600 dark:hover:text-danger-400 focus:outline-none focus:ring-2 focus:ring-danger-500 focus:ring-offset-2 rounded-md transition-colors"
+                            class="ml-4 p-2 min-h-11 min-w-11 flex items-center justify-center text-gray-400 hover:text-danger-600 dark:hover:text-danger-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 rounded-lg transition-colors"
                             :aria-label="'{{ __('Remove') }} ' + file.name">
                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor" aria-hidden="true">

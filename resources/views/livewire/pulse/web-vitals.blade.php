@@ -33,17 +33,17 @@
                                 </span>
                                 @if ($metric['rating'] === 'good')
                                     <span
-                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
+                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-800 dark:bg-success-800 dark:text-success-100">
                                         Good
                                     </span>
                                 @elseif ($metric['rating'] === 'needs-improvement')
                                     <span
-                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100">
+                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-warning-100 text-warning-800 dark:bg-warning-800 dark:text-warning-100">
                                         Needs Improvement
                                     </span>
                                 @elseif ($metric['rating'] === 'poor')
                                     <span
-                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100">
+                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-danger-100 text-danger-800 dark:bg-danger-800 dark:text-danger-100">
                                         Poor
                                     </span>
                                 @endif
@@ -55,11 +55,11 @@
 
                         {{-- Progress Bar --}}
                         <div class="relative w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <div class="absolute top-0 left-0 h-full transition-all duration-300 @if ($metric['rating'] === 'good') bg-green-500
+                            <div class="absolute top-0 left-0 h-full transition-all duration-300 @if ($metric['rating'] === 'good') bg-success-500
                                 @elseif ($metric['rating'] === 'needs-improvement')
-                                    bg-yellow-500
+                                    bg-warning-500
                                 @else
-                                    bg-red-500 @endif
+                                    bg-danger-500 @endif
                                 "
                                 style="width: {{ min(100, $metric['percentage']) }}%">
                             </div>
@@ -74,15 +74,15 @@
             </div>
 
             {{-- Performance Insights --}}
-            <div class="mx-6 mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <div class="mx-6 mb-4 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
                 <div class="flex items-start gap-2">
-                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" fill="currentColor"
+                    <svg class="w-5 h-5 text-primary-600 dark:text-primary-400 mt-0.5 shrink-0" fill="currentColor"
                         viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                             clip-rule="evenodd" />
                     </svg>
-                    <div class="text-xs text-blue-800 dark:text-blue-200">
+                    <div class="text-xs text-primary-800 dark:text-primary-200">
                         <p class="font-medium mb-1">Core Web Vitals Targets</p>
                         <ul class="space-y-0.5">
                             <li>• LCP: &lt;2.5s (good), &lt;4s (needs improvement)</li>

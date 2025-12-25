@@ -52,7 +52,12 @@ class AuditHashingService
      * @param  array  $data  Data untuk dihash
      * @return string Hash SHA-256
      */
-    public function generateHash(array $data): string
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function generateHash(array $data): string
     {
         // Susun kunci untuk konsistensi
         ksort($data);
@@ -69,11 +74,16 @@ class AuditHashingService
     /**
      * Jana hash dengan rantaian (chain of custody)
      *
-     * @param  array  $data  Data untuk dihash
+     * @param  array<string, mixed>  $data  Data untuk dihash
      * @param  string|null  $previousHash  Hash entri sebelumnya
      * @return array Hash dan previous_hash
      */
-    public function generateChainedHash(array $data, ?string $previousHash = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function generateChainedHash(array $data, ?string $previousHash = null): array
     {
         // Tambah previous_hash ke data untuk rantaian
         $dataWithChain = array_merge($data, ['_previous_hash' => $previousHash ?? 'genesis']);
@@ -114,7 +124,12 @@ class AuditHashingService
      * @param  int  $limit  Had bilangan entri untuk disahkan
      * @return array Hasil pengesahan
      */
-    public function verifyAuditChain(int $limit = 1000): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function verifyAuditChain(int $limit = 1000): array
     {
         $logs = MessageLog::orderBy('id', 'asc')
             ->limit($limit)
@@ -172,7 +187,12 @@ class AuditHashingService
      * @param  array  $data  Data log
      * @return MessageLog Entri log yang dicipta
      */
-    public function createHashedLogEntry(array $data): MessageLog
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public function createHashedLogEntry(array $data): MessageLog
     {
         // Dapatkan hash terakhir untuk rantaian
         $lastLog = MessageLog::orderBy('id', 'desc')->first();
@@ -215,7 +235,12 @@ class AuditHashingService
     /**
      * Trigger amaran pengubahsuaian
      */
-    private function triggerTamperingAlert(array $results): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function triggerTamperingAlert(array $results): void
     {
         if (! $this->config['alert_on_tampering']) {
             return;
@@ -242,7 +267,12 @@ class AuditHashingService
     /**
      * Log hasil pengesahan
      */
-    private function logVerificationResult(array $results): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function logVerificationResult(array $results): void
     {
         $level = $results['invalid_entries'] > 0 ? 'warning' : 'info';
 
@@ -259,7 +289,12 @@ class AuditHashingService
      *
      * @return array Statistik audit
      */
-    public function getAuditStatistics(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAuditStatistics(): array
     {
         return [
             'total_logs' => MessageLog::count(),
@@ -318,7 +353,12 @@ class AuditHashingService
      * @param  \Carbon\Carbon  $endDate  Tarikh akhir
      * @return array Data eksport
      */
-    public function exportAuditLogs(\Carbon\Carbon $startDate, \Carbon\Carbon $endDate): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function exportAuditLogs(\Carbon\Carbon $startDate, \Carbon\Carbon $endDate): array
     {
         $logs = MessageLog::whereBetween('created_at', [$startDate, $endDate])
             ->orderBy('id', 'asc')

@@ -78,12 +78,20 @@ class GenerateMonthlyReports extends Command
      *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
      * }  $reportData
      */
+
+    /**
+     * @param  array<string, mixed>  $reportData
+     */
     private function displayMonthlyReportSummary(array $reportData): void
     {
-        $helpdesk = $reportData['helpdesk_stats'];
-        $loan = $reportData['loan_stats'];
-        $asset = $reportData['asset_stats'];
-        $sla = $reportData['sla_compliance'];
+        /** @var array<string, mixed> $helpdesk */
+        $helpdesk = is_array($reportData['helpdesk_stats'] ?? null) ? $reportData['helpdesk_stats'] : [];
+        /** @var array<string, mixed> $loan */
+        $loan = is_array($reportData['loan_stats'] ?? null) ? $reportData['loan_stats'] : [];
+        /** @var array<string, mixed> $asset */
+        $asset = is_array($reportData['asset_stats'] ?? null) ? $reportData['asset_stats'] : [];
+        /** @var array<string, mixed> $sla */
+        $sla = is_array($reportData['sla_compliance'] ?? null) ? $reportData['sla_compliance'] : [];
 
         $this->newLine();
         $this->info('=== MONTHLY REPORT SUMMARY ===');
@@ -105,12 +113,18 @@ class GenerateMonthlyReports extends Command
      *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
      * }  $reportData
      */
+
+    /**
+     * @param  array<string, mixed>  $reportData
+     */
     private function displayMonthlyInsights(array $reportData): void
     {
         $this->newLine();
         $this->info('=== KEY MONTHLY INSIGHTS ===');
-        $helpdesk = $reportData['helpdesk_stats'];
-        $loan = $reportData['loan_stats'];
+        /** @var array<string, mixed> $helpdesk */
+        $helpdesk = is_array($reportData['helpdesk_stats'] ?? null) ? $reportData['helpdesk_stats'] : [];
+        /** @var array<string, mixed> $loan */
+        $loan = is_array($reportData['loan_stats'] ?? null) ? $reportData['loan_stats'] : [];
 
         $this->info("Open tickets to monitor: {$helpdesk['open_tickets']}");
         $this->info("Overdue loan returns: {$loan['overdue_returns']}");
@@ -122,14 +136,21 @@ class GenerateMonthlyReports extends Command
      *     asset_stats: array{most_requested: array<int, array{name: string, asset_code: string, request_count: int}>}
      * }  $reportData
      */
+
+    /**
+     * @param  array<string, mixed>  $reportData
+     */
     private function displayRecommendations(array $reportData): void
     {
-        $assets = $reportData['asset_stats']['most_requested'];
+        $assetStats = is_array($reportData['asset_stats'] ?? null) ? $reportData['asset_stats'] : [];
+        $assets = is_array($assetStats['most_requested'] ?? null) ? $assetStats['most_requested'] : [];
 
         if (! empty($assets)) {
             $this->warn('=== ASSET REQUEST INSIGHTS ===');
             foreach ($assets as $asset) {
-                $this->line(" - {$asset['name']} ({$asset['asset_code']}): {$asset['request_count']} requests");
+                if (is_array($asset)) {
+                    $this->line(" - {$asset['name']} ({$asset['asset_code']}): {$asset['request_count']} requests");
+                }
             }
             $this->newLine();
         }

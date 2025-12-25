@@ -114,7 +114,7 @@ default => 'sm:max-w-2xl',
     <div x-show="show" x-transition:enter="ease-out duration-400" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-        class="fixed inset-0 bg-gray-500/75 dark:bg-gray-900/75 transition-opacity"
+        class="fixed inset-0 bg-slate-500/75 dark:bg-slate-900/75 transition-opacity"
         @if ($closeable) @click="close()" @endif aria-hidden="true"></div>
 
     {{-- Modal Panel Container --}}
@@ -127,12 +127,12 @@ default => 'sm:max-w-2xl',
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-(--radius-l) bg-white dark:bg-gray-800 text-left shadow-dropdown transition-all sm:my-8 sm:w-full {{ $maxWidthClass }}">
+                class="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 text-left shadow-dropdown transition-all sm:my-8 sm:w-full {{ $maxWidthClass }}">
 
                 {{-- Close Button --}}
                 @if ($closeable)
                 <button type="button" @click="close()"
-                    class="absolute top-4 right-4 z-10 inline-flex items-center justify-center min-w-11 min-h-11 -m-2 rounded-(--radius-s) text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 focus:outline-none transition-colors"
+                    class="absolute top-4 right-4 z-10 inline-flex items-center justify-center min-w-11 min-h-11 -m-2 rounded-lg text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors"
                     aria-label="{{ __('common.close_modal') }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         aria-hidden="true">

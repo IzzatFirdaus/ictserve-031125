@@ -72,7 +72,7 @@
 
             {{-- Dismiss button --}}
             <button type="button" @click="dismiss()"
-                class="shrink-0 p-1 rounded-full hover:bg-warning-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-warning-500"
+                class="shrink-0 p-1 rounded-full hover:bg-warning-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-warning-500"
                 aria-label="{{ __('Tutup pemberitahuan') }}">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

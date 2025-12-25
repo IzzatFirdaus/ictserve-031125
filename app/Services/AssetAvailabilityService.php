@@ -301,7 +301,12 @@ class AssetAvailabilityService
      * @param  int|null  $excludeApplicationId  Exclude this application from conflict check
      * @return array<int, bool> Array keyed by asset ID with availability status
      */
-    public function checkAvailability(
+    
+
+/**
+ * @param array<string, mixed> $assetIds
+ */
+public function checkAvailability(
         array $assetIds,
         string $startDate,
         string $endDate,

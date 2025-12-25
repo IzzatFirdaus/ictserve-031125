@@ -38,7 +38,7 @@
 @props([
 'align' => 'right',
 'width' => '48',
-'contentClasses' => 'py-1 bg-white dark:bg-gray-800',
+'contentClasses' => 'py-1 bg-white dark:bg-slate-800',
 'closeOnClick' => true,
 'disabled' => false,
 ])
@@ -132,7 +132,7 @@ default => is_numeric($width) ? "w-{$width}" : $width,
         x-transition:leave-end="opacity-0 scale-95" x-cloak @keydown.arrow-down.prevent="focusNext()"
         @keydown.arrow-up.prevent="focusPrev()" @keydown.home.prevent="focusFirst()" @keydown.end.prevent="focusLast()"
         @keydown.tab="close()" @if ($closeOnClick) @click="close()" @endif
-        class="absolute z-50 mt-2 {{ $widthClass }} rounded-(--radius-l) {{ $alignmentClasses }} shadow-dropdown" role="menu"
+        class="absolute z-50 mt-2 {{ $widthClass }} rounded-lg {{ $alignmentClasses }} shadow-dropdown" role="menu"
         aria-orientation="vertical">
         <div class="rounded-lg shadow-lg ring-1 ring-black/5 dark:ring-white/10 {{ $contentClasses }}">
             {{ $content }}

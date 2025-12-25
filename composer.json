@@ -1,130 +1,159 @@
 {
-    "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
-    "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
-    "license": "MIT",
-    "require": {
-        "php": "^8.2",
-        "aws/aws-sdk-php": "^3.363",
-        "bacon/bacon-qr-code": "^3.0",
-        "barryvdh/laravel-dompdf": "^3.1",
-        "cloudstudio/ollama-laravel": "^1.1",
-        "filament/filament": "4.1.10",
-        "laravel/framework": "^12.0",
-        "laravel/mcp": "^0.3.4",
-        "laravel/pulse": "^1.4",
-        "laravel/reverb": "*",
-        "laravel/sanctum": "^4.2",
-        "laravel/socialite": "*",
-        "laravel/tinker": "^2.10.1",
-        "league/commonmark": "^2.8",
-        "livewire/livewire": "^3.6.4",
-        "livewire/volt": "^1.7.0",
-        "maatwebsite/excel": "^3.1",
-        "owen-it/laravel-auditing": "^14.0",
-        "phpoffice/phpword": "^1.4",
-        "pragmarx/google2fa-laravel": "^2.3",
-        "pusher/pusher-php-server": "^7.0",
-        "spatie/laravel-activitylog": "^4.10",
-        "spatie/laravel-permission": "^6.23",
-        "spatie/pdf-to-text": "^1.54"
-    },
-    "require-dev": {
-        "barryvdh/laravel-ide-helper": "^3.6",
-        "doctrine/dbal": "*",
-        "fakerphp/faker": "^1.24",
-        "larastan/larastan": "*",
-        "laravel/boost": "^1.8",
-        "laravel/breeze": "^2.3",
-        "laravel/pail": "^1.2.2",
-        "laravel/pint": "^1.24",
-        "laravel/telescope": "^5.15",
-        "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.6",
-        "nunomaduro/phpinsights": "^2.11",
-        "phpunit/phpunit": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
-    },
-    "scripts": {
-        "boost": "@php artisan boost:mcp",
-        "boost:install": "@php artisan boost:install --ansi --no-interaction",
-        "boost:update": "@php artisan boost:update --ansi",
-        "setup": [
-            "composer install",
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "@php artisan key:generate",
-            "@php artisan migrate --force",
-            "npm install",
-            "npm run build"
-        ],
-        "dev": [
-            "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
-        ],
-        "test": [
-            "@php artisan config:clear --ansi",
-            "@php artisan test"
-        ],
-        "analyse": "vendor/bin/phpstan analyse",
-        "analyse:save": "php -r \"if (!is_dir('test-results/larastan')) { mkdir('test-results/larastan', 0777, true); }\" && php -r \"if (!is_file('vendor/larastan/larastan/extension.neon')) { fwrite(STDERR, 'ERROR: Missing larastan extension vendor/larastan/larastan/extension.neon\n'); exit(2);}\" && vendor/bin/phpstan analyse --no-progress 2>&1 | tee test-results/larastan/larastan-results.txt",
-        "insights": "vendor/bin/phpinsights",
-        "lint": [
-            "@analyse",
-            "@insights"
-        ],
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@php -r \"if(class_exists('Laravel\\\\Boost\\\\BoostServiceProvider')){passthru('php artisan boost:update --ansi');}\""
-        ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@php -r \"if(class_exists('Laravel\\\\Boost\\\\BoostServiceProvider')){passthru('php artisan boost:update --ansi');}\""
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
-        ],
-        "pre-package-uninstall": [
-            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
-        ]
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        },
-        "audit": {
-            "ignore": ["PKSA-yb9k-ykqx-p2zw"]
-        },
-        "vendor-dir": "/tmp/vendor"
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+	"$schema": "https://getcomposer.org/schema.json",
+	"name": "laravel/laravel",
+	"type": "project",
+	"description": "The skeleton application for the Laravel framework.",
+	"keywords": [
+		"laravel",
+		"framework"
+	],
+	"license": "MIT",
+	"require": {
+		"php": "^8.2",
+		"aws/aws-php-sns-message-validator": "^1.10",
+		"aws/aws-sdk-php": "^3.363",
+		"bacon/bacon-qr-code": "^3.0",
+		"barryvdh/laravel-dompdf": "^3.1",
+		"cloudstudio/ollama-laravel": "^1.1",
+		"filament/filament": "^4.1.10",
+		"filament/query-builder": "*",
+		"laravel/framework": "^12.0",
+		"laravel/horizon": "^5.41",
+		"laravel/mcp": "^0.3.4",
+		"laravel/pulse": "^1.4",
+		"laravel/reverb": "*",
+		"laravel/sanctum": "^4.2",
+		"laravel/socialite": "*",
+		"laravel/tinker": "^2.10.1",
+		"league/commonmark": "^2.8",
+		"livewire/livewire": "^3.6.4",
+		"livewire/volt": "^1.7.0",
+		"maatwebsite/excel": "^3.1",
+		"owen-it/laravel-auditing": "^14.0",
+		"php-http/discovery": "^1.20",
+		"phpoffice/phpword": "^1.4",
+		"pragmarx/google2fa-laravel": "^2.3",
+		"predis/predis": "^3.3",
+		"pusher/pusher-php-server": "^7.0",
+		"spatie/laravel-activitylog": "^4.10",
+		"spatie/laravel-permission": "^6.23",
+		"spatie/pdf-to-text": "^1.54"
+	},
+	"require-dev": {
+		"barryvdh/laravel-ide-helper": "^3.6",
+		"doctrine/dbal": "*",
+		"fakerphp/faker": "^1.24",
+		"filp/whoops": "^2.18",
+		"larastan/larastan": "*",
+		"laravel/boost": "^1.8",
+		"laravel/breeze": "^2.3",
+		"laravel/pail": "^1.2.2",
+		"laravel/pint": "^1.24",
+		"laravel/telescope": "^5.15",
+		"mockery/mockery": "^1.6",
+		"nunomaduro/collision": "^8.6",
+		"nunomaduro/phpinsights": "^2.11",
+		"phpunit/phpunit": "^11.0",
+		"pragmarx/recovery": "^0.2.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"App\\": "app/",
+			"Database\\Factories\\": "database/factories/",
+			"Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "tests/"
+		}
+	},
+	"scripts": {
+		"boost": "@php artisan boost:mcp",
+		"boost:install": "@php artisan boost:install --ansi --no-interaction",
+		"boost:update": "@php artisan boost:update --ansi",
+		"setup": [
+			"@composer install",
+			"@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+			"@php artisan key:generate",
+			"@php artisan migrate --force",
+			"npm install",
+			"npm run build"
+		],
+		"dev": [
+			"Composer\\Config::disableProcessTimeout",
+			"npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+		],
+		"test": [
+			"@php artisan config:clear --ansi",
+			"@php artisan test"
+		],
+		"test:coverage": [
+			"@php artisan config:clear --ansi",
+			"@php artisan test --coverage --min=80"
+		],
+		"format": "@php vendor/bin/pint --dirty",
+		"format:all": "@php vendor/bin/pint",
+		"analyse": "vendor/bin/phpstan analyse",
+		"analyse:save": "php -r \"if (!is_dir('test-results/larastan')) { mkdir('test-results/larastan', 0777, true); }\" && php -r \"if (!is_file('vendor/larastan/larastan/extension.neon')) { fwrite(STDERR, 'ERROR: Missing larastan extension vendor/larastan/larastan/extension.neon\\n'); exit(2);}\" && vendor/bin/phpstan analyse --no-progress 2>&1 | tee test-results/larastan/larastan-results.txt",
+		"insights": "vendor/bin/phpinsights",
+		"lint": [
+			"@analyse",
+			"@insights"
+		],
+		"post-autoload-dump": [
+			"Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+			"@php artisan package:discover --ansi"
+		],
+		"post-update-cmd": [
+			"@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+			"@php artisan boost:update --ansi"
+		],
+		"post-root-package-install": [
+			"@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+		],
+		"post-create-project-cmd": [
+			"@php artisan key:generate --ansi",
+			"@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+			"@php artisan migrate --graceful --ansi"
+		],
+		"pre-package-uninstall": [
+			"Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+		]
+	},
+	"extra": {
+		"laravel": {
+			"dont-discover": [
+				"barryvdh/laravel-ide-helper",
+				"laravel/boost",
+				"laravel/pail"
+			]
+		}
+	},
+	"config": {
+		"optimize-autoloader": true,
+		"preferred-install": "dist",
+		"sort-packages": true,
+		"platform-check": false,
+		"ignore-platform-req": [
+			"ext-pcntl",
+			"ext-posix"
+		],
+		"allow-plugins": {
+			"pestphp/pest-plugin": true,
+			"php-http/discovery": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"audit": {
+			"ignore": [
+				"PKSA-yb9k-ykqx-p2zw"
+			]
+		},
+		"vendor-dir": "vendor",
+		"platform": {
+			"php": "8.4.11"
+		}
+	},
+	"minimum-stability": "stable",
+	"prefer-stable": true
 }

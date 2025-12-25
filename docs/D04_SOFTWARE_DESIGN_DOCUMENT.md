@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2
+**Standard Rujukan:** ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, IEEE 1016:2009, ISO 9241-210, OWASP Transport Security, RFC 5322 (Format E-mel), ISO 8601 (Format Tarikh/Masa), TLS 1.3, AES-256
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                                    |
 | **Status**           | Aktif                                               |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                          |
-| **Pematuhi**         | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2 |
+| **Pematuhi**         | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, IEEE 1016:2009, ISO 9241-210, OWASP Transport Security |
 | **Bahasa**           | Bahasa Melayu sahaja (v3.6.0+)                      |
 
 > Notis Penggunaan Dalaman: Sistem ini digunakan secara dalaman oleh staf dan pegawai gred MOTAC; ia bukan sistem awam.
@@ -29,13 +29,13 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. **Cloud Hybrid AI Integration**: Tambah §8 AI Integration Layer dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Model routing pintar, streaming responses, web-augmented responses, conversation management. Service layer design untuk RagService, BedrockService, ModelRouter. | Pasukan Pembangunan BPM |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Filament 4.3.1, Laravel Horizon 5.41.0. **Cloud Hybrid AI Integration**: Tambah §8 AI Integration Layer dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Model routing pintar, streaming responses, web-augmented responses, conversation management. Service layer design untuk RagService, BedrockService, ModelRouter. | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini semua modul (registration, login, account linking, notifications) kepada Bahasa Melayu sahaja. Language switcher dilumpuhkan. Bilingual support→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                 | Pasukan Pembangunan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Restore user_id nullable FK dalam HelpdeskTicket/LoanApplication. Auth::check() logic untuk auto-fill. ERD update: user_id (0..1 relationship). Penyelarasan dengan D00/D02 v3.4.0.                                                                  | Pasukan Pembangunan BPM |
-| 3.3.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D03 v3.2.0.                                                 | Pasukan Pembangunan BPM |
+| 3.3.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.43.1, PHP 8.2.12, Livewire 3.7.3, Filament 4.3.1, PHPUnit 11.5.46, Larastan 3.8.1, Laravel Pint 1.26.0). Penyelarasan dengan D00-D03 v3.2.0.                                                 | Pasukan Pembangunan BPM |
 | 3.2.0 | 29 November 2025 | Kemaskini rekabentuk guest-first: penjelasan aliran kerja tanpa akaun pengguna, token-based approval, status checking, dan integrasi real-time WebSocket untuk notifikasi pentadbir                                                                                       | Pasukan Pembangunan BPM |
-| 3.1.0 | 29 November 2025 | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Penambahan komunikasi real-time WebSocket.                                 | Pasukan Pembangunan BPM |
+| 3.1.0 | 29 November 2025 | Kemaskini kepada teknologi semasa: Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.18, Laravel Reverb 1.6.3, Laravel Echo 2.2.6, PHPUnit 11.5.46. Penambahan komunikasi real-time WebSocket.                                 | Pasukan Pembangunan BPM |
 | 3.0.0 | 31 Oktober 2025  | Rekabentuk dikemas kini kepada seni bina dalaman (internal-only); autentikasi pengguna dalaman, RBAC, penyusunan semula modul Helpdesk & Loan, dan pengukuhan audit/kelulusan dalam sistem.                                                                               | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                    | Pasukan BPM             |
 | 1.0.0 | September 2025   | Versi awal SDD                                                                                                                                                                                                                                                            | Pasukan BPM             |
@@ -59,7 +59,7 @@
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.5.0)
 - **[D15_LANGUAGE_MS_EN.md]** - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
-- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Pengurusan queue (Laravel Queue + Redis; Horizon tidak dipasang)
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Pengurusan queue (Laravel Queue + Redis; Laravel Horizon 5.41.0 dipasang)
 - **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture (v1.0.0)
 - **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
 - **docs/loan_form_to_model.md** - Asset loan data mapping
@@ -72,11 +72,11 @@ SDD ini menghuraikan rekabentuk teknikal ICTServe sebagai sistem dalaman (intern
 
 - **Staf** boleh pilih login (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu
 - **Database** menyokong nullable `user_id` FK dalam `helpdesk_tickets` dan `loan_applications`
-- **Pentadbir** (`admin` & `superuser`) menguruskan tiket, permohonan, dan aset melalui panel Filament 4.1.10
+- **Pentadbir** (`admin` & `superuser`) menguruskan tiket, permohonan, dan aset melalui panel Filament 4.3.1
 - **Kelulusan** diproses melalui pautan e-mel bertanda tangan (signed URL + token)
 - **Status** boleh disemak menggunakan token unik
 
-Sistem dibina menggunakan Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.2 untuk komunikasi masa nyata (notifikasi pentadbir).
+Sistem dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.18, dan Laravel Reverb 1.6.3 untuk komunikasi masa nyata (notifikasi pentadbir).
 
 ---
 
@@ -84,10 +84,10 @@ Sistem dibina menggunakan Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Alpine.j
 
 Skop merangkumi:
 
-- **Portal Hybrid**: Borang helpdesk dan pinjaman aset dengan pilihan login (Laravel Breeze) atau tetamu (Laravel Blade + Livewire 3.7.0, Volt 1.10.1, Alpine.js 3)
-- **Portal Pentadbir**: Panel Filament 4.1.10 untuk `admin` dan `superuser` dengan autentikasi Laravel Breeze
-- **Backend Servis**: Laravel 12.40.1 untuk validasi, notifikasi, audit, dan workflow kelulusan
-- **Komunikasi Real-time**: Laravel Reverb 1.6.2 (WebSocket server) dan Laravel Echo 2.2.6 (client) untuk notifikasi pentadbir
+- **Portal Hybrid**: Borang helpdesk dan pinjaman aset dengan pilihan login (Laravel Breeze) atau tetamu (Laravel Blade + Livewire 3.7.3, Volt 1.10.1, Alpine.js 3)
+- **Portal Pentadbir**: Panel Filament 4.3.1 untuk `admin` dan `superuser` dengan autentikasi Laravel Breeze
+- **Backend Servis**: Laravel 12.43.1 untuk validasi, notifikasi, audit, dan workflow kelulusan
+- **Komunikasi Real-time**: Laravel Reverb 1.6.3 (WebSocket server) dan Laravel Echo 2.2.6 (client) untuk notifikasi pentadbir
 - **Token-Based Operations**: Signed URLs untuk kelulusan e-mel, status tokens untuk semakan tetamu
 - **Penyimpanan**: MySQL 8.0 (data), S3/MinIO (lampiran), Redis (queue & cache)
 - **Integrasi**: E-mel (SMTP), SMS (opsyen), direktori/kamus dalaman bahagian (bukan LDAP/SSO dalam v3.4.0)
@@ -104,8 +104,8 @@ Di luar skop:
 ### 3.1. Architectural Pattern: MVC + Service Layer + Guest-First
 
 - **Presentation Layer:**
-  - **Hybrid Portal**: Blade + Livewire 3.7.0 + Volt 1.10.1 + Alpine.js 3 (pilihan login atau tetamu)
-  - **Admin Panel**: Filament 4.1.10 (dengan autentikasi Laravel Breeze)
+  - **Hybrid Portal**: Blade + Livewire 3.7.3 + Volt 1.10.1 + Alpine.js 3 (pilihan login atau tetamu)
+  - **Admin Panel**: Filament 4.3.1 (dengan autentikasi Laravel Breeze)
   - **Real-time**: Laravel Echo 2.2.6 client untuk notifikasi pentadbir
 - **Application Layer:**
   - Controllers untuk guest routes (helpdesk, loan, status, approval)
@@ -125,13 +125,13 @@ Di luar skop:
   - `owen-it/laravel-auditing` v14.x untuk field-level audit trail (compliance, PDPA)
   - `spatie/laravel-activitylog` v4.x untuk user activity logging (operations, dashboard)
   - Laravel Telescope v5.x untuk debugging (superuser only, unrestricted)
-  - WebSocket server (Laravel Reverb 1.6.2)
+  - WebSocket server (Laravel Reverb 1.6.3)
 
 ### 3.2. Layered Components
 
 | Lapisan        | Komponen                                                                                                                                                                                  | Nota                                               |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| Presentation   | **Hybrid**: Livewire 3.7.0 + Volt 1.10.1 components (`helpdesk.ticket-form`, `loan.application-form`), Alpine.js 3 interactivity. **Admin**: Filament 4.1.10 resources dengan autentikasi | Mematuhi D12–D14, WCAG 2.2 AA                      |
+| Presentation   | **Hybrid**: Livewire 3.7.3 + Volt 1.10.1 components (`helpdesk.ticket-form`, `loan.application-form`), Alpine.js 3 interactivity. **Admin**: Filament 4.3.1 resources dengan autentikasi | Mematuhi D12–D14, WCAG 2.2 AA                      |
 | Service        | `HelpdeskService`, `LoanService`, `ApprovalService`, `NotificationService`, `TokenService`                                                                                                | Logik domain, workflow kelulusan, token generation |
 | Persistence    | Eloquent models (`HelpdeskTicket`, `LoanApplication`, `LoanApproval`, `User`, `StatusToken`)                                                                                              | Nullable user_id FK + guest tracking columns       |
 | Infrastructure | Queue jobs (Redis), mail templates (WCAG compliant), storage (S3/MinIO), WebSocket (Reverb)                                                                                               | Dependency injection via service container         |
@@ -141,13 +141,13 @@ Di luar skop:
 
 **Application Server:**
 
-- Laravel 12.40.1 monolith (Nginx 1.24 + PHP-FPM 8.2.12)
+- Laravel 12.43.1 monolith (Nginx 1.24 + PHP-FPM 8.2.12)
 - Vite 7.0.7 untuk asset bundling (CSS/JS)
 - Tailwind CSS 4.1.17 untuk styling
 
 **Real-time Communication:**
 
-- Laravel Reverb 1.6.2 (WebSocket server untuk notifikasi pentadbir)
+- Laravel Reverb 1.6.3 (WebSocket server untuk notifikasi pentadbir)
 - Laravel Echo 2.2.6 (client-side WebSocket integration)
 - Redis untuk broadcasting events
 
@@ -155,7 +155,7 @@ Di luar skop:
 
 - Redis 7.0 untuk queue dan cache
 - Supervisor untuk queue workers
-- Laravel Pulse + Filament Failed Jobs/Email Logs untuk pemantauan queue (Horizon tidak dipasang)
+- Laravel Pulse + Laravel Horizon 5.41.0 untuk pemantauan queue komprehensif
 
 **Data Storage:**
 
@@ -1324,7 +1324,7 @@ Refer to D05 (Data Migration Plan) and D06 (Data Migration Specification) for le
 
 ### 6.2. Admin Panel UI (Filament)
 
-**Filament 4.1.10 Customization:**
+**Filament 4.3.1 Customization:**
 
 - MOTAC branding (logo, colors)
 - Custom navigation groups
@@ -1513,7 +1513,7 @@ Log::info('Ticket created', [
 **Backend Performance:**
 
 - Laravel Telescope (development)
-- Laravel Pulse + Filament Failed Jobs untuk pemantauan queue (Horizon tidak dipasang)
+- Laravel Pulse + Laravel Horizon 5.41.0 untuk pemantauan queue komprehensif
 - Database query profiling (Laravel Debugbar)
 - APM tools (New Relic, Datadog - opsyen)
 
@@ -1571,7 +1571,7 @@ Log::info('Ticket created', [
 
 ### 9.1. Unit Testing
 
-**Framework**: PHPUnit 11.5.44
+**Framework**: PHPUnit 11.5.46
 
 **Test Coverage:**
 
@@ -1775,7 +1775,7 @@ test("guest can submit helpdesk ticket", async ({ page }) => {
 **JavaScript Optimization:**
 
 - Alpine.js 3 untuk lightweight interactivity
-- Livewire 3.7.0 untuk server-side rendering
+- Livewire 3.7.3 untuk server-side rendering
 - Defer non-critical scripts
 - Preload critical resources
 
@@ -1804,7 +1804,7 @@ test("guest can submit helpdesk ticket", async ({ page }) => {
 **Queue Optimization:**
 
 - **Redis**: Fast queue driver
-- **Queue Monitoring**: Laravel Pulse + Filament Failed Jobs (Horizon tidak dipasang)
+- **Queue Monitoring**: Laravel Pulse + Laravel Horizon 5.41.0 (dashboard `/horizon`)
 - **Job Batching**: Process multiple jobs efficiently
 - **Failed Job Handling**: Automatic retry dengan exponential backoff
 
@@ -1887,14 +1887,14 @@ test("guest can submit helpdesk ticket", async ({ page }) => {
 
 | Category               | Technology        | Version | Purpose                     |
 | ---------------------- | ----------------- | ------- | --------------------------- |
-| Backend Framework      | Laravel           | 12.40.1 | Application framework       |
-| Frontend Framework     | Livewire          | 3.7.0   | Reactive components         |
+| Backend Framework      | Laravel           | 12.43.1 | Application framework       |
+| Frontend Framework     | Livewire          | 3.7.3   | Reactive components         |
 | Single-File Components | Volt              | 1.10.1  | Simplified Livewire syntax  |
 | JavaScript Framework   | Alpine.js         | 3       | Lightweight interactivity   |
-| CSS Framework          | Tailwind CSS      | 4.1.17  | Utility-first styling       |
-| Admin Panel            | Filament          | 4.1.10  | CRUD interface              |
+| CSS Framework          | Tailwind CSS      | 4.1.18  | Utility-first styling       |
+| Admin Panel            | Filament          | 4.3.1   | CRUD interface              |
 | Build Tool             | Vite              | 7.0.7   | Asset bundling              |
-| WebSocket Server       | Laravel Reverb    | 1.6.2   | Real-time communication     |
+| WebSocket Server       | Laravel Reverb    | 1.6.3   | Real-time communication     |
 | WebSocket Client       | Laravel Echo      | 2.2.6   | Client-side WebSocket       |
 | Database               | MySQL             | 8.0     | Relational database         |
 | Cache/Queue            | Redis             | 7.0     | In-memory data store        |
@@ -1945,7 +1945,7 @@ test("guest can submit helpdesk ticket", async ({ page }) => {
 
 **Admin Panel:**
 
-- [ ] Filament 4.1.10 configured
+- [ ] Filament 4.3.1 configured
 - [ ] Role-based access control (admin vs superuser)
 - [ ] Audit trail logging
 - [ ] Dashboard widgets functional

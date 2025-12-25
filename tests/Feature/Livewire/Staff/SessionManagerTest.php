@@ -21,7 +21,12 @@ class SessionManagerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->actingAs($user);
+        // Start a session for the test
+        $response = $this->actingAs($user)->get('/staff/profile');
+        $response->assertOk();
+
+        // Get the current session ID
+        $currentSessionId = session()->getId();
 
         // Create a dummy session for the user
         DB::table('sessions')->insert([
@@ -33,18 +38,8 @@ class SessionManagerTest extends TestCase
             'last_activity' => now()->subHours(2)->timestamp,
         ]);
 
-        // Create current session
-        $sessionId = session()->getId();
-        DB::table('sessions')->insert([
-            'id' => $sessionId,
-            'user_id' => $user->id,
-            'ip_address' => '127.0.0.1',
-            'user_agent' => 'Symfony',
-            'payload' => 'payload',
-            'last_activity' => now()->timestamp,
-        ]);
-
-        Livewire::test(SessionManager::class)
+        Livewire::actingAs($user)
+            ->test(SessionManager::class)
             ->call('logoutOtherBrowserSessions')
             ->assertDispatched('logged-out-other-devices');
 
@@ -53,7 +48,7 @@ class SessionManagerTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('sessions', [
-            'id' => $sessionId,
+            'id' => $currentSessionId,
         ]);
     }
 }

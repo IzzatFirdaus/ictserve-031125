@@ -54,8 +54,7 @@ use Illuminate\Support\Facades\Auth;
             </div>
             <div class="mt-4 flex md:mt-0 md:ml-4">
                 <button wire:click="refreshData" type="button" data-dashboard-refresh="true" tabindex="0"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
-                    style="height:44px;min-width:44px;line-height:44px;"
+                    class="touch-target flex items-center justify-center px-4 border border-slate-700 rounded-lg shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 min-h-11 min-w-11"
                     aria-label="{{ __('common.refresh_dashboard') }}">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -92,7 +91,7 @@ use Illuminate\Support\Facades\Auth;
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
-                            <svg class="h-6 w-6 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            <svg class="h-6 w-6 text-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -115,7 +114,7 @@ use Illuminate\Support\Facades\Auth;
                 <div class="bg-slate-800/50 px-5 py-3">
                     <div class="text-sm">
                         <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                            class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            class="inline-block py-3 font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                             {{ __('common.view_all') }}
                         </a>
                     </div>
@@ -128,7 +127,7 @@ use Illuminate\Support\Facades\Auth;
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
-                            <svg class="h-6 w-6 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            <svg class="h-6 w-6 text-warning-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -152,7 +151,7 @@ use Illuminate\Support\Facades\Auth;
                 <div class="bg-slate-800/50 px-5 py-3">
                     <div class="text-sm">
                         <a href="{{ route('loan.authenticated.history') }}"
-                            class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            class="inline-block py-3 font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                             {{ __('common.view_all') }}
                         </a>
                     </div>
@@ -171,7 +170,7 @@ use Illuminate\Support\Facades\Auth;
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
-                            <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            <svg class="h-6 w-6 text-success-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -194,7 +193,7 @@ use Illuminate\Support\Facades\Auth;
                 <div class="bg-slate-800/50 px-5 py-3">
                     <div class="text-sm">
                         <a href="{{ route('loan.authenticated.history') }}"
-                            class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            class="inline-block py-3 font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                             {{ __('common.review_approvals') }}
                         </a>
                     </div>
@@ -204,9 +203,9 @@ use Illuminate\Support\Facades\Auth;
 
             {{-- Overdue Items Card (Task 4.2.9: Dynamic State Consistency) --}}
             @php($overdueCount = (int) ($this->statistics['overdue_items'] ?? 0))
-            @php($overdueIconColor = $overdueCount > 0 ? 'text-red-400' : 'text-green-400')
+            @php($overdueIconColor = $overdueCount > 0 ? 'text-danger-400' : 'text-success-400')
             <div @class([ 'bg-slate-900/70 backdrop-blur-sm border overflow-hidden shadow rounded-lg' ,
-                $overdueCount> 0 ? 'border-red-800/50' : 'border-slate-800',
+                $overdueCount> 0 ? 'border-danger-800/50' : 'border-slate-800',
                 ]) wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
@@ -237,7 +236,7 @@ use Illuminate\Support\Facades\Auth;
                                         {{ $overdueCount }}
                                     </div>
                                     @if ($overdueCount === 0)
-                                    <span class="ml-2 text-xs text-green-400">{{ __('common.all_clear') }}</span>
+                                    <span class="ml-2 text-xs text-success-400">{{ __('common.all_clear') }}</span>
                                     @endif
                                 </dd>
                             </dl>
@@ -247,7 +246,7 @@ use Illuminate\Support\Facades\Auth;
                 <div class="bg-slate-800/50 px-5 py-3">
                     <div class="text-sm">
                         <a href="{{ route('loan.authenticated.history') }}?status=overdue"
-                            class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            class="inline-block py-3 font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                             {{ __('common.view_overdue') }}
                         </a>
                     </div>
@@ -264,8 +263,7 @@ use Illuminate\Support\Facades\Auth;
             </h2>
             <div class="flex flex-wrap gap-4">
                 <a href="{{ route('helpdesk.create') }}"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
-                    style="height:44px;min-width:44px;line-height:44px;">
+                    class="touch-target flex items-center justify-center px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 min-h-11 min-w-11">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -273,8 +271,7 @@ use Illuminate\Support\Facades\Auth;
                     {{ __('common.new_ticket') }}
                 </a>
                 <a href="{{ route('loan.guest.apply') }}"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
-                    style="height:44px;min-width:44px;line-height:44px;">
+                    class="touch-target flex items-center justify-center px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 min-h-11 min-w-11">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -282,8 +279,7 @@ use Illuminate\Support\Facades\Auth;
                     {{ __('common.request_loan') }}
                 </a>
                 <a href="{{ route('portal.dashboard') }}"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
-                    style="height:44px;min-width:44px;line-height:44px;">
+                    class="touch-target flex items-center justify-center px-4 border border-slate-700 rounded-lg shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 min-h-11 min-w-11">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -292,8 +288,7 @@ use Illuminate\Support\Facades\Auth;
                     {{ __('common.view_all_submissions') }}
                 </a>
                 <a href="{{ route('profile.edit') }}"
-                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-11"
-                    style="height:44px;min-width:44px;line-height:44px;">
+                    class="touch-target flex items-center justify-center px-4 border border-slate-700 rounded-lg shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 min-h-11 min-w-11">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -316,9 +311,9 @@ use Illuminate\Support\Facades\Auth;
                 aria-label="{{ __('portal.filter_activity') }}">
                 @foreach ($filterOptions as $key => $label)
                 <button wire:click="setActivityFilter('{{ $key }}')" type="button"
-                    class="touch-target inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-11
+                    class="touch-target inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-150 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 min-h-11 min-w-11
                             {{ $activityFilter === $key
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-primary-600 text-white'
                                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700' }}"
                     aria-pressed="{{ $activityFilter === $key ? 'true' : 'false' }}">
                     @if ($key === 'all')
@@ -370,7 +365,7 @@ use Illuminate\Support\Facades\Auth;
                         </p>
                         <div class="text-center mt-4">
                             <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                                class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                                class="inline-block py-3 text-sm font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                                 {{ __('common.view_all') }}
                             </a>
                         </div>
@@ -402,7 +397,7 @@ use Illuminate\Support\Facades\Auth;
                 </div>
                 <div class="px-6 py-3 bg-slate-800/50 text-right">
                     <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                        class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                        class="inline-block py-3 text-sm font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                         {{ __('common.view_all') }}
                     </a>
                 </div>
@@ -430,7 +425,7 @@ use Illuminate\Support\Facades\Auth;
                         </p>
                         <div class="text-center mt-4">
                             <a href="{{ route('loan.authenticated.history') }}"
-                                class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                                class="inline-block py-3 text-sm font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                                 {{ __('common.view_all') }}
                             </a>
                         </div>
@@ -468,7 +463,7 @@ use Illuminate\Support\Facades\Auth;
                 </div>
                 <div class="px-6 py-3 bg-slate-800/50 text-right">
                     <a href="{{ route('loan.authenticated.history') }}"
-                        class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                        class="inline-block py-3 text-sm font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                         {{ __('common.view_all') }}
                     </a>
                 </div>
@@ -481,7 +476,7 @@ use Illuminate\Support\Facades\Auth;
             class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center z-50">
             <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 shadow-xl">
                 <div class="flex items-center space-x-3">
-                    <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <svg class="animate-spin h-5 w-5 text-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                             stroke-width="4"></circle>
@@ -506,7 +501,7 @@ use Illuminate\Support\Facades\Auth;
 
                 const applyFocusStyles = () => {
                     refreshTarget.style.boxShadow =
-                        '0 0 0 4px rgba(59, 130, 246, 0.65), 0 0 0 6px rgba(15, 23, 42, 0.95)';
+                        '0 0 0 3px rgba(0, 86, 179, 0.5), 0 0 0 5px rgba(15, 23, 42, 0.95)';
                     refreshTarget.style.outline = 'none';
                     refreshTarget.classList.add('dashboard-refresh-focused');
                 };

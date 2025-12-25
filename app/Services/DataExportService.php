@@ -17,21 +17,36 @@ use Illuminate\Support\Facades\Storage;
  */
 class DataExportService
 {
-    public function exportLoanApplications(array $filters = []): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function exportLoanApplications(array $filters = []): string
     {
         $applications = $this->getLoanApplicationsData($filters);
 
         return $this->generateCSV($applications, 'loan_applications');
     }
 
-    public function exportAssets(array $filters = []): string
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function exportAssets(array $filters = []): string
     {
         $assets = $this->getAssetsData($filters);
 
         return $this->generateCSV($assets, 'assets');
     }
 
-    protected function getLoanApplicationsData(array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+protected function getLoanApplicationsData(array $filters): Collection
     {
         $query = LoanApplication::query()->with(['division', 'user', 'loanItems.asset']);
 
@@ -61,7 +76,12 @@ class DataExportService
         ]);
     }
 
-    protected function getAssetsData(array $filters): Collection
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+protected function getAssetsData(array $filters): Collection
     {
         $query = \App\Models\Asset::query()->with('category');
 

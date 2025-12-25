@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\LoanApplication;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
@@ -17,9 +18,19 @@ use Illuminate\Support\Facades\DB;
  */
 class LoanAnalyticsWidget extends ChartWidget
 {
-    protected ?string $heading = 'Loan Applications Trend';
+    use WidgetMetadata;
+
+    protected ?string $heading = 'Trend Permohonan Pinjaman';
 
     protected static ?int $sort = 2;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 WCAG 2.2 AA compliance';
+    }
 
     protected function getData(): array
     {
@@ -43,7 +54,7 @@ class LoanAnalyticsWidget extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Applications',
+                    'label' => 'Permohonan',
                     'data' => $months->map(fn ($m) => $data[now()->parse($m)->format('Y-m')] ?? 0)->values(),
                     'borderColor' => '#3b82f6',
                     'backgroundColor' => 'rgba(59, 130, 246, 0.1)',

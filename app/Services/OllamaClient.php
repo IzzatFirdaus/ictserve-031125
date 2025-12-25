@@ -57,7 +57,14 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function generate(array $payload): array
+    
+
+/**
+  * @param array<string, mixed> $payload
+
+ * @return array<string, mixed>
+ */
+public function generate(array $payload): array
     {
         $startTime = microtime(true);
 
@@ -146,7 +153,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function embeddings(string $text, ?string $model = null): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function embeddings(string $text, ?string $model = null): array
     {
         $startTime = microtime(true);
 
@@ -217,7 +229,14 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function chat(array $messages, array $options = []): array
+    
+
+/**
+  * @param array<string, mixed> $options
+
+ * @return array<string, mixed>
+ */
+public function chat(array $messages, array $options = []): array
     {
         $startTime = microtime(true);
 
@@ -257,7 +276,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function models(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function models(): array
     {
         $startTime = microtime(true);
 
@@ -359,7 +383,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function cacheResponse(string $cacheKey, array $response, int $ttl): void
+    
+
+/**
+ * @param array<string, mixed> $response
+ */
+public function cacheResponse(string $cacheKey, array $response, int $ttl): void
     {
         if (! $this->config['cache']['enabled']) {
             return;
@@ -371,7 +400,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function clearCache(string|array $tags): bool
+    
+
+/**
+ * @param array<string, mixed> $tags
+ */
+public function clearCache(string|array $tags): bool
     {
         try {
             if (is_string($tags)) {
@@ -396,7 +430,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * {@inheritDoc}
      */
-    public function getPerformanceStats(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getPerformanceStats(): array
     {
         $stats = $this->stats;
 
@@ -442,7 +481,14 @@ class OllamaClient implements OllamaClientContract
     /**
      * Membuat permintaan HTTP ke pelayan Ollama
      */
-    private function makeRequest(string $endpoint, array $payload = []): array
+    
+
+/**
+  * @param array<string, mixed> $payload
+
+ * @return array<string, mixed>
+ */
+private function makeRequest(string $endpoint, array $payload = []): array
     {
         $url = $this->config['url'].$endpoint;
         $timeout = $this->config['connection']['timeout'];
@@ -509,7 +555,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * Validasi payload untuk generate
      */
-    private function validateGeneratePayload(array $payload): void
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+private function validateGeneratePayload(array $payload): void
     {
         if (empty($payload['prompt'])) {
             throw new InvalidArgumentException('Prompt diperlukan untuk generate');
@@ -527,7 +578,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * Validasi mesej chat
      */
-    private function validateChatMessages(array $messages): void
+    
+
+/**
+ * @param array<string, mixed> $messages
+ */
+private function validateChatMessages(array $messages): void
     {
         if (empty($messages)) {
             throw new InvalidArgumentException('Mesej diperlukan untuk chat');
@@ -547,7 +603,12 @@ class OllamaClient implements OllamaClientContract
     /**
      * Jana kunci cache
      */
-    private function generateCacheKey(string $operation, array $payload): string
+    
+
+/**
+ * @param array<string, mixed> $payload
+ */
+private function generateCacheKey(string $operation, array $payload): string
     {
         $hash = md5(serialize($payload));
 
@@ -574,7 +635,14 @@ class OllamaClient implements OllamaClientContract
     /**
      * Sanitasi payload untuk logging
      */
-    private function sanitizePayload(array $payload): array
+    
+
+/**
+  * @param array<string, mixed> $payload
+
+ * @return array<string, mixed>
+ */
+private function sanitizePayload(array $payload): array
     {
         // Redaksi maklumat sensitif untuk logging
         $sanitized = $payload;

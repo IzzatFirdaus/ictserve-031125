@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * FAQ Page - Frequently Asked Questions (Enhanced v3.6.0)
  *
@@ -22,7 +22,7 @@
 
     {{-- Page Header with Enhanced Branding (D12 §3.1, D13 §2.4) --}}
     <section
-        class="bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white py-12 md:py-16 theme-transition"
+        class="bg-linear-to-r from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white py-12 md:py-16 theme-transition"
         role="banner" aria-labelledby="page-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Enhanced Breadcrumbs (D12 §6.1, WCAG 2.2 AA) --}}
@@ -30,11 +30,11 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded-md px-2 py-1 min-h-11">
+                            class="text-primary-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded-lg px-2 py-1 min-h-11">
                             {{ __('Utama') }}
                         </a>
                     </li>
-                    <li aria-hidden="true" class="text-blue-200">
+                    <li aria-hidden="true" class="text-primary-200">
                         <x-heroicon-s-chevron-right class="h-4 w-4" />
                     </li>
                     <li>
@@ -49,31 +49,31 @@
             <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
                 {{ __('Soalan Lazim (FAQ)') }}
             </h1>
-            <p class="text-lg md:text-xl text-blue-100 dark:text-blue-50 max-w-2xl leading-relaxed">
+            <p class="text-lg md:text-xl text-primary-100 dark:text-primary-50 max-w-2xl leading-relaxed">
                 {{ __('Cari jawapan kepada soalan-soalan lazim mengenai perkhidmatan ICT kami.') }}
             </p>
         </div>
     </section>
 
     {{-- Enhanced Main Content (D12 §7.4 Grid System, D14 §7.5 Shadow System) --}}
-    <section id="main-content" class="py-12 md:py-16 bg-slate-50 dark:bg-gray-800 theme-transition"
+    <section id="main-content" class="py-12 md:py-16 bg-slate-50 dark:bg-slate-800 theme-transition"
         aria-labelledby="faq-heading">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="faq-heading" class="sr-only">{{ __('Soalan Lazim') }}</h2>
 
             {{-- Enhanced Search Box (D13 §5.6, WCAG 2.2 AA) --}}
             <div class="mb-8">
-                <label for="faq-search" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                <label for="faq-search" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                     {{ __('Cari Soalan') }}
                 </label>
                 <div class="relative">
-                    <x-heroicon-o-magnifying-glass class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+                    <x-heroicon-o-magnifying-glass class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"
                         aria-hidden="true" />
                     <input type="search" id="faq-search" placeholder="{{ __('Taip untuk mencari...') }}"
-                        class="block w-full min-h-11 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 pl-10 pr-4 py-3 shadow-sm focus:border-primary-500 focus:ring-3 focus:ring-primary-500 text-sm transition-colors duration-200"
+                        class="block w-full min-h-11 rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400 pl-10 pr-4 py-3 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm transition-colors duration-200"
                         aria-describedby="faq-search-hint" />
                 </div>
-                <p id="faq-search-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <p id="faq-search-hint" class="mt-1 text-xs text-slate-500 dark:text-slate-400">
                     {{ __('Contoh: tiket, pinjaman, status') }}
                 </p>
             </div>
@@ -83,25 +83,25 @@
                 {{-- Enhanced Helpdesk FAQ (D03-FR-004, D12 §6.4) --}}
                 <section aria-labelledby="helpdesk-faq-heading">
                     <div
-                        class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
-                        <div class="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                        class="bg-white dark:bg-slate-900 rounded-lg shadow-card dark:shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden theme-transition">
+                        <div class="p-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
                                     aria-hidden="true">
                                     <x-heroicon-o-computer-desktop class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <h3 id="helpdesk-faq-heading"
-                                    class="text-xl font-heading font-semibold text-gray-900 dark:text-gray-100">
+                                    class="text-xl font-heading font-semibold text-slate-900 dark:text-slate-100">
                                     {{ __('Perkhidmatan Helpdesk') }}
                                 </h3>
                             </div>
                         </div>
-                        <div class="divide-y divide-gray-200 dark:divide-gray-700" x-data="{ openItem: null }">
+                        <div class="divide-y divide-slate-200 dark:divide-slate-700" x-data="{ openItem: null }">
                             {{-- FAQ Item 1 --}}
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 1 ? null : 1" :aria-expanded="openItem === 1"
                                         aria-controls="faq-helpdesk-1">
                                         <span>{{ __('Bagaimana untuk menghantar tiket helpdesk?') }}</span>
@@ -129,7 +129,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 2 ? null : 2" :aria-expanded="openItem === 2"
                                         aria-controls="faq-helpdesk-2">
                                         <span>{{ __('Bagaimana untuk menyemak status tiket?') }}</span>
@@ -149,7 +149,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 3 ? null : 3" :aria-expanded="openItem === 3"
                                         aria-controls="faq-helpdesk-3">
                                         <span>{{ __('Apakah masa respons untuk tiket?') }}</span>
@@ -195,7 +195,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 1 ? null : 1" :aria-expanded="openItem === 1"
                                         aria-controls="faq-loan-1">
                                         <span>{{ __('Apakah tempoh notis minimum untuk pinjaman aset?') }}</span>
@@ -218,7 +218,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 2 ? null : 2" :aria-expanded="openItem === 2"
                                         aria-controls="faq-loan-2">
                                         <span>{{ __('Siapa yang boleh meluluskan permohonan pinjaman saya?') }}</span>
@@ -238,7 +238,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 3 ? null : 3" :aria-expanded="openItem === 3"
                                         aria-controls="faq-loan-3">
                                         <span>{{ __('Bolehkah saya memohon bagi pihak orang lain?') }}</span>
@@ -279,7 +279,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 1 ? null : 1" :aria-expanded="openItem === 1"
                                         aria-controls="faq-general-1">
                                         <span>{{ __('Adakah saya perlu membuat akaun?') }}</span>
@@ -299,7 +299,7 @@
                             <div class="faq-item">
                                 <h4>
                                     <button type="button"
-                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-primary-500 min-h-11"
+                                        class="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                                         @click="openItem = openItem === 2 ? null : 2" :aria-expanded="openItem === 2"
                                         aria-controls="faq-general-2">
                                         <span>{{ __('Adakah sistem ini tersedia 24/7?') }}</span>
@@ -343,7 +343,7 @@
                                 <div class="flex flex-col gap-3">
                                     <button type="button"
                                         onclick="document.querySelector('[aria-label=\'Buka atau tutup tetingkap sembang bot FAQ\']')?.click()"
-                                        class="inline-flex items-center justify-center min-h-11 px-6 py-2.5 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 transition-colors duration-200 shadow-md text-sm">
+                                        class="inline-flex items-center justify-center min-h-11 px-6 py-2.5 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 transition-colors duration-200 shadow-md text-sm">
                                         <x-heroicon-s-chat-bubble-left-ellipsis class="h-4 w-4 mr-2" aria-hidden="true" />
                                         {{ __('Buka Bot FAQ') }}
                                     </button>
@@ -377,7 +377,7 @@
                                 </p>
                                 <div class="flex flex-col gap-3">
                                     <a href="{{ route('ai.faq') }}"
-                                        class="inline-flex items-center justify-center min-h-11 px-6 py-2.5 bg-white text-orange-600 font-semibold rounded-lg hover:bg-orange-50 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-orange-600 transition-colors duration-200 shadow-md text-sm">
+                                        class="inline-flex items-center justify-center min-h-11 px-6 py-2.5 bg-white text-orange-600 font-semibold rounded-lg hover:bg-orange-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-orange-600 transition-colors duration-200 shadow-md text-sm">
                                         <x-heroicon-s-chat-bubble-left-ellipsis class="h-4 w-4 mr-2" aria-hidden="true" />
                                         {{ __('faq.ai_chat.chat_button') }}
                                     </a>
@@ -398,11 +398,11 @@
                     <h3 class="text-xl font-heading font-semibold mb-3">
                         {{ __('Masih ada soalan?') }}
                     </h3>
-                    <p class="text-blue-100 dark:text-blue-50 mb-6">
+                    <p class="text-primary-100 dark:text-primary-50 mb-6">
                         {{ __('Hubungi pasukan sokongan kami untuk bantuan lanjut.') }}
                     </p>
                     <a href="{{ route('contact') }}"
-                        class="inline-flex items-center min-h-11 px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 transition-colors duration-200">
+                        class="inline-flex items-center min-h-11 px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 transition-colors duration-200">
                         <x-heroicon-s-chat-bubble-left-right class="h-5 w-5 mr-2" aria-hidden="true" />
                         {{ __('Hubungi Kami') }}
                     </a>
@@ -422,7 +422,7 @@
                 <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <li>
                         <a href="{{ route('services') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-squares-2x2 class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0"
                                 aria-hidden="true" />
                             <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Perkhidmatan') }}</span>
@@ -430,7 +430,7 @@
                     </li>
                     <li>
                         <a href="{{ route('contact') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-phone class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0"
                                 aria-hidden="true" />
                             <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Hubungi Kami') }}</span>
@@ -438,7 +438,7 @@
                     </li>
                     <li>
                         <a href="{{ route('accessibility') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-eye class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0"
                                 aria-hidden="true" />
                             <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Kebolehcapaian') }}</span>
@@ -446,7 +446,7 @@
                     </li>
                     <li>
                         <a href="{{ route('privacy-policy') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-shield-check class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0"
                                 aria-hidden="true" />
                             <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Dasar Privasi') }}</span>

@@ -71,7 +71,7 @@ $ariaDescribedBy = !empty($describedBy) ? implode(' ', $describedBy) : null;
             @dragleave.prevent="isDragging = false"
             @drop.prevent="isDragging = false; handleFiles($event.dataTransfer.files)"
             :class="{ 'border-primary-600 bg-primary-50': isDragging, 'border-gray-300': !isDragging }"
-            class="border-2 border-dashed rounded-md p-6 text-center transition-colors duration-200">
+            class="border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200">
             <input
                 type="file"
                 id="{{ $id }}"
@@ -94,7 +94,7 @@ $ariaDescribedBy = !empty($describedBy) ? implode(' ', $describedBy) : null;
                 </svg>
 
                 <div class="mt-4">
-                    <span class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:outline-none min-h-11">
+                    <span class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:outline-none min-h-11">
                         {{ __('forms.Select files') }}
                     </span>
                     <p class="mt-2 text-sm text-gray-700">
@@ -117,7 +117,7 @@ $ariaDescribedBy = !empty($describedBy) ? implode(' ', $describedBy) : null;
         <template x-if="files.length > 0">
             <div class="mt-4 space-y-2">
                 <p class="text-sm font-medium text-gray-900">{{ __('forms.Selected files:') }}</p>
-                <ul class="divide-y divide-gray-200 border border-gray-200 rounded-md" role="list">
+                <ul class="divide-y divide-gray-200 border border-gray-200 rounded-lg" role="list">
                     <template x-for="(file, index) in files" :key="index">
                         <li class="flex items-center justify-between p-3 hover:bg-gray-50">
                             <div class="flex items-center flex-1 min-w-0">
@@ -130,7 +130,7 @@ $ariaDescribedBy = !empty($describedBy) ? implode(' ', $describedBy) : null;
                             <button
                                 type="button"
                                 @click="removeFile(index)"
-                                class="ml-4 shrink-0 text-danger-600 hover:text-danger-800 focus:outline-none rounded p-1 min-h-11 min-w-11 flex items-center justify-center"
+                                class="ml-4 shrink-0 text-danger-600 hover:text-danger-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 rounded-lg p-1 min-h-11 min-w-11 flex items-center justify-center"
                                 :aria-label="'{{ __('forms.Remove file') }} ' + file.name">
                                 <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />

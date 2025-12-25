@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** RFC 6455 (WebSocket Protocol), OWASP Transport Security, Laravel Framework v12
+**Standard Rujukan:** RFC 6455 (Protokol WebSocket), OWASP Transport Security, Laravel Framework v12, TLS 1.3, AES-256
 
 ---
 
@@ -30,7 +30,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis                 |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan Pembangunan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0, Filament 4.3.1. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Google Workspace SSO (opsyen), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding. Penambahan acara penyiaran baharu untuk API token dan SSO events. Penyelarasan dengan D00-D15 v3.5.0. | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan Pembangunan BPM |
 | 1.3.0 | 29 November 2025 | Hybrid operations: Auth users (private-user.{id}) + Guests (private-ticket.{uuid})                                                                                                                                                                                                                  | Pasukan Pembangunan BPM |
@@ -156,6 +156,7 @@ Sistem menyiarkan status pemprosesan AI untuk pemantauan admin/superuser melalui
 | `AutoReplyRejected`            | `private-ai-approvals`     | `AutoReplyRejected`      | Penolakan auto-reply                             |
 
 Nota:
+
 - Listener `resources/js/bootstrap.js` masih mempunyai handler `.AIProcessingFailed` untuk backward compatibility; rujuk event sebenar `AIErrorOccurred` untuk ralat.
 
 **Channel Selection Logic**:

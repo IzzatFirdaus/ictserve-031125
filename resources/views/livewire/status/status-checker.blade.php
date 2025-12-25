@@ -14,13 +14,13 @@
                     <x-heroicon-o-magnifying-glass class="w-7 h-7" />
                 </div>
                 <div>
-                    <p class="text-sm text-blue-100 font-semibold tracking-wide uppercase">
+                    <p class="text-sm text-primary-100 font-semibold tracking-wide uppercase">
                         {{ __('status.page_tagline') }}</p>
                     <h1 id="status-heading" class="text-3xl md:text-4xl font-heading font-bold tracking-tight">
                         {{ __('status.title') }}</h1>
                 </div>
             </div>
-            <p class="text-base md:text-lg text-blue-50 max-w-2xl leading-relaxed">{{ __('status.subtitle') }}</p>
+            <p class="text-base md:text-lg text-primary-50 max-w-2xl leading-relaxed">{{ __('status.subtitle') }}</p>
         </div>
     </section>
 
@@ -57,7 +57,7 @@
                                     </label>
                                     <div class="relative">
                                         <input type="text" id="token" wire:model.live.debounce.300ms="token"
-                                            class="block w-full px-4 py-3 rounded-lg border {{ $errorBag->has('token') ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500' : 'border-gray-300 dark:border-gray-600 focus:border-primary-500 focus:ring-primary-500' }} bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm transition-colors"
+                                            class="block w-full min-h-11 px-4 py-3 rounded-lg border {{ $errorBag->has('token') ? 'border-danger-500 focus:border-danger-500 focus-visible:ring-3 focus-visible:ring-danger-500' : 'border-gray-300 dark:border-gray-600 focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500' }} bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm transition-colors"
                                             placeholder="{{ __('status.token_placeholder') }}" autocomplete="off"
                                             aria-describedby="token-help token-error" required />
                                         <div class="absolute inset-y-0 right-0 flex items-center pr-3"
@@ -84,7 +84,7 @@
                                         {{ __('status.type_label') }}
                                     </label>
                                     <select id="type" wire:model="type"
-                                        class="block w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                        class="block w-full min-h-11 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500"
                                         aria-describedby="type-help">
                                         <option value="auto">{{ __('status.type_auto') }}</option>
                                         <option value="ticket">{{ __('status.type_ticket') }}</option>
@@ -112,14 +112,14 @@
                                 <div class="flex gap-3 flex-wrap">
                                     @if ($showResults || $notFound)
                                         <button type="button" wire:click="clearSearch"
-                                            class="inline-flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-semibold text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 min-h-11">
+                                            class="inline-flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-semibold text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11">
                                             <x-heroicon-o-arrow-path class="w-4 h-4" />
                                             {{ __('status.clear') }}
                                         </button>
                                     @endif
 
                                     <button type="submit"
-                                        class="inline-flex items-center justify-center gap-2 px-6 py-2 rounded-lg text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 min-h-11 shadow-button disabled:opacity-60 disabled:cursor-not-allowed"
+                                        class="inline-flex items-center justify-center gap-2 px-6 py-2 rounded-lg text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 shadow-button disabled:opacity-60 disabled:cursor-not-allowed"
                                         wire:loading.attr="disabled" wire:target="checkStatus">
                                         <span wire:loading.remove wire:target="checkStatus"
                                             class="flex items-center gap-2">
@@ -138,17 +138,17 @@
 
                     {{-- Error Message --}}
                     @if ($notFound)
-                        <div class="mt-6 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 p-4"
+                        <div class="mt-6 rounded-xl bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700 p-4"
                             role="alert" aria-live="polite">
                             <div class="flex">
                                 <div class="shrink-0">
-                                    <x-heroicon-o-exclamation-circle class="h-5 w-5 text-red-500" />
+                                    <x-heroicon-o-exclamation-circle class="h-5 w-5 text-danger-500" />
                                 </div>
                                 <div class="ml-3">
-                                    <h3 class="text-sm font-semibold text-red-800 dark:text-red-200">
+                                    <h3 class="text-sm font-semibold text-danger-800 dark:text-danger-200">
                                         {{ __('status.not_found_title') }}
                                     </h3>
-                                    <div class="mt-2 text-sm text-red-700 dark:text-red-200 space-y-1">
+                                    <div class="mt-2 text-sm text-danger-700 dark:text-danger-200 space-y-1">
                                         <p>{{ __('status.not_found_message') }}</p>
                                         <ul class="list-disc list-inside space-y-1">
                                             <li>{{ __('status.not_found_hint_1') }}</li>
@@ -172,13 +172,13 @@
                                         <div class="flex items-center gap-2 mb-2">
                                             @if ($foundType === 'ticket')
                                                 <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-100">
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-info-100 text-info-800 dark:bg-info-900/40 dark:text-info-100">
                                                     <x-heroicon-o-ticket class="w-3 h-3 mr-1" />
                                                     {{ __('status.type_ticket') }}
                                                 </span>
                                             @else
                                                 <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200">
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-200">
                                                     <x-heroicon-o-clipboard-document-list class="w-3 h-3 mr-1" />
                                                     {{ __('status.type_loan') }}
                                                 </span>
@@ -209,12 +209,12 @@
                                                 $statusClass = match ($submission->status) {
                                                     'open',
                                                     'new'
-                                                        => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200',
+                                                        => 'bg-warning-100 text-warning-800 dark:bg-warning-900/40 dark:text-warning-200',
                                                     'assigned',
                                                     'in_progress'
-                                                        => 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200',
+                                                        => 'bg-primary-100 text-primary-800 dark:bg-primary-900/40 dark:text-primary-200',
                                                     'resolved'
-                                                        => 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200',
+                                                        => 'bg-success-100 text-success-800 dark:bg-success-900/40 dark:text-success-200',
                                                     default
                                                         => 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200',
                                                 };
@@ -287,14 +287,14 @@
                                     {{ __('status.timeline_title') }}
                                 </h3>
 
-                                <ol class="relative border-l-2 border-blue-200 dark:border-blue-900/50 space-y-8 ml-3">
+                                <ol class="relative border-l-2 border-primary-200 dark:border-primary-900/50 space-y-8 ml-3">
                                     @forelse ($timeline as $event)
                                         <li class="ml-6">
                                             @php
                                                 $markerClass = $event['current']
-                                                    ? 'border-blue-600 bg-blue-600'
+                                                    ? 'border-primary-600 bg-primary-600'
                                                     : ($event['completed']
-                                                        ? 'border-blue-600 bg-white dark:bg-blue-900/40'
+                                                        ? 'border-primary-600 bg-white dark:bg-primary-900/40'
                                                         : 'border-gray-300 bg-white dark:bg-gray-800');
                                             @endphp
                                             <span
@@ -302,7 +302,7 @@
                                                 @if ($event['current'])
                                                     <span class="h-2.5 w-2.5 rounded-full bg-white"></span>
                                                 @elseif ($event['completed'])
-                                                    <x-heroicon-s-check class="h-3.5 w-3.5 text-blue-600" />
+                                                    <x-heroicon-s-check class="h-3.5 w-3.5 text-primary-600" />
                                                 @else
                                                     <span
                                                         class="h-2 w-2 rounded-full bg-gray-300 dark:bg-gray-500"></span>
@@ -311,7 +311,7 @@
 
                                             @php
                                                 $cardClass = $event['current']
-                                                    ? 'border-blue-300 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800 shadow-sm ring-1 ring-blue-200/80'
+                                                    ? 'border-primary-300 bg-primary-50 dark:bg-primary-900/20 dark:border-primary-800 shadow-sm ring-1 ring-primary-200/80'
                                                     : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800';
                                             @endphp
                                             <div class="rounded-lg border p-4 transition-all {{ $cardClass }}">
@@ -320,7 +320,7 @@
                                                     {{ $event['label'] }}
                                                     @if ($event['current'])
                                                         <span
-                                                            class="inline-flex items-center rounded-full bg-blue-600 px-2.5 py-0.5 text-xs font-medium text-white">
+                                                            class="inline-flex items-center rounded-full bg-primary-600 px-2.5 py-0.5 text-xs font-medium text-white">
                                                             {{ __('status.current_status') }}
                                                         </span>
                                                     @endif
@@ -416,12 +416,12 @@
 
                                     @if ($submission->resolution_notes)
                                         <div
-                                            class="mt-4 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 p-4">
+                                            class="mt-4 rounded-lg bg-success-50 dark:bg-success-900/30 border border-success-200 dark:border-success-700 p-4">
                                             <p
-                                                class="text-sm font-semibold text-emerald-700 dark:text-emerald-200 mb-2">
+                                                class="text-sm font-semibold text-success-700 dark:text-success-200 mb-2">
                                                 {{ __('status.resolution_notes') }}
                                             </p>
-                                            <p class="text-sm text-emerald-800 dark:text-emerald-100">
+                                            <p class="text-sm text-success-800 dark:text-success-100">
                                                 {{ $submission->resolution_notes }}</p>
                                         </div>
                                     @endif
@@ -435,7 +435,7 @@
                         <p class="text-sm text-gray-600 dark:text-gray-300">
                             {{ __('status.help_text') }}
                             <a href="{{ route('helpdesk.create') }}"
-                                class="text-primary-600 dark:text-primary-300 font-semibold hover:underline focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-sm">
+                                class="inline-flex min-h-11 items-center px-1 text-primary-600 dark:text-primary-300 font-semibold hover:underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded-lg">
                                 {{ __('status.contact_support') }}
                             </a>
                         </p>
@@ -472,7 +472,7 @@
                                     <p class="font-semibold">
                                         {{ __('status.quick_help_ticket') }}</p>
                                     <a href="{{ route('helpdesk.submit') }}"
-                                        class="text-primary-600 dark:text-primary-300 font-semibold hover:underline focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-sm">{{ __('status.quick_help_ticket_cta') }}</a>
+                                        class="inline-flex min-h-11 items-center px-1 text-primary-600 dark:text-primary-300 font-semibold hover:underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded-lg">{{ __('status.quick_help_ticket_cta') }}</a>
                                 </div>
                             </li>
                         </ul>

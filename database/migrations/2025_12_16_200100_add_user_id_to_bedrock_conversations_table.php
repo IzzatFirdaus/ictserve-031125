@@ -30,8 +30,26 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('bedrock_conversations', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
+            if (Schema::hasColumn('bedrock_conversations', 'user_id')) {
+                // Drop foreign key first, then index, then column
+                try {
+                    $table->dropForeign(['user_id']);
+                } catch (\Exception $e) {
+                    // Ignore if foreign key does not exist
+                }
+
+                try {
+                    $table->dropIndex(['user_id']);
+                } catch (\Exception $e) {
+                    // Ignore if index does not exist
+                }
+
+                try {
+                    $table->dropColumn('user_id');
+                } catch (\Exception $e) {
+                    // Ignore if column does not exist
+                }
+            }
         });
     }
 };

@@ -24,11 +24,11 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded px-1">
+                            class="text-primary-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded px-1">
                             {{ __('Utama') }}
                         </a>
                     </li>
-                    <li aria-hidden="true" class="text-blue-200">
+                    <li aria-hidden="true" class="text-primary-200">
                         <x-heroicon-s-chevron-right class="h-4 w-4" />
                     </li>
                     <li>
@@ -43,7 +43,7 @@
             <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
                 {{ __('Dasar Privasi') }}
             </h1>
-            <p class="text-lg md:text-xl text-blue-100 max-w-2xl leading-relaxed">
+            <p class="text-lg md:text-xl text-primary-100 max-w-2xl leading-relaxed">
                 {{ __('Kemas kini terakhir') }}: {{ now()->format('d F Y') }}
             </p>
         </div>
@@ -55,35 +55,35 @@
             <h2 id="privacy-heading" class="sr-only">{{ __('Maklumat Dasar Privasi') }}</h2>
 
             {{-- Introduction Section --}}
-            <article class="bg-white rounded-lg shadow-card border border-gray-200 p-6 md:p-8">
-                <h2 class="text-2xl font-heading font-bold text-gray-900 mb-4">
+            <article class="bg-white rounded-lg shadow-card border border-slate-200 p-6 md:p-8">
+                <h2 class="text-2xl font-heading font-bold text-slate-900 mb-4">
                     {{ __('Pengenalan') }}
                 </h2>
-                <p class="text-gray-700 leading-relaxed mb-4">
+                <p class="text-slate-700 leading-relaxed mb-4">
                     {{ __('Bahagian Pengurusan Maklumat (BPM), Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) komited untuk melindungi privasi dan data peribadi anda. Dasar privasi ini menerangkan bagaimana kami mengumpul, menggunakan, mendedahkan dan melindungi maklumat peribadi anda melalui sistem ICTServe.') }}
                 </p>
-                <p class="text-gray-700 leading-relaxed">
+                <p class="text-slate-700 leading-relaxed">
                     {{ __('Dasar ini disediakan selaras dengan Akta Perlindungan Data Peribadi 2010 (PDPA 2010) dan peraturan-peraturan berkaitan.') }}
                 </p>
             </article>
 
             {{-- PDPA 2010 Compliance Section --}}
-            <article class="bg-white rounded-lg shadow-card border border-gray-200 p-6 md:p-8">
+            <article class="bg-white rounded-lg shadow-card border border-slate-200 p-6 md:p-8">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="h-12 w-12 bg-primary-50 rounded-full flex items-center justify-center shrink-0"
                         aria-hidden="true">
                         <x-heroicon-o-shield-check class="h-6 w-6 text-primary-600" />
                     </div>
-                    <h2 class="text-2xl font-heading font-bold text-gray-900">
+                    <h2 class="text-2xl font-heading font-bold text-slate-900">
                         {{ __('Pematuhan PDPA 2010') }}
                         <span class="sr-only">Personal Data Protection Act 2010 Compliance</span>
                     </h2>
                 </div>
-                <p class="text-gray-700 leading-relaxed mb-4">
+                <p class="text-slate-700 leading-relaxed mb-4">
                     {{ __('Kami mematuhi tujuh prinsip perlindungan data peribadi seperti yang ditetapkan dalam PDPA 2010:') }}
                     <span class="sr-only">Personal Data Protection</span>
                 </p>
-                <ol class="space-y-3 text-gray-700" role="list">
+                <ol class="space-y-3 text-slate-700" role="list">
                     <li class="flex items-start gap-3">
                         <span
                             class="flex items-center justify-center h-6 w-6 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold shrink-0">1</span>
@@ -255,7 +255,7 @@
                     @if (Route::has('staff.data-rights'))
                         <div class="mt-6 pt-6 border-t border-gray-200">
                             <a href="{{ route('staff.data-rights') }}"
-                                class="inline-flex items-center min-h-11 px-4 py-2 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200">
+                                class="inline-flex items-center min-h-11 px-4 py-2 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200">
                                 <x-heroicon-s-document-text class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('Urus Hak Data Saya') }}
                             </a>
@@ -349,38 +349,38 @@
                 <h2 class="text-2xl font-heading font-bold mb-4">
                     {{ __('Hubungi Kami') }}
                 </h2>
-                <p class="text-blue-100 mb-6 leading-relaxed">
+                <p class="text-primary-100 mb-6 leading-relaxed">
                     {{ __('Untuk sebarang pertanyaan mengenai dasar privasi ini atau untuk melaksanakan hak subjek data anda, sila hubungi:') }}
                 </p>
 
                 <div class="grid grid-cols-4 md:grid-cols-8 gap-4 md:gap-6 mb-6">
                     <div class="col-span-4 flex items-start gap-3">
-                        <x-heroicon-o-user class="h-6 w-6 text-blue-200 shrink-0 mt-0.5" aria-hidden="true" />
+                        <x-heroicon-o-user class="h-6 w-6 text-primary-200 shrink-0 mt-0.5" aria-hidden="true" />
                         <div>
                             <h3 class="font-semibold text-white mb-1">{{ __('Pegawai Perlindungan Data') }}</h3>
-                            <p class="text-blue-100">Bahagian Pengurusan Maklumat</p>
-                            <p class="text-blue-100">MOTAC</p>
+                            <p class="text-primary-100">Bahagian Pengurusan Maklumat</p>
+                            <p class="text-primary-100">MOTAC</p>
                         </div>
                     </div>
 
                     <div class="col-span-4 space-y-3">
                         <div class="flex items-start gap-3">
-                            <x-heroicon-o-envelope class="h-6 w-6 text-blue-200 shrink-0 mt-0.5" aria-hidden="true" />
+                            <x-heroicon-o-envelope class="h-6 w-6 text-primary-200 shrink-0 mt-0.5" aria-hidden="true" />
                             <div>
                                 <h3 class="font-semibold text-white mb-1">{{ __('E-mel') }}</h3>
                                 <a href="mailto:pdpa@motac.gov.my"
-                                    class="text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
+                                    class="text-primary-100 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded">
                                     pdpa@motac.gov.my
                                 </a>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-3">
-                            <x-heroicon-o-phone class="h-6 w-6 text-blue-200 shrink-0 mt-0.5" aria-hidden="true" />
+                            <x-heroicon-o-phone class="h-6 w-6 text-primary-200 shrink-0 mt-0.5" aria-hidden="true" />
                             <div>
                                 <h3 class="font-semibold text-white mb-1">{{ __('Telefon') }}</h3>
                                 <a href="tel:+60388917000"
-                                    class="text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
+                                    class="text-primary-100 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded">
                                     +603-8891 7000
                                 </a>
                             </div>
@@ -388,7 +388,7 @@
                     </div>
                 </div>
 
-                <p class="text-sm text-blue-200">
+                <p class="text-sm text-primary-200">
                     {{ __('Kami akan membalas dalam masa 21 hari bekerja seperti yang ditetapkan oleh PDPA 2010.') }}
                 </p>
             </article>
@@ -405,14 +405,14 @@
                 <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <li>
                         <a href="{{ route('services') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-squares-2x2 class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
                             <span class="text-sm text-gray-700">{{ __('Perkhidmatan') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('faq') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-question-mark-circle class="h-5 w-5 text-primary-600 shrink-0"
                                 aria-hidden="true" />
                             <span class="text-sm text-gray-700">{{ __('Soalan Lazim') }}</span>
@@ -420,14 +420,14 @@
                     </li>
                     <li>
                         <a href="{{ route('contact') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-phone class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
                             <span class="text-sm text-gray-700">{{ __('Hubungi Kami') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('accessibility') }}"
-                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <x-heroicon-o-eye class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
                             <span class="text-sm text-gray-700">{{ __('Kebolehcapaian') }}</span>
                         </a>

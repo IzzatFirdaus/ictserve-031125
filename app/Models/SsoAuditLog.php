@@ -282,7 +282,12 @@ class SsoAuditLog extends Model
      *
      * @param  array<string, mixed>  $data
      */
-    public static function logSuccess(array $data): self
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public static function logSuccess(array $data): self
     {
         return self::create([
             'user_id' => $data['user_id'] ?? null,
@@ -302,7 +307,12 @@ class SsoAuditLog extends Model
      *
      * @param  array<string, mixed>  $data
      */
-    public static function logFailure(array $data): self
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+public static function logFailure(array $data): self
     {
         return self::create([
             'user_id' => $data['user_id'] ?? null,

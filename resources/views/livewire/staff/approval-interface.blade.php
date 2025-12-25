@@ -47,19 +47,19 @@
 
         {{-- Delegations To Me Banner --}}
         @if ($this->delegationsToMe->count() > 0)
-            <div class="bg-green-900/30 border border-green-700 rounded-lg p-4">
+            <div class="bg-success-900/30 border border-success-700 rounded-lg p-4">
                 <div class="flex items-start">
-                    <x-heroicon-o-information-circle class="w-5 h-5 text-green-400 mt-0.5 mr-3 shrink-0" />
+                    <x-heroicon-o-information-circle class="w-5 h-5 text-success-400 mt-0.5 mr-3 shrink-0" />
                     <div>
-                        <h3 class="text-sm font-medium text-green-300">
+                        <h3 class="text-sm font-medium text-success-300">
                             {{ __('delegation.delegated_to_me') }}
                         </h3>
-                        <p class="mt-1 text-sm text-green-400">
+                        <p class="mt-1 text-sm text-success-400">
                             {{ __('delegation.delegated_to_me_info', ['count' => $this->delegationsToMe->count()]) }}
                         </p>
                         <ul class="mt-2 space-y-1">
                             @foreach ($this->delegationsToMe as $delegation)
-                                <li class="text-sm text-green-300">
+                                <li class="text-sm text-success-300">
                                     • {{ $delegation->originalApprover->name }}
                                     ({{ $delegation->start_date->format('d/m/Y') }} -
                                     {{ $delegation->end_date->format('d/m/Y') }})
@@ -89,7 +89,7 @@
                         {{ __('common.status') }}
                     </label>
                     <select id="status-filter" wire:model.live="statusFilter"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
+                        class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-950 min-h-11">
                         <option value="pending">{{ __('staff.approvals.pending') }}</option>
                         <option value="approved">{{ __('staff.approvals.approved') }}</option>
                         <option value="rejected">{{ __('staff.approvals.rejected') }}</option>
@@ -103,7 +103,7 @@
                     </label>
                     <input type="text" id="applicant-search" wire:model.live.debounce.300ms="applicantSearch"
                         placeholder="{{ __('staff.approvals.search_placeholder') }}"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
+                        class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-950 min-h-11">
                 </div>
 
                 {{-- Date From --}}
@@ -112,7 +112,7 @@
                         {{ __('common.date_from') }}
                     </label>
                     <input type="date" id="date-from" wire:model.live="dateFrom"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
+                        class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-950 min-h-11">
                 </div>
 
                 {{-- Date To --}}
@@ -121,7 +121,7 @@
                         {{ __('common.date_to') }}
                     </label>
                     <input type="date" id="date-to" wire:model.live="dateTo"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
+                        class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-950 min-h-11">
                 </div>
             </div>
 
@@ -137,7 +137,7 @@
             <x-ui.card class="mb-6">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
-                        <x-heroicon-o-clock class="w-5 h-5 text-blue-400" />
+                        <x-heroicon-o-clock class="w-5 h-5 text-primary-400" />
                         {{ __('sla.dashboard.title') }}
                     </h2>
                     <span class="text-xs text-slate-400" title="{{ __('sla.help.business_hours') }}">
@@ -155,15 +155,15 @@
                     </div>
 
                     {{-- On Track --}}
-                    <div class="bg-green-900/30 border border-green-700/50 rounded-lg p-4 text-center">
-                        <div class="text-2xl font-bold text-green-400">{{ $this->slaSummary['ok'] }}</div>
-                        <div class="text-xs text-green-300 mt-1">{{ __('sla.dashboard.on_track') }}</div>
+                    <div class="bg-success-900/30 border border-success-700/50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-success-400">{{ $this->slaSummary['ok'] }}</div>
+                        <div class="text-xs text-success-300 mt-1">{{ __('sla.dashboard.on_track') }}</div>
                     </div>
 
                     {{-- Warning --}}
-                    <div class="bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-4 text-center">
-                        <div class="text-2xl font-bold text-yellow-400">{{ $this->slaSummary['warning'] }}</div>
-                        <div class="text-xs text-yellow-300 mt-1">{{ __('sla.status.warning') }}</div>
+                    <div class="bg-warning-900/30 border border-warning-700/50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-warning-400">{{ $this->slaSummary['warning'] }}</div>
+                        <div class="text-xs text-warning-300 mt-1">{{ __('sla.status.warning') }}</div>
                     </div>
 
                     {{-- Critical --}}
@@ -173,9 +173,9 @@
                     </div>
 
                     {{-- Breached --}}
-                    <div class="bg-red-900/30 border border-red-700/50 rounded-lg p-4 text-center">
-                        <div class="text-2xl font-bold text-red-400">{{ $this->slaSummary['breached'] }}</div>
-                        <div class="text-xs text-red-300 mt-1">{{ __('sla.status.breached') }}</div>
+                    <div class="bg-danger-900/30 border border-danger-700/50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-danger-400">{{ $this->slaSummary['breached'] }}</div>
+                        <div class="text-xs text-danger-300 mt-1">{{ __('sla.status.breached') }}</div>
                     </div>
                 </div>
 
@@ -183,7 +183,7 @@
                 <div class="mt-4 flex items-center justify-between bg-slate-800/30 rounded-lg p-3">
                     <span class="text-sm text-slate-300">{{ __('sla.dashboard.compliance_rate') }}</span>
                     <span
-                        class="text-lg font-semibold {{ $this->slaSummary['compliance_rate'] >= 90 ? 'text-green-400' : ($this->slaSummary['compliance_rate'] >= 70 ? 'text-yellow-400' : 'text-red-400') }}">
+                        class="text-lg font-semibold {{ $this->slaSummary['compliance_rate'] >= 90 ? 'text-success-400' : ($this->slaSummary['compliance_rate'] >= 70 ? 'text-warning-400' : 'text-danger-400') }}">
                         {{ $this->slaSummary['compliance_rate'] }}%
                     </span>
                 </div>
@@ -235,8 +235,8 @@
                         @forelse($applications as $application)
                             <tr wire:key="app-{{ $application->id }}" x-data="{ optimisticStatus: null, isProcessing: false }"
                                 :class="{
-                                    'bg-green-900/30 transition-colors duration-500': optimisticStatus === 'approved',
-                                    'bg-red-900/30 transition-colors duration-500': optimisticStatus === 'rejected',
+                                    'bg-success-900/30 transition-colors duration-500': optimisticStatus === 'approved',
+                                    'bg-danger-900/30 transition-colors duration-500': optimisticStatus === 'rejected',
                                     'opacity-60': isProcessing
                                 }"
                                 @optimistic-update.window="if ($event.detail.applicationId == {{ $application->id }}) { optimisticStatus = $event.detail.status; isProcessing = true; }"
@@ -248,7 +248,7 @@
                                         {{-- Optimistic status indicator --}}
                                         <template x-if="optimisticStatus === 'approved'">
                                             <span
-                                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-800">
                                                 <svg class="w-3 h-3 mr-1 animate-spin" x-show="isProcessing"
                                                     fill="none" viewBox="0 0 24 24">
                                                     <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -262,7 +262,7 @@
                                         </template>
                                         <template x-if="optimisticStatus === 'rejected'">
                                             <span
-                                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-danger-100 text-danger-800">
                                                 <svg class="w-3 h-3 mr-1 animate-spin" x-show="isProcessing"
                                                     fill="none" viewBox="0 0 24 24">
                                                     <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -323,7 +323,7 @@
                                             {{-- Progress Bar --}}
                                             <div class="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden">
                                                 <div class="h-full rounded-full transition-all duration-300
-                                                    {{ $sla['status'] === 'breached' ? 'bg-red-500' : ($sla['status'] === 'critical' ? 'bg-orange-500' : ($sla['status'] === 'warning' ? 'bg-yellow-500' : 'bg-green-500')) }}"
+                                                    {{ $sla['status'] === 'breached' ? 'bg-danger-500' : ($sla['status'] === 'critical' ? 'bg-orange-500' : ($sla['status'] === 'warning' ? 'bg-warning-500' : 'bg-success-500')) }}"
                                                     style="width: {{ min(100, $sla['percentage']) }}%">
                                                 </div>
                                             </div>
@@ -338,7 +338,7 @@
                                             <button type="button"
                                                 wire:click="openApprovalModal({{ $application->id }}, 'approve')"
                                                 :disabled="isProcessing"
-                                                class="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 focus:outline-none focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed min-h-11 min-w-11 bg-green-600 hover:bg-green-700 text-white focus:ring-green-300 dark:focus:ring-green-800 px-3 py-2 text-sm">
+                                                class="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 focus:outline-none focus-visible:ring-3 disabled:opacity-50 disabled:cursor-not-allowed min-h-11 min-w-11 bg-success-600 hover:bg-success-700 text-white focus-visible:ring-3 focus-visible:ring-success-300 dark:focus-visible:ring-3 focus-visible:ring-success-800 px-3 py-2 text-sm focus-visible:ring-offset-2">
                                                 {{ __('staff.approvals.approve') }}
                                             </button>
                                             <x-ui.button
@@ -350,7 +350,7 @@
                                         {{-- Optimistic action feedback --}}
                                         <div x-show="optimisticStatus" x-transition class="text-sm">
                                             <template x-if="optimisticStatus === 'approved'">
-                                                <span class="text-green-400 flex items-center justify-end gap-1">
+                                                <span class="text-success-400 flex items-center justify-end gap-1">
                                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
                                                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -360,7 +360,7 @@
                                                 </span>
                                             </template>
                                             <template x-if="optimisticStatus === 'rejected'">
-                                                <span class="text-red-400 flex items-center justify-end gap-1">
+                                                <span class="text-danger-400 flex items-center justify-end gap-1">
                                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
                                                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -410,14 +410,14 @@
                     <form wire:submit="{{ $approvalAction === 'approve' ? 'approve' : 'reject' }}" class="space-y-6">
                         <div>
                             <label for="approval-remarks" class="block text-sm font-medium text-slate-300 mb-2">
-                                {{ __('staff.approvals.remarks') }} <span class="text-red-400">*</span>
+                                {{ __('staff.approvals.remarks') }} <span class="text-danger-400">*</span>
                             </label>
                             <textarea id="approval-remarks" wire:model="approvalRemarks" rows="4" required
-                                class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950"
+                                class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-950"
                                 placeholder="{{ __('staff.approvals.remarks_placeholder') }}"
                                 @error('approvalRemarks') aria-invalid="true" aria-describedby="remarks-error" @enderror></textarea>
                             @error('approvalRemarks')
-                                <p id="remarks-error" class="mt-2 text-sm text-red-400" role="alert">
+                                <p id="remarks-error" class="mt-2 text-sm text-danger-400" role="alert">
                                     {{ $message }}
                                 </p>
                             @enderror

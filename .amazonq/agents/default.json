@@ -17,8 +17,7 @@
     "@sequentialthinking",
     "@fetch",
     "@memory",
-    "@gitkraken",
-    "@deepl"
+    "@gitkraken"
   ],
   "toolAliases": {},
   "allowedTools": [

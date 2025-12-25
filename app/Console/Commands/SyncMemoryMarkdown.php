@@ -23,8 +23,8 @@ class SyncMemoryMarkdown extends Command
         $this->info('Starting memory sync of markdown files...');
 
         $pathOption = $this->option('path');
-        $paths = is_array($pathOption) && !empty($pathOption) 
-            ? $pathOption 
+        $paths = is_array($pathOption) && ! empty($pathOption)
+            ? $pathOption
             : [base_path('docs'), base_path('.agents'), base_path('.github'), base_path('.')];
         $paths = array_map('strval', $paths);
 
@@ -171,17 +171,24 @@ class SyncMemoryMarkdown extends Command
     protected function normalizeEncoding(string $contents): string
     {
         // strip UTF-8 BOM if present
-        $contents = preg_replace('/^\xEF\xBB\xBF/', '', $contents);
+        $stripped = preg_replace('/^\xEF\xBB\xBF/', '', $contents);
+        $contents = is_string($stripped) ? $stripped : $contents;
 
         // Detect common encodings (UTF-8, UTF-16LE, UTF-16BE). If not UTF-8, attempt conversion.
         $encoding = mb_detect_encoding($contents, ['UTF-8', 'UTF-16LE', 'UTF-16BE', 'ISO-8859-1'], true);
 
-        if ($encoding && $encoding !== 'UTF-8') {
-            $contents = mb_convert_encoding($contents, 'UTF-8', $encoding);
+        if ($encoding !== false && $encoding !== 'UTF-8') {
+            $converted = mb_convert_encoding($contents, 'UTF-8', $encoding);
+            if ($converted !== false) {
+                $contents = $converted;
+            }
         }
 
         // Ensure valid UTF-8
-        $contents = mb_convert_encoding($contents, 'UTF-8', 'UTF-8');
+        $validated = mb_convert_encoding($contents, 'UTF-8', 'UTF-8');
+        if ($validated !== false) {
+            $contents = $validated;
+        }
 
         return $contents;
     }

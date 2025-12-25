@@ -40,7 +40,7 @@
 
 @php
 $baseClasses = 'group flex w-full items-center gap-3 px-4 py-2.5 min-h-11 text-sm transition-colors';
-$baseClasses .= ' focus:outline-none';
+$baseClasses .= ' focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500';
 
 $stateClasses = match (true) {
 $disabled => 'text-gray-400 dark:text-gray-500 cursor-not-allowed',
@@ -48,14 +48,14 @@ $danger
 => 'text-danger-600 dark:text-danger-400 hover:bg-danger-50 dark:hover:bg-danger-900/50 focus:bg-danger-50 dark:focus:bg-danger-900/50',
 $active => 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50',
 default
-=> 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-100 dark:focus:bg-gray-700',
+=> 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 focus:bg-slate-100 dark:focus:bg-slate-700',
 };
 
 $iconClasses = match (true) {
-$disabled => 'text-gray-400 dark:text-gray-500',
+$disabled => 'text-slate-400 dark:text-slate-500',
 $danger => 'text-danger-500 dark:text-danger-400',
 $active => 'text-primary-500 dark:text-primary-400',
-default => 'text-gray-400 dark:text-gray-500 group-hover:text-gray-500 dark:group-hover:text-gray-400',
+default => 'text-slate-400 dark:text-slate-500 group-hover:text-slate-500 dark:group-hover:text-slate-400',
 };
 
 $tag = $href && !$disabled ? 'a' : 'button';

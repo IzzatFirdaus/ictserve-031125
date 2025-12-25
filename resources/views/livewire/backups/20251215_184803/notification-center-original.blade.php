@@ -20,7 +20,7 @@
         <div class="mt-4 flex flex-wrap md:mt-0 md:ml-4 gap-2">
             @if (count($selectedIds) > 0)
                 <button wire:click="markSelectedAsRead" type="button"
-                    class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 transition-colors"
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 transition-colors"
                     aria-label="{{ __('notifications.mark_selected_read') }}">
                     <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -29,7 +29,7 @@
                     {{ __('notifications.mark_read') }}
                 </button>
                 <button wire:click="deleteSelected" type="button"
-                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-danger-600 hover:bg-danger-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-danger-500 transition-colors"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-danger-600 hover:bg-danger-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-danger-500 transition-colors"
                     aria-label="{{ __('common.delete_selected') }}">
                     <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -40,7 +40,7 @@
                 </button>
             @else
                 <button wire:click="markAllAsRead" type="button"
-                    class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 transition-colors"
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 transition-colors"
                     aria-label="{{ __('notifications.mark_all_as_read') }}">
                     {{ __('notifications.mark_all_as_read') }}
                 </button>
@@ -48,14 +48,14 @@
         </div>
     </div>
 
-    <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-md">
+    <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
         {{-- Filters --}}
         <div
             class="px-4 py-4 border-b border-gray-200 dark:border-gray-700 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div class="flex items-center">
                     <input wire:click="toggleUnreadFilter" id="unread_only" type="checkbox"
-                        class="h-4 w-4 text-primary-600 focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 border-gray-300 dark:border-gray-600 rounded transition-colors"
+                        class="h-4 w-4 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-3 focus-visible:ring-offset-2 border-gray-300 dark:border-gray-600 rounded transition-colors"
                         {{ $unreadOnly ? 'checked' : '' }} aria-describedby="unread-help">
                     <label for="unread_only" class="ml-2 block text-sm font-medium text-gray-900 dark:text-gray-300">
                         {{ __('notifications.filter_unread') }}
@@ -63,7 +63,7 @@
                 </div>
 
                 <select wire:change="setTypeFilter($event.target.value)"
-                    class="block w-full sm:w-auto pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md dark:bg-gray-700 dark:text-white transition-colors"
+                    class="block w-full sm:w-auto pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-lg dark:bg-gray-700 dark:text-white transition-colors"
                     aria-label="{{ __('notifications.filter_by_type') }}">
                     <option value="">{{ __('notifications.filter_all') }}</option>
                     @foreach ($availableTypes as $key => $label)
@@ -75,12 +75,12 @@
 
             <div class="flex items-center gap-2">
                 <button wire:click="selectAll" type="button"
-                    class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors">
+                    class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors">
                     {{ __('common.select_all') }}
                 </button>
                 <span class="text-gray-300 dark:text-gray-600">|</span>
                 <button wire:click="deselectAll" type="button"
-                    class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors">
+                    class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors">
                     {{ __('common.deselect_all') }}
                 </button>
             </div>
@@ -96,7 +96,7 @@
                         <div class="flex items-start">
                             <div class="flex items-center h-5">
                                 <input wire:click="toggleSelection('{{ $notification->id }}')" type="checkbox"
-                                    class="focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 h-4 w-4 text-primary-600 border-gray-300 dark:border-gray-600 rounded transition-colors"
+                                    class="focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-3 focus-visible:ring-offset-2 h-4 w-4 text-primary-600 border-gray-300 dark:border-gray-600 rounded transition-colors"
                                     {{ in_array($notification->id, $selectedIds) ? 'checked' : '' }}
                                     aria-label="{{ __('common.select_item') }}">
                             </div>
@@ -135,13 +135,13 @@
                                         @if ($notification->url)
                                             <a href="{{ $notification->url }}"
                                                 wire:click="markAsRead('{{ $notification->id }}')"
-                                                class="font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded px-1 py-0.5 transition-colors">
+                                                class="font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded px-1 py-0.5 transition-colors">
                                                 {{ __('notifications.view_details') }}
                                             </a>
                                         @endif
                                         @if (!$notification->is_read)
                                             <button wire:click="markAsRead('{{ $notification->id }}')" type="button"
-                                                class="font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded px-1 py-0.5 transition-colors">
+                                                class="font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded px-1 py-0.5 transition-colors">
                                                 {{ __('notifications.mark_as_read') }}
                                             </button>
                                         @endif

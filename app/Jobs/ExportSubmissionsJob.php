@@ -43,7 +43,12 @@ class ExportSubmissionsJob implements ShouldQueue
      *
      * @param  array<string, mixed>  $filters
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $filters
+ */
+public function __construct(
         public User $user,
         public string $format,
         public array $filters,
@@ -107,5 +112,23 @@ class ExportSubmissionsJob implements ShouldQueue
                 'error' => $notificationException->getMessage(),
             ]);
         }
+    }
+
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * Requirement 23.7: Job tagging for ICTServe operations
+     *
+     * @return array<string>
+     */
+    public function tags(): array
+    {
+        return [
+            'reports',
+            'export',
+            'user:'.$this->user->id,
+            'format:'.$this->format,
+            'job_id:'.$this->jobId,
+        ];
     }
 }

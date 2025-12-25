@@ -1,5 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+$redisSupported = static function (): bool {
+    return extension_loaded('redis') || class_exists(\Predis\Client::class);
+};
+
+$defaultQueueConnection = env('QUEUE_CONNECTION', 'redis');
+
+// For WSL Horizon setup, we'll use Redis when available
+if ($defaultQueueConnection === 'redis' && ! $redisSupported()) {
+    $defaultQueueConnection = 'database'; // Fall back to database instead of sync
+}
+
 return [
 
     /*
@@ -13,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_CONNECTION', 'database'),
+    'default' => $defaultQueueConnection,
 
     /*
     |--------------------------------------------------------------------------
@@ -71,6 +84,39 @@ return [
             'retry_after' => (int) env('REDIS_QUEUE_RETRY_AFTER', 90),
             'block_for' => null,
             'after_commit' => false,
+        ],
+
+        'broadcast' => [
+            'driver' => 'redis',
+            'connection' => env('REDIS_BROADCAST_CONNECTION', 'default'),
+            'queue' => env('REDIS_BROADCAST_QUEUE', 'broadcast'),
+            'retry_after' => (int) env('REDIS_BROADCAST_RETRY_AFTER', 60),
+            'block_for' => null,
+            'after_commit' => false,
+
+            // Broadcasting-specific configuration (Requirements 3.4, 7.3)
+            'timeout' => (int) env('BROADCAST_TIMEOUT', 30),
+            'max_tries' => (int) env('BROADCAST_MAX_TRIES', 3),
+            'backoff' => [
+                (int) env('BROADCAST_BACKOFF_FIRST', 10),
+                (int) env('BROADCAST_BACKOFF_SECOND', 30),
+                (int) env('BROADCAST_BACKOFF_THIRD', 60),
+            ],
+
+            // High volume handling configuration (Requirement 7.3)
+            'processes' => (int) env('BROADCAST_PROCESSES', 3),
+            'max_jobs' => (int) env('BROADCAST_MAX_JOBS', 1000),
+            'memory' => (int) env('BROADCAST_MEMORY', 128),
+            'sleep' => (int) env('BROADCAST_SLEEP', 3),
+            'rest' => (int) env('BROADCAST_REST', 0),
+
+            // Performance monitoring (Requirement 7.5)
+            'monitoring' => [
+                'enabled' => env('BROADCAST_MONITORING_ENABLED', true),
+                'slow_threshold' => (int) env('BROADCAST_SLOW_THRESHOLD', 1000), // milliseconds
+                'failed_threshold' => (int) env('BROADCAST_FAILED_THRESHOLD', 5),
+                'alert_email' => env('BROADCAST_ALERT_EMAIL', env('QUEUE_ADMIN_EMAIL')),
+            ],
         ],
 
         'deferred' => [

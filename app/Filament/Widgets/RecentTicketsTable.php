@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\HelpdeskTicket;
 use Filament\Actions\Action;
 use Filament\Support\Colors\Color;
@@ -33,7 +34,17 @@ use Filament\Widgets\TableWidget;
  */
 class RecentTicketsTable extends TableWidget
 {
+    use WidgetMetadata;
+
     protected static ?int $sort = 4;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D16 Broadcasting Setup - Laravel Reverb integration';
+    }
 
     protected static bool $isLazy = true; // Non-critical - lazy load
 
@@ -46,7 +57,7 @@ class RecentTicketsTable extends TableWidget
         return $table
             ->query(
                 HelpdeskTicket::query()
-                    ->with(['user', 'user.department', 'category', 'assignedUser', 'relatedAsset'])
+                    ->with(['user', 'user.division', 'category', 'assignedUser', 'relatedAsset'])
                     ->latest()
                     ->limit(10)
             )
@@ -72,7 +83,7 @@ class RecentTicketsTable extends TableWidget
 
                 TextColumn::make('user.name')
                     ->label(__('widgets.reported_by'))
-                    ->description(fn (HelpdeskTicket $record): ?string => $record->user?->department?->name)
+                    ->description(fn (HelpdeskTicket $record): ?string => $record->user?->division?->name)
                     ->placeholder($this->getGuestPlaceholder()),
 
                 TextColumn::make('category.name_ms')

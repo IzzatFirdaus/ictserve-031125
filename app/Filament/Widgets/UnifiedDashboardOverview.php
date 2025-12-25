@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Filament\Traits\CacheableWidget;
+use App\Filament\Traits\WidgetMetadata;
 use App\Services\UnifiedAnalyticsService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -32,6 +33,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class UnifiedDashboardOverview extends BaseWidget
 {
     use CacheableWidget;
+    use WidgetMetadata;
 
     /**
      * Polling interval for real-time updates (300 seconds = 5 minutes)
@@ -46,6 +48,29 @@ class UnifiedDashboardOverview extends BaseWidget
      */
     protected static ?int $sort = -10;
 
+    /**
+     * Widget roles - accessible to all authenticated users
+     */
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function getWidgetRoles(): array
+    {
+        return ['staff', 'admin', 'superuser'];
+    }
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 §9 Performance optimization patterns';
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
     protected function getStats(): array
     {
         // Use cached data with 5-minute TTL for performance optimization
@@ -135,6 +160,10 @@ class UnifiedDashboardOverview extends BaseWidget
 
     /**
      * @return array<int, int>
+     */
+
+    /**
+     * @return array<string, mixed>
      */
     private function getHealthTrendData(): array
     {

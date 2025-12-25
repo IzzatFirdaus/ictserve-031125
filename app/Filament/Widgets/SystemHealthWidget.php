@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Services\PerformanceMonitoringService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -22,10 +23,28 @@ use Illuminate\Support\HtmlString;
  */
 class SystemHealthWidget extends BaseWidget
 {
+    use WidgetMetadata;
+
     /**
      * Widget sort order on dashboard
      */
     protected static ?int $sort = 11;
+
+    /**
+     * Widget roles - restricted to superuser only
+     */
+    public static function getWidgetRoles(): array
+    {
+        return ['superuser'];
+    }
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D03 §8.2 Performance monitoring requirements, D04 §3.2 Dashboard widgets';
+    }
 
     /**
      * Polling interval for real-time updates (30 seconds)
@@ -87,6 +106,10 @@ class SystemHealthWidget extends BaseWidget
      *
      * @param  array<string, mixed>  $metrics
      */
+
+    /**
+     * @param  array<string, mixed>  $metrics
+     */
     private function buildCpuStat(array $metrics, string $serverName): Stat
     {
         $cpuPercent = $metrics['cpu_percent'] ?? 0;
@@ -107,6 +130,10 @@ class SystemHealthWidget extends BaseWidget
     /**
      * Build memory usage statistic
      *
+     * @param  array<string, mixed>  $metrics
+     */
+
+    /**
      * @param  array<string, mixed>  $metrics
      */
     private function buildMemoryStat(array $metrics): Stat
@@ -136,6 +163,10 @@ class SystemHealthWidget extends BaseWidget
     /**
      * Build disk usage statistic
      *
+     * @param  array<string, mixed>  $metrics
+     */
+
+    /**
      * @param  array<string, mixed>  $metrics
      */
     private function buildDiskStat(array $metrics): Stat

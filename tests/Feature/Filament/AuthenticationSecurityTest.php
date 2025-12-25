@@ -44,7 +44,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test session timeout is configured to 30 minutes
      */
     #[Test]
-    public function test_session_timeout_is_configured_to_30_minutes(): void
+    public function session_timeout_is_configured_to_30_minutes(): void
     {
         $this->assertEquals(30, config('session.lifetime'));
     }
@@ -53,7 +53,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test session timeout middleware logs out inactive users
      */
     #[Test]
-    public function test_session_timeout_middleware_logs_out_inactive_users(): void
+    public function session_timeout_middleware_logs_out_inactive_users(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -78,7 +78,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test session timeout middleware updates last activity time
      */
     #[Test]
-    public function test_session_timeout_middleware_updates_last_activity_time(): void
+    public function session_timeout_middleware_updates_last_activity_time(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -103,7 +103,7 @@ class AuthenticationSecurityTest extends TestCase
      * Filament v4 uses Livewire for authentication, so we test the rate limiter directly.
      */
     #[Test]
-    public function test_rate_limiting_blocks_after_5_failed_attempts(): void
+    public function rate_limiting_blocks_after_5_failed_attempts(): void
     {
         $admin = User::factory()->admin()->create([
             'email' => 'test@example.com',
@@ -136,7 +136,7 @@ class AuthenticationSecurityTest extends TestCase
      * Tests the rate limiter state management functionality.
      */
     #[Test]
-    public function test_rate_limiting_clears_on_successful_login(): void
+    public function rate_limiting_clears_on_successful_login(): void
     {
         $admin = User::factory()->admin()->create([
             'email' => 'test@example.com',
@@ -172,7 +172,7 @@ class AuthenticationSecurityTest extends TestCase
      * This test verifies the CSRF middleware is active.
      */
     #[Test]
-    public function test_csrf_protection_is_enabled_for_admin_forms(): void
+    public function csrf_protection_is_enabled_for_admin_forms(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -193,7 +193,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test password complexity requirements are configured
      */
     #[Test]
-    public function test_password_complexity_requirements_are_configured(): void
+    public function password_complexity_requirements_are_configured(): void
     {
         $rule = Password::defaults();
 
@@ -204,7 +204,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test password must be at least 8 characters
      */
     #[Test]
-    public function test_password_must_be_at_least_8_characters(): void
+    public function password_must_be_at_least_8_characters(): void
     {
         $rule = Password::defaults();
 
@@ -218,7 +218,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test password must contain uppercase letter
      */
     #[Test]
-    public function test_password_must_contain_uppercase_letter(): void
+    public function password_must_contain_uppercase_letter(): void
     {
         $rule = Password::defaults();
 
@@ -231,7 +231,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test password must contain lowercase letter
      */
     #[Test]
-    public function test_password_must_contain_lowercase_letter(): void
+    public function password_must_contain_lowercase_letter(): void
     {
         $rule = Password::defaults();
 
@@ -244,7 +244,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test password must contain number
      */
     #[Test]
-    public function test_password_must_contain_number(): void
+    public function password_must_contain_number(): void
     {
         $rule = Password::defaults();
 
@@ -257,7 +257,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test password must contain special character
      */
     #[Test]
-    public function test_password_must_contain_special_character(): void
+    public function password_must_contain_special_character(): void
     {
         $rule = Password::defaults();
 
@@ -270,7 +270,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test valid password passes all requirements
      */
     #[Test]
-    public function test_valid_password_passes_all_requirements(): void
+    public function valid_password_passes_all_requirements(): void
     {
         $rule = Password::defaults();
 
@@ -283,7 +283,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test automatic logout on session expiry
      */
     #[Test]
-    public function test_automatic_logout_on_session_expiry(): void
+    public function automatic_logout_on_session_expiry(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -304,7 +304,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test session is invalidated on logout
      */
     #[Test]
-    public function test_session_is_invalidated_on_logout(): void
+    public function session_is_invalidated_on_logout(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -312,8 +312,9 @@ class AuthenticationSecurityTest extends TestCase
 
         $sessionId = Session::getId();
 
-        // Logout
-        $this->post(route('logout'));
+        // Logout with CSRF token
+        $this->withSession(['_token' => 'test-token'])
+            ->post(route('logout'), ['_token' => 'test-token']);
 
         // Session ID should be regenerated
         $this->assertNotEquals($sessionId, Session::getId());
@@ -326,7 +327,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test session cookie is HTTP only
      */
     #[Test]
-    public function test_session_cookie_is_http_only(): void
+    public function session_cookie_is_http_only(): void
     {
         $this->assertTrue(config('session.http_only'));
     }
@@ -335,7 +336,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test session cookie has same-site protection
      */
     #[Test]
-    public function test_session_cookie_has_same_site_protection(): void
+    public function session_cookie_has_same_site_protection(): void
     {
         $this->assertEquals('lax', config('session.same_site'));
     }
@@ -344,7 +345,7 @@ class AuthenticationSecurityTest extends TestCase
      * Test production environment enforces stricter password rules
      */
     #[Test]
-    public function test_production_environment_enforces_stricter_password_rules(): void
+    public function production_environment_enforces_stricter_password_rules(): void
     {
         // Verify the PasswordValidationServiceProvider class exists
         $this->assertTrue(class_exists(\App\Providers\PasswordValidationServiceProvider::class));

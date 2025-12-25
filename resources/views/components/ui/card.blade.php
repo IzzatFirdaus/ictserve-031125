@@ -12,26 +12,40 @@
  */
 --}}
 @props([
-'padding' => 'p-6',
-'header' => null,
-'footer' => null,
+    'header' => null,
+    'footer' => null,
+    'title' => null,
+    'subtitle' => null,
+    'noPadding' => false,
 ])
 
 <div
-    {{ $attributes->merge(['class' => 'bg-white dark:bg-gray-800 overflow-hidden shadow-card rounded-(--radius-l) border border-gray-200 dark:border-gray-700']) }}>
-    @if ($header)
-    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-        {{ $header }}
-    </div>
+    {{ $attributes->merge(['class' => 'bg-white dark:bg-gray-800 rounded-lg shadow-card border border-gray-200 dark:border-gray-700 overflow-hidden']) }}>
+
+    @if (isset($header) || $title)
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            @if (isset($header))
+                {{ $header }}
+            @else
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    {{ $title }}
+                </h3>
+                @if ($subtitle)
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        {{ $subtitle }}
+                    </p>
+                @endif
+            @endif
+        </div>
     @endif
 
-    <div class="{{ $padding }}">
+    <div class="px-6 py-6 {{ $noPadding ? 'p-0' : '' }}">
         {{ $slot }}
     </div>
 
-    @if ($footer)
-    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-        {{ $footer }}
-    </div>
+    @if (isset($footer))
+        <div class="bg-gray-50 dark:bg-gray-700/50 px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+            {{ $footer }}
+        </div>
     @endif
 </div>

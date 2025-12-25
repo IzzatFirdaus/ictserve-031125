@@ -33,14 +33,14 @@ $defaultTitle = __('portal.verified_user_info');
 @if($displayUser)
 <div
     {{ $attributes->merge([
-        'class' => 'bg-teal-50 dark:bg-teal-900/20 border-l-4 border-teal-500 dark:border-teal-400 p-4 rounded-(--radius-l)',
+        'class' => 'bg-info-50 dark:bg-info-900/20 border-l-4 border-info-500 dark:border-info-400 p-4 rounded-lg',
         'role' => 'region',
         'aria-labelledby' => 'user-info-heading-' . ($displayUser->id ?? 'guest'),
     ]) }}>
     <div class="flex items-start">
         {{-- Info Icon --}}
         <div class="shrink-0" aria-hidden="true">
-            <svg class="h-5 w-5 text-teal-500 dark:text-teal-400" fill="currentColor" viewBox="0 0 20 20">
+            <svg class="h-5 w-5 text-info-500 dark:text-info-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
             </svg>
         </div>
@@ -49,11 +49,11 @@ $defaultTitle = __('portal.verified_user_info');
         <div class="ml-3 flex-1">
             <p
                 id="user-info-heading-{{ $displayUser->id ?? 'guest' }}"
-                class="text-sm font-medium text-teal-800 dark:text-teal-200">
+                class="text-sm font-medium text-info-800 dark:text-info-200">
                 {{ $title ?? $defaultTitle }}
             </p>
 
-            <dl class="mt-2 text-sm text-teal-700 dark:text-teal-300 space-y-1">
+            <dl class="mt-2 text-sm text-info-700 dark:text-info-300 space-y-1">
                 {{-- Name --}}
                 <div class="flex gap-1">
                     <dt class="font-semibold">{{ __('portal.name') }}:</dt>
@@ -111,7 +111,7 @@ $defaultTitle = __('portal.verified_user_info');
 
             {{-- Optional slot for additional content --}}
             @if($slot->isNotEmpty())
-            <div class="mt-3 pt-3 border-t border-teal-200 dark:border-teal-700">
+            <div class="mt-3 pt-3 border-t border-info-200 dark:border-info-700">
                 {{ $slot }}
             </div>
             @endif

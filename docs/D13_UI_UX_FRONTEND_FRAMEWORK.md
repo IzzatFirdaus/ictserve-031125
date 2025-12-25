@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0
+**Standard Rujukan:** ISO 9241-210 (Human-Centred Design), ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0, MDGDM, Standard DDSA (Digital Document Standard Architecture), 18 Prinsip Reka Bentuk MyGovEA
 
 ---
 
@@ -29,7 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                      | Penulis     |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi rangka kerja frontend                                                                                                                                                                                                                                                   | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                         | Pasukan BPM |
 | 2.1.0 | 19 Oktober 2025  | Tambah §5.6 Language Switcher component                                                                                                                                                                                                                                                        | Pasukan BPM |
@@ -74,14 +74,14 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 | Technology       | Version    | Purpose                                               |
 | ---------------- | ---------- | ----------------------------------------------------- |
 | **Blade**        | Laravel 12 | Templating engine dengan component-based architecture |
-| **Livewire**     | 3.7.0      | Server-driven reactive components                     |
+| **Livewire**     | 3.7.3      | Server-driven reactive components                     |
 | **Volt**         | 1.10.1     | Single-file components (functional API)               |
-| **Tailwind CSS** | 4.1.17     | Utility-first CSS framework                           |
+| **Tailwind CSS** | 4.1.18     | Utility-first CSS framework                           |
 | **Alpine.js**    | 3.x        | Lightweight reactive DOM interactions                 |
-| **Filament**     | 4.1.10     | Admin panel framework (SDUI)                          |
+| **Filament**     | 4.3.1      | Admin panel framework (SDUI)                          |
 | **Vite**         | 7.0.7      | Frontend build tool                                   |
 | **Laravel Echo** | 2.2.6      | WebSocket client for real-time features               |
-| **Laravel Reverb** | 1.6.2    | WebSocket server                                      |
+| **Laravel Reverb** | 1.6.3    | WebSocket server                                      |
 
 ### 2.2. Tailwind CSS v4 Configuration (MyDS Aligned)
 
@@ -508,7 +508,7 @@ resources/views/
 
 ```blade
 {{-- Responsive grid implementation --}}
-<div class="grid grid-cols-4 gap-[18px] px-[18px] md:grid-cols-8 md:gap-6 md:px-6 lg:grid-cols-12 lg:max-w-7xl lg:mx-auto">
+<div class="grid grid-cols-4 gap-4.5 px-4.5 md:grid-cols-8 md:gap-6 md:px-6 lg:grid-cols-12 lg:max-w-7xl lg:mx-auto">
     <div class="col-span-4 md:col-span-5 lg:col-span-8">Main Content</div>
     <div class="col-span-4 md:col-span-3 lg:col-span-4">Sidebar</div>
 </div>
@@ -546,6 +546,7 @@ resources/views/
 **Service**: `app/Services/RegistrationService.php`
 
 Ringkasan implementasi (source of truth):
+
 - Validasi domain e-mel menggunakan `ends_with:@motac.gov.my`
 - Password strength indicator dan `confirmed`
 - Logik pendaftaran dipusatkan melalui `RegistrationServiceInterface`
@@ -557,6 +558,7 @@ Ringkasan implementasi (source of truth):
 **Google SSO**: `app/Http/Controllers/Auth/GoogleAuthController.php` + konfigurasi `config/services.php`
 
 Ringkasan implementasi:
+
 - UI login berasaskan Livewire Volt (bukan Blade form statik)
 - Laluan SSO Google melalui route `auth.google.redirect` / `auth.google.callback` (rujuk `routes/auth.php`)
 
@@ -574,6 +576,7 @@ Ringkasan implementasi:
 **Service**: `app/Services/AccountLinkingService.php`
 
 Ringkasan implementasi:
+
 - Pengguna authenticated (staff) boleh mencari rekod tetamu yang belum dipautkan menggunakan e-mel.
 - Pautan dibuat dengan mengemaskini `user_id` pada rekod yang dipilih.
 - Carian rekod tetamu menyasar `helpdesk_tickets.guest_email` dan `loan_applications.applicant_email` (rekod `user_id` = NULL).
@@ -585,6 +588,7 @@ Ringkasan implementasi:
 **View**: `resources/views/livewire/notification-preferences.blade.php`
 
 Ringkasan implementasi:
+
 - Toggle granular untuk jenis notifikasi (contoh: `ticketStatusUpdates`, `loanApprovalNotifications`, dsb.)
 - Konfigurasi kekerapan e-mel menggunakan nilai: `immediate`, `daily_digest`, `weekly_digest`, `disabled`
 - Penyimpanan ke `user_notification_preferences` (rujuk Model `App/Models/UserNotificationPreference.php`)
@@ -642,7 +646,7 @@ Ringkasan implementasi:
 
 ```blade
 {{-- Main AI Chat Interface --}}
-<div class="flex flex-col h-[600px] bg-white rounded-lg shadow-card">
+<div class="flex flex-col h-150 bg-white rounded-lg shadow-card">
     {{-- Header with Model Selection --}}
     <div class="flex items-center justify-between p-4 border-b border-gray-200">
         <h2 class="text-lg font-semibold text-gray-900">
@@ -707,6 +711,7 @@ Ringkasan implementasi:
 ### 6.2. AI Chat Bubble Component
 
 UI “bubble” chat diimplementasi terus dalam view Livewire:
+
 - `resources/views/livewire/bedrock-chat.blade.php` (chat staff + token usage)
 - `resources/views/livewire/ollama/faq-bot.blade.php` (FAQ bot)
 
@@ -847,6 +852,7 @@ UI “bubble” chat diimplementasi terus dalam view Livewire:
 **Route**: `routes/web.php` (`/change-locale/{locale}`)
 
 Nota:
+
 - UI switcher berasaskan Livewire/Volt tidak digunakan dalam versi semasa (antara muka utama Bahasa Melayu).
 - Laluan tukar locale kekal untuk keperluan dalaman/ujian, tertakluk kepada polisi aplikasi.
 
@@ -1217,6 +1223,7 @@ class TicketForm extends Component
 ### 11.2. Volt Single-File Component
 
 Contoh Volt sedia ada (source of truth):
+
 - `resources/views/livewire/loan/track-application.blade.php` (token tracking + `state/mount/computed`)
 - `resources/views/livewire/components/theme-switcher.blade.php` (theme toggle + persist)
 

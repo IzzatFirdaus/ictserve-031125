@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $model
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation query()
@@ -22,13 +24,23 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation whereModel($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation whereUpdatedAt($value)
+ *
  * @property int|null $user_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation whereUserId($value)
+ *
+ * @property int $total_tokens
+ *
+ * @method static \Database\Factories\BedrockConversationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BedrockConversation whereTotalTokens($value)
+ *
  * @mixin \Eloquent
  */
 class BedrockConversation extends Model
 {
-    protected $fillable = ['title', 'messages', 'model'];
+    use HasFactory;
+
+    protected $fillable = ['user_id', 'title', 'messages', 'model', 'total_tokens'];
 
     protected function casts(): array
     {

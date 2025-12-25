@@ -23,7 +23,7 @@ class AccessibilityCompliance extends Page
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 6;
 
@@ -43,7 +43,7 @@ class AccessibilityCompliance extends Page
 
     public static function getNavigationGroup(): ?string
     {
-        return static::transOrNull('admin_pages.accessibility_compliance.group');
+        return __('filament.navigation.system');
     }
 
     protected function getHeaderActions(): array
@@ -162,6 +162,10 @@ class AccessibilityCompliance extends Page
     /**
      * @param  array<string, mixed>  $category
      */
+
+    /**
+     * @param  array<string, mixed>  $category
+     */
     public function getComplianceStatus(array $category): string
     {
         return match ($category['status']) {
@@ -171,6 +175,10 @@ class AccessibilityCompliance extends Page
             default => 'info',
         };
     }
+
+    /**
+     * @param  array<string, mixed>  $category
+     */
 
     /**
      * @param  array<string, mixed>  $category

@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Skeleton List Component
  *

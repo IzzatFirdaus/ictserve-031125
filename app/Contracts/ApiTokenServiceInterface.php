@@ -42,7 +42,12 @@ interface ApiTokenServiceInterface
      *
      * @see Requirements 37.1, 37.2
      */
-    public function createToken(User $user, string $name, array $abilities = ['*'], ?int $expirationDays = 30): NewAccessToken;
+    
+
+/**
+ * @param array<string, mixed> $abilities
+ */
+public function createToken(User $user, string $name, array $abilities = ['*'], ?int $expirationDays = 30): NewAccessToken;
 
     /**
      * Revoke a specific token for a user
@@ -96,7 +101,12 @@ interface ApiTokenServiceInterface
      *
      * @see Requirements 37.3
      */
-    public function validateTokenAbilities(PersonalAccessToken $token, array $requiredAbilities): bool;
+    
+
+/**
+ * @param array<string, mixed> $requiredAbilities
+ */
+public function validateTokenAbilities(PersonalAccessToken $token, array $requiredAbilities): bool;
 
     /**
      * Log API token usage for audit trail

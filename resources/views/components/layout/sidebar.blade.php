@@ -23,7 +23,7 @@
         {{-- Close button - 44×44px touch target per D12 §4.1 --}}
         <div class="absolute top-0 right-0 -mr-14 pt-2">
             <button @click="sidebarOpen = false" type="button"
-                class="flex items-center justify-center h-11 w-11 rounded-full bg-gray-800/50 text-white hover:bg-gray-800/70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors duration-150"
+                class="flex items-center justify-center h-11 w-11 rounded-full bg-gray-800/50 text-white hover:bg-gray-800/70 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800 transition-colors duration-150"
                 aria-label="{{ __('Close sidebar') }}">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -100,7 +100,7 @@
             {{-- Collapse toggle button --}}
             <div class="shrink-0 flex border-t border-gray-200 dark:border-gray-700 p-2">
                 <button @click="collapsed = !collapsed" type="button"
-                    class="flex items-center justify-center w-full p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-150 min-h-11"
+                    class="flex items-center justify-center w-full p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-150 min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     :aria-expanded="!collapsed" aria-controls="sidebar-nav"
                     :aria-label="collapsed ? '{{ __('Expand sidebar') }}' : '{{ __('Collapse sidebar') }}'">
                     <svg class="h-5 w-5 transition-transform duration-300" :class="collapsed ? 'rotate-180' : ''"

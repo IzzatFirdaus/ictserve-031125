@@ -40,7 +40,12 @@ class ImageOptimizationService
      *
      * @return array{original: string, webp: string|null, thumbnail: string|null, sizes: array}
      */
-    public function optimizeImage(UploadedFile $file, string $directory = 'attachments'): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function optimizeImage(UploadedFile $file, string $directory = 'attachments'): array
     {
         if (! $this->isImage($file)) {
             throw new \InvalidArgumentException('File must be an image');
@@ -154,7 +159,12 @@ class ImageOptimizationService
     /**
      * @return array<string, string>
      */
-    protected function generateResponsiveSizes($sourceImage, string $basePath): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function generateResponsiveSizes($sourceImage, string $basePath): array
     {
         $sizes = [];
 
@@ -268,9 +278,18 @@ class ImageOptimizationService
     }
 
     /**
+      * @param array<string, mixed> $optimizedPaths
+
      * @return array{src: string, srcset: string, sizes: string, loading: string, fetchpriority: string}
      */
-    public function getImageAttributes(array $optimizedPaths, bool $isPriority = false): array
+    
+
+/**
+  * @param array<string, mixed> $optimizedPaths
+
+ * @return array<string, mixed>
+ */
+public function getImageAttributes(array $optimizedPaths, bool $isPriority = false): array
     {
         $attributes = [
             'loading' => $isPriority ? 'eager' : 'lazy',
@@ -294,7 +313,12 @@ class ImageOptimizationService
         return $attributes;
     }
 
-    public function deleteOptimizedImages(array $optimizedPaths): void
+    
+
+/**
+ * @param array<string, mixed> $optimizedPaths
+ */
+public function deleteOptimizedImages(array $optimizedPaths): void
     {
         $disk = Storage::disk('private');
 
@@ -311,7 +335,12 @@ class ImageOptimizationService
         }
     }
 
-    public function getThumbnailUrl(array $optimizedPaths): ?string
+    
+
+/**
+ * @param array<string, mixed> $optimizedPaths
+ */
+public function getThumbnailUrl(array $optimizedPaths): ?string
     {
         if (isset($optimizedPaths['thumbnail'])) {
             return Storage::disk('private')->url($optimizedPaths['thumbnail']);
@@ -320,7 +349,12 @@ class ImageOptimizationService
         return null;
     }
 
-    public function getOptimizedUrl(array $optimizedPaths): string
+    
+
+/**
+ * @param array<string, mixed> $optimizedPaths
+ */
+public function getOptimizedUrl(array $optimizedPaths): string
     {
         if (isset($optimizedPaths['webp'])) {
             return Storage::disk('private')->url($optimizedPaths['webp']);

@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cookie;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * SetLocale Middleware
@@ -27,7 +25,7 @@ class SetLocale
      * User preferences and cookies are ignored.
      * The ictserve_locale cookie is deleted to clean up legacy data.
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(\Illuminate\Http\Request $request, Closure $next): \Symfony\Component\HttpFoundation\Response
     {
         // v3.6.0: Always use Bahasa Melayu - ignore user preferences and cookies
         App::setLocale('ms');

@@ -51,7 +51,7 @@
         role="columnheader" @endif>
     @if ($sortable && $column)
         <button type="button"
-            class="group inline-flex items-center gap-1 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
+            class="group inline-flex items-center gap-1 min-h-11 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
             @click="sort('{{ $column }}')" @keydown.enter.prevent="sort('{{ $column }}')"
             @keydown.space.prevent="sort('{{ $column }}')" aria-label="{{ __('Sort by') }} {{ $slot }}">
             <span>{{ $slot }}</span>

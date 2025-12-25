@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1
+**Standard Rujukan:** ISO 8000 (Data Quality), IEEE 1016:2009 (Huraian Reka Bentuk Perisian), ISO/IEC 27701, ISO/IEC 38505-1, ISO/IEC 33063:2015, ISO/IEC/IEEE 15289:2019, ISO 8601, TLS 1.3, AES-256, RFC 5322, MDGDM, DDSA
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                                            |
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                  |
-| **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1 |
+| **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1, ISO/IEC 33063:2015, ISO/IEC/IEEE 15289:2019, ISO 8601, TLS 1.3, AES-256, RFC 5322, MDGDM, DDSA |
 | **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu  |
 
 > Notis Penggunaan Dalaman: Semua skema dan jadual adalah untuk sistem dalaman
@@ -30,11 +30,11 @@
 
 | Versi | Tarikh           | Perubahan | Penulis |
 | ----- | ---------------- | --------- | ------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot Ollama-Bedrock v1.0.0. Tambah jadual AI: `faqs`, `documents`, `document_chunks`, `embeddings`, `message_logs`, `bedrock_conversations`, `auto_reply_templates`, `auto_reply_drafts`. Multi-model intelligence, streaming responses, web-augmented responses, conversation management. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot Ollama-Bedrock v1.0.0. Tambah jadual AI: `faqs`, `documents`, `document_chunks`, `embeddings`, `message_logs`, `bedrock_conversations`, `auto_reply_templates`, `auto_reply_drafts`. Multi-model intelligence, streaming responses, web-augmented responses, conversation management. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D08 v3.5.0. Tambah jadual `loan_transaction_accessories`, `personal_access_tokens`, `pulse_*`. Tambah medan `google_id`, `form_reference_code`, `responsible_officer_*`. Laravel Pulse, Sanctum API, Google SSO. | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Restored nullable user_id FK. Added staff role to users. | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Hybrid data model: users table extended for Staff profiles | Pasukan BPM |
-| 3.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.40.1, Filament 4.1.10, MySQL 8.0 | Pasukan BPM |
+| 3.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.43.1, Filament 4.3.1, MySQL 8.0 | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi pangkalan data | Pasukan BPM |
 
@@ -64,21 +64,61 @@ hubungan jadual bagi ICTServe sebagai sistem dalaman (internal-only).
 
 ---
 
+## 2.1. Piawaian dan Garis Panduan (Standards and Guidelines)
+
+### 2.1.1. Piawaian Proses dan Dokumentasi (Process and Documentation Standards)
+
+| Piawaian | Versi | Aplikasi dalam ICTServe |
+|----------|-------|-------------------------|
+| **ISO/IEC 33063:2015** | 2015 | Pengukuran proses dalam integrasi sistem pangkalan data |
+| **ISO/IEC/IEEE 15289:2019** | 2019 | Keperluan dokumentasi sistem dan perisian untuk pangkalan data |
+| **ISO/IEC TS 24748-6** | Latest | Panduan teknikal pengurusan kitaran hayat dokumentasi |
+| **IEEE 1016:2009** | 2009 | Huraian reka bentuk perisian untuk struktur pangkalan data |
+
+### 2.1.2. Piawaian Teknikal Data dan Komunikasi (Technical Data and Communication Standards)
+
+| Piawaian | Versi | Aplikasi dalam ICTServe |
+|----------|-------|-------------------------|
+| **RFC 5322** | 2008 | Format e-mel yang sah untuk migrasi dan integrasi data |
+| **ISO 8601** | 2019 | Format tarikh dan masa seragam di seluruh pangkalan data |
+| **TLS 1.3** | 2018 | Penyulitan data sensitif semasa penghantaran |
+| **AES-256** | Current | Penyulitan data sensitif semasa penyimpanan |
+
+### 2.1.3. Garis Panduan Kerajaan Malaysia (Malaysian Government Guidelines)
+
+| Garis Panduan | Versi | Aplikasi dalam ICTServe |
+|---------------|-------|-------------------------|
+| **MyGovEA 18 Prinsip** | v2.1.0 | Kerangka kerja seni bina perusahaan untuk reka bentuk pangkalan data |
+| **MDGDM** | Latest | Manual Reka Bentuk Digital Kerajaan Malaysia untuk struktur data |
+| **DDSA** | Current | Digital Document Standard Architecture untuk arkib dan dokumen digital |
+
+### 2.1.4. Piawaian Keselamatan dan Reka Bentuk (Security and Design Standards)
+
+| Piawaian | Versi | Aplikasi dalam ICTServe |
+|----------|-------|-------------------------|
+| **OWASP Transport Security** | Latest | Keselamatan saluran komunikasi data sistem |
+| **ISO 9241-210** | 2019 | Reka bentuk berpusatkan manusia untuk antara muka pangkalan data |
+
+> **Nota Pematuhan**: Semua piawaian tambahan ini dilaksanakan bersama dengan piawaian sedia ada (ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1) untuk memastikan sistem ICTServe mematuhi keperluan organisasi kerajaan yang komprehensif.
+
+---
+
 ## 3. Teknologi Pangkalan Data (Database Technology)
 
 | Komponen             | Teknologi         | Versi   | Fungsi                                    |
 | -------------------- | ----------------- | ------- | ----------------------------------------- |
 | RDBMS                | MySQL             | 8.x     | Production database                       |
 | Development DB       | SQLite            | 3.x     | Development/testing database              |
-| ORM                  | Eloquent          | 12.42.0 | Laravel ORM                               |
-| Migrations           | Laravel           | 12.42.0 | Schema version control                    |
+| ORM                  | Eloquent          | 12.43.1 | Laravel ORM                               |
+| Migrations           | Laravel           | 12.43.1 | Schema version control                    |
 | Caching              | Redis             | 7.x     | Query caching                             |
 | Audit (Compliance)   | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)         |
 | Audit (Operations)   | Activity Log      | 4.x     | User activity logging (spatie)            |
-| Performance Monitor  | Laravel Pulse     | 1.4.6   | Performance metrics & server health       |
+| Performance Monitor  | Laravel Pulse     | 1.4.7   | Performance metrics & server health       |
 | API Authentication   | Laravel Sanctum   | 4.2.1   | Token-based API authentication            |
 | Permissions          | Spatie Permission | 6.23    | Role-based access control                 |
 | Debugging            | Laravel Telescope | 5.x     | System monitoring (superuser only)        |
+| Queue Management     | Laravel Horizon   | 5.41.0  | Redis queue monitoring & management       |
 | **AI Local (Ollama)**| Ollama Server     | Latest  | Local LLM untuk FAQ Bot (D18 v1.0.0)     |
 | **AI Cloud (Bedrock)**| AWS Bedrock      | Latest  | Claude models untuk complex reasoning     |
 | **Vector Search**    | MySQL JSON        | 8.x     | Embedding storage dan semantic search     |
@@ -232,7 +272,7 @@ Ringkasan medan penting (bukan senarai penuh):
 | Field | Tipe Data | Keterangan |
 |------|----------|-----------|
 | id | bigint, PK | ID permohonan |
-| application_number | string(20) | Nombor permohonan unik (format: LA[YYYY][MM][0001-9999]) |
+| application_number | string(20) | Nombor permohonan unik (format: LA\[YYYY\]\[MM\]\[0001-9999\]) |
 | form_reference_code | string(50) | Kod rujukan borang PK.(S).MOTAC.07.(L3) |
 | user_id | bigint, FK nullable | FK → `users.id` (NULL untuk permohonan guest) |
 | applicant_name/email/phone | string | Maklumat pemohon (sentiasa dipopulasi) |
@@ -836,5 +876,4 @@ perubahan D01 §9.3.
 
 ---
 
-**Dokumen ini mematuhi piawaian ISO 8000:2022 (Data Quality), ISO/IEC/IEEE 1016:2009, dan D18 AI Chatbot Ollama-Bedrock v1.0.0 untuk Cloud Hybrid AI Architecture. Semua jadual AI mengikut True Hybrid Architecture dengan nullable user_id FK dan Dual Audit System untuk pematuhan PDPA 2010.**
-ISO/IEC 27701:2019, dan ISO/IEC 38505-1:2017.**
+**Dokumen ini mematuhi piawaian ISO 8000:2022 (Data Quality), ISO/IEC/IEEE 1016:2009, ISO/IEC 27701:2019, ISO/IEC 38505-1:2017, ISO/IEC 33063:2015 (Process Measurement), ISO/IEC/IEEE 15289:2019 (Documentation Requirements), ISO/IEC TS 24748-6 (Lifecycle Management), IEEE 1016:2009 (Software Design Descriptions), RFC 5322 (Email Format), ISO 8601 (Date/Time Format), TLS 1.3 dan AES-256 (Encryption), OWASP Transport Security, ISO 9241-210 (Human-Centered Design), MyGovEA 18 Prinsip, MDGDM, dan DDSA untuk memastikan pematuhan komprehensif kepada keperluan organisasi kerajaan Malaysia. Sistem ini juga mematuhi D18 AI Chatbot Ollama-Bedrock v1.0.0 untuk Cloud Hybrid AI Architecture dengan nullable user_id FK dan Dual Audit System untuk pematuhan PDPA 2010.**

@@ -8,7 +8,6 @@ use App\Enums\LoanStatus;
 use App\Livewire\Loans\ApprovalQueue;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,8 +15,6 @@ use Tests\TestCase;
 
 class LoanApprovalQueueTest extends TestCase
 {
-    use DatabaseMigrations;
-
     #[Test]
     public function approver_sees_pending_applications(): void
     {

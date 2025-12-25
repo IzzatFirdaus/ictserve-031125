@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Staff;
 
+use App\Livewire\Concerns\ListensForBroadcasts;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
@@ -58,7 +59,7 @@ use Livewire\Component;
 #[Layout('layouts.portal')]
 class AuthenticatedDashboard extends Component
 {
-    use OptimizedLivewireComponent;
+    use ListensForBroadcasts, OptimizedLivewireComponent;
 
     /**
      * Activity filter type (all, tickets, loans)
@@ -68,11 +69,11 @@ class AuthenticatedDashboard extends Component
     public string $activityFilter = 'all';
 
     /**
-     * Get Echo listeners for real-time updates via Laravel Reverb per D12 §2
+     * Get additional component-specific listeners for AuthenticatedDashboard.
      *
      * @return array<string, string>
      */
-    public function getListeners(): array
+    protected function getAdditionalListeners(): array
     {
         $user = Auth::user();
 
@@ -96,6 +97,10 @@ class AuthenticatedDashboard extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:TicketStatusUpdated')]
+
+    /**
+     * @param  array<string, mixed>  $event
+     */
     public function handleTicketUpdate(array $event): void
     {
         // Clear ticket-related caches
@@ -115,6 +120,10 @@ class AuthenticatedDashboard extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:LoanStatusUpdated')]
+
+    /**
+     * @param  array<string, mixed>  $event
+     */
     public function handleLoanUpdate(array $event): void
     {
         // Clear loan-related caches
@@ -134,6 +143,10 @@ class AuthenticatedDashboard extends Component
      * @param  array<string, mixed>  $event
      */
     #[On('echo-private:notification')]
+
+    /**
+     * @param  array<string, mixed>  $event
+     */
     public function handleNotification(array $event): void
     {
         // Refresh all data on notification

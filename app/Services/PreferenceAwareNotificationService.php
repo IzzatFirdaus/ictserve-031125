@@ -76,7 +76,12 @@ class PreferenceAwareNotificationService
     /**
      * Send approval request (always send to approver, no user preference).
      */
-    public function sendApprovalRequest(LoanApplication $application, array $approver, string $token): void
+    
+
+/**
+ * @param array<string, mixed> $approver
+ */
+public function sendApprovalRequest(LoanApplication $application, array $approver, string $token): void
     {
         $this->notificationService->sendApprovalRequest($application, $approver, $token);
     }
@@ -199,7 +204,12 @@ class PreferenceAwareNotificationService
      *
      * @param  array  $preferences  Associative array of preference_key => boolean
      */
-    public function updateUserPreferences(User $user, array $preferences): void
+    
+
+/**
+ * @param array<string, mixed> $preferences
+ */
+public function updateUserPreferences(User $user, array $preferences): void
     {
         foreach ($preferences as $key => $value) {
             UserNotificationPreference::updateOrCreate(

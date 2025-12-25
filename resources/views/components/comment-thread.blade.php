@@ -9,7 +9,7 @@
     <div class="flex items-start justify-between mb-3">
         <div class="flex items-center gap-3">
             {{-- User Avatar --}}
-            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+            <div class="shrink-0 w-10 h-10 rounded-full bg-primary-600 flex items-center justify-center text-white font-medium">
                 {{ strtoupper(substr($comment->user->name, 0, 1)) }}
             </div>
 
@@ -34,7 +34,7 @@
                 @if ($depth < 2)
                     <button
                         wire:click="startReply({{ $comment->id }})"
-                        class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                        class="p-2 min-h-11 min-w-11 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         title="{{ __('internal_comments.reply') }}"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -48,7 +48,7 @@
                 @can('update', $comment)
                     <button
                         wire:click="startEdit({{ $comment->id }})"
-                        class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                        class="p-2 min-h-11 min-w-11 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         title="{{ __('internal_comments.edit') }}"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -63,7 +63,7 @@
                     <button
                         wire:click="deleteComment({{ $comment->id }})"
                         wire:confirm="{{ __('internal_comments.delete_confirm') }}"
-                        class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                        class="p-2 min-h-11 min-w-11 flex items-center justify-center text-danger-600 dark:text-danger-400 hover:bg-danger-50 dark:hover:bg-danger-900/30 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2"
                         title="{{ __('internal_comments.delete') }}"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -83,24 +83,23 @@
             <textarea
                 wire:model="editingContent"
                 rows="3"
-                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 required
             ></textarea>
             @error('editingContent')
-                <p class="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">{{ $message }}</p>
+                <p class="mt-2 text-sm text-danger-600 dark:text-danger-400" role="alert">{{ $message }}</p>
             @enderror
 
             <div class="flex items-center gap-2 mt-3">
-                <button
                     type="submit"
-                    class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+                    class="px-3 py-1.5 min-h-11 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                     {{ __('internal_comments.save') }}
                 </button>
                 <button
                     type="button"
                     wire:click="cancelEdit"
-                    class="px-3 py-1.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm rounded-lg transition-colors"
+                    class="px-3 py-1.5 min-h-11 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                     {{ __('internal_comments.cancel') }}
                 </button>
@@ -127,3 +126,4 @@
         </div>
     @endif
 </div>
+

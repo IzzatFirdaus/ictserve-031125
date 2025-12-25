@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, MyGOV Digital Service Standards v2.1.0
+**Standard Rujukan:** ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, MyGOV Digital Service Standards v2.1.0, IEEE 1016:2009, ISO 9241-210, OWASP Transport Security, TLS 1.3, AES-256
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                                                                                           |
 | **Status**           | Aktif                                                                                                      |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                                 |
-| **Pematuhi**         | ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, MyGOV Digital Service Standards v2.1.0 |
+| **Pematuhi**         | ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, MyGOV Digital Service Standards v2.1.0, IEEE 1016:2009, ISO 9241-210, OWASP Transport Security |
 | **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                                                  |
 
 > Notis Penggunaan Dalaman: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam.
@@ -29,12 +29,12 @@
 
 | Versi | Tarikh            | Perubahan                                                                                                                                                                                                                                                                                                                                                                                           | Penulis                 |
 | ----- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.6.1 | 17 Disember 2025  | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. **Cloud Hybrid AI Integration:** Kemaskini §5.9 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah SRS-AI-011 hingga SRS-AI-020 untuk model routing, streaming responses, web-augmented responses, conversation management. Kemaskini keperluan untuk modul Asset Management (§5.10-5.12) dan Laporan & Analitik (§5.13). Cross-reference D18 v1.0.1. Tambah keperluan MCP Server Integration (SRS-AI-016), Data Residency Compliance (SRS-AI-018), dan Emergency Procedures (SRS-AI-020). | Pasukan Pembangunan BPM |
+| 3.6.1 | 17 Disember 2025  | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Filament 4.3.1, Laravel Horizon 5.41.0. **Cloud Hybrid AI Integration:** Kemaskini §5.9 dengan D18 Cloud Hybrid Architecture (Ollama + AWS Bedrock). Tambah SRS-AI-011 hingga SRS-AI-020 untuk model routing, streaming responses, web-augmented responses, conversation management. Kemaskini keperluan untuk modul Asset Management (§5.10-5.12) dan Laporan & Analitik (§5.13). Cross-reference D18 v1.0.1. Tambah keperluan MCP Server Integration (SRS-AI-016), Data Residency Compliance (SRS-AI-018), dan Emergency Procedures (SRS-AI-020). | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025   | Bahasa Melayu sahaja untuk antara muka: Kemaskini SRS-HELP-001 borang dwibahasa→Bahasa Melayu sahaja. Kemaskini rujukan bahasa dwibahasa automatik→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                                                                                                                                                                                      | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025  | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara.                                                                                                                          | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025  | Hybrid Architecture: Staff boleh log masuk (Laravel Breeze - akaun pangkalan data) untuk Dashboard ATAU gunakan borang tetamu. Tambah SRS-AUTH-001 (Dual Entry), SRS-DATA-001 (Hybrid Association). Nullable user_id FK. Penyelarasan dengan D00/D02/D04 v3.4.0.                                                                                                                                  | Pasukan Pembangunan BPM |
-| 3.2.0 | 29 November 2025  | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D02 v3.2.0.                                                                                                                                                                         | Pasukan Pembangunan BPM |
-| 3.1.0 | 29 November 2025  | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Pematuhan WCAG 2.2 AA dan OWASP ASVS L2.                                                                                                                                                           | Pasukan Pembangunan BPM |
+| 3.2.0 | 29 November 2025  | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.43.1, PHP 8.2.12, Livewire 3.7.3, Filament 4.3.1, PHPUnit 11.5.46, Larastan 3.8.1, Laravel Pint 1.26.0). Penyelarasan dengan D00-D02 v3.2.0.                                                                                                                                                                         | Pasukan Pembangunan BPM |
+| 3.1.0 | 29 November 2025  | Kemaskini kepada teknologi semasa: Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.18, Laravel Reverb 1.6.3, Laravel Echo 2.2.6, PHPUnit 11.5.46. Pematuhan WCAG 2.2 AA dan OWASP ASVS L2.                                                                                                                                                           | Pasukan Pembangunan BPM |
 | 3.0.1 | 31 Oktober 2025   | Penyelarasan pautan dalaman: rujukan ke GLOSSARY dipusatkan ke `docs/GLOSSARY.md`; pindahkan dokumen induk dan versi terkini ke `docs/`.                                                                                                                                                                                                                                                           | Pasukan Pembangunan BPM |
 | 3.0.0 | 31 Oktober 2025   | Penjajaran penuh kepada seni bina dalaman (internal-only), autentikasi pengguna staf, kelulusan berperingkat dalam sistem, dan pematuhan WCAG 2.2 AA.                                                                                                                                                                                                                                              | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025   | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                                                                                                                             | Pasukan BPM             |
@@ -60,7 +60,7 @@
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.5.0)
 - **[D15_LANGUAGE_MS_EN.md]** - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
-- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Pengurusan queue (Laravel Queue + Redis; Horizon tidak dipasang)
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Pengurusan queue (Laravel Queue + Redis; Horizon v5.41.0 dipasang)
 - **Rujukan implementasi Helpdesk (kod):** `app/Livewire/Helpdesk/TicketForm.php`, `database/migrations/2025_11_03_043924_create_helpdesk_tickets_table.php`
 - **Rujukan implementasi Pinjaman Aset (kod):** `app/Livewire/Forms/LoanApplicationForm.php`, `database/migrations/2025_11_03_043935_create_loan_applications_table.php`
 - **[D18_AI_CHATBOT_OLLAMA_BEDROCK.md]** - Cloud Hybrid AI Architecture documentation (v1.0.0)
@@ -77,7 +77,7 @@
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-Dokumen ini mendefinisikan keperluan perisian terperinci untuk ICTServe sebagai sistem dalaman (internal-only) untuk warga kerja MOTAC. Ia meliputi keperluan fungsional, antara muka, data, keselamatan, dan kebolehcapaian untuk memastikan modul Helpdesk & Asset Loan beroperasi dengan log masuk pengguna dalaman dan kawalan pentadbiran melalui panel Filament 4.1.10. Sistem dibina menggunakan Laravel 12.42.0, Livewire 3.7.1, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.3 untuk komunikasi masa nyata.
+Dokumen ini mendefinisikan keperluan perisian terperinci untuk ICTServe sebagai sistem dalaman (internal-only) untuk warga kerja MOTAC. Ia meliputi keperluan fungsional, antara muka, data, keselamatan, dan kebolehcapaian untuk memastikan modul Helpdesk & Asset Loan beroperasi dengan log masuk pengguna dalaman dan kawalan pentadbiran melalui panel Filament 4.3.1. Sistem dibina menggunakan Laravel 12.43.1, Livewire 3.7.3, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.18, dan Laravel Reverb 1.6.3 untuk komunikasi masa nyata.
 
 ---
 
@@ -86,8 +86,8 @@ Dokumen ini mendefinisikan keperluan perisian terperinci untuk ICTServe sebagai 
 Skop meliputi:
 
 - Borang dalaman Bahasa Melayu untuk Helpdesk & Asset Loan (akses tetamu ATAU authenticated staff).
-- Perkhidmatan backend (Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, queue) bagi pengesahan data, notifikasi, kelulusan, audit, dan laporan.
-- Panel pentadbiran Filament 4.1.10 untuk `admin` dan `superuser`.
+- Perkhidmatan backend (Laravel 12.43.1, Livewire 3.7.3, Volt 1.10.1, queue) bagi pengesahan data, notifikasi, kelulusan, audit, dan laporan.
+- Panel pentadbiran Filament 4.3.1 untuk `admin` dan `superuser`.
 - **Hybrid Access Model**: Staff log masuk (Laravel Breeze) untuk My Dashboard, view history, auto-fill forms ATAU gunakan borang tetamu (quick access, tracked via Token).
 - **Hybrid Data Association**: **CRITICAL:** If Auth::check() === true, link submission to user_id (nullable FK). If false, user_id=NULL, fallback to submitter_email. Email notifications sent to submitter_email regardless.
 - Komunikasi masa nyata menggunakan Laravel Reverb 1.6.2 dan Laravel Echo 2.2.6.
@@ -146,8 +146,8 @@ Di luar skop:
 
 ## 4. PERSEKITARAN SISTEM (System Environment)
 
-- **Platform:** Laravel 12.42.0, PHP 8.2.12, Livewire 3.7.1, Volt 1.10.1, Filament 4.1.10.
-- **Frontend:** Vite 7.0.7 + Tailwind CSS 4.1.17, Alpine.js 3, layout `resources/views/layouts/guest.blade.php`, `@vite` bundling, responsive breakpoints (rujuk D13 §5).
+- **Platform:** Laravel 12.43.1, PHP 8.2.12, Livewire 3.7.3, Volt 1.10.1, Filament 4.3.1.
+- **Frontend:** Vite 7.0.7 + Tailwind CSS 4.1.18, Alpine.js 3, layout `resources/views/layouts/guest.blade.php`, `@vite` bundling, responsive breakpoints (rujuk D13 §5).
 - **Real-time:** Laravel Reverb 1.6.3 (WebSocket server), Laravel Echo 2.2.6 (client).
 - **Backend:** PHP-FPM, queue (Redis), scheduled jobs (`artisan schedule:run`), Filament resources untuk operasi pentadbiran.
 - **Database:** MySQL 8 (utf8mb4), migrasi Laravel, audit tables (`activity_log`, `loan_audits`).
@@ -169,10 +169,10 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 | SRS-AUTH-001 | Dual Entry Model        | **NEW:** Staff boleh log masuk (Laravel Breeze) untuk My Dashboard ATAU gunakan borang tetamu. System detect Auth::check() untuk auto-fill dan user_id linking.                                        |
 | SRS-DATA-001 | Hybrid Data Association | **CRITICAL:** If Auth::check() === true, link submission to user*id (nullable FK). If false, user_id=NULL, require manual submitter*\* fields. Email notifications sent to submitter_email regardless. |
 | SRS-FORM-001 | Auto-fill Data          | Jika staff log masuk (Auth::check() === true), borang auto-fill nama, e-mel, telefon, bahagian, gred dari profil pengguna. Jika guest, require manual entry.                                           |
-| SRS-HELP-002 | Validasi Masa Nyata     | Livewire 3.7.0 + Volt 1.10.1 memaparkan ralat masa nyata dengan Alpine.js 3, memastikan format e-mel/telefon sah, had lampiran (≤5MB, 5 fail).                                                         |
+| SRS-HELP-002 | Validasi Masa Nyata     | Livewire 3.7.3 + Volt 1.10.1 memaparkan ralat masa nyata dengan Alpine.js 3, memastikan format e-mel/telefon sah, had lampiran (≤5MB, 5 fail).                                                         |
 | SRS-HELP-003 | Penjanaan Tiket         | Sistem menjana `ticket_number`, status awal `OPEN`, menyimpan metadata tetamu (`submitter_name`, `submitter_email`).                                                                                   |
 | SRS-HELP-004 | Notifikasi Tetamu       | E-mel pengesahan dihantar dengan ringkasan tiket & pautan semakan status (token).                                                                                                                      |
-| SRS-HELP-005 | Triage Admin            | `admin` menerima notifikasi queue dan real-time melalui Laravel Reverb 1.6.2, boleh menukar status (In Progress, Awaiting Info, Resolved, Closed) melalui Filament 4.1.10.                             |
+| SRS-HELP-005 | Triage Admin            | `admin` menerima notifikasi queue dan real-time melalui Laravel Reverb 1.6.3, boleh menukar status (In Progress, Awaiting Info, Resolved, Closed) melalui Filament 4.3.1.                             |
 | SRS-HELP-006 | Komunikasi              | `admin` boleh menambah komen; tetamu menerima e-mel setiap kemas kini.                                                                                                                                 |
 | SRS-HELP-007 | SLA & Eskalasi          | Sistem menjejaki masa tindak balas; `superuser` menerima amaran SLA (rujuk D11 §7).                                                                                                                    |
 | SRS-HELP-008 | Lampiran                | Fail disimpan di storan objek dengan metadata; akses dihadkan kepada `admin`/`superuser`.                                                                                                              |
@@ -182,7 +182,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 | ID           | Keperluan                | Perincian                                                                                                                                               |
 | ------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SRS-LOAN-001 | Borang Permohonan Hybrid | Staff mengisi data pemohon (auto-fill jika log masuk), butiran aset, tarikh mula/tamat, lokasi, tujuan, perakuan PDPA.                                  |
-| SRS-LOAN-002 | Pemeriksaan Ketersediaan | Sistem menyemak konflik tempahan aset secara real-time menggunakan Livewire 3.7.0 + Alpine.js 3, status `loan_transactions`, dan memaparkan alternatif. |
+| SRS-LOAN-002 | Pemeriksaan Ketersediaan | Sistem menyemak konflik tempahan aset secara real-time menggunakan Livewire 3.7.3 + Alpine.js 3, status `loan_transactions`, dan memaparkan alternatif. |
 | SRS-LOAN-003 | Penjanaan Permohonan     | Permohonan disimpan dengan kod rujukan unik, status `PENDING_SUPERVISOR_APPROVAL`.                                                                      |
 | SRS-LOAN-004 | Kelulusan E-mel          | `ApprovalService` menjana token bertanda tangan (JWT) dan menghantar e-mel kepada pegawai Gred 41 dengan butang **Luluskan / Tolak**.                   |
 | SRS-LOAN-005 | Laman Kelulusan          | Pautan membawa ke halaman tetamu ringkas yang memaparkan maklumat permohonan dan pilihan keputusan. Tiada log masuk diperlukan.                         |
@@ -198,7 +198,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 | SRS-ADM-001 | Autentikasi Pentadbir | `staff`, `approver`, `admin`, dan `superuser` wujud dalam jadual `users`. Guard Filament memerlukan 2FA (TOTP) bagi `superuser`. Staff boleh log masuk untuk My Dashboard.       |
 | SRS-ADM-006 | My Dashboard (Staff)  | **NEW:** Authenticated staff akses My Dashboard: view submission history (helpdesk + loan), profile management, notification center (DB + Email), quick actions.                    |
 | SRS-ADM-002 | Kawalan Peranan       | `admin` mempunyai akses operasi; `superuser` mempunyai akses konfigurasi, audit, tetapan integrasi; `approver` untuk kelulusan; `staff` untuk dashboard peribadi.                |
-| SRS-ADM-003 | Dashboard             | Papar metrik SLA, backlog tiket, status aset, permohonan tertunggak, dan audit terkini menggunakan Filament 4.1.10 widgets dengan kemaskini real-time melalui Laravel Reverb 1.6.3. |
+| SRS-ADM-003 | Dashboard             | Papar metrik SLA, backlog tiket, status aset, permohonan tertunggak, dan audit terkini menggunakan Filament 4.3.1 widgets dengan kemaskini real-time melalui Laravel Reverb 1.6.3. |
 | SRS-ADM-004 | Pengurusan Kandungan  | `admin` boleh menyunting salinan borang (soalan bantu, tooltip) tanpa menyentuh kod.                                                                                                |
 | SRS-ADM-005 | Laporan               | Eksport CSV/PDF untuk statistik, pematuhan, dan audit.                                                                                                                              |
 | SRS-ADM-007 | Laravel Pulse         | **NEW:** `admin` dan `superuser` akses Laravel Pulse dashboard untuk monitor prestasi real-time: slow queries, queue jobs, server health, memory usage.                             |
@@ -437,7 +437,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 ### 9.1. Core Dependencies
 
 - **PHP**: 8.2.12
-- **Laravel Framework**: 12.40.1
+- **Laravel Framework**: 12.43.1
 - **Composer**: Latest stable
 - **Node.js**: 20.x LTS
 - **NPM**: 10.x
@@ -448,9 +448,9 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 ### 9.2. Laravel Ecosystem
 
-- **Livewire**: 3.7.0 (server-driven UI)
+- **Livewire**: 3.7.3 (server-driven UI)
 - **Livewire Volt**: 1.10.1 (single-file components)
-- **Filament**: 4.1.10 (admin panel)
+- **Filament**: 4.3.1 (admin panel)
 - **Laravel Breeze**: 2.3.8 (authentication scaffolding)
 - **Laravel Reverb**: 1.6.2 (WebSocket server)
 - **Laravel Echo**: 2.2.6 (WebSocket client)

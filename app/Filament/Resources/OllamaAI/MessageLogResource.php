@@ -41,7 +41,7 @@ class MessageLogResource extends Resource
 {
     protected static ?string $model = MessageLog::class;
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $cluster = OllamaAI::class;
 

@@ -234,4 +234,12 @@ return [
     'virus_detected' => 'Fail :attribute mengandungi virus (:virus) dan telah ditolak.',
     'virus_scan_failed' => 'Pengimbasan virus untuk :attribute gagal: :error',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Domain E-mel MOTAC
+    |--------------------------------------------------------------------------
+    */
+
+    'motac_email_domain' => 'Medan :attribute mesti menggunakan alamat e-mel @motac.gov.my.',
+
 ];

@@ -31,7 +31,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 4;
 
@@ -65,9 +65,12 @@ class EmailTemplateManagement extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.email_templates.group');
+        return __('filament.navigation.system_management');
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getForms(): array
     {
         return [
@@ -140,6 +143,9 @@ class EmailTemplateManagement extends Page implements HasForms
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getHeaderActions(): array
     {
         return [
@@ -261,6 +267,10 @@ class EmailTemplateManagement extends Page implements HasForms
     /**
      * @return array<string, array<int, array<string, mixed>>>
      */
+
+    /**
+     * @return array<string, mixed>
+     */
     public function getExistingTemplates(): array
     {
         /** @var array<string, array<int, array<string, mixed>>> $templates */
@@ -309,6 +319,10 @@ class EmailTemplateManagement extends Page implements HasForms
     /**
      * @return array<string, mixed>
      */
+
+    /**
+     * @return array<string, mixed>
+     */
     private function getFormState(): array
     {
         if (property_exists($this, 'form') && is_object($this->form) && method_exists($this->form, 'getState')) {
@@ -322,6 +336,10 @@ class EmailTemplateManagement extends Page implements HasForms
 
     /**
      * @param  array<string, mixed>|null  $state
+     */
+
+    /**
+     * @param  array<string, mixed>  $state
      */
     private function fillForm(?array $state = null): void
     {

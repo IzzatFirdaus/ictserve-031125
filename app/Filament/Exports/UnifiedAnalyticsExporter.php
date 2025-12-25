@@ -22,6 +22,9 @@ class UnifiedAnalyticsExporter extends Exporter
 {
     protected static ?string $model = Export::class;
 
+    /**
+     * @return array<int, ExportColumn>
+     */
     public static function getColumns(): array
     {
         return [

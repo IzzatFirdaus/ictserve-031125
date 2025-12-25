@@ -294,13 +294,18 @@ class AutoReplyService
 
         if (! in_array(get_class($model), $supportedModels)) {
             throw new \InvalidArgumentException(
-                'Model '.get_class($model).' tidak disokong untuk auto-reply'
+                'Model ' . get_class($model) . ' tidak disokong untuk auto-reply'
             );
         }
     }
 
     /**
      * Bina konteks untuk penjanaan respons
+     */
+
+
+    /**
+     * @return array<string, mixed>
      */
     private function buildContext(Model $replyable): array
     {
@@ -336,6 +341,11 @@ class AutoReplyService
     /**
      * Ekstrak pembolehubah template dari model
      */
+
+
+    /**
+     * @return array<string, mixed>
+     */
     private function extractTemplateVariables(Model $replyable): array
     {
         $variables = $this->config['default_template_variables'];
@@ -368,6 +378,11 @@ class AutoReplyService
     /**
      * Dapatkan sejarah replyable untuk konteks
      */
+
+
+    /**
+     * @return array<string, mixed>
+     */
     private function getReplyableHistory(Model $replyable): array
     {
         // Implementasi bergantung pada model - boleh diperluas
@@ -380,6 +395,11 @@ class AutoReplyService
 
     /**
      * Bina konteks khusus untuk tiket helpdesk
+     */
+
+
+    /**
+     * @return array<string, mixed>
      */
     private function buildTicketContext(HelpdeskTicket $ticket): array
     {
@@ -396,6 +416,11 @@ class AutoReplyService
     /**
      * Bina konteks khusus untuk permohonan pinjaman
      */
+
+
+    /**
+     * @return array<string, mixed>
+     */
     private function buildLoanContext(LoanApplication $loan): array
     {
         return [
@@ -403,12 +428,17 @@ class AutoReplyService
             'department' => $loan->department,
             'grade' => $loan->grade,
             'items_count' => $loan->loanItems()->count(),
-            'total_value' => $loan->loanItems()->sum('estimated_value'),
+            'total_value' => $loan->loanItems()->sum('total_value'),
         ];
     }
 
     /**
      * Jana kandungan draf menggunakan template atau AI
+     */
+
+
+    /**
+     * @param array<string, mixed> $context
      */
     private function generateDraftContent(array $context, ?int $templateId = null): string
     {
@@ -421,6 +451,11 @@ class AutoReplyService
 
     /**
      * Jana kandungan menggunakan template
+     */
+
+
+    /**
+     * @param array<string, mixed> $context
      */
     private function generateFromTemplate(array $context, int $templateId): string
     {
@@ -446,6 +481,11 @@ class AutoReplyService
     /**
      * Jana kandungan menggunakan AI sahaja
      */
+
+
+    /**
+     * @param array<string, mixed> $context
+     */
     private function generateWithAI(array $context): string
     {
         $prompt = $this->buildAIPrompt($context);
@@ -465,7 +505,7 @@ class AutoReplyService
 
         // Validasi panjang kandungan
         if (strlen($content) > $this->config['max_content_length']) {
-            $content = substr($content, 0, $this->config['max_content_length']).'...';
+            $content = substr($content, 0, $this->config['max_content_length']) . '...';
         }
 
         return trim($content);
@@ -474,12 +514,17 @@ class AutoReplyService
     /**
      * Bina prompt AI untuk penjanaan respons
      */
+
+
+    /**
+     * @param array<string, mixed> $context
+     */
     private function buildAIPrompt(array $context): string
     {
         $type = $context['type'];
         $model = $context['model'];
 
-        $systemPrompt = 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. '.
+        $systemPrompt = 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. ' .
             'Jana respons profesional dalam Bahasa Melayu sahaja untuk ';
 
         if ($type === 'helpdesk_ticket') {
@@ -510,6 +555,11 @@ class AutoReplyService
     /**
      * Jana konteks AI untuk template
      */
+
+
+    /**
+     * @param array<string, mixed> $context
+     */
     private function generateAIContext(array $context): string
     {
         // Gunakan RAG untuk dapatkan konteks yang berkaitan
@@ -525,6 +575,11 @@ class AutoReplyService
 
     /**
      * Bina query untuk RAG berdasarkan konteks
+     */
+
+
+    /**
+     * @param array<string, mixed> $context
      */
     private function buildContextQuery(array $context): string
     {
@@ -669,13 +724,18 @@ class AutoReplyService
                 'approver_name' => $approver->name,
                 'reason' => $reason,
             ],
-            'hash' => hash('sha256', $draft->id.$action.$approver->id.now()->timestamp),
+            'hash' => hash('sha256', $draft->id . $action . $approver->id . now()->timestamp),
             'processed_at' => now(),
         ]);
     }
 
     /**
      * Log penjanaan draf untuk audit
+     */
+
+
+    /**
+     * @param array<string, mixed> $context
      */
     private function logDraftGeneration(
         string $requestId,
@@ -697,7 +757,7 @@ class AutoReplyService
                 'processing_time' => $processingTime,
                 'content_length' => strlen($draft->draft_content),
             ],
-            'hash' => hash('sha256', $requestId.$draft->draft_content),
+            'hash' => hash('sha256', $requestId . $draft->draft_content),
             'processed_at' => now(),
         ]);
     }

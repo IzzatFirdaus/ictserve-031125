@@ -61,7 +61,12 @@ class SecurityScanCommand extends Command
      *
      * @param  array<string, mixed>  $results
      */
-    private function displayResults(array $results): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function displayResults(array $results): void
     {
         $this->info('Security Statistics:');
         $this->table(
@@ -84,7 +89,12 @@ class SecurityScanCommand extends Command
      *
      * @param  array<string, mixed>  $results
      */
-    private function generateReport(array $results): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function generateReport(array $results): void
     {
         $this->info('Generating detailed security report...');
 
@@ -111,7 +121,12 @@ class SecurityScanCommand extends Command
      *
      * @param  array<string, mixed>  $results
      */
-    private function emailReport(array $results, string $email): void
+    
+
+/**
+ * @param array<string, mixed> $results
+ */
+private function emailReport(array $results, string $email): void
     {
         $this->info("Emailing security report to: {$email}");
 

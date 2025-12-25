@@ -182,6 +182,7 @@ return [
     'messages' => [
         'application_submitted' => 'Permohonan anda telah berjaya dihantar. Nombor permohonan: :application_number',
         'submission_failed' => 'Permohonan gagal dihantar. Sila cuba lagi.',
+        'application_not_found' => 'Permohonan tidak dijumpai. Sila semak nombor permohonan anda.',
         'not_provided' => 'Tidak dinyatakan',
         'info_from_profile' => 'Maklumat ini diambil dari profil pengguna anda.',
         'no_approvers_found' => 'Tiada pegawai pelulus dijumpai. Sila cuba dengan kata kunci lain.',
@@ -269,7 +270,7 @@ return [
         'return_confirmation_title' => 'Terima Kasih - Pulangan Aset Disahkan',
 
         // Email greetings and closings
-        'dear' => 'Tuan/Puan',
+        'dear' => 'Yang Dihormati',
         'thank_you' => 'Terima kasih',
 
         // Email body content

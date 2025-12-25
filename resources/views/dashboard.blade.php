@@ -15,23 +15,23 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                <h1 class="text-2xl font-heading font-bold text-slate-900 dark:text-white">
                     {{ __('common.dashboard') }}
                 </h1>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
                     {{ __('common.welcome_back', ['name' => auth()->user()->name]) }}
                 </p>
             </div>
             {{-- Quick Actions --}}
             <div class="hidden sm:flex items-center gap-3">
                 <a href="{{ route('tickets.create') }}"
-                    class="inline-flex items-center min-h-11 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-md shadow-button focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-colors theme-transition"
+                    class="inline-flex items-center justify-center min-h-11 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg shadow-button focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-colors theme-transition"
                     aria-label="{{ __('portal.create_helpdesk_ticket') }}">
                     <x-heroicon-m-plus class="h-5 w-5 mr-2" aria-hidden="true" />
                     {{ __('helpdesk.new_ticket') }}
                 </a>
                 <a href="{{ route('loan.create') }}"
-                    class="inline-flex items-center min-h-11 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-md shadow-button hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-colors theme-transition"
+                    class="inline-flex items-center justify-center min-h-11 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-lg shadow-button hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-slate-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-colors theme-transition"
                     aria-label="{{ __('portal.create_loan_application') }}">
                     <x-heroicon-m-clipboard-document class="h-5 w-5 mr-2" aria-hidden="true" />
                     {{ __('loan.new_application') }}
@@ -53,28 +53,28 @@
                 <h2 id="quick-actions-mobile-heading" class="sr-only">{{ __('common.quick_actions') }}</h2>
                 <div class="grid grid-cols-2 gap-4">
                     <a href="{{ route('tickets.create') }}"
-                        class="flex flex-col items-center justify-center min-h-20 p-4 bg-primary-50 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 rounded-lg text-center focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-colors theme-transition"
+                        class="flex flex-col items-center justify-center min-h-20 p-4 bg-primary-50 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 rounded-lg text-center focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-colors theme-transition"
                         aria-label="{{ __('portal.create_helpdesk_ticket') }}">
                         <x-heroicon-o-plus-circle class="h-8 w-8 text-primary-600 dark:text-primary-400 mb-2" aria-hidden="true" />
                         <span class="text-sm font-medium text-primary-700 dark:text-primary-300">{{ __('helpdesk.new_ticket') }}</span>
                     </a>
                     <a href="{{ route('loan.create') }}"
-                        class="flex flex-col items-center justify-center min-h-20 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-center focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-colors theme-transition"
+                        class="flex flex-col items-center justify-center min-h-20 p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-center focus:outline-none focus-visible:ring-3 focus-visible:ring-slate-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-colors theme-transition"
                         aria-label="{{ __('portal.create_loan_application') }}">
-                        <x-heroicon-o-clipboard-document class="h-8 w-8 text-gray-600 dark:text-gray-400 mb-2" aria-hidden="true" />
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('loan.new_application') }}</span>
+                        <x-heroicon-o-clipboard-document class="h-8 w-8 text-slate-600 dark:text-slate-400 mb-2" aria-hidden="true" />
+                        <span class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('loan.new_application') }}</span>
                     </a>
                 </div>
             </section>
 
             {{-- Welcome Message Card --}}
             <section aria-labelledby="welcome-heading">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-card rounded-lg theme-transition border border-gray-200 dark:border-gray-700">
+                <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-card rounded-lg theme-transition border border-slate-200 dark:border-slate-700">
                     <div class="p-6">
-                        <h2 id="welcome-heading" class="text-lg font-heading font-semibold text-gray-900 dark:text-white mb-2">
+                        <h2 id="welcome-heading" class="text-lg font-heading font-semibold text-slate-900 dark:text-white mb-2">
                             {{ __('common.you_are_logged_in') }}
                         </h2>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p class="text-slate-600 dark:text-slate-400">
                             {{ __('common.dashboard_intro') }}
                         </p>
                     </div>

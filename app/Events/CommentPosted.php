@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Events;
 
+use App\Events\Concerns\BroadcastsToHybridChannels;
+use App\Models\HelpdeskTicket;
 use App\Models\InternalComment;
-use Illuminate\Broadcasting\Channel;
+use App\Models\LoanApplication;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -15,14 +16,16 @@ use Illuminate\Queue\SerializesModels;
 /**
  * Comment Posted Event
  *
- * Broadcasts real-time internal comment updates to authenticated users.
- * Sent to private channels based on commentable resource type.
+ * Broadcasts real-time comment updates for tickets and loan applications.
+ * Uses hybrid channel strategy: authenticated users get private-user.{id} channels,
+ * guests get private-ticket.{uuid} or private-loan.{uuid} channels.
  *
- * @see .kiro/specs/staff-dashboard-profile/tasks.md - Task 7.1.2
- * @see .kiro/specs/staff-dashboard-profile/requirements.md - Requirements 7.4
+ * @see .kiro/specs/realtime-notifications-broadcasting/design.md - Dual Channel Strategy
+ * @see .kiro/specs/realtime-notifications-broadcasting/requirements.md - Requirements 4.1, 4.2, 4.3, 4.4
  */
 class CommentPosted implements ShouldBroadcast
 {
+    use BroadcastsToHybridChannels;
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
@@ -33,25 +36,49 @@ class CommentPosted implements ShouldBroadcast
     ) {}
 
     /**
-     * Get the channels the event should broadcast on
-     *
-     * @return array<int, Channel>
+     * Get the authenticated user ID for channel routing
      */
-    public function broadcastOn(): array
+    protected function getAuthenticatedUserId(): ?int
     {
-        $commentableType = class_basename($this->comment->commentable_type);
-        $commentableId = $this->comment->commentable_id;
+        $commentable = $this->comment->commentable;
 
-        // Map class basename to simple type for channel naming
-        $type = match ($commentableType) {
-            'HelpdeskTicket' => 'ticket',
-            'LoanApplication' => 'loan',
-            default => strtolower($commentableType),
-        };
+        if ($commentable instanceof HelpdeskTicket || $commentable instanceof LoanApplication) {
+            return $commentable->user_id;
+        }
 
-        return [
-            new PrivateChannel("submission.{$type}.{$commentableId}"),
-        ];
+        return null;
+    }
+
+    /**
+     * Get the guest channel UUID for channel routing
+     */
+    protected function getGuestChannelUuid(): ?string
+    {
+        $commentable = $this->comment->commentable;
+
+        if ($commentable && $commentable->user_id === null) {
+            return $commentable->uuid ?? null;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the guest channel type for channel naming
+     */
+    protected function getGuestChannelType(): string
+    {
+        $commentable = $this->comment->commentable;
+
+        if ($commentable instanceof HelpdeskTicket) {
+            return 'ticket';
+        }
+
+        if ($commentable instanceof LoanApplication) {
+            return 'loan';
+        }
+
+        return 'comment';
     }
 
     /**
@@ -65,6 +92,8 @@ class CommentPosted implements ShouldBroadcast
     /**
      * Get the data to broadcast
      *
+     * Excludes PII and credentials from payload as per security requirements.
+     *
      * @return array<string, mixed>
      */
     public function broadcastWith(): array
@@ -72,11 +101,12 @@ class CommentPosted implements ShouldBroadcast
         $user = $this->comment->user;
 
         return [
-            'id' => $this->comment->id,
-            'comment' => $this->comment->comment,
-            'user' => $user ? [
+            'comment_id' => $this->comment->id,
+            'content' => $this->comment->comment,
+            'author' => $user ? [
                 'id' => $user->id,
                 'name' => $user->name,
+                // Exclude email and other PII
             ] : null,
             'created_at' => $this->comment->created_at?->toISOString() ?? now()->toISOString(),
         ];

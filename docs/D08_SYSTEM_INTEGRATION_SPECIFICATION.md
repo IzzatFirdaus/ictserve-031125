@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 15289, ISO/IEC TS 24748-6
+**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 15289:2019 (Dokumentasi Sistem/Perisian), ISO/IEC TS 24748-6 (Panduan Dokumentasi Teknikal), RFC 5322, ISO 8601, TLS 1.3, AES-256
 
 ---
 
@@ -30,14 +30,14 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D07 v3.5.0. Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Google SSO (optional), Responsible Officer tracking, Accessory Tracking, Form Reference Codes, MOTAC Branding, Enhanced UX. Hapus rujukan LDAP/SSO legacy. Pematuhan Jabatan Digital Negara. | Pasukan BPM |
 | 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah spesifikasi integrasi AI (Ollama API, AWS Bedrock API, model routing, RAG pipeline, streaming responses, MCP server). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture.                                                                                                                                                                                                                                                                                                                                                                      | Pasukan BPM |
 | 3.4.0 | 30 November 2025 | Hybrid Architecture v3.4.0: Restore LDAP/SSO integration sebagai optional authentication untuk staff. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                                                                                                                                                                                                                                                           | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan penuh Guest-First: hapus semua rujukan LDAP/SSO/User Sync. Hanya admin/superuser authenticate.                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Pasukan BPM |
 | 3.2.0 | 29 November 2025 | Hapus LDAP/SSO; klarifikasi Guest-First (staf guna guest forms tanpa authentication)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Pasukan BPM |
-| 2.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.40.1, Filament 4.1.10, Livewire 3.7.0, Tailwind 4.1.17                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Pasukan BPM |
-| 2.1.0 | 6 Januari 2025   | Kemaskini teknologi: Laravel Reverb 1.6.2, Laravel Echo 2.2.6 untuk real-time WebSocket                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Pasukan BPM |
+| 2.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.43.1, Filament 4.3.1, Livewire 3.7.3, Tailwind 4.1.18                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Pasukan BPM |
+| 2.1.0 | 6 Januari 2025   | Kemaskini teknologi: Laravel Reverb 1.6.3, Laravel Echo 2.2.6 untuk real-time WebSocket                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal spesifikasi integrasi sistem                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Pasukan BPM |
 
@@ -60,6 +60,116 @@ untuk Sistem **Helpdesk & ICT Asset Loan BPM MOTAC**. Spesifikasi ini mengikut
 garis panduan dan piawaian **ISO/IEC/IEEE 15288** (system engineering),
 **ISO/IEC/IEEE 15289** (system/software documentation), dan **ISO/IEC TS 24748-6**
 (lifecycle management guide).
+
+---
+
+## 2. Pematuhan Standard (Standards Compliance)
+
+### 2.1. ISO/IEC/IEEE 15289:2019 - Documentation Requirements Implementation
+
+**Pematuhan Standard**: ISO/IEC/IEEE 15289:2019 (Systems and software engineering — Content of life-cycle information items (documentation))
+
+Sistem ICTServe mengimplementasikan keperluan dokumentasi mengikut ISO/IEC/IEEE 15289:2019 untuk memastikan dokumentasi integrasi yang komprehensif dan boleh diaudit.
+
+#### 2.1.1. Documentation Lifecycle Management
+
+**Mandatory Documentation Items untuk Integrasi**:
+
+| Dokumen                           | Standard Clause | Status    | Lokasi                                    | Review Cycle |
+| --------------------------------- | --------------- | --------- | ----------------------------------------- | ------------ |
+| **Integration Architecture**      | 6.4.2           | ✅ Active | D07, D08, D11                             | Quarterly    |
+| **Interface Specifications**      | 6.4.3           | ✅ Active | D08 §9 (API Endpoints)                    | Monthly      |
+| **Integration Test Plans**        | 6.4.4           | ✅ Active | D08 §7 (Testing Requirements)             | Per Sprint   |
+| **Configuration Management**      | 6.4.5           | ✅ Active | Version control (Git) + deployment docs  | Continuous   |
+| **Integration Verification**      | 6.4.6           | ✅ Active | Test reports + UAT documentation         | Per Release  |
+| **Traceability Matrix**           | 6.4.7           | ✅ Active | Cross-references dalam semua D00-D18     | Monthly      |
+
+#### 2.1.2. Document Version Control & Traceability
+
+**Version Control Implementation**:
+
+```bash
+# Git tagging strategy untuk documentation releases
+git tag -a "docs-v3.6.1" -m "Documentation release v3.6.1 - ISO/IEC/IEEE 15289 compliance"
+
+# Branch strategy untuk documentation updates
+main/                    # Production documentation
+├── docs/feature/*       # Feature-specific documentation updates
+├── docs/compliance/*    # Standards compliance updates
+└── docs/hotfix/*        # Critical documentation fixes
+```
+
+**Traceability Implementation dalam ICTServe**:
+
+- **Requirements → Design**: D03 requirements traced to D04 design decisions
+- **Design → Implementation**: D04 components traced to actual code files
+- **Implementation → Testing**: Code changes traced to test cases
+- **Testing → Deployment**: Test results traced to deployment approvals
+
+#### 2.1.3. Documentation Quality Gates
+
+**Pre-Release Documentation Checklist** (ISO/IEC/IEEE 15289 Compliance):
+
+- [ ] **Completeness**: All mandatory sections present dan populated
+- [ ] **Consistency**: Cross-references accurate dan up-to-date
+- [ ] **Traceability**: Requirements dapat dikesan dari D03 → D04 → Implementation
+- [ ] **Version Control**: Proper versioning dan changelog maintenance
+- [ ] **Review Approval**: Technical review + management approval
+- [ ] **Accessibility**: WCAG 2.2 AA compliance untuk documentation portal
+
+### 2.2. ISO/IEC TS 24748-6:2016 - Lifecycle Management Implementation
+
+**Pematuhan Standard**: ISO/IEC TS 24748-6:2016 (Systems and software engineering — Life cycle management — Part 6: System integration)
+
+#### 2.2.1. Integration Lifecycle Phases
+
+**Phase-Gate Model untuk ICTServe Integration**:
+
+| Phase                    | Gate Criteria                                    | Deliverables                           | Duration |
+| ------------------------ | ------------------------------------------------ | -------------------------------------- | -------- |
+| **Phase 1: Planning**    | Integration strategy approved                    | D07 (Integration Plan)                 | 1 week   |
+| **Phase 2: Design**      | Interface specifications complete                | D08 (Integration Specification)        | 1 week   |
+| **Phase 3: Development** | All integration points implemented               | Code + unit tests                      | 4 weeks  |
+| **Phase 4: Integration** | System integration tests pass                    | Integration test reports               | 1 week   |
+| **Phase 5: Validation**  | User acceptance criteria met                     | UAT sign-off + deployment approval     | 3 days   |
+| **Phase 6: Deployment**  | Production deployment successful                 | Live system + monitoring setup        | 2 days   |
+
+#### 2.2.2. Lifecycle Management Tools dalam ICTServe
+
+**Laravel-Based Lifecycle Tracking**:
+
+```php
+// app/Models/IntegrationLifecycle.php
+class IntegrationLifecycle extends Model
+{
+    protected $fillable = [
+        'phase_name',
+        'gate_criteria',
+        'status',
+        'start_date',
+        'end_date',
+        'deliverables',
+        'approved_by',
+        'notes'
+    ];
+
+    protected $casts = [
+        'gate_criteria' => 'array',
+        'deliverables' => 'array',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime'
+    ];
+}
+```
+
+**Automated Phase Progression**:
+
+- **Gate Reviews**: Automated checks untuk phase completion criteria
+- **Approval Workflow**: Digital approval melalui Filament admin panel
+- **Audit Trail**: Semua phase transitions dilog dalam activity_log
+- **Notification System**: Email alerts untuk phase milestones
+
+**Rujukan**: Lihat [D01_SYSTEM_DEVELOPMENT_PLAN.md](D01_SYSTEM_DEVELOPMENT_PLAN.md) untuk development lifecycle methodology yang complementary.
 
 ---
 
@@ -337,13 +447,13 @@ Laravel Sanctum Bearer token authentication.
 
 | Komponen             | Teknologi         | Versi   | Fungsi                                    |
 | -------------------- | ----------------- | ------- | ----------------------------------------- |
-| Framework            | Laravel           | 12.42.0 | Backend application framework             |
-| Admin Panel          | Filament          | 4.1.10  | CRUD interfaces, dashboard                |
-| Reactive UI          | Livewire          | 3.7.1   | Server-driven UI components               |
+| Framework            | Laravel           | 12.43.1 | Backend application framework             |
+| Admin Panel          | Filament          | 4.3.1   | CRUD interfaces, dashboard                |
+| Reactive UI          | Livewire          | 3.7.3   | Server-driven UI components               |
 | Single-file Livewire | Volt              | 1.10.1  | Single-file Livewire components           |
 | WebSocket Server     | Laravel Reverb    | 1.6.3   | Real-time communication                   |
 | WebSocket Client     | Laravel Echo      | 2.2.6   | Client-side WebSocket integration         |
-| CSS Framework        | Tailwind CSS      | 4.1.17  | Utility-first styling                     |
+| CSS Framework        | Tailwind CSS      | 4.1.18  | Utility-first styling                     |
 | Database             | MySQL             | 8.x     | Production database                       |
 | Queue & Cache        | Redis             | 7.x     | Job queue & caching                       |
 | Testing              | PHPUnit           | 11.5.46 | Unit & integration testing                |
@@ -353,10 +463,11 @@ Laravel Sanctum Bearer token authentication.
 | Permissions          | Spatie Permission | 6.23    | Role-based access control                 |
 | Audit (Compliance)   | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)         |
 | Audit (Operations)   | Activity Log      | 4.x     | User activity logging (spatie)            |
-| Performance Monitor  | Laravel Pulse     | 1.4.6   | Performance metrics & server health       |
+| Performance Monitor  | Laravel Pulse     | 1.4.7   | Performance metrics & server health       |
 | API Authentication   | Laravel Sanctum   | 4.2.1   | Token-based API authentication            |
 | OAuth SSO            | Laravel Socialite | 5.24.0  | Google Workspace SSO (optional)           |
 | Debugging            | Laravel Telescope | 5.16.0  | System monitoring (superuser only)        |
+| Queue Management     | Laravel Horizon   | 5.41.0  | Redis queue monitoring & management       |
 
 ---
 

@@ -438,7 +438,7 @@ new class extends Component {
                                             class="flex items-start p-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors duration-150">
                                             <input type="checkbox" wire:model.live="selected_assets"
                                                 value="{{ $asset->id }}"
-                                                class="mt-1 mr-3 h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                                class="mt-1 mr-3 h-4 w-4 text-primary-600 border-gray-300 rounded focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
                                             <div class="flex-1">
                                                 <div class="font-medium text-gray-900 dark:text-white">{{ $asset->name }}
                                                 </div>
@@ -543,7 +543,7 @@ new class extends Component {
 
                     <label class="flex items-start space-x-3 cursor-pointer">
                         <input id="terms_accepted" wire:model="terms_accepted" type="checkbox" aria-required="true"
-                            class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800">
                         <span class="text-sm text-gray-700 dark:text-gray-300">
                             Saya mengesahkan bahawa semua peralatan yang dipinjam adalah untuk kegunaan rasmi dan berada
                             di bawah tanggungjawab dan penyeliaan saya sepanjang tempoh tersebut.

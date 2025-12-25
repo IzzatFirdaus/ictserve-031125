@@ -1,23 +1,14 @@
 {
     "mcpServers": {
-        "sequentialthinking": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-sequential-thinking"
-            ],
-            "disabled": false,
-            "autoApprove": [
-                "sequentialthinking"
-            ]
-        },
         "memory": {
             "command": "npx",
             "args": [
                 "-y",
-                "@modelcontextprotocol/server-memory",
-                "${workspaceFolder}/storage/mcp/memory.jsonl"
+                "@modelcontextprotocol/server-memory"
             ],
+            "env": {
+                "MEMORY_FILE_PATH": "c:\\laragon\\www\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+            },
             "disabled": false,
             "autoApprove": [
                 "create_entities",
@@ -29,6 +20,38 @@
                 "read_graph",
                 "search_nodes",
                 "open_nodes"
+            ]
+        },
+        "sequentialthinking": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-sequential-thinking"
+            ],
+            "env": {
+                "NODE_OPTIONS": "--max-old-space-size=4096"
+            },
+            "disabled": false,
+            "autoApprove": [
+                "sequentialthinking"
+            ]
+        },
+        "laravel-boost": {
+            "command": "php",
+            "args": [
+                "artisan",
+                "boost:mcp"
+            ]
+        },
+        "fetch": {
+            "command": "uvx",
+            "args": [
+                "--native-tls",
+                "mcp-server-fetch"
+            ],
+            "disabled": false,
+            "autoApprove": [
+                "fetch"
             ]
         },
         "chrome-devtools": {
@@ -43,20 +66,12 @@
                 "take_snapshot",
                 "click",
                 "fill",
-                "evaluate_script"
+                "evaluate_script",
+                "take_screenshot",
+                "list_pages",
+                "list_network_requests",
+                "get_console_message"
             ]
-        },
-        "firecrawl": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "firecrawl-mcp"
-            ],
-            "env": {
-                "FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
-            },
-            "disabled": true,
-            "autoApprove": []
         },
         "playwright": {
             "command": "npx",
@@ -71,103 +86,52 @@
                 "browser_snapshot",
                 "browser_fill",
                 "browser_evaluate",
-                "browser_close"
+                "browser_take_screenshot",
+                "browser_wait_for",
+                "browser_select_option"
             ]
         },
-        "context7": {
+        "git": {
             "command": "npx",
             "args": [
                 "-y",
-                "@upstash/context7-mcp"
-            ],
-            "env": {
-                "CONTEXT7_API_KEY": "$env:CONTEXT7_API_KEY"
-            },
-            "disabled": true,
-            "autoApprove": [
-                "resolve-library-id",
-                "get-library-docs"
-            ]
-        },
-        "laravel-boost": {
-            "command": "php",
-            "args": [
-                "artisan",
-                "boost:mcp"
-            ]
-        },
-        "fetch": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "mcp-server-fetch"
+                "@modelcontextprotocol/server-git"
             ],
             "disabled": false,
             "autoApprove": [
-                "fetch"
+                "git_status",
+                "git_log_or_diff",
+                "git_branch",
+                "git_add_or_commit",
+                "git_blame",
+                "git_stash"
             ]
         },
-        "deepl": {
+        "filesystem": {
             "command": "npx",
             "args": [
                 "-y",
-                "deepl-mcp-server"
+                "@modelcontextprotocol/server-filesystem"
             ],
             "env": {
-                "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
+                "ALLOWED_DIRECTORIES": "C:\\laragon\\www\\ictserve-031125,C:\\laragon\\www\\ictserve-031125\\storage,C:\\laragon\\www\\ictserve-031125\\public"
             },
-            "disabled": true,
+            "disabled": false,
             "autoApprove": [
-                "get-source-languages",
-                "get-target-languages",
-                "translate-text",
-                "rephrase-text"
-            ]
-        },
-        "github": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-github"
-            ],
-            "env": {
-                "GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
-            },
-            "disabled": true,
-            "autoApprove": []
-        },
-        "gitkraken": {
-            "command": "gk",
-            "args": [
-                "mcp"
-            ],
-            "disabled": true,
-            "autoApprove": []
-        },
-        "bedrock-opus": {
-            "command": "node",
-            "args": [
-                "${workspaceFolder}/mcp-servers/bedrock-server.js"
-            ],
-            "env": {
-                "AWS_ACCESS_KEY_ID": "$env:AWS_ACCESS_KEY_ID",
-                "AWS_SECRET_ACCESS_KEY": "$env:AWS_SECRET_ACCESS_KEY",
-                "AWS_BEDROCK_REGION": "us-east-1"
-            },
-            "disabled": true,
-            "autoApprove": [
-                "invoke_claude_opus",
-                "invoke_claude_sonnet",
-                "invoke_claude_haiku"
+                "read_file",
+                "write_file",
+                "list_directory",
+                "create_directory",
+                "get_file_info"
             ]
         },
         "herd": {
             "command": "php",
             "args": [
-                "C:/Users/exatf/.config/herd/bin/herd-mcp.phar"
+                "C:/Users/izzatfirdaus/.config/herd/bin/herd-mcp.phar"
             ],
             "env": {
-                "SITE_PATH": "C:\\XAMPP\\htdocs\\ictserve-031125"
+                "SITE_PATH": "C:\\laragon\\www\\ictserve-031125"
             }
         }
     }

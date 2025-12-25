@@ -3,7 +3,7 @@
      Trace: Requirements 2.4, 2.5, 7.1, 10.1, 10.2, 10.3
      WCAG 2.2 AA Compliant
      MyDS: Uses design tokens from D13 §2.2-2.7
-     last-updated: 2025-12-06 --}}
+     last-updated: 2025-12-15 --}}
 
 <div class="space-y-6">
     {{-- Page Header --}}
@@ -25,7 +25,7 @@
         <div class="mt-4 flex gap-3 sm:ml-4 sm:mt-0">
             {{-- Back Button - 44px touch target per D12 §4.1 --}}
             <a href="{{ route('staff.history') }}"
-                class="inline-flex items-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-button ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-w-11 min-h-11 transition-colors duration-200"
+                class="inline-flex items-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-button ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-w-11 min-h-11 transition-colors duration-200"
                 aria-label="{{ __('portal.back_to_submissions') }}">
                 <x-heroicon-o-arrow-left class="h-5 w-5" aria-hidden="true" />
                 {{ __('portal.back') }}
@@ -33,7 +33,7 @@
 
             {{-- Refresh Button - Primary action per D14 §6.5 --}}
             <button wire:click="refreshSubmission" type="button"
-                class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-button hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-w-11 min-h-11 transition-colors duration-200"
+                class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-button hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-w-11 min-h-11 transition-colors duration-200"
                 aria-label="{{ __('portal.refresh_submission') }}">
                 <x-heroicon-o-arrow-path class="h-5 w-5" aria-hidden="true" />
                 {{ __('portal.refresh') }}
@@ -99,7 +99,7 @@
                                                 'open' =>
                                                     'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 ring-primary-600/20',
                                                 'in_progress' =>
-                                                    'bg-warning-50 dark:bg-warning-900/20 text-warning-700 dark:text-warning-300 ring-warning-600/20',
+                                                    'bg-info-50 dark:bg-info-900/20 text-info-700 dark:text-info-300 ring-info-600/20',
                                                 'resolved' =>
                                                     'bg-success-50 dark:bg-success-900/20 text-success-700 dark:text-success-300 ring-success-600/20',
                                                 'closed' =>
@@ -291,7 +291,7 @@
                                             {{ __('portal.loan_items') }}</dt>
                                         <dd class="mt-1">
                                             <div
-                                                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                                                class="overflow-hidden shadow ring-1 ring-black/5 rounded-lg">
                                                 <table
                                                     class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                                                     <thead class="bg-gray-50 dark:bg-gray-700">
@@ -358,12 +358,12 @@
                                                 <div>
                                                     @php
                                                         $activityColors = [
-                                                            'blue' => 'bg-blue-500',
-                                                            'green' => 'bg-green-500',
-                                                            'red' => 'bg-red-500',
-                                                            'amber' => 'bg-amber-500',
-                                                            'purple' => 'bg-purple-500',
-                                                            'orange' => 'bg-orange-500',
+                                                            'blue' => 'bg-primary-500',
+                                                            'green' => 'bg-success-500',
+                                                            'red' => 'bg-danger-500',
+                                                            'amber' => 'bg-warning-500',
+                                                            'purple' => 'bg-secondary-500',
+                                                            'orange' => 'bg-warning-500',
                                                         ];
 
                                                         $activityColorClass =
@@ -463,7 +463,7 @@
                     <div class="space-y-3">
                         @if ($isClaimable)
                             <button wire:click="openClaimModal" type="button"
-                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 min-h-11">
+                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-lg bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-600 min-h-11">
                                 <x-heroicon-o-user class="h-5 w-5" aria-hidden="true" />
                                 {{ __('portal.claim_submission') }}
                             </button>
@@ -471,14 +471,14 @@
 
                         @if ($isCancellable)
                             <button wire:click="openCancelModal" type="button"
-                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600 min-h-11">
+                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-lg bg-danger-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-danger-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-danger-600 min-h-11">
                                 <x-heroicon-o-x-circle class="h-5 w-5" aria-hidden="true" />
                                 {{ __('portal.cancel_submission') }}
                             </button>
                         @endif
 
                         <button type="button" onclick="window.print()"
-                            class="w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-white dark:bg-gray-700 px-3.5 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 min-h-11">
+                            class="w-full inline-flex items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-gray-700 px-3.5 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-600 min-h-11">
                             <x-heroicon-o-printer class="h-5 w-5" aria-hidden="true" />
                             {{ __('portal.print') }}
                         </button>
@@ -503,7 +503,7 @@
                                             class="ml-2 truncate text-sm text-gray-900 dark:text-white">{{ $attachment->filename }}</span>
                                     </div>
                                     <a href="{{ $attachment->url }}" target="_blank"
-                                        class="ml-4 shrink-0 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                                        class="ml-4 shrink-0 text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
                                         aria-label="{{ __('portal.download_attachment', ['filename' => $attachment->filename]) }}">
                                         {{ __('portal.download') }}
                                     </a>
@@ -525,7 +525,7 @@
         {{ __('portal.submission_not_found_description') }}</p>
     <div class="mt-6">
         <a href="{{ route('staff.history') }}"
-            class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
+            class="inline-flex items-center rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-600">
             {{ __('portal.back_to_submissions') }}
         </a>
     </div>
@@ -535,7 +535,7 @@
 {{-- Claim Submission Modal --}}
 @if ($showClaimModal)
     <div class="relative z-50" aria-labelledby="modal-claim-title" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
 
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -543,8 +543,8 @@
                     class="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                     <div>
                         <div
-                            class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-                            <x-heroicon-o-user class="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+                            class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900">
+                            <x-heroicon-o-user class="h-6 w-6 text-primary-600 dark:text-primary-400" aria-hidden="true" />
                         </div>
                         <div class="mt-3 text-center sm:mt-5">
                             <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
@@ -560,11 +560,11 @@
                     </div>
                     <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                         <button wire:click="claimSubmission" type="button"
-                            class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 sm:col-start-2 min-h-11">
+                            class="inline-flex w-full justify-center rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-600 sm:col-start-2 min-h-11">
                             {{ __('portal.confirm_claim') }}
                         </button>
                         <button wire:click="closeClaimModal" type="button"
-                            class="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 sm:col-start-1 sm:mt-0 min-h-11">
+                            class="mt-3 inline-flex w-full justify-center rounded-lg bg-white dark:bg-gray-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 sm:col-start-1 sm:mt-0 min-h-11">
                             {{ __('portal.cancel') }}
                         </button>
                     </div>
@@ -577,7 +577,7 @@
 {{-- Cancel Submission Modal --}}
 @if ($showCancelModal)
     <div class="relative z-50" aria-labelledby="modal-cancel-title" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
 
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -585,8 +585,8 @@
                     class="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                     <div>
                         <div
-                            class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
-                            <x-heroicon-o-exclamation-triangle class="h-6 w-6 text-red-600 dark:text-red-400" aria-hidden="true" />
+                            class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-danger-100 dark:bg-danger-900">
+                            <x-heroicon-o-exclamation-triangle class="h-6 w-6 text-danger-600 dark:text-danger-400" aria-hidden="true" />
                         </div>
                         <div class="mt-3 text-center sm:mt-5">
                             <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
@@ -602,21 +602,21 @@
                                 <label for="cancelReason"
                                     class="sr-only">{{ __('portal.cancellation_reason') }}</label>
                                 <textarea wire:model="cancelReason" id="cancelReason" rows="3"
-                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 dark:bg-gray-700"
+                                    class="block w-full rounded-lg border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-700"
                                     placeholder="{{ __('portal.cancellation_reason_placeholder') }}" required></textarea>
                                 @error('cancelReason')
-                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                    <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
                     </div>
                     <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                         <button wire:click="cancelSubmission" type="button"
-                            class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600 sm:col-start-2 min-h-11">
+                            class="inline-flex w-full justify-center rounded-lg bg-danger-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-danger-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-danger-600 sm:col-start-2 min-h-11">
                             {{ __('portal.confirm_cancel') }}
                         </button>
                         <button wire:click="closeCancelModal" type="button"
-                            class="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 sm:col-start-1 sm:mt-0 min-h-11">
+                            class="mt-3 inline-flex w-full justify-center rounded-lg bg-white dark:bg-gray-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 sm:col-start-1 sm:mt-0 min-h-11">
                             {{ __('portal.go_back') }}
                         </button>
                     </div>
@@ -627,10 +627,11 @@
 @endif
 
 {{-- Loading Overlay --}}
-<div wire:loading class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+<div wire:loading class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50">
     <div class="flex flex-col items-center">
         <x-heroicon-o-arrow-path class="animate-spin h-8 w-8 text-white" />
         <p class="mt-4 text-white font-semibold">{{ __('portal.loading') }}</p>
     </div>
 </div>
 </div>
+

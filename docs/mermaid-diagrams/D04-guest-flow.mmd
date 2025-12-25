@@ -1,0 +1,43 @@
+sequenceDiagram
+    actor Guest as Guest User
+    participant Portal as Hybrid Portal
+    participant Livewire as Livewire Component
+    participant Service as HelpdeskService
+    participant DB as MySQL Database
+    participant Queue as Redis Queue
+    participant Mail as Email System
+    participant Token as TokenService
+    
+    Note over Guest,Token: Guest Helpdesk Ticket Submission Flow
+    
+    Guest->>Portal: Access /helpdesk/create
+    Portal->>Livewire: Load TicketForm component
+    Livewire->>Guest: Display form (manual input)
+    Note over Guest: No Auth::check()<br/>Manual entry required
+    
+    Guest->>Livewire: Fill form + reCAPTCHA
+    Livewire->>Livewire: Client-side validation
+    Guest->>Livewire: Submit form
+    
+    Livewire->>Service: createTicket(data)
+    Service->>Service: Generate ticket number<br/>HD-YYYYMM-XXXX
+    Service->>Token: generateStatusToken()
+    Token-->>Service: SHA-512 hashed token
+    Service->>DB: INSERT helpdesk_tickets<br/>user_id = NULL<br/>guest_* fields populated
+    DB-->>Service: Ticket created
+    
+    Service->>Queue: Dispatch SendTicketNotification
+    Queue->>Mail: Send confirmation email<br/>with status token link
+    Mail-->>Guest: Email received
+    
+    Service-->>Livewire: Success response
+    Livewire-->>Guest: Redirect to success page<br/>Display ticket number + token link
+    
+    Note over Guest,Token: Status Checking Flow
+    
+    Guest->>Portal: Click status token link
+    Portal->>Service: checkStatus(token)
+    Service->>DB: Query by status_token_hash
+    DB-->>Service: Ticket details
+    Service-->>Portal: Ticket status + timeline
+    Portal-->>Guest: Display status page

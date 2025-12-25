@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Component name: User Profile Management (Volt)
  * Description: Profile management interface with editable and read-only fields
@@ -208,7 +208,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         </div>
                     </div>
                     <button wire:click="requestCorrection('email')" type="button"
-                        class="min-h-11 min-w-11 px-3 py-2 text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 rounded-md transition-colors duration-200"
+                        class="min-h-11 min-w-11 px-3 py-2 text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 rounded-lg transition-colors duration-200"
                         aria-label="{{ __('profile.request_correction_for', ['field' => __('profile.email')]) }}">
                         {{ __('profile.request_correction') }}
                     </button>
@@ -229,7 +229,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         </div>
                     </div>
                     <button wire:click="requestCorrection('staff_id')" type="button"
-                        class="min-h-11 min-w-11 px-3 py-2 text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 rounded-md transition-colors duration-200"
+                        class="min-h-11 min-w-11 px-3 py-2 text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 rounded-lg transition-colors duration-200"
                         aria-label="{{ __('profile.request_correction_for', ['field' => __('profile.staff_id')]) }}">
                         {{ __('profile.request_correction') }}
                     </button>
@@ -252,7 +252,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         </div>
                     </div>
                     <button wire:click="requestCorrection('grade')" type="button"
-                        class="min-h-11 min-w-11 px-3 py-2 text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 rounded-md transition-colors duration-200"
+                        class="min-h-11 min-w-11 px-3 py-2 text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 rounded-lg transition-colors duration-200"
                         aria-label="{{ __('profile.request_correction_for', ['field' => __('profile.grade')]) }}">
                         {{ __('profile.request_correction') }}
                     </button>
@@ -275,7 +275,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         </div>
                     </div>
                     <button wire:click="requestCorrection('department')" type="button"
-                        class="min-h-11 min-w-11 px-3 py-2 text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 rounded-md transition-colors duration-200"
+                        class="min-h-11 min-w-11 px-3 py-2 text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 rounded-lg transition-colors duration-200"
                         aria-label="{{ __('profile.request_correction_for', ['field' => __('profile.department')]) }}">
                         {{ __('profile.request_correction') }}
                     </button>
@@ -302,7 +302,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         {{ __('profile.name') }} <span class="text-danger-500" aria-hidden="true">*</span>
                     </label>
                     <input type="text" id="name" wire:model="name"
-                        class="mt-1 block w-full min-h-11 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+                        class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-required="true" aria-describedby="name-error" @error('name') aria-invalid="true" @enderror
                         required>
                     @error('name')
@@ -317,7 +317,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         {{ __('profile.phone') }}
                     </label>
                     <input type="tel" id="phone" wire:model="phone" placeholder="+60 3-XXXX XXXX"
-                        class="mt-1 block w-full min-h-11 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+                        class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-describedby="phone-hint phone-error">
                     <p id="phone-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                         {{ __('profile.phone_format_hint') ?: 'Format: +60 3-XXXX XXXX' }}</p>
@@ -333,7 +333,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         {{ __('profile.mobile') }}
                     </label>
                     <input type="tel" id="mobile" wire:model="mobile" placeholder="+60 1X-XXX XXXX"
-                        class="mt-1 block w-full min-h-11 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+                        class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-describedby="mobile-hint mobile-error">
                     <p id="mobile-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                         {{ __('profile.mobile_format_hint') ?: 'Format: +60 1X-XXX XXXX' }}</p>
@@ -349,7 +349,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         {{ __('profile.bio') }}
                     </label>
                     <textarea id="bio" wire:model="bio" rows="3" maxlength="500"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-describedby="bio-hint bio-error" placeholder="{{ __('profile.bio_placeholder') }}"></textarea>
                     <p id="bio-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                         {{ strlen($bio ?? '') }}/500 {{ __('profile.characters') }}
@@ -362,7 +362,7 @@ new #[Layout('layouts.portal')] class extends Component {
 
                 <div class="flex justify-end">
                     <button type="submit"
-                        class="inline-flex items-center min-h-11 px-4 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-button text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
+                        class="inline-flex items-center min-h-11 px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-button text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
                         wire:loading.attr="disabled" wire:loading.class="opacity-75 cursor-wait">
                         <span wire:loading.remove wire:target="updateProfile">{{ __('profile.save_changes') }}</span>
                         <span wire:loading wire:target="updateProfile" class="inline-flex items-center">
@@ -400,7 +400,7 @@ new #[Layout('layouts.portal')] class extends Component {
                             aria-hidden="true">*</span>
                     </label>
                     <input type="password" id="current_password" wire:model="current_password"
-                        class="mt-1 block w-full min-h-11 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+                        class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-required="true" aria-describedby="current-password-error"
                         @error('current_password') aria-invalid="true" @enderror autocomplete="current-password"
                         required>
@@ -416,7 +416,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         {{ __('profile.new_password') }} <span class="text-danger-500" aria-hidden="true">*</span>
                     </label>
                     <input type="password" id="password" wire:model="password"
-                        class="mt-1 block w-full min-h-11 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+                        class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-required="true" aria-describedby="password-hint password-error"
                         @error('password') aria-invalid="true" @enderror autocomplete="new-password" required>
                     <p id="password-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
@@ -436,13 +436,13 @@ new #[Layout('layouts.portal')] class extends Component {
                             aria-hidden="true">*</span>
                     </label>
                     <input type="password" id="password_confirmation" wire:model="password_confirmation"
-                        class="mt-1 block w-full min-h-11 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+                        class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-required="true" autocomplete="new-password" required>
                 </div>
 
                 <div class="flex justify-end">
                     <button type="submit"
-                        class="inline-flex items-center min-h-11 px-4 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-button text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
+                        class="inline-flex items-center min-h-11 px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-button text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
                         wire:loading.attr="disabled" wire:loading.class="opacity-75 cursor-wait">
                         <span wire:loading.remove
                             wire:target="updatePassword">{{ __('profile.update_password') }}</span>
@@ -477,14 +477,14 @@ new #[Layout('layouts.portal')] class extends Component {
                 <div class="flex items-center space-x-4">
                     <label class="inline-flex items-center">
                         <input type="radio" wire:model="language" value="ms"
-                            class="form-radio text-primary-600 focus:ring-primary-500">
+                            class="form-radio text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500">
                         <span class="ml-2 text-gray-700 dark:text-gray-300">Bahasa Melayu</span>
                     </label>
                 </div>
 
                 <div class="mt-4 flex justify-end">
                     <button wire:click="updateLanguage" type="button"
-                        class="inline-flex items-center min-h-11 px-4 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-button text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
+                        class="inline-flex items-center min-h-11 px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-button text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
                         wire:loading.attr="disabled" wire:loading.class="opacity-75 cursor-wait">
                         <span wire:loading.remove
                             wire:target="updateLanguage">{{ __('profile.save_language') }}</span>
@@ -529,13 +529,13 @@ new #[Layout('layouts.portal')] class extends Component {
                     <label class="flex items-center justify-between">
                         <span class="text-sm text-gray-700 dark:text-gray-300">{{ $label }}</span>
                         <input type="checkbox" wire:model="notification_preferences.{{ $key }}"
-                            class="form-checkbox h-5 w-5 text-primary-600 rounded focus:ring-primary-500">
+                            class="form-checkbox h-5 w-5 text-primary-600 rounded focus-visible:ring-3 focus-visible:ring-primary-500">
                     </label>
                 @endforeach
 
                 <div class="pt-4 flex justify-end">
                     <button wire:click="updateNotificationPreferences" type="button"
-                        class="inline-flex items-center min-h-11 px-4 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-button text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
+                        class="inline-flex items-center min-h-11 px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-button text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 transition-colors duration-200"
                         wire:loading.attr="disabled" wire:loading.class="opacity-75 cursor-wait">
                         <span wire:loading.remove
                             wire:target="updateNotificationPreferences">{{ __('profile.save_preferences') }}</span>

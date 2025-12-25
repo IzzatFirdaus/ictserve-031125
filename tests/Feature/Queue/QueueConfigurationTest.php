@@ -9,7 +9,6 @@ use App\Listeners\CreateMaintenanceTicketForDamagedAsset;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\LoanTransaction;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class QueueConfigurationTest extends TestCase
 {
-    use DatabaseMigrations;
-
     #[Test]
     public function it_has_correct_queue_configuration(): void
     {

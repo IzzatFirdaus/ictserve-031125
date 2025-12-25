@@ -86,7 +86,12 @@ class AccessoryTrackingService implements AccessoryTrackingServiceInterface
      * @see Requirements 26.2 - Allow marking accessories as included/not included
      * @see Requirements 26.6 - Store accessory data in loan_transaction_accessories
      */
-    public function recordCheckoutAccessories(LoanTransaction $transaction, array $accessories): void
+    
+
+/**
+ * @param array<string, mixed> $accessories
+ */
+public function recordCheckoutAccessories(LoanTransaction $transaction, array $accessories): void
     {
         DB::transaction(function () use ($transaction, $accessories): void {
             foreach ($accessories as $accessoryData) {
@@ -117,7 +122,12 @@ class AccessoryTrackingService implements AccessoryTrackingServiceInterface
      * @see Requirements 26.4 - Pre-populate checklist from check-out data
      * @see Requirements 26.6 - Store accessory data in loan_transaction_accessories
      */
-    public function recordCheckinAccessories(LoanTransaction $transaction, array $accessories): void
+    
+
+/**
+ * @param array<string, mixed> $accessories
+ */
+public function recordCheckinAccessories(LoanTransaction $transaction, array $accessories): void
     {
         DB::transaction(function () use ($transaction, $accessories): void {
             // Get checkout transaction for this loan to find existing accessories
@@ -258,7 +268,12 @@ class AccessoryTrackingService implements AccessoryTrackingServiceInterface
      * @param  array<int, array{accessory_type: string, accessory_name?: string|null, present: bool, condition_notes?: string|null}>  $accessories
      * @return bool True if data is valid
      */
-    public function validateAccessoryData(array $accessories): bool
+    
+
+/**
+ * @param array<string, mixed> $accessories
+ */
+public function validateAccessoryData(array $accessories): bool
     {
         $validTypes = array_keys(self::STANDARD_ACCESSORIES);
 

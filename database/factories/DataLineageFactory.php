@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
  * Factory untuk model DataLineage
  *
  * Menjana data lineage yang realistik untuk penjejakan transformasi data AI
+  *
+ * @extends Factory<\App\Models\DataLineage>
  */
 class DataLineageFactory extends Factory
 {

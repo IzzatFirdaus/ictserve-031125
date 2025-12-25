@@ -9,7 +9,7 @@
                 <p class="text-gray-700 dark:text-gray-300">{{ $comment->comment }}</p>
 
                 @if($comment->canHaveReplies())
-                    <button wire:click="replyToComment({{ $comment->id }})" class="text-sm text-blue-600 hover:text-blue-700 mt-2">
+                    <button wire:click="replyToComment({{ $comment->id }})" class="text-sm text-primary-600 hover:text-primary-700 mt-2">
                         Reply
                     </button>
                 @endif
@@ -26,7 +26,7 @@
                                 <p class="text-sm text-gray-700 dark:text-gray-300">{{ $reply->comment }}</p>
 
                                 @if($reply->canHaveReplies())
-                                    <button wire:click="replyToComment({{ $reply->id }})" class="text-xs text-blue-600 hover:text-blue-700 mt-1">
+                                    <button wire:click="replyToComment({{ $reply->id }})" class="text-xs text-primary-600 hover:text-primary-700 mt-1">
                                         Reply
                                     </button>
                                 @endif
@@ -57,9 +57,9 @@
 
     <form wire:submit="addComment" class="mt-4">
         @if($replyingTo)
-            <div class="mb-2 p-2 bg-blue-50 dark:bg-blue-900 rounded flex justify-between items-center">
-                <span class="text-sm text-blue-700 dark:text-blue-300">Replying to comment...</span>
-                <button type="button" wire:click="cancelReply" class="text-blue-600 hover:text-blue-700">✕</button>
+            <div class="mb-2 p-2 bg-primary-50 dark:bg-primary-900 rounded flex justify-between items-center">
+                <span class="text-sm text-primary-700 dark:text-primary-300">Replying to comment...</span>
+                <button type="button" wire:click="cancelReply" class="text-primary-600 hover:text-primary-700">✕</button>
             </div>
         @endif
 
@@ -73,10 +73,10 @@
 
         <div class="flex justify-between items-center mt-2">
             <span class="text-sm text-gray-500">{{ 1000 - strlen($newComment) }} characters remaining</span>
-            @error('newComment') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+            @error('newComment') <span class="text-danger-600 text-sm">{{ $message }}</span> @enderror
         </div>
 
-        <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        <button type="submit" class="mt-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
             Hantar
         </button>
     </form>

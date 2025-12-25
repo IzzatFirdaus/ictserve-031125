@@ -4,14 +4,17 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
-		"dev": "node scripts/dev/check-node-version.js && vite",
+		"dev": "node scripts/dev/check-node-version.js && npx vite",
 		"check-node": "node scripts/dev/check-node-version.js",
 		"wsl-redis-setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\setup-wsl-redis.ps1",
 		"test-dev-script": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\test-script.ps1",
 		"dev:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1",
-		"dev:win:minimal": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1 -Profile minimal",
-		"dev:win:backend": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1 -Profile backend",
-		"dev:win:ai": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1 -Profile ai",
+		"dev:win:minimal": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1 -ProfileName minimal",
+		"dev:win:backend": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1 -ProfileName backend",
+		"dev:win:frontend": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1 -ProfileName frontend",
+		"dev:win:ai": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1 -ProfileName ai",
+		"dev:win:testing": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1 -ProfileName testing",
+		"dev:win:production": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1 -ProfileName production",
 		"dev:win:simple": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev-simple.ps1",
 		"dev:helpers": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\dev-helpers.ps1",
 		"test:e2e": "playwright test",
@@ -49,7 +52,7 @@
 		"pusher-js": "^8.4.0",
 		"tailwindcss": "^4.0.0-alpha.25",
 		"terser": "^5.44.0",
-		"vite": "^7.0.7",
+		"vite": "^7.3.0",
 		"web-vitals": "^4.2.4"
 	}
 }

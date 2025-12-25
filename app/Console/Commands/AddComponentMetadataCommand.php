@@ -91,7 +91,27 @@ class AddComponentMetadataCommand extends Command
             ];
         }
 
-        return $service->addMetadataToCategory($category);
+        $result = $service->addMetadataToCategory($category);
+
+        // Ensure proper structure
+        $processedValue = $result['processed'] ?? 0;
+        $skippedValue = $result['skipped'] ?? 0;
+        $totalValue = $result['total'] ?? 0;
+        $messageValue = $result['message'] ?? null;
+
+        $returnArray = [
+            'success' => (bool) ($result['success'] ?? false),
+            'category' => (string) ($result['category'] ?? $category),
+            'processed' => is_numeric($processedValue) ? (int) $processedValue : 0,
+            'skipped' => is_numeric($skippedValue) ? (int) $skippedValue : 0,
+            'total' => is_numeric($totalValue) ? (int) $totalValue : 0,
+        ];
+
+        if (is_string($messageValue)) {
+            $returnArray['message'] = $messageValue;
+        }
+
+        return $returnArray;
     }
 
     /**
@@ -137,6 +157,10 @@ class AddComponentMetadataCommand extends Command
      *     by_category?: array<string, array{success: bool, category: string, processed: int, skipped: int, total: int}>
      * }  $result
      */
+
+    /**
+     * @param  array<string, mixed>  $result
+     */
     private function displayResults(array $result): void
     {
         $this->newLine();
@@ -164,13 +188,27 @@ class AddComponentMetadataCommand extends Command
             );
 
             $this->newLine();
-            $this->info('??? Total Processed: '.((int) ($result['total_processed'] ?? 0)));
-            $this->info('??????  Total Skipped: '.((int) ($result['total_skipped'] ?? 0)));
-            $this->info('???? Total Components: '.((int) ($result['total_components'] ?? 0)));
+            $totalProcessedValue = $result['total_processed'] ?? 0;
+            $totalProcessed = is_numeric($totalProcessedValue) ? (int) $totalProcessedValue : 0;
+
+            $totalSkippedValue = $result['total_skipped'] ?? 0;
+            $totalSkipped = is_numeric($totalSkippedValue) ? (int) $totalSkippedValue : 0;
+
+            $totalComponentsValue = $result['total_components'] ?? 0;
+            $totalComponents = is_numeric($totalComponentsValue) ? (int) $totalComponentsValue : 0;
+
+            $this->info("📝 Total Processed: {$totalProcessed}");
+            $this->info("⏭️  Total Skipped: {$totalSkipped}");
+            $this->info("📊 Total Components: {$totalComponents}");
         } else {
-            $processed = (int) ($result['processed'] ?? 0);
-            $skipped = (int) ($result['skipped'] ?? 0);
-            $total = (int) ($result['total'] ?? 0);
+            $processedValue = $result['processed'] ?? 0;
+            $processed = is_numeric($processedValue) ? (int) $processedValue : 0;
+
+            $skippedValue = $result['skipped'] ?? 0;
+            $skipped = is_numeric($skippedValue) ? (int) $skippedValue : 0;
+
+            $totalValue = $result['total'] ?? 0;
+            $total = is_numeric($totalValue) ? (int) $totalValue : 0;
 
             $this->info("??? Processed: {$processed}");
             $this->info("??????  Skipped: {$skipped}");

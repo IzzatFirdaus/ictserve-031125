@@ -133,7 +133,12 @@ class GuestLoanApplication extends Component
     /**
      * @return array<string, string>
      */
-    protected function messages(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function messages(): array
     {
         return [
             'form.equipment_items.*.equipment_type.required' => __('loan.validation.equipment_type_required'),
@@ -152,7 +157,12 @@ class GuestLoanApplication extends Component
     /**
      * @return array<string, string>
      */
-    protected function validationAttributes(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+protected function validationAttributes(): array
     {
         return [
             'form.equipment_items.*.equipment_type' => __('loan.table.equipment_type'),
@@ -280,7 +290,12 @@ class GuestLoanApplication extends Component
      *
      * @return array<int, array{id: int, name: string, available: int, total: int}>
      */
-    public function getAvailabilitySummary(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function getAvailabilitySummary(): array
     {
         $startDate = $this->form['loan_start_date'] ?? date('Y-m-d', strtotime('+3 days'));
         $endDate = $this->form['expected_return_date'] ?? $this->form['loan_end_date'] ?? date('Y-m-d', strtotime('+10 days'));
@@ -602,6 +617,16 @@ class GuestLoanApplication extends Component
                 ->orderBy('sort_order')
                 ->orderBy('name')
                 ->get(),
+            'assetCategories' => AssetCategory::where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('name')
+                ->get()
+                ->map(function ($category) {
+                    return [
+                        'id' => $category->id,
+                        'name' => $category->name,
+                    ];
+                }),
             'layout' => $layout,
         ]);
     }

@@ -27,12 +27,15 @@ class EmailQueueMonitoring extends Page
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 2;
 
     protected string $view = 'filament.pages.email-queue-monitoring';
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getHeaderWidgets(): array
     {
         return [
@@ -65,9 +68,12 @@ class EmailQueueMonitoring extends Page
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.email_queue.group');
+        return __('filament.navigation.system_management');
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getHeaderActions(): array
     {
         return [

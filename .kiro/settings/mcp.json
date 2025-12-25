@@ -1,16 +1,5 @@
 {
   "mcpServers": {
-    "sequentialthinking": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
-      "disabled": false,
-      "autoApprove": [
-        "sequentialthinking"
-      ]
-    },
     "memory": {
       "command": "npx",
       "args": [
@@ -18,7 +7,7 @@
         "@modelcontextprotocol/server-memory"
       ],
       "env": {
-        "MEMORY_FILE_PATH": "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+        "MEMORY_FILE_PATH": "C:\\laragon\\www\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       },
       "disabled": false,
       "autoApprove": [
@@ -31,6 +20,67 @@
         "read_graph",
         "search_nodes",
         "open_nodes"
+      ]
+    },
+    "sequentialthinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=4096"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "sequentialthinking"
+      ]
+    },
+    "laravel-boost": {
+      "command": "php",
+      "args": [
+        "artisan",
+        "boost:mcp"
+      ],
+      "cwd": "C:\\laragon\\www\\ictserve-031125",
+      "env": {
+        "APP_ENV": "local"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "application-info",
+        "browser-logs",
+        "database-connections",
+        "database-query",
+        "database-schema",
+        "get-absolute-url",
+        "get-config",
+        "last-error",
+        "list-artisan-commands",
+        "list-available-config-keys",
+        "list-available-env-vars",
+        "list-routes",
+        "read-log-entries",
+        "report-feedback",
+        "search-docs",
+        "tinker"
+      ]
+    },
+    "ictserve": {
+      "command": "php",
+      "args": [
+        "artisan",
+        "mcp:start",
+        "ictserve"
+      ],
+      "cwd": "C:\\laragon\\www\\ictserve-031125",
+      "env": {
+        "APP_ENV": "local"
+      },
+      "disabled": true,
+      "autoApprove": [
+        "query-helpdesk-tickets",
+        "check-asset-status"
       ]
     },
     "fetch": {
@@ -57,25 +107,13 @@
         "click",
         "fill",
         "evaluate_script",
-        "list_console_messages",
-        "list_network_requests",
         "take_screenshot",
         "list_pages",
+        "new_page",
+        "list_console_messages",
         "wait_for",
-        "new_page"
+        "get_console_message"
       ]
-    },
-    "firecrawl": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "firecrawl-mcp"
-      ],
-      "env": {
-        "FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
-      },
-      "disabled": true,
-      "autoApprove": []
     },
     "playwright": {
       "command": "npx",
@@ -90,9 +128,11 @@
         "browser_snapshot",
         "browser_fill",
         "browser_evaluate",
+        "browser_close",
         "browser_take_screenshot",
-        "browser_type",
-        "browser_select_option"
+        "browser_run_code",
+        "browser_wait_for",
+        "browser_fill_form"
       ]
     },
     "context7": {
@@ -110,37 +150,6 @@
         "get-library-docs"
       ]
     },
-    "laravel-boost": {
-      "command": "php",
-      "args": [
-        "artisan",
-        "mcp:start",
-        "laravel-boost"
-      ],
-      "cwd": "C:\\XAMPP\\htdocs\\ictserve-031125",
-      "env": {
-        "APP_ENV": "local"
-      },
-      "disabled": false,
-      "autoApprove": [
-        "application-info",
-        "browser-logs",
-        "database-connections",
-        "database-query",
-        "database-schema",
-        "get-absolute-url",
-        "get-config",
-        "last-error",
-        "list-artisan-commands",
-        "list-available-config-keys",
-        "list-available-env-vars",
-        "list-routes",
-        "read-log-entries",
-        "report-feedback",
-        "search-docs",
-        "tinker"
-      ]
-    },
     "deepl": {
       "command": "npx",
       "args": [
@@ -152,11 +161,23 @@
       },
       "disabled": true,
       "autoApprove": [
-        "get_source_languages",
-        "get_target_languages",
-        "translate_text",
-        "rephrase_text"
+        "get-source-languages",
+        "get-target-languages",
+        "translate-text",
+        "rephrase-text"
       ]
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firecrawl-mcp"
+      ],
+      "env": {
+        "FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
+      },
+      "disabled": true,
+      "autoApprove": []
     },
     "github": {
       "command": "npx",
@@ -167,68 +188,14 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
       },
-      "disabled": true,
-      "autoApprove": []
-    },
-    "gitkraken": {
-      "command": "gk",
-      "args": [
-        "mcp"
-      ],
       "disabled": false,
       "autoApprove": [
-        "git_status",
-        "git_add_or_commit",
-        "git_log_or_diff",
-        "git_push",
-        "git_stash"
-      ]
-    },
-    "bedrock-opus": {
-      "command": "node",
-      "args": [
-        "C:\\XAMPP\\htdocs\\ictserve-031125\\mcp-servers\\bedrock-server.js"
-      ],
-      "env": {
-        "AWS_ACCESS_KEY_ID": "$env:AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY": "$env:AWS_SECRET_ACCESS_KEY",
-        "AWS_BEDROCK_REGION": "us-east-1"
-      },
-      "disabled": false,
-      "autoApprove": [
-        "invoke_claude_opus",
-        "invoke_claude_sonnet",
-        "invoke_claude_haiku"
-      ]
-    },
-    "figma": {
-      "url": "https://mcp.figma.com/mcp",
-      "disabled": true,
-      "autoApprove": []
-    },
-    "agentcore-mcp-server": {
-      "command": "uvx",
-      "args": [
-        "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
-      ],
-      "disabled": true,
-      "autoApprove": [
-        "search_agentcore_docs",
-        "fetch_agentcore_doc",
-        "manage_agentcore_runtime",
-        "manage_agentcore_memory",
-        "manage_agentcore_gateway"
-      ]
-    },
-    "strands-mcp-server": {
-      "command": "uvx",
-      "args": [
-        "strands-agents-mcp-server"
-      ],
-      "disabled": true,
-      "autoApprove": [
-        "search_docs",
-        "fetch_doc"
+        "create_or_update_file",
+        "get_file_contents",
+        "get_repository",
+        "list_repositories",
+        "search_repositories",
+        "create_repository"
       ]
     }
   }

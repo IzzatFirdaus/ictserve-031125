@@ -7,6 +7,7 @@ namespace App\Filament\Widgets;
 use App\Filament\Resources\Assets\AssetResource;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
 use App\Filament\Resources\Loans\LoanApplicationResource;
+use App\Filament\Traits\WidgetMetadata;
 use Filament\Widgets\Widget;
 
 /**
@@ -27,6 +28,8 @@ use Filament\Widgets\Widget;
  */
 class QuickActionsWidget extends Widget
 {
+    use WidgetMetadata;
+
     protected string $view = 'filament.widgets.quick-actions';
 
     protected int|string|array $columnSpan = 'full';
@@ -35,6 +38,14 @@ class QuickActionsWidget extends Widget
      * Sort order - display after critical alerts
      */
     protected static ?int $sort = 0;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 §3.4 User Experience';
+    }
 
     protected function getViewData(): array
     {

@@ -123,7 +123,7 @@
         @if ($actionUrl && $actionLabel)
             <div class="mt-3">
                 <a href="{{ $actionUrl }}" wire:navigate
-                    class="inline-flex items-center gap-2 text-sm font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors duration-200">
+                    class="inline-flex items-center gap-2 text-sm font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors duration-200">
                     {{ $actionLabel }}
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -137,7 +137,7 @@
     @if (!$read && $notificationId)
         <div class="shrink-0">
             <button type="button" wire:click="markAsRead({{ $notificationId }})"
-                class="p-2 min-h-11 min-w-11 text-gray-400 hover:text-white focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors duration-200"
+                class="p-2 min-h-11 min-w-11 text-gray-400 hover:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded-lg transition-colors duration-200"
                 aria-label="{{ __('notifications.mark_as_read') }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />

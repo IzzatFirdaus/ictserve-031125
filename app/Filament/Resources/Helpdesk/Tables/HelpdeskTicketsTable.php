@@ -36,6 +36,7 @@ use Maatwebsite\Excel\Facades\Excel;
  */
 class HelpdeskTicketsTable
 {
+    // @intelephense-ignore
     public static function configure(Table $table): Table
     {
         return $table

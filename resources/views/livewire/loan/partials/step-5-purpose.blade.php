@@ -15,7 +15,7 @@
     {{-- Purpose of Loan --}}
     <div>
         <label for="purpose" class="block text-sm font-medium text-gray-700 mb-1">
-            {{ __('loan.fields.purpose') }} <span class="text-red-500">*</span>
+            {{ __('loan.fields.purpose') }} <span class="text-danger-500">*</span>
         </label>
         <textarea
             id="purpose"
@@ -24,8 +24,8 @@
             minlength="10"
             maxlength="500"
             @class([
-                'block w-full rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm',
-                'border-red-300' => $errorBag->has('purpose'),
+                'block w-full rounded-lg shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm',
+                'border-danger-300' => $errorBag->has('purpose'),
                 'border-gray-300' => ! $errorBag->has('purpose'),
             ])
             placeholder="{{ __('loan.placeholders.purpose') }}"
@@ -36,14 +36,14 @@
             <span>{{ strlen($purpose) }}/500</span>
         </div>
         @error('purpose')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            <p class="mt-1 text-sm text-danger-600">{{ $message }}</p>
         @enderror
     </div>
 
     {{-- Location --}}
     <div>
         <label for="location" class="block text-sm font-medium text-gray-700 mb-1">
-            {{ __('loan.fields.location') }} <span class="text-red-500">*</span>
+            {{ __('loan.fields.location') }} <span class="text-danger-500">*</span>
         </label>
         <input
             type="text"
@@ -51,8 +51,8 @@
             wire:model.live.debounce.300ms="location"
             maxlength="255"
             @class([
-                'block w-full rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm',
-                'border-red-300' => $errorBag->has('location'),
+                'block w-full rounded-lg shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm',
+                'border-danger-300' => $errorBag->has('location'),
                 'border-gray-300' => ! $errorBag->has('location'),
             ])
             placeholder="{{ __('loan.placeholders.location') }}"
@@ -60,7 +60,7 @@
         >
         <p class="mt-1 text-xs text-gray-500">{{ __('loan.help.location') }}</p>
         @error('location')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            <p class="mt-1 text-sm text-danger-600">{{ $message }}</p>
         @enderror
     </div>
 
@@ -75,7 +75,7 @@
             wire:model.live.debounce.300ms="specialInstructions"
             rows="3"
             maxlength="500"
-            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 text-sm"
             placeholder="{{ __('loan.placeholders.special_instructions') }}"
         ></textarea>
         <p class="mt-1 text-xs text-gray-500">{{ __('loan.help.special_instructions') }}</p>
@@ -114,11 +114,11 @@
                 <dt class="text-gray-500">{{ __('loan.fields.priority') }}</dt>
                 <dd class="text-gray-900 font-medium">
                     @if ($emergencyRequest)
-                        <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
+                        <span class="inline-flex items-center rounded-full bg-danger-100 px-2.5 py-0.5 text-xs font-medium text-danger-800">
                             {{ __('loan.priority.urgent') }}
                         </span>
                     @else
-                        <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                        <span class="inline-flex items-center rounded-full bg-success-100 px-2.5 py-0.5 text-xs font-medium text-success-800">
                             {{ __('loan.priority.normal') }}
                         </span>
                     @endif

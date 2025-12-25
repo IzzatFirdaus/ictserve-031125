@@ -18,12 +18,26 @@ class LoanExtensionController extends Controller
      * Handle POST extension submission (portal workflow)
      * trace: D03-FR-011.4; D04 §4.3; D11 §6
      */
-    public function store(Request $request, LoanApplication $application, LoanApplicationService $service): RedirectResponse
+    public function store(Request $request, $application, LoanApplicationService $service): RedirectResponse
     {
+        // Resolve the application if route model binding didn't work
+        if (!$application instanceof LoanApplication) {
+            $application = LoanApplication::findOrFail($application);
+        }
+
         // Authorization: only original applicant can request extension
         $authEmail = Auth::user()?->email;
+        $applicantEmail = $application->applicant_email;
+
         abort_unless(
-            $application->user_id === Auth::id() || ($authEmail && strtolower($application->applicant_email) === strtolower($authEmail)),
+            $application->user_id === Auth::id() ||
+            ($authEmail && $applicantEmail && strtolower($applicantEmail) === strtolower($authEmail)),
+            403
+        );
+
+        abort_unless(
+            $application->user_id === Auth::id() ||
+            ($authEmail && $applicantEmail && strtolower($applicantEmail) === strtolower($authEmail)),
             403
         );
 

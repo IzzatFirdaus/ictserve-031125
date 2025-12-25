@@ -1,4 +1,4 @@
-﻿{{--
+{{--
     QR Code Display Component
 
     @trace D12 §6.15 (Print Optimization)
@@ -58,29 +58,29 @@ $displayLabel = $label ?? $defaultLabel;
 <div {{ $attributes->merge(['class' => 'qr-code-container text-center print-visible ' . $class]) }}>
     {{-- QR Code Image --}}
     <div
-        class="qr-code-wrapper inline-block p-3 bg-white rounded-md shadow-sm border border-gray-200 dark:border-gray-700">
+        class="qr-code-wrapper inline-block p-3 bg-white rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
         <img src="{{ $qrDataUri }}" alt="{{ __('common.qr_code_alt', ['reference' => $reference ?? 'URL']) }}"
             width="{{ $size }}" height="{{ $size }}" class="block mx-auto" loading="lazy">
     </div>
 
     {{-- Label --}}
     @if ($showLabel && $displayLabel)
-    <p class="qr-code-label mt-2 text-xs text-gray-500 dark:text-gray-400">
+    <p class="qr-code-label mt-2 text-xs text-slate-500 dark:text-slate-400">
         {{ $displayLabel }}
     </p>
     @endif
 
     {{-- Reference Number (for print) --}}
     @if ($reference)
-    <p class="qr-code-reference mt-1 text-xs font-mono text-gray-600 dark:text-gray-300 print-only">
+    <p class="qr-code-reference mt-1 text-xs font-mono text-slate-600 dark:text-slate-300 print-only">
         {{ $reference }}
     </p>
     @endif
 </div>
 @else
 <div
-    {{ $attributes->merge(['class' => 'qr-code-error text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-md ' . $class]) }}>
-    <p class="text-sm text-gray-500 dark:text-gray-400">
+    {{ $attributes->merge(['class' => 'qr-code-error text-center p-4 bg-slate-50 dark:bg-slate-800 rounded-lg ' . $class]) }}>
+    <p class="text-sm text-slate-500 dark:text-slate-400">
         {{ __('common.qr_code_unavailable') }}
     </p>
 </div>

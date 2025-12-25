@@ -8,8 +8,8 @@
 
             <x-filament::card>
                 <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                        <x-heroicon-o-clock class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center">
+                        <x-heroicon-o-clock class="w-6 h-6 text-primary-600 dark:text-primary-400" />
                     </div>
                     <div>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -24,8 +24,8 @@
 
             <x-filament::card>
                 <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                        <x-heroicon-o-user-group class="w-6 h-6 text-green-600 dark:text-green-400" />
+                    <div class="w-10 h-10 bg-success-100 dark:bg-success-900/20 rounded-lg flex items-center justify-center">
+                        <x-heroicon-o-user-group class="w-6 h-6 text-success-600 dark:text-success-400" />
                     </div>
                     <div>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -41,8 +41,8 @@
             <x-filament::card>
                 <div class="flex items-center gap-4">
                     <div
-                        class="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                        <x-heroicon-o-envelope class="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                        class="w-10 h-10 bg-secondary-100 dark:bg-secondary-900/20 rounded-lg flex items-center justify-center">
+                        <x-heroicon-o-envelope class="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
                     </div>
                     <div>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -58,16 +58,16 @@
             <x-filament::card>
                 <div class="flex items-center gap-4">
                     <div
-                        class="w-10 h-10 {{ $stats['expired_tokens'] > 0 ? 'bg-red-100 dark:bg-red-900/20' : 'bg-gray-100 dark:bg-gray-900/20' }} rounded-lg flex items-center justify-center">
+                        class="w-10 h-10 {{ $stats['expired_tokens'] > 0 ? 'bg-danger-100 dark:bg-danger-900/20' : 'bg-gray-100 dark:bg-gray-900/20' }} rounded-lg flex items-center justify-center">
                         <x-heroicon-o-key
-                            class="w-6 h-6 {{ $stats['expired_tokens'] > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400' }}" />
+                            class="w-6 h-6 {{ $stats['expired_tokens'] > 0 ? 'text-danger-600 dark:text-danger-400' : 'text-gray-600 dark:text-gray-400' }}" />
                     </div>
                     <div>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
                             {{ __('superuser_config.stats.expired_tokens') }}
                         </div>
                         <div
-                            class="text-2xl font-bold {{ $stats['expired_tokens'] > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-gray-100' }}">
+                            class="text-2xl font-bold {{ $stats['expired_tokens'] > 0 ? 'text-danger-600 dark:text-danger-400' : 'text-gray-900 dark:text-gray-100' }}">
                             {{ $stats['expired_tokens'] }}
                         </div>
                     </div>
@@ -83,15 +83,15 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div
-                                class="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                                <x-heroicon-o-clock class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                class="w-8 h-8 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center">
+                                <x-heroicon-o-clock class="w-5 h-5 text-primary-600 dark:text-primary-400" />
                             </div>
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                                 {{ __('superuser_config.sections.sla.title') }}
                             </h3>
                         </div>
                         <a href="{{ \App\Filament\Pages\SLAThresholdManagement::getUrl() }}"
-                            class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                            class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
                             {{ __('superuser_config.sections.sla.manage') }} →
                         </a>
                     </div>
@@ -128,15 +128,15 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div
-                                class="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                                <x-heroicon-o-user-group class="w-5 h-5 text-green-600 dark:text-green-400" />
+                                class="w-8 h-8 bg-success-100 dark:bg-success-900/20 rounded-lg flex items-center justify-center">
+                                <x-heroicon-o-user-group class="w-5 h-5 text-success-600 dark:text-success-400" />
                             </div>
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                                 {{ __('superuser_config.sections.approval.title') }}
                             </h3>
                         </div>
                         <a href="{{ \App\Filament\Pages\ApprovalMatrixConfiguration::getUrl() }}"
-                            class="text-sm text-green-600 dark:text-green-400 hover:underline">
+                            class="text-sm text-success-600 dark:text-success-400 hover:underline">
                             {{ __('superuser_config.sections.approval.manage') }} →
                         </a>
                     </div>
@@ -179,8 +179,8 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
             <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                        <x-heroicon-o-key class="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                    <div class="w-8 h-8 bg-warning-100 dark:bg-warning-900/20 rounded-lg flex items-center justify-center">
+                        <x-heroicon-o-key class="w-5 h-5 text-warning-600 dark:text-warning-400" />
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -255,19 +255,19 @@
                                     class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center shrink-0">
                                     @switch($change->log_name)
                                         @case('sla_configuration')
-                                            <x-heroicon-o-clock class="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                            <x-heroicon-o-clock class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                         @break
 
                                         @case('approval_matrix')
-                                            <x-heroicon-o-user-group class="w-4 h-4 text-green-600 dark:text-green-400" />
+                                            <x-heroicon-o-user-group class="w-4 h-4 text-success-600 dark:text-success-400" />
                                         @break
 
                                         @case('email_templates')
-                                            <x-heroicon-o-envelope class="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                            <x-heroicon-o-envelope class="w-4 h-4 text-info-600 dark:text-info-400" />
                                         @break
 
                                         @case('token_regeneration')
-                                            <x-heroicon-o-key class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                                            <x-heroicon-o-key class="w-4 h-4 text-warning-600 dark:text-warning-400" />
                                         @break
 
                                         @default
@@ -298,7 +298,7 @@
         {{-- Configuration Guidelines --}}
         <x-filament::card>
             <div class="flex items-start gap-3 mb-4">
-                <x-heroicon-o-information-circle class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                <x-heroicon-o-information-circle class="w-5 h-5 text-primary-600 dark:text-primary-400 shrink-0 mt-0.5" />
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     {{ __('superuser_config.guidelines.title') }}
                 </h3>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use Filament\Forms\Components\Select;
@@ -20,6 +21,16 @@ use Illuminate\Support\Collection;
  */
 class AssetAvailabilityCalendarWidget extends Widget
 {
+    use WidgetMetadata;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 WCAG 2.2 AA compliance';
+    }
+
     protected string $view = 'filament.widgets.asset-availability-calendar';
 
     protected int|string|array $columnSpan = 'full';

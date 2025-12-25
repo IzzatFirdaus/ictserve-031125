@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\HelpdeskTicket;
 use Filament\Widgets\ChartWidget;
 
@@ -17,9 +18,19 @@ use Filament\Widgets\ChartWidget;
  */
 class TicketsByStatusChart extends ChartWidget
 {
+    use WidgetMetadata;
+
     protected ?string $heading = 'Tiket Mengikut Status';
 
     protected static ?int $sort = 2;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D12 WCAG 2.2 AA compliance';
+    }
 
     protected ?string $maxHeight = '300px';
 

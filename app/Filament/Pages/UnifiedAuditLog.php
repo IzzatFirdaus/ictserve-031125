@@ -23,6 +23,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use UnitEnum;
 
 /**
  * Unified Audit Log Page
@@ -52,7 +53,7 @@ class UnifiedAuditLog extends Page implements HasTable
 
     protected string $view = 'filament.pages.unified-audit-log';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Konfigurasi Sistem';
+    protected static string|UnitEnum|null $navigationGroup = 'Konfigurasi Sistem';
 
     protected static ?int $navigationSort = 10;
 
@@ -223,6 +224,10 @@ class UnifiedAuditLog extends Page implements HasTable
      *
      * @return array<Tables\Columns\Column>
      */
+
+    /**
+     * @return array<string, mixed>
+     */
     protected function getTableColumns(): array
     {
         $baseColumns = [
@@ -336,6 +341,10 @@ class UnifiedAuditLog extends Page implements HasTable
      *
      * @return array<Tables\Filters\BaseFilter>
      */
+
+    /**
+     * @return array<string, mixed>
+     */
     protected function getTableFilters(): array
     {
         $filters = [
@@ -445,6 +454,10 @@ class UnifiedAuditLog extends Page implements HasTable
      * Get header actions
      *
      * @return array<PageAction>
+     */
+
+    /**
+     * @return array<string, mixed>
      */
     protected function getHeaderActions(): array
     {

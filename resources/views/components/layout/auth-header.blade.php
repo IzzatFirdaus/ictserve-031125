@@ -56,7 +56,7 @@
 
                 {{-- MOTAC Logo and Name --}}
                 <a href="{{ $dashboardUrl }}"
-                    class="flex items-center space-x-3 focus:outline-none focus:ring-4 focus:ring-motac-blue dark:focus:ring-primary-400 focus:ring-offset-2 rounded-md p-2 transition-all"
+                    class="flex items-center space-x-3 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 rounded-lg p-2 transition-all"
                     aria-label="{{ __('common.staff_dashboard') }}">
                     <x-application-logo class="h-10 w-auto text-motac-blue dark:text-primary-400" />
                     <div class="hidden sm:block">
@@ -70,14 +70,14 @@
             {{-- Main Navigation --}}
             <nav class="hidden md:flex space-x-8" role="navigation" aria-label="{{ __('common.main_navigation') }}">
                 <a href="{{ $dashboardUrl }}"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-md transition-colors duration-200 min-h-11"
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded-lg transition-colors duration-200 min-h-11"
                     aria-current="{{ request()->routeIs('staff.dashboard') ? 'page' : 'false' }}">
                     {{ __('common.dashboard') }}
                 </a>
 
                 @if ($staffTicketsUrl)
                     <a href="{{ $staffTicketsUrl }}"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-md transition-colors duration-200 min-h-11"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded-lg transition-colors duration-200 min-h-11"
                         aria-current="{{ request()->routeIs('staff.tickets.*') ? 'page' : 'false' }}">
                         {{ __('common.my_tickets') }}
                     </a>
@@ -85,7 +85,7 @@
 
                 @if ($staffLoansUrl)
                     <a href="{{ $staffLoansUrl }}"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-md transition-colors duration-200 min-h-11"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded-lg transition-colors duration-200 min-h-11"
                         aria-current="{{ request()->routeIs('staff.loans.*') ? 'page' : 'false' }}">
                         {{ __('common.my_loans') }}
                     </a>
@@ -93,7 +93,7 @@
 
                 @if ($user->canApprove() && $staffApprovalsUrl)
                     <a href="{{ $staffApprovalsUrl }}"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-md transition-colors duration-200 min-h-11"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded-lg transition-colors duration-200 min-h-11"
                         aria-current="{{ request()->routeIs('staff.approvals.*') ? 'page' : 'false' }}">
                         {{ __('common.approvals') }}
                     </a>
@@ -102,13 +102,13 @@
 
             {{-- Right Side Actions --}}
             <div class="flex items-center space-x-2 sm:space-x-4">
-                {{-- Theme Switcher (v3.6.0) --}}
-                <livewire:components.theme-toggle />
+                {{-- Theme Switcher (v3.6.1) --}}
+                <livewire:components.theme-toggle-unified />
 
                 {{-- Notification Bell with Badge (wire:poll.30s for real-time updates) --}}
                 <div class="relative" x-data="{ open: false }">
                     <button type="button" @click="open = !open"
-                        class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full focus:outline-none focus:ring-4 focus:ring-motac-blue dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 min-h-11 min-w-11 flex items-center justify-center transition-all"
+                        class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 flex items-center justify-center transition-all"
                         aria-label="{{ __('common.notifications') }} @if ($unreadCount > 0) ({{ $unreadCount }} {{ __('common.unread') }}) @endif"
                         aria-expanded="false" aria-haspopup="menu" :aria-expanded="open.toString()">
                         {{-- Bell Icon --}}
@@ -130,7 +130,7 @@
 
                     {{-- Notifications Dropdown (will be enhanced with NotificationCenter component) --}}
                     <div x-show="open" @click.away="open = false" @keydown.escape.window="open = false" x-cloak
-                        class="absolute right-0 mt-2 w-80 rounded-lg shadow-dropdown bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 dark:ring-gray-700 z-50 max-h-96 overflow-y-auto">
+                        class="absolute right-0 mt-2 w-80 rounded-lg shadow-dropdown bg-white dark:bg-gray-800 ring-1 ring-black/5 dark:ring-gray-700 z-50 max-h-96 overflow-y-auto">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                             <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
                                 {{ __('common.notifications') }}</h3>
@@ -151,7 +151,7 @@
                         @if (Route::has('staff.notifications'))
                             <div class="p-2 border-t border-gray-200 dark:border-gray-700">
                                 <a href="{{ route('staff.notifications') }}"
-                                    class="flex items-center justify-center px-4 py-2 text-sm text-center text-motac-blue dark:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-motac-blue dark:focus:ring-primary-400 min-h-11">
+                                    class="flex items-center justify-center px-4 py-2 text-sm text-center text-motac-blue dark:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
                                     {{ __('common.view_all_notifications') }}
                                 </a>
                             </div>
@@ -162,7 +162,7 @@
                 {{-- User Menu --}}
                 <div class="relative" x-data="{ open: false }">
                     <button type="button" @click="open = !open" id="user-menu-button"
-                        class="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-motac-blue dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 min-h-11 transition-all"
+                        class="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 transition-all"
                         aria-expanded="false" aria-haspopup="menu" aria-controls="user-menu"
                         aria-label="{{ __('common.user_menu') }}" :aria-expanded="open.toString()">
                         {{-- User Avatar --}}
@@ -180,7 +180,7 @@
                     {{-- Dropdown Menu --}}
                     <div x-show="open" @click.away="open = false" @keydown.escape.window="open = false" x-cloak
                         id="user-menu" role="menu" aria-labelledby="user-menu-button"
-                        class="absolute right-0 mt-2 w-56 rounded-lg shadow-dropdown bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 dark:ring-gray-700 z-50">
+                        class="absolute right-0 mt-2 w-56 rounded-lg shadow-dropdown bg-white dark:bg-gray-800 ring-1 ring-black/5 dark:ring-gray-700 z-50">
                         <div class="py-1">
                             {{-- User Info --}}
                             <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
@@ -197,7 +197,7 @@
                             {{-- Menu Items --}}
                             @if ($staffProfileUrl)
                                 <a href="{{ $staffProfileUrl }}" role="menuitem"
-                                    class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-motac-blue dark:focus:ring-primary-400 min-h-11">
+                                    class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
                                     <svg class="mr-3 h-5 w-5 text-gray-400 dark:text-gray-500" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -209,7 +209,7 @@
 
                             @if ($staffSettingsUrl)
                                 <a href="{{ $staffSettingsUrl }}" role="menuitem"
-                                    class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-motac-blue dark:focus:ring-primary-400 min-h-11">
+                                    class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
                                     <svg class="mr-3 h-5 w-5 text-gray-400 dark:text-gray-500" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -226,7 +226,7 @@
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" role="menuitem"
-                                    class="w-full flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-motac-blue dark:focus:ring-primary-400 min-h-11">
+                                    class="w-full flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
                                     <svg class="mr-3 h-5 w-5 text-gray-400 dark:text-gray-500" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -243,7 +243,7 @@
             {{-- Mobile Menu Button --}}
             <div class="md:hidden">
                 <button type="button"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 min-h-11 min-w-11"
+                    class="inline-flex items-center justify-center p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11"
                     aria-expanded="false" aria-controls="mobile-menu"
                     aria-label="{{ __('common.toggle_navigation_menu') }}" x-data="{ open: false }"
                     @click="open = !open; $dispatch('toggle-mobile-menu')" :aria-expanded="open.toString()">
@@ -266,14 +266,14 @@
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-900" role="navigation"
             aria-label="{{ __('common.mobile_navigation') }}">
             <a href="{{ $dashboardUrl }}"
-                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 min-h-11"
+                class="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11"
                 aria-current="{{ request()->routeIs('staff.dashboard') ? 'page' : 'false' }}">
                 {{ __('common.dashboard') }}
             </a>
 
             @if ($staffTicketsUrl)
                 <a href="{{ $staffTicketsUrl }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 min-h-11"
+                    class="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11"
                     aria-current="{{ request()->routeIs('staff.tickets.*') ? 'page' : 'false' }}">
                     {{ __('common.my_tickets') }}
                 </a>
@@ -281,7 +281,7 @@
 
             @if ($staffLoansUrl)
                 <a href="{{ $staffLoansUrl }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 min-h-11"
+                    class="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11"
                     aria-current="{{ request()->routeIs('staff.loans.*') ? 'page' : 'false' }}">
                     {{ __('common.my_loans') }}
                 </a>
@@ -289,7 +289,7 @@
 
             @if ($user->canApprove() && $staffApprovalsUrl)
                 <a href="{{ $staffApprovalsUrl }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 min-h-11"
+                    class="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11"
                     aria-current="{{ request()->routeIs('staff.approvals.*') ? 'page' : 'false' }}">
                     {{ __('common.approvals') }}
                 </a>
@@ -297,7 +297,7 @@
 
             @if ($staffProfileUrl)
                 <a href="{{ $staffProfileUrl }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 min-h-11">
+                    class="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
                     {{ __('common.profile') }}
                 </a>
             @endif
@@ -305,10 +305,11 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"
-                    class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-primary-400 min-h-11">
+                    class="w-full text-left block px-3 py-2 rounded-lg text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
                     {{ __('common.logout') }}
                 </button>
             </form>
         </div>
     </div>
 </header>
+

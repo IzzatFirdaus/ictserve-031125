@@ -3,7 +3,7 @@
     description: Granular notification preference management with toggle controls for 6 notification types
     author: dev-team@motac.gov.my
     trace: SRS-FR-004; D04 §3.3.2; D12 §4; Requirements 3.2
-    last-updated: 2025-11-06
+    last-updated: 2025-12-15
     WCAG 2.2 AA Compliant
 --}}
 
@@ -16,47 +16,47 @@
 
     {{-- Success/Error Messages --}}
     @if($successMessage)
-        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-4 mb-6" role="alert" aria-live="polite">
+        <div class="bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 rounded-lg p-4 mb-6" role="alert" aria-live="polite">
             <div class="flex items-center">
-                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 text-success-600 dark:text-success-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
-                <p class="text-sm text-green-800 dark:text-green-200">{{ $successMessage }}</p>
+                <p class="text-sm text-success-800 dark:text-success-200">{{ $successMessage }}</p>
                 @if($lastSaved)
-                    <span class="ml-auto text-xs text-green-600 dark:text-green-400">{{ __('portal.saved_at') }}: {{ $lastSaved }}</span>
+                    <span class="ml-auto text-xs text-success-600 dark:text-success-400">{{ __('portal.saved_at') }}: {{ $lastSaved }}</span>
                 @endif
             </div>
         </div>
     @endif
 
     @if($errorMessage)
-        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 mb-6" role="alert" aria-live="assertive">
+        <div class="bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-lg p-4 mb-6" role="alert" aria-live="assertive">
             <div class="flex items-center">
-                <svg class="w-5 h-5 text-red-600 dark:text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 text-danger-600 dark:text-danger-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                 </svg>
-                <p class="text-sm text-red-800 dark:text-red-200">{{ $errorMessage }}</p>
+                <p class="text-sm text-danger-800 dark:text-danger-200">{{ $errorMessage }}</p>
             </div>
         </div>
     @endif
 
     {{-- Preferences Summary Card --}}
-    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+    <div class="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4 mb-6">
         <div class="flex items-center justify-between">
             <div class="flex items-center">
-                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
                 <div>
-                    <p class="text-sm font-semibold text-blue-900 dark:text-blue-100">{{ __('portal.notifications_enabled') }}</p>
-                    <p class="text-xs text-blue-700 dark:text-blue-300">{{ $enabledCount }} {{ __('portal.of') }} 6 {{ __('portal.notification_types') }}</p>
+                    <p class="text-sm font-semibold text-primary-900 dark:text-primary-100">{{ __('portal.notifications_enabled') }}</p>
+                    <p class="text-xs text-primary-700 dark:text-primary-300">{{ $enabledCount }} {{ __('portal.of') }} 6 {{ __('portal.notification_types') }}</p>
                 </div>
             </div>
             <div class="flex gap-2">
-                <button type="button" wire:click="enableAll" class="text-xs px-3 py-1 min-h-11 bg-blue-600 hover:bg-blue-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button type="button" wire:click="enableAll" class="text-xs px-3 py-1 min-h-11 bg-primary-600 hover:bg-primary-700 text-white rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     {{ __('portal.enable_all') }}
                 </button>
-                <button type="button" wire:click="disableAll" class="text-xs px-3 py-1 min-h-11 bg-gray-600 hover:bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <button type="button" wire:click="disableAll" class="text-xs px-3 py-1 min-h-11 bg-gray-600 hover:bg-gray-700 text-white rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     {{ __('portal.disable_all') }}
                 </button>
             </div>
@@ -76,7 +76,7 @@
             <select
                 id="email-frequency"
                 wire:change="updateEmailFrequency($event.target.value)"
-                class="w-full sm:w-64 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full sm:w-64 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-primary-500 min-h-11"
                 aria-describedby="email-frequency-help"
             >
                 <option value="immediate" {{ $emailFrequency === 'immediate' ? 'selected' : '' }}>{{ __('portal.email_frequency_immediate') }}</option>
@@ -100,7 +100,7 @@
                             id="digest-time"
                             wire:model.live.debounce.500ms="digestTime"
                             wire:change="updateDigestSchedule"
-                            class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                         >
                     </div>
 
@@ -112,7 +112,7 @@
                                 id="digest-day"
                                 wire:model.live="digestDay"
                                 wire:change="updateDigestSchedule"
-                                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
                             >
                                 <option value="0">{{ __('portal.day_sunday') }}</option>
                                 <option value="1">{{ __('portal.day_monday') }}</option>
@@ -133,7 +133,7 @@
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
 
         {{-- Ticket Status Updates --}}
-        <div class="p-6"></div>
+        <div class="p-6">
             <div class="flex items-start justify-between">
                 <div class="flex-1">
                     <label for="ticket-status-updates" class="flex items-center cursor-pointer">
@@ -155,7 +155,7 @@
                         aria-checked="{{ $ticketStatusUpdates ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_ticket_status_updates') }}"
                         wire:click="updatePreference('ticketStatusUpdates', {{ $ticketStatusUpdates ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $ticketStatusUpdates ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $ticketStatusUpdates ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_ticket_status_updates') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $ticketStatusUpdates ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -187,7 +187,7 @@
                         aria-checked="{{ $loanApprovalNotifications ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_loan_approval_notifications') }}"
                         wire:click="updatePreference('loanApprovalNotifications', {{ $loanApprovalNotifications ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $loanApprovalNotifications ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $loanApprovalNotifications ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_loan_approval_notifications') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $loanApprovalNotifications ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -219,7 +219,7 @@
                         aria-checked="{{ $overdueReminders ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_overdue_reminders') }}"
                         wire:click="updatePreference('overdueReminders', {{ $overdueReminders ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $overdueReminders ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $overdueReminders ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_overdue_reminders') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $overdueReminders ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -251,7 +251,7 @@
                         aria-checked="{{ $systemAnnouncements ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_system_announcements') }}"
                         wire:click="updatePreference('systemAnnouncements', {{ $systemAnnouncements ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $systemAnnouncements ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $systemAnnouncements ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_system_announcements') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $systemAnnouncements ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -283,7 +283,7 @@
                         aria-checked="{{ $ticketAssignments ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_ticket_assignments') }}"
                         wire:click="updatePreference('ticketAssignments', {{ $ticketAssignments ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $ticketAssignments ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $ticketAssignments ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_ticket_assignments') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $ticketAssignments ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -315,7 +315,7 @@
                         aria-checked="{{ $commentReplies ? 'true' : 'false' }}"
                         aria-label="{{ __('portal.toggle_comment_replies') }}"
                         wire:click="updatePreference('commentReplies', {{ $commentReplies ? 'false' : 'true' }})"
-                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 {{ $commentReplies ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                        class="relative inline-flex h-6 w-11 min-h-11 min-w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $commentReplies ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}"
                     >
                         <span class="sr-only">{{ __('portal.toggle_comment_replies') }}</span>
                         <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $commentReplies ? 'translate-x-5' : 'translate-x-0' }}"></span>
@@ -328,7 +328,7 @@
 
     {{-- Reset Button --}}
     <div class="mt-6 flex justify-between items-center">
-        <button type="button" wire:click="resetToDefaults" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        <button type="button" wire:click="resetToDefaults" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
             {{ __('portal.reset_to_defaults') }}
         </button>
         <p class="text-xs text-gray-500 dark:text-gray-400">
@@ -337,9 +337,9 @@
     </div>
 
     {{-- Loading Overlay --}}
-    <div wire:loading wire:target="updatePreference,saveAll,enableAll,disableAll,resetToDefaults" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+    <div wire:loading wire:target="updatePreference,saveAll,enableAll,disableAll,resetToDefaults" class="fixed inset-0 bg-gray-900/50 flex items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center">
-            <svg class="animate-spin h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24">
+            <svg class="animate-spin h-10 w-10 text-primary-600" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
@@ -347,3 +347,4 @@
         </div>
     </div>
 </div>
+

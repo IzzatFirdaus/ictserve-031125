@@ -23,14 +23,14 @@
 
 @php
     $iconClasses = [
-        'created' => 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400',
-        'updated' => 'bg-amber-100 dark:bg-amber-900 text-amber-600 dark:text-amber-400',
-        'submitted' => 'bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400',
-        'approved' => 'bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400',
-        'rejected' => 'bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400',
-        'commented' => 'bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400',
-        'assigned' => 'bg-teal-100 dark:bg-teal-900 text-teal-600 dark:text-teal-400',
-        'resolved' => 'bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-400',
+        'created' => 'bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400',
+        'updated' => 'bg-warning-100 dark:bg-warning-900 text-warning-600 dark:text-warning-400',
+        'submitted' => 'bg-info-100 dark:bg-info-900 text-info-600 dark:text-info-400',
+        'approved' => 'bg-success-100 dark:bg-success-900 text-success-600 dark:text-success-400',
+        'rejected' => 'bg-danger-100 dark:bg-danger-900 text-danger-600 dark:text-danger-400',
+        'commented' => 'bg-info-100 dark:bg-info-900 text-info-600 dark:text-info-400',
+        'assigned' => 'bg-info-100 dark:bg-info-900 text-info-600 dark:text-info-400',
+        'resolved' => 'bg-success-100 dark:bg-success-900 text-success-600 dark:text-success-400',
     ];
 
     $typeIcons = [
@@ -47,7 +47,7 @@
 
 <div {{ $attributes->merge(['class' => 'flex items-start']) }}>
     {{-- Icon --}}
-    <div class="flex-shrink-0">
+    <div class="shrink-0">
         <div class="w-8 h-8 {{ $iconClasses[$type] ?? $iconClasses['updated'] }} rounded-full flex items-center justify-center">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 {!! $typeIcons[$type] ?? $typeIcons['updated'] !!}
@@ -60,7 +60,7 @@
         @if($url)
             <a
                 href="{{ $url }}"
-                class="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                class="inline-flex min-h-11 items-center text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
             >
                 {{ $title }}
             </a>
@@ -81,3 +81,4 @@
         </p>
     </div>
 </div>
+

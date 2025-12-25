@@ -339,17 +339,17 @@ class EmailSystemTest extends TestCase
     }
 
     /**
-     * Test bilingual email generation (Bahasa Melayu)
+     * Test Bahasa Melayu email content validation
      *
-     * @see D03-FR-006.4 Bilingual email support
-     * @see D03-FR-015.3 Language switching
+     * @see D03-FR-006.4 Bahasa Melayu email support
+     * @see D15 Language localization (Bahasa Melayu sahaja)
      *
-     * @trace Requirement 6.4
+     * @trace Requirement 3.4
      */
     #[Test]
-    public function bilingual_email_generation_malay(): void
+    public function bahasa_melayu_email_content_validation(): void
     {
-        // Set locale to Malay
+        // Set locale to Bahasa Melayu (v3.6.0 default)
         app()->setLocale('ms');
 
         $log = $this->emailDispatcher->queue(
@@ -361,7 +361,17 @@ class EmailSystemTest extends TestCase
         Mail::assertQueued(LoanApplicationSubmitted::class, function ($mail) {
             $rendered = $mail->render();
 
-            // Verify Malay content (check for common Malay terms)
+            // Verify Bahasa Melayu content is present in the email
+            $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+            $this->assertStringContainsString('Permohonan pinjaman aset ICT', $rendered); // BM content
+            $this->assertStringContainsString('Butiran Permohonan', $rendered); // BM section header
+            $this->assertStringContainsString('Nombor Permohonan', $rendered); // BM field label
+            $this->assertStringContainsString('Tempoh Pinjaman', $rendered); // BM field label
+            $this->assertStringContainsString('Langkah Seterusnya', $rendered); // BM section header
+            $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
+            $this->assertStringContainsString('Yang benar', $rendered); // BM signature
+
+            // Verify application number is present
             $this->assertStringContainsString($this->loanApplication->application_number, $rendered);
 
             // Verify email structure is maintained
@@ -372,30 +382,29 @@ class EmailSystemTest extends TestCase
     }
 
     /**
-     * Test bilingual email generation (English)
+     * Test email approval content in Bahasa Melayu
      *
-     * @see D03-FR-006.4 Bilingual email support
+     * @see D03-FR-002.3 Email approval workflow
+     * @see D15 Bahasa Melayu content
      *
-     * @trace Requirement 6.4
+     * @trace Requirement 3.4
      */
     #[Test]
-    public function bilingual_email_generation_english(): void
+    public function email_approval_content_bahasa_melayu(): void
     {
-        // Set locale to English
-        app()->setLocale('en');
+        app()->setLocale('ms');
 
-        $log = $this->emailDispatcher->queue(
-            new LoanApplicationSubmitted($this->loanApplication),
-            $this->loanApplication->applicant_email,
-            $this->loanApplication->applicant_name
-        );
+        $this->workflowService->routeForEmailApproval($this->loanApplication);
 
-        Mail::assertQueued(LoanApplicationSubmitted::class, function ($mail) {
+        Mail::assertQueued(LoanApprovalRequest::class, function ($mail) {
             $rendered = $mail->render();
 
-            // Verify English content
-            $this->assertStringContainsString($this->loanApplication->application_number, $rendered);
-            $this->assertNotEmpty($rendered);
+            // Verify Bahasa Melayu approval content is present
+            $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+            $this->assertStringContainsString('kelulusan', $rendered); // BM approval term
+            $this->assertStringContainsString('permohonan', $rendered); // BM application term
+            $this->assertStringContainsString(__('loan.email.decline_application'), $rendered);
+            $this->assertStringContainsString(__('emails.assalamualaikum_greeting'), $rendered);
 
             return true;
         });
@@ -698,16 +707,18 @@ class EmailSystemTest extends TestCase
     }
 
     /**
-     * Test email template WCAG compliance
+     * Test email template WCAG compliance with Bahasa Melayu content
      *
      * @see D03-FR-006.1 WCAG 2.2 AA compliance
+     * @see D15 Bahasa Melayu content
      *
-     * @trace Requirement 6.4
+     * @trace Requirement 3.4
      */
     #[Test]
-    public function email_template_wcag_compliance(): void
+    public function email_template_wcag_compliance_bahasa_melayu(): void
     {
         Mail::fake();
+        app()->setLocale('ms');
 
         $log = $this->emailDispatcher->queue(
             new LoanApplicationSubmitted($this->loanApplication),
@@ -721,6 +732,10 @@ class EmailSystemTest extends TestCase
             // Verify semantic HTML structure
             $this->assertStringContainsString('<html', $rendered);
             $this->assertStringContainsString('</html>', $rendered);
+
+            // Verify Bahasa Melayu content is present
+            $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+            $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
 
             // Verify content is present
             $this->assertNotEmpty($rendered);
@@ -807,12 +822,13 @@ class EmailSystemTest extends TestCase
         $response->assertViewIs('loans.approval-form');
         $response->assertViewHas('token', $token);
 
-        // 2. Test Process Approval
-        $this->withoutExceptionHandling();
-        $response = $this->post(route('loan.approval.approve.process'), [
-            'token' => $token,
-            'comments' => 'Approved via controller',
-        ]);
+        // 2. Test Process Approval (using session to bypass CSRF)
+        $response = $this->withSession(['_token' => 'test-token'])
+            ->post(route('loan.approval.approve.process'), [
+                '_token' => 'test-token',
+                'token' => $token,
+                'comments' => 'Approved via controller',
+            ]);
 
         $response->assertRedirect(route('welcome'));
 
@@ -836,12 +852,13 @@ class EmailSystemTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('loans.approval-form');
 
-        // 2. Test Process Decline
-        $this->withoutExceptionHandling();
-        $response = $this->post(route('loan.approval.decline.process'), [
-            'token' => $token,
-            'reason' => 'Declined via controller',
-        ]);
+        // 2. Test Process Decline (using session to bypass CSRF)
+        $response = $this->withSession(['_token' => 'test-token'])
+            ->post(route('loan.approval.decline.process'), [
+                '_token' => 'test-token',
+                'token' => $token,
+                'reason' => 'Declined via controller',
+            ]);
 
         $response->assertRedirect(route('welcome'));
 
@@ -868,11 +885,13 @@ class EmailSystemTest extends TestCase
         $response = $this->get(route('loan.approval.approve', ['token' => $token]));
         $response->assertRedirect(route('welcome'));
 
-        // Test Process with expired token - should also redirect
-        $response = $this->post(route('loan.approval.approve.process'), [
-            'token' => $token,
-            'comments' => 'Should fail',
-        ]);
+        // Test Process with expired token - should also redirect (using session to bypass CSRF)
+        $response = $this->withSession(['_token' => 'test-token'])
+            ->post(route('loan.approval.approve.process'), [
+                '_token' => 'test-token',
+                'token' => $token,
+                'comments' => 'Should fail',
+            ]);
 
         $response->assertRedirect(route('welcome'));
     }

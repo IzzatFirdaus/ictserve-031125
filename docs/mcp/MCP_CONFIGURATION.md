@@ -1,8 +1,8 @@
 # MCP Server Configuration Guide
 
-**Last Updated**: 2025-12-09  
-**Version**: 3.0  
-**Environment**: Local Development (XAMPP/Laragon) + Docker Support
+**Last Updated**: 2025-12-19  
+**Version**: 4.0  
+**Environment**: Local Development (XAMPP/Laragon) - Docker-Free Configuration
 
 ---
 
@@ -23,9 +23,10 @@
 
 This repository includes comprehensive MCP (Model Context Protocol) server configuration for Kiro IDE and VS Code, providing AI-powered development tools for the ICTServe Laravel 12 application.
 
-**Total MCP Servers**: 12 servers across 7 categories  
-**Active by Default**: 9 servers  
-**Optional (Disabled)**: 3 servers
+**Total MCP Servers**: 11 servers across 6 categories  
+**Active by Default**: 6 servers  
+**Optional (Disabled)**: 5 servers  
+**Configuration Type**: Local development (no Docker dependency)
 
 ### What is MCP?
 

@@ -35,7 +35,7 @@ class AICacheStatsUpdate implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param  array  $stats  Statistik cache AI
+     * @param  array<string, mixed>  $stats  Statistik cache AI
      */
     public function __construct(array $stats)
     {
@@ -45,6 +45,9 @@ class AICacheStatsUpdate implements ShouldBroadcast
 
     /**
      * Sanitize stats to only include allowed keys.
+     *
+     * @param  array<string, mixed>  $stats
+     * @return array<string, mixed>
      */
     private function sanitizeStats(array $stats): array
     {
@@ -62,6 +65,9 @@ class AICacheStatsUpdate implements ShouldBroadcast
         return array_intersect_key($stats, array_flip($allowedKeys));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function broadcastOn(): array
     {
         return [
@@ -74,6 +80,9 @@ class AICacheStatsUpdate implements ShouldBroadcast
         return 'AICacheStatsUpdate';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function broadcastWith(): array
     {
         return [

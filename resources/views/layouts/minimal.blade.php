@@ -19,17 +19,17 @@
     <meta name="theme-color" content="#0056B3">
     <title>{{ config('app.name', 'ICTServe') }}</title>
 
-    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
-    <x-theme-init-script />
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.1 --}}
+    <x-theme-init />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 theme-transition">
-    {{-- Theme Switcher (Top-right, v3.6.0) --}}
+<body class="font-sans antialiased bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 theme-transition">
+    {{-- Theme Switcher (Top-right, v3.6.1) --}}
     <div class="fixed top-4 right-4 z-50">
-        <livewire:components.theme-toggle />
+        <livewire:components.theme-toggle-unified />
     </div>
 
     {{ $slot }}

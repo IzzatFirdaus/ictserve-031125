@@ -10,7 +10,7 @@
 --}}
 @php
     $sectionCardClasses =
-        'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
+        'rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-card';
     $stepLabels = [
         1 => __('Personal Info'),
         2 => __('Issue Details'),
@@ -18,7 +18,7 @@
     ];
 @endphp
 
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8" x-data="optimisticHelpdeskForm()"
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-8" x-data="optimisticHelpdeskForm()"
     @optimistic-submission-started.window="handleOptimisticStart($event.detail)"
     @submission-confirmed.window="handleSubmissionConfirmed($event.detail)"
     @submission-rollback.window="handleSubmissionRollback($event.detail)">
@@ -33,16 +33,16 @@
                     <p class="text-xs uppercase tracking-wide text-primary-600 dark:text-primary-400 font-semibold">
                         {{ __('ICT Support') }}
                     </p>
-                    <h1 id="form-heading" class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                    <h1 id="form-heading" class="text-2xl font-heading font-bold text-slate-900 dark:text-white">
                         {{ __('Submit Helpdesk Ticket') }}
                     </h1>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                    <p class="text-sm text-slate-600 dark:text-slate-400">
                         {{ __('Complete all steps below to submit your support request.') }}
                     </p>
                 </div>
                 {{-- Document Reference Badge (Language switcher is in navbar) --}}
                 <span
-                    class="inline-flex items-center rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-1 text-xs font-mono text-gray-600 dark:text-gray-400">
+                    class="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs font-mono text-slate-600 dark:text-slate-400">
                     PK.(S).MOTAC.07.(L1)
                 </span>
             </div>
@@ -54,14 +54,14 @@
                 <div class="text-center py-8" x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 transform scale-95"
                     x-transition:enter-end="opacity-100 transform scale-100">
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-danger-100">
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-danger-100 dark:bg-danger-900/30">
                         <svg class="h-8 w-8 text-danger-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                             </path>
                         </svg>
                     </div>
-                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 class="mt-4 text-lg font-semibold text-slate-900 dark:text-white">
                         {{ __('Submission Failed') }}
                     </h3>
                     <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">
@@ -89,7 +89,7 @@
                     x-transition:enter-start="opacity-0 transform scale-95"
                     x-transition:enter-end="opacity-100 transform scale-100">
                     {{-- Animated Success Icon --}}
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success-100"
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success-100 dark:bg-success-900/30"
                         x-show="!isOptimistic" x-transition>
                         <svg class="h-8 w-8 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
@@ -97,7 +97,7 @@
                         </svg>
                     </div>
                     {{-- Processing Spinner (Optimistic State) --}}
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-100"
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900/30"
                         x-show="isOptimistic" x-transition>
                         <svg class="h-8 w-8 text-primary-600 animate-spin" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -108,20 +108,20 @@
                         </svg>
                     </div>
 
-                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 class="mt-4 text-lg font-semibold text-slate-900 dark:text-white">
                         <span x-show="isOptimistic">{{ __('Processing Your Ticket...') }}</span>
                         <span x-show="!isOptimistic">{{ __('Ticket Submitted Successfully!') }}</span>
                     </h3>
 
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                         {{ __('Your ticket number is') }}:
                         <span class="font-mono font-bold text-primary-600"
                             x-text="ticketNumber || '{{ $ticketNumber }}'">{{ $ticketNumber }}</span>
                         <span x-show="isOptimistic"
-                            class="ml-2 text-xs text-gray-500">({{ __('Confirming...') }})</span>
+                            class="ml-2 text-xs text-slate-500">({{ __('Confirming...') }})</span>
                     </p>
 
-                    <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                    <p class="mt-4 text-sm text-slate-600 dark:text-slate-400">
                         <span x-show="isOptimistic">{{ __('Sending confirmation email to') }}:
                             {{ $guest_email }}</span>
                         <span x-show="!isOptimistic">{{ __('A confirmation email has been sent to') }}:
@@ -162,7 +162,7 @@
                                                 class="flex items-center justify-center w-10 h-10 rounded-full border transition-colors duration-200 min-h-11 min-w-11 text-sm font-semibold shadow-button
                                             {{ $step < $currentStep ? 'bg-success-600 border-success-400/70 text-white' : '' }}
                                             {{ $step === $currentStep ? 'bg-primary-600 border-primary-400/70 text-white ring-2 ring-primary-400/40' : '' }}
-                                            {{ $step > $currentStep ? 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500' : '' }}">
+                                            {{ $step > $currentStep ? 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-400 dark:text-slate-500' : '' }}">
                                                 @if ($step < $currentStep)
                                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                                         aria-hidden="true">
@@ -178,13 +178,13 @@
                                         @if ($step < $totalSteps)
                                             <div class="flex-1 mx-2" aria-hidden="true">
                                                 <div
-                                                    class="h-1 rounded-full transition-colors duration-200 {{ $step < $currentStep ? 'bg-success-600' : 'bg-gray-200 dark:bg-gray-700' }}">
+                                                    class="h-1 rounded-full transition-colors duration-200 {{ $step < $currentStep ? 'bg-success-600' : 'bg-slate-200 dark:bg-slate-700' }}">
                                                 </div>
                                             </div>
                                         @endif
                                     </div>
                                     <span
-                                        class="mt-2 text-xs font-medium {{ $step === $currentStep ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-400' }}">
+                                        class="mt-2 text-xs font-medium {{ $step === $currentStep ? 'text-primary-600 dark:text-primary-400' : 'text-slate-600 dark:text-slate-400' }}">
                                         {{ $stepLabels[$step] }}
                                     </span>
                                 </div>
@@ -199,12 +199,12 @@
                 @if ($currentStep === 1)
                     <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="personal-info-heading">
                         <div
-                            class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
+                            class="rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-100/80 dark:bg-slate-700/50 px-5 py-4">
                             <h2 id="personal-info-heading"
-                                class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
+                                class="text-lg font-heading font-semibold text-slate-900 dark:text-white">
                                 {{ __('Personal Information') }}
                             </h2>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
                                 {{ __('Enter your contact details.') }}
                             </p>
                         </div>
@@ -258,12 +258,12 @@
                 @if ($currentStep === 2)
                     <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="issue-details-heading">
                         <div
-                            class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
+                            class="rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-100/80 dark:bg-slate-700/50 px-5 py-4">
                             <h2 id="issue-details-heading"
-                                class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
+                                class="text-lg font-heading font-semibold text-slate-900 dark:text-white">
                                 {{ __('Issue Details') }}
                             </h2>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
                                 {{ __('Describe your technical issue.') }}
                             </p>
                         </div>
@@ -293,12 +293,12 @@
                         {{-- File Upload --}}
                         <div>
                             <label for="attachments"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                                 {{ __('Attachments') }} <span
-                                    class="text-sm text-gray-500">({{ __('Maximum 5 files') }})</span>
+                                    class="text-sm text-slate-500">({{ __('Maximum 5 files') }})</span>
                             </label>
                             <input id="attachments" type="file" wire:model="attachments" multiple max="5"
-                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100" />
+                                class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900 dark:file:text-primary-200" />
                             @error('attachments.*')
                                 <p class="mt-1 text-sm text-danger-600">{{ $message }}</p>
                             @enderror
@@ -325,9 +325,9 @@
                 @if ($currentStep === 3)
                     <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="declaration-heading">
                         <div
-                            class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
+                            class="rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-100/80 dark:bg-slate-700/50 px-5 py-4">
                             <h2 id="declaration-heading"
-                                class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
+                                class="text-lg font-heading font-semibold text-slate-900 dark:text-white">
                                 {{ __('Declaration') }}
                             </h2>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -336,22 +336,22 @@
                         </div>
 
                         {{-- Review Summary --}}
-                        <div class="rounded-lg bg-gray-50 dark:bg-gray-800 p-4">
-                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                        <div class="rounded-lg bg-slate-50 dark:bg-slate-800 p-4">
+                            <h3 class="text-sm font-semibold text-slate-900 dark:text-white mb-3">
                                 {{ __('Review Your Submission') }}
                             </h3>
                             <dl class="space-y-2 text-sm">
                                 <div class="flex justify-between">
-                                    <dt class="text-gray-600 dark:text-gray-400">{{ __('Name') }}:</dt>
-                                    <dd class="font-medium text-gray-900 dark:text-white">{{ $guest_name }}</dd>
+                                    <dt class="text-slate-600 dark:text-slate-400">{{ __('Name') }}:</dt>
+                                    <dd class="font-medium text-slate-900 dark:text-white">{{ $guest_name }}</dd>
                                 </div>
                                 <div class="flex justify-between">
-                                    <dt class="text-gray-600 dark:text-gray-400">{{ __('Email') }}:</dt>
-                                    <dd class="font-medium text-gray-900 dark:text-white">{{ $guest_email }}</dd>
+                                    <dt class="text-slate-600 dark:text-slate-400">{{ __('Email') }}:</dt>
+                                    <dd class="font-medium text-slate-900 dark:text-white">{{ $guest_email }}</dd>
                                 </div>
                                 <div class="flex justify-between">
-                                    <dt class="text-gray-600 dark:text-gray-400">{{ __('Subject') }}:</dt>
-                                    <dd class="font-medium text-gray-900 dark:text-white">{{ $subject }}</dd>
+                                    <dt class="text-slate-600 dark:text-slate-400">{{ __('Subject') }}:</dt>
+                                    <dd class="font-medium text-slate-900 dark:text-white">{{ $subject }}</dd>
                                 </div>
                             </dl>
                         </div>
@@ -362,13 +362,13 @@
                         <div class="rounded-lg border-2 border-warning-300 bg-warning-50 dark:bg-warning-900/20 p-4"
                             role="region" aria-labelledby="perakuan-heading">
                             <h3 id="perakuan-heading"
-                                class="text-base font-semibold text-gray-900 dark:text-white mb-3">
+                                class="text-base font-semibold text-slate-900 dark:text-white mb-3">
                                 {{ __('Perakuan / Declaration') }}
                             </h3>
 
                             {{-- Exact Legacy Legal Text (Bahasa Melayu) --}}
-                            <div class="text-sm text-gray-700 dark:text-gray-300 mb-4 space-y-3">
-                                <p class="font-medium text-gray-900 dark:text-white">
+                            <div class="text-sm text-slate-700 dark:text-slate-300 mb-4 space-y-3">
+                                <p class="font-medium text-slate-900 dark:text-white">
                                     Perakuan:
                                 </p>
                                 <p>
@@ -380,7 +380,7 @@
                                 </p>
 
                                 {{-- English Translation --}}
-                                <p class="font-medium text-gray-900 dark:text-white mt-4">
+                                <p class="font-medium text-slate-900 dark:text-white mt-4">
                                     Declaration:
                                 </p>
                                 <p class="italic">

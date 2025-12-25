@@ -24,15 +24,15 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
 
-    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
-    <x-theme-init-script />
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.1 --}}
+    <x-theme-init />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900 theme-transition">
+<body class="font-sans antialiased text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-900 theme-transition">
     <div class="min-h-screen flex flex-col">
         {{-- Skip Links (WCAG 2.4.1) --}}
         <x-accessibility.skip-links />
@@ -44,7 +44,7 @@
                 <div class="flex items-center justify-between h-20 gap-8">
                     <!-- Logo -->
                     <a href="/"
-                        class="shrink-0 flex items-center gap-3 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 rounded-lg"
+                        class="shrink-0 flex items-center gap-3 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-500 rounded-lg"
                         aria-label="{{ __('navigation.home') }}">
                         <div class="bg-white p-1.5 rounded-lg shadow-button">
                             @if (file_exists(public_path('images/motac-logo.png')))
@@ -67,7 +67,7 @@
                     <!-- Desktop Navigation -->
                     <nav class="hidden md:flex gap-2" role="navigation" aria-label="{{ __('navigation.main') }}">
                         <a href="{{ route('helpdesk.create') }}"
-                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 flex items-center gap-2 {{ request()->routeIs('helpdesk.*') ? 'bg-white/15' : '' }}">
+                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-500 min-h-11 flex items-center gap-2 {{ request()->routeIs('helpdesk.*') ? 'bg-white/15' : '' }}">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                 stroke-width="2" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -76,7 +76,7 @@
                             {{ __('Aduan ICT') }}
                         </a>
                         <a href="{{ route('loan.wizard') }}"
-                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 flex items-center gap-2 {{ request()->routeIs('loan.*') ? 'bg-white/15' : '' }}">
+                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-500 min-h-11 flex items-center gap-2 {{ request()->routeIs('loan.*') ? 'bg-white/15' : '' }}">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                 stroke-width="2" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -85,7 +85,7 @@
                             {{ __('Pinjaman Aset') }}
                         </a>
                         <a href="{{ route('status.check') }}"
-                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 flex items-center gap-2 {{ request()->routeIs('status.*') ? 'bg-white/15' : '' }}">
+                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-500 min-h-11 flex items-center gap-2 {{ request()->routeIs('status.*') ? 'bg-white/15' : '' }}">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                 stroke-width="2" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -97,24 +97,24 @@
 
                     <!-- Right Side: Theme & Auth -->
                     <div class="hidden md:flex items-center gap-3">
-                        {{-- Theme Switcher (v3.6.0) --}}
-                        <livewire:components.theme-toggle />
+                        {{-- Theme Switcher (v3.6.1) --}}
+                        <livewire:components.theme-toggle-unified />
 
                         @guest
                             <a href="{{ route('register') }}"
-                                class="px-4 py-2 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">
+                                class="px-4 py-2 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 min-h-11 flex items-center">
                                 {{ __('Daftar') }}
                             </a>
                         @endguest
 
                         @auth
                             <a href="{{ route('dashboard') }}"
-                                class="px-4 py-2 border border-white rounded-lg text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">
+                                class="px-4 py-2 border border-white rounded-lg text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 min-h-11 flex items-center">
                                 {{ __('Dashboard') }}
                             </a>
                         @else
                             <a href="{{ route('login') }}"
-                                class="px-4 py-2 border border-white rounded-lg text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">
+                                class="px-4 py-2 border border-white rounded-lg text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 min-h-11 flex items-center">
                                 {{ __('Log Masuk') }}
                             </a>
                         @endauth
@@ -123,7 +123,7 @@
                     <!-- Mobile Menu Button -->
                     <div class="flex items-center md:hidden">
                         <button @click="open = !open" type="button"
-                            class="inline-flex items-center justify-center p-2 rounded-lg text-primary-100 hover:text-white hover:bg-primary-700 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-white min-h-11 min-w-11"
+                            class="inline-flex items-center justify-center p-2 rounded-lg text-primary-100 hover:text-white hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-white min-h-11 min-w-11"
                             aria-controls="mobile-menu" :aria-expanded="open"
                             aria-label="{{ __('Buka menu utama') }}">
                             <span class="sr-only">{{ __('Buka menu utama') }}</span>
@@ -145,7 +145,7 @@
             <div x-show="open" x-cloak x-collapse class="md:hidden" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                     <a href="{{ route('helpdesk.create') }}"
-                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-white min-h-11 {{ request()->routeIs('helpdesk.*') ? 'bg-primary-700' : '' }}">
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-white min-h-11 {{ request()->routeIs('helpdesk.*') ? 'bg-primary-700' : '' }}">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             stroke-width="2" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -154,7 +154,7 @@
                         {{ __('Aduan ICT') }}
                     </a>
                     <a href="{{ route('loan.wizard') }}"
-                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-white min-h-11 {{ request()->routeIs('loan.*') ? 'bg-primary-700' : '' }}">
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-white min-h-11 {{ request()->routeIs('loan.*') ? 'bg-primary-700' : '' }}">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             stroke-width="2" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -163,7 +163,7 @@
                         {{ __('Pinjaman Aset') }}
                     </a>
                     <a href="{{ route('status.check') }}"
-                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-white min-h-11 {{ request()->routeIs('status.*') ? 'bg-primary-700' : '' }}">
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-white min-h-11 {{ request()->routeIs('status.*') ? 'bg-primary-700' : '' }}">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             stroke-width="2" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -176,20 +176,20 @@
                     <div class="px-2 space-y-2">
                         <div class="flex items-center justify-between px-3 py-2">
                             <span class="text-sm font-medium text-white">{{ __('Tema') }}</span>
-                            <livewire:components.theme-toggle />
+                            <livewire:components.theme-toggle-unified />
                         </div>
                         <a href="{{ route('register') }}"
-                            class="flex items-center justify-center px-3 py-2 rounded-lg text-base font-semibold text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-white min-h-11">
+                            class="flex items-center justify-center px-3 py-2 rounded-lg text-base font-semibold text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-white min-h-11">
                             {{ __('Daftar') }}
                         </a>
                         @auth
                             <a href="{{ route('dashboard') }}"
-                                class="flex items-center justify-center px-3 py-2 rounded-lg text-base font-medium text-white border border-white hover:bg-white hover:text-primary-600 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-white min-h-11">
+                                class="flex items-center justify-center px-3 py-2 rounded-lg text-base font-medium text-white border border-white hover:bg-white hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-white min-h-11">
                                 {{ __('Dashboard') }}
                             </a>
                         @else
                             <a href="{{ route('login') }}"
-                                class="flex items-center justify-center px-3 py-2 rounded-lg text-base font-medium text-white border border-white hover:bg-white hover:text-primary-600 focus:outline-none focus:ring-3 focus:ring-inset focus:ring-white min-h-11">
+                                class="flex items-center justify-center px-3 py-2 rounded-lg text-base font-medium text-white border border-white hover:bg-white hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-white min-h-11">
                                 {{ __('Log Masuk') }}
                             </a>
                         @endauth
@@ -208,12 +208,12 @@
         </main>
 
         {{-- Footer --}}
-        <footer class="bg-gray-800 dark:bg-gray-900 text-gray-300 py-8 theme-transition" role="contentinfo">
+        <footer class="bg-slate-800 dark:bg-slate-900 text-slate-300 py-8 theme-transition" role="contentinfo">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p class="text-xs text-gray-500">&copy; {{ date('Y') }} BPM MOTAC.
+                    <p class="text-xs text-slate-500">&copy; {{ date('Y') }} BPM MOTAC.
                         {{ __('Hak Cipta Terpelihara') }}.</p>
-                    <p class="text-xs text-gray-500">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
+                    <p class="text-xs text-slate-500">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
                 </div>
             </div>
         </footer>

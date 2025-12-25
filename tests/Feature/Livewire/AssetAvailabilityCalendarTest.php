@@ -41,4 +41,114 @@ class AssetAvailabilityCalendarTest extends TestCase
             ])
             ->assertDispatched('refreshCalendar');
     }
+
+    #[Test]
+    public function calendar_renders_with_bahasa_melayu_labels(): void
+    {
+        $user = User::factory()->create(['role' => 'admin']);
+        $asset = Asset::factory()->create(['status' => AssetStatus::AVAILABLE]);
+
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Assets\AssetAvailabilityCalendar::class, ['assetId' => $asset->id]);
+
+        // Verify component renders successfully
+        $component->assertStatus(200);
+
+        // Verify translation keys are present (they will be translated by Laravel)
+        $component->assertSee('Sebelumnya')  // Previous in Bahasa Melayu
+            ->assertSee('Seterusnya')        // Next in Bahasa Melayu
+            ->assertSee('Tersedia')          // Available in Bahasa Melayu
+            ->assertSee('Dipinjam')          // Loaned in Bahasa Melayu
+            ->assertSee('Penyelenggaraan');  // Maintenance in Bahasa Melayu
+    }
+
+    #[Test]
+    public function calendar_navigation_works_correctly(): void
+    {
+        $user = User::factory()->create(['role' => 'admin']);
+
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Assets\AssetAvailabilityCalendar::class);
+
+        // Test next month navigation
+        $component->call('nextMonth')
+            ->assertSet('currentMonth', now()->addMonth()->format('m'))
+            ->assertSet('currentYear', now()->addMonth()->format('Y'));
+
+        // Test previous month navigation
+        $component->call('previousMonth')
+            ->assertSet('currentMonth', now()->format('m'))
+            ->assertSet('currentYear', now()->format('Y'));
+    }
+
+    #[Test]
+    public function calendar_displays_asset_availability_correctly(): void
+    {
+        $user = User::factory()->create(['role' => 'admin']);
+
+        // Create assets with different statuses
+        $availableAsset = Asset::factory()->create(['status' => AssetStatus::AVAILABLE]);
+        $maintenanceAsset = Asset::factory()->create(['status' => AssetStatus::MAINTENANCE]);
+
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Assets\AssetAvailabilityCalendar::class);
+
+        // Verify calendar data is loaded
+        $this->assertNotEmpty($component->get('calendarData'));
+
+        // Verify assets are counted correctly in calendar data
+        $calendarData = $component->get('calendarData');
+        $todayData = collect($calendarData)->firstWhere('isToday', true);
+
+        if ($todayData) {
+            $this->assertArrayHasKey('availableCount', $todayData);
+            $this->assertArrayHasKey('maintenanceCount', $todayData);
+            $this->assertArrayHasKey('loanedCount', $todayData);
+        }
+    }
+
+    #[Test]
+    public function calendar_filters_by_asset_id_correctly(): void
+    {
+        $user = User::factory()->create(['role' => 'admin']);
+        $asset1 = Asset::factory()->create(['status' => AssetStatus::AVAILABLE]);
+        $asset2 = Asset::factory()->create(['status' => AssetStatus::AVAILABLE]);
+
+        // Test with specific asset filter
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Assets\AssetAvailabilityCalendar::class, ['assetId' => $asset1->id]);
+
+        $this->assertEquals($asset1->id, $component->get('assetId'));
+
+        // Verify calendar data is loaded for the specific asset
+        $this->assertNotEmpty($component->get('calendarData'));
+    }
+
+    #[Test]
+    public function calendar_handles_echo_event_for_correct_asset_only(): void
+    {
+        $user = User::factory()->create(['role' => 'admin']);
+        $asset1 = Asset::factory()->create(['status' => AssetStatus::AVAILABLE]);
+        $asset2 = Asset::factory()->create(['status' => AssetStatus::AVAILABLE]);
+
+        // Component watching asset1
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Assets\AssetAvailabilityCalendar::class, ['assetId' => $asset1->id]);
+
+        // Event for asset2 should not trigger refresh
+        $component->call('handleEchoAssetReturnedDamaged', [
+            'asset_id' => $asset2->id,
+            'transaction_id' => 123,
+            'damage_report' => 'Test damage',
+        ])
+            ->assertNotDispatched('refreshCalendar');
+
+        // Event for asset1 should trigger refresh
+        $component->call('handleEchoAssetReturnedDamaged', [
+            'asset_id' => $asset1->id,
+            'transaction_id' => 123,
+            'damage_report' => 'Test damage',
+        ])
+            ->assertDispatched('refreshCalendar');
+    }
 }

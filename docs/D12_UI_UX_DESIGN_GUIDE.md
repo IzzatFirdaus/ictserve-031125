@@ -8,7 +8,7 @@
 | **Tarikh Kemaskini** | 14 Disember 2025 |
 | **Status** | Aktif - Sedia untuk Pelaksanaan |
 | **Klasifikasi** | Terhad - Dalaman BPM MOTAC |
-| **Pematuhi** | WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 42010 |
+| **Pematuhi** | WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 42010, ISO 9241-210, MDGDM, DDSA |
 | **Bahasa** | Bahasa Melayu sahaja (D15 v3.6.0) |
 
 > **Notis Penggunaan Dalaman**: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam (internal use only).
@@ -19,7 +19,7 @@
 
 | Versi | Tarikh | Perubahan | Penulis |
 |-------|--------|-----------|---------|
-| 3.6.1 | 2025-12-17 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D18 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+). | Pasukan Pembangunan BPM |
+| 3.6.1 | 2025-12-17 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. Kemaskini versi sistem kepada ICTServe v3.6.1, penyelarasan dengan D00-D18 v3.6.1, pengesahan Bahasa Melayu sahaja (v3.6.0+). | Pasukan Pembangunan BPM |
 | 3.6.0 | 2025-12-14 | Integrasi lengkap D18 Cloud Hybrid AI Architecture - AI chat interface, streaming responses, model selection, conversation management, web-augmented responses, WCAG 2.2 AA compliance | Pasukan Pembangunan BPM |
 | 3.5.0 | 2025-11-01 | Kemaskini untuk Laravel Reverb, Laravel Pulse, dan pematuhan WCAG 2.2 AA | Pasukan Pembangunan BPM |
 | 3.4.0 | 2025-10-15 | Penyepaduan Filament v4, Livewire v3, dan Tailwind v4 | Pasukan Pembangunan BPM |

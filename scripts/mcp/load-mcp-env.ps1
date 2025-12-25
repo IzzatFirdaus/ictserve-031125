@@ -1,4 +1,4 @@
-﻿param([switch]$StartVSCode)
+param([switch]$StartVSCode)
 
 $envFile = ".\.env"
 if (-not (Test-Path $envFile)) {

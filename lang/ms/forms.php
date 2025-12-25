@@ -41,4 +41,12 @@ return [
     'Failed to save' => 'Gagal menyimpan',
     'Draft restored successfully' => 'Draf berjaya dipulihkan',
     'Starting with a fresh form' => 'Memulakan dengan borang baharu',
+    'guest_name' => 'Nama Tetamu',
+    'required_fields' => 'Medan Wajib',
+    'applicant_name' => 'Nama Pemohon',
+    'full_name' => 'Nama Penuh',
+    'email_address' => 'Alamat E-mel',
+    'phone_number' => 'Nombor Telefon',
+    'submit_button' => 'Hantar',
+    'ticket_details' => 'Butiran Tiket',
 ];

@@ -1,0 +1,62 @@
+sequenceDiagram
+    actor Applicant as Applicant (Guest/Staff)
+    participant Portal as Loan Portal
+    participant Service as LoanService
+    participant Approval as ApprovalService
+    participant DB as MySQL Database
+    participant Queue as Redis Queue
+    participant Mail as Email System
+    actor Approver as Approver (Grade 41+)
+    participant Controller as ApprovalController
+    
+    Note over Applicant,Controller: Loan Application & Approval Workflow
+    
+    Applicant->>Portal: Submit loan application
+    Portal->>Service: createApplication(data)
+    Service->>Service: Validate asset availability<br/>Check date conflicts
+    Service->>DB: INSERT loan_applications<br/>status = PENDING_SUPERVISOR_APPROVAL
+    DB-->>Service: Application created
+    
+    Service->>Approval: initiateApproval(application)
+    Approval->>Approval: Generate signed URL<br/>SHA-512 token hash<br/>72-hour validity
+    Approval->>DB: INSERT loan_approvals<br/>token_hash stored
+    DB-->>Approval: Approval record created
+    
+    Approval->>Queue: Dispatch SendApprovalEmail
+    Queue->>Mail: Send email with signed link
+    Mail-->>Approver: Email received
+    
+    Service-->>Portal: Success response
+    Portal-->>Applicant: Confirmation displayed<br/>Awaiting approval
+    
+    Note over Approver,Controller: Approval Decision Flow
+    
+    Approver->>Mail: Click approval link
+    Mail->>Controller: GET /loan/approve/{id}?signature=...
+    Controller->>Controller: Verify signed URL<br/>Check token validity<br/>Check expiration (72h)
+    
+    alt Token Valid
+        Controller->>DB: Query loan_applications
+        DB-->>Controller: Application details
+        Controller-->>Approver: Display approval form<br/>(read-only summary)
+        
+        Approver->>Controller: Submit decision<br/>(APPROVE/REJECT + remarks)
+        Controller->>DB: UPDATE loan_approvals<br/>decision, remarks, IP hash
+        Controller->>DB: UPDATE loan_applications<br/>status = APPROVED/REJECTED
+        DB-->>Controller: Updated
+        
+        Controller->>Queue: Dispatch StatusUpdateEmail
+        Queue->>Mail: Send decision email
+        Mail-->>Applicant: Decision notification
+        
+        Controller-->>Approver: Success confirmation
+    else Token Invalid/Expired
+        Controller-->>Approver: Error: Token expired<br/>Contact admin
+    end
+    
+    Note over Applicant,Controller: Post-Approval Flow (if APPROVED)
+    
+    Service->>DB: UPDATE assets<br/>status = RESERVED
+    Service->>Queue: Schedule collection reminder
+    Queue->>Mail: Send collection instructions
+    Mail-->>Applicant: Collection details

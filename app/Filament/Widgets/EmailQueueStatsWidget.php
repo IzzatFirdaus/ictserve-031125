@@ -4,12 +4,23 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\DB;
 
 class EmailQueueStatsWidget extends BaseWidget
 {
+    use WidgetMetadata;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D11 §9 Queue management';
+    }
+
     protected function getStats(): array
     {
         $pendingJobs = DB::table('jobs')->count();

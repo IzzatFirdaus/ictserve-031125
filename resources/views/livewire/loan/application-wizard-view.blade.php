@@ -58,7 +58,7 @@
                         <li class="flex-1 {{ $i < $totalSteps ? 'pr-2' : '' }}">
                             <button type="button" wire:click="goToStep({{ $i }})"
                                 @if ($i > $currentStep) disabled @endif
-                                class="flex flex-col items-center text-center w-full group focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded"
+                                class="flex flex-col items-center text-center w-full group focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 rounded-lg"
                                 aria-current="{{ $i === $currentStep ? 'step' : 'false' }}">
                                 <div class="flex items-center w-full">
                                     <div class="shrink-0">
@@ -205,7 +205,7 @@
                         class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-4">
                         <label class="flex items-start cursor-pointer">
                             <input type="checkbox" wire:model.live="isApplicantResponsible"
-                                class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-3 focus:ring-primary-500 min-h-11 min-w-11">
+                                class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-11 min-w-11">
                             <span class="ml-3">
                                 <span
                                     class="text-sm font-medium text-gray-900 dark:text-white">{{ __('loan.fields.applicant_is_responsible_checkbox') }}</span>
@@ -250,7 +250,7 @@
                                 class="rounded-lg border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/30 p-4">
                                 <label class="flex items-start cursor-pointer">
                                     <input type="checkbox" wire:model.live="responsibleOfficerAcknowledgement"
-                                        class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-3 focus:ring-primary-500"
+                                        class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                                         required>
                                     <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">
                                         {{ __('loan.form.responsible_officer_acknowledgement') }}

@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant Event as Event Dispatched
+    participant Check as shouldBroadcast Check
+    participant Queue as Redis Queue
+    participant Worker as Queue Worker
+    participant Provider as Reverb/Pusher
+    participant Frontend as Echo Frontend
+    
+    Event->>Check: NotificationCreated.php
+    Check->>Queue: Store job
+    Queue->>Worker: Process job
+    Worker->>Provider: Send to channel
+    Provider->>Frontend: Receive & update UI
+    Note over Frontend: No page reload

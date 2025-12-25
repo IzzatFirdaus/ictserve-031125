@@ -95,12 +95,12 @@
                                                         {{ $template['name'] }}
                                                     </h5>
                                                     
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $template['locale'] === 'ms' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' }}">
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $template['locale'] === 'ms' ? 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200' : 'bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200' }}">
                                                         {{ $template['locale'] === 'ms' ? 'Bahasa Melayu' : 'English' }}
                                                     </span>
                                                     
                                                     @if($template['is_active'])
-                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200">
                                                             Active
                                                         </span>
                                                     @else
@@ -123,7 +123,7 @@
                                                 <button 
                                                     type="button"
                                                     wire:click="loadTemplate({{ $template['id'] }})"
-                                                    class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                                                    class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
                                                 >
                                                     Edit
                                                 </button>
@@ -131,7 +131,7 @@
                                                     type="button"
                                                     wire:click="deleteTemplate({{ $template['id'] }})"
                                                     wire:confirm="Are you sure you want to delete this template?"
-                                                    class="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                                                    class="text-sm text-danger-600 hover:text-danger-800 dark:text-danger-400 dark:hover:text-danger-300"
                                                 >
                                                     Delete
                                                 </button>

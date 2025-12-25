@@ -16,7 +16,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-memory",
-        "$env:MEMORY_FILE_PATH"
+C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
       ],
       "disabled": false,
       "autoApprove": [
@@ -124,23 +124,6 @@
         "tinker"
       ]
     },
-    "deepl": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "deepl-mcp-server"
-      ],
-      "env": {
-        "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
-      },
-      "disabled": true,
-      "autoApprove": [
-        "get_source_languages",
-        "get_target_languages",
-        "translate_text",
-        "rephrase_text"
-      ]
-    },
     "github": {
       "command": "npx",
       "args": [
@@ -176,6 +159,29 @@
         "invoke_claude_opus",
         "invoke_claude_sonnet",
         "invoke_claude_haiku"
+      ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\XAMPP\\htdocs\\ictserve-031125"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "read_text_file",
+        "read_multiple_files",
+        "list_directory",
+        "list_directory_with_sizes",
+        "directory_tree",
+        "search_files",
+        "get_file_info",
+        "list_allowed_directories",
+        "create_directory",
+        "write_file",
+        "edit_file",
+        "move_file"
       ]
     }
   }

@@ -1,14 +1,14 @@
 <div class="space-y-6" x-data="{ scrollToForm() { document.getElementById('comment-form').scrollIntoView({ behavior: 'smooth' }); } }" @scroll-to-form.window="scrollToForm()">
     {{-- Flash Messages --}}
     @if (session()->has('comment-success'))
-        <div class="rounded-md bg-green-50 dark:bg-green-900/30 p-4" role="alert">
-            <p class="text-sm text-green-800 dark:text-green-200">{{ session('comment-success') }}</p>
+        <div class="rounded-lg bg-success-50 dark:bg-success-900/30 p-4" role="alert">
+            <p class="text-sm text-success-800 dark:text-success-200">{{ session('comment-success') }}</p>
         </div>
     @endif
 
     @if (session()->has('comment-error'))
-        <div class="rounded-md bg-red-50 dark:bg-red-900/30 p-4" role="alert">
-            <p class="text-sm text-red-800 dark:text-red-200">{{ session('comment-error') }}</p>
+        <div class="rounded-lg bg-danger-50 dark:bg-danger-900/30 p-4" role="alert">
+            <p class="text-sm text-danger-800 dark:text-danger-200">{{ session('comment-error') }}</p>
         </div>
     @endif
 
@@ -29,19 +29,19 @@
                     wire:model="newCommentContent"
                     id="new-comment"
                     rows="4"
-                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     placeholder="{{ __('internal_comments.comment_placeholder') }}"
                     required
                 ></textarea>
                 @error('newCommentContent')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">{{ $message }}</p>
+                    <p class="mt-2 text-sm text-danger-600 dark:text-danger-400" role="alert">{{ $message }}</p>
                 @enderror
             </div>
 
             <div class="flex items-center gap-3">
                 <button
                     type="submit"
-                    class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors focus:ring-4 focus:ring-blue-300"
+                    class="inline-flex items-center justify-center min-h-11 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     wire:loading.attr="disabled"
                 >
                     <span wire:loading.remove>{{ __('internal_comments.submit') }}</span>
@@ -52,7 +52,7 @@
                     <button
                         type="button"
                         wire:click="cancelReply"
-                        class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                        class="inline-flex items-center justify-center min-h-11 px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
                     >
                         {{ __('internal_comments.cancel_reply') }}
                     </button>

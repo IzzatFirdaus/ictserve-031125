@@ -36,7 +36,7 @@ class TwoFactorAuthentication extends Page implements HasForms, HasInfolists
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 1;
 
@@ -71,7 +71,7 @@ class TwoFactorAuthentication extends Page implements HasForms, HasInfolists
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.two_factor_auth.group');
+        return __('filament.navigation.system');
     }
 
     protected function getHeaderActions(): array

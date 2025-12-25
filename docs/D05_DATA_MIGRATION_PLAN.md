@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 27701 (Privacy Information Management)
+**Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 27701 (Privacy Information Management), RFC 5322 (Format E-mel), ISO 8601, TLS 1.3, AES-256, ISO/IEC/IEEE 12207
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
-| **Pematuhi**         | ISO 8000, ISO/IEC 27701                   |
+| **Pematuhi**         | ISO 8000, ISO/IEC 27701, RFC 5322, ISO 8601, TLS 1.3, AES-256, ISO/IEC/IEEE 12207 |
 | **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 > Notis Penggunaan Dalaman: Migrasi data ini melibatkan data dalaman MOTAC dan tidak berkaitan data awam.
@@ -29,15 +29,15 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                | Penulis     |
 | ----- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D04 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | **Kemaskini Teknologi Stack**: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D04 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), MOTAC branding. Penyelarasan dengan D00-D04 v3.5.0. | Pasukan BPM |
 | 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini rujukan bilingual support→Bahasa Melayu sahaja dalam migration plan. Penyelarasan dengan D00-D17 v3.6.0.                                                  | Pasukan BPM |
 | 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah migrasi data AI (FAQ, dokumen, embeddings, conversation history). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture (Ollama + AWS Bedrock).                                    | Pasukan BPM |
 | 3.4.0 | 30 November 2025 | Hybrid Architecture v3.4.0: Migrate legacy staff to users table, link historical submissions via email, restore LDAP/SSO as optional authentication. Penyelarasan dengan D00-D08 v3.4.0.                 | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan versi dengan D00 v3.3.0 dan D04 v3.3.0: standardisasi dokumentasi guest-first architecture, token-based workflows, disaster recovery plan, dan teknologi stack terkini (Playwright 1.56.1). | Pasukan BPM |
-| 3.1.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12). Penyelarasan dengan D00-D04.                                                                              | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.43.1, PHP 8.2.12). Penyelarasan dengan D00-D04.                                                                              | Pasukan BPM |
 | 3.0.0 | 22 Januari 2025  | Kemaskini kepada seni bina guest-first: tiada migrasi akaun pengguna tetamu, fokus kepada data pentadbiran dan rekod sejarah                                                                             | Pasukan BPM |
-| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.40.1, PHP 8.2.12                                                                                                                                                 | Pasukan BPM |
+| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.43.1, PHP 8.2.12                                                                                                                                                 | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                   | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal pelan migrasi data                                                                                                                                                                            | Pasukan BPM |
 
@@ -59,7 +59,7 @@
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Helpdesk & ICT Asset Loan** yang berasaskan Laravel 12.42.0 untuk Bahagian Pengurusan Maklumat (BPM), MOTAC. Pelan ini mematuhi piawaian **ISO 8000** untuk kualiti data (data quality) dan **ISO/IEC 27701** untuk pengurusan privasi maklumat (privacy information management).
+Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Helpdesk & ICT Asset Loan** yang berasaskan Laravel 12.43.1 untuk Bahagian Pengurusan Maklumat (BPM), MOTAC. Pelan ini mematuhi piawaian **ISO 8000** untuk kualiti data (data quality) dan **ISO/IEC 27701** untuk pengurusan privasi maklumat (privacy information management).
 
 **Nota Penting**: Sistem baharu menggunakan True Hybrid Architecture v3.5.0 di mana staff boleh self-register dengan @motac.gov.my dan log masuk ATAU gunakan borang tetamu. Migrasi data fokus kepada:
 
@@ -75,7 +75,7 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 
 ## 2. SKOP MIGRASI (Scope)
 
-- Migrasi data berkaitan aduan ICT, inventori aset, dan sejarah pinjaman dari sistem lama (manual, Excel, Access, atau sistem digital terdahulu) ke sistem baru Laravel 12.42.0.
+- Migrasi data berkaitan aduan ICT, inventori aset, dan sejarah pinjaman dari sistem lama (manual, Excel, Access, atau sistem digital terdahulu) ke sistem baru Laravel 12.43.1.
 - Data yang terlibat:
   - **Staff Profiles**: Migrate legacy staff ke `users` (role='staff') untuk enable self-registration dan akses dashboard. Medan berkaitan migrasi: `email_verified_at`, `locale` (DEPRECATED: sentiasa `ms`), `staff_number`, `division_code`, `division_id`, `grade_id`, `position_id`, `guest_submissions_linked`, `theme_preference`
   - **Tiket Helpdesk**: Rekod sejarah tiket dengan link ke user_id (jika staff) atau NULL (jika guest)

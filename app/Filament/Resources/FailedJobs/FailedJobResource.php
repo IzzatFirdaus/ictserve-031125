@@ -13,12 +13,30 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class FailedJobResource extends Resource
 {
     protected static ?string $model = FailedJob::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Sistem';
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Tugas Gagal';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Tugas Gagal';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Tugas Gagal';
+    }
 
     public static function form(Schema $schema): Schema
     {

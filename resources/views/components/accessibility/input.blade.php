@@ -42,19 +42,19 @@
 
     // Base input classes with 44px minimum height
     $inputClasses =
-        'block w-full min-h-[44px] px-4 py-2.5 text-base rounded-lg border shadow-sm transition-colors duration-200';
+        'block w-full min-h-11 px-4 py-2.5 text-base rounded-lg border shadow-sm transition-colors duration-200';
 
     // State-specific classes
     if ($hasError) {
         $inputClasses .=
-            ' border-danger-500 text-gray-900 placeholder-danger-300 focus:border-danger-500 focus:ring-danger-500 bg-danger-50';
+            ' border-danger-500 text-gray-900 placeholder-danger-300 focus:border-danger-500 focus-visible:ring-danger-500 bg-danger-50';
     } else {
         $inputClasses .=
-            ' border-gray-300 text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500';
+            ' border-gray-300 text-gray-900 placeholder-gray-500 focus:border-primary-500 focus-visible:ring-primary-500';
     }
 
     // Focus indicator - 3px outline
-    $inputClasses .= ' focus-visible:outline-3 focus-visible:outline-offset-0';
+    $inputClasses .= ' focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2';
 
     if ($disabled) {
         $inputClasses .= ' bg-gray-100 cursor-not-allowed opacity-60';
@@ -100,8 +100,7 @@
             @if ($hasError) aria-invalid="true"
                 aria-describedby="{{ $errorId }}"
             @elseif($helper)
-                aria-describedby="{{ $helperId }}" @endif
-            style="outline-width: 3px;">
+                aria-describedby="{{ $helperId }}" @endif>
 
         {{-- Suffix or error icon --}}
         @if ($hasError)

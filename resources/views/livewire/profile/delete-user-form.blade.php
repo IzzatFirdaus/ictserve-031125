@@ -39,11 +39,11 @@ new class extends Component
 
 <section class="space-y-6">
     <header>
-        <h2 class="text-xl font-semibold text-slate-100">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
             {{ __('profile.delete_account_title') }}
         </h2>
 
-        <p class="mt-1 text-sm text-slate-300">
+        <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
             {{ __('profile.delete_account_description') }}
         </p>
     </header>
@@ -51,17 +51,17 @@ new class extends Component
     <x-danger-button
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-        class="min-h-11"
+        class="min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500"
     >{{ __('profile.delete_account') }}</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
         <form wire:submit="deleteUser" class="p-6">
 
-            <h2 class="text-lg font-medium text-slate-100">
+            <h2 class="text-lg font-medium text-slate-900 dark:text-slate-100">
                 {{ __('profile.delete_account_confirm_title') }}
             </h2>
 
-            <p class="mt-1 text-sm text-slate-300">
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
                 {{ __('profile.delete_account_confirm_description') }}
             </p>
 
@@ -73,7 +73,7 @@ new class extends Component
                     id="password"
                     name="password"
                     type="password"
-                    class="mt-1 block w-3/4"
+                    class="mt-1 block w-3/4 min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500"
                     :placeholder="__('profile.current_password_placeholder')"
                 />
 
@@ -81,14 +81,15 @@ new class extends Component
             </div>
 
             <div class="mt-6 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')" class="min-h-11">
+                <x-secondary-button x-on:click="$dispatch('close')" class="min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-slate-500 dark:focus-visible:ring-3 focus-visible:ring-slate-400">
                     {{ __('common.cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3 min-h-11">
+                <x-danger-button class="ms-3 min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500">
                     {{ __('profile.delete_account') }}
                 </x-danger-button>
             </div>
         </form>
     </x-modal>
 </section>
+

@@ -1,36 +1,36 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
         <div class="text-center">
             <!-- Success Icon -->
-            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
-                <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-success-100 dark:bg-success-900/30">
+                <svg class="h-10 w-10 text-success-600 dark:text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
 
             <!-- Success Message -->
-            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+            <h2 class="mt-6 text-3xl font-extrabold text-slate-900 dark:text-white">
                 {{ __('helpdesk.ticket_submitted_successfully') }}
             </h2>
 
             @if ($ticketNumber)
-                <div class="mt-4 p-4 bg-blue-50 rounded-lg">
-                    <p class="text-sm text-gray-600">{{ __('helpdesk.your_ticket_number') }}</p>
-                    <p class="text-2xl font-bold text-blue-600 mt-1">{{ $ticketNumber }}</p>
+                <div class="mt-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg border border-primary-200 dark:border-primary-800">
+                    <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('helpdesk.your_ticket_number') }}</p>
+                    <p class="text-2xl font-bold text-primary-600 dark:text-primary-400 mt-1">{{ $ticketNumber }}</p>
                 </div>
 
-                <p class="mt-4 text-sm text-gray-600">
+                <p class="mt-4 text-sm text-slate-600 dark:text-slate-400">
                     {{ __('helpdesk.ticket_confirmation_email_sent') }}
                 </p>
             @endif
 
             @if ($canClaim && auth()->check())
-                <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p class="text-sm text-yellow-800">
+                <div class="mt-6 p-4 bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 rounded-lg">
+                    <p class="text-sm text-warning-800 dark:text-warning-200">
                         {{ __('helpdesk.can_claim_ticket_message') }}
                     </p>
                     <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                        class="mt-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                        class="mt-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-warning-600 hover:bg-warning-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-warning-500 dark:focus-visible:ring-offset-slate-900 min-h-11 min-w-11">
                         {{ __('helpdesk.view_my_tickets') }}
                     </a>
                 </div>
@@ -39,20 +39,21 @@
             <!-- Action Buttons -->
             <div class="mt-8 space-y-3">
                 <a href="{{ route('helpdesk.track', ['ticketNumber' => $ticketNumber]) }}"
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-900 min-h-11">
                     {{ __('helpdesk.track_ticket') }}
                 </a>
 
                 <a href="{{ route('helpdesk.create') }}"
-                    class="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    class="w-full flex justify-center py-2 px-4 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-900 min-h-11">
                     {{ __('helpdesk.submit_another_ticket') }}
                 </a>
 
                 <a href="{{ route('welcome') }}"
-                    class="w-full flex justify-center py-2 px-4 text-sm font-medium text-gray-600 hover:text-gray-900">
+                    class="w-full flex justify-center py-2 px-4 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-900 rounded-lg">
                     {{ __('common.back_to_home') }}
                 </a>
             </div>
         </div>
     </div>
 </div>
+

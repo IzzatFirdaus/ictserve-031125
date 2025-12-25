@@ -9,13 +9,15 @@ use App\Models\BedrockConversation;
 use App\Services\BedrockService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class BedrockChatTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_send_creates_conversation_and_appends_assistant_message(): void
+    #[Test]
+    public function send_creates_conversation_and_appends_assistant_message(): void
     {
         $mock = $this->createMock(BedrockService::class);
         $mock->expects($this->once())
@@ -42,7 +44,8 @@ class BedrockChatTest extends TestCase
         $this->assertSame('Jawapan ujian', $conversation->messages[1]['content']);
     }
 
-    public function test_send_adds_bahasa_melayu_error_message_when_bedrock_fails(): void
+    #[Test]
+    public function send_adds_bahasa_melayu_error_message_when_bedrock_fails(): void
     {
         $mock = $this->createMock(BedrockService::class);
         $mock->expects($this->once())
@@ -64,7 +67,8 @@ class BedrockChatTest extends TestCase
         $this->assertStringContainsString('Maaf', $conversation->messages[1]['content']);
     }
 
-    public function test_nova_models_are_supported(): void
+    #[Test]
+    public function nova_models_are_supported(): void
     {
         $mock = $this->createMock(BedrockService::class);
         $mock->expects($this->once())
@@ -89,7 +93,8 @@ class BedrockChatTest extends TestCase
         $this->assertSame('nova_micro', $conversation->messages[1]['model']);
     }
 
-    public function test_titan_models_are_supported(): void
+    #[Test]
+    public function titan_models_are_supported(): void
     {
         $mock = $this->createMock(BedrockService::class);
         $mock->expects($this->once())

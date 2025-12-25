@@ -10,6 +10,9 @@ use App\Models\Asset;
 use App\Models\AssetCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<\App\Models\Asset>
+ */
 class AssetFactory extends Factory
 {
     protected $model = Asset::class;
@@ -18,14 +21,14 @@ class AssetFactory extends Factory
     {
         $purchaseDate = now()->subYears(\random_int(1, 5))->subMonths(\random_int(0, 11));
         $purchaseValue = \random_int(1000, 20000) + \random_int(0, 99) / 100;
-        
+
         $names = [
             'Dell Latitude 5420 Laptop', 'HP EliteBook 840 G8', 'Lenovo ThinkPad X1 Carbon',
             'Epson EB-X05 Projector', 'BenQ MH535A Projector', 'Apple iPad Pro 12.9"',
             'Samsung Galaxy Tab S8', 'Canon EOS 90D Camera', 'Sony Alpha a7 III',
             'Cisco Catalyst 2960 Switch', 'TP-Link Archer AX6000 Router',
         ];
-        
+
         $brands = ['Dell', 'HP', 'Lenovo', 'Epson', 'BenQ', 'Apple', 'Samsung', 'Canon', 'Sony', 'Cisco', 'TP-Link'];
         $locations = ['Putrajaya HQ', 'Kuala Lumpur Office', 'Cyberjaya Branch', 'Shah Alam Office'];
         $accessories = ['Power Adapter', 'Carrying Case', 'Wireless Mouse', 'USB-C Hub', 'HDMI Cable', 'VGA Cable', 'Remote Control', 'Lens Cap', 'Memory Card', 'Battery Pack'];
@@ -33,7 +36,7 @@ class AssetFactory extends Factory
         $all_acc = [];
         $count = \random_int(2, \min(5, \count($accessories)));
         $keys = \array_rand($accessories, $count);
-        if (!\is_array($keys)) {
+        if (! \is_array($keys)) {
             $keys = [$keys];
         }
         foreach ($keys as $k) {
@@ -73,16 +76,24 @@ class AssetFactory extends Factory
 
     private function generateAssetTag(): string
     {
+        static $counter = 0;
+        $counter++;
+
         $prefixes = ['LAP', 'PRJ', 'TAB', 'CAM', 'NET'];
         $prefix = $prefixes[\array_rand($prefixes)];
         $year = \random_int(2019, 2025);
-        $number = \random_int(1000, 9999);
-        return \sprintf('%s-%d-%04d', $prefix, $year, $number);
+
+        // Use microtime, counter, and random to ensure uniqueness across all test runs
+        $microtime = \str_replace('.', '', (string) \microtime(true));
+        $uniquePart = (int) \substr($microtime, -6) + $counter + \random_int(1, 9999);
+
+        return \sprintf('%s-%d-%06d', $prefix, $year, $uniquePart % 1000000);
     }
 
     public function available(): static
     {
         $conditions = [AssetCondition::EXCELLENT, AssetCondition::GOOD, AssetCondition::FAIR];
+
         return $this->state(fn (array $attributes) => [
             'status' => AssetStatus::AVAILABLE,
             'condition' => $conditions[\array_rand($conditions)],
@@ -92,6 +103,7 @@ class AssetFactory extends Factory
     public function loaned(): static
     {
         $conditions = [AssetCondition::EXCELLENT, AssetCondition::GOOD];
+
         return $this->state(fn (array $attributes) => [
             'status' => AssetStatus::LOANED,
             'condition' => $conditions[\array_rand($conditions)],
@@ -101,6 +113,7 @@ class AssetFactory extends Factory
     public function maintenance(): static
     {
         $conditions = [AssetCondition::FAIR, AssetCondition::POOR];
+
         return $this->state(fn (array $attributes) => [
             'status' => AssetStatus::MAINTENANCE,
             'condition' => $conditions[\array_rand($conditions)],
@@ -122,6 +135,7 @@ class AssetFactory extends Factory
     public function retired(): static
     {
         $conditions = [AssetCondition::POOR, AssetCondition::DAMAGED];
+
         return $this->state(fn (array $attributes) => [
             'status' => AssetStatus::RETIRED,
             'condition' => $conditions[\array_rand($conditions)],

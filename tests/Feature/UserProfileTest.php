@@ -488,9 +488,9 @@ class UserProfileTest extends TestCase
 
         $html = $component->html();
 
-        // Check for success alert styling (green background)
-        $this->assertStringContainsString('bg-green-50', $html);
-        $this->assertStringContainsString('border-green-700', $html);
+        // Check for success alert styling (primary background)
+        $this->assertStringContainsString('bg-primary-50', $html);
+        $this->assertStringContainsString('border-primary-200', $html);
     }
 
     #[Test]
@@ -509,9 +509,9 @@ class UserProfileTest extends TestCase
 
         $html = $component->html();
 
-        // Check for success alert styling (green background)
-        $this->assertStringContainsString('bg-green-50', $html);
-        $this->assertStringContainsString('border-green-700', $html);
+        // Check for success alert styling (primary background)
+        $this->assertStringContainsString('bg-primary-50', $html);
+        $this->assertStringContainsString('border-primary-200', $html);
     }
 
     #[Test]
@@ -520,7 +520,58 @@ class UserProfileTest extends TestCase
         $this->actingAs($this->user)
             ->get(route('staff.profile'))
             ->assertOk()
-            ->assertSeeLivewire(\App\Livewire\Staff\UserProfile::class);
+            ->assertSee('Profil Saya') // My Profile
+            ->assertSee('Maklumat Profil') // Profile Information
+            ->assertSee('Nama Penuh') // Full Name
+            ->assertSee('Alamat E-mel') // Email Address
+            ->assertSee('Nombor Telefon') // Phone Number
+            ->assertSee('ID Kakitangan') // Staff ID
+            ->assertSee('Bahagian') // Division
+            ->assertSee('Gred') // Grade
+            ->assertSee('Jawatan'); // Position
+    }
+
+    /**
+     * Test that profile form uses BM labels and validation messages
+     *
+     * @trace Requirements 1.1, 3.2
+     */
+    #[Test]
+    public function profile_form_uses_bm_labels_and_validation(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->get(route('staff.profile'));
+
+        $response->assertOk()
+            ->assertSee('Kemaskini Profil') // Update Profile
+            ->assertSee('Tukar Kata Laluan') // Change Password
+            ->assertSee('Tetapan Notifikasi') // Notification Settings
+            ->assertSee('Simpan Perubahan') // Save Changes
+            ->assertSee('Kata Laluan Semasa') // Current Password
+            ->assertSee('Kata Laluan Baharu') // New Password
+            ->assertSee('Sahkan Kata Laluan'); // Confirm Password
+    }
+
+    /**
+     * Test that notification preferences use BM labels
+     *
+     * @trace Requirements 1.1, 3.2
+     */
+    #[Test]
+    public function notification_preferences_use_bm_labels(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->get(route('staff.profile'));
+
+        $response->assertOk()
+            ->assertSee('Kemaskini Tiket') // Ticket Updates
+            ->assertSee('Tugasan Tiket') // Ticket Assignments
+            ->assertSee('Komen Tiket') // Ticket Comments
+            ->assertSee('Amaran SLA') // SLA Alerts
+            ->assertSee('Kemaskini Pinjaman') // Loan Updates
+            ->assertSee('Kelulusan Pinjaman') // Loan Approvals
+            ->assertSee('Peringatan Pinjaman') // Loan Reminders
+            ->assertSee('Pengumuman Sistem'); // System Announcements
     }
 
     #[Test]

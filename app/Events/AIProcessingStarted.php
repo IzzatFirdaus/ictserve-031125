@@ -61,7 +61,12 @@ class AIProcessingStarted implements ShouldBroadcast
      * @param  array  $metadata  Metadata tambahan (document_id, user_id, etc.)
      * @param  string|null  $requestId  X-Request-ID untuk audit trail
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $metadata
+ */
+public function __construct(
         string $operationType,
         array $metadata = [],
         ?string $requestId = null
@@ -91,7 +96,14 @@ class AIProcessingStarted implements ShouldBroadcast
     /**
      * Sanitize metadata to remove PII
      */
-    private function sanitizeMetadata(array $metadata): array
+    
+
+/**
+  * @param array<string, mixed> $metadata
+
+ * @return array<string, mixed>
+ */
+private function sanitizeMetadata(array $metadata): array
     {
         $sanitized = [];
         $allowedKeys = [
@@ -118,7 +130,12 @@ class AIProcessingStarted implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-status'),
@@ -138,7 +155,12 @@ class AIProcessingStarted implements ShouldBroadcast
      *
      * @return array<string, mixed>
      */
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'operationType' => $this->operationType,

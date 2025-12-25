@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Enums\LoanStatus;
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\LoanApplication;
 use Carbon\Carbon;
 use Filament\Actions\Action;
@@ -33,6 +34,8 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class LoanApprovalQueueWidget extends BaseWidget
 {
+    use WidgetMetadata;
+
     protected ?string $pollingInterval = '300s';
 
     protected int|string|array $columnSpan = 'full';
@@ -45,7 +48,7 @@ class LoanApprovalQueueWidget extends BaseWidget
     protected function getTableQuery(): Builder
     {
         return LoanApplication::query()
-            ->with(['user', 'user.department', 'division', 'loanItems.asset'])
+            ->with(['user', 'user.division', 'division', 'loanItems.asset'])
             ->whereIn('status', [
                 LoanStatus::UNDER_REVIEW,
                 LoanStatus::PENDING_INFO,
@@ -53,6 +56,14 @@ class LoanApprovalQueueWidget extends BaseWidget
             ])
             ->orderByDesc('created_at')
             ->limit(10);
+    }
+
+    /**
+     * Get widget documentation reference.
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D03 SRS-AST-002';
     }
 
     protected function getTableColumns(): array
@@ -64,7 +75,7 @@ class LoanApprovalQueueWidget extends BaseWidget
                 ->searchable(),
             Tables\Columns\TextColumn::make('applicant_name')
                 ->label(__('widgets.applicant'))
-                ->description(fn (LoanApplication $record): ?string => $record->user?->department?->name ?? $record->division?->name_ms)
+                ->description(fn (LoanApplication $record): ?string => $record->user?->division?->name ?? $record->division?->name_ms)
                 ->searchable(),
             Tables\Columns\TextColumn::make('asset_summary')
                 ->label(__('widgets.asset_type'))

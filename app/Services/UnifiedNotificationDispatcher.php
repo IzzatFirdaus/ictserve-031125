@@ -61,12 +61,17 @@ class UnifiedNotificationDispatcher
      * @param  User  $user  The notification recipient
      * @param  Notification  $notification  Laravel notification instance (for database + optional mail)
      * @param  Mailable|null  $mailable  Optional dedicated Mailable (if different from notification mail)
-     * @param  array  $meta  Metadata for email log (ticket_number, loan_id, etc.)
+     * @param  array<string, mixed>  $meta  Metadata for email log (ticket_number, loan_id, etc.)
      * @param  string|null  $notificationType  Type for preference checking (ticket_updates, loan_approvals, etc.)
      * @param  string|null  $priority  Priority level (critical, high, normal, low)
-     * @return array Result of dispatch with channels used
+     * @return array<string, mixed> Result of dispatch with channels used
      */
-    public function dispatch(
+    
+
+/**
+ * @param array<string, mixed> $meta
+ */
+public function dispatch(
         User $user,
         Notification $notification,
         ?Mailable $mailable = null,
@@ -206,15 +211,20 @@ class UnifiedNotificationDispatcher
      *
      * Convenience method for bulk notifications (e.g., notify all admins, all approvers).
      *
-     * @param  iterable  $users  Collection or array of User models
+     * @param  iterable<User>  $users  Collection or array of User models
      * @param  Notification  $notification  Notification to send
      * @param  Mailable|null  $mailable  Optional Mailable
-     * @param  array  $meta  Metadata
+     * @param  array<string, mixed>  $meta  Metadata
      * @param  string|null  $notificationType  Notification type
      * @param  string|null  $priority  Priority level
-     * @return array Results for each user
+     * @return array<int, array<string, mixed>> Results for each user
      */
-    public function dispatchToMany(
+    
+
+/**
+ * @param array<string, mixed> $meta
+ */
+public function dispatchToMany(
         iterable $users,
         Notification $notification,
         ?Mailable $mailable = null,
@@ -256,11 +266,16 @@ class UnifiedNotificationDispatcher
      * @param  User  $user  The recipient
      * @param  Notification  $notification  The notification
      * @param  Mailable|null  $mailable  Optional Mailable
-     * @param  array  $meta  Metadata
+     * @param  array<string, mixed>  $meta  Metadata
      * @param  string  $notificationType  Type (for logging)
-     * @return array Dispatch result
+     * @return array<string, mixed> Dispatch result
      */
-    public function dispatchCritical(
+    
+
+/**
+ * @param array<string, mixed> $meta
+ */
+public function dispatchCritical(
         User $user,
         Notification $notification,
         ?Mailable $mailable = null,
@@ -290,11 +305,16 @@ class UnifiedNotificationDispatcher
      *
      * @param  User  $user  The recipient
      * @param  Mailable  $mailable  The email to send
-     * @param  array  $meta  Metadata for EmailLog
+     * @param  array<string, mixed>  $meta  Metadata for EmailLog
      * @param  string  $notificationType  Type for preference check
-     * @return array Dispatch result
+     * @return array<string, mixed> Dispatch result
      */
-    public function dispatchEmailOnly(
+    
+
+/**
+ * @param array<string, mixed> $meta
+ */
+public function dispatchEmailOnly(
         User $user,
         Mailable $mailable,
         array $meta = [],
@@ -362,7 +382,15 @@ class UnifiedNotificationDispatcher
         }
     }
 
-    private function recordStatistics(string $notificationType, array $channelsUsed, bool $hadFailure): void
+    /**
+     * @param  array<string>  $channelsUsed
+     */
+    
+
+/**
+ * @param array<string, mixed> $channelsUsed
+ */
+private function recordStatistics(string $notificationType, array $channelsUsed, bool $hadFailure): void
     {
         self::$statistics['attempts']++;
 

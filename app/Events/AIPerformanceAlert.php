@@ -52,7 +52,12 @@ class AIPerformanceAlert implements ShouldBroadcastNow
      * @param  int  $degradationTier  Tahap degradasi semasa (1-4)
      * @param  string|null  $requestId  X-Request-ID untuk audit trail
      */
-    public function __construct(
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+public function __construct(
         string $alertType,
         array $metrics = [],
         int $degradationTier = 1,
@@ -82,7 +87,12 @@ class AIPerformanceAlert implements ShouldBroadcastNow
         };
     }
 
-    private function generateMessage(string $alertType, array $metrics): string
+    
+
+/**
+ * @param array<string, mixed> $metrics
+ */
+private function generateMessage(string $alertType, array $metrics): string
     {
         return match ($alertType) {
             'cpu_high' => sprintf(
@@ -109,7 +119,12 @@ class AIPerformanceAlert implements ShouldBroadcastNow
         };
     }
 
-    public function broadcastOn(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastOn(): array
     {
         return [
             new PrivateChannel('ai-alerts'),
@@ -121,7 +136,12 @@ class AIPerformanceAlert implements ShouldBroadcastNow
         return 'AIPerformanceAlert';
     }
 
-    public function broadcastWith(): array
+    
+
+/**
+ * @return array<string, mixed>
+ */
+public function broadcastWith(): array
     {
         return [
             'alertType' => $this->alertType,

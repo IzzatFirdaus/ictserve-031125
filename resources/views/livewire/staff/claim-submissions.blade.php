@@ -50,14 +50,14 @@
                     {{ __('staff.claims.email_label') }}
                 </label>
                 <input type="email" id="search-email" wire:model="searchEmail" required autocomplete="email"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-motac-blue dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-11"
+                    class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-11"
                     aria-describedby="email-help"
                     @error('searchEmail') aria-invalid="true" aria-describedby="email-error" @enderror>
                 <p id="email-help" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                     {{ __('staff.claims.email_help') }}
                 </p>
                 @error('searchEmail')
-                    <p id="email-error" class="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">
+                    <p id="email-error" class="mt-2 text-sm text-danger-600 dark:text-danger-400" role="alert">
                         {{ $message }}
                     </p>
                 @enderror
@@ -86,9 +86,9 @@
     @if ($showResults)
         <div class="space-y-6">
             {{-- Results Summary --}}
-            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4"
+            <div class="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4"
                 role="status" aria-live="polite">
-                <p class="text-sm text-blue-800 dark:text-blue-200">
+                <p class="text-sm text-primary-800 dark:text-primary-200">
                     {{ __('staff.claims.results_found', [
                         'tickets' => $this->foundTickets->count(),
                         'loans' => $this->foundLoans->count(),
@@ -105,7 +105,7 @@
                         <button type="button" @click="activeTab = 'tickets'"
                             :class="activeTab === 'tickets' ? 'border-primary-600 text-primary-600 dark:text-primary-400' :
                                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-t transition-colors" role="tab"
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded-t transition-colors" role="tab"
                             :aria-selected="activeTab === 'tickets'" :tabindex="activeTab === 'tickets' ? 0 : -1">
                             {{ __('staff.claims.tickets_tab') }} ({{ $this->foundTickets->count() }})
                         </button>
@@ -113,7 +113,7 @@
                         <button type="button" @click="activeTab = 'loans'"
                             :class="activeTab === 'loans' ? 'border-primary-600 text-primary-600 dark:text-primary-400' :
                                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-t transition-colors" role="tab"
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded-t transition-colors" role="tab"
                             :aria-selected="activeTab === 'loans'" :tabindex="activeTab === 'loans' ? 0 : -1">
                             {{ __('staff.claims.loans_tab') }} ({{ $this->foundLoans->count() }})
                         </button>
@@ -137,7 +137,7 @@
                                             <th scope="col" class="px-6 py-3 text-left">
                                                 <input type="checkbox"
                                                     @change="$wire.selectedTickets = $event.target.checked ? @js($this->foundTickets->pluck('id')->toArray()) : []"
-                                                    class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 min-h-[24px] min-w-[24px] transition-colors"
+                                                    class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-[24px] min-w-[24px] transition-colors"
                                                     aria-label="{{ __('staff.claims.select_all_tickets') }}">
                                             </th>
                                             <th scope="col"
@@ -165,7 +165,7 @@
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <input type="checkbox" wire:model="selectedTickets"
                                                         value="{{ $ticket->id }}"
-                                                        class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 min-h-[24px] min-w-[24px] transition-colors"
+                                                        class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-[24px] min-w-[24px] transition-colors"
                                                         aria-label="{{ __('staff.claims.select_ticket', ['number' => $ticket->ticket_number]) }}">
                                                 </td>
                                                 <td
@@ -221,7 +221,7 @@
                                     <div class="flex items-start justify-between mb-4">
                                         <input type="checkbox" wire:model="selectedLoans"
                                             value="{{ $loan->id }}"
-                                            class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 min-h-[24px] min-w-[24px] transition-colors"
+                                            class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-[24px] min-w-[24px] transition-colors"
                                             aria-label="{{ __('staff.claims.select_loan', ['number' => $loan->application_number]) }}">
                                         <x-data.status-badge :status="$loan->status" type="loan" />
                                     </div>

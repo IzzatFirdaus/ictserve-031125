@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207
+**Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207, OWASP Transport Security, IEEE 1016:2009, PSR-12
 
 ---
 
@@ -18,7 +18,7 @@
 | **Tarikh Kemaskini** | 17 Disember 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
-| **Pematuhi**         | ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000, ISO/IEC/IEEE 12207 |
+| **Pematuhi**         | ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000, ISO/IEC/IEEE 12207, PSR-12 |
 | **Bahasa**           | Bahasa Melayu (utama), istilah teknikal English bila perlu |
 
 ---
@@ -27,7 +27,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                  | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal dokumentasi kod sumber                                                                                                                                                                                                                                                          | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                     | Pasukan BPM |
 | 3.0.0 | 29 November 2025 | Kemaskini struktur kod, Laravel 12, Filament 4, Livewire 3, Tailwind CSS                                                                                                                                                                                                                   | Pasukan BPM |
@@ -68,26 +68,27 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 | Komponen              | Versi   | Fungsi                                |
 | --------------------- | ------- | ------------------------------------- |
 | **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama           |
-| **Laravel**           | 12.42.0 | Framework aplikasi web                |
-| **Filament**          | 4.1.10  | Admin panel framework                 |
-| **Livewire**          | 3.7.1   | Server-driven UI components           |
+| **Laravel**           | 12.43.1 | Framework aplikasi web                |
+| **Filament**          | 4.3.1   | Admin panel framework                 |
+| **Livewire**          | 3.7.3   | Server-driven UI components           |
 | **Livewire Volt**     | 1.10.1  | Single-file Livewire components       |
-| **Tailwind CSS**      | 4.1.17  | Utility-first CSS framework           |
+| **Tailwind CSS**      | 4.1.18  | Utility-first CSS framework           |
 | **Alpine.js**         | 3.x     | Lightweight JavaScript framework      |
 | **Laravel Reverb**    | 1.6.3   | WebSocket server untuk real-time      |
 | **Laravel Echo**      | 2.2.6   | WebSocket client                      |
-| **PHPUnit**           | 11.5.44 | Testing framework                     |
-| **Larastan**          | 3.8.0   | Static analysis (PHPStan for Laravel) |
+| **PHPUnit**           | 11.5.46 | Testing framework                     |
+| **Larastan**          | 3.8.1   | Static analysis (PHPStan for Laravel) |
 | **Laravel Pint**      | 1.26.0  | Code formatting (PSR-12)              |
 | **MySQL**             | 8.x     | Production database                   |
 | **SQLite**            | -       | Development/testing database          |
 | **Spatie Permission** | 6.23    | Role-based access control             |
 | **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it)     |
 | **Activity Log**      | 4.x     | User activity logging (spatie)        |
-| **Laravel Pulse**     | 1.3.0   | Performance monitoring (v3.5.0)       |
+| **Laravel Pulse**     | 1.4.7   | Performance monitoring (v3.5.0)       |
 | **Laravel Sanctum**   | 4.0     | API token authentication (v3.5.0)     |
 | **Laravel Socialite** | 5.x     | Google OAuth SSO (v3.5.0)             |
 | **Laravel Telescope** | 5.x     | System debugging (superuser only)     |
+| **Laravel Horizon**   | 5.41.0  | Redis queue dashboard & monitoring    |
 
 ---
 
@@ -1058,7 +1059,7 @@ class FaqBot extends Component
 
 | Jenis Ujian             | Framework                  | Cakupan                            | Sasaran            |
 | ----------------------- | -------------------------- | ---------------------------------- | ------------------ |
-| **Unit Testing**        | PHPUnit 11                 | Fungsi individual, logic kondisi   | 80%+ coverage      |
+| **Unit Testing**        | PHPUnit 11.5.46           | Fungsi individual, logic kondisi   | 80%+ coverage      |
 | **Feature Testing**     | PHPUnit + Laravel TestCase | API endpoints, database, auth flow | All critical paths |
 | **Livewire Testing**    | Livewire::test()           | UI components, user interactions   | CRUD operations    |
 | **Browser Testing**     | Laravel Dusk               | Full browser automation            | Critical flows     |

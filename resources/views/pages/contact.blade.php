@@ -17,18 +17,19 @@
     {{-- NOTE: Skip links are provided by layouts.landing --}}
 
     {{-- Page Header with MOTAC Branding --}}
-    <section class="bg-primary-600 dark:bg-primary-700 text-white py-12 md:py-16 theme-transition" role="banner" aria-labelledby="page-heading">
+    <section class="bg-primary-600 dark:bg-primary-700 text-white py-12 md:py-16 theme-transition" role="banner"
+        aria-labelledby="page-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Breadcrumbs per D12 §6.1 --}}
             <nav aria-label="{{ __('Breadcrumb') }}" class="mb-6">
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded px-1">
+                            class="text-primary-100 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-white focus-visible:ring-offset-primary-600 rounded px-1">
                             {{ __('Utama') }}
                         </a>
                     </li>
-                    <li aria-hidden="true" class="text-blue-200">
+                    <li aria-hidden="true" class="text-primary-200">
                         <x-heroicon-s-chevron-right class="h-4 w-4" />
                     </li>
                     <li>
@@ -43,14 +44,15 @@
             <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
                 {{ __('Hubungi Kami') }}
             </h1>
-            <p class="text-lg md:text-xl text-blue-100 max-w-2xl leading-relaxed">
+            <p class="text-lg md:text-xl text-primary-100 max-w-2xl leading-relaxed">
                 {{ __('Hubungi pasukan sokongan ICT BPM untuk sebarang pertanyaan atau bantuan.') }}
             </p>
         </div>
     </section>
 
     {{-- Main Content with 12-8-4 Grid per D14 §7.4 --}}
-    <section id="main-content" class="py-12 md:py-16 bg-slate-50 dark:bg-gray-800 theme-transition" aria-labelledby="contact-heading">
+    <section id="main-content" class="py-12 md:py-16 bg-slate-50 dark:bg-slate-800 theme-transition"
+        aria-labelledby="contact-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="contact-heading" class="sr-only">{{ __('Maklumat Hubungan') }}</h2>
 
@@ -58,124 +60,122 @@
                 {{-- Contact Information Cards --}}
                 <div class="col-span-4 md:col-span-8 lg:col-span-4 space-y-6">
                     {{-- Office Location Card --}}
-                    <article class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
-                                    aria-hidden="true">
-                                    <x-heroicon-o-map-pin class="h-5 w-5 text-primary-600 dark:text-primary-400" />
-                                </div>
-                                <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100">{{ __('Alamat Pejabat') }}</h3>
+                    <x-ui.card>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
+                                aria-hidden="true">
+                                <x-heroicon-o-map-pin class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                             </div>
-                            <address class="not-italic text-gray-700 dark:text-gray-300 text-sm space-y-1 leading-relaxed">
-                                <p class="font-semibold text-gray-900 dark:text-gray-100">Bahagian Pengurusan Maklumat</p>
-                                <p>Kementerian Pelancongan, Seni dan Budaya</p>
-                                <p>No. 2, Menara 1, Jalan P5/6</p>
-                                <p>Presint 5, 62200 Putrajaya</p>
-                            </address>
+                            <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100">
+                                {{ __('Alamat Pejabat') }}</h3>
                         </div>
-                    </article>
+                        <address class="not-italic text-slate-700 dark:text-slate-300 text-sm space-y-1 leading-relaxed">
+                            <p class="font-semibold text-slate-900 dark:text-slate-100">Bahagian Pengurusan Maklumat</p>
+                            <p>{{ __('pages.contact.address_line1') }}</p>
+                            <p>{{ __('pages.contact.address_line2') }}</p>
+                            <p>{{ __('pages.contact.address_line3') }}</p>
+                            <p>{{ __('pages.contact.address_line4') }}</p>
+                        </address>
+                    </x-ui.card>
 
                     {{-- Contact Channels Card --}}
-                    <article class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
-                                    aria-hidden="true">
-                                    <x-heroicon-o-phone class="h-5 w-5 text-primary-600 dark:text-primary-400" />
-                                </div>
-                                <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100">{{ __('Saluran Hubungan') }}
-                                </h3>
+                    <x-ui.card>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
+                                aria-hidden="true">
+                                <x-heroicon-o-phone class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                             </div>
-                            <dl class="space-y-4 text-sm">
-                                <div>
-                                    <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('Talian Am') }}</dt>
-                                    <dd class="text-gray-900 dark:text-gray-100 font-semibold">
-                                        <a href="tel:+60380008000"
-                                            class="hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded">
-                                            +603-8000 8000
-                                        </a>
-                                    </dd>
-                                </div>
-                                <div>
-                                    <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('Sokongan Helpdesk') }}</dt>
-                                    <dd class="text-gray-900 dark:text-gray-100 font-semibold">
-                                        <a href="tel:+60388917000"
-                                            class="hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded">
-                                            +603-8891 7000
-                                        </a>
-                                    </dd>
-                                </div>
-                                <div>
-                                    <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('E-mel') }}</dt>
-                                    <dd>
-                                        <a href="mailto:helpdesk@motac.gov.my"
-                                            class="text-primary-600 hover:text-primary-700 font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 rounded">
-                                            helpdesk@motac.gov.my
-                                        </a>
-                                    </dd>
-                                </div>
-                            </dl>
+                            <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100">
+                                {{ __('Saluran Hubungan') }}
+                            </h3>
                         </div>
-                    </article>
+                        <dl class="space-y-4 text-sm">
+                            <div>
+                                <dt class="font-medium text-slate-500 dark:text-slate-400">{{ __('Talian Am') }}</dt>
+                                <dd class="text-slate-900 dark:text-slate-100 font-semibold">
+                                    <a href="tel:+60380008000"
+                                        class="hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
+                                        +603-8000 8000
+                                    </a>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('Sokongan Helpdesk') }}
+                                </dt>
+                                <dd class="text-gray-900 dark:text-gray-100 font-semibold">
+                                    <a href="tel:+60388917000"
+                                        class="hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
+                                        +603-8891 7000
+                                    </a>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('E-mel') }}</dt>
+                                <dd>
+                                    <a href="mailto:helpdesk@motac.gov.my"
+                                        class="text-primary-600 hover:text-primary-700 font-semibold focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded">
+                                        helpdesk@motac.gov.my
+                                    </a>
+                                </dd>
+                            </div>
+                        </dl>
+                    </x-ui.card>
 
 
                     {{-- Operating Hours Card --}}
-                    <article class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
-                                    aria-hidden="true">
-                                    <x-heroicon-o-clock class="h-5 w-5 text-primary-600 dark:text-primary-400" />
-                                </div>
-                                <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100">{{ __('Waktu Operasi') }}</h3>
+                    <x-ui.card>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="h-10 w-10 bg-primary-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center shrink-0"
+                                aria-hidden="true">
+                                <x-heroicon-o-clock class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                             </div>
-                            <dl class="space-y-3 text-sm">
-                                <div class="flex justify-between items-center">
-                                    <dt class="text-gray-700 dark:text-gray-300">{{ __('Isnin - Jumaat') }}</dt>
-                                    <dd class="font-semibold text-gray-900 dark:text-gray-100">8:30 PG - 5:30 PTG</dd>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <dt class="text-gray-700 dark:text-gray-300">{{ __('Rehat Tengah Hari') }}</dt>
-                                    <dd class="font-semibold text-gray-900 dark:text-gray-100">1:00 PTG - 2:00 PTG</dd>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <dt class="text-gray-700 dark:text-gray-300">{{ __('Rehat Jumaat') }}</dt>
-                                    <dd class="font-semibold text-gray-900 dark:text-gray-100">12:15 PTG - 2:45 PTG</dd>
-                                </div>
-                                <div class="flex justify-between items-center pt-3 border-t border-gray-200 dark:border-gray-700">
-                                    <dt class="text-gray-700 dark:text-gray-300">{{ __('Hujung Minggu & Cuti Umum') }}</dt>
-                                    <dd class="font-semibold text-danger">{{ __('Tutup') }}</dd>
-                                </div>
-                            </dl>
+                            <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100">
+                                {{ __('Waktu Operasi') }}</h3>
                         </div>
-                    </article>
+                        <dl class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center">
+                                <dt class="text-gray-700 dark:text-gray-300">{{ __('Isnin - Jumaat') }}</dt>
+                                <dd class="font-semibold text-gray-900 dark:text-gray-100">8:30 PG - 5:30 PTG</dd>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <dt class="text-gray-700 dark:text-gray-300">{{ __('Rehat Tengah Hari') }}</dt>
+                                <dd class="font-semibold text-gray-900 dark:text-gray-100">1:00 PTG - 2:00 PTG</dd>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <dt class="text-gray-700 dark:text-gray-300">{{ __('Rehat Jumaat') }}</dt>
+                                <dd class="font-semibold text-gray-900 dark:text-gray-100">12:15 PTG - 2:45 PTG</dd>
+                            </div>
+                            <div
+                                class="flex justify-between items-center pt-3 border-t border-gray-200 dark:border-gray-700">
+                                <dt class="text-gray-700 dark:text-gray-300">{{ __('Hujung Minggu & Cuti Umum') }}</dt>
+                                <dd class="font-semibold text-danger">{{ __('Tutup') }}</dd>
+                            </div>
+                        </dl>
+                    </x-ui.card>
                 </div>
 
                 {{-- Contact Form and Map --}}
                 <div class="col-span-4 md:col-span-8 lg:col-span-8 space-y-6">
                     {{-- Contact Form --}}
-                    <article class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
-                        <div class="p-6 md:p-8">
+                    <x-ui.card>
+                        <x-slot name="header">
                             <h3 class="text-xl font-heading font-semibold text-gray-900 mb-6">{{ __('Hantar Pertanyaan') }}
                             </h3>
-                            <livewire:contact-form />
-                        </div>
-                    </article>
+                        </x-slot>
+                        <livewire:contact-form />
+                    </x-ui.card>
 
                     {{-- Map --}}
-                    <article class="bg-white dark:bg-gray-900 rounded-lg shadow-card dark:shadow-dropdown border border-gray-200 dark:border-gray-700 overflow-hidden theme-transition">
+                    <x-ui.card :noPadding="true">
                         <div class="relative w-full" style="padding-bottom: 56.25%; /* 16:9 aspect ratio */">
                             <iframe
                                 src="https://www.google.com/maps?q=Kementerian+Pelancongan%2C+Seni+dan+Budaya+Malaysia%2C+No.+2%2C+Menara+1%2C+Jalan+P5%2F6%2C+Presint+5%2C+62200+Putrajaya&output=embed"
-                                loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade"
-                                title="{{ __('Peta Lokasi MOTAC') }}"
-                                allowfullscreen=""
+                                loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                title="{{ __('Peta Lokasi MOTAC') }}" allowfullscreen=""
                                 class="absolute top-0 left-0 w-full h-full border-0"
                                 aria-label="{{ __('Peta lokasi Kementerian Pelancongan, Seni dan Budaya Malaysia, No. 2, Menara 1, Jalan P5/6, Presint 5, 62200 Putrajaya') }}"></iframe>
                         </div>
-                    </article>
+                    </x-ui.card>
 
                     {{-- Quick Actions --}}
                     <div class="grid grid-cols-4 md:grid-cols-8 gap-4 md:gap-6">
@@ -194,7 +194,7 @@
 
                         @if ($helpdeskRoute)
                             <a href="{{ route($helpdeskRoute) }}"
-                                class="col-span-4 group bg-white dark:bg-gray-900 rounded-lg shadow-card hover:shadow-dropdown dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                                class="col-span-4 group bg-white dark:bg-gray-900 rounded-lg shadow-card hover:shadow-dropdown dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 <div class="flex items-center justify-between mb-3">
                                     <h4
                                         class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
@@ -212,7 +212,7 @@
 
                         @if ($loanRoute)
                             <a href="{{ route($loanRoute) }}"
-                                class="col-span-4 group bg-white dark:bg-gray-900 rounded-lg shadow-card hover:shadow-dropdown dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 focus:outline-none focus:ring-3 focus:ring-success focus:ring-offset-2">
+                                class="col-span-4 group bg-white dark:bg-gray-900 rounded-lg shadow-card hover:shadow-dropdown dark:shadow-dropdown border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-success focus-visible:ring-offset-2">
                                 <div class="flex items-center justify-between mb-3">
                                     <h4
                                         class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 group-hover:text-success dark:group-hover:text-success-400 transition-colors">
@@ -234,7 +234,8 @@
     </section>
 
     {{-- Quick Links --}}
-    <section class="py-8 md:py-12 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 theme-transition" aria-labelledby="quick-links-heading">
+    <section class="py-8 md:py-12 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 theme-transition"
+        aria-labelledby="quick-links-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="quick-links-heading" class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 {{ __('Pautan Pantas') }}
@@ -243,30 +244,33 @@
                 <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <li>
                         <a href="{{ route('faq') }}"
-                                class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
-                            <x-heroicon-o-question-mark-circle class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0"
-                                aria-hidden="true" />
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                            <x-heroicon-o-question-mark-circle
+                                class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0" aria-hidden="true" />
                             <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Soalan Lazim') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('services') }}"
-                                class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
-                            <x-heroicon-o-squares-2x2 class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0" aria-hidden="true" />
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                            <x-heroicon-o-squares-2x2 class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0"
+                                aria-hidden="true" />
                             <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Perkhidmatan') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('accessibility') }}"
-                                class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
-                            <x-heroicon-o-eye class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0" aria-hidden="true" />
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                            <x-heroicon-o-eye class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0"
+                                aria-hidden="true" />
                             <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Kebolehcapaian') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('privacy-policy') }}"
-                                class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
-                            <x-heroicon-o-shield-check class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0" aria-hidden="true" />
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                            <x-heroicon-o-shield-check class="h-5 w-5 text-primary-600 dark:text-primary-400 shrink-0"
+                                aria-hidden="true" />
                             <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Dasar Privasi') }}</span>
                         </a>
                     </li>
@@ -275,6 +279,3 @@
         </div>
     </section>
 @endsection
-
-
-

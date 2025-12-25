@@ -4,8 +4,8 @@
         {{-- Total Compliance Audits --}}
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
-                <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                    <x-heroicon-o-shield-check class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <div class="p-2 bg-primary-100 dark:bg-primary-900 rounded-lg">
+                    <x-heroicon-o-shield-check class="w-6 h-6 text-primary-600 dark:text-primary-400" />
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('Compliance Audits') }}</p>
@@ -18,8 +18,8 @@
         {{-- Total Activity Logs --}}
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
-                <div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-                    <x-heroicon-o-clipboard-document-list class="w-6 h-6 text-green-600 dark:text-green-400" />
+                <div class="p-2 bg-success-100 dark:bg-success-900 rounded-lg">
+                    <x-heroicon-o-clipboard-document-list class="w-6 h-6 text-success-600 dark:text-success-400" />
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('Activity Logs') }}</p>
@@ -32,8 +32,8 @@
         {{-- Last 7 Days Audits --}}
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
-                <div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-                    <x-heroicon-o-calendar-days class="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <div class="p-2 bg-secondary-100 dark:bg-secondary-900 rounded-lg">
+                    <x-heroicon-o-calendar-days class="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('Audits (7 Days)') }}</p>
@@ -45,8 +45,8 @@
         {{-- Last 7 Days Activities --}}
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
-                <div class="p-2 bg-amber-100 dark:bg-amber-900 rounded-lg">
-                    <x-heroicon-o-clock class="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                <div class="p-2 bg-warning-100 dark:bg-warning-900 rounded-lg">
+                    <x-heroicon-o-clock class="w-6 h-6 text-warning-600 dark:text-warning-400" />
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('Activities (7 Days)') }}</p>
@@ -62,7 +62,7 @@
         <nav class="flex space-x-4" aria-label="{{ __('Audit Log Tabs') }}">
             <button
                 wire:click="setTab('all')"
-                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 {{ $activeTab === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
+                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $activeTab === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
                 aria-current="{{ $activeTab === 'all' ? 'page' : 'false' }}"
             >
                 <x-heroicon-o-squares-2x2 class="w-4 h-4 inline-block mr-1" />
@@ -71,24 +71,24 @@
 
             <button
                 wire:click="setTab('compliance')"
-                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 {{ $activeTab === 'compliance' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
+                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $activeTab === 'compliance' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
                 aria-current="{{ $activeTab === 'compliance' ? 'page' : 'false' }}"
             >
                 <x-heroicon-o-shield-check class="w-4 h-4 inline-block mr-1" />
                 {{ __('Compliance Audits') }}
-                <span class="ml-1 px-2 py-0.5 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full">
+                <span class="ml-1 px-2 py-0.5 text-xs bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded-full">
                     owen-it
                 </span>
             </button>
 
             <button
                 wire:click="setTab('activity')"
-                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 {{ $activeTab === 'activity' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
+                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 {{ $activeTab === 'activity' ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}"
                 aria-current="{{ $activeTab === 'activity' ? 'page' : 'false' }}"
             >
                 <x-heroicon-o-clipboard-document-list class="w-4 h-4 inline-block mr-1" />
                 {{ __('Activity Logs') }}
-                <span class="ml-1 px-2 py-0.5 text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">
+                <span class="ml-1 px-2 py-0.5 text-xs bg-success-100 dark:bg-success-900 text-success-800 dark:text-success-200 rounded-full">
                     spatie
                 </span>
             </button>
@@ -121,8 +121,8 @@
     </div>
 
     {{-- Retention Notice --}}
-    <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
-        <p class="text-sm text-amber-800 dark:text-amber-200">
+    <div class="mt-4 p-3 bg-warning-50 dark:bg-warning-900/20 rounded-lg border border-warning-200 dark:border-warning-800">
+        <p class="text-sm text-warning-800 dark:text-warning-200">
             <x-heroicon-o-exclamation-triangle class="w-4 h-4 inline-block mr-1" />
             {{ __('Audit records are retained for 7 years per PDPA 2010 and Arkib Negara requirements. Records are immutable and cannot be modified or deleted.') }}
         </p>

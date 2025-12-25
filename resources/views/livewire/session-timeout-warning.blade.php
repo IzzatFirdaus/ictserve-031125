@@ -82,7 +82,7 @@ document.addEventListener('alpine:init', () => {
     <!-- Session Timeout Warning Modal -->
     <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!-- Backdrop -->
-        <div class="fixed inset-0 bg-gray-900/75 dark:bg-gray-950/90 transition-opacity" aria-hidden="true"></div>
+        <div class="fixed inset-0 bg-slate-900/75 dark:bg-slate-950/90 transition-opacity" aria-hidden="true"></div>
 
         <!-- Modal Content -->
         <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
@@ -95,11 +95,11 @@ document.addEventListener('alpine:init', () => {
                         </svg>
                     </div>
                     <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left flex-1">
-                        <h3 class="text-lg font-semibold leading-6 text-gray-900 dark:text-gray-100" id="modal-title">
+                        <h3 class="text-lg font-semibold leading-6 text-slate-900 dark:text-slate-100" id="modal-title">
                             {{ __('auth.session_expiring_title') }}
                         </h3>
                         <div class="mt-2">
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                            <p class="text-sm text-slate-600 dark:text-slate-400">
                                 {{ __('auth.session_expiring_message') }}
                             </p>
                             <p class="mt-2 text-sm font-medium text-warning-700 dark:text-warning-400">
@@ -114,14 +114,14 @@ document.addEventListener('alpine:init', () => {
                     <button
                         type="button"
                         wire:click="extendSession"
-                        class="inline-flex w-full justify-center rounded-md bg-primary-600 dark:bg-primary-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 sm:w-auto transition-colors"
+                        class="inline-flex w-full justify-center rounded-lg bg-primary-600 dark:bg-primary-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 dark:hover:bg-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:w-auto transition-colors min-h-11"
                     >
                         {{ __('auth.extend_session') }}
                     </button>
                     <button
                         type="button"
                         wire:click="logout"
-                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-slate-700 px-4 py-2.5 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 sm:mt-0 sm:w-auto transition-colors"
+                        class="mt-3 inline-flex w-full justify-center rounded-lg bg-white dark:bg-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-900 dark:text-slate-100 shadow-sm ring-1 ring-inset ring-slate-300 dark:ring-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:mt-0 sm:w-auto transition-colors min-h-11"
                     >
                         {{ __('auth.logout') }}
                     </button>

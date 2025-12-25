@@ -35,7 +35,7 @@
                 <x-heroicon-o-magnifying-glass class="h-5 w-5 text-gray-400" />
             </div>
             <input type="search" wire:model.live.debounce.300ms="search"
-                class="block w-full rounded-lg border-gray-300 pl-10 pr-12 focus:border-primary-500 focus:ring-primary-500"
+                class="block w-full rounded-lg border-gray-300 pl-10 pr-12 focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500"
                 placeholder="{{ __('portal.help.search_placeholder') }}"
                 aria-label="{{ __('portal.help.search_placeholder') }}" />
             @if ($search)
@@ -57,9 +57,9 @@
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($categories as $key => $category)
                     <button type="button" wire:click="selectCategory('{{ $key }}')"
-                        class="flex items-start rounded-lg border border-gray-200 bg-white p-4 text-left shadow-sm transition-all hover:border-primary-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="flex items-start rounded-lg border border-gray-200 bg-white p-4 text-left shadow-sm transition-all hover:border-primary-500 hover:shadow-md focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <div class="shrink-0">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-50">
                                 <x-dynamic-component :component="'heroicon-o-' . $category['icon']" class="h-6 w-6 text-primary-600" />
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                 {{ $categories[$selectedCategory]['name'] ?? __('portal.help.articles') }}
             </h2>
             <button type="button" wire:click="selectCategory(null)"
-                class="inline-flex items-center px-3 py-2 text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                class="inline-flex items-center px-3 py-2 text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg">
                 <x-heroicon-o-arrow-left class="mr-1 h-4 w-4" />
                 {{ __('portal.help.back_to_categories') ?? 'Back to categories' }}
             </button>
@@ -98,7 +98,7 @@
                 <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
                     <h3 class="text-lg font-medium text-gray-900">
                         <a href="#"
-                            class="hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                            class="hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg">
                             {{ $article['title'] }}
                         </a>
                     </h3>
@@ -133,7 +133,7 @@
             </p>
             @if ($search || $selectedCategory)
                 <button type="button" wire:click="clearSearch"
-                    class="mt-4 inline-flex items-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    class="mt-4 inline-flex items-center rounded-lg border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     {{ __('portal.clear_filters') }}
                 </button>
             @endif
@@ -151,7 +151,7 @@
                 <div class="space-y-3">
                     @foreach ($popularArticles as $article)
                         <a href="#"
-                            class="block rounded-lg border border-gray-200 bg-white p-4 hover:border-primary-500 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                            class="block rounded-lg border border-gray-200 bg-white p-4 hover:border-primary-500 hover:shadow-md transition-all focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <h3 class="text-sm font-medium text-gray-900">
                                 {{ $article['title'] }}
                             </h3>
@@ -171,7 +171,7 @@
                 <div class="space-y-3">
                     @foreach ($recentArticles as $article)
                         <a href="#"
-                            class="block rounded-lg border border-gray-200 bg-white p-4 hover:border-primary-500 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                            class="block rounded-lg border border-gray-200 bg-white p-4 hover:border-primary-500 hover:shadow-md transition-all focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                             <h3 class="text-sm font-medium text-gray-900">
                                 {{ $article['title'] }}
                             </h3>
@@ -199,7 +199,7 @@
                     {{ __('portal.help.contact_support_description') }}
                 </p>
                 <a href="{{ route('contact') }}"
-                    class="mt-3 inline-flex items-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    class="mt-3 inline-flex items-center rounded-lg border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     {{ __('portal.help.contact_support') }}
                     <x-heroicon-o-arrow-right class="ml-2 h-4 w-4" />
                 </a>

@@ -90,8 +90,8 @@ $neutralColors = [
 
 // Success colors for zero count on danger type (good state - no overdue items)
 $zeroSuccessColors = [
-'bg' => 'bg-green-100 dark:bg-green-900/30',
-'text' => 'text-green-500 dark:text-green-400',
+'bg' => 'bg-success-100 dark:bg-success-900/30',
+'text' => 'text-success-500 dark:text-success-400',
 ];
 
 // Determine which colors to use
@@ -107,13 +107,13 @@ $colors = $typeColors[$type] ?? $typeColors['primary'];
 <a href="{{ $href }}"
     {{ $attributes->merge([
             'class' =>
-                'block bg-white dark:bg-gray-800 rounded-(--radius-l) shadow-card border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900',
+                'block bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6 transition-all duration-200 hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900',
         ]) }}
     aria-label="{{ $title }}: {{ $count }}">
     @else
     <div
         {{ $attributes->merge([
-                'class' => 'bg-white dark:bg-gray-800 rounded-(--radius-l) shadow-card border border-gray-200 dark:border-gray-700 p-6',
+                'class' => 'bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6',
                 'role' => 'status',
                 'aria-label' => $title . ': ' . $count,
             ]) }}>
@@ -122,14 +122,14 @@ $colors = $typeColors[$type] ?? $typeColors['primary'];
         <div class="flex items-center justify-between">
             {{-- Text Content --}}
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
+                <p class="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">
                     {{ $title }}
                 </p>
-                <p class="mt-1 text-3xl font-bold text-gray-900 dark:text-gray-100">
+                <p class="mt-1 text-3xl font-bold text-slate-900 dark:text-slate-100">
                     {{ number_format((int) $count) }}
                 </p>
                 @if ($description)
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     {{ $description }}
                 </p>
                 @endif

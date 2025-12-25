@@ -6,15 +6,12 @@ namespace Tests\Feature;
 
 use App\Livewire\Helpdesk\SubmitTicket;
 use App\Models\Division;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SubmitTicketDivisionsTest extends TestCase
 {
-    use DatabaseMigrations;
-
     #[Test]
     public function it_returns_active_divisions_sorted_by_localized_name(): void
     {

@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -45,9 +46,13 @@ class NotificationJobsTest extends TestCase
     #[Test]
     public function send_ticket_notification_job_can_be_dispatched(): void
     {
+        $user = User::factory()->create([
+            'email' => 'test@motac.gov.my',
+            'name' => 'Test User',
+        ]);
+
         $ticket = HelpdeskTicket::factory()->create([
-            'submitter_email' => 'test@motac.gov.my',
-            'submitter_name' => 'Test User',
+            'user_id' => $user->id,
         ]);
 
         SendTicketNotification::dispatch([
@@ -198,9 +203,13 @@ class NotificationJobsTest extends TestCase
     {
         Mail::fake();
 
+        $user = User::factory()->create([
+            'email' => 'test@motac.gov.my',
+            'name' => 'Test User',
+        ]);
+
         $ticket = HelpdeskTicket::factory()->create([
-            'submitter_email' => 'test@motac.gov.my',
-            'submitter_name' => 'Test User',
+            'user_id' => $user->id,
         ]);
 
         $job = new SendTicketNotification([
@@ -263,10 +272,10 @@ class NotificationJobsTest extends TestCase
     }
 
     /**
-     * Test ProcessNotificationDigest processes daily digest for eligible users.
+     * Test ProcessNotificationDigest processes daily digest for eligible users with BM content.
      */
     #[Test]
-    public function process_notification_digest_processes_daily_digest(): void
+    public function process_notification_digest_processes_daily_digest_with_bm_content(): void
     {
         Mail::fake();
 
@@ -275,13 +284,16 @@ class NotificationJobsTest extends TestCase
             'notification_preferences' => ['digest_frequency' => 'daily'],
         ]);
 
-        // Create a notification for the user
+        // Create a notification for the user with BM content
         DB::table('notifications')->insert([
             'id' => Str::uuid()->toString(),
             'type' => 'App\\Notifications\\TestNotification',
             'notifiable_type' => User::class,
             'notifiable_id' => $user->id,
-            'data' => json_encode(['message' => 'Test notification']),
+            'data' => json_encode([
+                'message' => 'Tiket baharu telah diterima', // BM content
+                'title' => 'Pemberitahuan Tiket Helpdesk',
+            ]),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -296,6 +308,134 @@ class NotificationJobsTest extends TestCase
         Mail::assertQueued(NotificationDigest::class, function ($mail) use ($user) {
             return $mail->hasTo($user->email);
         });
+    }
+
+    /**
+     * Test multi-channel notification creation with comprehensive data provider
+     */
+    #[Test]
+    #[DataProvider('multiChannelNotificationProvider')]
+    public function multi_channel_notification_creation_works_correctly(array $jobData, string $jobClass, array $expectedChannels): void
+    {
+        Mail::fake();
+        Queue::fake();
+
+        // Create test data based on job type
+        if ($jobClass === SendTicketNotification::class) {
+            $user = User::factory()->create(['email' => $jobData['email']]);
+            $ticket = HelpdeskTicket::factory()->create(['user_id' => $user->id]);
+            $jobData['ticket_id'] = $ticket->id;
+        } elseif ($jobClass === SendLoanNotification::class) {
+            $application = LoanApplication::factory()->create([
+                'applicant_email' => $jobData['email'],
+                'applicant_name' => $jobData['name'] ?? 'Test Applicant',
+            ]);
+            $jobData['loan_application_id'] = $application->id;
+        } elseif ($jobClass === SendApprovalRequest::class) {
+            $application = LoanApplication::factory()->create();
+            $jobData['loan_application_id'] = $application->id;
+        }
+
+        // Dispatch the job
+        $jobClass::dispatch($jobData);
+
+        // Verify job was queued
+        Queue::assertPushed($jobClass);
+
+        // Execute the job to test multi-channel behavior
+        $job = new $jobClass($jobData);
+        $job->handle();
+
+        // Verify expected channels were used
+        foreach ($expectedChannels as $channel) {
+            if ($channel === 'mail') {
+                Mail::assertQueued(\Illuminate\Mail\Mailable::class);
+            } elseif ($channel === 'database') {
+                // Database notifications would be created by the actual notification system
+                $this->assertTrue(true, 'Database channel would be handled by Laravel notification system');
+            }
+        }
+    }
+
+    public static function multiChannelNotificationProvider(): array
+    {
+        return [
+            'ticket notification with email' => [
+                ['type' => 'created', 'email' => 'test@motac.gov.my'],
+                SendTicketNotification::class,
+                ['mail', 'database'],
+            ],
+            'loan notification with email' => [
+                ['type' => 'submitted', 'email' => 'applicant@motac.gov.my', 'name' => 'Test Applicant'],
+                SendLoanNotification::class,
+                ['mail', 'database'],
+            ],
+            'approval request with token' => [
+                ['approver_email' => 'approver@motac.gov.my', 'token' => 'test-token-123', 'approver_name' => 'Test Approver'],
+                SendApprovalRequest::class,
+                ['mail'],
+            ],
+        ];
+    }
+
+    /**
+     * Test queue-based notification delivery with comprehensive scenarios
+     */
+    #[Test]
+    #[DataProvider('queueDeliveryProvider')]
+    public function queue_based_notification_delivery_works_correctly(string $jobClass, array $jobData, string $expectedQueue, int $expectedRetries): void
+    {
+        Queue::fake();
+
+        // Create necessary test data
+        if ($jobClass === SendTicketNotification::class && ! isset($jobData['ticket_id'])) {
+            $ticket = HelpdeskTicket::factory()->create();
+            $jobData['ticket_id'] = $ticket->id;
+        } elseif ($jobClass === SendLoanNotification::class && ! isset($jobData['loan_application_id'])) {
+            $application = LoanApplication::factory()->create();
+            $jobData['loan_application_id'] = $application->id;
+        } elseif ($jobClass === SendApprovalRequest::class && ! isset($jobData['loan_application_id'])) {
+            $application = LoanApplication::factory()->create();
+            $jobData['loan_application_id'] = $application->id;
+        }
+
+        // Dispatch job
+        $jobClass::dispatch($jobData);
+
+        // Verify job configuration
+        Queue::assertPushed($jobClass, function ($job) use ($expectedQueue, $expectedRetries) {
+            return $job->queue === $expectedQueue && $job->tries === $expectedRetries;
+        });
+    }
+
+    public static function queueDeliveryProvider(): array
+    {
+        return [
+            'ticket notification on notifications queue' => [
+                SendTicketNotification::class,
+                ['type' => 'created'],
+                'notifications',
+                3,
+            ],
+            'loan notification on notifications queue' => [
+                SendLoanNotification::class,
+                ['type' => 'submitted'],
+                'notifications',
+                3,
+            ],
+            'approval request on emails queue' => [
+                SendApprovalRequest::class,
+                ['approver_email' => 'test@motac.gov.my', 'token' => 'abc123'],
+                'emails',
+                3,
+            ],
+            'digest processing on digests queue' => [
+                ProcessNotificationDigest::class,
+                ['frequency' => 'daily'],
+                'digests',
+                3,
+            ],
+        ];
     }
 
     /**

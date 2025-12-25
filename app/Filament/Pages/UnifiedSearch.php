@@ -25,7 +25,7 @@ class UnifiedSearch extends Page
 
     protected string $view = 'filament.pages.unified-search';
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 1;
 
@@ -68,7 +68,7 @@ class UnifiedSearch extends Page
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.unified_search.group');
+        return __('filament.navigation.system');
     }
 
     public function getTitle(): string

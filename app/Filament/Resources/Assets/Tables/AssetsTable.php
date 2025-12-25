@@ -22,6 +22,7 @@ use Illuminate\Support\Collection;
 
 class AssetsTable
 {
+    // @intelephense-ignore
     public static function configure(Table $table): Table
     {
         return $table
@@ -338,6 +339,10 @@ class AssetsTable
     /**
      * @param  array<AssetStatus|AssetCondition>  $cases
      * @return array<string, string>
+     */
+
+    /**
+     * @param  array<string, mixed>  $cases
      */
     private static function enumOptions(array $cases): array
     {

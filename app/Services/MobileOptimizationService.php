@@ -218,7 +218,12 @@ class MobileOptimizationService
      * @param  array<int, array<string, mixed>>  $items
      * @return array<int, array<string, mixed>>
      */
-    public function getMobileNavigation(array $items, int $maxItems = 5): array
+    
+
+/**
+ * @param array<string, mixed> $items
+ */
+public function getMobileNavigation(array $items, int $maxItems = 5): array
     {
         // Prioritize items for mobile bottom navigation
         $prioritized = collect($items)

@@ -1,0 +1,25 @@
+graph TD
+    ROOT[BF-IS<br/>Mengurus Perkhidmatan ICT MOTAC]
+    
+    ROOT --> MP[BF-IS-MP<br/>Mengurus Pengguna]
+    ROOT --> HS[BF-IS-HS<br/>Helpdesk Service Desk]
+    ROOT --> PA[BF-IS-PA<br/>Pinjaman Aset ICT]
+    ROOT --> PM[BF-IS-PM<br/>Pemantauan & Audit]
+    ROOT --> JL[BF-IS-JL<br/>Dashboard & Laporan]
+    
+    MP --> MP1[BF-IS-MP-SR<br/>Self-Registration]
+    MP --> MP2[BF-IS-MP-FL<br/>Flexible Login]
+    MP --> MP3[BF-IS-MP-AL<br/>Account Linking]
+    
+    HS --> HS1[BF-IS-HS-TK<br/>Tiket]
+    HS --> HS2[BF-IS-HS-SLA<br/>Pengurusan SLA]
+    HS --> HS3[BF-IS-HS-NT<br/>Notifikasi]
+    
+    PA --> PA1[BF-IS-PA-PP<br/>Permohonan]
+    PA --> PA2[BF-IS-PA-KL<br/>Kelulusan]
+    PA --> PA3[BF-IS-PA-CO<br/>Check-out/Check-in]
+    
+    PM --> PM1[BF-IS-PM-PS<br/>Pulse]
+    PM --> PM2[BF-IS-PM-TS<br/>Telescope]
+    PM --> PM3[BF-IS-PM-DA<br/>Dual Audit]
+    PM --> PM4[BF-IS-PM-API<br/>Sanctum]

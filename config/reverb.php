@@ -34,7 +34,13 @@ return [
             'path' => env('REVERB_SERVER_PATH', ''),
             'hostname' => env('REVERB_HOST'),
             'options' => [
-                'tls' => [],
+                'tls' => [
+                    'local_cert' => env('REVERB_TLS_CERT_PATH'),
+                    'local_pk' => env('REVERB_TLS_KEY_PATH'),
+                    'verify_peer' => env('REVERB_TLS_VERIFY_PEER', false),
+                    'verify_peer_name' => env('REVERB_TLS_VERIFY_PEER_NAME', false),
+                    'allow_self_signed' => env('REVERB_TLS_ALLOW_SELF_SIGNED', true),
+                ],
             ],
             'max_request_size' => env('REVERB_MAX_REQUEST_SIZE', 10_000),
             'scaling' => [
@@ -46,8 +52,10 @@ return [
                     'port' => env('REDIS_PORT', '6379'),
                     'username' => env('REDIS_USERNAME'),
                     'password' => env('REDIS_PASSWORD'),
-                    'database' => env('REDIS_DB', '0'),
+                    'database' => env('REDIS_BROADCAST_DB', env('REDIS_DB', '0')),
                     'timeout' => env('REDIS_TIMEOUT', 60),
+                    'read_timeout' => env('REDIS_READ_TIMEOUT', 60),
+                    'retry_interval' => env('REDIS_RETRY_INTERVAL', 100),
                 ],
             ],
             'pulse_ingest_interval' => env('REVERB_PULSE_INGEST_INTERVAL', 15),

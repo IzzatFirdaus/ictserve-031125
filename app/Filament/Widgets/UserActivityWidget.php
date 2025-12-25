@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Tables;
@@ -28,7 +29,25 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class UserActivityWidget extends BaseWidget
 {
+    use WidgetMetadata;
+
     protected static ?int $sort = 3;
+
+    /**
+     * Widget roles - restricted access
+     */
+    public static function getWidgetRoles(): array
+    {
+        return ['superuser'];
+    }
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D09 Database Documentation - Dual Audit System';
+    }
 
     protected int|string|array $columnSpan = 'full';
 

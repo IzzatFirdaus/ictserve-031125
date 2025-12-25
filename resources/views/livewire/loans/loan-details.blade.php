@@ -8,7 +8,7 @@
         </div>
 
         <div class="flex items-center gap-3">
-            <span class="inline-flex items-center rounded-full bg-blue-900/30 px-3 py-1 text-sm font-medium text-blue-400 border border-blue-800">
+            <span class="inline-flex items-center rounded-full bg-primary-900/30 px-3 py-1 text-sm font-medium text-primary-400 border border-primary-800">
                 {{ $application->status->label() }}
             </span>
 
@@ -76,20 +76,20 @@
         <x-ui.card>
             <h2 class="text-lg font-semibold text-slate-100 mb-4">{{ __('Garis Masa') }}</h2>
 
-            <ol class="relative border-l border-emerald-800 pl-6 space-y-6">
+            <ol class="relative border-l border-success-800 pl-6 space-y-6">
                 @foreach ($timeline as $event)
                     <li>
-                        <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full border border-emerald-700 bg-slate-900">
+                        <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full border border-success-700 bg-slate-900">
                             <span class="@class([
                                 'h-3 w-3 rounded-full',
-                                'bg-emerald-500' => $event['completed'] || $event['current'],
-                                'bg-slate-900 border border-emerald-700' => ! $event['completed'] && ! $event['current'],
+                                'bg-success-500' => $event['completed'] || $event['current'],
+                                'bg-slate-900 border border-success-700' => ! $event['completed'] && ! $event['current'],
                             ])"></span>
                         </span>
 
                         <div @class([
                             'rounded-lg border p-4 transition shadow-sm',
-                            'border-emerald-800 bg-emerald-900/30' => $event['current'],
+                            'border-success-800 bg-success-900/30' => $event['current'],
                             'border-slate-800 bg-slate-900/70 backdrop-blur-sm' => ! $event['current'],
                         ])>
                             <h3 class="text-sm font-semibold text-slate-100">{{ $event['label'] }}</h3>

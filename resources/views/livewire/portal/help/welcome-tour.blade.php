@@ -1,7 +1,7 @@
 <div>
     @if($isVisible)
     <!-- Tour Overlay -->
-    <div class="fixed inset-0 bg-gray-900/50 dark:bg-gray-950/75 z-50 transition-opacity"
+    <div class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/75 z-50 transition-opacity"
          x-data="{ show: $wire.entangle('isVisible') }"
          x-show="show"
          x-transition:enter="ease-out duration-300"
@@ -13,7 +13,7 @@
     </div>
 
     <!-- Tour Tooltip -->
-    <div class="fixed z-50 max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700"
+    <div class="fixed z-50 max-w-md bg-white dark:bg-slate-800 rounded-lg shadow-2xl border border-slate-200 dark:border-slate-700"
          x-data="{
              show: $wire.entangle('isVisible'),
              step: $wire.entangle('currentStep'),
@@ -25,7 +25,7 @@
                      const position = '{{ $stepData['position'] ?? 'bottom' }}';
 
                      // Highlight target element
-                     target.classList.add('ring-4', 'ring-primary-500', 'ring-offset-2');
+                     target.classList.add('ring-3', 'ring-primary-500', 'ring-offset-2');
                      target.style.position = 'relative';
                      target.style.zIndex = '60';
 
@@ -51,8 +51,8 @@
                  }
              },
              clearHighlight() {
-                 document.querySelectorAll('.ring-4').forEach(el => {
-                     el.classList.remove('ring-4', 'ring-primary-500', 'ring-offset-2');
+                 document.querySelectorAll('.ring-3').forEach(el => {
+                     el.classList.remove('ring-3', 'ring-primary-500', 'ring-offset-2');
                      el.style.position = '';
                      el.style.zIndex = '';
                  });
@@ -71,7 +71,7 @@
          aria-describedby="tour-description">
 
         <!-- Progress Bar -->
-        <div class="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-t-lg overflow-hidden">
+        <div class="h-1.5 bg-slate-200 dark:bg-slate-700 rounded-t-lg overflow-hidden">
             <div class="h-full bg-primary-600 transition-all duration-300"
                  style="width: {{ $progressPercentage }}%"
                  role="progressbar"
@@ -87,16 +87,16 @@
             <!-- Header -->
             <div class="flex items-start justify-between mb-4">
                 <div class="flex-1">
-                    <h3 id="tour-title" class="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                    <h3 id="tour-title" class="text-lg font-semibold text-slate-900 dark:text-white mb-1">
                         {{ __($stepData['title'] ?? 'portal.help.tour.welcome') }}
                     </h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
                         {{ __('portal.help.tour.step_count', ['current' => $currentStep, 'total' => $totalSteps]) }}
                     </p>
                 </div>
                 <button wire:click="skipTour"
                         type="button"
-                        class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-md p-1"
+                        class="text-slate-400 hover:text-slate-500 dark:hover:text-slate-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg p-1"
                         aria-label="{{ __('portal.help.tour.skip') }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -105,7 +105,7 @@
             </div>
 
             <!-- Description -->
-            <p id="tour-description" class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+            <p id="tour-description" class="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                 {{ __($stepData['description'] ?? '') }}
             </p>
 
@@ -117,12 +117,12 @@
                         <button wire:click="goToStep({{ $i }})"
                                 type="button"
                                 class="w-2.5 h-2.5 rounded-full transition-all duration-200
-                                       focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                                       focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2
                                        {{ $currentStep === $i
                                           ? 'bg-primary-600 w-8'
                                           : ($currentStep > $i
                                              ? 'bg-primary-300 dark:bg-primary-700'
-                                             : 'bg-gray-300 dark:bg-gray-600') }}"
+                                             : 'bg-slate-300 dark:bg-slate-600') }}"
                                 role="tab"
                                 aria-label="{{ __('portal.help.tour.go_to_step', ['step' => $i]) }}"
                                 aria-selected="{{ $currentStep === $i ? 'true' : 'false' }}">
@@ -135,9 +135,9 @@
                     @if($currentStep > 1)
                         <button wire:click="previousStep"
                                 type="button"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300
-                                       hover:text-gray-900 dark:hover:text-white
-                                       focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-md
+                                class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300
+                                       hover:text-slate-900 dark:hover:text-white
+                                       focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg
                                        transition-colors duration-200">
                             {{ __('portal.help.tour.previous') }}
                         </button>
@@ -148,8 +148,8 @@
                                 type="button"
                                 class="px-4 py-2 text-sm font-medium text-white bg-primary-600
                                        hover:bg-primary-700 active:bg-primary-800
-                                       focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-                                       rounded-md shadow-sm transition-colors duration-200">
+                                       focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2
+                                       rounded-lg shadow-sm transition-colors duration-200">
                             {{ __('portal.help.tour.next') }}
                         </button>
                     @else
@@ -157,8 +157,8 @@
                                 type="button"
                                 class="px-4 py-2 text-sm font-medium text-white bg-success-600
                                        hover:bg-success-700 active:bg-success-800
-                                       focus:outline-none focus:ring-2 focus:ring-success-500 focus:ring-offset-2
-                                       rounded-md shadow-sm transition-colors duration-200">
+                                       focus:outline-none focus-visible:ring-3 focus-visible:ring-success-500 focus-visible:ring-offset-2
+                                       rounded-lg shadow-sm transition-colors duration-200">
                             {{ __('portal.help.tour.finish') }}
                         </button>
                     @endif

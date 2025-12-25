@@ -16,7 +16,12 @@ final class ChannelRegistrar
     /**
      * @param  array<string, mixed>  $options
      */
-    public function channel(mixed $channel, callable|string $callback, array $options = []): void
+    
+
+/**
+ * @param array<string, mixed> $options
+ */
+public function channel(mixed $channel, callable|string $callback, array $options = []): void
     {
         $this->registrations[] = [
             'channel' => $channel,
@@ -28,11 +33,14 @@ final class ChannelRegistrar
     public function register(Broadcaster $broadcaster): void
     {
         foreach ($this->registrations as $registration) {
-            $broadcaster->channel(
-                $registration['channel'],
-                $registration['callback'],
-                $registration['options'],
-            );
+            $channel = $registration['channel'];
+            if (is_string($channel) || $channel instanceof \Illuminate\Contracts\Broadcasting\HasBroadcastChannel) {
+                $broadcaster->channel(
+                    $channel,
+                    $registration['callback'],
+                    $registration['options'],
+                );
+            }
         }
     }
 }

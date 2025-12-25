@@ -7,12 +7,12 @@
 <div class="space-y-6">
     {{-- Header with Clear Filters --}}
     <div class="flex items-center justify-between">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">
             {{ __('staff.recent_activity.title') }}
         </h2>
         @if($activityType !== 'all' || $dateFrom || $dateTo || $search)
             <button wire:click="clearFilters"
-                    class="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    class="px-3 py-1.5 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-slate-300 dark:focus-visible:ring-3 focus-visible:ring-slate-600 min-h-11 min-w-11"
                     aria-label="{{ __('staff.recent_activity.clear_filters_aria') }}">
                 <span class="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -25,16 +25,16 @@
     </div>
 
     {{-- Filters Section --}}
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {{-- Activity Type Filter --}}
             <div>
-                <label for="activityType" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label for="activityType" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     {{ __('staff.recent_activity.filters.activity_type') }}
                 </label>
                 <select wire:model.live="activityType"
                         id="activityType"
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                        class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
                     @foreach($availableActivityTypes as $value => $label)
                         <option wire:key="activity-type-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
                     @endforeach
@@ -43,52 +43,52 @@
 
             {{-- Date From Filter --}}
             <div>
-                <label for="dateFrom" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label for="dateFrom" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     {{ __('staff.recent_activity.filters.date_from') }}
                 </label>
                 <input type="date"
                        wire:model.live="dateFrom"
                        id="dateFrom"
-                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
             </div>
 
             {{-- Date To Filter --}}
             <div>
-                <label for="dateTo" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label for="dateTo" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     {{ __('staff.recent_activity.filters.date_to') }}
                 </label>
                 <input type="date"
                        wire:model.live="dateTo"
                        id="dateTo"
-                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
             </div>
 
             {{-- Search Filter --}}
             <div>
-                <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label for="search" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     {{ __('staff.recent_activity.filters.search') }}
                 </label>
                 <input type="text"
                        wire:model.live.debounce.300ms="search"
                        id="search"
                        placeholder="{{ __('staff.recent_activity.filters.search_placeholder') }}"
-                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-3 focus-visible:ring-primary-400 min-h-11">
             </div>
         </div>
     </div>
 
     {{-- Activities Timeline --}}
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
         @if($activities->isEmpty())
             {{-- Empty State --}}
             <div class="p-12 text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
-                <h3 class="mt-4 text-sm font-medium text-gray-900 dark:text-white">
+                <h3 class="mt-4 text-sm font-medium text-slate-900 dark:text-white">
                     {{ __('staff.recent_activity.empty.title') }}
                 </h3>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     @if($activityType !== 'all' || $dateFrom || $dateTo || $search)
                         {{ __('staff.recent_activity.empty.filtered') }}
                     @else
@@ -98,58 +98,58 @@
             </div>
         @else
             {{-- Activity Items --}}
-            <div class="divide-y divide-gray-200 dark:divide-gray-700">
+            <div class="divide-y divide-slate-200 dark:divide-slate-700">
                 @foreach($activities as $activity)
-                    <div wire:key="activity-{{ $activity->id }}" class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                    <div wire:key="activity-{{ $activity->id }}" class="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                         <div class="flex items-start space-x-3">
                             {{-- Activity Icon --}}
                             <div class="shrink-0">
                                 <div class="flex items-center justify-center w-10 h-10 rounded-full
                                     @switch($activity->activity_type)
                                         @case('submission')
-                                            bg-blue-100 dark:bg-blue-900/30
+                                            bg-primary-100 dark:bg-primary-900/30
                                             @break
                                         @case('login')
-                                            bg-green-100 dark:bg-green-900/30
+                                            bg-success-100 dark:bg-success-900/30
                                             @break
                                         @case('update')
-                                            bg-amber-100 dark:bg-amber-900/30
+                                            bg-warning-100 dark:bg-warning-900/30
                                             @break
                                         @case('export')
-                                            bg-purple-100 dark:bg-purple-900/30
+                                            bg-secondary-100 dark:bg-secondary-900/30
                                             @break
                                         @case('claim')
-                                            bg-indigo-100 dark:bg-indigo-900/30
+                                            bg-secondary-100 dark:bg-secondary-900/30
                                             @break
                                         @case('approval')
-                                            bg-emerald-100 dark:bg-emerald-900/30
+                                            bg-success-100 dark:bg-success-900/30
                                             @break
                                         @case('comment')
-                                            bg-gray-100 dark:bg-gray-700
+                                            bg-slate-100 dark:bg-slate-700
                                             @break
                                         @default
-                                            bg-gray-100 dark:bg-gray-700
+                                            bg-slate-100 dark:bg-slate-700
                                     @endswitch
                                 ">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5
                                         @switch($activity->activity_type)
                                             @case('submission')
-                                                text-blue-600 dark:text-blue-400
+                                                text-primary-600 dark:text-primary-400
                                                 @break
                                             @case('login')
-                                                text-green-600 dark:text-green-400
+                                                text-success-600 dark:text-success-400
                                                 @break
                                             @case('update')
-                                                text-amber-600 dark:text-amber-400
+                                                text-warning-600 dark:text-warning-400
                                                 @break
                                             @case('export')
-                                                text-purple-600 dark:text-purple-400
+                                                text-secondary-600 dark:text-secondary-400
                                                 @break
                                             @case('claim')
-                                                text-indigo-600 dark:text-indigo-400
+                                                text-secondary-600 dark:text-secondary-400
                                                 @break
                                             @case('approval')
-                                                text-emerald-600 dark:text-emerald-400
+                                                text-success-600 dark:text-success-400
                                                 @break
                                             @case('comment')
                                                 text-gray-600 dark:text-gray-400
@@ -189,10 +189,10 @@
 
                             {{-- Activity Details --}}
                             <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                <p class="text-sm font-medium text-slate-900 dark:text-white">
                                     {{ ucfirst(str_replace('_', ' ', $activity->activity_type)) }}
                                 </p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
                                     @if($activity->subject)
                                         {{ class_basename($activity->subject_type) }}:
                                         <span class="font-medium">
@@ -200,7 +200,7 @@
                                         </span>
                                     @endif
                                 </p>
-                                <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                                <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
                                     {{ $activity->created_at->diffForHumans() }}
                                 </p>
                             </div>
@@ -210,7 +210,7 @@
             </div>
 
             {{-- Pagination --}}
-            <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-4 py-3 border-t border-slate-200 dark:border-slate-700">
                 {{ $activities->links() }}
             </div>
         @endif

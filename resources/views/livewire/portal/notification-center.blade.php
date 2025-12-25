@@ -1,4 +1,4 @@
-﻿{{--
+{{--
 /**
  * Component: Portal Notification Center
  * Description: WCAG 2.2 AA compliant full notification center with filters & pagination
@@ -36,7 +36,7 @@
         <button type="button" wire:click="filterBy('all')" role="tab"
             aria-selected="{{ $filter === 'all' ? 'true' : 'false' }}" aria-controls="notification-list"
             @class([
-                'min-h-11 min-w-11 px-4 py-2.5 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 dark:focus:ring-offset-gray-900',
+                'min-h-11 min-w-11 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 dark:focus-visible:ring-offset-gray-900',
                 'bg-primary-600 text-white shadow-button' => $filter === 'all',
                 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600' =>
                     $filter !== 'all',
@@ -46,7 +46,7 @@
         <button type="button" wire:click="filterBy('unread')" role="tab"
             aria-selected="{{ $filter === 'unread' ? 'true' : 'false' }}" aria-controls="notification-list"
             @class([
-                'min-h-11 min-w-11 px-4 py-2.5 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 dark:focus:ring-offset-gray-900',
+                'min-h-11 min-w-11 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 dark:focus-visible:ring-offset-gray-900',
                 'bg-primary-600 text-white shadow-button' => $filter === 'unread',
                 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600' =>
                     $filter !== 'unread',
@@ -56,7 +56,7 @@
         <button type="button" wire:click="filterBy('read')" role="tab"
             aria-selected="{{ $filter === 'read' ? 'true' : 'false' }}" aria-controls="notification-list"
             @class([
-                'min-h-11 min-w-11 px-4 py-2.5 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 dark:focus:ring-offset-gray-900',
+                'min-h-11 min-w-11 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 dark:focus-visible:ring-offset-gray-900',
                 'bg-primary-600 text-white shadow-button' => $filter === 'read',
                 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600' =>
                     $filter !== 'read',
@@ -83,12 +83,12 @@
                             </span>
                             @if ($n->read_at)
                                 <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success-100 dark:bg-success-900/50 text-success-800 dark:text-success-200">
+                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success-50 dark:bg-success-900/50 text-success-800 dark:text-success-200">
                                     {{ __('Dibaca') }}
                                 </span>
                             @else
                                 <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-warning-100 dark:bg-warning-900/50 text-warning-800 dark:text-warning-200">
+                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-warning-50 dark:bg-warning-900/50 text-warning-800 dark:text-warning-200">
                                     {{ __('Belum Dibaca') }}
                                 </span>
                             @endif
@@ -152,14 +152,14 @@
                     <div class="flex flex-col gap-2 items-end shrink-0">
                         @if (!$n->read_at)
                             <button type="button" wire:click="markAsRead('{{ $n->id }}')"
-                                class="min-h-11 min-w-11 px-3 py-2 text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-md focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-150"
+                                class="min-h-11 min-w-11 px-3 py-2 text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2 dark:focus-visible:ring-offset-gray-800 transition-colors duration-150"
                                 aria-label="{{ __('Tandakan sebagai dibaca') }}">
                                 {{ __('Tandakan Dibaca') }}
                             </button>
                         @endif
                         <button type="button" wire:click="deleteNotification('{{ $n->id }}')"
                             wire:confirm="{{ __('Adakah anda pasti mahu memadam pemberitahuan ini?') }}"
-                            class="min-h-11 min-w-11 px-3 py-1 text-xs font-medium text-danger-600 dark:text-danger-400 hover:text-danger-800 dark:hover:text-danger-300 hover:bg-danger-50 dark:hover:bg-danger-900/20 rounded-md focus:outline-none focus:ring-2 focus:ring-danger-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-150"
+                            class="min-h-11 min-w-11 px-3 py-1 text-xs font-medium text-danger-600 dark:text-danger-400 hover:text-danger-800 dark:hover:text-danger-300 hover:bg-danger-50 dark:hover:bg-danger-900/20 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 transition-colors duration-150"
                             aria-label="{{ __('Padam pemberitahuan') }}">
                             {{ __('Padam') }}
                         </button>

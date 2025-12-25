@@ -32,7 +32,12 @@ trait CrossModuleIntegration
     /**
      * Log cross-module integration event
      */
-    protected function logCrossModuleEvent(string $event, array $data): void
+    
+
+/**
+ * @param array<string, mixed> $data
+ */
+protected function logCrossModuleEvent(string $event, array $data): void
     {
         \Illuminate\Support\Facades\Log::info("Cross-Module Integration: {$event}", $data);
     }

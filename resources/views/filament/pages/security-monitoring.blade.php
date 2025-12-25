@@ -12,8 +12,8 @@
                         {{ $stats['failed_logins_24h'] ?? 0 }}
                     </p>
                 </div>
-                <div class="p-3 bg-red-100 rounded-lg dark:bg-red-900/20">
-                    <x-heroicon-o-shield-exclamation class="w-8 h-8 text-red-600 dark:text-red-400" />
+                <div class="p-3 bg-danger-100 rounded-lg dark:bg-danger-900/20">
+                    <x-heroicon-o-shield-exclamation class="w-8 h-8 text-danger-600 dark:text-danger-400" />
                 </div>
             </div>
         </x-filament::section>
@@ -29,8 +29,8 @@
                         {{ $stats['suspicious_activities_24h'] ?? 0 }}
                     </p>
                 </div>
-                <div class="p-3 bg-yellow-100 rounded-lg dark:bg-yellow-900/20">
-                    <x-heroicon-o-exclamation-triangle class="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
+                <div class="p-3 bg-warning-100 rounded-lg dark:bg-warning-900/20">
+                    <x-heroicon-o-exclamation-triangle class="w-8 h-8 text-warning-600 dark:text-warning-400" />
                 </div>
             </div>
         </x-filament::section>
@@ -46,8 +46,8 @@
                         {{ $stats['role_changes_24h'] ?? 0 }}
                     </p>
                 </div>
-                <div class="p-3 bg-blue-100 rounded-lg dark:bg-blue-900/20">
-                    <x-heroicon-o-user-group class="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                <div class="p-3 bg-primary-100 rounded-lg dark:bg-primary-900/20">
+                    <x-heroicon-o-user-group class="w-8 h-8 text-primary-600 dark:text-primary-400" />
                 </div>
             </div>
         </x-filament::section>
@@ -63,8 +63,8 @@
                         {{ $stats['critical_alerts'] ?? 0 }}
                     </p>
                 </div>
-                <div class="p-3 bg-red-100 rounded-lg dark:bg-red-900/20">
-                    <x-heroicon-o-bell-alert class="w-8 h-8 text-red-600 dark:text-red-400" />
+                <div class="p-3 bg-danger-100 rounded-lg dark:bg-danger-900/20">
+                    <x-heroicon-o-bell-alert class="w-8 h-8 text-danger-600 dark:text-danger-400" />
                 </div>
             </div>
         </x-filament::section>
@@ -84,15 +84,15 @@
             <div class="space-y-3">
                 @foreach ($alerts as $alert)
                     <div
-                        class="flex items-start justify-between p-4 rounded-lg {{ $alert['severity'] === 'critical' ? 'bg-red-50 dark:bg-red-900/10' : ($alert['severity'] === 'high' ? 'bg-orange-50 dark:bg-orange-900/10' : 'bg-yellow-50 dark:bg-yellow-900/10') }}">
+                        class="flex items-start justify-between p-4 rounded-lg {{ $alert['severity'] === 'critical' ? 'bg-danger-50 dark:bg-danger-900/10' : ($alert['severity'] === 'high' ? 'bg-warning-50 dark:bg-warning-900/10' : 'bg-warning-50 dark:bg-warning-900/10') }}">
                         <div class="flex items-start flex-1 space-x-3">
                             @if ($alert['severity'] === 'critical')
-                                <x-heroicon-o-shield-exclamation class="w-6 h-6 text-red-600 dark:text-red-400" />
+                                <x-heroicon-o-shield-exclamation class="w-6 h-6 text-danger-600 dark:text-danger-400" />
                             @elseif($alert['severity'] === 'high')
                                 <x-heroicon-o-exclamation-triangle
-                                    class="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                                    class="w-6 h-6 text-warning-600 dark:text-warning-400" />
                             @else
-                                <x-heroicon-o-information-circle class="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
+                                <x-heroicon-o-information-circle class="w-6 h-6 text-warning-600 dark:text-warning-400" />
                             @endif
 
                             <div class="flex-1">
@@ -106,7 +106,7 @@
                         </div>
 
                         <button wire:click="acknowledgeAlert('{{ $alert['id'] }}')"
-                            class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700 min-h-11">
                             {{ __('Acknowledge') }}
                         </button>
                     </div>
@@ -137,7 +137,7 @@
                                 <span>{{ $event['timestamp']->diffForHumans() }}</span>
                                 <span>{{ $event['ip_address'] }}</span>
                                 <span
-                                    class="px-2 py-0.5 text-xs font-medium rounded {{ $event['severity'] === 'critical' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400' : ($event['severity'] === 'high' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300') }}">
+                                    class="px-2 py-0.5 text-xs font-medium rounded {{ $event['severity'] === 'critical' ? 'bg-danger-100 text-danger-800 dark:bg-danger-900/20 dark:text-danger-400' : ($event['severity'] === 'high' ? 'bg-warning-100 text-warning-800 dark:bg-warning-900/20 dark:text-warning-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300') }}">
                                     {{ ucfirst($event['severity']) }}
                                 </span>
                             </div>
@@ -173,7 +173,7 @@
                                 <span>{{ $attempt['ip_address'] }}</span>
                                 @if ($attempt['attempts_count'] >= 5)
                                     <span
-                                        class="px-2 py-0.5 text-xs font-medium text-red-800 bg-red-100 rounded dark:bg-red-900/20 dark:text-red-400">
+                                        class="px-2 py-0.5 text-xs font-medium text-danger-800 bg-danger-100 rounded dark:bg-danger-900/20 dark:text-danger-400">
                                         {{ __(':count attempts', ['count' => $attempt['attempts_count']]) }}
                                     </span>
                                 @endif
@@ -214,7 +214,7 @@
                         </div>
 
                         <button wire:click="unblockIP('{{ $ip }}')"
-                            class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700 min-h-11">
                             {{ __('Unblock') }}
                         </button>
                     </div>

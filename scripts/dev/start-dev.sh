@@ -126,26 +126,92 @@ check_port 6001 10 1 "Laravel Reverb"
 
 sleep 2
 
-# 4. Start Queue Worker
+# 4. Start Laravel Horizon or Queue Worker
 echo ""
-echo -e "\033[1;33m[4/5] Starting Queue Worker...\033[0m"
-start_service "Laravel Queue Worker" "php artisan queue:work --tries=3 --timeout=90"
-# Check for Laravel queue process
-queue_check() {
-    local attempts=${1:-8}
-    local delay=${2:-1}
-    for ((i=1;i<=attempts;i++)); do
-        if pgrep -f "artisan queue:work" >/dev/null 2>&1 || ps aux | grep "artisan queue:work" | grep -v grep >/dev/null 2>&1; then
-            echo -e "\033[1;32m[OK] Queue worker process detected\033[0m"
-            return 0
+echo -e "\033[1;33m[4/5] Starting Laravel Horizon/Queue Worker...\033[0m"
+
+# Check if Horizon is available and Redis is running
+horizon_available=false
+redis_running=false
+
+# Check if Redis is accessible
+if command -v wsl.exe >/dev/null 2>&1; then
+    redis_ping=$(wsl.exe -e redis-cli ping 2>/dev/null)
+    if [[ "$redis_ping" == "PONG" ]]; then
+        redis_running=true
+    fi
+elif command -v redis-cli >/dev/null 2>&1; then
+    redis_ping=$(redis-cli ping 2>/dev/null)
+    if [[ "$redis_ping" == "PONG" ]]; then
+        redis_running=true
+    fi
+fi
+
+# Check if Horizon command exists
+if php artisan horizon:status >/dev/null 2>&1; then
+    horizon_available=true
+fi
+
+if [[ "$redis_running" == true && "$horizon_available" == true ]]; then
+    echo -e "\033[1;36m  └─ Using Laravel Horizon (Redis + Horizon detected)\033[0m"
+    
+    # Check current Horizon status
+    horizon_status=$(php artisan horizon:status 2>/dev/null)
+    if [[ "$horizon_status" == *"running"* ]]; then
+        echo -e "\033[1;32m  └─ Horizon already running\033[0m"
+    else
+        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+            # Use WSL for better Horizon compatibility on Windows
+            if command -v wsl.exe >/dev/null 2>&1; then
+                start_service "Laravel Horizon (WSL)" "wsl.exe -e bash -c 'cd /mnt/c/laragon/www/ictserve-031125 && php artisan horizon'"
+            else
+                start_service "Laravel Horizon" "php artisan horizon"
+            fi
+        else
+            start_service "Laravel Horizon" "php artisan horizon"
         fi
-        echo -e "\033[1;33m[WAIT] Queue worker not detected (attempt $i/$attempts). Retrying in $delay sec...\033[0m"
-        sleep $delay
-    done
-    echo -e "\033[1;33m[WARN] Queue worker process not detected after $attempts attempts\033[0m"
-    return 1
-}
-queue_check 8 1
+    fi
+    
+    # Verify Horizon is running
+    horizon_check() {
+        local attempts=${1:-10}
+        local delay=${2:-2}
+        for ((i=1;i<=attempts;i++)); do
+            horizon_status=$(php artisan horizon:status 2>/dev/null)
+            if [[ "$horizon_status" == *"running"* ]]; then
+                echo -e "\033[1;32m[OK] Laravel Horizon running and managing queues\033[0m"
+                return 0
+            fi
+            echo -e "\033[1;33m[WAIT] Horizon starting... (attempt $i/$attempts)\033[0m"
+            sleep $delay
+        done
+        echo -e "\033[1;33m[WARN] Horizon not confirmed running after $attempts attempts\033[0m"
+        echo -e "\033[1;37m  └─ Check manually: php artisan horizon:status\033[0m"
+        return 1
+    }
+    horizon_check 10 2
+    
+else
+    echo -e "\033[1;33m  └─ Using traditional Queue Worker (Horizon not available or Redis not running)\033[0m"
+    start_service "Laravel Queue Worker" "php artisan queue:work --tries=3 --timeout=90 --sleep=3 --max-jobs=1000 --max-time=3600"
+    
+    # Check for Laravel queue process
+    queue_check() {
+        local attempts=${1:-8}
+        local delay=${2:-1}
+        for ((i=1;i<=attempts;i++)); do
+            if pgrep -f "artisan queue:work" >/dev/null 2>&1 || ps aux | grep "artisan queue:work" | grep -v grep >/dev/null 2>&1; then
+                echo -e "\033[1;32m[OK] Queue worker process detected\033[0m"
+                return 0
+            fi
+            echo -e "\033[1;33m[WAIT] Queue worker not detected (attempt $i/$attempts). Retrying in $delay sec...\033[0m"
+            sleep $delay
+        done
+        echo -e "\033[1;33m[WARN] Queue worker process not detected after $attempts attempts\033[0m"
+        return 1
+    }
+    queue_check 8 1
+fi
 
 sleep 2
 
@@ -167,8 +233,20 @@ echo -e "\033[1;37mRunning Services:\033[0m"
 echo -e "  \033[1;31m1. Redis Server (WSL)       - Monitoring mode\033[0m"
 echo -e "  \033[1;34m2. Laravel Server           - http://127.0.0.1:8000\033[0m"
 echo -e "  \033[1;35m3. Laravel Reverb           - ws://127.0.0.1:6001\033[0m"
-echo -e "  \033[1;36m4. Queue Worker             - Processing jobs\033[0m"
+if [[ "$redis_running" == true && "$horizon_available" == true ]]; then
+    echo -e "  \033[1;36m4. Laravel Horizon         - Queue management\033[0m"
+else
+    echo -e "  \033[1;36m4. Queue Worker             - Processing jobs\033[0m"
+fi
 echo -e "  \033[1;32m5. Vite Dev Server          - Hot Module Replacement\033[0m"
+echo ""
+echo -e "\033[1;33mQuick Access:\033[0m"
+echo -e "  \033[1;37m• Application:       http://127.0.0.1:8000\033[0m"
+echo -e "  \033[1;37m• Admin Panel:       http://127.0.0.1:8000/admin\033[0m"
+if [[ "$redis_running" == true && "$horizon_available" == true ]]; then
+    echo -e "  \033[1;37m• Horizon Dashboard: http://127.0.0.1:8000/horizon\033[0m"
+fi
+echo -e "  \033[1;37m• Vite Dev Server:   http://127.0.0.1:5173\033[0m"
 echo ""
 echo -e "\033[1;33mClose this window to keep services running.\033[0m"
 echo -e "\033[1;33mTo stop all services, close each window individually.\033[0m"

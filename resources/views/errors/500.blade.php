@@ -73,7 +73,7 @@
                 </p>
                 <button type="button"
                     onclick="navigator.clipboard.writeText('{{ $incidentRef }}'); this.textContent = '{{ __('portal.errors.copied') }}';"
-                    class="mt-2 inline-flex items-center rounded-md bg-danger-100 px-3 py-1 text-xs font-medium text-danger-700 transition-colors duration-200 hover:bg-danger-200 focus:outline-none focus:ring-2 focus:ring-danger-500 focus:ring-offset-2"
+                    class="mt-2 inline-flex min-h-11 items-center rounded-lg bg-danger-100 px-3 py-1 text-xs font-medium text-danger-700 transition-colors duration-200 hover:bg-danger-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2"
                     aria-label="{{ __('portal.errors.copy_reference') }}">
                     <x-heroicon-o-clipboard-document class="mr-1 h-3 w-3" aria-hidden="true" />
                     {{ __('portal.errors.copy_reference') }}
@@ -83,20 +83,20 @@
             {{-- Action Buttons --}}
             <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
                 <button onclick="window.location.reload()"
-                    class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    class="inline-flex min-h-11 items-center justify-center rounded-lg border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                     <x-heroicon-o-arrow-path class="mr-2 h-5 w-5" aria-hidden="true" />
                     {{ __('portal.errors.try_again') }}
                 </button>
 
                 @auth
                     <a href="{{ route('dashboard') }}"
-                        class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="inline-flex min-h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <x-heroicon-o-home class="mr-2 h-5 w-5" aria-hidden="true" />
                         {{ __('portal.errors.back_to_dashboard') }}
                     </a>
                 @else
                     <a href="{{ route('welcome') }}"
-                        class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="inline-flex min-h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <x-heroicon-o-home class="mr-2 h-5 w-5" aria-hidden="true" />
                         {{ __('portal.errors.back_to_home') }}
                     </a>
@@ -123,7 +123,7 @@
                 <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {{-- Email Support --}}
                     <a href="mailto:{{ config('mail.from.address', 'ict@motac.gov.my') }}?subject={{ urlencode(__('portal.errors.email_subject', ['ref' => $incidentRef])) }}"
-                        class="flex items-center rounded-md border border-gray-200 bg-gray-50 p-3 text-sm transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="flex min-h-11 items-center rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <x-heroicon-o-envelope class="h-5 w-5 text-gray-400" aria-hidden="true" />
                         <div class="ml-3">
                             <p class="font-medium text-gray-900">{{ __('portal.errors.email_support') }}</p>
@@ -133,7 +133,7 @@
 
                     {{-- Phone Support --}}
                     <a href="tel:{{ config('app.support_phone', '+60388911000') }}"
-                        class="flex items-center rounded-md border border-gray-200 bg-gray-50 p-3 text-sm transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        class="flex min-h-11 items-center rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <x-heroicon-o-phone class="h-5 w-5 text-gray-400" aria-hidden="true" />
                         <div class="ml-3">
                             <p class="font-medium text-gray-900">{{ __('portal.errors.phone_support') }}</p>
@@ -145,7 +145,7 @@
                 {{-- Help Center Link --}}
                 <div class="mt-4 border-t border-gray-200 pt-4">
                     <a href="{{ route('contact') }}"
-                        class="inline-flex items-center text-sm font-medium text-primary-600 transition-colors duration-200 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                        class="inline-flex min-h-11 items-center text-sm font-medium text-primary-600 transition-colors duration-200 hover:text-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                         <x-heroicon-o-question-mark-circle class="mr-2 h-4 w-4" aria-hidden="true" />
                         {{ __('portal.errors.visit_help_center') }}
                         <x-heroicon-o-arrow-right class="ml-1 h-4 w-4" aria-hidden="true" />
@@ -156,10 +156,10 @@
             {{-- Technical Details (for debugging, hidden by default) --}}
             <details class="mt-6 text-left">
                 <summary
-                    class="cursor-pointer text-xs text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                    class="cursor-pointer min-h-11 text-xs text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
                     {{ __('portal.errors.technical_details') }}
                 </summary>
-                <div class="mt-2 rounded-md bg-gray-100 p-3 font-mono text-xs text-gray-600">
+                <div class="mt-2 rounded-lg bg-gray-100 p-3 font-mono text-xs text-gray-600">
                     <p><strong>{{ __('portal.errors.incident_id') }}:</strong> {{ $incidentRef }}</p>
                     <p><strong>{{ __('portal.errors.timestamp') }}:</strong> {{ $timestamp }}</p>
                     <p><strong>{{ __('portal.errors.request_url') }}:</strong> {{ request()->fullUrl() }}</p>

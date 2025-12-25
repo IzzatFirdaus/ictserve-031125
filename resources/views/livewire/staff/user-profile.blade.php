@@ -64,7 +64,7 @@
                             class="h-32 w-32 rounded-full object-cover border-4 border-slate-700 shadow-lg">
                     @else
                         <div
-                            class="h-32 w-32 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-slate-700 shadow-lg">
+                            class="h-32 w-32 rounded-full bg-linear-to-br from-primary-500 to-primary-700 flex items-center justify-center border-4 border-slate-700 shadow-lg">
                             <span class="text-4xl font-bold text-white">
                                 {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
                             </span>
@@ -85,15 +85,15 @@
                                     accept="image/jpeg,image/jpg,image/png,image/webp"
                                     class="block w-full text-sm text-slate-300
                                               file:mr-4 file:py-2 file:px-4
-                                              file:rounded-md file:border-0
+                                              file:rounded-lg file:border-0
                                               file:text-sm file:font-semibold
-                                              file:bg-blue-600 file:text-white
-                                              hover:file:bg-blue-700
+                                              file:bg-primary-600 file:text-white
+                                              hover:file:bg-primary-700
                                               file:cursor-pointer
                                               cursor-pointer
-                                              border border-slate-700 rounded-md
+                                              border border-slate-700 rounded-lg
                                               bg-slate-800
-                                              focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                              focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500">
                             </div>
                             <p class="mt-2 text-xs text-slate-400">
                                 {{ __('profile.picture_requirements') }}
@@ -101,7 +101,7 @@
 
                             {{-- Loading indicator for upload --}}
                             <div wire:loading wire:target="profilePicture" class="mt-2">
-                                <div class="flex items-center text-sm text-blue-400">
+                                <div class="flex items-center text-sm text-primary-400">
                                     <x-heroicon-o-arrow-path class="animate-spin h-4 w-4 mr-2" />
                                     {{ __('profile.uploading') }}
                                 </div>
@@ -112,13 +112,13 @@
                                 <div class="mt-4">
                                     <p class="text-sm font-medium text-slate-300 mb-2">{{ __('profile.preview') }}</p>
                                     <img src="{{ $profilePicture->temporaryUrl() }}"
-                                        class="h-24 w-24 rounded-full object-cover border-2 border-blue-500 shadow-md"
+                                        class="h-24 w-24 rounded-full object-cover border-2 border-primary-500 shadow-md"
                                         alt="{{ __('profile.preview_picture') }}">
                                 </div>
                             @endif
 
                             @error('profilePicture')
-                                <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-danger-400">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -202,13 +202,13 @@
                             {{ __('common.email') }}
                         </label>
                         <input type="email" id="email" value="{{ $email }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p id="email-readonly" class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('email')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -219,13 +219,13 @@
                             {{ __('common.staff_id') }}
                         </label>
                         <input type="text" id="staff_id" value="{{ $staff_id }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('staff_id')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -236,13 +236,13 @@
                             {{ __('common.grade') }}
                         </label>
                         <input type="text" id="grade" value="{{ $grade }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('grade')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -253,13 +253,13 @@
                             {{ __('common.division') }}
                         </label>
                         <input type="text" id="division" value="{{ $division }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('division')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -270,13 +270,13 @@
                             {{ __('common.position') }}
                         </label>
                         <input type="text" id="position" value="{{ $position }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
                             </p>
                             <button wire:click="requestCorrection('position')" type="button"
-                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg">
                                 {{ __('profile.request_correction') }}
                             </button>
                         </div>
@@ -378,7 +378,7 @@
                         <label class="flex items-center space-x-3 cursor-pointer">
                             <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
                                 value="immediate" name="email_frequency"
-                                class="h-4 w-4 text-blue-600 border-slate-600 bg-slate-800 focus:ring-blue-500 focus:ring-offset-slate-900">
+                                class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900">
                             <span
                                 class="text-sm text-slate-300">{{ __('profile.email_immediate') ?: 'Immediate' }}</span>
                             <span
@@ -387,7 +387,7 @@
                         <label class="flex items-center space-x-3 cursor-pointer">
                             <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
                                 value="daily" name="email_frequency"
-                                class="h-4 w-4 text-blue-600 border-slate-600 bg-slate-800 focus:ring-blue-500 focus:ring-offset-slate-900">
+                                class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900">
                             <span
                                 class="text-sm text-slate-300">{{ __('profile.email_daily') ?: 'Daily Digest' }}</span>
                             <span
@@ -396,7 +396,7 @@
                         <label class="flex items-center space-x-3 cursor-pointer">
                             <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
                                 value="weekly" name="email_frequency"
-                                class="h-4 w-4 text-blue-600 border-slate-600 bg-slate-800 focus:ring-blue-500 focus:ring-offset-slate-900">
+                                class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900">
                             <span
                                 class="text-sm text-slate-300">{{ __('profile.email_weekly') ?: 'Weekly Digest' }}</span>
                             <span

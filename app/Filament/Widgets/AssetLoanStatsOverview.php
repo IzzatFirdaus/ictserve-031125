@@ -7,6 +7,7 @@ namespace App\Filament\Widgets;
 use App\Enums\LoanStatus;
 use App\Filament\Resources\Assets\AssetResource;
 use App\Filament\Resources\Loans\LoanApplicationResource;
+use App\Filament\Traits\WidgetMetadata;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use Filament\Widgets\StatsOverviewWidget;
@@ -32,7 +33,17 @@ use Livewire\Attributes\On;
  */
 class AssetLoanStatsOverview extends StatsOverviewWidget
 {
+    use WidgetMetadata;
+
     protected static ?int $sort = 2;
+
+    /**
+     * Documentation reference
+     */
+    public static function getDocumentationReference(): string
+    {
+        return 'D04 §3.2 Dashboard widgets, D03 SRS-AST-001';
+    }
 
     protected static bool $isLazy = false; // Critical widget - load immediately
 

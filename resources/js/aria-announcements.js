@@ -1,154 +1,105 @@
 /**
- * ARIA Live Region Announcements
+ * ARIA Announcements for ICTServe
  *
- * Provides screen reader announcements for dynamic content updates
- * in the authenticated portal.
+ * Provides screen reader announcements for dynamic content changes.
+ * Ensures WCAG 2.2 AA compliance for assistive technologies.
  *
- * @trace D12 §4.3, D14 §9 (WCAG 2.2 SC 4.1.3)
- * @author dev-team@motac.gov.my
- * @created 2025-11-06
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §10.4 (ARIA Live Regions)
+ * @wcag SC 4.1.3 (Status Messages)
+ * @version 3.6.1
  */
 
-// Constants for timing to improve readability and maintainability
-const ANNOUNCEMENT_DELAY = 100; // Brief delay for screen reader detection
-const ANNOUNCEMENT_CLEAR_DELAY = 5000; // Clear announcement after 5 seconds
-
-/**
- * Announce message to screen readers via ARIA live region
- *
- * @param {string} message - Message to announce
- * @param {string} priority - 'polite' (default) or 'assertive'
- */
-export function announceToScreenReader(message, priority = "polite") {
-	const regionId =
-		priority === "assertive"
-			? "aria-error-announcements"
-			: "aria-announcements";
-
-	const region = document.getElementById(regionId);
-
-	if (!region) {
-		console.warn(`ARIA live region #${regionId} not found`);
-		return;
+class AriaAnnouncer {
+	constructor() {
+		this.liveRegion = null;
+		this.init();
 	}
 
-	// Clear previous announcement
-	region.textContent = "";
+	/**
+	 * Initialize ARIA live region
+	 */
+	init() {
+		// Create ARIA live region if it doesn't exist
+		this.liveRegion = document.getElementById("aria-live-notifications");
 
-	// Add new announcement after brief delay (allows screen reader to detect change)
-	setTimeout(() => {
-		region.textContent = message;
-	}, ANNOUNCEMENT_DELAY);
+		if (!this.liveRegion) {
+			this.liveRegion = document.createElement("div");
+			this.liveRegion.id = "aria-live-notifications";
+			this.liveRegion.setAttribute("aria-live", "polite");
+			this.liveRegion.setAttribute("aria-atomic", "true");
+			this.liveRegion.className = "sr-only";
+			document.body.appendChild(this.liveRegion);
+		}
 
-	// Clear announcement after timeout
-	setTimeout(() => {
-		region.textContent = "";
-	}, ANNOUNCEMENT_CLEAR_DELAY);
-}
+		// Create assertive live region for urgent announcements
+		this.assertiveLiveRegion = document.getElementById("aria-live-assertive");
 
-/**
- * Announce notification to screen readers
- *
- * @param {Object} notification - Notification object with title and message
- */
-export function announceNotification(notification) {
-	const message = `${notification.title}. ${notification.message || ""}`;
-	announceToScreenReader(message, "polite");
+		if (!this.assertiveLiveRegion) {
+			this.assertiveLiveRegion = document.createElement("div");
+			this.assertiveLiveRegion.id = "aria-live-assertive";
+			this.assertiveLiveRegion.setAttribute("aria-live", "assertive");
+			this.assertiveLiveRegion.setAttribute("aria-atomic", "true");
+			this.assertiveLiveRegion.className = "sr-only";
+			document.body.appendChild(this.assertiveLiveRegion);
+		}
+	}
 
-	// Also update notification-specific live region
-	const notificationRegion = document.getElementById(
-		"aria-notification-announcements"
-	);
-	if (notificationRegion) {
-		notificationRegion.textContent = "";
-		setTimeout(() => {
-			notificationRegion.textContent = message;
-		}, ANNOUNCEMENT_DELAY);
-		setTimeout(() => {
-			notificationRegion.textContent = "";
-		}, ANNOUNCEMENT_CLEAR_DELAY);
+	/**
+	 * Announce message to screen readers (polite)
+	 * @param {string} message - Message to announce
+	 * @param {number} delay - Delay before clearing (default: 5000ms)
+	 */
+	announce(message, delay = 5000) {
+		if (!this.liveRegion || !message) return;
+
+		this.liveRegion.textContent = message;
+
+		// Clear after delay
+		if (delay > 0) {
+			setTimeout(() => {
+				if (this.liveRegion) {
+					this.liveRegion.textContent = "";
+				}
+			}, delay);
+		}
+	}
+
+	/**
+	 * Announce urgent message to screen readers (assertive)
+	 * @param {string} message - Urgent message to announce
+	 * @param {number} delay - Delay before clearing (default: 8000ms)
+	 */
+	announceUrgent(message, delay = 8000) {
+		if (!this.assertiveLiveRegion || !message) return;
+
+		this.assertiveLiveRegion.textContent = message;
+
+		// Clear after delay
+		if (delay > 0) {
+			setTimeout(() => {
+				if (this.assertiveLiveRegion) {
+					this.assertiveLiveRegion.textContent = "";
+				}
+			}, delay);
+		}
+	}
+
+	/**
+	 * Clear all announcements
+	 */
+	clear() {
+		if (this.liveRegion) {
+			this.liveRegion.textContent = "";
+		}
+		if (this.assertiveLiveRegion) {
+			this.assertiveLiveRegion.textContent = "";
+		}
 	}
 }
 
-/**
- * Announce form validation errors
- *
- * @param {Array} errors - Array of error messages
- */
-export function announceFormErrors(errors) {
-	// Use Bahasa Melayu for form validation announcements
-	const errorCount = errors.length;
-	const errorText = errorCount > 1 ? "ralat" : "ralat";
-	const message = `Pengesahan borang gagal. ${errorCount} ${errorText} dijumpai: ${errors.join(
-		", "
-	)}`;
-	announceToScreenReader(message, "assertive");
-}
+// Initialize and expose globally
+window.AriaAnnouncer = new AriaAnnouncer();
 
-/**
- * Announce successful action
- *
- * @param {string} action - Action description
- */
-export function announceSuccess(action) {
-	announceToScreenReader(`Berjaya: ${action}`, "polite");
-}
-
-/**
- * Announce loading state
- *
- * @param {string} content - Content being loaded
- */
-export function announceLoading(content) {
-	announceToScreenReader(`Memuatkan ${content}...`, "polite");
-}
-
-/**
- * Announce content loaded
- *
- * @param {string} content - Content that was loaded
- */
-export function announceLoaded(content) {
-	announceToScreenReader(`${content} telah dimuatkan`, "polite");
-}
-
-// Listen for Livewire events and announce them
-document.addEventListener("livewire:init", () => {
-	// Notification events
-	Livewire.on("notification-received", (event) => {
-		if (event && event.notification) {
-			announceNotification(event.notification);
-		}
-	});
-
-	// Success events
-	Livewire.on("success", (event) => {
-		if (event && event.message) {
-			announceSuccess(event.message);
-		}
-	});
-
-	// Error events
-	Livewire.on("error", (event) => {
-		if (event && event.message) {
-			announceToScreenReader(`Ralat: ${event.message}`, "assertive");
-		}
-	});
-
-	// Loading events
-	Livewire.hook("message.sent", (message, component) => {
-		const action = message.updateQueue[0]?.method || "kandungan";
-		announceLoading(action);
-	});
-
-	Livewire.hook("message.processed", (message, component) => {
-		const action = message.updateQueue[0]?.method || "kandungan";
-		announceLoaded(action);
-	});
-});
-
-// Export for global use
-window.ariaAnnounce = announceToScreenReader;
-window.ariaAnnounceNotification = announceNotification;
-window.ariaAnnounceFormErrors = announceFormErrors;
-window.ariaAnnounceSuccess = announceSuccess;
+// Export for module usage
+export default window.AriaAnnouncer;

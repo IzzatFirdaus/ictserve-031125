@@ -67,11 +67,6 @@ class PulseServiceProvider extends ServiceProvider
     protected function configureAuthorization(): void
     {
         Gate::define('viewPulse', function (?User $user): bool {
-            // In local environment, allow access for development
-            if (app()->environment('local')) {
-                return true;
-            }
-
             // Require authentication
             if ($user === null) {
                 return false;

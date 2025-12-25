@@ -24,23 +24,23 @@
 @php
 // Base classes with MyDS tokens: shadow-button, rounded-lg, transition-colors duration-200
 $baseClasses =
-'inline-flex items-center justify-center font-medium rounded-md shadow-button transition-colors duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed';
+'inline-flex items-center justify-center font-medium rounded-lg shadow-button transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
 
 // Variants using MyDS semantic colors (D13 §2.2)
 $variants = [
-'primary' => 'bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-500',
+'primary' => 'bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500',
 'secondary' =>
-'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700',
-'success' => 'bg-success-500 text-white hover:bg-success-600',
-'warning' => 'bg-warning-500 text-white hover:bg-warning-600',
-'danger' => 'bg-danger-500 text-white hover:bg-danger-600',
+'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-600 dark:hover:bg-slate-700 focus-visible:ring-3 focus-visible:ring-slate-500',
+'success' => 'bg-success-500 text-white hover:bg-success-600 focus-visible:ring-3 focus-visible:ring-success-500',
+'warning' => 'bg-warning-500 text-white hover:bg-warning-600 focus-visible:ring-3 focus-visible:ring-warning-500',
+'danger' => 'bg-danger-500 text-white hover:bg-danger-600 focus-visible:ring-3 focus-visible:ring-danger-500',
 'ghost' =>
-'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100',
+'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 focus-visible:ring-3 focus-visible:ring-slate-500',
 ];
 
 // Sizes with 44px minimum touch target (D12 §4.1, WCAG 2.5.8)
 $sizes = [
-'sm' => 'px-3 py-1.5 text-sm min-h-9', // 36px - for dense UIs only
+'sm' => 'px-3 py-1.5 text-sm min-h-11', // 44px min touch target
 'md' => 'px-4 py-2 text-base min-h-11 min-w-11', // 44px touch target
 'lg' => 'px-6 py-3 text-lg min-h-13', // 52px
 ];

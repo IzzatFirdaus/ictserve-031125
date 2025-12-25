@@ -1,0 +1,53 @@
+graph TB
+    subgraph PRESENTATION["Presentation Layer"]
+        BLADE[Blade Templates<br/>Guest/Auth Layouts]
+        LIVEWIRE[Livewire Components<br/>Ticket/Loan Forms]
+        VOLT[Volt Components<br/>Single-File Components]
+        FILAMENT_UI[Filament Resources<br/>Admin CRUD]
+        ALPINE[Alpine.js 3<br/>Client Interactivity]
+    end
+    
+    subgraph APPLICATION["Application Layer"]
+        CONTROLLERS[Controllers<br/>HTTP Request Handling]
+        SERVICES[Service Classes<br/>Business Logic]
+        JOBS[Queue Jobs<br/>Background Processing]
+        MIDDLEWARE[Middleware<br/>Auth/Rate Limiting]
+        POLICIES[Policies<br/>Authorization]
+    end
+    
+    subgraph DOMAIN["Domain Layer"]
+        MODELS[Eloquent Models<br/>Data Entities]
+        EVENTS[Events<br/>System Events]
+        ENUMS[Enums<br/>Status/Priority]
+        OBSERVERS[Observers<br/>Model Lifecycle]
+    end
+    
+    subgraph INFRASTRUCTURE["Infrastructure Layer"]
+        QUEUE[Queue System<br/>Redis Driver]
+        MAIL[Mail System<br/>SMTP/Templates]
+        STORAGE[File Storage<br/>S3/MinIO]
+        AUDIT[Audit System<br/>owen-it + spatie]
+        WEBSOCKET[WebSocket<br/>Laravel Reverb]
+    end
+    
+    BLADE --> CONTROLLERS
+    LIVEWIRE --> CONTROLLERS
+    VOLT --> CONTROLLERS
+    FILAMENT_UI --> CONTROLLERS
+    ALPINE --> LIVEWIRE
+    
+    CONTROLLERS --> SERVICES
+    CONTROLLERS --> MIDDLEWARE
+    SERVICES --> MODELS
+    SERVICES --> EVENTS
+    SERVICES --> POLICIES
+    
+    MODELS --> OBSERVERS
+    MODELS --> ENUMS
+    EVENTS --> JOBS
+    
+    JOBS --> QUEUE
+    JOBS --> MAIL
+    JOBS --> STORAGE
+    SERVICES --> AUDIT
+    EVENTS --> WEBSOCKET

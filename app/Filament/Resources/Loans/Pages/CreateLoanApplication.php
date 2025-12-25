@@ -12,6 +12,9 @@ class CreateLoanApplication extends CreateRecord
 {
     protected static string $resource = LoanApplicationResource::class;
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     protected function handleRecordCreation(array $data): LoanApplication
     {
         $data['application_number'] = LoanApplication::generateApplicationNumber();

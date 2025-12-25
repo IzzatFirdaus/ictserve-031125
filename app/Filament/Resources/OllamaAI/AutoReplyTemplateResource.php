@@ -43,7 +43,7 @@ class AutoReplyTemplateResource extends Resource
 {
     protected static ?string $model = AutoReplyTemplate::class;
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-document-duplicate';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-duplicate';
 
     protected static ?string $cluster = OllamaAI::class;
 

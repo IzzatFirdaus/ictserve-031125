@@ -7,11 +7,11 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\AdminDashboard;
-use App\Filament\Resources\Loans\Widgets\LoanAnalyticsWidget;
 use App\Filament\Widgets\AssetLoanStatsOverview;
 use App\Filament\Widgets\AssetUtilizationWidget;
 use App\Filament\Widgets\CrossModuleIntegrationChart;
 use App\Filament\Widgets\HelpdeskStatsOverview;
+use App\Filament\Widgets\LoanAnalyticsWidget;
 use App\Filament\Widgets\LoanApprovalQueueWidget;
 use App\Filament\Widgets\UnifiedAnalyticsChart;
 use App\Http\Middleware\AdminAccessMiddleware;
@@ -41,9 +41,20 @@ class AdminPanelProvider extends PanelProvider
 {
     public function boot(): void
     {
+        // Add skip link for accessibility (WCAG 2.2 AA)
         FilamentView::registerRenderHook(
             PanelsRenderHook::BODY_START,
             fn (): string => <<<'HTML'
+                <!-- Skip Link for Keyboard Navigation (D14 §10.2) -->
+                <a href="#main-content"
+                   class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4
+                          focus:z-50 focus:rounded-lg focus:bg-primary-600 focus:px-4 focus:py-2
+                          focus:text-white focus:shadow-dropdown focus:outline-none
+                          focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                   tabindex="1">
+                    {{ __('Langkau ke kandungan utama') }}
+                </a>
+
                 <script>
                     (() => {
                         const persistSidebarState = () => {
@@ -81,7 +92,60 @@ class AdminPanelProvider extends PanelProvider
         FilamentView::registerRenderHook(
             PanelsRenderHook::HEAD_END,
             fn (): string => <<<'HTML'
+                <!-- Accessibility Meta Tags (WCAG 2.2 AA) -->
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+                <meta name="theme-color" content="#0056b3">
+                <meta name="description" content="ICTServe Admin - Sistem Pengurusan Perkhidmatan ICT MOTAC">
+
+                <!-- MyDS Typography System (D13 §2.4) -->
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">                                                                                                     
                 <style>
+                    /* MyDS Typography System Implementation (D13 §2.4) */
+                    :root {
+                        --font-heading: 'Poppins', system-ui, sans-serif;
+                        --font-body: 'Inter', system-ui, sans-serif;
+                        --font-mono: 'JetBrains Mono', monospace;
+
+                        /* MyDS Color Tokens (D14 §4.1.1) */
+                        --color-primary: #0056b3;
+                        --color-primary-hover: #004494;
+                        --color-primary-light: #e6f0ff;
+                        --color-text-primary: #1a1a1a;
+                        --color-text-secondary: #4a4a4a;
+                        --color-success: #198754;
+                        --color-warning: #ff8c00;
+                        --color-danger: #b50c0c;
+                        --color-focus-ring: #0056b3;
+
+                        /* MyDS Shadow System (D14 §7.5) */
+                        --shadow-button: 0px 1px 3px 0px rgba(0, 0, 0, 0.07);
+                        --shadow-card: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05);
+                        --shadow-dropdown: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 12px 50px 0px rgba(0, 0, 0, 0.10);
+
+                        /* MyDS Motion System (D14 §7.6) */
+                        --motion-easeout: cubic-bezier(0, 0, 0.58, 1);
+                        --motion-easeoutback: cubic-bezier(0.4, 1.4, 0.2, 1);
+                        --duration-short: 200ms;
+                        --duration-medium: 400ms;
+                        --duration-long: 600ms;
+                    }
+
+                    /* Apply MyDS Typography */
+                    .fi-header-heading,
+                    .fi-section-header-heading,
+                    .fi-modal-heading,
+                    h1, h2, h3, h4, h5, h6 {
+                        font-family: var(--font-heading) !important;
+                    }
+
+                    .fi-body,
+                    .fi-main,
+                    body {
+                        font-family: var(--font-body) !important;
+                    }
+
                     /* Global SVG icon sizing fix */
                     .fi-main-ctn svg:not([class*="w-"]):not([class*="h-"]) {
                         width: 1.5rem;
@@ -115,6 +179,132 @@ class AdminPanelProvider extends PanelProvider
                     [x-data*="globalSearchPanel"] .fi-global-search-results {
                         padding: 0.5rem;
                     }
+
+                    /* Main content anchor for skip link */
+                    #main-content {
+                        scroll-margin-top: 2rem;
+                    }
+
+                    /* Enhanced focus indicators for all interactive elements (WCAG 2.2 AA) */
+                    .fi-btn:focus-visible,
+                    .fi-ta-btn:focus-visible,
+                    .fi-dropdown-trigger:focus-visible,
+                    .fi-sidebar-nav-item:focus-visible,
+                    .fi-tabs-tab:focus-visible,
+                    .fi-form-field-wrapper input:focus-visible,
+                    .fi-form-field-wrapper select:focus-visible,
+                    .fi-form-field-wrapper textarea:focus-visible {
+                        outline: 3px solid var(--color-focus-ring) !important;
+                        outline-offset: 2px !important;
+                        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.3) !important;
+                    }
+
+                    /* MyDS Motion System Implementation */
+                    .fi-btn,
+                    .fi-ta-btn,
+                    .fi-dropdown-trigger,
+                    .fi-sidebar-nav-item {
+                        transition: all var(--duration-short) var(--motion-easeout);
+                    }
+
+                    /* MyDS Shadow System Implementation */
+                    .fi-section,
+                    .fi-widget,
+                    .fi-card {
+                        box-shadow: var(--shadow-card);
+                    }
+
+                    .fi-btn {
+                        box-shadow: var(--shadow-button);
+                    }
+
+                    .fi-dropdown-panel,
+                    .fi-modal {
+                        box-shadow: var(--shadow-dropdown);
+                    }
+
+                    /* Dashboard Grid Improvements (D14 §7.4) */
+                    .fi-dashboard-widgets {
+                        display: grid;
+                        gap: 1.5rem;
+                        grid-template-columns: repeat(4, minmax(0, 1fr));
+                    }
+
+                    @media (max-width: 767px) {
+                        .fi-dashboard-widgets {
+                            grid-template-columns: repeat(4, minmax(0, 1fr));
+                            gap: 1.125rem;
+                            padding: 1.125rem;
+                        }
+                    }
+
+                    @media (min-width: 768px) and (max-width: 1023px) {
+                        .fi-dashboard-widgets {
+                            grid-template-columns: repeat(8, minmax(0, 1fr));
+                            gap: 1.5rem;
+                            padding: 1.5rem;
+                        }
+                    }
+
+                    @media (min-width: 1024px) {
+                        .fi-dashboard-widgets {
+                            grid-template-columns: repeat(12, minmax(0, 1fr));
+                            gap: 1.5rem;
+                            max-width: 80rem;
+                            margin: 0 auto;
+                        }
+                    }
+
+                    /* Widget Responsive Behavior */
+                    .fi-wi-stats-overview {
+                        grid-column: span 4;
+                    }
+
+                    @media (min-width: 768px) {
+                        .fi-wi-stats-overview {
+                            grid-column: span 8;
+                        }
+                    }
+
+                    @media (min-width: 1024px) {
+                        .fi-wi-stats-overview {
+                            grid-column: span 12;
+                        }
+                    }
+
+                    /* Chart widgets responsive */
+                    .fi-wi-chart {
+                        grid-column: span 4;
+                    }
+
+                    @media (min-width: 768px) {
+                        .fi-wi-chart {
+                            grid-column: span 4;
+                        }
+                    }
+
+                    @media (min-width: 1024px) {
+                        .fi-wi-chart {
+                            grid-column: span 6;
+                        }
+                    }
+
+                    /* Full-width widgets */
+                    .fi-wi-full-width {
+                        grid-column: span 4;
+                    }
+
+                    @media (min-width: 768px) {
+                        .fi-wi-full-width {
+                            grid-column: span 8;
+                        }
+                    }
+
+                    @media (min-width: 1024px) {
+                        .fi-wi-full-width {
+                            grid-column: span 12;
+                        }
+                    }
                 </style>
             HTML,
         );
@@ -133,7 +323,9 @@ class AdminPanelProvider extends PanelProvider
         // Add portal link to sidebar
         FilamentView::registerRenderHook(
             PanelsRenderHook::SIDEBAR_NAV_END,
-            fn (): string => view('filament.components.portal-link')->render(),
+            function (): string {
+                return (string) \Illuminate\Support\Facades\View::make('filament.components.portal-link');
+            },
         );
     }
 
@@ -144,33 +336,38 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->authGuard('web')
-            ->login()
-            // MOTAC Branding Theme (Requirements 5.1, D14 §4.1)
-            // Custom theme CSS for WCAG 2.2 AA compliance and MOTAC branding
+            ->login(\App\Filament\Pages\Auth\Login::class)
+            // MOTAC Branding Theme (D12-D14 UI/UX Design Guidelines)
+            // Custom theme CSS for WCAG 2.2 AA compliance and MyGOV standards
             ->viteTheme('resources/css/filament/admin/theme.css')
-            // WCAG 2.2 AA Compliant Color Palette (Requirements 14.1, 15.1)
+            // WCAG 2.2 AA Compliant Color Palette (D14 §4.1 Color System)
             ->colors([
-                'primary' => Color::hex('#0056b3'),   // 6.8:1 contrast ratio
-                'success' => Color::hex('#198754'),   // 4.9:1 contrast ratio
-                'warning' => Color::hex('#ff8c00'),   // 4.5:1 contrast ratio
-                'danger' => Color::hex('#b50c0c'),    // 8.2:1 contrast ratio
+                'primary' => Color::hex('#0056b3'),   // MyGOV Blue - 6.8:1 contrast ratio
+                'success' => Color::hex('#198754'),   // MyGOV Green - 4.9:1 contrast ratio
+                'warning' => Color::hex('#ff8c00'),   // MyGOV Orange - 4.5:1 contrast ratio
+                'danger' => Color::hex('#b50c0c'),    // MyGOV Red - 8.2:1 contrast ratio
+                'gray' => Color::hex('#64748b'),      // Slate - Matching MyDS
+                'info' => Color::hex('#3b82f6'),      // Blue - 4.5:1 contrast ratio
             ])
-            // Branding Configuration (Requirements 16.1, 21.4)
-            ->brandName('ICTServe Admin')
+            // Branding Configuration (D12 §5.1 MOTAC Branding)
+            ->brandName(__('filament.navigation.brand_name'))
             ->brandLogo(asset('images/motac-logo.png'))
             ->brandLogoHeight('2.5rem')
             ->darkModeBrandLogo(asset('images/motac-logo.png'))
             ->favicon(asset('favicon.ico'))
-            // Navigation Groups (Requirements 16.1)
+            // Navigation Groups (D12 §6.1 Navigation Structure - Bahasa Melayu)
             ->navigationGroups([
-                NavigationGroup::make(__('filament::navigation.operations'))
+                NavigationGroup::make(__('filament.navigation.operations'))
                     ->icon('heroicon-o-briefcase')
                     ->collapsed(false),
-                NavigationGroup::make(__('filament::navigation.management'))
+                NavigationGroup::make(__('filament.navigation.management'))
                     ->icon('heroicon-o-users')
                     ->collapsed(false),
-                NavigationGroup::make(__('filament::navigation.system'))
+                NavigationGroup::make(__('filament.navigation.system'))
                     ->icon('heroicon-o-cog-6-tooth')
+                    ->collapsed(true),
+                NavigationGroup::make(__('filament.navigation.reports'))
+                    ->icon('heroicon-o-chart-bar')
                     ->collapsed(true),
             ])
             // Resource and Cluster Discovery
@@ -189,7 +386,7 @@ class AdminPanelProvider extends PanelProvider
                 // Unified Dashboard Widgets
                 HelpdeskStatsOverview::class,
                 AssetLoanStatsOverview::class,
-                LoanAnalyticsWidget::class, // Loan application detailed analytics
+                LoanAnalyticsWidget::class, // Using the widget from App\Filament\Widgets
                 CrossModuleIntegrationChart::class,
                 AssetUtilizationWidget::class,
                 UnifiedAnalyticsChart::class,

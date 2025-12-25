@@ -35,7 +35,12 @@ class InvalidEmailDomainException extends Exception
      * @param  string  $email  The invalid email address
      * @param  array<string>  $allowedDomains  List of allowed domains
      */
-    public function __construct(string $email, array $allowedDomains = ['motac.gov.my'])
+    
+
+/**
+ * @param array<string, mixed> $allowedDomains
+ */
+public function __construct(string $email, array $allowedDomains = ['motac.gov.my'])
     {
         $this->email = $email;
         $this->allowedDomains = $allowedDomains;

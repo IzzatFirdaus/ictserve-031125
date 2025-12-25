@@ -1,5 +1,6 @@
 import "./bootstrap";
 import "./alpine-components";
+import "./alpine-patterns";
 import "./portal-mobile";
 import "./portal-echo";
 import "./submission-echo";
@@ -7,7 +8,12 @@ import "./aria-announcements";
 import "./keyboard-navigation";
 import "./performance-monitor";
 import "./script-loader";
+import "./echo-handlers";
+import "./components/notification-bell";
+import "./components/status-display";
+import "./components/ai-streaming-display";
 
+// Theme preference application function (used by event listeners)
 function applyThemePreference(theme) {
 	const normalized = theme === "dark" ? "dark" : "light";
 	const root = document.documentElement;
@@ -15,7 +21,7 @@ function applyThemePreference(theme) {
 	try {
 		localStorage.setItem("theme", normalized);
 	} catch (error) {
-		// Ignore
+		// Ignore localStorage errors (private browsing, etc.)
 	}
 
 	if (normalized === "dark") {

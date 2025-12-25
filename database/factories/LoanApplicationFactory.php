@@ -79,36 +79,35 @@ class LoanApplicationFactory extends Factory
         $locations = ['Putrajaya', 'Kuala Lumpur', 'Cyberjaya', 'Shah Alam'];
         $firstNames = ['Ahmad', 'Siti', 'Mohd', 'Fatimah', 'Ali', 'Nur', 'Hassan', 'Zainab', 'Ibrahim', 'Aisha'];
         $lastNames = ['Abdullah', 'Bin Khalid', 'Mat Said', 'Binti Ahmad', 'Zainal', 'Ismail', 'Osman', 'Rahman', 'Hasan', 'Ibrahim'];
-        
+
         $startDate = now()->addDays(\random_int(1, 30));
         $endDate = (clone $startDate)->addDays(\random_int(1, 60));
-        
+
         $firstNameIdx = \array_rand($firstNames);
         $lastNameIdx = \array_rand($lastNames);
-        $email = \strtolower(\str_replace(' ', '.', $firstNames[$firstNameIdx] . '.' . $lastNames[$lastNameIdx])) . '.motac@gov.my';
+        $email = \strtolower(\str_replace(' ', '.', $firstNames[$firstNameIdx].'.'.$lastNames[$lastNameIdx])).'.motac@gov.my';
 
-        
         return [
             'application_number' => LoanApplication::generateApplicationNumber(),
             'user_id' => null, // Default to guest submission
             // Guest applicant fields (always populated)
-            'applicant_name' => $firstNames[$firstNameIdx] . ' ' . $lastNames[$lastNameIdx],
+            'applicant_name' => $firstNames[$firstNameIdx].' '.$lastNames[$lastNameIdx],
             'applicant_position' => $positions[\array_rand($positions)],
             'applicant_grade' => $grades[\array_rand($grades)],
             'applicant_email' => $email,
-            'applicant_phone' => '01' . \random_int(100, 199) . '-' . \random_int(1000, 9999) . ' ' . \random_int(1000, 9999),
-            'staff_id' => 'MOTAC' . \random_int(1000, 9999),
+            'applicant_phone' => '01'.\random_int(100, 199).'-'.\random_int(1000, 9999).' '.\random_int(1000, 9999),
+            'staff_id' => 'MOTAC'.\random_int(1000, 9999),
             'grade' => $grades[\array_rand($grades)],
             'division_id' => Division::factory(),
             // Application details
-            'purpose' => 'Loan request for ' . ['conference', 'training', 'exhibition', 'project', 'event'][\array_rand(['conference', 'training', 'exhibition', 'project', 'event'])],
+            'purpose' => 'Loan request for '.['conference', 'training', 'exhibition', 'project', 'event'][\array_rand(['conference', 'training', 'exhibition', 'project', 'event'])],
             'location' => $locations[\array_rand($locations)],
             'return_location' => $locations[\array_rand($locations)],
             'loan_start_date' => $startDate,
             'loan_end_date' => $endDate,
             'expected_return_date' => $endDate,
-            'status' => LoanStatus::SUBMITTED,
-            'priority' => LoanPriority::NORMAL,
+            'status' => LoanStatus::SUBMITTED->value,
+            'priority' => LoanPriority::NORMAL->value,
             'total_value' => \random_int(50000, 1500000) / 100,
             // Email approval workflow (null by default)
             'approver_email' => null,
@@ -129,7 +128,9 @@ class LoanApplicationFactory extends Factory
             'related_helpdesk_tickets' => null,
             'maintenance_required' => false,
         ];
-    }    /**
+    }
+
+    /**
      * State: Authenticated submission (with user_id)
      */
     public function authenticated(): static
@@ -176,7 +177,7 @@ class LoanApplicationFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => LoanStatus::UNDER_REVIEW,
-            'approver_email' => 'approver' . \random_int(1000, 9999) . '@motac.gov.my',
+            'approver_email' => 'approver'.\random_int(1000, 9999).'@motac.gov.my',
             'approval_token' => Str::random(64),
             'approval_token_expires_at' => now()->addDays(7),
         ]);
@@ -188,9 +189,10 @@ class LoanApplicationFactory extends Factory
     public function approved(): static
     {
         $names = ['Dato Ahmad', 'Dr. Siti', 'Tuan Hassan', 'Pn. Zainab', 'Encik Ibrahim'];
+
         return $this->state(fn (array $attributes) => [
             'status' => LoanStatus::APPROVED,
-            'approver_email' => 'approver' . \random_int(1000, 9999) . '@motac.gov.my',
+            'approver_email' => 'approver'.\random_int(1000, 9999).'@motac.gov.my',
             'approved_by_name' => $names[\array_rand($names)],
             'approved_at' => now()->subDays(\random_int(1, 5)),
             'approval_token' => null,
@@ -205,9 +207,10 @@ class LoanApplicationFactory extends Factory
     {
         $reasons = ['Budget not approved', 'Equipment not available', 'Invalid purpose', 'Incorrect documentation'];
         $names = ['Dato Ahmad', 'Dr. Siti', 'Tuan Hassan', 'Pn. Zainab', 'Encik Ibrahim'];
+
         return $this->state(fn (array $attributes) => [
             'status' => LoanStatus::REJECTED,
-            'approver_email' => 'approver' . \random_int(1000, 9999) . '@motac.gov.my',
+            'approver_email' => 'approver'.\random_int(1000, 9999).'@motac.gov.my',
             'approved_by_name' => $names[\array_rand($names)],
             'rejected_reason' => $reasons[\array_rand($reasons)],
             'approval_token' => null,
@@ -221,9 +224,10 @@ class LoanApplicationFactory extends Factory
     public function issued(): static
     {
         $names = ['Dato Ahmad', 'Dr. Siti', 'Tuan Hassan', 'Pn. Zainab', 'Encik Ibrahim'];
+
         return $this->state(fn (array $attributes) => [
             'status' => LoanStatus::ISSUED,
-            'approver_email' => 'approver' . \random_int(1000, 9999) . '@motac.gov.my',
+            'approver_email' => 'approver'.\random_int(1000, 9999).'@motac.gov.my',
             'approved_by_name' => $names[\array_rand($names)],
             'approved_at' => now()->subDays(\random_int(5, 10)),
         ]);
@@ -235,11 +239,12 @@ class LoanApplicationFactory extends Factory
     public function inUse(): static
     {
         $names = ['Dato Ahmad', 'Dr. Siti', 'Tuan Hassan', 'Pn. Zainab', 'Encik Ibrahim'];
+
         return $this->state(fn (array $attributes) => [
             'status' => LoanStatus::IN_USE,
             'loan_start_date' => now()->subDays(\random_int(1, 10)),
             'loan_end_date' => now()->addDays(\random_int(5, 20)),
-            'approver_email' => 'approver' . \random_int(1000, 9999) . '@motac.gov.my',
+            'approver_email' => 'approver'.\random_int(1000, 9999).'@motac.gov.my',
             'approved_by_name' => $names[\array_rand($names)],
             'approved_at' => now()->subDays(\random_int(10, 15)),
         ]);
@@ -251,11 +256,12 @@ class LoanApplicationFactory extends Factory
     public function overdue(): static
     {
         $names = ['Dato Ahmad', 'Dr. Siti', 'Tuan Hassan', 'Pn. Zainab', 'Encik Ibrahim'];
+
         return $this->state(fn (array $attributes) => [
             'status' => LoanStatus::OVERDUE,
             'loan_start_date' => now()->subDays(\random_int(20, 40)),
             'loan_end_date' => now()->subDays(\random_int(1, 10)),
-            'approver_email' => 'approver' . \random_int(1000, 9999) . '@motac.gov.my',
+            'approver_email' => 'approver'.\random_int(1000, 9999).'@motac.gov.my',
             'approved_by_name' => $names[\array_rand($names)],
             'approved_at' => now()->subDays(\random_int(30, 50)),
         ]);
@@ -267,11 +273,12 @@ class LoanApplicationFactory extends Factory
     public function returned(): static
     {
         $names = ['Dato Ahmad', 'Dr. Siti', 'Tuan Hassan', 'Pn. Zainab', 'Encik Ibrahim'];
+
         return $this->state(fn (array $attributes) => [
             'status' => LoanStatus::RETURNED,
             'loan_start_date' => now()->subDays(\random_int(20, 40)),
             'loan_end_date' => now()->subDays(\random_int(5, 15)),
-            'approver_email' => 'approver' . \random_int(1000, 9999) . '@motac.gov.my',
+            'approver_email' => 'approver'.\random_int(1000, 9999).'@motac.gov.my',
             'approved_by_name' => $names[\array_rand($names)],
             'approved_at' => now()->subDays(\random_int(30, 50)),
         ]);
@@ -283,11 +290,12 @@ class LoanApplicationFactory extends Factory
     public function completed(): static
     {
         $names = ['Dato Ahmad', 'Dr. Siti', 'Tuan Hassan', 'Pn. Zainab', 'Encik Ibrahim'];
+
         return $this->state(fn (array $attributes) => [
             'status' => LoanStatus::COMPLETED,
             'loan_start_date' => now()->subDays(\random_int(30, 60)),
             'loan_end_date' => now()->subDays(\random_int(10, 25)),
-            'approver_email' => 'approver' . \random_int(1000, 9999) . '@motac.gov.my',
+            'approver_email' => 'approver'.\random_int(1000, 9999).'@motac.gov.my',
             'approved_by_name' => $names[\array_rand($names)],
             'approved_at' => now()->subDays(\random_int(40, 70)),
         ]);
@@ -334,7 +342,7 @@ class LoanApplicationFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => LoanStatus::UNDER_REVIEW,
-            'approver_email' => 'approver' . \random_int(1000, 9999) . '@motac.gov.my',
+            'approver_email' => 'approver'.\random_int(1000, 9999).'@motac.gov.my',
             'approval_token' => Str::random(64),
             'approval_token_expires_at' => now()->subDays(1),
         ]);

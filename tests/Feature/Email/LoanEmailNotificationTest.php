@@ -121,4 +121,98 @@ class LoanEmailNotificationTest extends TestCase
 
         $this->assertLessThan(1.0, $queueTime);
     }
+
+    #[Test]
+    public function loan_emails_contain_bahasa_melayu_content(): void
+    {
+        // Set locale to Bahasa Melayu (v3.6.0 default)
+        app()->setLocale('ms');
+
+        $loan = LoanApplication::factory()->create([
+            'applicant_email' => 'applicant@example.com',
+        ]);
+
+        $mailable = new LoanApplicationSubmitted($loan);
+
+        // Render email content
+        $rendered = $mailable->render();
+
+        // Verify Bahasa Melayu content
+        $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+        $this->assertStringContainsString('permohonan', $rendered); // Application term in BM
+        $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
+        $this->assertNotEmpty($rendered);
+    }
+
+    #[Test]
+    public function approval_request_emails_contain_bahasa_melayu_content(): void
+    {
+        app()->setLocale('ms');
+
+        $approver = User::factory()->create(['email' => 'approver@example.com']);
+        $approver->assignRole('approver');
+
+        $loan = LoanApplication::factory()->create([
+            'approval_token' => 'test-token-123',
+        ]);
+
+        $mailable = new LoanApprovalRequest($loan, 'test-token-123');
+
+        // Render email content
+        $rendered = $mailable->render();
+
+        // Verify Bahasa Melayu content
+        $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+        $this->assertStringContainsString('kelulusan', $rendered); // Approval term in BM
+        $this->assertStringContainsString('permohonan', $rendered); // Application term in BM
+        $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
+        $this->assertNotEmpty($rendered);
+    }
+
+    #[Test]
+    public function decision_emails_contain_bahasa_melayu_content(): void
+    {
+        app()->setLocale('ms');
+
+        $loan = LoanApplication::factory()->create([
+            'status' => 'approved',
+            'applicant_email' => 'applicant@example.com',
+        ]);
+
+        $mailable = new LoanApplicationDecision($loan, true);
+
+        // Render email content
+        $rendered = $mailable->render();
+
+        // Verify Bahasa Melayu content
+        $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+        $this->assertStringContainsString('diluluskan', $rendered); // Approved term in BM
+        $this->assertStringContainsString('permohonan', $rendered); // Application term in BM
+        $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
+        $this->assertNotEmpty($rendered);
+    }
+
+    #[Test]
+    public function return_reminder_emails_contain_bahasa_melayu_content(): void
+    {
+        app()->setLocale('ms');
+
+        $loan = LoanApplication::factory()->create([
+            'status' => 'in_use',
+            'loan_end_date' => now()->addDays(3),
+            'applicant_email' => 'applicant@example.com',
+        ]);
+
+        $mailable = new AssetReturnReminder($loan);
+
+        // Render email content
+        $rendered = $mailable->render();
+
+        // Verify Bahasa Melayu content
+        $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+        $this->assertStringContainsString('peringatan', $rendered); // Reminder term in BM
+        $this->assertStringContainsString('pulangan', $rendered); // Return term in BM
+        $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
+        $this->assertNotEmpty($rendered);
+    }
 }

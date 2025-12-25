@@ -24,6 +24,10 @@ class AssetForm
      * @param  array<int, AssetStatus>  $statuses
      * @param  array<int, AssetCondition>  $conditions
      */
+
+    /**
+     * @param  array<string, mixed>  $conditions
+     */
     public static function configure(Schema $schema, array $statuses, array $conditions): Schema
     {
         return $schema->components([
@@ -117,6 +121,10 @@ class AssetForm
     /**
      * @param  array<int, AssetStatus|AssetCondition>  $enumCases
      * @return array<string, string>
+     */
+
+    /**
+     * @param  array<string, mixed>  $enumCases
      */
     private static function enumOptions(array $enumCases): array
     {

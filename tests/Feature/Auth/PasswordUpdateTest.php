@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Volt\Volt;
 use PHPUnit\Framework\Attributes\Test;
@@ -11,8 +12,6 @@ use Tests\TestCase;
 
 class PasswordUpdateTest extends TestCase
 {
-    use DatabaseMigrations;
-
     #[Test]
     public function password_can_be_updated(): void
     {

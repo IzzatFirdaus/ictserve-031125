@@ -1,0 +1,131 @@
+KRISA TEMPLATE COMPLIANCE VALIDATION REPORT
+Generated: 2025-12-24 01:52:24
+============================================================
+
+Document: D01
+--------------------
+Status: COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+
+Document: D02
+--------------------
+Status: NON-COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+Violations (3):
+  - Missing required methodology reference: Pemodelan Fungsi Bisnes [F1.3]
+  - Missing proper KRISA notation format (BF-ICT-XX-YY)
+  - Found deprecated 'Syarat Pasca' - should use 'Aktiviti Sebelum' and 'Aktiviti Selepas'
+
+Document: D03
+--------------------
+Status: NON-COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+Violations (4):
+  - Missing required methodology reference: Pemodelan Fungsi Sistem [F2.2]
+  - Missing required methodology reference: Pemodelan Use Case [F2.1]
+  - Missing required methodology reference: Pemodelan Keperluan Data [F2.3]
+  - Missing proper KRISA notation format (BF-ICT-XX-YY)
+
+Document: D04
+--------------------
+Status: COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+
+Document: D05
+--------------------
+Status: COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+
+Document: D06
+--------------------
+Status: COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+
+Document: D07
+--------------------
+Status: COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+
+Document: D08
+--------------------
+Status: COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+
+Document: D09
+--------------------
+Status: NON-COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+Violations (1):
+  - Missing CRUD indicators (C), (R), (U), (D) in database documentation
+
+Document: D10
+--------------------
+Status: COMPLIANT
+Template Compliance Score: 100%
+Sections Found: 8/8
+
+Document: D15
+--------------------
+Status: NON-COMPLIANT
+Template Compliance Score: 25%
+Sections Found: 2/8
+Violations (7):
+  - Missing required KRISA template section: iii. Kawalan Dokumen
+  - Missing required KRISA template section: iv. Kandungan
+  - Missing required KRISA template section: v. Senarai Gambarajah
+  - Missing required KRISA template section: vi. Senarai Jadual
+  - Missing required KRISA template section: vii. Definisi dan Akronim
+  - Missing required KRISA template section: viii. Sumber Rujukan
+  - Missing proper agency information (BPM/MOTAC)
+
+Document: D17
+--------------------
+Status: NON-COMPLIANT
+Template Compliance Score: 12.5%
+Sections Found: 1/8
+Violations (8):
+  - Missing required KRISA template section: ii. Semakan dan Pengesahan Dokumen
+  - Missing required KRISA template section: iii. Kawalan Dokumen
+  - Missing required KRISA template section: iv. Kandungan
+  - Missing required KRISA template section: v. Senarai Gambarajah
+  - Missing required KRISA template section: vi. Senarai Jadual
+  - Missing required KRISA template section: vii. Definisi dan Akronim
+  - Missing required KRISA template section: viii. Sumber Rujukan
+  - Missing proper agency information (BPM/MOTAC)
+
+CROSS-REFERENCE VALIDATION
+==============================
+Cross-Reference Violations:
+  - Version mismatch in D03: References D09 v3.5 but actual version is v3.6
+  - Version mismatch in D03: References D02 v1.4 but actual version is v3.6
+  - Version mismatch in D03: References D06 v1.5 but actual version is v3.6
+  - Version mismatch in D03: References D09 v3.5 but actual version is v3.6
+  - Version mismatch in D04: References D02 v3.5 but actual version is v3.6
+  - Version mismatch in D04: References D03 v3.5 but actual version is v3.6
+
+Document Versions:
+  D01: v3.6
+  D02: v3.6
+  D03: v3.6
+  D05: v3.6
+  D06: v3.6
+  D07: v3.6
+  D08: v3.7
+  D09: v3.6
+  D15: v3.6
+  D17: v3.6
+
+SUMMARY
+====================
+Total Documents: 12
+Total Violations: 29
+Overall Status: NON-COMPLIANT

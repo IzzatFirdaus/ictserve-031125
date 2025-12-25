@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Volt\Volt;
 use PHPUnit\Framework\Attributes\Test;
@@ -12,16 +13,15 @@ use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
 {
-    use DatabaseMigrations;
-
     #[Test]
     public function reset_password_link_screen_can_be_rendered(): void
     {
         $response = $this->get('/forgot-password');
 
         $response
-            ->assertSeeVolt('pages.auth.forgot-password')
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->assertSee('Lupa kata laluan')  // Check for forgot password content in Bahasa Melayu
+            ->assertSee('E-mel');
     }
 
     #[Test]
@@ -53,8 +53,9 @@ class PasswordResetTest extends TestCase
             $response = $this->get('/reset-password/'.$notification->token);
 
             $response
-                ->assertSeeVolt('pages.auth.reset-password')
-                ->assertStatus(200);
+                ->assertStatus(200)
+                ->assertSee('Reset Password')  // Check for reset password content
+                ->assertSee('Confirm Password');
 
             return true;
         });

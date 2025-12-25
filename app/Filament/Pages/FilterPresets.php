@@ -36,7 +36,7 @@ class FilterPresets extends Page
 
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
+    protected static string|UnitEnum|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 2;
 
@@ -72,7 +72,7 @@ class FilterPresets extends Page
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.filter_presets.group');
+        return __('filament.navigation.system');
     }
 
     public function getTitle(): string
@@ -226,6 +226,10 @@ class FilterPresets extends Page
     {
         return $this->presetService->getQuickFilters($this->selectedResource);
     }
+
+    /**
+     * @param  array<string, mixed>  $filters
+     */
 
     /**
      * @param  array<string, mixed>  $filters

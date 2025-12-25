@@ -1,0 +1,18 @@
+{
+  "enabledMcpjsonServers": [
+    "sequentialthinking",
+    "memory",
+    "chrome-devtools",
+    "firecrawl",
+    "playwright",
+    "context7",
+    "laravel-boost",
+    "fetch",
+    "deepl",
+    "github",
+    "gitkraken",
+    "bedrock-opus",
+    "herd"
+  ],
+  "enableAllProjectMcpServers": true
+}

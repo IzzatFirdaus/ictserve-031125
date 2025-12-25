@@ -23,12 +23,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Contracts\SsoHealthCheckInterface;
 use App\Events\GoogleSsoLinked;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User as SocialiteUser;
+use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -43,6 +45,25 @@ class GoogleAuthControllerTest extends TestCase
 
         // Fake events to test event dispatching
         Event::fake();
+
+        // Mock the SsoHealthCheckInterface to return healthy status for tests
+        $this->mock(SsoHealthCheckInterface::class, function (MockInterface $mock) {
+            $mock->shouldReceive('getServiceStatus')->andReturn([
+                'status' => 'healthy',
+                'configured' => true,
+                'available' => true,
+                'message' => 'Google SSO service is fully operational',
+                'details' => [
+                    'configuration_errors' => [],
+                    'configuration_warnings' => [],
+                    'connectivity_tested' => true,
+                    'connectivity_passed' => true,
+                    'allowed_domains' => ['motac.gov.my'],
+                    'redirect_uri_configured' => true,
+                ],
+                'checked_at' => now()->toIso8601String(),
+            ]);
+        });
     }
 
     // =========================================================================
@@ -52,6 +73,16 @@ class GoogleAuthControllerTest extends TestCase
     #[Test]
     public function redirect_returns_socialite_redirect_response(): void
     {
+        // Mock Socialite redirect to return a redirect response to Google
+        Socialite::shouldReceive('driver')
+            ->with('google')
+            ->once()
+            ->andReturnSelf();
+
+        Socialite::shouldReceive('redirect')
+            ->once()
+            ->andReturn(redirect('https://accounts.google.com/oauth/authorize?client_id=test'));
+
         $response = $this->get(route('auth.google.redirect'));
 
         $response->assertRedirect();

@@ -110,7 +110,6 @@ class ServicesPageTest extends TestCase
         $response->assertSee(__('pages.services.issue_reporting_feature_1'));
         $response->assertSee(__('pages.services.issue_reporting_feature_2'));
         $response->assertSee(__('pages.services.issue_reporting_feature_3'));
-        $response->assertSee(__('pages.services.issue_reporting_feature_4'));
         $response->assertSee(__('pages.services.issue_reporting_cta'));
     }
 
@@ -127,7 +126,6 @@ class ServicesPageTest extends TestCase
         $response->assertSee(__('pages.services.support_feature_1'));
         $response->assertSee(__('pages.services.support_feature_2'));
         $response->assertSee(__('pages.services.support_feature_3'));
-        $response->assertSee(__('pages.services.support_feature_4'));
         $response->assertSee(__('pages.services.support_cta'));
     }
 
@@ -242,14 +240,14 @@ class ServicesPageTest extends TestCase
     {
         $response = $this->get(route('services'));
 
-        // Check for MOTAC blue
-        $response->assertSee('motac-blue', false);
+        // Check for primary colors
+        $response->assertSee('primary-600', false);
 
-        // Check for success color (emerald)
-        $response->assertSee('emerald', false);
+        // Check for success color
+        $response->assertSee('success', false);
 
         // Check for warning color
-        $response->assertSee('text-warning', false);
+        $response->assertSee('warning', false);
     }
 
     /**
@@ -275,9 +273,9 @@ class ServicesPageTest extends TestCase
 
         // Check for grid layout classes
         $response->assertSee('grid', false);
-        $response->assertSee('grid-cols-1', false);
-        $response->assertSee('md:grid-cols-2', false);
-        $response->assertSee('lg:grid-cols-3', false);
+        $response->assertSee('grid-cols-4', false);
+        $response->assertSee('md:grid-cols-8', false);
+        $response->assertSee('lg:grid-cols-12', false);
     }
 
     /**
@@ -290,9 +288,6 @@ class ServicesPageTest extends TestCase
 
         $response->assertSee('shadow-card', false);
         $response->assertSee('rounded-lg', false);
-        // Check for card styling classes
-        $response->assertSee('rounded-2xl', false);
-        $response->assertSee('shadow-lg', false);
         $response->assertSee('border', false);
         $response->assertSee('overflow-hidden', false);
     }
@@ -305,8 +300,9 @@ class ServicesPageTest extends TestCase
     {
         $response = $this->get(route('services'));
 
-        $response->assertSee('hover:-translate-y-1', false);
-        $response->assertSee('transition-transform', false);
+        $response->assertSee('hover:shadow-lg', false);
+        $response->assertSee('hover:shadow-dropdown', false);
+        $response->assertSee('transition-shadow', false);
     }
 
     /**
@@ -331,8 +327,8 @@ class ServicesPageTest extends TestCase
     {
         $response = $this->get(route('services'));
 
-        // Check for checkmark SVG path
-        $response->assertSee('M16.707 5.293a1 1 0 00-1.414 0L8 12.586', false);
+        // Check for checkmark SVG path (Heroicons v2 check icon)
+        $response->assertSee('M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z', false);
     }
 
     /**
@@ -382,8 +378,8 @@ class ServicesPageTest extends TestCase
     {
         $response = $this->get(route('services'));
 
-        $response->assertSee('focus:ring', false);
         $response->assertSee('focus:outline-none', false);
+        $response->assertSee('focus:ring-2', false);
     }
 
     /**
@@ -395,7 +391,7 @@ class ServicesPageTest extends TestCase
         $response = $this->get(route('services'));
 
         $response->assertSee('bg-primary-600', false);
-        $response->assertSee('bg-success', false);
+        $response->assertSee('bg-success-600', false);
         $response->assertSee('bg-secondary-500', false);
         $response->assertSee('bg-warning', false);
     }

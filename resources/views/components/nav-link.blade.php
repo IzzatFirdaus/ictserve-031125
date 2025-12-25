@@ -19,8 +19,8 @@
     // MyDS tokens: primary-500 for active state, transition-colors duration-200
     $classes =
         $active ?? false
-            ? 'inline-flex items-center px-4 min-h-11 border-b-2 border-primary-500 dark:border-primary-400 text-sm font-medium leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200'
-            : 'inline-flex items-center px-4 min-h-11 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:text-gray-700 dark:focus:text-gray-300 transition-colors duration-200';
+            ? 'inline-flex items-center px-4 min-h-11 border-b-2 border-primary-500 dark:border-primary-400 text-sm font-medium leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200'
+            : 'inline-flex items-center px-4 min-h-11 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:text-gray-700 dark:focus:text-gray-300 transition-colors duration-200';
 @endphp
 
 <a {{ $attributes->merge(['class' => $classes]) }}>

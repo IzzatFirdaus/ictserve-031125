@@ -1,10 +1,21 @@
 *.log
 .DS_Store
 .env
+.env.bak
 .env.backup
 .env.production
 .env.local
 .env.nova
+
+# Environment files with potential secrets (never commit these)
+.env.xampp
+.env.workspace
+.env.testing
+.env.staging
+.env.docker
+.env.laragon
+.env.generated.*
+.env.*.local
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -18,6 +29,11 @@
 /public/build
 /public/hot
 /public/storage
+
+# MCP NPM directories
+/.npm-cache
+/.npm-global
+/.npm-user
 /storage/*.key
 /storage/pail
 /storage/mcp
@@ -28,6 +44,12 @@ Thumbs.db
 
 # Development and testing directories
 /.playwright-mcp/
+
+# MCP test scripts and configurations
+test-mcp-docker.ps1
+verify-mcp-docker.ps1
+switch-mcp-config.ps1
+.kiro/settings/mcp-*backup*.json
 /.vite/
 /__pycache__/
 /copilot-data/
@@ -41,6 +63,13 @@ Thumbs.db
 .mcp/
 mcp-servers/
 copilot-data/
+
+# Laravel Boost generated files (auto-regenerated on boost:install/update)
+.mcp.json
+CLAUDE.md
+AGENTS.md
+boost.json
+.ai/guidelines/
 
 # Python cache
 __pycache__/
@@ -86,3 +115,22 @@ desktop.ini
 
 # Test artifacts and temp views
 /storage/framework/views_testing/
+
+# IDE helpers and cache
+.ide-helpers/
+.intelephense/
+_ide_helper.php
+_ide_helper_models.php
+
+# Backup files
+*.bak
+
+# Docker build artifacts
+docker/php-fpm/
+
+# Bootstrap cache
+bootstrap/cache/filament/
+
+# Development tools
+pint.bat
+stubs/

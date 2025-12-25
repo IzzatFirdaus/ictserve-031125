@@ -22,18 +22,18 @@
 
 @php
 $variantClasses = match($variant) {
-'success' => 'bg-green-50 border-green-200 text-green-800',
-'danger', 'error' => 'bg-red-50 border-red-200 text-red-800',
-'warning' => 'bg-yellow-50 border-yellow-200 text-yellow-800',
-'info' => 'bg-blue-50 border-blue-200 text-blue-800',
+'success' => 'bg-success-50 border-success-200 text-success-800',
+'danger', 'error' => 'bg-danger-50 border-danger-200 text-danger-800',
+'warning' => 'bg-warning-50 border-warning-200 text-warning-800',
+'info' => 'bg-primary-50 border-primary-200 text-primary-800',
 default => 'bg-gray-50 border-gray-200 text-gray-800',
 };
 
 $iconClasses = match($variant) {
-'success' => 'text-green-500',
-'danger', 'error' => 'text-red-500',
-'warning' => 'text-yellow-500',
-'info' => 'text-blue-500',
+'success' => 'text-success-500',
+'danger', 'error' => 'text-danger-500',
+'warning' => 'text-warning-500',
+'info' => 'text-primary-500',
 default => 'text-gray-500',
 };
 @endphp
@@ -52,7 +52,7 @@ default => 'text-gray-500',
     @if($dismissible)
     <button
         type="button"
-        class="shrink-0 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded"
+        class="shrink-0 min-h-11 min-w-11 flex items-center justify-center text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 rounded-lg"
         aria-label="Close alert"
         onclick="this.parentElement.remove()">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

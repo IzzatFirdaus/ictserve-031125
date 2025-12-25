@@ -78,11 +78,11 @@ new class extends Component
 
 <section>
     <header>
-        <h2 class="text-xl font-semibold text-slate-100">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
             {{ __('profile.information_title') }}
         </h2>
 
-        <p class="mt-1 text-sm text-slate-300">
+        <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
             {{ __('profile.information_description') }}
         </p>
     </header>
@@ -90,27 +90,27 @@ new class extends Component
     <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
         <div>
             <x-input-label for="name" :value="__('profile.name')" />
-            <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full" required autofocus autocomplete="name" :placeholder="__('profile.name_placeholder')" />
+            <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" required autofocus autocomplete="name" :placeholder="__('profile.name_placeholder')" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
             <x-input-label for="email" :value="__('profile.email')" />
-            <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full" required autocomplete="username" />
+            <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())
                 <div>
-                    <p class="text-sm mt-2 text-slate-300">
+                    <p class="text-sm mt-2 text-slate-600 dark:text-slate-400">
                         {{ __('auth.email_unverified') }}
 
-                        <button wire:click.prevent="sendVerification" class="underline text-sm text-slate-400 hover:text-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-800">
+                        <button wire:click.prevent="sendVerification" class="underline text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800">
                             {{ __('auth.resend_verification') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-400">
+                        <p class="mt-2 font-medium text-sm text-success-600 dark:text-success-400">
                             {{ __('auth.verification_link_sent') }}
                         </p>
                     @endif
@@ -119,7 +119,7 @@ new class extends Component
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('profile.save_changes') }}</x-primary-button>
+            <x-primary-button class="min-h-11 px-6 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500">{{ __('profile.save_changes') }}</x-primary-button>
 
             <x-action-message class="me-3" on="profile-updated">
                 {{ __('profile.update_success') }}
@@ -127,3 +127,4 @@ new class extends Component
         </div>
     </form>
 </section>
+

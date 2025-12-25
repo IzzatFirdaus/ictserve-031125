@@ -31,11 +31,11 @@
     <nav aria-label="{{ __('Form progress') }}" class="mb-6">
         {{-- Progress bar --}}
         <div class="mb-4">
-            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <div class="flex justify-between text-sm text-slate-600 dark:text-slate-400 mb-2">
                 <span>{{ __('Step :current of :total', ['current' => $currentStep, 'total' => $totalSteps]) }}</span>
                 <span>{{ $progressPercentage }}% {{ __('complete') }}</span>
             </div>
-            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden" role="progressbar"
+            <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden" role="progressbar"
                 aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100"
                 aria-label="{{ __('Form completion progress') }}">
                 <div class="bg-primary-500 h-2 rounded-full transition-all duration-400 ease-out"
@@ -58,7 +58,7 @@
                     {{-- Step button/indicator --}}
                     <button type="button" wire:click="goToStep({{ $stepNumber }})"
                         @if (!$canNavigate) disabled @endif
-                        class="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg p-2 -m-2 transition-colors duration-200
+                        class="flex items-center gap-2 group focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg p-2 -m-2 transition-colors duration-200
                             {{ $canNavigate ? 'cursor-pointer' : 'cursor-not-allowed opacity-60' }}"
                         aria-label="{{ __('Step :number: :title', ['number' => $stepNumber, 'title' => $step['title']]) }}{{ $isCompleted ? ' - ' . __('Completed') : '' }}{{ $isCurrent ? ' - ' . __('Current step') : '' }}">
                         {{-- Step circle --}}
@@ -66,8 +66,8 @@
                             @class([
                                 'flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 shrink-0',
                                 'bg-primary-500 border-primary-500 text-white' => $isCompleted,
-                                'bg-white dark:bg-gray-800 border-primary-500 text-primary-600 dark:text-primary-400' => $isCurrent && !$isCompleted,
-                                'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400' => !$isCompleted && !$isCurrent,
+                                'bg-white dark:bg-slate-800 border-primary-500 text-primary-600 dark:text-primary-400' => $isCurrent && !$isCompleted,
+                                'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400' => !$isCompleted && !$isCurrent,
                                 'group-hover:border-primary-400 group-hover:text-primary-500' => $canNavigate && !$isCurrent,
                             ])>
                             @if ($isCompleted)
@@ -93,13 +93,13 @@
                                 @class([
                                     'block text-sm font-medium transition-colors duration-200',
                                     'text-primary-600 dark:text-primary-400' => $isCurrent,
-                                    'text-gray-900 dark:text-gray-100' => $isCompleted && !$isCurrent,
-                                    'text-gray-500 dark:text-gray-400' => !$isCompleted && !$isCurrent,
+                                    'text-slate-900 dark:text-slate-100' => $isCompleted && !$isCurrent,
+                                    'text-slate-500 dark:text-slate-400' => !$isCompleted && !$isCurrent,
                                 ])>
                                 {{ $step['title'] }}
                             </span>
                             @if (isset($step['description']))
-                                <span class="block text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                <span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                                     {{ $step['description'] }}
                                 </span>
                             @endif
@@ -109,7 +109,7 @@
                     {{-- Connector line --}}
                     @if ($index < count($steps) - 1)
                         <div class="flex-1 h-0.5 mx-4 transition-colors duration-200
-                                {{ $isCompleted ? 'bg-primary-500' : 'bg-gray-200 dark:bg-gray-700' }}"
+                                {{ $isCompleted ? 'bg-primary-500' : 'bg-slate-200 dark:bg-slate-700' }}"
                             aria-hidden="true"></div>
                     @endif
                 </li>
@@ -150,13 +150,13 @@
     </div>
 
     {{-- Navigation buttons --}}
-    <div class="mt-8 flex items-center justify-between gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+    <div class="mt-8 flex items-center justify-between gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
         {{-- Previous button --}}
         <button type="button" wire:click="previousStep" @if ($this->isFirstStep()) disabled @endif
-            class="inline-flex items-center gap-2 px-4 py-2.5 min-h-11 text-sm font-medium rounded-lg border transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2
+            class="inline-flex items-center gap-2 px-4 py-2.5 min-h-11 text-sm font-medium rounded-lg border transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2
                 {{ $this->isFirstStep()
-                    ? 'border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700' }}"
+                    ? 'border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed'
+                    : 'border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700' }}"
             aria-label="{{ __('Go to previous step') }}">
             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                 aria-hidden="true">
@@ -168,7 +168,7 @@
         </button>
 
         {{-- Step indicator (mobile) --}}
-        <span class="text-sm text-gray-500 dark:text-gray-400 sm:hidden">
+        <span class="text-sm text-slate-500 dark:text-slate-400 sm:hidden">
             {{ $currentStep }} / {{ $totalSteps }}
         </span>
 
@@ -179,7 +179,7 @@
 
             @if (!isset($submitButton))
                 <button type="submit" wire:loading.attr="disabled"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 min-h-11 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                    class="inline-flex items-center gap-2 px-6 py-2.5 min-h-11 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                     <span wire:loading.remove>{{ __('Submit') }}</span>
                     <span wire:loading class="inline-flex items-center gap-2">
                         <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -196,7 +196,7 @@
             @endif
         @else
             <button type="button" wire:click="nextStep" wire:loading.attr="disabled"
-                class="inline-flex items-center gap-2 px-6 py-2.5 min-h-11 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="inline-flex items-center gap-2 px-6 py-2.5 min-h-11 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="{{ __('Go to next step') }}">
                 <span>{{ __('Next') }}</span>
                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"

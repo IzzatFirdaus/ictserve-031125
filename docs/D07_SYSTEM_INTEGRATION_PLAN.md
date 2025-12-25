@@ -6,7 +6,7 @@
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207
+**Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, RFC 5322, ISO 8601, TLS 1.3, AES-256, ISO/IEC 33063:2015 (Pengukuran Proses), ISO/IEC/IEEE 15289:2019 (Dokumentasi Sistem/Perisian)
 
 ---
 
@@ -30,14 +30,14 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                               | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.42.0, Livewire 3.7.1, Laravel Pulse 1.4.6, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.17, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
+| 3.6.1 | 17 Disember 2025 | Kemaskini teknologi stack: Laravel 12.43.1, Livewire 3.7.3, Laravel Pulse 1.4.7, Laravel Reverb 1.6.3, Laravel Sanctum 4.2.1, Laravel Socialite 5.24.0, PHPUnit 11.5.46, Tailwind CSS 4.1.18, Laravel MCP 0.3.4, Laravel Prompts 0.3.8, Larastan 3.8.1, Laravel Pint 1.26.0, Laravel Telescope 5.16.0, Laravel Horizon 5.41.0. Penyelarasan dengan D00-D18 v3.6.1. | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding, Enhanced UX. Penyelarasan dengan D00-D06 v3.5.0. | Pasukan BPM |
 | 3.7.0 | 15 Disember 2025 | AI Chatbot Integration: Tambah pelan integrasi AI (Ollama server, AWS Bedrock, model routing, RAG pipeline). Rujukan D18 v1.0.0 Cloud Hybrid AI Architecture.                                                                                                                                                                            | Pasukan BPM |
 | 3.4.0 | 30 November 2025   | Hybrid Architecture v3.4.0: Restore LDAP/SSO integration sebagai optional authentication untuk staff. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                                               | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan penuh Guest-First: hapus semua rujukan LDAP/SSO/User Sync. Hanya admin/superuser authenticate.                                                                                                                                                                                                                                             | Pasukan BPM |
 | 3.2.0 | 29 November 2025 | Hapus LDAP/SSO; klarifikasi Guest-First (staf guna guest forms tanpa authentication)                                                                                                                                                                                                                                                                    | Pasukan BPM |
-| 2.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.40.1, Filament 4.1.10, Livewire 3.7.0, Tailwind 4.1.17                                                                                                                                                                                                                                                                  | Pasukan BPM |
-| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.40.1, Laravel Reverb 1.6.2 untuk real-time                                                                                                                                                                                                                                                                      | Pasukan BPM |
+| 2.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.43.1, Filament 4.3.1, Livewire 3.7.3, Tailwind 4.1.18                                                                                                                                                                                                                                                                  | Pasukan BPM |
+| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.43.1, Laravel Reverb 1.6.3 untuk real-time                                                                                                                                                                                                                                                                      | Pasukan BPM |
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                                                                                  | Pasukan BPM |
 | 1.0.0 | September 2025   | Versi awal pelan integrasi sistem                                                                                                                                                                                                                                                                                                                       | Pasukan BPM |
 
@@ -66,6 +66,80 @@ ICT Asset Loan** BPM MOTAC, berpandukan piawaian **ISO/IEC/IEEE 15288** (system
 lifecycle processes) dan **ISO/IEC/IEEE 12207** (software lifecycle processes).
 Ia memastikan semua komponen dan modul sistem digabung secara berstruktur,
 bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
+
+---
+
+## 2. Pematuhan Standard (Additional Standards Compliance)
+
+### 2.1. ISO/IEC 33063:2015 - Process Measurement Implementation
+
+**Pematuhan Standard**: ISO/IEC 33063:2015 (Information technology — Process assessment — Process measurement framework for assessment of process capability)
+
+Sistem ICTServe mengimplementasikan pengukuran proses integrasi mengikut ISO/IEC 33063:2015 untuk memastikan kualiti dan keberkesanan proses integrasi sistem.
+
+#### 2.1.1. Process Measurement Framework
+
+**Key Performance Indicators (KPIs) untuk Integrasi**:
+
+| Metrik Proses                     | Target         | Pengukuran                                      | Frekuensi  |
+| --------------------------------- | -------------- | ----------------------------------------------- | ---------- |
+| **Integration Success Rate**      | ≥99%           | (Successful integrations / Total attempts) × 100 | Harian     |
+| **Data Consistency Rate**         | 100%           | Foreign key integrity checks                    | Real-time  |
+| **API Response Time**             | <200ms         | Average response time untuk internal APIs       | Real-time  |
+| **Integration Test Coverage**     | ≥80%           | (Tested integration points / Total points) × 100 | Per sprint |
+| **Error Recovery Time**           | <30 min        | Time to recover from integration failure        | Per incident |
+| **Cross-Module Data Sync Time**   | <5 sec         | Time untuk sync data antara Helpdesk ↔ Asset Loan | Real-time  |
+
+#### 2.1.2. Measurement Implementation dalam ICTServe
+
+**Laravel Pulse Integration untuk Process Metrics**:
+
+```php
+// app/Services/IntegrationMetricsService.php
+use Laravel\Pulse\Facades\Pulse;
+
+class IntegrationMetricsService
+{
+    public function recordIntegrationAttempt(string $module, bool $success): void
+    {
+        Pulse::record('integration_attempts', $module, $success ? 1 : 0)
+            ->count()
+            ->avg();
+    }
+
+    public function recordApiResponseTime(string $endpoint, float $duration): void
+    {
+        Pulse::record('api_response_time', $endpoint, $duration)
+            ->avg()
+            ->max();
+    }
+
+    public function recordDataSyncTime(string $operation, float $duration): void
+    {
+        Pulse::record('data_sync_time', $operation, $duration)
+            ->avg();
+    }
+}
+```
+
+**Automated Monitoring & Alerting**:
+
+- Laravel Pulse dashboard untuk real-time metrics visualization
+- Automated alerts jika metrics melebihi threshold (email kepada <admin@motac.gov.my>)
+- Weekly integration health reports kepada BPM management
+- Monthly process capability assessment reports
+
+#### 2.1.3. Process Capability Levels
+
+Sistem ICTServe mensasarkan **Level 3 (Established Process)** mengikut ISO/IEC 33063:
+
+- **Level 1 (Performed)**: ✅ Proses integrasi dilaksanakan dan mencapai objektif
+- **Level 2 (Managed)**: ✅ Proses diurus dengan planning, monitoring, dan adjustment
+- **Level 3 (Established)**: ✅ Proses standard didokumenkan dan diikuti secara konsisten
+- **Level 4 (Predictable)**: 🎯 Target masa depan - proses beroperasi dalam had yang boleh diramal
+- **Level 5 (Optimizing)**: 🎯 Target masa depan - continuous improvement berdasarkan metrics
+
+**Rujukan**: Lihat [D08_SYSTEM_INTEGRATION_SPECIFICATION.md](D08_SYSTEM_INTEGRATION_SPECIFICATION.md) untuk spesifikasi teknikal pengukuran proses.
 
 ---
 
@@ -128,14 +202,14 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 - Setiap modul (Helpdesk, Asset Loan, Inventory, dll) dibangunkan sebagai komponen
   berasingan dengan API dalaman (Laravel service layer).
 - Menggunakan Eloquent ORM untuk hubungan model (One-to-Many, Many-to-Many).
-- Filament 4.1.10 digunakan untuk panel pentadbiran dengan integrasi modul bersepadu.
+- Filament 4.3.1 digunakan untuk panel pentadbiran dengan integrasi modul bersepadu.
 
 ### 5.2. Data Mapping & Consistency
 
 - Field utama seperti `asset_id`, `user_id`, `status`, dan `timestamp` mesti selaras
   di semua modul.
 - Foreign key constraint dan policy validation pada peringkat database dan aplikasi.
-- Livewire 3.7.1 memastikan konsistensi data real-time antara frontend dan backend.
+- Livewire 3.7.3 memastikan konsistensi data real-time antara frontend dan backend.
 
 ### 5.3. Interface & API Integration
 
@@ -162,26 +236,27 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 
 | Komponen             | Teknologi         | Versi   | Fungsi                                    |
 | -------------------- | ----------------- | ------- | ----------------------------------------- |
-| Framework            | Laravel           | 12.42.0 | Backend application framework             |
-| Admin Panel          | Filament          | 4.1.10  | CRUD interfaces, dashboard                |
-| Reactive UI          | Livewire          | 3.7.0   | Server-driven UI components               |
+| Framework            | Laravel           | 12.43.1 | Backend application framework             |
+| Admin Panel          | Filament          | 4.3.1   | CRUD interfaces, dashboard                |
+| Reactive UI          | Livewire          | 3.7.3   | Server-driven UI components               |
 | Single-file Livewire | Volt              | 1.10.1  | Single-file Livewire components           |
-| WebSocket Server     | Laravel Reverb    | 1.6.2   | Real-time communication                   |
+| WebSocket Server     | Laravel Reverb    | 1.6.3   | Real-time communication                   |
 | WebSocket Client     | Laravel Echo      | 2.2.6   | Client-side WebSocket integration         |
-| CSS Framework        | Tailwind CSS      | 4.1.17  | Utility-first styling                     |
+| CSS Framework        | Tailwind CSS      | 4.1.18  | Utility-first styling                     |
 | Database             | MySQL             | 8.x     | Production database                       |
 | Queue                | Redis             | 7.x     | Job queue & caching                       |
-| Testing              | PHPUnit           | 11.5.44 | Unit & integration testing                |
+| Testing              | PHPUnit           | 11.5.46 | Unit & integration testing                |
 | E2E Testing          | Playwright        | 1.56.1  | Browser automation testing                |
-| Static Analysis      | Larastan          | 3.8.0   | PHP static analysis                       |
+| Static Analysis      | Larastan          | 3.8.1   | PHP static analysis                       |
 | Code Style           | Laravel Pint      | 1.26.0  | PSR-12 code formatting                    |
 | Permissions          | Spatie Permission | 6.23    | Role-based access control                 |
 | Audit (Compliance)   | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)         |
 | Audit (Operations)   | Activity Log      | 4.x     | User activity logging (spatie)            |
-| Performance Monitor  | Laravel Pulse     | 1.x     | Performance metrics & server health       |
+| Performance Monitor  | Laravel Pulse     | 1.4.7   | Performance metrics & server health       |
 | API Authentication   | Laravel Sanctum   | 4.x     | Token-based API authentication            |
 | OAuth SSO            | Laravel Socialite | 5.x     | Google Workspace SSO (optional)           |
 | Debugging            | Laravel Telescope | 5.x     | System monitoring (superuser only)        |
+| Queue Management     | Laravel Horizon   | 5.41.0  | Redis queue dashboard & monitoring        |
 
 ---
 
@@ -223,7 +298,7 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 
 ### 8.2. Alat Ujian
 
-- PHPUnit 11.5.44 untuk unit dan feature tests.
+- PHPUnit 11.5.46 untuk unit dan feature tests.
 - Livewire testing utilities untuk komponen Livewire.
 - Playwright untuk E2E browser testing.
 - Laravel Dusk untuk browser automation testing.

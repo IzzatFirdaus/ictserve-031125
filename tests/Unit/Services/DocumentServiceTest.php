@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Services;
 
 use App\Models\Document;
-use App\Models\DocumentChunk;
 use App\Services\DocumentService;
 use App\Services\EmbeddingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -66,7 +65,6 @@ class DocumentServiceTest extends TestCase
         Mockery::close();
         parent::tearDown();
     }
-
 
     #[Test]
     public function it_can_upload_txt_document(): void
@@ -140,7 +138,7 @@ class DocumentServiceTest extends TestCase
         $document = $this->documentService->uploadDocument($file, null);
 
         $storedName = $document->metadata['stored_name'];
-        Storage::disk('local')->assertExists('documents/' . $storedName);
+        Storage::disk('local')->assertExists('documents/'.$storedName);
     }
 
     #[Test]
@@ -263,8 +261,9 @@ class DocumentServiceTest extends TestCase
         $result = $this->documentService->deleteDocument($document);
 
         $this->assertTrue($result);
-        $this->assertDatabaseMissing('documents', ['id' => $document->id]);
-        Storage::disk('local')->assertMissing('documents/' . $storedName);
+        // Document uses soft deletes, so check that it's soft deleted
+        $this->assertSoftDeleted('documents', ['id' => $document->id]);
+        Storage::disk('local')->assertMissing('documents/'.$storedName);
     }
 
     #[Test]

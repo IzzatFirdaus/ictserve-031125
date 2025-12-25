@@ -75,7 +75,7 @@ class ReportBuilder extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.report_builder.group');
+        return __('filament.navigation.reports');
     }
 
     public function getTitle(): string
@@ -280,6 +280,10 @@ class ReportBuilder extends Page implements HasForms
 
     /**
      * @param  array<string, mixed>|null  $state
+     */
+
+    /**
+     * @param  array<string, mixed>  $state
      */
     private function fillForm(?array $state = null): void
     {

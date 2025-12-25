@@ -37,6 +37,7 @@ This directory contains comprehensive Redis setup and usage documentation for IC
 **Steps**:
 
 1. **Install Redis in WSL** (1 min):
+
    ```powershell
    # Option A — Automated: run the repo installer (Windows):
    npm run wsl-redis-setup
@@ -72,12 +73,15 @@ This directory contains comprehensive Redis setup and usage documentation for IC
 
    ```dotenv
    # Verify .env has these settings:
+   REDIS_CLIENT=predis
    REDIS_HOST=127.0.0.1
    REDIS_PORT=6379
    CACHE_STORE=redis
    SESSION_DRIVER=redis
    QUEUE_CONNECTION=redis
    ```
+
+   **Note**: Use `REDIS_CLIENT=predis` for cross-platform compatibility. Predis is a pure PHP library that works on Windows, Linux, and macOS without requiring PHP extensions.
 
 5. **Test Laravel integration** (30 sec):
 
@@ -383,6 +387,7 @@ composer require predis/predis
 5. **phpRedisAdmin** (optional):
    - Browser → Apache → Predis library → TCP 127.0.0.1:6379 → WSL Redis
    - Provides: Visual key browser, server monitoring, command execution
+   - **Note**: phpRedisAdmin tool uses phpredis extension, but Laravel uses Predis library
 
 ---
 
@@ -468,8 +473,8 @@ composer require predis/predis
 
 ### Tools & Libraries
 
-- **phpredis Extension**: <https://github.com/phpredis/phpredis>
-- **Predis PHP Library**: <https://github.com/predis/predis>
+- **Predis PHP Library**: <https://github.com/predis/predis> (recommended for Laravel)
+- **phpredis Extension**: <https://github.com/phpredis/phpredis> (required for phpRedisAdmin tool)
 - **phpRedisAdmin**: <https://github.com/erikdubbelboer/phpRedisAdmin>
 - **RedisInsight**: <https://redis.com/redis-enterprise/redis-insight/>
 - **Redis Commander**: <https://github.com/joeferner/redis-commander>
@@ -489,8 +494,10 @@ composer require predis/predis
 - ✅ **Added**: Complete phpRedisAdmin setup guide ([PHPREDISADMIN_SETUP.md](PHPREDISADMIN_SETUP.md))
 - ✅ **Added**: Comprehensive Redis commands reference ([REDIS_COMMANDS_REFERENCE.md](REDIS_COMMANDS_REFERENCE.md))
 - ✅ **Added**: This README.md for documentation navigation
-- ✅ **Updated**: [redis-setup.md](redis-setup.md) with phpRedisAdmin quick setup and troubleshooting
+- ✅ **Updated**: [redis-setup.md](redis-setup.md) with Predis emphasis and phpRedisAdmin integration
 - ✅ **Updated**: [WSL_SETUP.md](WSL_SETUP.md) with Web Management Interface section
+- ✅ **Updated**: All documentation to emphasize Predis over phpredis for Laravel applications
+- ✅ **Clarified**: phpRedisAdmin tool uses phpredis extension, but Laravel should use Predis library
 - ✅ **Verified**: All steps tested on Windows 11 with WSL Ubuntu 24.04 LTS + XAMPP
 - ✅ **Fixed**: Documented Predis/PSR-7 dependency installation requirements
 

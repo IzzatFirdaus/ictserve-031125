@@ -1,0 +1,23 @@
+graph TD
+    START[Query Received]
+    ANALYZE[Analyze Query]
+    
+    FAQ_CHECK{FAQ Query?}
+    HYBRID_CHECK{Hybrid?}
+    MODEL_SELECT[Use Model Selected<br/>Haiku/Sonnet/Opus]
+    
+    OLLAMA[Ollama RAG<br/>FREE]
+    HYBRID_PROC[Ollama + Haiku<br/>Minimal Cost]
+    
+    START --> ANALYZE
+    ANALYZE --> FAQ_CHECK
+    
+    FAQ_CHECK -->|Yes| OLLAMA
+    FAQ_CHECK -->|No| HYBRID_CHECK
+    
+    HYBRID_CHECK -->|Yes| HYBRID_PROC
+    HYBRID_CHECK -->|No| MODEL_SELECT
+    
+    OLLAMA --> END1[Response]
+    HYBRID_PROC --> END1
+    MODEL_SELECT --> END1

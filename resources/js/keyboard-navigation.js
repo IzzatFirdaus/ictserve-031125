@@ -1,453 +1,231 @@
 /**
- * Keyboard Navigation and Shortcuts
+ * Keyboard Navigation Enhancement for ICTServe
  *
- * Implements keyboard shortcuts for common portal actions and ensures
- * logical tab order throughout the authenticated portal.
+ * Provides enhanced keyboard navigation support for better accessibility.
+ * Ensures WCAG 2.2 AA compliance for keyboard-only users.
  *
- * @trace D12 §4.4, D14 §9 (WCAG 2.2 SC 2.1.1, 2.4.3)
- * @author dev-team@motac.gov.my
- * @created 2025-11-06
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §10.2 (Keyboard Navigation)
+ * @wcag SC 2.1.1 (Keyboard), SC 2.4.7 (Focus Visible)
+ * @version 3.6.1
  */
 
-/**
- * Keyboard shortcuts configuration
- * Can be overridden via window.keyboardConfig
- */
-const getConfig = () => ({
-    shortcuts: window.keyboardConfig?.shortcuts || {
-        // Navigation shortcuts (Alt + key)
-        d: {
-            action: "dashboard",
-            url: "/staff/dashboard",
-            description: "Go to Dashboard",
-        },
-        s: {
-            action: "submissions",
-            url: "/staff/submissions",
-            description: "View Submissions",
-        },
-        p: {
-            action: "profile",
-            url: "/staff/profile",
-            description: "Edit Profile",
-        },
-        h: {
-            action: "helpdesk",
-            url: "/helpdesk/authenticated/dashboard",
-            description: "Helpdesk Dashboard",
-        },
-        l: {
-            action: "loans",
-            url: "/loan/authenticated/dashboard",
-            description: "Loans Dashboard",
-        },
-        a: {
-            action: "approvals",
-            url: "/loan/approvals",
-            description: "View Approvals (Approvers only)",
-        },
-        n: {
-            action: "new-ticket",
-            url: "/helpdesk/authenticated/create",
-            description: "New Helpdesk Ticket",
-        },
-        r: {
-            action: "new-loan",
-            url: "/loan/authenticated/create",
-            description: "Request Asset Loan",
-        },
-        "/": { action: "search", description: "Focus Search" },
-        "?": { action: "help", description: "Show Keyboard Shortcuts" },
-    },
-    closeModalEvent: window.keyboardConfig?.closeModalEvent || "close-modal",
-    closeDropdownEvent: window.keyboardConfig?.closeDropdownEvent || "close-dropdown",
-    shortcutsModalId: window.keyboardConfig?.shortcutsModalId || "keyboard-shortcuts-modal",
-});
+class KeyboardNavigationEnhancer {
+	constructor() {
+		this.focusableElements = [
+			"a[href]",
+			"button:not([disabled])",
+			"input:not([disabled])",
+			"select:not([disabled])",
+			"textarea:not([disabled])",
+			'[tabindex]:not([tabindex="-1"])',
+			'[contenteditable="true"]',
+		].join(", ");
 
-const shortcuts = {
-    // Navigation shortcuts (Alt + key)
-    d: {
-        action: "dashboard",
-        url: "/staff/dashboard",
-        description: "Go to Dashboard",
-    },
-    s: {
-        action: "submissions",
-        url: "/staff/submissions",
-        description: "View Submissions",
-    },
-    p: {
-        action: "profile",
-        url: "/staff/profile",
-        description: "Edit Profile",
-    },
-    h: {
-        action: "helpdesk",
-        url: "/helpdesk/authenticated/dashboard",
-        description: "Helpdesk Dashboard",
-    },
-    l: {
-        action: "loans",
-        url: "/loan/authenticated/dashboard",
-        description: "Loans Dashboard",
-    },
-    a: {
-        action: "approvals",
-        url: "/loan/approvals",
-        description: "View Approvals (Approvers only)",
-    },
+		this.init();
+	}
 
-    // Action shortcuts (Alt + Shift + key)
-    n: {
-        action: "new-ticket",
-        url: "/helpdesk/authenticated/create",
-        description: "New Helpdesk Ticket",
-    },
-    r: {
-        action: "new-loan",
-        url: "/loan/authenticated/create",
-        description: "Request Asset Loan",
-    },
+	/**
+	 * Initialize keyboard navigation enhancements
+	 */
+	init() {
+		this.setupFocusManagement();
+		this.setupSkipLinks();
+		this.setupModalFocusTrap();
+		this.setupDropdownNavigation();
+	}
 
-    // Utility shortcuts
-    "/": { action: "search", description: "Focus Search" },
-    "?": { action: "help", description: "Show Keyboard Shortcuts" },
-};
+	/**
+	 * Setup focus management
+	 */
+	setupFocusManagement() {
+		// Track focus for debugging (development only)
+		if (import.meta.env.DEV) {
+			document.addEventListener("focusin", (e) => {
+				console.log("Focus:", e.target);
+			});
+		}
 
-/**
- * Initialize keyboard navigation
- */
-export function initKeyboardNavigation() {
-    // Global keyboard event listener
-    document.addEventListener("keydown", handleKeyboardShortcut);
+		// Ensure focus is visible
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Tab") {
+				document.body.classList.add("keyboard-navigation");
+			}
+		});
 
-    // Ensure skip links are visible on focus
-    enhanceSkipLinks();
+		// Remove keyboard navigation class on mouse use
+		document.addEventListener("mousedown", () => {
+			document.body.classList.remove("keyboard-navigation");
+		});
+	}
 
-    // Add keyboard shortcut hints to help modal
-    addKeyboardShortcutHelp();
+	/**
+	 * Setup skip links for main content
+	 */
+	setupSkipLinks() {
+		// Create skip link if it doesn't exist
+		let skipLink = document.getElementById("skip-to-main");
 
-    console.log("Keyboard navigation initialized");
+		if (!skipLink) {
+			skipLink = document.createElement("a");
+			skipLink.id = "skip-to-main";
+			skipLink.href = "#main-content";
+			skipLink.textContent = "Langkau ke kandungan utama";
+			skipLink.className =
+				"sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-md focus:shadow-lg";
+
+			// Insert at the beginning of body
+			document.body.insertBefore(skipLink, document.body.firstChild);
+		}
+
+		// Handle skip link activation
+		skipLink.addEventListener("click", (e) => {
+			e.preventDefault();
+			const mainContent =
+				document.getElementById("main-content") ||
+				document.querySelector("main");
+
+			if (mainContent) {
+				mainContent.focus();
+				mainContent.scrollIntoView({ behavior: "smooth" });
+			}
+		});
+	}
+
+	/**
+	 * Setup modal focus trap
+	 */
+	setupModalFocusTrap() {
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") {
+				// Close any open modals/dropdowns
+				const openModals = document.querySelectorAll(
+					'[role="dialog"][aria-hidden="false"], .modal.show, [x-show="true"]'
+				);
+
+				openModals.forEach((modal) => {
+					// Try different methods to close modal
+					if (modal.hasAttribute("x-show")) {
+						// Alpine.js modal
+						modal.dispatchEvent(new CustomEvent("close-modal"));
+					} else if (modal.classList.contains("modal")) {
+						// Bootstrap-style modal
+						modal.classList.remove("show");
+					}
+				});
+			}
+
+			// Trap focus in modals
+			if (e.key === "Tab") {
+				const activeModal = document.querySelector(
+					'[role="dialog"][aria-hidden="false"]'
+				);
+
+				if (activeModal) {
+					this.trapFocus(e, activeModal);
+				}
+			}
+		});
+	}
+
+	/**
+	 * Trap focus within an element
+	 * @param {KeyboardEvent} e - Keyboard event
+	 * @param {Element} container - Container to trap focus within
+	 */
+	trapFocus(e, container) {
+		const focusableElements = container.querySelectorAll(
+			this.focusableElements
+		);
+		const firstElement = focusableElements[0];
+		const lastElement = focusableElements[focusableElements.length - 1];
+
+		if (e.shiftKey) {
+			// Shift + Tab
+			if (document.activeElement === firstElement) {
+				e.preventDefault();
+				lastElement.focus();
+			}
+		} else {
+			// Tab
+			if (document.activeElement === lastElement) {
+				e.preventDefault();
+				firstElement.focus();
+			}
+		}
+	}
+
+	/**
+	 * Setup dropdown navigation
+	 */
+	setupDropdownNavigation() {
+		document.addEventListener("keydown", (e) => {
+			const dropdown = e.target.closest('[role="listbox"], [role="menu"]');
+
+			if (!dropdown) return;
+
+			const options = dropdown.querySelectorAll(
+				'[role="option"], [role="menuitem"]'
+			);
+			const currentIndex = Array.from(options).indexOf(document.activeElement);
+
+			switch (e.key) {
+				case "ArrowDown":
+					e.preventDefault();
+					const nextIndex =
+						currentIndex < options.length - 1 ? currentIndex + 1 : 0;
+					options[nextIndex].focus();
+					break;
+
+				case "ArrowUp":
+					e.preventDefault();
+					const prevIndex =
+						currentIndex > 0 ? currentIndex - 1 : options.length - 1;
+					options[prevIndex].focus();
+					break;
+
+				case "Home":
+					e.preventDefault();
+					options[0].focus();
+					break;
+
+				case "End":
+					e.preventDefault();
+					options[options.length - 1].focus();
+					break;
+
+				case "Enter":
+				case " ":
+					e.preventDefault();
+					document.activeElement.click();
+					break;
+			}
+		});
+	}
+
+	/**
+	 * Focus first focusable element in container
+	 * @param {Element} container - Container to search within
+	 */
+	focusFirst(container) {
+		const firstFocusable = container.querySelector(this.focusableElements);
+		if (firstFocusable) {
+			firstFocusable.focus();
+		}
+	}
+
+	/**
+	 * Get all focusable elements in container
+	 * @param {Element} container - Container to search within
+	 * @returns {NodeList} Focusable elements
+	 */
+	getFocusableElements(container) {
+		return container.querySelectorAll(this.focusableElements);
+	}
 }
 
-/**
- * Handle keyboard shortcut
- *
- * @param {KeyboardEvent} event - Keyboard event
- */
-function handleKeyboardShortcut(event) {
-    // Ignore if user is typing in input/textarea
-    const activeElement = document.activeElement;
-    const isInputField =
-        activeElement &&
-        (activeElement.tagName === "INPUT" ||
-            activeElement.tagName === "TEXTAREA" ||
-            activeElement.isContentEditable);
+// Initialize and expose globally
+window.KeyboardNavigationEnhancer = new KeyboardNavigationEnhancer();
 
-    // Alt + key shortcuts (navigation)
-    if (event.altKey && !event.shiftKey && !event.ctrlKey) {
-        const key = event.key.toLowerCase();
-        const config = getConfig();
-        const shortcut = config.shortcuts[key];
-
-        if (shortcut && shortcut.url) {
-            event.preventDefault();
-            navigateToUrl(shortcut.url, shortcut.description);
-            return;
-        }
-    }
-
-    // Alt + Shift + key shortcuts (actions)
-    if (event.altKey && event.shiftKey && !event.ctrlKey) {
-        const key = event.key.toLowerCase();
-        const config = getConfig();
-        const shortcut = config.shortcuts[key];
-
-        if (shortcut && shortcut.url) {
-            event.preventDefault();
-            navigateToUrl(shortcut.url, shortcut.description);
-            return;
-        }
-    }
-
-    // Utility shortcuts (no modifiers, unless in input field)
-    if (!event.altKey && !event.shiftKey && !event.ctrlKey && !isInputField) {
-        const key = event.key;
-
-        // / - Focus search
-        if (key === "/") {
-            event.preventDefault();
-            focusSearch();
-            return;
-        }
-
-        // ? - Show keyboard shortcuts help
-        if (key === "?") {
-            event.preventDefault();
-            showKeyboardShortcutsHelp();
-            return;
-        }
-    }
-
-    // Escape - Close modals/dropdowns
-    if (event.key === "Escape") {
-        closeModalsAndDropdowns();
-    }
-}
-
-/**
- * Navigate to URL using Livewire wire:navigate
- *
- * @param {string} url - Target URL
- * @param {string} description - Action description for screen readers
- */
-function navigateToUrl(url, description) {
-    // Announce navigation to screen readers
-    if (window.ariaAnnounce) {
-        window.ariaAnnounce(`Navigating to ${description}`);
-    }
-
-    // Use Livewire navigation if available
-    if (window.Livewire) {
-        window.Livewire.navigate(url);
-    } else {
-        window.location.href = url;
-    }
-}
-
-/**
- * Focus search input
- */
-function focusSearch() {
-    const searchInput = document.querySelector(
-        'input[type="search"], input[name="search"], input[placeholder*="Search"]'
-    );
-
-    if (searchInput) {
-        searchInput.focus();
-        searchInput.select();
-
-        if (window.ariaAnnounce) {
-            window.ariaAnnounce("Search focused");
-        }
-    }
-}
-
-/**
- * Show keyboard shortcuts help modal
- */
-function showKeyboardShortcutsHelp() {
-    // Dispatch Livewire event to show help modal
-    if (window.Livewire) {
-        window.Livewire.dispatch("show-keyboard-shortcuts");
-    }
-
-    // Fallback: create simple modal
-    if (!document.getElementById("keyboard-shortcuts-modal")) {
-        createKeyboardShortcutsModal();
-    }
-}
-
-/**
- * Create keyboard shortcuts help modal
- */
-function createKeyboardShortcutsModal() {
-    const modal = document.createElement("div");
-    modal.id = "keyboard-shortcuts-modal";
-    modal.className =
-        "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50";
-    modal.setAttribute("role", "dialog");
-    modal.setAttribute("aria-labelledby", "keyboard-shortcuts-title");
-    modal.setAttribute("aria-modal", "true");
-
-    modal.innerHTML = `
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-                <h2 id="keyboard-shortcuts-title" class="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                    Keyboard Shortcuts
-                </h2>
-                <button
-                    onclick="document.getElementById('keyboard-shortcuts-modal').remove()"
-                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1"
-                    aria-label="Close"
-                >
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <div class="px-6 py-4">
-                <div class="space-y-4">
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Navigation (Alt + key)</h3>
-                        <dl class="space-y-2">
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">Alt + D</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Dashboard</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">Alt + S</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Submissions</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">Alt + P</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Profile</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">Alt + H</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Helpdesk</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">Alt + L</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Loans</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">Alt + A</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Approvals</dd>
-                            </div>
-                        </dl>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Actions (Alt + Shift + key)</h3>
-                        <dl class="space-y-2">
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">Alt + Shift + N</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">New Ticket</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">Alt + Shift + R</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Request Loan</dd>
-                            </div>
-                        </dl>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Utilities</h3>
-                        <dl class="space-y-2">
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">/</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Focus Search</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">?</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Show This Help</dd>
-                            </div>
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-600 dark:text-gray-400">Esc</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">Close Modals</dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 text-center">
-                <button
-                    onclick="document.getElementById('keyboard-shortcuts-modal').remove()"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                    Close
-                </button>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    // Focus close button
-    setTimeout(() => {
-        const closeButton = modal.querySelector('button[aria-label="Close"]');
-        if (closeButton) {
-            closeButton.focus();
-        }
-    }, 100);
-
-    // Close on click outside
-    modal.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.remove();
-        }
-    });
-}
-
-/**
- * Close all modals and dropdowns
- */
-function closeModalsAndDropdowns() {
-    const config = getConfig();
-    
-    // Dispatch Livewire event
-    if (window.Livewire) {
-        window.Livewire.dispatch(config.closeModalEvent);
-        window.Livewire.dispatch(config.closeDropdownEvent);
-    }
-
-    // Close keyboard shortcuts modal
-    const shortcutsModal = document.getElementById(config.shortcutsModalId);
-    if (shortcutsModal) {
-        shortcutsModal.remove();
-    }
-}
-
-/**
- * Enhance skip links visibility on focus
- */
-function enhanceSkipLinks() {
-    const skipLinks = document.querySelectorAll(
-        '.skip-to-content, [href="#main-content"]'
-    );
-
-    skipLinks.forEach((link) => {
-        link.addEventListener("focus", () => {
-            link.classList.add("not-sr-only");
-            link.style.position = "fixed";
-            link.style.top = "0";
-            link.style.left = "0";
-            link.style.zIndex = "9999";
-        });
-
-        link.addEventListener("blur", () => {
-            link.classList.remove("not-sr-only");
-            link.style.position = "";
-            link.style.top = "";
-            link.style.left = "";
-            link.style.zIndex = "";
-        });
-    });
-}
-
-/**
- * Add keyboard shortcut help button to navigation
- */
-function addKeyboardShortcutHelp() {
-    // Add help button to user menu or navigation
-    const userMenu = document.getElementById("user-menu");
-
-    if (userMenu && !document.getElementById("keyboard-shortcuts-help-btn")) {
-        const helpButton = document.createElement("button");
-        helpButton.id = "keyboard-shortcuts-help-btn";
-        helpButton.className =
-            "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-2";
-        helpButton.setAttribute(
-            "aria-label",
-            "Keyboard shortcuts (Press ? for help)"
-        );
-        helpButton.setAttribute("title", "Keyboard shortcuts (?)");
-        helpButton.innerHTML = `
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-        `;
-        helpButton.addEventListener("click", showKeyboardShortcutsHelp);
-
-        userMenu.insertBefore(helpButton, userMenu.firstChild);
-    }
-}
-
-// Initialize on DOM ready
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initKeyboardNavigation);
-} else {
-    initKeyboardNavigation();
-}
-
-// Export for manual initialization
-export default initKeyboardNavigation;
+// Export for module usage
+export default window.KeyboardNavigationEnhancer;

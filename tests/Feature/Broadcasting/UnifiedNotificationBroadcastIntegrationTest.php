@@ -14,6 +14,7 @@ use App\Services\UnifiedNotificationDispatcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -46,7 +47,8 @@ class UnifiedNotificationBroadcastIntegrationTest extends TestCase
     /**
      * Test that dispatcher triggers NotificationCreated broadcast event
      */
-    public function test_dispatcher_triggers_notification_created_broadcast(): void
+    #[Test]
+    public function dispatcher_triggers_notification_created_broadcast(): void
     {
         Event::fake([NotificationCreated::class]);
 
@@ -88,7 +90,8 @@ class UnifiedNotificationBroadcastIntegrationTest extends TestCase
     /**
      * Test that status updates trigger StatusUpdated broadcast event
      */
-    public function test_status_update_triggers_broadcast_event(): void
+    #[Test]
+    public function status_update_triggers_broadcast_event(): void
     {
         Event::fake([StatusUpdated::class]);
 
@@ -118,7 +121,8 @@ class UnifiedNotificationBroadcastIntegrationTest extends TestCase
     /**
      * Test that broadcast events respect user preferences
      */
-    public function test_broadcast_respects_user_preferences(): void
+    #[Test]
+    public function broadcast_respects_user_preferences(): void
     {
         Event::fake([NotificationCreated::class]);
 
@@ -150,7 +154,8 @@ class UnifiedNotificationBroadcastIntegrationTest extends TestCase
     /**
      * Test that critical notifications always broadcast regardless of preferences
      */
-    public function test_critical_notifications_always_broadcast(): void
+    #[Test]
+    public function critical_notifications_always_broadcast(): void
     {
         Event::fake([NotificationCreated::class]);
 
@@ -181,7 +186,8 @@ class UnifiedNotificationBroadcastIntegrationTest extends TestCase
     /**
      * Test that loan status updates broadcast correctly
      */
-    public function test_loan_status_update_broadcasts_correct_model_type(): void
+    #[Test]
+    public function loan_status_update_broadcasts_correct_model_type(): void
     {
         Event::fake([StatusUpdated::class]);
 
@@ -206,7 +212,8 @@ class UnifiedNotificationBroadcastIntegrationTest extends TestCase
     /**
      * Test that multiple notification types broadcast correctly
      */
-    public function test_multiple_notification_types_broadcast(): void
+    #[Test]
+    public function multiple_notification_types_broadcast(): void
     {
         Event::fake([NotificationCreated::class]);
 
@@ -235,7 +242,8 @@ class UnifiedNotificationBroadcastIntegrationTest extends TestCase
     /**
      * Test broadcast payload data structure for frontend compatibility
      */
-    public function test_broadcast_payload_structure_for_frontend(): void
+    #[Test]
+    public function broadcast_payload_structure_for_frontend(): void
     {
         Event::fake([NotificationCreated::class]);
 

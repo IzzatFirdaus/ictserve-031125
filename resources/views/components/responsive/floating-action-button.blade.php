@@ -52,11 +52,11 @@
     };
 
     $colorClasses = match ($color) {
-        'secondary' => 'bg-secondary-600 hover:bg-secondary-700 focus:ring-secondary-500 text-white',
-        'success' => 'bg-success-600 hover:bg-success-700 focus:ring-success-500 text-white',
-        'warning' => 'bg-warning-600 hover:bg-warning-700 focus:ring-warning-500 text-white',
-        'danger' => 'bg-danger-600 hover:bg-danger-700 focus:ring-danger-500 text-white',
-        default => 'bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 text-white',
+        'secondary' => 'bg-secondary-600 hover:bg-secondary-700 focus-visible:ring-secondary-500 text-white',
+        'success' => 'bg-success-600 hover:bg-success-700 focus-visible:ring-3 focus-visible:ring-success-500 text-white',
+        'warning' => 'bg-warning-600 hover:bg-warning-700 focus-visible:ring-3 focus-visible:ring-warning-500 text-white',
+        'danger' => 'bg-danger-600 hover:bg-danger-700 focus-visible:ring-3 focus-visible:ring-danger-500 text-white',
+        default => 'bg-primary-600 hover:bg-primary-700 focus-visible:ring-3 focus-visible:ring-primary-500 text-white',
     };
 
     $visibilityClass = $showOnDesktop ? '' : 'md:hidden';
@@ -112,7 +112,7 @@
 
         {{-- Main FAB Button --}}
         <button type="button" @click="open = !open" :aria-expanded="open"
-            class="flex items-center justify-center w-14 h-14 rounded-full shadow-lg {{ $colorClasses }} focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 motion-safe:hover:scale-110"
+            class="flex items-center justify-center w-14 h-14 rounded-full shadow-lg {{ $colorClasses }} focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 transition-all duration-200 motion-safe:hover:scale-110"
             aria-label="{{ $label }}">
             <svg x-show="!open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 aria-hidden="true">
@@ -128,7 +128,7 @@
     {{-- Simple FAB --}}
     <a href="{{ $href ?? '#' }}"
         {{ $attributes->merge([
-            'class' => "fixed {$positionClasses} z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-lg {$colorClasses} focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 motion-safe:hover:scale-110 {$visibilityClass}",
+            'class' => "fixed {$positionClasses} z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-lg {$colorClasses} focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 transition-all duration-200 motion-safe:hover:scale-110 {$visibilityClass}",
             'style' => 'bottom: calc(5rem + env(safe-area-inset-bottom, 0px));',
         ]) }}
         aria-label="{{ $label }}">

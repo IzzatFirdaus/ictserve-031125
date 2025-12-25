@@ -40,10 +40,15 @@
 - **WSL Redis 7.0.15** running and accessible on `127.0.0.1:6379`
 - **XAMPP** or **Laragon** with Apache/PHP installed
 - **PHP 8.2+** with the following extensions:
-  - `php_redis` (phpredis) - for native Redis communication
+  - `php_redis` (phpredis) - **required for phpRedisAdmin tool itself**
   - `php_curl` - for HTTP requests
   - `php_json` - for JSON encoding/decoding
 - **Composer** - PHP dependency manager
+
+**Important Note**: phpRedisAdmin (the web management tool) requires the phpredis PHP extension to function. However, your Laravel application should use Predis (`REDIS_CLIENT=predis`) for better cross-platform compatibility. Both can coexist without conflict:
+
+- **Laravel Application**: Uses Predis library (pure PHP, no extensions needed)
+- **phpRedisAdmin Tool**: Uses phpredis extension (required for the web interface)
 
 ### Verify PHP Extensions
 
@@ -119,10 +124,12 @@ composer install --no-dev
 
 **Why Composer is Required**:
 
-- Installs **Predis v3.3.0** (PHP Redis client)
+- Installs **Predis v3.3.0** (PHP Redis client for phpRedisAdmin's fallback communication)
 - Installs **psr/http-message** (PSR-7 HTTP message interfaces)
 - Installs **paragonie/random_compat** (PHP 7+ compatibility layer)
 - Resolves all transitive dependencies automatically
+
+**Note**: phpRedisAdmin primarily uses the phpredis PHP extension for Redis communication, but also includes Predis as a fallback option. The Composer dependencies are required for proper PSR-7 interface support.
 
 **Common Error Without Composer**:
 
@@ -459,12 +466,20 @@ composer require predis/predis
    # Expected: TcpTestSucceeded = True
    ```
 
-5. **Check phpredis extension**:
+5. **Check phpredis extension** (required for phpRedisAdmin):
 
    ```powershell
    php -m | Select-String redis
    # Expected: redis
    ```
+
+   **If phpredis is missing**:
+   - For XAMPP: Download `php_redis.dll` from [PECL](https://pecl.php.net/package/redis)
+   - Copy to `C:\xampp\php\ext\`
+   - Add `extension=redis` to `php.ini`
+   - Restart Apache
+
+**Note**: Remember that phpRedisAdmin requires the phpredis extension, while your Laravel application can use Predis (`REDIS_CLIENT=predis` in `.env`).
 
 ### Issue: Blank page or PHP errors
 

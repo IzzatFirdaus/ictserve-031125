@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('BROADCAST_CONNECTION', 'null'),
+    'default' => env('BROADCAST_CONNECTION', 'reverb'),
 
     /*
     |--------------------------------------------------------------------------
@@ -79,6 +79,15 @@ return [
             'client_options' => [
                 // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
             ],
+        ],
+
+        'redis' => [
+            'driver' => 'redis',
+            'connection' => env('BROADCAST_REDIS_CONNECTION', 'default'),
+            'queue' => env('BROADCAST_REDIS_QUEUE', 'broadcast'),
+
+            // Use dedicated broadcast queue connection (Requirements 3.4, 7.3)
+            'queue_connection' => 'broadcast',
         ],
 
         'ably' => [

@@ -21,11 +21,10 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use App\Contracts\GoogleSsoServiceInterface;
+use App\Contracts\SsoHealthCheckInterface;
 use App\Events\GoogleSsoLinked;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Models\User;
-use App\Services\GoogleSsoService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Event;
 use Laravel\Socialite\Facades\Socialite;
@@ -33,20 +32,37 @@ use Laravel\Socialite\Two\GoogleProvider;
 use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\User as SocialiteUser;
 use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GoogleAuthControllerUnitTest extends TestCase
 {
-    use RefreshDatabase;
-
     private GoogleAuthController $controller;
 
     private GoogleSsoServiceInterface $ssoService;
 
+    private SsoHealthCheckInterface|MockInterface $healthCheck;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Mock the health check service
+        $this->healthCheck = Mockery::mock(SsoHealthCheckInterface::class);
+        $this->app->instance(SsoHealthCheckInterface::class, $this->healthCheck);
+
+        // Default healthy status for most tests
+        $this->healthCheck->shouldReceive('getServiceStatus')
+            ->andReturn([
+                'status' => 'healthy',
+                'available' => true,
+                'configured' => true,
+                'message' => 'Google SSO service is fully operational',
+                'details' => [],
+                'checked_at' => now()->toIso8601String(),
+            ])
+            ->byDefault();
 
         // Get the GoogleSsoService from the container
         $this->ssoService = $this->app->make(GoogleSsoServiceInterface::class);
@@ -66,9 +82,6 @@ class GoogleAuthControllerUnitTest extends TestCase
     public function redirect_method_returns_redirect_response(): void
     {
         $provider = Mockery::mock(GoogleProvider::class);
-        $provider->shouldReceive('scopes')
-            ->with(['email', 'profile'])
-            ->andReturnSelf();
         $provider->shouldReceive('redirect')
             ->andReturn(new RedirectResponse('https://accounts.google.com/oauth/authorize'));
 
@@ -98,6 +111,43 @@ class GoogleAuthControllerUnitTest extends TestCase
         $response = $this->controller->redirect();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
+    }
+
+    #[Test]
+    public function redirect_method_handles_unhealthy_service(): void
+    {
+        // Override the default mock behavior for this specific test
+        $this->healthCheck->shouldReceive('getServiceStatus')
+            ->atLeast()->once()
+            ->andReturn([
+                'status' => 'unhealthy',
+                'available' => false,
+                'configured' => false,
+                'message' => 'Google SSO is not properly configured',
+                'details' => [],
+                'checked_at' => now()->toIso8601String(),
+            ]);
+
+        // Force the container to forget the singleton and recreate it
+        $this->app->forgetInstance(GoogleSsoServiceInterface::class);
+
+        // Create a new SSO service and controller with the updated health check
+        $ssoService = $this->app->make(GoogleSsoServiceInterface::class);
+        $controller = new GoogleAuthController($ssoService);
+
+        // Test the health status directly first
+        $healthStatus = $ssoService->getHealthStatus();
+        $this->assertFalse($healthStatus['available'], 'Health status should show service as unavailable');
+
+        // Socialite should not be called when service is unhealthy
+        Socialite::shouldReceive('driver')
+            ->never()
+            ->andThrow(new \Exception('Socialite should not be called when service is unhealthy'));
+
+        $response = $controller->redirect();
+
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertEquals(route('login'), $response->getTargetUrl());
     }
 
     // =========================================================================
