@@ -15,9 +15,9 @@
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menyediakan dokumentasi komprehensif bagi struktur pangkalan data Sistem ICTServe yang dibangunkan mengikut piawaian ISO 8000 (Kualiti Data), IEEE 1016:2009 (Huraian Reka Bentuk Perisian), ISO/IEC 27701 (Pengurusan Privasi), **Polisi Keselamatan Siber (PKS) MOTAC**, dan garis panduan KRISA MAMPU.
+Dokumen ini menyediakan dokumentasi komprehensif bagi struktur pangkalan data Sistem ICTServe yang dibangunkan mengikut piawaian ISO 8000 (Kualiti Data), IEEE 1016:2009 (Huraian Reka Bentuk Perisian), ISO/IEC 27701 (Pengurusan Privasi), dan garis panduan KRISA MAMPU.
 
-Dokumen ini merangkumi definisi jadual, hubungan data, piawaian kualiti, dan prosedur pengurusan pangkalan data untuk sistem dalaman MOTAC dengan **pematuhan PKS 5.2.1** yang mewajibkan **user_id sebagai mandatory foreign key** untuk memastikan semua aktiviti sistem dikaitkan dengan staf yang disahkan melalui SSO LDAP/Active Directory. **Dual audit system dengan retention 7 tahun** dilaksanakan mengikut standard PKS untuk compliance dan operational tracking.
+Dokumen ini merangkumi definisi jadual, hubungan data, piawaian kualiti, dan prosedur pengurusan pangkalan data untuk sistem dalaman MOTAC.
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -43,10 +43,7 @@ Dokumen ini merangkumi definisi jadual, hubungan data, piawaian kualiti, dan pro
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 15 September 2025 | Versi awal dokumentasi pangkalan data | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan Pembangunan BPM |
-| 3.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.43.1, Filament 4.3.1, MySQL 8.0 | Pasukan Pembangunan BPM |
-| 3.5.0 | 1 Disember 2025 | True Hybrid Architecture: Tambah jadual Sanctum, Pulse, Google SSO | Pasukan Pembangunan BPM |
-| 3.6.1 | 23 Disember 2025 | Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot, tambah jadual AI | Pasukan Pembangunan BPM |
-| 4.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1, 9.2.1, 4.2 & PSPM**: user_id mandatory FK, penghapusan akses tetamu, SSO wajib, CRUD indicators mengikut KRISA template. Rujukan PKS Seksyen 5.2.1 (Prinsip Akauntabiliti - halaman 150), 9.2.1 (Prosedur pemindahan data - halaman 588-603), 4.2 (Kedaulatan data - halaman 1147-1148), 5.4.3 (Polisi kata laluan - halaman 596-605). PSPM MyGovCloud prioritization. Dual audit system dengan 7-year retention. | Pasukan Pembangunan BPM |
+| 4.0 | 24 Disember 2025 | Semakan editorial dan penyelarasan kandungan mengikut template rasmi | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -75,7 +72,6 @@ Dokumen ini merangkumi definisi jadual, hubungan data, piawaian kualiti, dan pro
 
 | Akronim | Keterangan |
 | :--- | :--- |
-| AI | Artificial Intelligence (Kecerdasan Buatan) |
 | API | Application Programming Interface |
 | BPM | Bahagian Pengurusan Maklumat |
 | ERD | Entity Relationship Diagram |
@@ -88,25 +84,20 @@ Dokumen ini merangkumi definisi jadual, hubungan data, piawaian kualiti, dan pro
 | PK | Primary Key (Kunci Utama) |
 | RAG | Retrieval-Augmented Generation |
 | RDBMS | Relational Database Management System |
-| SSO | Single Sign-On |
 
 ### b. Definisi
 
 | Terma/Istilah | Definisi |
 | :--- | :--- |
-| Cloud Hybrid AI | Seni bina AI hibrid yang menggunakan model tempatan (Ollama) dan awan (AWS Bedrock) dengan kedaulatan data |
 | Dual Audit System | Sistem audit dwi-lapisan menggunakan owen-it/laravel-auditing dan spatie/laravel-activitylog |
 | Embedding Vector | Representasi vektor bagi teks untuk carian semantik |
-| Walk-in/Kiosk Mode dengan SSO | Seni bina sistem yang memerlukan SSO authentication untuk semua pengguna mengikut PKS 5.2.1 |
-| Mandatory FK | Foreign Key yang WAJIB untuk semua aktiviti sistem (user_id tidak boleh NULL) |
 | Polymorphic Relationship | Hubungan pangkalan data yang membolehkan satu model berkaitan dengan pelbagai model lain |
-| SSO Authentication | Pengesahan tunggal menggunakan LDAP/Active Directory untuk akauntabiliti penuh |
 
 ## viii. Sumber Rujukan
 
 1. ISO 8000:2022 - Data Quality Management Systems
-2. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
-3. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation dengan pematuhan eksplisit
+2. **Polisi Keselamatan Siber (PKS) MOTAC** - Rujukan umum keperluan keselamatan
+3. **Personal Data Protection Act 2010 (PDPA)** - Malaysian data protection legislation
 4. IEEE 1016:2009 - Standard for Information Technology - Systems Design - Software Design Descriptions
 5. ISO/IEC 27701:2019 - Security techniques — Extension to ISO/IEC 27001 and ISO/IEC 27002 for privacy information management
 6. **MAMPU (2019)**. Kerangka Rujukan ICT Sektor Awam (KRISA) Versi 2.0
@@ -130,11 +121,9 @@ Dokumen ini merangkumi definisi jadual, hubungan data, piawaian kualiti, dan pro
 
 ## 1. PENGENALAN
 
-Sistem ICTServe merupakan sistem pengurusan helpdesk dan pinjaman aset dalaman yang dibangunkan khusus untuk Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC). Sistem ini menggunakan seni bina Cloud Hybrid AI yang menggabungkan teknologi tempatan dan awan untuk menyediakan perkhidmatan yang cekap dan selamat dengan **akauntabiliti penuh mengikut PKS 5.2.1**.
+Sistem ICTServe merupakan sistem pengurusan helpdesk dan pinjaman aset dalaman yang dibangunkan khusus untuk Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC).
 
-Dokumen ini menerangkan struktur pangkalan data fizikal yang menyokong operasi sistem, termasuk jadual utama, hubungan data, piawaian kualiti, dan prosedur pengurusan. Pangkalan data direka bentuk mengikut prinsip **Walk-in/Kiosk Mode dengan SSO** yang memerlukan authentication wajib untuk semua pengguna dengan **user_id sebagai mandatory foreign key** untuk memastikan traceability penuh.
-
-Sistem ini dilengkapi dengan kemampuan AI hibrid melalui integrasi D18 AI Chatbot yang menggunakan model tempatan (Ollama) untuk operasi asas dan model awan (AWS Bedrock) untuk analisis kompleks, sambil mematuhi keperluan keselamatan dan privasi data kerajaan Malaysia dengan **Data Loss Prevention (DLP) filters** mengikut PKS 9.2.1.
+Dokumen ini menerangkan struktur pangkalan data fizikal yang menyokong operasi sistem, termasuk jadual utama, hubungan data, piawaian kualiti, dan prosedur pengurusan.
 
 ## 2. RINGKASAN MAKLUMAT PANGKALAN DATA FIZIKAL YANG DIBANGUNKAN
 
