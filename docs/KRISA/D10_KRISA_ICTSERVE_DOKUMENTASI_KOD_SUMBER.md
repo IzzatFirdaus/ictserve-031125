@@ -41,9 +41,7 @@ Dokumen ini menyatakan piawaian dan panduan kod pengaturcaraan yang digunakan ba
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 15 September 2025 | Versi awal dokumentasi kod sumber | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan Pembangunan BPM |
-| 3.0.0 | 29 November 2025 | Kemaskini struktur kod Laravel 12, Filament 4, Livewire 3 | Pasukan Pembangunan BPM |
-| 3.5.0 | 1 Disember 2025 | Seni Bina SSO dengan Pengesahan Mandatori: Laravel Pulse, Sanctum API, LDAP/AD SSO | Pasukan Pembangunan BPM |
-| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1, 9.2.1, 4.2 & PSPM**: Penghapusan akses tetamu, pengesahan SSO mandatori, rujukan D09 CRUD indicators, coding standards untuk PKS compliance. Rujukan PKS Seksyen 5.2.1 (Prinsip Akauntabiliti - halaman 150), 9.2.1 (Prosedur pemindahan data - halaman 588-603), 4.2 (Kedaulatan data - halaman 1147-1148), 5.4.3 (Polisi kata laluan - halaman 596-605). PSPM MyGovCloud prioritization. Enhanced documentation standards. | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | Semakan editorial dan penyelarasan kandungan mengikut template rasmi | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -71,7 +69,6 @@ Dokumen ini menyatakan piawaian dan panduan kod pengaturcaraan yang digunakan ba
 
 | Akronim | Keterangan |
 | :--- | :--- |
-| AI | Artificial Intelligence (Kecerdasan Buatan) |
 | API | Application Programming Interface |
 | BPM | Bahagian Pengurusan Maklumat |
 | CI/CD | Continuous Integration/Continuous Deployment |
@@ -81,21 +78,17 @@ Dokumen ini menyatakan piawaian dan panduan kod pengaturcaraan yang digunakan ba
 | PSR | PHP Standards Recommendation |
 | RBAC | Role-Based Access Control |
 | SQuaRE | Systems and Software Quality Requirements and Evaluation |
-| SSO | Single Sign-On |
 | TDD | Test-Driven Development |
 
 ### b. Definisi
 
 | Terma/Istilah | Definisi |
 | :--- | :--- |
-| Cloud Hybrid AI | Seni bina AI hibrid yang menggunakan model tempatan (Ollama) dan awan (AWS Bedrock) |
 | Constructor Property Promotion | Ciri PHP 8.0+ yang membolehkan parameter constructor ditulis sebagai property |
 | Eloquent ORM | Object-Relational Mapping Laravel untuk interaksi pangkalan data |
 | Livewire Component | Komponen UI Laravel yang membolehkan interaktiviti tanpa JavaScript |
 | Service Layer | Lapisan perniagaan yang mengandungi logik aplikasi |
 | Strict Typing | Penggunaan declare(strict_types=1) untuk pengesahan jenis data ketat |
-| Seni Bina SSO Mandatori | Seni bina sistem dengan pengesahan SSO mandatori melalui LDAP/Active Directory untuk semua pengguna mengikut PKS 5.2.1 |
-| Walk-in/Kiosk Mode | Mod akses pantas untuk staf menggunakan pengesahan SSO automatik di terminal kiosk |
 | Volt Component | Komponen Livewire satu-fail yang menggabungkan PHP dan Blade |
 
 ## viii. Sumber Rujukan
