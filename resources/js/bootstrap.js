@@ -31,12 +31,14 @@ import {
 window.Alpine = Alpine;
 
 /**
- * Laravel Echo Configuration
+ * Laravel Echo Configuration - PKS 5.2.1 Compliant
  *
  * Echo allows you to easily build real-time event-driven applications.
  * We'll use Laravel Reverb as the WebSocket server for broadcasting.
  *
- * @trace D03 SRS-FR-008, D04 §5.3 (Requirements 5.1, 5.2, 1.5)
+ * PKS 5.2.1: All channels require authenticated user_id - NO GUEST CHANNELS
+ *
+ * @trace D03 SRS-FR-008, D04 §5.3 (Requirements 6.4, 6.5, 24.5, 24.6, 25.1)
  */
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
@@ -57,42 +59,8 @@ if (reverbAppKey && reverbHost) {
 		forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https",
 		enabledTransports: ["ws", "wss"],
 		disableStats: true,
-		authorizer: (channel) => {
-			return {
-				authorize: (socketId, callback) => {
-					// Include status token for guest channel authorization
-					const statusToken =
-						new URLSearchParams(window.location.search).get("status_token") ||
-						sessionStorage.getItem("status_token") ||
-						localStorage.getItem("status_token");
-
-					const authData = {
-						socket_id: socketId,
-						channel_name: channel.name,
-					};
-
-					// Add status token for guest channels
-					if (
-						statusToken &&
-						(channel.name.includes("ticket.") ||
-							channel.name.includes("loan.") ||
-							channel.name.includes("conversation."))
-					) {
-						authData.status_token = statusToken;
-					}
-
-					window.axios
-						.post("/broadcasting/auth", authData)
-						.then((response) => {
-							callback(null, response.data);
-						})
-						.catch((error) => {
-							console.error("Echo authorization failed:", error);
-							callback(error);
-						});
-				},
-			};
-		},
+		// PKS 5.2.1: Standard authorizer - no guest token support needed
+		// All channels require authenticated user via Laravel session
 	});
 
 	// Connection state management (v3.5.0)

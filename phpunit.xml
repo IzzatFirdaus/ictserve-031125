@@ -23,7 +23,7 @@
         <env name="APP_KEY" value="base64:bnIFZkGgs8m7WzgAsW7CQ+cnRO+PQgBsX45B0ranaME="/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
-        <env name="BROADCAST_CONNECTION" value="null"/>
+        <env name="BROADCAST_CONNECTION" value="reverb"/>
         <env name="CACHE_STORE" value="array"/>
         <env name="REDIS_CLIENT" value="predis"/>
         <env name="DB_CONNECTION" value="sqlite"/>
