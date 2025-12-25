@@ -14,14 +14,18 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Comment Posted Event
+ * Comment Posted Event - PKS 5.2.1 Compliant
  *
  * Broadcasts real-time comment updates for tickets and loan applications.
- * Uses hybrid channel strategy: authenticated users get private-user.{id} channels,
- * guests get private-ticket.{uuid} or private-loan.{uuid} channels.
+ * Uses authenticated-only channels per PKS 5.2.1:
+ * - User channel: private-user.{userId}
+ * - Ticket channel: ticket.{userId}.{ticketId}
+ * - Loan channel: loan.{userId}.{loanId}
  *
- * @see .kiro/specs/realtime-notifications-broadcasting/design.md - Dual Channel Strategy
- * @see .kiro/specs/realtime-notifications-broadcasting/requirements.md - Requirements 4.1, 4.2, 4.3, 4.4
+ * NO GUEST CHANNELS - All channels require authenticated user_id per PKS 5.2.1
+ *
+ * @see .kiro/specs/ictserve-comprehensive-v4/design.md - PKS 5.2.1 Compliant Architecture
+ * @see .kiro/specs/ictserve-comprehensive-v4/requirements.md - Requirements 6.4, 6.5, 24.5, 24.6, 25.1
  */
 class CommentPosted implements ShouldBroadcast
 {
@@ -37,6 +41,8 @@ class CommentPosted implements ShouldBroadcast
 
     /**
      * Get the authenticated user ID for channel routing
+     *
+     * PKS 5.2.1: All submissions must have user_id (NOT NULL)
      */
     protected function getAuthenticatedUserId(): ?int
     {
@@ -50,23 +56,23 @@ class CommentPosted implements ShouldBroadcast
     }
 
     /**
-     * Get the guest channel UUID for channel routing
+     * Get the entity ID for channel routing
      */
-    protected function getGuestChannelUuid(): ?string
+    protected function getEntityId(): ?int
     {
         $commentable = $this->comment->commentable;
 
-        if ($commentable && $commentable->user_id === null) {
-            return $commentable->uuid ?? null;
+        if ($commentable instanceof HelpdeskTicket || $commentable instanceof LoanApplication) {
+            return $commentable->id;
         }
 
         return null;
     }
 
     /**
-     * Get the guest channel type for channel naming
+     * Get the entity type for channel naming
      */
-    protected function getGuestChannelType(): string
+    protected function getEntityType(): string
     {
         $commentable = $this->comment->commentable;
 
@@ -78,7 +84,7 @@ class CommentPosted implements ShouldBroadcast
             return 'loan';
         }
 
-        return 'comment';
+        return 'user';
     }
 
     /**

@@ -14,14 +14,18 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Status Updated Event
+ * Status Updated Event - PKS 5.2.1 Compliant
  *
  * Broadcasts real-time status updates for helpdesk tickets and loan applications.
- * Uses hybrid channel strategy: authenticated users get private-user.{id} channels,
- * guests get private-ticket.{uuid} or private-loan.{uuid} channels.
+ * Uses authenticated-only channels per PKS 5.2.1:
+ * - User channel: private-user.{userId}
+ * - Ticket channel: ticket.{userId}.{ticketId}
+ * - Loan channel: loan.{userId}.{loanId}
  *
- * @see .kiro/specs/realtime-notifications-broadcasting/design.md - Dual Channel Strategy
- * @see .kiro/specs/realtime-notifications-broadcasting/requirements.md - Requirements 1.1, 4.1, 4.2, 4.3, 4.4
+ * NO GUEST CHANNELS - All channels require authenticated user_id per PKS 5.2.1
+ *
+ * @see .kiro/specs/ictserve-comprehensive-v4/design.md - PKS 5.2.1 Compliant Architecture
+ * @see .kiro/specs/ictserve-comprehensive-v4/requirements.md - Requirements 6.4, 6.5, 24.5, 24.6, 25.1
  */
 class StatusUpdated implements ShouldBroadcast
 {
@@ -39,6 +43,8 @@ class StatusUpdated implements ShouldBroadcast
 
     /**
      * Get the authenticated user ID for channel routing
+     *
+     * PKS 5.2.1: All submissions must have user_id (NOT NULL)
      */
     protected function getAuthenticatedUserId(): ?int
     {
@@ -46,30 +52,21 @@ class StatusUpdated implements ShouldBroadcast
     }
 
     /**
-     * Get the guest channel UUID for channel routing
+     * Get the entity ID for channel routing
      */
-    protected function getGuestChannelUuid(): ?string
+    protected function getEntityId(): ?int
     {
-        if ($this->model->user_id !== null) {
-            return null; // Authenticated submission
-        }
-
-        // For guest submissions, use the model's ID as the UUID
-        if ($this->model instanceof HelpdeskTicket) {
-            return (string) $this->model->id;
-        }
-
-        if ($this->model instanceof LoanApplication) {
-            return (string) $this->model->id;
+        if ($this->model instanceof HelpdeskTicket || $this->model instanceof LoanApplication) {
+            return $this->model->id;
         }
 
         return null;
     }
 
     /**
-     * Get the guest channel type for channel naming
+     * Get the entity type for channel naming
      */
-    protected function getGuestChannelType(): string
+    protected function getEntityType(): string
     {
         if ($this->model instanceof HelpdeskTicket) {
             return 'ticket';
@@ -79,7 +76,7 @@ class StatusUpdated implements ShouldBroadcast
             return 'loan';
         }
 
-        return 'unknown';
+        return 'user';
     }
 
     /**
@@ -114,7 +111,6 @@ class StatusUpdated implements ShouldBroadcast
                 default => 'unknown'
             },
             'entity_id' => $this->model->getKey(),
-            'entity_uuid' => $this->model->uuid ?? null,
             'old_status' => $this->oldStatus,
             'new_status' => $this->newStatus,
             'updated_by' => \Illuminate\Support\Facades\Auth::id(),

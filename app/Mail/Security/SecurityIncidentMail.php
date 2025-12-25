@@ -34,17 +34,21 @@ class SecurityIncidentMail extends Mailable implements ShouldQueue
     public int $timeout = 120;
 
     /**
-     * Create a new message instance.
+     * Notification type (superuser, csirt, nacsa, mycert)
      */
-    
+    public string $notificationType;
 
-/**
- * @param array<string, mixed> $incidentData
- */
-public function __construct(
+    /**
+     * Create a new message instance.
+     *
+     * @param  array<string, mixed>  $incidentData
+     */
+    public function __construct(
         public array $incidentData,
-        public User $recipient
+        public ?User $recipient = null,
+        string $notificationType = 'superuser'
     ) {
+        $this->notificationType = $notificationType;
         $this->queue = 'high-priority';
         $this->delay = now()->addSeconds(5); // 5-second delay for 60-second SLA
     }
@@ -54,17 +58,26 @@ public function __construct(
      */
     public function envelope(): Envelope
     {
-        $severity = strtoupper($this->incidentData['severity']);
-        $type = ucfirst(str_replace('_', ' ', $this->incidentData['type']));
+        $severity = strtoupper($this->incidentData['severity'] ?? 'UNKNOWN');
+        $type = ucfirst(str_replace('_', ' ', $this->incidentData['type'] ?? 'unknown'));
+        $incidentNumber = $this->incidentData['incident_number'] ?? 'N/A';
+
+        $subject = match ($this->notificationType) {
+            'csirt' => "[CSIRT] [{$severity}] Insiden Keselamatan: {$type} - {$incidentNumber}",
+            'nacsa' => "[NACSA] Laporan Insiden Keselamatan: {$incidentNumber}",
+            'mycert' => "[MyCERT] Laporan Insiden Keselamatan: {$incidentNumber}",
+            default => "[{$severity}] Amaran Insiden Keselamatan: {$type} - ICTServe",
+        };
 
         return new Envelope(
-            subject: "[{$severity}] Security Incident Alert: {$type} - ICTServe",
-            tags: ['security', 'incident', 'alert'],
+            subject: $subject,
+            tags: ['security', 'incident', 'alert', $this->notificationType],
             metadata: [
-                'incident_id' => $this->incidentData['incident_id'],
-                'severity' => $this->incidentData['severity'],
-                'type' => $this->incidentData['type'],
-                'recipient_id' => $this->recipient->id,
+                'incident_number' => $incidentNumber,
+                'severity' => $this->incidentData['severity'] ?? 'unknown',
+                'type' => $this->incidentData['type'] ?? 'unknown',
+                'recipient_id' => $this->recipient?->id,
+                'notification_type' => $this->notificationType,
             ],
         );
     }
@@ -74,11 +87,24 @@ public function __construct(
      */
     public function content(): Content
     {
+        $view = match ($this->notificationType) {
+            'csirt' => 'emails.security.csirt-notification',
+            'nacsa' => 'emails.security.nacsa-report',
+            'mycert' => 'emails.security.mycert-report',
+            default => 'emails.security.security-incident',
+        };
+
+        // Use fallback view if specific view doesn't exist
+        if (! view()->exists($view)) {
+            $view = 'emails.security.security-incident';
+        }
+
         return new Content(
-            view: 'emails.security.security-incident',
+            view: $view,
             with: [
                 'incidentData' => $this->incidentData,
                 'recipient' => $this->recipient,
+                'notificationType' => $this->notificationType,
                 'dashboardUrl' => route('filament.admin.pages.security-monitoring'),
                 'auditTrailUrl' => route('filament.admin.resources.system.audits.index'),
             ],
@@ -101,11 +127,12 @@ public function __construct(
     public function failed(\Throwable $exception): void
     {
         \Log::error('Security incident email failed to send', [
-            'incident_id' => $this->incidentData['incident_id'],
-            'recipient' => $this->recipient->email,
+            'incident_number' => $this->incidentData['incident_number'] ?? 'N/A',
+            'recipient' => $this->recipient?->email ?? 'N/A',
+            'notification_type' => $this->notificationType,
             'error' => $exception->getMessage(),
-            'severity' => $this->incidentData['severity'],
-            'type' => $this->incidentData['type'],
+            'severity' => $this->incidentData['severity'] ?? 'unknown',
+            'type' => $this->incidentData['type'] ?? 'unknown',
         ]);
     }
 }

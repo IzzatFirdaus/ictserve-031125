@@ -8,44 +8,58 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
 
 /**
- * Broadcasts to Hybrid Channels Trait
+ * Broadcasts to Authenticated Channels Trait - PKS 5.2.1 Compliant
  *
- * Implements channel selection logic for ICTServe's True Hybrid Architecture.
- * Routes events to authenticated user channels (private-user.{id}) or
- * guest UUID-based channels (private-ticket.{uuid}, private-loan.{uuid}).
+ * Implements channel selection logic for ICTServe's PKS 5.2.1 Compliant Architecture.
+ * Routes events to authenticated user channels ONLY:
+ * - User channel: private-user.{userId}
+ * - Ticket channel: ticket.{userId}.{ticketId}
+ * - Loan channel: loan.{userId}.{loanId}
  *
- * @see .kiro/specs/realtime-notifications-broadcasting/design.md - Dual Channel Strategy
- * @see .kiro/specs/realtime-notifications-broadcasting/requirements.md - Requirements 4.1, 4.2
+ * NO GUEST CHANNELS - All channels require authenticated user_id per PKS 5.2.1
+ *
+ * @see .kiro/specs/ictserve-comprehensive-v4/design.md - PKS 5.2.1 Compliant Architecture
+ * @see .kiro/specs/ictserve-comprehensive-v4/requirements.md - Requirements 6.4, 6.5, 24.5, 24.6, 25.1
  */
 trait BroadcastsToHybridChannels
 {
     /**
      * Get the authenticated user ID for channel routing
      *
-     * @return int|null User ID if authenticated submission, null for guest
+     * PKS 5.2.1: All submissions must have user_id (NOT NULL)
+     *
+     * @return int|null User ID - must be non-null for valid broadcasts
      */
     abstract protected function getAuthenticatedUserId(): ?int;
 
     /**
-     * Get the guest channel UUID for channel routing
+     * Get the entity ID for channel routing (ticket_id or loan_id)
      *
-     * @return string|null UUID for guest channel, null if authenticated
+     * @return int|null Entity ID for specific channel routing
      */
-    abstract protected function getGuestChannelUuid(): ?string;
+    protected function getEntityId(): ?int
+    {
+        return null;
+    }
 
     /**
-     * Get the guest channel type for channel naming
+     * Get the entity type for channel naming
      *
-     * @return string Channel type (ticket, loan, conversation)
+     * @return string Channel type (ticket, loan)
      */
-    abstract protected function getGuestChannelType(): string;
+    protected function getEntityType(): string
+    {
+        return 'user';
+    }
 
     /**
      * Get the channels the event should broadcast on
      *
-     * Implements dual channel strategy:
-     * - Authenticated users: private-user.{userId}
-     * - Guest users: private-{type}.{uuid}
+     * PKS 5.2.1 Compliant - Authenticated-only channels:
+     * - User channel: private-user.{userId}
+     * - Entity channel: {type}.{userId}.{entityId}
+     *
+     * NO GUEST CHANNELS per PKS 5.2.1
      *
      * @return array<int, Channel>
      */
@@ -53,18 +67,42 @@ trait BroadcastsToHybridChannels
     {
         $userId = $this->getAuthenticatedUserId();
 
-        if ($userId !== null) {
-            return [new PrivateChannel("user.{$userId}")];
+        // PKS 5.2.1: All broadcasts require authenticated user_id
+        if ($userId === null) {
+            // Log warning for debugging - this should not happen in PKS 5.2.1 compliant system
+            \Illuminate\Support\Facades\Log::warning('BroadcastsToHybridChannels: Attempted broadcast without user_id', [
+                'event_class' => static::class,
+            ]);
+
+            return [];
         }
 
-        $uuid = $this->getGuestChannelUuid();
-        $type = $this->getGuestChannelType();
+        $channels = [new PrivateChannel("user.{$userId}")];
 
-        if ($uuid !== null && $type !== '') {
-            return [new PrivateChannel("{$type}.{$uuid}")];
+        // Add entity-specific channel if available
+        $entityId = $this->getEntityId();
+        $entityType = $this->getEntityType();
+
+        if ($entityId !== null && $entityType !== 'user') {
+            $channels[] = new PrivateChannel("{$entityType}.{$userId}.{$entityId}");
         }
 
-        // Fallback: no valid channel found
-        return [];
+        return $channels;
+    }
+
+    /**
+     * @deprecated Use getEntityId() instead - Guest channels removed per PKS 5.2.1
+     */
+    protected function getGuestChannelUuid(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @deprecated Use getEntityType() instead - Guest channels removed per PKS 5.2.1
+     */
+    protected function getGuestChannelType(): string
+    {
+        return $this->getEntityType();
     }
 }

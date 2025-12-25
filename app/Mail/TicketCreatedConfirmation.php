@@ -11,8 +11,9 @@ use Illuminate\Mail\Mailables\Envelope;
 /**
  * Ticket Created Confirmation Email
  *
- * Sent to users (guest or authenticated) when a helpdesk ticket is created.
+ * Sent to authenticated users when a helpdesk ticket is created.
  * Provides ticket details and next steps with bilingual support.
+ * PKS 5.2.1 Compliant - SSO-Only Architecture (no guest access).
  *
  * @component Email Template
  *
@@ -20,15 +21,17 @@ use Illuminate\Mail\Mailables\Envelope;
  *
  * @author Pasukan BPM MOTAC
  *
- * @trace D03-FR-001.2 Guest ticket submission
+ * @trace D03-FR-001.1 PKS-Compliant SSO-Only architecture
  * @trace D03-FR-008.1 Enhanced email workflows
- * @trace Requirements 1.2, 10.1, 18.1, 18.2
+ * @trace Requirements 1.1, 1.2, 10.1, 18.1, 18.2, 25.1
  *
  * @wcag_level AA
  *
- * @version 1.0.0
+ * @version 2.0.0
  *
  * @created 2025-11-04
+ *
+ * @updated 2025-12-25 PKS 5.2.1 compliance - removed guest mode
  */
 class TicketCreatedConfirmation extends BaseMailable
 {
@@ -55,21 +58,17 @@ class TicketCreatedConfirmation extends BaseMailable
 
     /**
      * Get the message content definition.
+     *
+     * PKS 5.2.1 Compliant - All tickets require authenticated user
      */
     public function content(): Content
     {
-        $isGuest = is_null($this->ticket->user_id);
-        $template = $isGuest ? 'emails.helpdesk.ticket-created' : 'emails.helpdesk.authenticated-ticket-created';
-
         return new Content(
-            markdown: $template,
+            markdown: 'emails.helpdesk.authenticated-ticket-created',
             with: [
                 'ticket' => $this->ticket,
-                'submitterName' => $this->ticket->user
-                    ? $this->ticket->user->name
-                    : $this->ticket->guest_name,
+                'submitterName' => $this->ticket->user->name,
                 'user' => $this->ticket->user,
-                'isGuest' => $isGuest,
             ],
         );
     }
