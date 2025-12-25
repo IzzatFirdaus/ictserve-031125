@@ -2,14 +2,13 @@
 
 ## Introduction
 
-This specification defines the requirements for integrating Percy visual testing platform with the ICTServe Laravel application. Percy will provide automated visual regression testing capabilities for both Playwright and Laravel Dusk test suites, ensuring UI consistency across releases and preventing visual regressions.
+This specification defines the requirements for integrating Percy visual testing platform with the ICTServe v3.6.1 Laravel application. Percy will provide automated visual regression testing capabilities for the existing Playwright test framework, ensuring UI consistency across releases and preventing visual regressions. The integration will enhance the comprehensive E2E test suite already in place with visual regression detection capabilities.
 
 ## Glossary
 
 - **Percy**: BrowserStack's visual testing and review platform for automated UI regression testing
-- **Visual_Testing_System**: The integrated Percy visual testing solution within the ICTServe application
-- **Playwright_Integration**: Percy integration with the existing Playwright test framework
-- **Dusk_Integration**: Percy integration with Laravel Dusk browser testing framework
+- **Visual_Testing_System**: The integrated Percy visual testing solution within the ICTServe v3.6.1 application
+- **Playwright_Integration**: Percy integration with the existing Playwright 1.56.1 test framework
 - **Snapshot**: A visual capture of a UI state for comparison against baseline images
 - **Visual_Regression**: Unintended changes to the visual appearance of the application UI
 - **Baseline_Image**: The reference image used for visual comparison in Percy
@@ -21,6 +20,10 @@ This specification defines the requirements for integrating Percy visual testing
 - **Cross_Browser_Testing**: Testing across multiple browsers and browser versions on real operating systems
 - **Test_Management**: BrowserStack's test case and test run management capabilities
 - **Accessibility_Testing**: BrowserStack's accessibility scanning and compliance validation tools
+- **E2E_Test_Suite**: The existing comprehensive end-to-end test suite with 16+ test files
+- **Hybrid_Architecture**: ICTServe's True Hybrid Architecture with nullable user_id FK supporting both authenticated and guest users
+- **WCAG_Compliance**: Web Content Accessibility Guidelines 2.2 AA compliance requirements
+- **Bahasa_Melayu_Interface**: The system's exclusive use of Bahasa Melayu for user interfaces (v3.6.0+)
 
 ## Requirements
 
@@ -35,29 +38,29 @@ This specification defines the requirements for integrating Percy visual testing
 3. THE Visual_Testing_System SHALL support both standalone Percy and Percy on Automate configurations
 4. WHEN project configuration is invalid, THE Visual_Testing_System SHALL provide clear error messages
 
-### Requirement 2: Playwright Integration
+### Requirement 2: Playwright Integration with Existing Test Suite
 
-**User Story:** As a developer, I want to capture visual snapshots during Playwright tests, so that I can detect visual regressions in my UI components.
+**User Story:** As a developer, I want to enhance existing Playwright tests with Percy visual snapshots, so that I can detect visual regressions in the comprehensive E2E test suite without rewriting existing tests.
 
 #### Acceptance Criteria
 
 1. WHEN a Playwright test runs with Percy enabled, THE Playwright_Integration SHALL capture visual snapshots
 2. THE Playwright_Integration SHALL support custom snapshot names and configuration options
 3. WHEN taking snapshots, THE Playwright_Integration SHALL support full-page and element-specific captures
-4. THE Playwright_Integration SHALL integrate with existing Playwright test configuration without breaking current tests
+4. THE Playwright_Integration SHALL integrate with existing Playwright 1.56.1 test configuration without breaking current tests
 5. WHEN Percy is disabled, THE Playwright_Integration SHALL allow tests to run normally without visual captures
 
-### Requirement 3: Laravel Dusk Integration
+### Requirement 3: Integration with ICTServe v3.6.1 Architecture
 
-**User Story:** As a developer, I want to capture visual snapshots during Dusk browser tests, so that I can ensure visual consistency across Laravel application pages.
+**User Story:** As a developer, I want Percy integration to work seamlessly with ICTServe's True Hybrid Architecture, so that visual testing supports both authenticated and guest user workflows.
 
 #### Acceptance Criteria
 
-1. WHEN a Dusk test runs with Percy enabled, THE Dusk_Integration SHALL capture visual snapshots
-2. THE Dusk_Integration SHALL extend existing Dusk browser capabilities with snapshot functionality
-3. WHEN taking snapshots, THE Dusk_Integration SHALL support custom naming and configuration options
-4. THE Dusk_Integration SHALL integrate seamlessly with existing Dusk test suites
-5. WHEN Percy is disabled via command-line option, THE Dusk_Integration SHALL skip visual captures
+1. WHEN testing authenticated user workflows, THE Visual_Testing_System SHALL capture snapshots with user-specific data
+2. WHEN testing guest user workflows, THE Visual_Testing_System SHALL capture snapshots with guest-specific UI states
+3. THE Visual_Testing_System SHALL support Bahasa Melayu interface visual validation
+4. WHEN testing Livewire 3.7.3 components, THE Visual_Testing_System SHALL handle dynamic content appropriately
+5. THE Visual_Testing_System SHALL integrate with Filament 4.3.1 admin panel testing
 
 ### Requirement 4: Configuration Management
 
