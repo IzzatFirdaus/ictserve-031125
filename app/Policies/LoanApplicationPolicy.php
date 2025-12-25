@@ -4,26 +4,24 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Models\User;
 
 /**
- * Policy: LoanApplicationPolicy
+ * PKS 5.2.1 Compliant LoanApplicationPolicy
  *
  * Authorization policy for LoanApplication model operations.
- * Supports hybrid architecture: guest applications (no user_id) and authenticated applications.
+ * SSO-only architecture - all applications require authenticated user_id.
+ * Guest submission functionality has been removed per PKS 5.2.1.
  * Implements dual approval workflow: email-based (no login) and portal-based (with login).
  *
- * @see D03-FR-001.4 (Hybrid loan application submission)
+ * @see D03-FR-001.4 (Authenticated loan application submission)
  * @see D03-FR-001.6 (Dual approval workflow)
  * @see D03-FR-022.5 (Role-based access for authenticated users)
  * @see D04 §6.2 (Authentication Architecture)
  *
- * @version 1.0.0
- *
- * @author Pasukan BPM MOTAC
- *
- * @created 2025-11-03
+ * @trace Requirements 1.4, 1.5, 3.1, 12.3, 25.1
  */
 class LoanApplicationPolicy
 {
@@ -40,7 +38,7 @@ class LoanApplicationPolicy
 
     /**
      * Determine whether the user can view the model.
-     * Users can view their own applications, approvers can view applications assigned to them,
+     * PKS 5.2.1: Users can view their own applications, approvers can view applications assigned to them,
      * admin/superuser can view any application.
      */
     public function view(User $user, LoanApplication $application): bool
@@ -51,27 +49,20 @@ class LoanApplicationPolicy
         }
 
         // Approvers can view applications assigned to them (by email)
-        if ($user->canApprove() && $application->approver_email &&
-            strtolower($application->approver_email) === strtolower($user->email)) {
+        if (
+            $user->canApprove() && $application->approver_email &&
+            \strtolower($application->approver_email) === \strtolower($user->email)
+        ) {
             return true;
         }
 
-        // Users can view applications they submitted (authenticated submissions)
-        if ($application->user_id === $user->id) {
-            return true;
-        }
-
-        // Users can view guest applications if email matches
-        if ($application->isGuestSubmission() && $application->applicant_email === $user->email) {
-            return true;
-        }
-
-        return false;
+        // Users can view applications they submitted (authenticated submissions only)
+        return $application->user_id === $user->id;
     }
 
     /**
      * Determine whether the user can create models.
-     * All authenticated users can create loan applications.
+     * PKS 5.2.1: All authenticated users can create loan applications.
      */
     public function create(User $user): bool
     {
@@ -109,8 +100,10 @@ class LoanApplicationPolicy
         }
 
         // Approvers can approve applications assigned to them (by email)
-        if ($user->canApprove() && $application->approver_email &&
-            strtolower($application->approver_email) === strtolower($user->email)) {
+        if (
+            $user->canApprove() && $application->approver_email &&
+            \strtolower($application->approver_email) === \strtolower($user->email)
+        ) {
             return true;
         }
 
@@ -118,22 +111,13 @@ class LoanApplicationPolicy
     }
 
     /**
-     * Determine whether the user can claim a guest application.
-     * Users can claim guest applications if email matches.
-     */
-    public function claim(User $user, LoanApplication $application): bool
-    {
-        return $application->isGuestSubmission() && $application->applicant_email === $user->email;
-    }
-
-    /**
      * Determine whether the user can request an extension.
-     * Users can request extensions for their own approved applications.
+     * PKS 5.2.1: Users can request extensions for their own approved applications.
      */
     public function requestExtension(User $user, LoanApplication $application): bool
     {
         // Application must be approved
-        if ($application->status !== 'approved') {
+        if ($application->status !== LoanStatus::APPROVED) {
             return false;
         }
 
@@ -142,17 +126,8 @@ class LoanApplicationPolicy
             return true;
         }
 
-        // Users can request extensions for their own applications
-        if ($application->user_id === $user->id) {
-            return true;
-        }
-
-        // Users can request extensions for guest applications if email matches
-        if ($application->isGuestSubmission() && $application->applicant_email === $user->email) {
-            return true;
-        }
-
-        return false;
+        // Users can request extensions for their own applications (authenticated only)
+        return $application->user_id === $user->id;
     }
 
     /**

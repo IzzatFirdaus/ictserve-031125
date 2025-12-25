@@ -39,14 +39,13 @@ class LoanApplicationObserver
             // Broadcast real-time status change event
             StatusUpdated::dispatch($loanApplication, $oldStatusString, $newStatusString);
 
+            // PKS 5.2.1: All loan applications must have user_id (NOT NULL)
             Log::info('Loan application status updated', [
                 'loan_application_id' => $loanApplication->id,
                 'application_number' => $loanApplication->application_number,
                 'old_status' => $oldStatusString,
                 'new_status' => $newStatusString,
-                'submitter' => $loanApplication->isGuestSubmission()
-                    ? "guest:{$loanApplication->applicant_email}"
-                    : "user:{$loanApplication->user_id}",
+                'user_id' => $loanApplication->user_id,
             ]);
         }
     }

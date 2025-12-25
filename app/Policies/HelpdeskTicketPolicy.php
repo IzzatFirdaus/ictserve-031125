@@ -8,20 +8,17 @@ use App\Models\HelpdeskTicket;
 use App\Models\User;
 
 /**
- * Policy: HelpdeskTicketPolicy
+ * PKS 5.2.1 Compliant HelpdeskTicketPolicy
  *
  * Authorization policy for HelpdeskTicket model operations.
- * Supports hybrid architecture: guest submissions (no user_id) and authenticated submissions.
+ * SSO-only architecture - all tickets require authenticated user_id.
+ * Guest submission functionality has been removed per PKS 5.2.1.
  *
- * @see D03-FR-001.1 (Hybrid helpdesk ticket submission)
+ * @see D03-FR-001.1 (Authenticated helpdesk ticket submission)
  * @see D03-FR-022.5 (Role-based access for authenticated users)
  * @see D04 §6.2 (Authentication Architecture)
  *
- * @version 1.0.0
- *
- * @author Pasukan BPM MOTAC
- *
- * @created 2025-11-03
+ * @trace Requirements 1.1, 3.1, 12.3, 25.1
  */
 class HelpdeskTicketPolicy
 {
@@ -38,7 +35,7 @@ class HelpdeskTicketPolicy
 
     /**
      * Determine whether the user can view the model.
-     * Users can view their own tickets, admin/superuser can view any ticket.
+     * PKS 5.2.1: Users can view their own tickets, admin/superuser can view any ticket.
      */
     public function view(User $user, HelpdeskTicket $ticket): bool
     {
@@ -47,22 +44,13 @@ class HelpdeskTicketPolicy
             return true;
         }
 
-        // Users can view tickets they submitted (authenticated submissions)
-        if ($ticket->user_id === $user->id) {
-            return true;
-        }
-
-        // Users can view guest tickets if email matches
-        if ($ticket->isGuestSubmission() && $ticket->guest_email === $user->email) {
-            return true;
-        }
-
-        return false;
+        // Users can view tickets they submitted (authenticated submissions only)
+        return $ticket->user_id === $user->id;
     }
 
     /**
      * Determine whether the user can create models.
-     * All authenticated users can create tickets.
+     * PKS 5.2.1: All authenticated users can create tickets.
      */
     public function create(User $user): bool
     {
@@ -89,7 +77,7 @@ class HelpdeskTicketPolicy
 
     /**
      * Determine whether the user can add comments to the ticket.
-     * Users can comment on their own tickets, admin/superuser can comment on any ticket.
+     * PKS 5.2.1: Users can comment on their own tickets, admin/superuser can comment on any ticket.
      */
     public function addComment(User $user, HelpdeskTicket $ticket): bool
     {
@@ -98,37 +86,8 @@ class HelpdeskTicketPolicy
             return true;
         }
 
-        // Users can comment on tickets they submitted
-        if ($ticket->user_id === $user->id) {
-            return true;
-        }
-
-        // Users can comment on guest tickets if email matches
-        if ($ticket->isGuestSubmission() && $ticket->guest_email === $user->email) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine whether the user can claim a guest ticket.
-     * Users can claim guest tickets if email matches.
-     */
-    public function claim(User $user, HelpdeskTicket $ticket): bool
-    {
-        return $ticket->isGuestSubmission() && $ticket->guest_email === $user->email;
-    }
-
-    /**
-     * Determine whether the user can claim a guest ticket.
-     * Alias for claim() method for consistency with requirements.
-     *
-     * @see D03-FR-001.4 (Ticket claiming)
-     */
-    public function canClaim(User $user, HelpdeskTicket $ticket): bool
-    {
-        return $this->claim($user, $ticket);
+        // Users can comment on tickets they submitted (authenticated only)
+        return $ticket->user_id === $user->id;
     }
 
     /**
