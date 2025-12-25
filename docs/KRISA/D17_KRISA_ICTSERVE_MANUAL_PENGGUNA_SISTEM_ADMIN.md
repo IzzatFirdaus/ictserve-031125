@@ -432,7 +432,7 @@ graph TD
 
 1. Dari dashboard, klik **"Pengurusan Tiket"**
 2. Lihat senarai tiket dengan maklumat:
-   - Nombor tiket (HD[YYYY][MM][0001-9999])
+   - Nombor tiket (HD[YYYY\][MM\][0001-9999])
    - Penghantar (nama dan e-mel)
    - Subjek dan kategori
    - Status dan keutamaan
