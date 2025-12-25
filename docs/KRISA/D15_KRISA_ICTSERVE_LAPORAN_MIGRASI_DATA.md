@@ -17,14 +17,13 @@
 
 | No. Versi | Tarikh | Ringkasan Pindaan | Penyedia |
 | :--- | :--- | :--- | :--- |
-| 3.6.1 | 23 Disember 2025 | Cloud Hybrid AI Architecture: Integrasi D18 AI Chatbot dengan Pematuhan PKS | Pasukan Pembangunan BPM |
-| 4.0.0 | 24 Disember 2025 | Pematuhan PKS 5.2.1: Penghapusan akses tanpa authentication, pengesahan SSO mandatori, rujukan PKS/PSPM, strategi migrasi data sejarah | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | Laporan migrasi data sistem ICTServe | Pasukan Pembangunan BPM |
 
 ---
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menyediakan laporan komprehensif mengenai pelaksanaan migrasi data untuk Sistem ICTServe dari sistem lama kepada seni bina SSO Mandatori v4.0.0 dengan pengesahan LDAP/Active Directory. Laporan ini merangkumi status migrasi, statistik kejayaan, dan analisis prestasi migrasi data yang telah dilaksanakan mengikut piawaian ISO 8000 (Kualiti Data), ISO/IEC 27701 (Pengurusan Privasi Maklumat), dan Polisi Keselamatan Siber MOTAC (PKS) Seksyen 5.2.1 (Prinsip Akauntabiliti).
+Dokumen ini menyediakan laporan komprehensif mengenai pelaksanaan migrasi data untuk Sistem ICTServe dari sistem lama kepada sistem baharu. Laporan ini merangkumi status migrasi, statistik kejayaan, dan analisis prestasi migrasi data yang telah dilaksanakan mengikut piawaian ISO 8000 (Kualiti Data), ISO/IEC 27701 (Pengurusan Privasi Maklumat), dan keperluan keselamatan yang berkaitan.
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -49,20 +48,13 @@ Dengan ini adalah disahkan Migrasi Data Sistem ICTServe telah selesai dilaksanak
 
 ## 1. PENGENALAN PROJEK
 
-Projek migrasi data Sistem ICTServe bertujuan untuk memindahkan data dari sistem lama (manual, Excel, Access DB) kepada sistem baharu berasaskan Laravel 12.43.1 dengan seni bina SSO Mandatori. Migrasi ini melibatkan transformasi data untuk menyokong operasi staf berdaftar dengan pengesahan LDAP/Active Directory mengikut PKS 5.2.1 (Prinsip Akauntabiliti). Sistem ini dihoskan sepenuhnya di Pusat Data MOTAC (Intranet).
+Projek migrasi data Sistem ICTServe bertujuan untuk memindahkan data dari sistem lama (manual, Excel, Access DB) kepada sistem baharu berasaskan Laravel 12.43.1. Migrasi ini melibatkan transformasi data untuk menyokong operasi sistem. Sistem ini dihoskan sepenuhnya di Pusat Data MOTAC (Intranet).
 
 **Objektif Migrasi:**
 
 - Memindahkan data sejarah tiket helpdesk dan permohonan pinjaman aset
-- Mengaitkan semua rekod sejarah dengan akaun staf yang disahkan melalui HRMIS
-- Mengekalkan integriti data dan audit trail dengan pematuhan PKS 7 tahun
-- Menyokong Cloud Hybrid AI Architecture v3.6.1 dengan data FAQ dan dokumen (data awam sahaja ke awan)
-
-**Pematuhan PKS:**
-
-- PKS 5.2.1: Semua aktiviti sistem dikaitkan dengan ID staf yang disahkan
-- PKS 9.2.1: Prosedur pemindahan data melindungi kerahsiaan
-- PKS 4.2: Data sensitif kekal dalam bidang kuasa Malaysia
+- Mengaitkan rekod sejarah dengan akaun staf
+- Mengekalkan integriti data dan audit trail
 
 ## 2. JADUAL PELAKSANAAN ASAL DAN SEBENAR
 
@@ -89,15 +81,6 @@ Projek migrasi data Sistem ICTServe bertujuan untuk memindahkan data dari sistem
 | **Permohonan Pinjaman** | ✅ Selesai | 99.8% | 0.2% data duplikasi dibersihkan |
 | **Inventori Aset** | ✅ Selesai | 100% | Semua aset berjaya dimigrasi |
 | **Audit Trail** | ✅ Selesai | 95.0% | 5% data lama tiada metadata |
-| **Data AI (FAQ)** | ✅ Selesai | 100% | Data FAQ baharu untuk AI Chatbot (Awam) |
-| **Data AI (Dokumen)** | ✅ Selesai | 100% | Dokumen untuk analisis AI (Diklasifikasi) |
-
-**Pematuhan Kedaulatan Data (PKS 9.2.1 & PKS 4.2):**
-
-- Data sensitif diproses secara tempatan menggunakan Ollama
-- Hanya data yang diklasifikasikan sebagai "Awam" dihantar ke AWS Bedrock
-- Semua pemindahan data ke awan melalui Secure API Gateway dengan penapisan DLP
-- Audit trail lengkap untuk semua data yang dihantar ke perkhidmatan awan
 
 **Status Keseluruhan:** ✅ **SELESAI DENGAN JAYANYA**
 
