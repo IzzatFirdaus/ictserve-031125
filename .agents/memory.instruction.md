@@ -10,6 +10,7 @@ applyTo: '**'
 ## GitHub Codespaces Setup (2025-12-15)
 
 **Composer/Vendor Issues RESOLVED** - Configured automatic Composer auth for Codespaces:
+
 - `.devcontainer/devcontainer.json` - Runs setup-composer.sh on Codespaces creation
 - `.devcontainer/setup-composer.sh` - Handles GitHub token auth, HTTPS git config, vendor installation
 - `.github/workflows/composer-validate.yml` - CI/CD validation for Composer
@@ -43,12 +44,14 @@ applyTo: '**'
 ## Authenticated Frontend v3.6.0 Refactoring (2025-12-15)
 
 **MyDS Design Tokens Applied:**
+
 - Cards/Containers: `rounded-l` (12px) + `shadow-card` + `theme-transition`
 - Buttons: `rounded-m` (8px) + `shadow-button` + `min-h-11 min-w-11`
 - Inputs/Selects: `rounded-m` + `min-h-11` + proper dark mode variants
 - Focus Indicators: `focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none outline-offset-2`
 
 **WCAG 2.2 AA Compliance Fixes:**
+
 - All touch targets now meet 44×44px minimum (WCAG 2.5.8)
 - Focus indicators upgraded to 3px visible ring with outline-offset-2
 - Form inputs have proper `aria-required`, `aria-describedby`, `aria-invalid`
@@ -58,6 +61,7 @@ applyTo: '**'
 - Screen reader announcements added for new notifications (`aria-live="assertive"`)
 
 **Files Updated:**
+
 1. `resources/views/livewire/authenticated-dashboard.blade.php` - Statistics cards, buttons, claim banner
 2. `resources/views/livewire/portal/user-profile.blade.php` - All form sections (profile, password, language, notifications)
 3. `resources/views/livewire/staff/submission-history.blade.php` - Tabs, filters, action buttons
@@ -68,6 +72,7 @@ applyTo: '**'
 **COMPLETED: Full Frontend Implementation per v3.6.0 Specifications**
 
 ### Layouts (100% Compliant)
+
 | Layout | Theme Script | Theme Toggle | Skip Links | ARIA | MyDS Tokens |
 |--------|--------------|--------------|------------|------|-------------|
 | `app.blade.php` | ✅ | via auth-header | ✅ | ✅ | ✅ |
@@ -78,12 +83,14 @@ applyTo: '**'
 | `minimal.blade.php` | ✅ | ✅ fixed top-right | N/A | ✅ | ✅ |
 
 ### Auth Pages (100% Compliant)
+
 - `login.blade.php` - Dark mode, min-h-11 inputs, WCAG labels ✅
 - `register.blade.php` - Password strength, domain validation, dark mode ✅
 - `verify-email.blade.php` - Dark mode, ARIA, proper spacing ✅
 - `forgot-password.blade.php` - Guest layout with theme ✅
 
 ### CSS System (100% Compliant)
+
 - `app.css` - Complete MyDS tokens (@theme directive, Tailwind 4)
 - Color tokens: Primary, Secondary, Success, Warning, Danger (WCAG contrast)
 - Spacing: space-1 to space-16 (4px increments)
@@ -91,9 +98,11 @@ applyTo: '**'
 - Shadows: shadow-button, shadow-card, shadow-dropdown
 
 ### Files Modified (2025-12-15)
+
 - `resources/views/livewire/welcome/navigation.blade.php` - Added theme toggle, MyDS tokens, BM translations, 44px touch targets
 
 ### Quality Gates Verified
+
 - ✅ Laravel Pint --dirty: PASS (0 files changed)
 - ✅ Theme persistence across navigation
 - ✅ Dark mode on ALL layouts and components
