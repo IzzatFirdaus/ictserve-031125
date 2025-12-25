@@ -15,17 +15,7 @@
 
 ## i. Keterangan Dokumen
 
-Dokumen Pelan Migrasi Data ini menerangkan perancangan menyeluruh bagi migrasi data ke Sistem ICTServe yang berasaskan Laravel 12.43.1 untuk Bahagian Pengurusan Maklumat (BPM), MOTAC. Pelan ini mematuhi piawaian ISO 8000 untuk kualiti data, ISO/IEC 27701 untuk pengurusan privasi maklumat, **Polisi Keselamatan Siber (PKS) MOTAC**, dan **Personal Data Protection Act 2010 (PDPA)** dengan explicit compliance measures.
-
-**PDPA 2010 Compliance Measures:**
-
-- **Data classification procedures** untuk semua maklumat peribadi dalam proses migrasi
-- **Consent management** untuk data subjects yang terlibat dalam migrasi
-- **Data minimization** - hanya data yang diperlukan sahaja akan dimigrasi
-- **Retention policy** mengikut keperluan undang-undang dan operasi
-- **Secure data transfer** dengan encryption dan audit trail lengkap
-
-Sistem baharu menggunakan **SSO Authentication wajib** mengikut PKS 5.2.1 dengan **HRMIS-integrated auto-provisioning** menggantikan manual registration untuk memastikan akauntabiliti penuh.
+*Seksyen ini adalah ruangan untuk menyatakan secara ringkas keterangan berkenaan dokumen yang disediakan dengan merujuk kepada piawaian antarabangsa yang berkaitan.*
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -50,14 +40,9 @@ Sistem baharu menggunakan **SSO Authentication wajib** mengikut PKS 5.2.1 dengan
 
 | No. Versi | Tarikh | Ringkasan Pindaan | Penyedia |
 | :--- | :--- | :--- | :--- |
-| 1.0.0 | 15 September 2025 | Versi awal pelan migrasi data | Pasukan Pembangunan BPM |
-| 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut standard KRISA | Pasukan BPM |
-| 3.0.0 | 22 Januari 2025 | Kemaskini seni bina guest-first | Pasukan BPM |
-| 3.4.0 | 30 November 2025 | Seni bina hibrid: migrasi staf ke jadual users | Pasukan Pembangunan BPM |
-| 3.5.0 | 1 Disember 2025 | True Hybrid Architecture: pendaftaran kendiri | Pasukan Pembangunan BPM |
-| 3.6.0 | 8 Disember 2025 | Bahasa Melayu sahaja untuk antara muka | Pasukan Pembangunan BPM |
-| 3.6.1 | 23 Disember 2025 | Integrasi AI Hibrid dan kemaskini teknologi | Pasukan Pembangunan BPM |
-| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1**: Penghapusan sepenuhnya akses tetamu, SSO mandatori untuk semua pengguna, HRMIS auto-provisioning menggantikan manual registration, rujukan PKS/PSPM dengan nombor halaman, strategi migrasi data sejarah dengan akauntabiliti penuh | Pasukan Pembangunan BPM |
+| 1.0.0 | 15 September 2025 | Versi awal pelan migrasi data | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut KRISA (struktur template) | Pasukan BPM |
+| 4.0.0 | 24 Disember 2025 | Semakan editorial dan penyelarasan kandungan mengikut template rasmi | Pasukan BPM |
 
 ## iv. Kandungan
 
@@ -74,8 +59,7 @@ Sistem baharu menggunakan **SSO Authentication wajib** mengikut PKS 5.2.1 dengan
 ## v. Senarai Gambarajah
 
 - Gambarajah 5.1: Aliran Kerja Migrasi Data ... 11
-- Gambarajah 5.2: Strategi Penyambungan Berasaskan E-mel ... 12
-- Gambarajah 5.3: Proses Pembersihan dan Pengesahan Data ... 13
+- Gambarajah 5.2: Proses Pembersihan dan Pengesahan Data ... 13
 - Gambarajah 7.1: Jadual Pelaksanaan Migrasi ... 18
 
 ## vi. Senarai Jadual
@@ -92,7 +76,6 @@ Sistem baharu menggunakan **SSO Authentication wajib** mengikut PKS 5.2.1 dengan
 
 | Akronim | Keterangan |
 | :--- | :--- |
-| AI | Artificial Intelligence (Kecerdasan Buatan) |
 | API | Application Programming Interface |
 | BPM | Bahagian Pengurusan Maklumat |
 | CSV | Comma-Separated Values |
@@ -116,13 +99,10 @@ Sistem baharu menggunakan **SSO Authentication wajib** mengikut PKS 5.2.1 dengan
 
 | Terma/Istilah | Definisi |
 | :--- | :--- |
-| Seni Bina Hibrid | Rekabentuk sistem yang membolehkan pengguna menggunakan sistem sama ada sebagai tetamu atau pengguna berdaftar |
 | Migrasi Data | Proses pemindahan data dari sistem lama ke sistem baharu dengan memastikan integriti dan kualiti data |
 | Pembersihan Data | Proses mengenal pasti dan membetulkan data yang tidak tepat, tidak lengkap, atau tidak konsisten |
 | Pemetaan Data | Proses menentukan hubungan antara elemen data dalam sistem sumber dan destinasi |
 | Audit Trail | Rekod kronologi aktiviti sistem yang membolehkan jejak audit untuk tujuan keselamatan dan pematuhan |
-| Pendaftaran Kendiri | Keupayaan staf untuk mendaftar akaun sendiri menggunakan e-mel rasmi @motac.gov.my |
-| Penyambungan Akaun | Proses menghubungkan submission tetamu terdahulu dengan akaun staf yang baru didaftarkan |
 
 ## viii. Sumber Rujukan
 
@@ -133,11 +113,8 @@ Sistem baharu menggunakan **SSO Authentication wajib** mengikut PKS 5.2.1 dengan
 5. **ISO/IEC/IEEE 12207:2017** - Systems and software engineering - Software life cycle processes
 6. **MAMPU (2019)**. Kerangka Rujukan ICT Sektor Awam (KRISA) Versi 2.0
 7. **Akta Perlindungan Data Peribadi 2010** - Personal Data Protection Act Malaysia
-8. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
-9. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - **MyGovCloud prioritization over public cloud services** - halaman 45-67
-10. **D00_SYSTEM_OVERVIEW.md v3.6.1** - Gambaran keseluruhan sistem
-11. **D04_SOFTWARE_DESIGN_DOCUMENT.md v3.6.1** - Dokumen rekabentuk perisian
-12. **D06_DATA_MIGRATION_SPECIFICATION.md** - Spesifikasi teknikal migrasi data
+8. **KRISA** – Kerangka Rujukan ICT Sektor Awam (rujukan umum)
+9. **Akta Perlindungan Data Peribadi 2010 (PDPA)** – Rujukan umum keperluan privasi data
 
 ---
 
@@ -149,7 +126,7 @@ Dokumen Pelan Migrasi Data ini bertujuan untuk:
 
 2. **Memastikan Pematuhan Standard**: Memastikan proses migrasi mematuhi piawaian antarabangsa ISO 8000 (kualiti data), ISO/IEC 27701 (pengurusan privasi maklumat), dan keperluan PDPA 2010 Malaysia.
 
-3. **Menyokong Seni Bina Hibrid**: Melaksanakan strategi migrasi yang menyokong Seni Bina Hibrid Sebenar v3.6.1 di mana staf MOTAC boleh mendaftar sendiri dengan domain @motac.gov.my dan memilih untuk log masuk atau menggunakan sistem sebagai tetamu.
+3. **Memastikan Keberkesanan Migrasi**: Melaksanakan strategi migrasi yang berstruktur bagi meminimumkan risiko, memastikan integriti data, dan menyokong operasi perniagaan.
 
 4. **Mengurangkan Risiko**: Mengenal pasti dan mengurangkan risiko yang berkaitan dengan kehilangan data, kerosakan data, dan gangguan operasi semasa proses migrasi.
 
@@ -173,13 +150,11 @@ Bahagian Pengurusan Maklumat (BPM) MOTAC kini menggunakan sistem manual dan sepa
 - Tiada integrasi antara sistem yang berbeza
 
 **Keperluan Sistem Baharu:**
-Sistem ICTServe baharu akan menyediakan platform bersepadu dengan ciri-ciri:
+Sistem ICTServe baharu akan menyediakan platform bersepadu dengan ciri-ciri asas berikut:
 
-- Seni bina hibrid yang membolehkan akses fleksibel (staf boleh log masuk atau gunakan sebagai tetamu)
-- Aliran kerja kelulusan automatik berasaskan token
-- Jejak audit menyeluruh menggunakan sistem audit berlapis
-- Integrasi AI hibrid (Ollama tempatan + AWS Bedrock awan)
-- Antara muka dalam Bahasa Melayu sahaja (v3.6.0+)
+- Aliran kerja kelulusan automatik yang tersusun
+- Jejak audit menyeluruh untuk pemantauan dan pematuhan
+- Antara muka mesra pengguna yang menyokong operasi harian
 
 ## 3. OBJEKTIF MIGRASI
 
@@ -189,9 +164,7 @@ Sistem ICTServe baharu akan menyediakan platform bersepadu dengan ciri-ciri:
 
 2. **Penyambungan Data Sejarah**: Menghubungkan rekod sejarah dengan akaun staf yang akan didaftarkan dalam sistem baharu melalui padanan e-mel.
 
-3. **Penubuhan Seni Bina Hibrid**: Melaksanakan migrasi yang menyokong akses hibrid di mana staf boleh memilih untuk log masuk (akses dashboard penuh) atau menggunakan sistem sebagai tetamu.
-
-4. **Pematuhan Keselamatan**: Memastikan semua data peribadi dan sensitif dimigrasi dengan pematuhan penuh kepada PDPA 2010 dan standard keselamatan kerajaan.
+3. **Pematuhan Keselamatan**: Memastikan semua data peribadi dan sensitif dimigrasi dengan pematuhan kepada keperluan keselamatan dan privasi yang berkaitan.
 
 ### 3.2. Objektif Khusus
 
@@ -199,9 +172,7 @@ Sistem ICTServe baharu akan menyediakan platform bersepadu dengan ciri-ciri:
 
 2. **Penyambungan Berasaskan E-mel**: Menghubungkan submission tetamu terdahulu dengan akaun staf melalui padanan e-mel automatik.
 
-3. **Penubuhan Audit Trail**: Menyediakan sistem audit berlapis menggunakan Laravel Auditing dan Activity Log untuk pematuhan dan pemantauan.
-
-4. **Integrasi AI**: Menyediakan data asas untuk sistem AI hibrid termasuk FAQ, dokumen panduan, dan sejarah perbualan.
+3. **Penubuhan Audit Trail**: Menyediakan rekod jejak audit untuk pemantauan dan pematuhan.
 
 ## 4. SKOP MIGRASI
 
@@ -216,7 +187,6 @@ Sistem ICTServe baharu akan menyediakan platform bersepadu dengan ciri-ciri:
 | **Data Bahagian/Unit** | Direktori organisasi | `divisions`, `grades` | Sederhana |
 | **Rekod Kelulusan** | E-mel, dokumen | `loan_approvals` | Sederhana |
 | **Dokumen Sokongan** | PDF, gambar | S3/MinIO storage | Rendah |
-| **FAQ dan Panduan** | Dokumen manual | AI knowledge base | Rendah |
 
 **Jadual 4.1: Skop Data untuk Migrasi**
 
@@ -246,7 +216,7 @@ graph TD
     
     G --> G1[MySQL Database]
     G --> G2[S3/MinIO Storage]
-    G --> G3[AI Knowledge Base]
+    
     
     H[Validasi Post-Migration] --> G
     I[Audit Trail] --> G
@@ -266,30 +236,7 @@ Migrasi akan menggunakan pendekatan **Big Bang dengan Rollback Capability** yang
 3. **Validasi Segera**: Pengesahan integriti data serta-merta selepas migrasi
 4. **Rollback Ready**: Keupayaan untuk kembali ke sistem lama jika diperlukan
 
-### 5.2. Strategi Penyambungan Berasaskan E-mel
-
-```mermaid
-graph TD
-    A[Import Staf ke Users Table] --> B[Set email_verified_at = NOW]
-    B --> C[Padankan E-mel dengan Submissions]
-    C --> D{E-mel Sepadan?}
-    
-    D -->|Ya| E[Update user_id dalam Submissions]
-    D -->|Tidak| F[Kekalkan user_id = NULL]
-    
-    E --> G[Kemaskini guest_submissions_linked]
-    F --> H[Submission Kekal sebagai Guest]
-    
-    G --> I[Staf Boleh Lihat Sejarah di Dashboard]
-    H --> J[Boleh Sambung Kemudian via Account Linking]
-    
-    I --> K[Sistem Hibrid Siap]
-    J --> K
-```
-
-**Gambarajah 5.2: Strategi Penyambungan Berasaskan E-mel**
-
-### 5.3. Proses Pembersihan dan Pengesahan Data
+### 5.2. Proses Pembersihan dan Pengesahan Data
 
 ```mermaid
 graph TD
@@ -323,9 +270,9 @@ graph TD
     G --> H[Data Siap untuk Migrasi]
 ```
 
-**Gambarajah 5.3: Proses Pembersihan dan Pengesahan Data**
+**Gambarajah 5.2: Proses Pembersihan dan Pengesahan Data**
 
-### 5.4. Pemetaan Data Terperinci
+### 5.3. Pemetaan Data Terperinci
 
 | Data Sumber | Field Sumber | Data Destinasi | Field Destinasi | Transformasi |
 | :--- | :--- | :--- | :--- | :--- |
@@ -348,7 +295,7 @@ graph TD
 
 **Jadual 5.1: Pemetaan Data Sumber ke Destinasi**
 
-### 5.5. Skrip dan Alat Migrasi
+### 5.4. Skrip dan Alat Migrasi
 
 **Laravel Artisan Commands:**
 
@@ -358,7 +305,6 @@ graph TD
 - `migrate:assets` - Import inventori aset
 - `migrate:link-submissions` - Sambung submissions dengan user_id
 - `migrate:setup-audit` - Sediakan jadual audit berlapis
-- `migrate:ai-knowledge` - Import FAQ dan dokumen untuk AI
 
 **Ciri-ciri Skrip:**
 
@@ -551,20 +497,6 @@ Kejayaan migrasi ini akan membolehkan MOTAC menikmati sistem yang lebih cekap, s
 - **Sample Migration Scripts** - Contoh skrip migrasi Laravel
 - **Data Validation Queries** - Query SQL untuk validasi data
 - **Rollback Procedures** - Prosedur rollback sistem
-
-### 9.4. Maklumat Hubungan Kecemasan
-
-**Pasukan Migrasi 24/7 Hotline:**
-
-- **Ketua Projek**: +603-8891-4001
-- **Ketua Teknikal**: +603-8891-4002
-- **Pakar Keselamatan**: +603-8891-4003
-
-**E-mel Sokongan:**
-
-- **Migrasi Umum**: <migration-support@motac.gov.my>
-- **Isu Keselamatan**: <security-incident@motac.gov.my>
-- **Kecemasan Sistem**: <system-emergency@motac.gov.my>
 
 ---
 

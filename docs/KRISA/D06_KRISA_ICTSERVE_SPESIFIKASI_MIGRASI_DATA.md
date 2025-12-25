@@ -17,15 +17,7 @@
 
 Dokumen ini menyatakan Spesifikasi Migrasi Data yang akan dirujuk semasa fasa pembangunan Sistem ICTServe. Ia bertujuan untuk menerangkan secara terperinci tujuan, maklumat sistem yang terlibat, maklumat data serta rangkaian sistem legasi, pemetaan data, pemetaan kod rujukan dan peraturan bisnes.
 
-Dokumen ini mematuhi piawaian ISO 8000 untuk kualiti data, ISO/IEC 38505-1 untuk tadbir urus data, **Polisi Keselamatan Siber (PKS) MOTAC**, dan **Personal Data Protection Act 2010 (PDPA)** Malaysia untuk perlindungan data peribadi dengan explicit compliance measures:
-
-**PDPA 2010 Compliance dalam Migrasi Data:**
-
-- **Data subject rights implementation** - access, rectification, erasure rights
-- **Privacy impact assessment** untuk semua proses migrasi yang melibatkan data peribadi
-- **Data breach notification procedures** sekiranya berlaku insiden semasa migrasi
-- **Cross-border data transfer restrictions** - semua data kekal dalam Pusat Data MOTAC
-- **Audit trail requirements** untuk semua aktiviti migrasi data peribadi
+Dokumen ini mematuhi piawaian ISO 8000 untuk kualiti data, ISO/IEC 38505-1 untuk tadbir urus data, dan keperluan perlindungan data yang berkaitan.
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -52,10 +44,7 @@ Dokumen ini mematuhi piawaian ISO 8000 untuk kualiti data, ISO/IEC 38505-1 untuk
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 15 September 2025 | Versi awal spesifikasi migrasi data | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut standard KRISA | Pasukan BPM |
-| 3.4.0 | 29 November 2025 | Seni bina hibrid: migrasi staf ke jadual users | Pasukan Pembangunan BPM |
-| 3.5.0 | 1 Disember 2025 | True Hybrid Architecture: pendaftaran kendiri | Pasukan Pembangunan BPM |
-| 3.6.1 | 23 Disember 2025 | Integrasi AI Hibrid dan kemaskini teknologi | Pasukan Pembangunan BPM |
-| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1**: Penghapusan sepenuhnya akses tetamu, SSO mandatori untuk semua pengguna, HRMIS auto-provisioning menggantikan manual registration, rujukan PKS/PSPM dengan nombor halaman, spesifikasi migrasi data dengan akauntabiliti penuh | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | Semakan editorial dan penyelarasan kandungan mengikut template rasmi | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -89,7 +78,6 @@ Dokumen ini mematuhi piawaian ISO 8000 untuk kualiti data, ISO/IEC 38505-1 untuk
 
 | Akronim | Keterangan |
 | :--- | :--- |
-| AI | Artificial Intelligence (Kecerdasan Buatan) |
 | API | Application Programming Interface |
 | BPM | Bahagian Pengurusan Maklumat |
 | DBMS | Database Management System |
@@ -104,11 +92,9 @@ Dokumen ini mematuhi piawaian ISO 8000 untuk kualiti data, ISO/IEC 38505-1 untuk
 
 | Terma/Istilah | Definisi |
 | :--- | :--- |
-| Seni Bina Hibrid | Rekabentuk sistem yang membolehkan pengguna menggunakan sistem sama ada sebagai tetamu atau pengguna berdaftar |
 | Migrasi Data | Proses pemindahan data dari sistem lama ke sistem baharu dengan transformasi yang diperlukan |
 | Pemetaan Data | Proses menentukan hubungan antara elemen data dalam sistem sumber dan destinasi |
 | Kualiti Data | Ukuran ketepatan, kelengkapan, konsistensi, dan kebolehpercayaan data |
-| Pendaftaran Kendiri | Keupayaan staf untuk mendaftar akaun sendiri menggunakan e-mel rasmi organisasi |
 
 ## viii. Sumber Rujukan
 
@@ -116,8 +102,8 @@ Dokumen ini mematuhi piawaian ISO 8000 untuk kualiti data, ISO/IEC 38505-1 untuk
 2. **ISO/IEC 38505-1:2017** - Governance of data
 3. **Akta Perlindungan Data Peribadi 2010** - Personal Data Protection Act Malaysia
 4. **MAMPU (2019)**. Kerangka Rujukan ICT Sektor Awam (KRISA) Versi 2.0
-5. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
-6. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - **MyGovCloud prioritization over public cloud services** - halaman 45-67
+5. **Polisi Keselamatan Siber (PKS) MOTAC** - Rujukan umum keperluan keselamatan
+6. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - Rujukan umum pelan strategik
 7. **D05_PELAN_MIGRASI_DATA.md v3.6.1** - Pelan migrasi data
 
 ---
@@ -130,7 +116,7 @@ Dokumen Spesifikasi Migrasi Data ini bertujuan untuk:
 
 2. **Memastikan Pematuhan Standard**: Memastikan proses migrasi mematuhi piawaian ISO 8000 (kualiti data) dan PDPA 2010 Malaysia.
 
-3. **Menyokong Seni Bina Hibrid**: Menyediakan spesifikasi untuk migrasi yang menyokong akses hibrid (staf boleh log masuk atau gunakan sebagai tetamu).
+3. **Menyokong Pendekatan Fleksibel**: Menyediakan spesifikasi untuk migrasi yang menyokong akses fleksibel.
 
 4. **Mengurangkan Risiko Migrasi**: Menyediakan panduan terperinci untuk mengurangkan risiko kehilangan data dan ketidakkonsistenan.
 
