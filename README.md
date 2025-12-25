@@ -21,25 +21,25 @@ Dokumentasi lengkap untuk sistem ICTServe - Platform Pengurusan ICT BPM MOTAC.
 
 ### Dokumentasi Sistem (D00–D18)
 
-- [D00 - System Overview](D00_SYSTEM_OVERVIEW.md)
-- [D01 - Development Plan](D01_SYSTEM_DEVELOPMENT_PLAN.md)
-- [D02 - Business Requirements](D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md)
-- [D03 - Software Requirements](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md)
-- [D04 - Software Design](D04_SOFTWARE_DESIGN_DOCUMENT.md)
-- [D05 - Data Migration Plan](D05_DATA_MIGRATION_PLAN.md)
-- [D06 - Data Migration Spec](D06_DATA_MIGRATION_SPECIFICATION.md)
-- [D07 - Integration Plan](D07_SYSTEM_INTEGRATION_PLAN.md)
-- [D08 - Integration Spec](D08_SYSTEM_INTEGRATION_SPECIFICATION.md)
-- [D09 - Database Documentation](D09_DATABASE_DOCUMENTATION.md)
-- [D10 - Source Code Documentation](D10_SOURCE_CODE_DOCUMENTATION.md)
-- [D11 - Technical Design](D11_TECHNICAL_DESIGN_DOCUMENTATION.md)
-- [D12 - UI/UX Design Guide](D12_UI_UX_DESIGN_GUIDE.md)
-- [D13 - Frontend Framework](D13_UI_UX_FRONTEND_FRAMEWORK.md)
-- [D14 - Style Guide](D14_UI_UX_STYLE_GUIDE.md)
-- [D15 - Piawaian Bahasa](D15_LANGUAGE_MS_EN.md)
-- [D16 - Broadcasting Setup](D16_BROADCASTING_SETUP.md)
-- [D17 - Queue Management (Redis)](D17_QUEUE_MANAGEMENT_HORIZON.md)
-- [D18 - AI Chatbot Ollama-Bedrock](D18_AI_CHATBOT_OLLAMA_BEDROCK.md)
+- [D00 - System Overview](docs/D00_SYSTEM_OVERVIEW.md)
+- [D01 - Development Plan](docs/D01_SYSTEM_DEVELOPMENT_PLAN.md)
+- [D02 - Business Requirements](docs/D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md)
+- [D03 - Software Requirements](docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md)
+- [D04 - Software Design](docs/D04_SOFTWARE_DESIGN_DOCUMENT.md)
+- [D05 - Data Migration Plan](docs/D05_DATA_MIGRATION_PLAN.md)
+- [D06 - Data Migration Spec](docs/D06_DATA_MIGRATION_SPECIFICATION.md)
+- [D07 - Integration Plan](docs/D07_SYSTEM_INTEGRATION_PLAN.md)
+- [D08 - Integration Spec](docs/D08_SYSTEM_INTEGRATION_SPECIFICATION.md)
+- [D09 - Database Documentation](docs/D09_DATABASE_DOCUMENTATION.md)
+- [D10 - Source Code Documentation](docs/D10_SOURCE_CODE_DOCUMENTATION.md)
+- [D11 - Technical Design](docs/D11_TECHNICAL_DESIGN_DOCUMENTATION.md)
+- [D12 - UI/UX Design Guide](docs/D12_UI_UX_DESIGN_GUIDE.md)
+- [D13 - Frontend Framework](docs/D13_UI_UX_FRONTEND_FRAMEWORK.md)
+- [D14 - Style Guide](docs/D14_UI_UX_STYLE_GUIDE.md)
+- [D15 - Piawaian Bahasa](docs/D15_LANGUAGE_MS_EN.md)
+- [D16 - Broadcasting Setup](docs/D16_BROADCASTING_SETUP.md)
+- [D17 - Queue Management (Redis)](docs/D17_QUEUE_MANAGEMENT_HORIZON.md)
+- [D18 - AI Chatbot Ollama-Bedrock](docs/D18_AI_CHATBOT_OLLAMA_BEDROCK.md)
 
 ### Rujukan Teknikal
 
@@ -53,9 +53,9 @@ Dokumentasi lengkap untuk sistem ICTServe - Platform Pengurusan ICT BPM MOTAC.
 
 ### Sumber Tambahan
 
-- [Glosari](GLOSSARY.md)
-- [Indeks Lengkap](INDEX.md)
-- [Dokumentasi Induk](ICTServe_System_Documentation.md)
+- [Glosari](docs/GLOSSARY.md)
+- [Indeks Lengkap](docs/INDEX.md)
+- [Dokumentasi Induk](docs/ICTServe_System_Documentation.md)
 
 ## Struktur Dokumentasi
 
