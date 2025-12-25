@@ -15,7 +15,7 @@
 
 ## i. Keterangan Dokumen
 
-Dokumen Spesifikasi Rekabentuk Sistem (SDS) ini menghuraikan rekabentuk teknikal komprehensif bagi Sistem ICTServe sebagai sistem dalaman MOTAC dengan seni bina **Walk-in/Kiosk Mode dengan SSO** yang memerlukan **authentication wajib untuk semua pengguna mengikut PKS 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)**. Dokumen ini memperincikan seni bina sistem, rekabentuk modul, komponen data, aliran kerja, dan integrasi AI hibrid yang menggabungkan Ollama (tempatan) dengan AWS Bedrock (awan) untuk memberikan pengalaman AI yang optimum dengan **akauntabiliti penuh dan kedaulatan data mengikut PKS 5.2.1, 9.2.1, dan 4.2**.
+Dokumen Spesifikasi Rekabentuk Sistem (SDS) ini menghuraikan rekabentuk teknikal bagi Sistem ICTServe sebagai sistem dalaman MOTAC dengan seni bina **Walk-in/Kiosk Mode dengan SSO** yang memerlukan **authentication wajib untuk semua pengguna**. Dokumen ini memperincikan seni bina sistem, rekabentuk modul, komponen data, aliran kerja, dan aspek keselamatan untuk memberikan pengalaman yang optimum dengan **akauntabiliti penuh**.
 
 **Pematuhan PKS 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)**: Sistem ini direkabentuk untuk memastikan "Semua aktiviti sistem mesti boleh dikesan kepada individu yang bertanggungjawab" dan "Penggunaan akaun milik orang lain adalah dilarang" melalui **SSO authentication wajib** menggunakan LDAP/Active Directory MOTAC untuk semua pengguna tanpa pengecualian.
 
@@ -63,7 +63,7 @@ Sistem ini dibangunkan menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3
 | 3.4.0 | 29 November 2025 | Seni bina Walk-in/Kiosk Mode: user_id wajib FK | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | HRMIS auto-provisioning dan SSO authentication wajib | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025 | Bahasa Melayu sahaja untuk antara muka | Pasukan Pembangunan BPM |
-| 3.6.1 | 23 Disember 2025 | Integrasi AI Hibrid (Ollama + AWS Bedrock) | Pasukan Pembangunan BPM |
+| 3.6 | 23 Disember 2025 | Penambahbaikan seni bina dan rekabentuk | Pasukan Pembangunan BPM |
 | 4.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1, 9.2.1, 4.2 & PSPM**: Penghapusan akses tetamu, SSO wajib, akauntabiliti penuh, seni bina Walk-in/Kiosk Mode dengan SSO. Redesign "True Hybrid" architecture kepada "Walk-in/Kiosk Mode dengan SSO". Update semua architectural diagrams untuk mandatory authentication per PKS 5.2.1. Link semua system activities kepada authenticated staff ID per PKS 5.2.1. Update AI integration flow dengan data classification dan routing per requirements 1.3, 5.1, 5.4, 8.3. **Pematuhan PKS 9.2.1 & 4.2**: Data sovereignty controls dengan DLP filtering untuk cloud AI. **Intranet-only deployment** dengan secure API gateway untuk cloud access. Rujukan PKS Seksyen 5.2.1 (halaman 150), 9.2.1 (halaman 588-603), 4.2 (halaman 1147-1148), 5.4.3 (halaman 596-605). PSPM MyGovCloud prioritization. Data sovereignty recommendations dan alternatives. | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
@@ -75,8 +75,9 @@ Sistem ini dibangunkan menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3
 5. [REKABENTUK PANGKALAN DATA](#5-rekabentuk-pangkalan-data) ... 25
 6. [REKABENTUK MIGRASI DATA](#6-rekabentuk-migrasi-data) ... 32
 7. [REKABENTUK INTEGRASI DATA](#7-rekabentuk-integrasi-data) ... 34
-8. [REKABENTUK AI HIBRID](#8-rekabentuk-ai-hibrid) ... 36
-9. [LAMPIRAN](#9-lampiran) ... 40
+8. [REKABENTUK INTEGRASI DATA](#7-rekabentuk-integrasi-data) ... 30
+9. [LAMPIRAN](#8-lampiran) ... 36
+10. [LAMPIRAN](#9-lampiran) ... 40
 
 ## v. Senarai Gambarajah
 
@@ -87,7 +88,7 @@ Sistem ini dibangunkan menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3
 - Gambarajah 4.1: Aliran Kerja Helpdesk dengan SSO Authentication ... 19
 - Gambarajah 4.2: Aliran Kerja Pinjaman Aset ... 21
 - Gambarajah 5.1: Rajah Hubungan Entiti (ERD) ... 26
-- Gambarajah 8.1: Seni Bina AI Hibrid ... 37
+- Gambarajah 7.1: Seni Bina Rekabentuk Integrasi Data ... 35
 
 ## vi. Senarai Jadual
 
@@ -130,8 +131,6 @@ Sistem ini dibangunkan menggunakan Laravel 12.43.1, Livewire 3.7.3, Filament 4.3
 | Walk-in/Kiosk Mode dengan SSO | Rekabentuk sistem yang memerlukan SSO authentication LDAP/Active Directory untuk semua pengguna termasuk akses kiosk/walk-in untuk memastikan akauntabiliti penuh mengikut **PKS 5.2.1 (Prinsip Akauntabiliti)** yang menyatakan "Semua aktiviti sistem mesti boleh dikesan kepada individu yang bertanggungjawab" dan "Penggunaan akaun milik orang lain adalah dilarang" |
 | Authenticated Staff | Staf MOTAC yang menggunakan sistem melalui SSO authentication dengan akses dashboard peribadi dan auto-fill data dari HRMIS |
 | Token Kelulusan | Token unik yang dijana untuk membolehkan kelulusan melalui pautan e-mel tanpa perlu log masuk |
-| AI Hibrid | Gabungan AI tempatan (Ollama) dan AI awan (AWS Bedrock) dengan penghalaan pintar dan kedaulatan data mengikut **PKS 4.2 (Kedaulatan data)** dan **PKS 9.2.1 (Prosedur pemindahan data)** - data sensitif diproses tempatan, data public sahaja ke cloud dengan DLP filtering |
-| Penghalaan Pintar | Sistem automatik yang menentukan AI yang sesuai berdasarkan jenis pertanyaan dan klasifikasi data mengikut **PKS 4.2** dan **PKS 9.2.1** - sensitive data → Ollama (tempatan), public data → Bedrock (cloud dengan DLP) |
 
 ## viii. Sumber Rujukan
 
@@ -161,9 +160,7 @@ Dokumen Spesifikasi Rekabentuk Sistem (SDS) ini bertujuan untuk:
 
 2. **Menyediakan Panduan Pembangunan**: Memberikan panduan terperinci kepada pasukan pembangunan untuk melaksanakan sistem menggunakan teknologi moden seperti Laravel 12.43.1, Livewire 3.7.3, dan Filament 4.3.1 dengan **integrasi LDAP/Active Directory MOTAC wajib** untuk memastikan semua pengguna dikenal pasti melalui SSO authentication.
 
-3. **Memastikan Pematuhan Standard**: Memastikan rekabentuk mematuhi standard KRISA, WCAG 2.2 AA, OWASP ASVS L2, dan **PKS 5.2.1 (Prinsip Akauntabiliti), PKS 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan), PKS 4.2 (Kedaulatan data dan bidang kuasa), dan PKS 5.4.3 (Keperluan kata laluan)** untuk memastikan keselamatan siber yang komprehensif.
-
-4. **Mengintegrasikan AI Hibrid dengan Kedaulatan Data**: Menghuraikan integrasi AI hibrid yang **mengutamakan Ollama (tempatan) untuk data sensitif** mengikut **PSPM MyGovCloud prioritization** dan **PKS 4.2 (Kedaulatan data)**, dengan **Data Loss Prevention (DLP) filters wajib** sebelum pemprosesan AWS Bedrock (awan) mengikut **PKS 9.2.1 (Prosedur pemindahan data)** yang menyatakan "Prosedur pemindahan data mesti melindungi kerahsiaan maklumat".
+3. **Memastikan Pematuhan Standard**: Memastikan rekabentuk mematuhi standard KRISA, WCAG 2.2 AA, OWASP ASVS L2.
 
 **Objektif Utama:**
 
@@ -232,10 +229,9 @@ Skop rekabentuk ini merangkumi:
 
 1. **Portal Walk-in/Kiosk dengan SSO**: Borang helpdesk dan pinjaman aset dengan SSO authentication wajib untuk semua pengguna
 2. **Portal Pentadbir**: Panel Filament untuk pengurusan sistem oleh admin dan superuser
-3. **Sistem Kelulusan**: Aliran kerja kelulusan berasaskan token melalui e-mel dengan user_id linking
-4. **Integrasi AI**: Sistem AI hibrid dengan penghalaan pintar dan kedaulatan data
-5. **Komunikasi Real-time**: WebSocket untuk notifikasi pentadbir
-6. **Audit dan Keselamatan**: Sistem audit berlapis dan keselamatan berlapis dengan PKS compliance
+3. **Sistem Kelulusan**: Aliran kerja kelulusan berasaskan token melalui e-mel
+4. **Komunikasi Real-time**: WebSocket untuk notifikasi pentadbir
+5. **Audit dan Keselamatan**: Sistem audit berlapis dan keselamatan berlapis
 
 **Modul Fungsian:**
 
@@ -250,9 +246,8 @@ Skop rekabentuk ini merangkumi:
 
 1. **Portal Pentadbir**: Panel Filament untuk pengurusan sistem oleh admin dan superuser
 2. **Sistem Kelulusan**: Aliran kerja kelulusan berasaskan token melalui e-mel
-3. **Integrasi AI**: Sistem AI hibrid dengan penghalaan pintar
-4. **Komunikasi Real-time**: WebSocket untuk notifikasi pentadbir
-5. **Audit dan Keselamatan**: Sistem audit berlapis dan keselamatan berlapis
+3. **Komunikasi Real-time**: WebSocket untuk notifikasi pentadbir
+4. **Audit dan Keselamatan**: Sistem audit berlapis dan keselamatan berlapis
 
 **Modul Fungsian:**
 
@@ -429,19 +424,16 @@ graph TD
     F -->|Tidak| G[Ralat: Status Tidak Aktif<br/>Hubungi HR untuk kemaskini<br/>Akses ditolak<br/>Audit Log dengan staff_id<br/>AKAUNTABILITI: Inactive staff tracked]
     F -->|Ya| H{Jenis<br/>Akses?}
     
-    H -->|Staff Dashboard| I[Dashboard Peribadi<br/>- Lihat sejarah lengkap<br/>- Edit profil<br/>- Auto-fill forms dari HRMIS<br/>- user_id WAJIB linked<br/>- PKS 5.2.1 Full Accountability<br/>- INDIVIDUAL TRACEABILITY]
+    H -->|Staff Dashboard| I[Dashboard Peribadi<br/>- Lihat sejarah lengkap<br/>- Edit profil<br/>- Auto-fill forms dari HRMIS<br/>- user_id WAJIB linked<br/>- INDIVIDUAL TRACEABILITY]
     H -->|Walk-in/Kiosk| J[Borang Walk-in/Kiosk<br/>- Manual entry dengan SSO<br/>- user_id WAJIB linked via LDAP<br/>- Token tracking dengan staff_id<br/>- HRMIS verified identity<br/>- Akauntabiliti penuh - TIADA ANONYMOUS<br/>- INDIVIDUAL RESPONSIBILITY]
-    H -->|AI Chatbot| K[AI Hibrid dengan Akauntabiliti<br/>- Data classification automatic<br/>- PKS 4.2 & 9.2.1 compliance<br/>- user_id tracking untuk semua queries<br/>- Local processing untuk sensitive data<br/>- DLP filtering untuk cloud processing<br/>- INDIVIDUAL AI ACCOUNTABILITY]
     
-    I --> L[Akses Penuh dengan Akauntabiliti<br/>- Role-based Permissions (RBAC)<br/>- Need-to-Know Principle<br/>- Minimum Privilege<br/>- PKS 5.2.1 Full Traceability<br/>- Semua aktiviti linked ke user_id<br/>- NON-REPUDIATION ENFORCED]
-    J --> M[Submission Tersimpan dengan Akauntabiliti<br/>- user_id WAJIB dari SSO<br/>- PKS 5.2.1 Compliance<br/>- Dual Audit Trail Created<br/>- Forensic-ready logging<br/>- TIADA ANONYMOUS SUBMISSIONS<br/>- INDIVIDUAL ACCOUNTABILITY]
-    K --> N[AI Response dengan Audit Trail<br/>- Data classification logged<br/>- Processing location recorded<br/>- PKS compliance status tracked<br/>- user_id correlation maintained<br/>- DLP filter audit trail<br/>- INDIVIDUAL AI RESPONSIBILITY]
+    I --> L[Akses Penuh dengan Akauntabiliti<br/>- Role-based Permissions (RBAC)<br/>- Need-to-Know Principle<br/>- Minimum Privilege<br/>- Semua aktiviti linked ke user_id<br/>- NON-REPUDIATION ENFORCED]
+    J --> M[Submission Tersimpan dengan Akauntabiliti<br/>- user_id WAJIB dari SSO<br/>- Dual Audit Trail Created<br/>- Forensic-ready logging<br/>- TIADA ANONYMOUS SUBMISSIONS<br/>- INDIVIDUAL ACCOUNTABILITY]
     
-    L --> O[Dual Audit Trail dengan Akauntabiliti<br/>- Owen-it (Compliance Audit)<br/>- Spatie Activity Log (Operations)<br/>- PKS Compliance dengan user_id correlation<br/>- 7-Year Retention<br/>- Forensic Investigation Ready<br/>- COMPLETE TRACEABILITY]
+    L --> O[Dual Audit Trail dengan Akauntabiliti<br/>- Owen-it (Compliance Audit)<br/>- Spatie Activity Log (Operations)<br/>- 7-Year Retention<br/>- Forensic Investigation Ready<br/>- COMPLETE TRACEABILITY]
     M --> O
-    N --> O
     
-    O --> P[Pengurusan Sejarah Lengkap<br/>- User_id Correlation untuk semua aktiviti<br/>- Forensic Ready dengan staff identity<br/>- PKS 5.2.1 Full Traceability<br/>- Audit trail untuk compliance<br/>- TIADA ANONYMOUS HISTORY<br/>- INDIVIDUAL RESPONSIBILITY MAINTAINED<br/>- AI INTERACTION HISTORY TRACKED]
+    O --> P[Pengurusan Sejarah Lengkap<br/>- User_id Correlation untuk semua aktiviti<br/>- Forensic Ready dengan staff identity<br/>- Audit trail untuk compliance<br/>- TIADA ANONYMOUS HISTORY<br/>- INDIVIDUAL RESPONSIBILITY MAINTAINED]
     
     D --> Q([Tamat - Akses Ditolak<br/>Security Event Logged dengan attempt details<br/>PKS 5.2.1 Enforced - NO BYPASS<br/>ACCOUNTABILITY: All attempts tracked])
     G --> Q
@@ -659,7 +651,8 @@ graph TD
     A[ICTServe System] --> B[Subsistem Helpdesk]
     A --> C[Subsistem Pinjaman Aset]
     A --> D[Subsistem Pengurusan Admin]
-    A --> E[Subsistem AI Hibrid]
+    A --> D[Subsistem Helpdesk]
+    A --> E[Subsistem Pinjaman Aset]
     A --> F[Subsistem SSO Authentication]
     
     B --> B1[Fungsi Submission dengan SSO]
@@ -723,7 +716,7 @@ graph TD
 | **Staf MOTAC (Walk-in/Kiosk)** | Submission Helpdesk | Penuh | Submit tiket dengan SSO authentication wajib mengikut PKS 5.2.1 |
 | **Staf MOTAC (Walk-in/Kiosk)** | Submission Pinjaman | Penuh | Mohon pinjaman aset dengan SSO authentication dan HRMIS verification |
 | **Staf MOTAC (Walk-in/Kiosk)** | Semakan Status | Terhad | Menggunakan token status dengan user_id linked |
-| **Staf MOTAC (Walk-in/Kiosk)** | AI Chatbot | Penuh | Akses kepada AI hibrid dengan user_id tracking |
+| **Staf MOTAC (Walk-in/Kiosk)** | Hantar Aduan | Penuh | Walk-in/Kiosk dengan SSO authentication |
 | **Staf MOTAC (Authenticated)** | Dashboard Peribadi | Penuh | Lihat sejarah lengkap, edit profil dengan auto-fill dari HRMIS |
 | **Staf MOTAC (Authenticated)** | Account Management | Penuh | Pengurusan profil dan preferences dengan HRMIS sync |
 | **Staf MOTAC (Authenticated)** | Borang Auto-fill | Penuh | Maklumat auto-fill dari LDAP/HRMIS data |
@@ -1209,606 +1202,9 @@ Untuk maklumat terperinci mengenai integrasi data, sila rujuk:
 - **D07 - Pelan Integrasi Sistem**: Strategi integrasi keseluruhan
 - **D08 - Spesifikasi Integrasi Data**: Spesifikasi teknikal integrasi
 
-## 8. REKABENTUK AI HIBRID
+## 8. LAMPIRAN
 
-### 8.1. Seni Bina AI Hibrid dengan Kedaulatan Data (PKS 9.2.1 & 4.2)
-
-Sistem ICTServe mengintegrasikan **AI Hibrid Architecture dengan Kedaulatan Data** yang menggabungkan Ollama (local LLM) dengan AWS Bedrock (cloud AI) sambil mematuhi **PKS 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** dan **PKS 4.2 (Kedaulatan data dan bidang kuasa)** untuk memberikan pengalaman AI yang optimum dengan akauntabiliti penuh.
-
-```mermaid
-graph TB
-    subgraph "User Interface Layer"
-        A[Pengguna Authenticated<br/>user_id WAJIB<br/>PKS 5.2.1 Compliance]
-    end
-    
-    subgraph "AI Processing Layer"
-        B[AI Controller<br/>User_id Tracking<br/>Audit Logging]
-        C[Smart Router dengan DLP<br/>Data Classification<br/>PKS 9.2.1 Compliance]
-        D[Conversation Manager<br/>User_id Correlation<br/>Session Tracking]
-    end
-    
-    subgraph "Data Classification Layer"
-        E[Data Sensitivity Analyzer<br/>Official Secrets Detection<br/>Personal Data Identification]
-        F[DLP Filter Engine<br/>Data Masking<br/>PKS 9.2.1 Protection]
-        G[Routing Decision Engine<br/>Local vs Cloud<br/>Kedaulatan Data PKS 4.2]
-    end
-    
-    subgraph "Local Processing (Kedaulatan Data)"
-        H[Ollama Server<br/>Local GPU/CPU<br/>Sensitive Data Processing<br/>PKS 4.2 Compliance]
-        I[Local Knowledge Base<br/>MOTAC Procedures<br/>Internal Documents<br/>Intranet Only]
-    end
-    
-    subgraph "Cloud Processing (Public Data Only)"
-        J[AWS Bedrock<br/>Claude 3.5 Sonnet<br/>DLP Filtered Data<br/>PKS 9.2.1 Compliant]
-        K[Vector Database<br/>Public Embeddings<br/>Non-sensitive Content]
-        L[Web Search API<br/>Current Public Info<br/>External Sources]
-    end
-    
-    subgraph "Audit & Compliance Layer"
-        M[Dual Audit System<br/>Owen-it + Spatie<br/>7-Year Retention]
-        N[Data Transfer Log<br/>Cloud API Tracking<br/>PKS 9.2.1 Monitoring]
-        O[User Activity Correlation<br/>user_id Linking<br/>PKS 5.2.1 Accountability]
-    end
-    
-    A --> B
-    B --> C
-    C --> E
-    E --> F
-    F --> G
-    
-    G -->|Sensitive/Official| H
-    G -->|FAQ/Procedures| I
-    G -->|Complex/Public| J
-    G -->|Knowledge Query| K
-    G -->|Current Info| L
-    
-    H --> D
-    I --> D
-    J --> D
-    K --> D
-    L --> D
-    
-    D --> B
-    B --> A
-    
-    B --> M
-    C --> N
-    D --> O
-    
-    style E fill:#ffcccc,stroke:#ff0000,stroke-width:2px
-    style F fill:#ffcccc,stroke:#ff0000,stroke-width:2px
-    style G fill:#ffcccc,stroke:#ff0000,stroke-width:2px
-    style H fill:#ccffcc,stroke:#00ff00,stroke-width:2px
-    style I fill:#ccffcc,stroke:#00ff00,stroke-width:2px
-    style M fill:#ffffcc,stroke:#ffff00,stroke-width:2px
-    style N fill:#ffffcc,stroke:#ffff00,stroke-width:2px
-    style O fill:#ffffcc,stroke:#ffff00,stroke-width:2px
-```
-
-**Gambarajah 8.1: Seni Bina AI Hibrid**
-
-### 8.2. Komponen AI Hibrid
-
-#### 8.2.1. Smart Router dengan DLP (Penghalaan Pintar dan Data Loss Prevention)
-
-**Fungsi**: Menganalisis pertanyaan, mengklasifikasikan data, dan menentukan AI yang optimum sambil mematuhi **PKS 9.2.1** dan **PKS 4.2**
-
-**Kriteria Penghalaan dengan Kedaulatan Data:**
-
-| Jenis Pertanyaan | Klasifikasi Data | AI Dipilih | Sebab PKS Compliance | Contoh |
-| :--- | :--- | :--- | :--- | :--- |
-| FAQ ICT | Public | Ollama | Kos rendah, PKS 4.2 kedaulatan | "Bagaimana reset password?" |
-| Prosedur MOTAC | Internal/Sensitive | Ollama | PKS 4.2 - data sensitif tempatan | "Cara mohon cuti?" |
-| Maklumat Peribadi Staf | Sensitive/PDPA | Ollama | PKS 4.2 - kedaulatan data wajib | "Maklumat gaji staf" |
-| Dokumen Rasmi | Official Secrets | Ollama | PKS 4.2 - dokumen kerajaan | "Minit mesyuarat tertutup" |
-| Analisis Kompleks | Public/Filtered | Bedrock | DLP filtered, PKS 9.2.1 compliant | "Analisis trend helpdesk" |
-| Kod Programming | Public/Technical | Bedrock | Non-sensitive, PKS 9.2.1 safe | "Debug Laravel error" |
-| Maklumat Terkini | Public | Web + Bedrock | External sources, PKS 9.2.1 safe | "Laravel 12 features" |
-
-**Data Loss Prevention (DLP) Filters:**
-
-- **Official Secrets Detection**: Automatic detection of classified information
-- **Personal Data Masking**: PDPA 2010 compliant data anonymization
-- **MOTAC Internal Data**: Detection of internal procedures and sensitive information
-- **Staff Information Protection**: Automatic masking of staff personal details
-- **Financial Data Protection**: Detection and protection of budget/financial information
-
-**Jadual 8.1: Konfigurasi Model AI dengan Kedaulatan Data**
-
-#### 8.2.2. Ollama Service (AI Tempatan - PKS 4.2 Compliance)
-
-**Model**: Llama 3.1 8B (optimized untuk FAQ dan prosedur dengan kedaulatan data)
-
-**Kelebihan PKS Compliance:**
-
-- **Kedaulatan Data Penuh (PKS 4.2)**: Semua data sensitif diproses secara tempatan di Pusat Data MOTAC
-- **Kos operasi rendah**: 82% penjimatan berbanding cloud-only solution
-- **PDPA 2010 compliant**: Data peribadi tidak meninggalkan infrastruktur MOTAC
-- **Latency rendah**: Pemprosesan tempatan untuk respons pantas
-- **Tidak bergantung internet**: Operasi berterusan walaupun tanpa sambungan luar
-- **Audit trail lengkap**: Semua aktiviti dilog dengan user_id correlation
-
-**Use Cases (Data Sensitif):**
-
-- FAQ ICT dan prosedur MOTAC (internal procedures)
-- Sokongan helpdesk dengan maklumat staf (PDPA protected)
-- Panduan penggunaan sistem dalaman (classified information)
-- Maklumat yang melibatkan data peribadi staf (PDPA compliance)
-- Dokumen rasmi dan sulit (Official Secrets Act compliance)
-- Prosedur kewangan dan belanjawan (financial sensitivity)
-
-#### 8.2.3. AWS Bedrock Service (AI Awan - PKS 9.2.1 Compliant)
-
-**Model**: Claude 3.5 Sonnet (untuk penaakulan kompleks dengan DLP filtering)
-
-**Kelebihan dengan PKS Compliance:**
-
-- **Keupayaan penaakulan tinggi**: Complex analysis untuk data public sahaja
-- **DLP Filtering Wajib**: Semua data melalui Data Loss Prevention sebelum dihantar
-- **Pemahaman konteks mendalam**: Advanced reasoning untuk technical queries
-- **Sokongan multi-bahasa**: Bahasa Melayu dan English support
-- **Kemaskini model automatik**: Latest AI capabilities untuk public data
-- **Audit trail cloud**: Tracking semua data yang dihantar ke cloud (PKS 9.2.1)
-
-**Use Cases (Data Public/Filtered Sahaja):**
-
-- Analisis data kompleks (public datasets only)
-- Penyelesaian masalah teknikal (non-sensitive technical issues)
-- Penulisan kod dan debugging (public code examples)
-- Pertanyaan yang memerlukan penaakulan (general knowledge)
-- Research dan development (public information only)
-- Training dan pembelajaran (non-classified content)
-
-### 8.3. Aliran Kerja AI Hibrid dengan Data Classification dan PKS Compliance
-
-**Pematuhan PKS 5.2.1, 9.2.1, dan 4.2 dalam AI Integration Flow:**
-
-Sistem AI hibrid direkabentuk untuk memastikan **akauntabiliti penuh** (PKS 5.2.1), **kedaulatan data** (PKS 4.2), dan **perlindungan data transfer** (PKS 9.2.1) melalui data classification dan routing yang ketat.
-
-```mermaid
-sequenceDiagram
-    participant U as Pengguna Authenticated<br/>(user_id WAJIB - PKS 5.2.1)
-    participant C as AI Controller<br/>(Accountability Tracking)
-    participant D as Data Classifier<br/>(PKS 9.2.1 & 4.2 Compliance)
-    participant F as DLP Filter<br/>(Data Masking Engine)
-    participant R as Smart Router<br/>(Kedaulatan Data Engine)
-    participant O as Ollama Service<br/>(Local - Sensitive Data)
-    participant B as Bedrock Service<br/>(Cloud - Public Only)
-    participant A as Audit Logger<br/>(PKS Compliance Tracking)
-    
-    Note over U,A: PKS 5.2.1: Semua aktiviti mesti boleh dikesan kepada individu yang bertanggungjawab
-    
-    U->>C: Hantar pertanyaan dengan user_id WAJIB
-    C->>A: Log user activity dengan staff identity (PKS 5.2.1)
-    C->>D: Analisis & klasifikasi data sensitivity
-    
-    Note over D: Data Classification Engine (PKS 4.2 & 9.2.1)
-    D->>D: Scan untuk Official Secrets
-    D->>D: Detect Personal Data (PDPA 2010)
-    D->>D: Identify MOTAC Internal Info
-    D->>D: Check Financial/Budget Data
-    
-    alt Data Sensitif/Official Secrets (PKS 4.2 - Kedaulatan Data WAJIB)
-        Note over D,O: PKS 4.2: Data sensitif kerajaan mesti diproses dalam bidang kuasa Malaysia
-        D->>R: FORCE Local Processing (Kedaulatan Data)
-        R->>O: Process dengan Llama 3.1 (Intranet Only)
-        O->>C: Return response (100% Local - PKS 4.2 Compliant)
-        C->>A: Log local processing dengan data classification (PKS 4.2)
-        
-    else Data PDPA/Personal (PKS 4.2 - Data Protection WAJIB)
-        Note over D,O: PDPA 2010: Data peribadi tidak boleh meninggalkan Malaysia
-        D->>R: FORCE Local Processing (PDPA Compliance)
-        R->>O: Process dengan Ollama (Data Protection)
-        O->>C: Return response (PDPA Compliant - Local Only)
-        C->>A: Log PDPA processing dengan staff_id (PKS 4.2)
-        
-    else Data Internal MOTAC (PKS 4.2 - Internal Procedures)
-        Note over D,O: PKS 4.2: Prosedur dalaman kerajaan - kedaulatan data
-        D->>R: Route ke Ollama (Internal Knowledge)
-        R->>O: Process dengan Local Knowledge Base
-        O->>C: Return response (Internal Procedures - Local)
-        C->>A: Log internal processing (PKS 4.2 Compliance)
-        
-    else Data Public/Technical (PKS 9.2.1 - DLP Required)
-        Note over D,B: PKS 9.2.1: Prosedur pemindahan data mesti melindungi kerahsiaan
-        D->>F: Apply DLP filters & data masking (PKS 9.2.1)
-        F->>F: Remove any residual sensitive data
-        F->>F: Mask staff identifiers
-        F->>F: Anonymize MOTAC references
-        F->>R: Route ke Bedrock (DLP Protected Data)
-        R->>B: Process dengan Claude 3.5 (Filtered Data Only)
-        B->>C: Return response (DLP Protected)
-        C->>A: Log cloud processing dengan DLP audit trail (PKS 9.2.1)
-        
-    else Data Current/External (PKS 9.2.1 - Web Enhanced)
-        Note over D,B: PKS 9.2.1: External data dengan DLP protection
-        D->>F: Apply DLP filters untuk external queries
-        F->>R: Route ke Web + Bedrock (Public Sources)
-        R->>B: Process dengan external knowledge
-        B->>C: Return response (External Sources - DLP Safe)
-        C->>A: Log external processing (PKS 9.2.1 Compliant)
-    end
-    
-    Note over C,A: PKS 5.2.1: Akauntabiliti dan audit trail lengkap
-    C->>A: Log conversation dengan user_id correlation (PKS 5.2.1)
-    C->>A: Record data classification decision (PKS 4.2 & 9.2.1)
-    C->>A: Store processing location (Local vs Cloud) (PKS Compliance)
-    
-    C->>U: Return final response dengan audit trail
-    A->>A: Store 7-year retention untuk forensic investigation (PKS Compliance)
-    
-    Note over U,A: PKS 5.2.1: Semua aktiviti sistem boleh dikesan kepada staf MOTAC yang bertanggungjawab
-```
-
-#### 8.3.1. Data Classification Matrix untuk PKS Compliance
-
-| Data Type | Sensitivity Level | PKS Section | Processing Location | DLP Required | Audit Level |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Official Secrets** | Classified | PKS 4.2 | Local ONLY (Ollama) | N/A (No Transfer) | Maximum |
-| **Staff Personal Data** | PDPA Protected | PKS 4.2 + PDPA 2010 | Local ONLY (Ollama) | N/A (No Transfer) | Maximum |
-| **MOTAC Internal Procedures** | Internal | PKS 4.2 | Local ONLY (Ollama) | N/A (No Transfer) | High |
-| **Financial/Budget Data** | Confidential | PKS 4.2 | Local ONLY (Ollama) | N/A (No Transfer) | High |
-| **Technical Public Info** | Public | PKS 9.2.1 | Cloud (Bedrock) | YES (DLP Filter) | Medium |
-| **General Knowledge** | Public | PKS 9.2.1 | Cloud (Bedrock) | YES (DLP Filter) | Medium |
-| **External Current Info** | Public | PKS 9.2.1 | Web + Cloud | YES (DLP Filter) | Medium |
-
-#### 8.3.2. DLP Filter Implementation untuk PKS 9.2.1 Compliance
-
-**Data Loss Prevention Filters:**
-
-```php
-// app/Services/AI/DLPFilter.php
-class DLPFilter
-{
-    public function filterForCloud(string $content): string
-    {
-        // PKS 9.2.1: Prosedur pemindahan data mesti melindungi kerahsiaan
-        
-        // 1. Remove Official Secrets indicators
-        $content = $this->removeOfficialSecrets($content);
-        
-        // 2. Mask staff personal information (PDPA 2010)
-        $content = $this->maskPersonalData($content);
-        
-        // 3. Anonymize MOTAC internal references
-        $content = $this->anonymizeMOTACReferences($content);
-        
-        // 4. Remove financial/budget information
-        $content = $this->removeFinancialData($content);
-        
-        // 5. Mask IP addresses and system details
-        $content = $this->maskSystemDetails($content);
-        
-        return $content;
-    }
-    
-    private function removeOfficialSecrets(string $content): string
-    {
-        // PKS 4.2: Data sensitif kerajaan tidak boleh ke cloud
-        $patterns = [
-            '/\b(sulit|rahsia|classified|confidential)\b/i',
-            '/\b(minit.*mesyuarat.*tertutup)\b/i',
-            '/\b(dokumen.*rasmi.*dalaman)\b/i',
-        ];
-        
-        foreach ($patterns as $pattern) {
-            if (preg_match($pattern, $content)) {
-                throw new DataSovereigntyException('Official Secrets detected - PKS 4.2 violation');
-            }
-        }
-        
-        return $content;
-    }
-    
-    private function maskPersonalData(string $content): string
-    {
-        // PDPA 2010 + PKS 4.2: Data peribadi tidak boleh ke cloud
-        $content = preg_replace('/\b\d{12}\b/', '[MASKED_IC]', $content); // IC numbers
-        $content = preg_replace('/\b[A-Za-z0-9._%+-]+@motac\.gov\.my\b/', '[MASKED_EMAIL]', $content);
-        $content = preg_replace('/\b01[0-9]-\d{7,8}\b/', '[MASKED_PHONE]', $content);
-        
-        return $content;
-    }
-}
-```
-
-#### 8.3.3. Audit Trail untuk PKS 5.2.1 Compliance
-
-**Akauntabiliti dan Non-repudiation:**
-
-```php
-// app/Services/AI/AuditLogger.php
-class AIAuditLogger
-{
-    public function logAIInteraction(array $data): void
-    {
-        // PKS 5.2.1: Semua aktiviti mesti boleh dikesan kepada individu
-        
-        $auditData = [
-            'user_id' => $data['user_id'], // WAJIB - PKS 5.2.1
-            'staff_name' => $data['staff_name'], // Individual accountability
-            'question' => $data['question'],
-            'data_classification' => $data['classification'], // PKS 4.2 & 9.2.1
-            'processing_location' => $data['location'], // Local vs Cloud
-            'ai_service_used' => $data['service'], // Ollama vs Bedrock
-            'dlp_applied' => $data['dlp_applied'], // PKS 9.2.1 compliance
-            'response_summary' => $data['response_summary'],
-            'pks_compliance_status' => $data['pks_status'],
-            'timestamp' => now(),
-            'ip_address_hash' => hash('sha256', request()->ip()),
-            'session_id' => session()->getId(),
-        ];
-        
-        // Dual audit system
-        activity('ai_interaction')
-            ->causedBy(auth()->user())
-            ->withProperties($auditData)
-            ->log('AI interaction with PKS compliance');
-            
-        // Owen-it compliance audit
-        OwenIt::log('ai_usage', $auditData);
-    }
-}
-```
-
-#### 8.3.4. PKS Compliance Monitoring Dashboard
-
-**Real-time PKS Compliance Tracking:**
-
-- **PKS 5.2.1 Monitoring**: Track all AI interactions dengan user_id correlation
-- **PKS 4.2 Monitoring**: Monitor data sovereignty compliance (Local vs Cloud processing)
-- **PKS 9.2.1 Monitoring**: Track DLP filter effectiveness dan cloud data transfers
-- **PDPA 2010 Monitoring**: Ensure personal data never leaves Malaysia jurisdiction
-- **Audit Trail Integrity**: Cryptographic verification untuk forensic readiness
-
-### 8.4. Konfigurasi dan Optimisasi
-
-**Ollama Configuration:**
-
-```yaml
-# config/ai.php
-'ollama' => [
-    'host' => env('OLLAMA_HOST', 'http://localhost:11434'),
-    'model' => env('OLLAMA_MODEL', 'llama3.1:8b'),
-    'timeout' => 30,
-    'max_tokens' => 2048,
-],
-```
-
-**Bedrock Configuration:**
-
-```yaml
-'bedrock' => [
-    'region' => env('AWS_BEDROCK_REGION', 'us-east-1'),
-    'model' => env('BEDROCK_MODEL', 'anthropic.claude-3-5-sonnet-20241022-v2:0'),
-    'max_tokens' => 4096,
-    'temperature' => 0.7,
-],
-```
-
-**Smart Routing Rules:**
-
-```php
-// app/Services/AI/SmartRouter.php
-public function determineRoute(string $question): string
-{
-    $patterns = [
-        'ollama' => [
-            '/\b(password|reset|login|cara|bagaimana)\b/i',
-            '/\b(prosedur|panduan|langkah)\b/i',
-            '/\b(motac|bahagian|gred)\b/i',
-        ],
-        'bedrock' => [
-            '/\b(analisis|analyze|complex|debug)\b/i',
-            '/\b(code|programming|laravel|php)\b/i',
-            '/\b(why|explain|reasoning)\b/i',
-        ],
-        'web_enhanced' => [
-            '/\b(latest|current|new|update)\b/i',
-            '/\b(version|release|changelog)\b/i',
-        ],
-    ];
-    
-    // Implementation logic...
-}
-```
-
-### 8.5. Cadangan Kedaulatan Data dan Alternatif (Data Sovereignty Recommendations and Alternatives)
-
-#### 8.5.1. Risiko Kedaulatan Data dengan Integrasi Cloud AI (PKS 9.2.1 & 4.2)
-
-**Risiko Utama yang Dikenal Pasti:**
-
-1. **Risiko Pemindahan Data Sensitif**: Walaupun dengan DLP filters, terdapat risiko data sensitif kerajaan tidak sengaja dihantar ke AWS Bedrock yang beroperasi di luar bidang kuasa Malaysia, melanggar **PKS 4.2 (Kedaulatan data dan bidang kuasa)**.
-
-2. **Risiko Air-Gap Policy**: Sambungan cloud AI melalui internet mewujudkan jambatan yang berpotensi memintas dasar air-gap/firewall intranet, melanggar **PKS 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)**.
-
-3. **Risiko Audit Trail**: Data yang diproses di cloud mungkin tidak mempunyai audit trail yang lengkap mengikut keperluan forensik kerajaan Malaysia.
-
-4. **Risiko Vendor Lock-in**: Kebergantungan kepada AWS Bedrock mewujudkan risiko vendor lock-in yang boleh menjejaskan kedaulatan teknologi kerajaan.
-
-#### 8.5.2. Cadangan Alternatif Kedaulatan Data Penuh
-
-**Alternatif 1: MyGovCloud High-Performance LLM Deployment**
-
-Mengikut **PSPM (Pelan Strategik Pendigitalan MOTAC) 2022-2026** yang mengutamakan MyGovCloud berbanding perkhidmatan awan awam:
-
-```yaml
-# Konfigurasi MyGovCloud LLM
-'mygov_llm' => [
-    'endpoint' => env('MYGOV_LLM_ENDPOINT', 'https://ai.mygov.my/api/v1'),
-    'model' => env('MYGOV_LLM_MODEL', 'llama3.1-70b-instruct'),
-    'region' => 'malaysia-central',
-    'data_residency' => 'malaysia_only',
-    'compliance' => ['PKS_4.2', 'PKS_9.2.1', 'PDPA_2010'],
-],
-```
-
-**Kelebihan MyGovCloud Deployment:**
-
-- **Kedaulatan Data 100%**: Semua data diproses dalam bidang kuasa Malaysia
-- **Pematuhan PKS Penuh**: Memenuhi PKS 4.2 dan 9.2.1 tanpa pengecualian
-- **Audit Trail Lengkap**: Forensic-ready logging mengikut standard kerajaan
-- **Keselamatan Berlapis**: Multi-layer security dengan government-grade encryption
-- **Sokongan Teknikal Tempatan**: 24/7 support dalam Bahasa Malaysia
-
-**Alternatif 2: On-Premise GPU Cluster untuk High-Performance AI**
-
-```yaml
-# Konfigurasi GPU Cluster Dalaman
-'onpremise_gpu' => [
-    'cluster_nodes' => [
-        'gpu-node-1' => 'http://10.0.1.100:8080',
-        'gpu-node-2' => 'http://10.0.1.101:8080',
-        'gpu-node-3' => 'http://10.0.1.102:8080',
-    ],
-    'model' => 'llama3.1-70b-instruct-q4_K_M',
-    'load_balancer' => 'round_robin',
-    'failover' => 'automatic',
-    'data_residency' => 'motac_datacenter_only',
-],
-```
-
-**Spesifikasi GPU Cluster yang Disyorkan:**
-
-| Komponen | Spesifikasi | Kuantiti | Anggaran Kos (RM) |
-|----------|-------------|----------|-------------------|
-| **GPU Server** | NVIDIA A100 80GB x4 | 3 unit | 450,000 |
-| **CPU Server** | Intel Xeon Gold 6348 | 3 unit | 90,000 |
-| **RAM** | 512GB DDR4 ECC | 3 set | 60,000 |
-| **Storage** | 10TB NVMe SSD | 3 set | 45,000 |
-| **Network** | 100Gbps InfiniBand | 1 set | 30,000 |
-| **UPS & Cooling** | Redundant systems | 1 set | 75,000 |
-| **Total** | | | **750,000** |
-
-**Alternatif 3: Hybrid MyGovCloud + On-Premise Architecture**
-
-```mermaid
-graph TB
-    subgraph "MOTAC Data Center (On-Premise)"
-        A[Sensitive Data Processing<br/>Ollama Llama3.1-8B<br/>PKS 4.2 Compliant]
-        B[Internal Knowledge Base<br/>MOTAC Procedures<br/>Staff Information]
-        C[Data Classification Engine<br/>Automatic Sensitivity Detection<br/>PKS 9.2.1 Compliance]
-    end
-    
-    subgraph "MyGovCloud Malaysia"
-        D[High-Performance LLM<br/>Llama3.1-70B<br/>Government-Grade Security]
-        E[Malaysian Government<br/>Knowledge Base<br/>Public Sector Procedures]
-        F[Secure API Gateway<br/>Government Network<br/>Audit Trail Compliant]
-    end
-    
-    subgraph "User Interface"
-        G[ICTServe AI Interface<br/>Seamless Experience<br/>Transparent Routing]
-    end
-    
-    G --> C
-    C -->|Sensitive Data| A
-    C -->|Government Procedures| D
-    A --> B
-    D --> E
-    D --> F
-    
-    style A fill:#ccffcc,stroke:#00ff00,stroke-width:2px
-    style B fill:#ccffcc,stroke:#00ff00,stroke-width:2px
-    style C fill:#ffcccc,stroke:#ff0000,stroke-width:2px
-    style D fill:#cceeff,stroke:#0066cc,stroke-width:2px
-    style E fill:#cceeff,stroke:#0066cc,stroke-width:2px
-    style F fill:#ffffcc,stroke:#ffff00,stroke-width:2px
-```
-
-#### 8.5.3. Strategi Migrasi Kedaulatan Data
-
-**Fasa 1: Immediate Compliance (0-3 bulan)**
-
-- Konfigurasi DLP filters yang lebih ketat untuk AWS Bedrock
-- Implementasi data classification yang lebih granular
-- Audit trail enhancement untuk cloud processing
-- Dokumentasi risiko dan mitigation yang komprehensif
-
-**Fasa 2: MyGovCloud Integration (3-6 bulan)**
-
-- Pilot deployment pada MyGovCloud infrastructure
-- Migration planning untuk high-performance workloads
-- Staff training untuk MyGovCloud operations
-- Performance benchmarking dan optimization
-
-**Fasa 3: Full Data Sovereignty (6-12 bulan)**
-
-- Complete migration ke MyGovCloud atau on-premise
-- Decommissioning AWS Bedrock integration
-- Full compliance audit dan certification
-- Disaster recovery planning untuk sovereign infrastructure
-
-#### 8.5.4. Analisis Kos-Faedah Kedaulatan Data
-
-**Kos Operasi Tahunan (Anggaran):**
-
-| Pilihan | Setup Cost (RM) | Operational Cost/Year (RM) | Compliance Level | Data Sovereignty |
-|---------|-----------------|---------------------------|------------------|------------------|
-| **Current (AWS Bedrock)** | 0 | 120,000 | Partial | 60% |
-| **MyGovCloud LLM** | 50,000 | 200,000 | Full | 100% |
-| **On-Premise GPU** | 750,000 | 150,000 | Full | 100% |
-| **Hybrid Approach** | 400,000 | 175,000 | Full | 100% |
-
-**Faedah Kedaulatan Data:**
-
-- **Pematuhan PKS Penuh**: Eliminasi risiko pelanggaran PKS 4.2 dan 9.2.1
-- **Keselamatan Nasional**: Data kerajaan tidak meninggalkan bidang kuasa Malaysia
-- **Audit Trail Lengkap**: Forensic-ready logging untuk investigation
-- **Vendor Independence**: Mengurangkan kebergantungan kepada vendor asing
-- **Strategic Autonomy**: Kawalan penuh terhadap infrastruktur AI kritikal
-
-#### 8.5.5. Cadangan Pelaksanaan Segera
-
-**Cadangan Jangka Pendek (Immediate - 3 bulan):**
-
-1. **Enhanced DLP Implementation**: Tingkatkan DLP filters dengan detection yang lebih ketat untuk Official Secrets, PDPA data, dan maklumat sensitif MOTAC.
-
-2. **Data Classification Automation**: Implementasi automatic data classification dengan machine learning untuk mengesan data sensitif dengan lebih tepat.
-
-3. **Audit Trail Enhancement**: Upgrade sistem audit untuk merekod semua data yang dihantar ke cloud dengan detailed forensic information.
-
-4. **Risk Assessment Documentation**: Dokumentasi komprehensif risiko kedaulatan data dan mitigation strategies.
-
-**Cadangan Jangka Sederhana (3-6 bulan):**
-
-1. **MyGovCloud Pilot**: Mulakan pilot project dengan MyGovCloud LLM services untuk workloads yang tidak sensitif.
-
-2. **On-Premise GPU Evaluation**: Conduct feasibility study untuk on-premise GPU cluster deployment.
-
-3. **Hybrid Architecture Design**: Reka bentuk hybrid architecture yang mengoptimumkan kedaulatan data dan prestasi.
-
-**Cadangan Jangka Panjang (6-12 bulan):**
-
-1. **Full Migration Planning**: Rancang migrasi lengkap ke infrastructure yang mematuhi kedaulatan data 100%.
-
-2. **Staff Training Program**: Program latihan komprehensif untuk pengurusan infrastructure AI sovereign.
-
-3. **Disaster Recovery**: Implementasi disaster recovery yang mematuhi keperluan kedaulatan data.
-
-#### 8.5.6. Kesimpulan dan Cadangan Utama
-
-**Cadangan Utama untuk MOTAC:**
-
-Berdasarkan analisis risiko kedaulatan data dan keperluan pematuhan PKS, adalah **sangat disyorkan** untuk MOTAC melaksanakan **Hybrid MyGovCloud + On-Premise Architecture** sebagai penyelesaian jangka panjang yang optimum:
-
-1. **Sensitive data processing** - 100% on-premise menggunakan Ollama
-2. **Government procedures** - MyGovCloud LLM untuk prestasi tinggi
-3. **Public information** - Maintained current AWS Bedrock dengan enhanced DLP
-
-Pendekatan ini memastikan:
-
-- **Pematuhan PKS 4.2 dan 9.2.1 yang penuh**
-- **Kedaulatan data 100% untuk maklumat sensitif**
-- **Prestasi AI yang optimum untuk semua use cases**
-- **Strategic autonomy dalam infrastruktur AI kritikal**
-- **Cost-effective implementation dengan ROI yang positif**
-
-**Ideally, replace AWS Bedrock dengan local high-performance LLMs hosted on MyGovCloud atau on-premise GPU servers untuk mencapai kedaulatan data yang lengkap sambil mengekalkan keupayaan AI yang canggih.**
-
-## 9. LAMPIRAN
-
-### 9.1. Senarai Teknologi dan Versi
+### 8.1. Senarai Teknologi dan Versi
 
 | Kategori | Teknologi | Versi | Tujuan |
 | :--- | :--- | :--- | :--- |
@@ -1830,7 +1226,7 @@ Pendekatan ini memastikan:
 | Audit (Compliance) | Laravel Auditing | 14.x | Field-level audit |
 | Audit (Operations) | Activity Log | 4.x | User activity logging |
 
-### 9.2. Checklist Verifikasi Rekabentuk
+### 8.2. Checklist Verifikasi Rekabentuk
 
 **Seni Bina Hibrid:**
 
@@ -1859,16 +1255,7 @@ Pendekatan ini memastikan:
 - ✅ Focus indicators visible
 - ✅ Form labels dan error messages
 
-**AI Hibrid:**
-
-- ✅ Smart routing implemented
-- ✅ Ollama local integration
-- ✅ AWS Bedrock cloud integration
-- ✅ Cost optimization (82% savings)
-- ✅ Data sovereignty compliance
-- ✅ Conversation management
-
-### 9.3. Rujukan Standard dan Pematuhan
+### 8.3. Rujukan Standard dan Pematuhan
 
 1. **KRISA 2.0** - Kerangka Rujukan ICT Sektor Awam
 2. **IEEE 1016-2009** - Software Design Descriptions
@@ -1879,7 +1266,7 @@ Pendekatan ini memastikan:
 7. **PSR-12** - PHP coding style guide
 8. **Semantic Versioning** - Version numbering standard
 
-### 9.4. Maklumat Hubungan
+### 8.4. Maklumat Hubungan
 
 **Pasukan Pembangunan BPM MOTAC:**
 
