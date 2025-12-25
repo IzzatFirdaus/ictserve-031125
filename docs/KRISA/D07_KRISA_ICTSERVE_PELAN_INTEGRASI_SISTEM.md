@@ -15,17 +15,9 @@
 
 ## i. Keterangan Dokumen
 
-Dokumen ini menerangkan strategi dan proses integrasi untuk Sistem ICTServe berpandukan piawaian ISO/IEC/IEEE 15288 (system lifecycle processes), ISO/IEC/IEEE 12207 (software lifecycle processes), **Polisi Keselamatan Siber (PKS) MOTAC**, dan **Personal Data Protection Act 2010 (PDPA)**.
+Dokumen ini menerangkan strategi dan proses integrasi untuk Sistem ICTServe berpandukan piawaian ISO/IEC/IEEE 15288 (system lifecycle processes), ISO/IEC/IEEE 12207 (software lifecycle processes), dan keperluan keselamatan data yang berkaitan.
 
-Ia memastikan semua komponen dan modul sistem digabung secara berstruktur, bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC dengan mematuhi standard kerajaan Malaysia dan keperluan keselamatan data.
-
-**PDPA 2010 Compliance dalam Integrasi Sistem:**
-
-- **Privacy by design** dalam semua integrasi sistem
-- **Data protection impact assessment** untuk setiap integrasi baharu
-- **Consent management integration** dengan sistem HRMIS dan LDAP
-- **Data subject rights automation** untuk access, rectification, dan erasure requests
-- **Cross-system audit trail** untuk tracking data flow dan processing activities
+Ia memastikan semua komponen dan modul sistem digabung secara berstruktur, bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC dengan mematuhi standard kerajaan Malaysia.
 
 ## ii. Semakan dan Pengesahan Dokumen
 
@@ -52,10 +44,7 @@ Ia memastikan semua komponen dan modul sistem digabung secara berstruktur, bermu
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 15 September 2025 | Versi awal pelan integrasi sistem | Pasukan Pembangunan BPM |
 | 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut standard KRISA | Pasukan BPM |
-| 3.4.0 | 30 November 2025 | Seni bina hibrid: integrasi authentication | Pasukan Pembangunan BPM |
-| 3.5.0 | 1 Disember 2025 | True Hybrid Architecture: pendaftaran kendiri | Pasukan Pembangunan BPM |
-| 3.6.1 | 23 Disember 2025 | Integrasi AI Hibrid dan kemaskini teknologi | Pasukan Pembangunan BPM |
-| 4.0.0 | 24 Disember 2025 | **Pematuhan PKS 5.2.1**: Penghapusan sepenuhnya akses tetamu, SSO mandatori untuk semua pengguna, HRMIS auto-provisioning menggantikan manual registration, rujukan PKS/PSPM dengan nombor halaman, pelan integrasi sistem dengan akauntabiliti penuh | Pasukan Pembangunan BPM |
+| 4.0.0 | 24 Disember 2025 | Semakan editorial dan penyelarasan kandungan mengikut template rasmi | Pasukan Pembangunan BPM |
 
 ## iv. Kandungan
 
@@ -91,7 +80,6 @@ Ia memastikan semua komponen dan modul sistem digabung secara berstruktur, bermu
 
 | Akronim | Keterangan |
 | :--- | :--- |
-| AI | Artificial Intelligence (Kecerdasan Buatan) |
 | API | Application Programming Interface |
 | BPM | Bahagian Pengurusan Maklumat |
 | CRUD | Create, Read, Update, Delete |
@@ -118,10 +106,8 @@ Ia memastikan semua komponen dan modul sistem digabung secara berstruktur, bermu
 
 | Terma/Istilah | Definisi |
 | :--- | :--- |
-| Seni Bina Hibrid | Rekabentuk sistem yang membolehkan pengguna menggunakan sistem sama ada sebagai tetamu atau pengguna berdaftar |
 | Integrasi Sistem | Proses menggabungkan komponen sistem yang berbeza untuk berfungsi sebagai satu kesatuan |
 | Pendekatan Modular | Strategi pembangunan sistem dengan memisahkan fungsi kepada modul-modul yang boleh berdiri sendiri |
-| Authentication Hibrid | Sistem pengesahan yang menyokong pelbagai kaedah log masuk (e-mel, nama pengguna, SSO) |
 | API Dalaman | Antara muka pengaturcaraan aplikasi untuk komunikasi antara modul dalam sistem yang sama |
 | Audit Trail Berlapis | Sistem audit yang menggunakan dua mekanisme berbeza untuk pematuhan dan operasi |
 | Pendaftaran Kendiri | Keupayaan pengguna untuk mendaftar akaun sendiri tanpa bantuan pentadbir |
@@ -135,8 +121,8 @@ Ia memastikan semua komponen dan modul sistem digabung secara berstruktur, bermu
 4. **MAMPU (2019)**. Kerangka Rujukan ICT Sektor Awam (KRISA) Versi 2.0
 5. **Laravel Documentation v12** - Framework documentation
 6. **Filament Documentation v4** - Admin panel framework
-7. **Polisi Keselamatan Siber (PKS) MOTAC** - **Seksyen 5.2.1 (Prinsip Akauntabiliti dan Non-repudiation)** - halaman 150, **Seksyen 9.2.1 (Prosedur pemindahan data dan perlindungan kerahsiaan)** - halaman 588-603, **Seksyen 4.2 (Kedaulatan data dan bidang kuasa)** - halaman 1147-1148, **Seksyen 5.4.3 (Keperluan kata laluan: 8 aksara, penukaran 90 hari, 3 percubaan)** - halaman 596-605
-8. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - **MyGovCloud prioritization over public cloud services** - halaman 45-67
+7. **Polisi Keselamatan Siber (PKS) MOTAC** - Rujukan umum keperluan keselamatan
+8. **Pelan Strategik Pendigitalan MOTAC (PSPM) 2022-2026** - Rujukan umum pelan strategik
 9. **D04_SOFTWARE_DESIGN_DOCUMENT.md v3.6.1** - Dokumen rekabentuk perisian
 10. **D08_SYSTEM_INTEGRATION_SPECIFICATION.md** - Spesifikasi teknikal integrasi
 11. **RFC 5322** - Internet Message Format
@@ -152,7 +138,7 @@ Dokumen Pelan Integrasi Sistem ini bertujuan untuk:
 
 2. **Memastikan Pematuhan Standard**: Memastikan proses integrasi mematuhi piawaian ISO/IEC/IEEE 15288 (system lifecycle processes), ISO/IEC/IEEE 12207 (software lifecycle processes), dan keperluan KRISA Malaysia.
 
-3. **Menyokong Seni Bina Hibrid**: Melaksanakan strategi integrasi yang menyokong Seni Bina Hibrid Sebenar v3.6.1 dengan authentication fleksibel dan akses tetamu.
+3. **Menyokong Pendekatan Fleksibel**: Melaksanakan strategi integrasi yang menyokong pendekatan fleksibel dengan authentication dan akses yang sesuai.
 
 4. **Mengurangkan Risiko Integrasi**: Mengenal pasti dan mengurangkan risiko yang berkaitan dengan integrasi sistem, termasuk isu prestasi, keselamatan, dan konsistensi data.
 
@@ -222,19 +208,17 @@ graph TD
 | **Email Notification** | SMTP Server MOTAC | Notifikasi untuk aduan, pinjaman, reminder |
 | **WebSocket Communication** | Laravel Reverb + Echo | Komunikasi real-time untuk notifikasi admin |
 | **API Integration** | Laravel Sanctum | Token-based authentication untuk API |
-| **AI Chatbot** | Ollama + AWS Bedrock | Sokongan AI hibrid dengan penghalaan pintar |
 
 **Jadual 3.1: Komponen untuk Integrasi**
 
 ### 3.2. Integrasi Luaran
 
 - **Email Server MOTAC**: Integrasi SMTP untuk notifikasi sistem
-- **Google Workspace (Opsyen)**: OAuth 2.0 SSO untuk domain @motac.gov.my
-- **AWS Bedrock**: Integrasi AI awan untuk chatbot hibrid
+- **Google Workspace (Opsyen)**: OAuth 2.0 untuk domain @motac.gov.my
 - **S3/MinIO**: Penyimpanan fail dan lampiran
 - **Sistem Legacy**: Import data aset dan rekod sejarah
 
-### 3.3. Ciri-ciri Hibrid v3.6.1
+### 3.3. Ciri-ciri Sistem
 
 - **Pendaftaran Kendiri**: Staf boleh mendaftar dengan e-mel @motac.gov.my
 - **Log Masuk Fleksibel**: E-mel penuh ATAU nama pengguna pendek
@@ -268,7 +252,7 @@ graph TD
 
 **Gambarajah 4.1: Strategi Integrasi Modular**
 
-### 4.2. Strategi Authentication Hibrid
+### 4.2. Strategi Authentication
 
 ```mermaid
 graph TD
@@ -289,7 +273,7 @@ graph TD
     H --> L{Login Method}
     L -->|Email| M[Full Email Login]
     L -->|Username| N[Short Username Login]
-    L -->|Google SSO| O[OAuth 2.0 Flow]
+    L -->|Google OAuth| O[OAuth 2.0 Flow]
     
     M --> P[Dashboard Access]
     N --> P
