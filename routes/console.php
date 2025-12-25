@@ -1,5 +1,7 @@
 <?php
 
+use App\Jobs\HrmisSyncJob;
+use App\Jobs\PerformBackupJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -7,6 +9,37 @@ use Illuminate\Support\Facades\Schedule;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+// PKS 5.2.1 - HRMIS Auto-Provisioning Daily Sync
+// Requirement 2.2, 2.4, 2.5: Daily user synchronization from HRMIS
+Schedule::job(new HrmisSyncJob('full'))
+    ->dailyAt('01:00')
+    ->withoutOverlapping();
+
+// PKS 5.2.1 - HRMIS Incremental Sync (every 4 hours)
+// For near real-time user updates during business hours
+Schedule::job(new HrmisSyncJob('incremental'))
+    ->everyFourHours()
+    ->between('06:00', '22:00')
+    ->withoutOverlapping();
+
+// PKS 29.1 - Automated Full Backup (Daily at 02:00)
+// Requirement 29.1: RTO 4 hours, RPO 24 hours compliance
+Schedule::job(new PerformBackupJob('full', true))
+    ->dailyAt('02:00')
+    ->withoutOverlapping();
+
+// PKS 29.1 - Automated Incremental Backup (Every 6 hours)
+// Requirement 29.1: Incremental backups for RPO compliance
+Schedule::job(new PerformBackupJob('incremental', false))
+    ->everySixHours()
+    ->withoutOverlapping();
+
+// PKS 29.3 - DR Health Check (Every 15 minutes)
+// Requirement 29.3, 29.4: Automated failover monitoring
+Schedule::job(new \App\Jobs\CheckDRHealthJob)
+    ->everyFifteenMinutes()
+    ->withoutOverlapping();
 
 // Schedule system alert checks
 Schedule::command('alerts:check')

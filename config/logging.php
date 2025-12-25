@@ -146,6 +146,44 @@ return [
             'replace_placeholders' => true,
         ],
 
+        /*
+        |--------------------------------------------------------------------------
+        | DLP (Data Loss Prevention) Log Channel
+        |--------------------------------------------------------------------------
+        |
+        | This channel logs all DLP filtering decisions for PKS 9.2.1 compliance.
+        | Tracks data classification, routing decisions, and sensitive content detection.
+        |
+        | @see App\Services\DlpFilteringService
+        | @see PKS 9.2.1 - Data Transfer and DLP Compliance
+        */
+        'dlp' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/dlp.log'),
+            'level' => 'info',
+            'days' => 365, // 1 year retention for compliance
+            'replace_placeholders' => true,
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Security Log Channel
+        |--------------------------------------------------------------------------
+        |
+        | This channel logs security-related events including sensitive content
+        | detection, authentication failures, and security incidents.
+        |
+        | @see PKS 5.2.1 - Accountability
+        | @see PKS CSIRT Integration
+        */
+        'security' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/security.log'),
+            'level' => 'warning',
+            'days' => 2555, // 7 years retention per PKS requirements
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];

@@ -53,12 +53,15 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__.'/../routes/api.php',
         apiPrefix: 'api',
         commands: __DIR__.'/../routes/console.php',
-        channels: __DIR__.'/../routes/channels.php',
         health: '/up',
         then: function () {
             Route::middleware('web')
                 ->group(base_path('routes/ai.php'));
         },
+    )
+    ->withBroadcasting(
+        __DIR__.'/../routes/channels.php',
+        ['middleware' => ['web', 'auth', 'throttle:broadcasting']],
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // Register session middleware before SetLocaleMiddleware

@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Broadcasting Routes
+| Web Routes
 |--------------------------------------------------------------------------
 |
-| Register broadcasting authentication routes for WebSocket channels.
-| These routes handle private channel authorization for Laravel Reverb.
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+| Note: Broadcasting routes are configured in bootstrap/app.php using
+| withBroadcasting() with ['web', 'auth', 'throttle:broadcasting'] middleware.
 |
 */
-
-Broadcast::routes(['middleware' => ['web', 'auth', 'throttle:broadcasting']]);
 
 Route::get('/', function () {
     return view('welcome');
