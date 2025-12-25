@@ -2,24 +2,24 @@
 
 ## Overview
 
-This implementation plan provides a step-by-step approach to integrate Percy visual testing with both Playwright and Laravel Dusk test frameworks in the ICTServe application. The implementation focuses on comprehensive visual regression testing capabilities with proper configuration management and CI/CD integration.
+This implementation plan provides a step-by-step approach to integrate Percy visual testing with the existing Playwright 1.56.1 test framework in the ICTServe v3.6.1 application. The implementation focuses on enhancing the comprehensive E2E test suite (16+ test files) with visual regression testing capabilities while maintaining compatibility with the True Hybrid Architecture and Bahasa Melayu interface requirements.
 
 ## Tasks
 
-- [ ] 1. Set up Percy project and core dependencies
-  - Create Percy account and project configuration
-  - Install Percy CLI and core dependencies via npm
-  - Configure basic Percy settings and environment variables
+- [ ] 1. Set up Percy project and core dependencies for v3.6.1
+  - Create Percy account and project configuration for ICTServe v3.6.1
+  - Install Percy CLI and core dependencies via npm (compatible with existing Node.js setup)
+  - Configure basic Percy settings and environment variables for Laravel 12.43.1
   - _Requirements: 1.1, 1.2, 4.1_
 
 - [ ]* 1.1 Write property test for Percy authentication validation
   - **Property 1: Percy Authentication and Token Validation**
   - **Validates: Requirements 1.2, 4.1, 8.3**
 
-- [ ] 2. Implement Playwright integration with Percy
-  - Install @percy/playwright package
-  - Create Percy configuration file for Playwright tests
-  - Integrate percySnapshot function into existing Playwright test structure
+- [ ] 2. Implement Playwright 1.56.1 integration with Percy
+  - Install @percy/playwright package compatible with Playwright 1.56.1
+  - Create Percy configuration file for existing Playwright test structure
+  - Integrate percySnapshot function into existing test fixtures and utilities
   - _Requirements: 2.1, 2.2, 2.3_
 
 - [ ]* 2.1 Write property test for universal snapshot capture
@@ -30,29 +30,18 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - **Property 6: Snapshot Configuration Flexibility**
   - **Validates: Requirements 2.2, 2.3, 3.2, 3.3, 5.1, 5.2, 5.3, 5.4**
 
-- [ ] 3. Implement Laravel Dusk integration with Percy
-  - Install Laravel Dusk if not already present
-  - Install stechstudio/laravel-visual-testing package
-  - Create Laravel configuration file for Percy settings
-  - Extend Dusk browser capabilities with snapshot functionality
-  - _Requirements: 3.1, 3.2, 3.3_
-
-- [ ]* 3.1 Write property test for multi-framework integration compatibility
-  - **Property 3: Multi-Framework Integration Compatibility**
-  - **Validates: Requirements 2.4, 3.4**
-
-- [ ] 4. Create configuration management system
-  - Create config/percy.php configuration file
+- [ ] 3. Create Laravel 12.43.1 configuration management system
+  - Create config/percy.php configuration file compatible with Laravel 12.43.1
   - Implement environment variable handling for Percy settings
   - Add support for environment-specific configuration files
-  - Create configuration validation and error handling
+  - Create configuration validation and error handling with Bahasa Melayu messages
   - _Requirements: 4.2, 4.3, 4.4, 4.5_
 
-- [ ]* 4.1 Write property test for configuration validation and error reporting
+- [ ]* 3.1 Write property test for configuration validation and error reporting
   - **Property 2: Configuration Validation and Error Reporting**
   - **Validates: Requirements 1.4, 4.3, 8.4**
 
-- [ ]* 4.2 Write property test for environment-specific configuration
+- [ ]* 3.2 Write property test for environment-specific configuration
   - **Property 11: Environment-Specific Configuration**
   - **Validates: Requirements 4.2, 4.4, 4.5, 9.4**
 
@@ -222,13 +211,13 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - Create artisan command for Percy status checking
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-- [ ] 16. Integrate Percy with existing ICTServe v3.6.1 Playwright tests
-  - Add Percy snapshots to dashboard.spec.ts for responsive layout testing
-  - Integrate Percy with helpdesk.spec.ts for form and UI state capture
-  - Add visual testing to loan-module.spec.ts for loan application flows
+- [ ] 16. Integrate Percy with existing ICTServe v3.6.1 Playwright test suite
+  - Add Percy snapshots to dashboard.spec.ts for responsive layout testing with True Hybrid Architecture
+  - Integrate Percy with helpdesk.spec.ts for form and UI state capture (guest + authenticated workflows)
+  - Add visual testing to loan-module.spec.ts for loan application flows with Bahasa Melayu interface
   - Add visual testing to loan.spec.ts for loan processing workflows
   - Update guest-flow-screenshots.spec.ts to use Percy instead of basic screenshots
-  - Add Percy snapshots to accessibility.comprehensive.spec.ts for WCAG compliance verification
+  - Add Percy snapshots to accessibility.comprehensive.spec.ts for WCAG 2.2 AA compliance verification
   - Add Percy snapshots to accessibility.interactions.spec.ts for interactive accessibility testing
   - Add Percy snapshots to guest-landing-accessibility.spec.ts for guest page visual compliance
   - Integrate Percy with cross-browser.spec.ts for cross-browser visual consistency
@@ -236,11 +225,13 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - Add Percy snapshots to branding-smoke.spec.ts for brand consistency validation
   - Add Percy snapshots to ollama-accessibility.spec.ts for AI component visual testing
   - Add Percy snapshots to devtools.integration.spec.ts for development tools visual validation
-  - Add Percy snapshots to filament.components.debug.spec.ts for admin component visual testing
+  - Add Percy snapshots to filament.components.debug.spec.ts for Filament 4.3.1 admin component visual testing
   - Enhance helpdesk-performance.spec.ts with visual performance validation
   - Enhance loan-module-performance.spec.ts with visual performance validation
   - Update existing screenshot-based tests to use Percy visual comparisons
-  - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 5.1, 5.2, 5.3, 5.4, 10.1-10.16_
+  - Ensure all Percy integrations support Bahasa Melayu interface elements
+  - Test both guest and authenticated user workflows for True Hybrid Architecture
+  - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 5.1, 5.2, 5.3, 5.4, 10.1-10.18_
 
 - [ ] 16.1. Individual Percy integration testing - Test each modified file individually
   - Execute dashboard.spec.ts with Percy integration and verify functionality
@@ -406,12 +397,17 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
 - Checkpoints ensure incremental validation and user feedback
 - Property tests validate universal correctness properties across all inputs
 - Unit tests validate specific examples and edge cases
-- The implementation supports both Playwright and Laravel Dusk frameworks
-- Configuration management allows for environment-specific settings
+- The implementation focuses on Playwright 1.56.1 framework integration (Laravel Dusk removed for v3.6.1)
+- Configuration management allows for environment-specific settings compatible with Laravel 12.43.1
 - Error handling ensures graceful degradation when Percy services are unavailable
 - Performance optimization minimizes impact on test execution times
 - CI/CD integration enables automated visual regression testing in deployment pipelines
 - BrowserStack integration provides comprehensive cross-platform testing on real devices and browsers
 - Test Management integration enables organized test case management and execution tracking
-- Accessibility testing integration combines WCAG compliance with visual regression detection
+- Accessibility testing integration combines WCAG 2.2 AA compliance with visual regression detection
 - Live session debugging capabilities enable real-time visual issue investigation and resolution
+- True Hybrid Architecture support ensures visual testing works for both guest and authenticated user workflows
+- Bahasa Melayu interface support ensures visual consistency for the exclusive Bahasa Melayu UI (v3.6.0+)
+- Integration with existing comprehensive E2E test suite (16+ test files) maintains backward compatibility
+- Support for Livewire 3.7.3 components and Filament 4.3.1 admin panel visual testing
+- Cloud Hybrid AI component visual testing integration for Ollama and AWS Bedrock interfaces
