@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 /**
  * Artisan Command: Validate Percy Configuration
- * 
+ *
  * This command validates Percy visual testing configuration
  * for ICTServe v3.6.1 integration.
  */
@@ -96,11 +96,11 @@ class ValidatePercyConfig extends Command
         $this->table(
             ['Setting', 'Value'],
             [
-                ['Project', $config['project'] ?? 'Not set'],
-                ['Enabled', $config['enabled'] ? 'Yes' : 'No'],
-                ['Branch', $config['branch'] ?? 'Not set'],
-                ['Target Branch', $config['target_branch'] ?? 'Not set'],
-                ['Token', !empty($config['token']) ? 'Set (hidden)' : 'Not set'],
+                ['Project', $config['project'] ?? Config::get('percy.project', 'Not set')],
+                ['Enabled', ($config['enabled'] ?? false) ? 'Yes' : 'No'],
+                ['Branch', $config['branch'] ?? Config::get('percy.branch', 'Not set')],
+                ['Target Branch', $config['target_branch'] ?? Config::get('percy.target_branch', 'Not set')],
+                ['Token', ! empty($config['token'] ?? Config::get('percy.token')) ? 'Set (hidden)' : 'Not set'],
             ]
         );
 
@@ -114,7 +114,7 @@ class ValidatePercyConfig extends Command
                 ['Widths', implode(', ', $snapshotConfig['widths'])],
                 ['Min Height', $snapshotConfig['minHeight']],
                 ['JavaScript', $snapshotConfig['enableJavaScript'] ? 'Enabled' : 'Disabled'],
-                ['Wait Timeout', $snapshotConfig['waitForTimeout'] . 'ms'],
+                ['Wait Timeout', $snapshotConfig['waitForTimeout'].'ms'],
             ]
         );
 
@@ -130,10 +130,10 @@ class ValidatePercyConfig extends Command
             [
                 ['Hybrid Architecture', 'Configured'],
                 ['Bahasa Melayu Interface', $bahasaConfig['validate_language'] ? 'Enabled' : 'Disabled'],
-                ['WCAG ' . $accessibilityConfig['wcag_version'] . ' ' . $accessibilityConfig['wcag_level'], 'Enabled'],
-                ['Guest Selectors', count($hybridConfig['guest_selectors']) . ' configured'],
-                ['Auth Selectors', count($hybridConfig['authenticated_selectors']) . ' configured'],
-                ['Admin Selectors', count($hybridConfig['admin_selectors']) . ' configured'],
+                ['WCAG '.$accessibilityConfig['wcag_version'].' '.$accessibilityConfig['wcag_level'], 'Enabled'],
+                ['Guest Selectors', count($hybridConfig['guest_selectors']).' configured'],
+                ['Auth Selectors', count($hybridConfig['authenticated_selectors']).' configured'],
+                ['Admin Selectors', count($hybridConfig['admin_selectors']).' configured'],
             ]
         );
 
@@ -160,14 +160,14 @@ class ValidatePercyConfig extends Command
         $envConfigTable = [];
         foreach ($envConfigs as $env => $config) {
             $status = $config['exists'] ? '✅ Exists' : '❌ Missing';
-            $size = $config['exists'] ? number_format($config['size']) . ' bytes' : 'N/A';
+            $size = $config['exists'] ? number_format($config['size']).' bytes' : 'N/A';
             $modified = $config['exists'] && $config['modified'] ? date('Y-m-d H:i:s', $config['modified']) : 'N/A';
 
             $envConfigTable[] = [
                 ucfirst($env),
                 $status,
                 $size,
-                $modified
+                $modified,
             ];
         }
 
@@ -180,9 +180,9 @@ class ValidatePercyConfig extends Command
         $this->info('💡 Environment Configuration Info:');
         $this->info('  • Environment-specific files override main configuration');
         $this->info('  • Files are located in config/percy.{environment}.php');
-        $this->info('  • Current environment: ' . app()->environment());
+        $this->info('  • Current environment: '.app()->environment());
 
-        $currentEnvFile = config_path('percy.' . app()->environment() . '.php');
+        $currentEnvFile = config_path('percy.'.app()->environment().'.php');
         if (file_exists($currentEnvFile)) {
             $this->info('  • ✅ Current environment config file exists');
         } else {

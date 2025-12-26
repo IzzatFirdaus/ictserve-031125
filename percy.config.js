@@ -8,11 +8,11 @@
  * - Responsive design testing across multiple viewports
  * - WCAG 2.2 AA compliance visual validation
  */
-module.exports = {
+export default {
 	version: 2,
 
 	// Project configuration
-	projectName: "ictserve-v3.6.1-visual-testing",
+	projectName: process.env.PERCY_PROJECT || "ictserve",
 
 	// Discovery settings for local development
 	discovery: {
