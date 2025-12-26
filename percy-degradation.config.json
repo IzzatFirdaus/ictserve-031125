@@ -1,0 +1,71 @@
+{
+	"degradation": {
+		"enabled": true,
+		"skipUploads": false,
+		"localOnly": false,
+		"fallbackMode": false
+	},
+	"environments": {
+		"development": {
+			"enabled": true,
+			"localOnly": true,
+			"skipUploads": false,
+			"gracefulDegradation": true
+		},
+		"testing": {
+			"enabled": true,
+			"localOnly": false,
+			"skipUploads": false,
+			"gracefulDegradation": true
+		},
+		"ci": {
+			"enabled": true,
+			"localOnly": false,
+			"skipUploads": false,
+			"gracefulDegradation": true
+		},
+		"production": {
+			"enabled": false,
+			"localOnly": false,
+			"skipUploads": true,
+			"gracefulDegradation": true
+		}
+	},
+	"commands": {
+		"test:e2e": {
+			"fallbackOnError": true,
+			"localOnly": false
+		},
+		"test:e2e:debug": {
+			"fallbackOnError": false,
+			"localOnly": true
+		},
+		"test:accessibility": {
+			"fallbackOnError": true,
+			"localOnly": false
+		},
+		"test:e2e:percy:setup": {
+			"fallbackOnError": true,
+			"localOnly": false
+		}
+	},
+	"fallbackStrategies": {
+		"networkError": {
+			"maxRetries": 3,
+			"retryDelay": 1000,
+			"enableDegradation": true
+		},
+		"serviceUnavailable": {
+			"enableDegradation": true,
+			"skipUploads": true
+		},
+		"authenticationError": {
+			"enableDegradation": true,
+			"localOnly": true
+		},
+		"configurationError": {
+			"enableDegradation": false,
+			"failFast": true
+		}
+	}
+}
