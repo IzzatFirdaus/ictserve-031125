@@ -10,11 +10,10 @@ use RuntimeException;
 
 /**
  * Percy Visual Testing Service for ICTServe v3.6.1
- * 
+ *
  * This service provides integration with Percy visual testing platform,
  * supporting the ICTServe True Hybrid Architecture and Bahasa Melayu interface.
- * 
- * @package App\Services
+ *
  * @version 3.6.1
  */
 class PercyService
@@ -25,17 +24,19 @@ class PercyService
     public function isEnabled(): bool
     {
         $config = $this->getConfiguration();
-        $token = Config::get('percy.token');
+
+        // Get token from merged config first, fallback to base config
+        $token = $config['token'] ?? Config::get('percy.token');
 
         // Get the final enabled status from merged configuration
         $enabled = $config['enabled'] ?? false;
 
-        return $enabled && !empty($token);
+        return $enabled && ! empty($token);
     }
 
     /**
      * Validate Percy configuration
-     * 
+     *
      * @throws RuntimeException
      */
     public function validateConfiguration(): array
@@ -43,20 +44,20 @@ class PercyService
         $errors = [];
         $config = $this->getConfiguration();
 
-        // Check required configuration - get token directly from config
-        $token = Config::get('percy.token');
+        // Check required configuration - get token from merged config first, fallback to base config
+        $token = $config['token'] ?? Config::get('percy.token');
         if (empty($token)) {
             $errors[] = Config::get('percy.messages.token_missing', 'Percy token is missing');
         }
 
-        $project = Config::get('percy.project');
+        $project = $config['project'] ?? Config::get('percy.project');
         if (empty($project)) {
             $errors[] = Config::get('percy.messages.project_missing', 'Percy project name is missing');
         }
 
         // Validate widths configuration
         $widths = $config['snapshot']['widths'] ?? Config::get('percy.snapshot.widths', []);
-        if (empty($widths) || !\is_array($widths)) {
+        if (empty($widths) || ! \is_array($widths)) {
             $errors[] = 'Percy snapshot widths must be a non-empty array';
         }
 
@@ -70,7 +71,7 @@ class PercyService
         }
 
         // Log validation results
-        if (!empty($errors)) {
+        if (! empty($errors)) {
             Log::warning('Percy configuration validation failed', [
                 'errors' => $errors,
                 'environment' => $environment,
@@ -101,7 +102,7 @@ class PercyService
 
         if (file_exists($envConfigFile)) {
             $envFileConfig = require $envConfigFile;
-            Log::info("Loaded Percy environment-specific configuration", [
+            Log::info('Loaded Percy environment-specific configuration', [
                 'environment' => $environment,
                 'config_file' => $envConfigFile,
             ]);
@@ -111,7 +112,18 @@ class PercyService
         $envConfig = Config::get("percy.environments.{$environment}", []);
 
         // Merge configurations: base -> env settings -> env file (env file has highest priority)
-        return [...$baseConfig, ...$envConfig, ...$envFileConfig];
+        // Ensure we preserve all base config values including token and project
+        $mergedConfig = [...$baseConfig, ...$envConfig, ...$envFileConfig];
+
+        // Ensure token and project are preserved from base config if not overridden
+        if (! isset($mergedConfig['token']) && isset($baseConfig['token'])) {
+            $mergedConfig['token'] = $baseConfig['token'];
+        }
+        if (! isset($mergedConfig['project']) && isset($baseConfig['project'])) {
+            $mergedConfig['project'] = $baseConfig['project'];
+        }
+
+        return $mergedConfig;
     }
 
     /**
@@ -185,8 +197,8 @@ class PercyService
             ]);
         }
 
-        if (!$gracefulDegradation) {
-            throw new RuntimeException("Percy {$operation} failed: " . $exception->getMessage(), 0, $exception);
+        if (! $gracefulDegradation) {
+            throw new RuntimeException("Percy {$operation} failed: ".$exception->getMessage(), 0, $exception);
         }
 
         // Log graceful degradation
@@ -214,13 +226,13 @@ class PercyService
      */
     public function generateBuildName(string $suffix = ''): string
     {
-        $project = Config::get('percy.project', 'ictserve-visual-testing');
+        $project = Config::get('percy.project', 'ictserve');
         $environment = app()->environment();
         $timestamp = now()->format('Y-m-d-H-i-s');
 
         $buildName = "{$project}-{$environment}-{$timestamp}";
 
-        if (!empty($suffix)) {
+        if (! empty($suffix)) {
             $buildName .= "-{$suffix}";
         }
 
@@ -237,18 +249,19 @@ class PercyService
         try {
             $config = require $configFile;
 
-            if (!\is_array($config)) {
+            if (! \is_array($config)) {
                 $errors[] = "Environment configuration file must return an array: {$configFile}";
+
                 return $errors;
             }
 
             // Validate snapshot configuration if present
             if (isset($config['snapshot'])) {
-                if (isset($config['snapshot']['widths']) && !\is_array($config['snapshot']['widths'])) {
+                if (isset($config['snapshot']['widths']) && ! \is_array($config['snapshot']['widths'])) {
                     $errors[] = 'Environment config: snapshot.widths must be an array';
                 }
 
-                if (isset($config['snapshot']['min_height']) && !\is_int($config['snapshot']['min_height'])) {
+                if (isset($config['snapshot']['min_height']) && ! \is_int($config['snapshot']['min_height'])) {
                     $errors[] = 'Environment config: snapshot.min_height must be an integer';
                 }
             }
@@ -257,11 +270,11 @@ class PercyService
             if (isset($config['error_handling'])) {
                 $errorHandling = $config['error_handling'];
 
-                if (isset($errorHandling['retry_attempts']) && (!\is_int($errorHandling['retry_attempts']) || $errorHandling['retry_attempts'] < 0)) {
+                if (isset($errorHandling['retry_attempts']) && (! \is_int($errorHandling['retry_attempts']) || $errorHandling['retry_attempts'] < 0)) {
                     $errors[] = 'Environment config: error_handling.retry_attempts must be a non-negative integer';
                 }
 
-                if (isset($errorHandling['timeout']) && (!\is_int($errorHandling['timeout']) || $errorHandling['timeout'] <= 0)) {
+                if (isset($errorHandling['timeout']) && (! \is_int($errorHandling['timeout']) || $errorHandling['timeout'] <= 0)) {
                     $errors[] = 'Environment config: error_handling.timeout must be a positive integer';
                 }
             }
@@ -270,16 +283,16 @@ class PercyService
             if (isset($config['performance'])) {
                 $performance = $config['performance'];
 
-                if (isset($performance['max_concurrent_uploads']) && (!\is_int($performance['max_concurrent_uploads']) || $performance['max_concurrent_uploads'] <= 0)) {
+                if (isset($performance['max_concurrent_uploads']) && (! \is_int($performance['max_concurrent_uploads']) || $performance['max_concurrent_uploads'] <= 0)) {
                     $errors[] = 'Environment config: performance.max_concurrent_uploads must be a positive integer';
                 }
 
-                if (isset($performance['cache_ttl']) && (!\is_int($performance['cache_ttl']) || $performance['cache_ttl'] < 0)) {
+                if (isset($performance['cache_ttl']) && (! \is_int($performance['cache_ttl']) || $performance['cache_ttl'] < 0)) {
                     $errors[] = 'Environment config: performance.cache_ttl must be a non-negative integer';
                 }
             }
         } catch (\Throwable $e) {
-            $errors[] = "Failed to load environment configuration file {$configFile}: " . $e->getMessage();
+            $errors[] = "Failed to load environment configuration file {$configFile}: ".$e->getMessage();
         }
 
         return $errors;

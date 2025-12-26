@@ -35,8 +35,8 @@ Add the following Percy configuration to your `.env` file:
 PERCY_TOKEN=your_percy_token_here
 PERCY_PROJECT=ictserve
 PERCY_ENABLED=true
-PERCY_BRANCH=main
-PERCY_TARGET_BRANCH=main
+PERCY_BRANCH=develop
+PERCY_TARGET_BRANCH=develop
 ```
 
 ### Validate Configuration
@@ -215,7 +215,7 @@ Add Percy token to GitHub repository secrets:
 env:
   PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
   PERCY_BRANCH: ${{ github.head_ref }}
-  PERCY_TARGET_BRANCH: main
+  PERCY_TARGET_BRANCH: develop
   PERCY_PARALLEL_NONCE: ${{ github.run_id }}
   PERCY_PARALLEL_TOTAL: 4
 ```

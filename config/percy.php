@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 /**
  * Percy Visual Testing Configuration for ICTServe v3.6.1
- * 
+ *
  * This configuration file manages Percy visual testing settings
  * compatible with Laravel 12.43.1 and the ICTServe technology stack.
- * 
- * @package ICTServe
+ *
  * @version 3.6.1
  */
 
@@ -32,7 +31,7 @@ return [
     | Project name and basic configuration for Percy builds.
     |
     */
-    'project' => env('PERCY_PROJECT', 'ictserve-v3.6.1-visual-testing'),
+    'project' => env('PERCY_PROJECT', 'ictserve'),
     'enabled' => env('PERCY_ENABLED', true),
 
     /*
@@ -43,8 +42,8 @@ return [
     | Configuration for Percy builds and parallel execution.
     |
     */
-    'branch' => env('PERCY_BRANCH', 'main'),
-    'target_branch' => env('PERCY_TARGET_BRANCH', 'main'),
+    'branch' => env('PERCY_BRANCH', 'develop'),
+    'target_branch' => env('PERCY_TARGET_BRANCH', 'develop'),
     'parallel_nonce' => env('PERCY_PARALLEL_NONCE'),
     'parallel_total' => env('PERCY_PARALLEL_TOTAL', 1),
 

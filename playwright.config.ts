@@ -15,7 +15,15 @@ import { defineConfig, devices } from "@playwright/test";
  * - Configuration supports ICTServe v3.6.1 True Hybrid Architecture
  * - Responsive testing across multiple viewport sizes
  * - Bahasa Melayu interface visual validation
+ * - Environment-based Percy enabling/disabling
+ * - Optimized for visual regression testing workflows
  */
+
+// Percy environment detection
+const isPercyEnabled =
+	process.env.PERCY_TOKEN && process.env.PERCY_TOKEN.length > 0;
+const isCI = process.env.CI === "true";
+const skipPercy = process.env.SKIP_PERCY === "true";
 export default defineConfig({
 	testDir: "./tests/e2e",
 	/* Additional test directories for Percy-specific tests */
@@ -52,11 +60,37 @@ export default defineConfig({
 		actionTimeout: 60000,
 		/* Navigation timeout: time for page loads (increased from 120s to 180s for Laravel server response) */
 		navigationTimeout: 180000,
-		/* Percy integration: Enable visual testing capabilities */
+
+		/* Percy integration: Enhanced visual testing capabilities */
 		extraHTTPHeaders: {
-			// Add headers for Percy integration if needed
-			"X-Percy-Test": process.env.PERCY_TOKEN ? "enabled" : "disabled",
+			// Percy integration headers
+			"X-Percy-Test": isPercyEnabled ? "enabled" : "disabled",
+			"X-Percy-Environment": isCI ? "ci" : "local",
+			"X-ICTServe-Version": "3.6.1",
+			"X-Laravel-Version": "12.43.1",
+			"X-Livewire-Version": "3.7.3",
+			"X-Filament-Version": "4.3.1",
 		},
+
+		/* Percy-optimized viewport configuration */
+		viewport: isPercyEnabled
+			? { width: 1280, height: 720 }
+			: { width: 1280, height: 720 },
+
+		/* Device scale factor for consistent Percy snapshots */
+		deviceScaleFactor: 1,
+
+		/* Locale for Bahasa Melayu interface testing */
+		locale: "ms-MY",
+
+		/* Timezone for consistent timestamp handling */
+		timezoneId: "Asia/Kuala_Lumpur",
+
+		/* Color scheme preference */
+		colorScheme: "light",
+
+		/* Reduced motion for consistent visual testing */
+		reducedMotion: isPercyEnabled ? "reduce" : undefined,
 	},
 
 	/* Global timeout for all tests (5 minutes for comprehensive flows) */
@@ -67,30 +101,87 @@ export default defineConfig({
 		timeout: 15000,
 	},
 
+	/* Percy-specific global setup */
+	globalSetup: isPercyEnabled
+		? "./tests/percy/percy-global-setup.ts"
+		: undefined,
+	globalTeardown: isPercyEnabled
+		? "./tests/percy/percy-global-teardown.ts"
+		: undefined,
+
 	projects: [
-		/* Chrome 90+ - Primary browser */
+		/* Chrome 90+ - Primary browser for Percy visual testing */
 		{
 			name: "chromium",
 			use: {
 				...devices["Desktop Chrome"],
+				// Percy-optimized Chrome configuration
+				viewport: { width: 1280, height: 720 },
+				deviceScaleFactor: 1,
 				// headless: false, // Uncomment for debugging
 			},
 		},
-		/* Firefox 88+ - Cross-browser testing */
+		/* Firefox 88+ - Cross-browser testing with Percy */
 		{
 			name: "firefox",
-			use: { ...devices["Desktop Firefox"] },
+			use: {
+				...devices["Desktop Firefox"],
+				// Percy-optimized Firefox configuration
+				viewport: { width: 1280, height: 720 },
+				deviceScaleFactor: 1,
+			},
 		},
-		/* Safari 14+ - WebKit engine (macOS/iOS) */
+		/* Safari 14+ - WebKit engine (macOS/iOS) with Percy support */
 		{
 			name: "webkit",
-			use: { ...devices["Desktop Safari"] },
+			use: {
+				...devices["Desktop Safari"],
+				// Percy-optimized Safari configuration
+				viewport: { width: 1280, height: 720 },
+				deviceScaleFactor: 1,
+			},
 		},
-		/* Edge 90+ - Chromium-based Microsoft Edge */
+		/* Edge 90+ - Chromium-based Microsoft Edge with Percy */
 		{
 			name: "edge",
-			use: { ...devices["Desktop Edge"], channel: "msedge" },
+			use: {
+				...devices["Desktop Edge"],
+				channel: "msedge",
+				// Percy-optimized Edge configuration
+				viewport: { width: 1280, height: 720 },
+				deviceScaleFactor: 1,
+			},
 		},
+
+		/* Percy-specific responsive testing projects */
+		...(isPercyEnabled
+			? [
+					{
+						name: "percy-mobile",
+						use: {
+							...devices["iPhone 12"],
+							viewport: { width: 375, height: 667 },
+							deviceScaleFactor: 1,
+						},
+					},
+					{
+						name: "percy-tablet",
+						use: {
+							...devices["iPad Pro"],
+							viewport: { width: 768, height: 1024 },
+							deviceScaleFactor: 1,
+						},
+					},
+					{
+						name: "percy-desktop-wide",
+						use: {
+							...devices["Desktop Chrome"],
+							viewport: { width: 1920, height: 1080 },
+							deviceScaleFactor: 1,
+						},
+					},
+			  ]
+			: []),
 	],
 
 	/* Web server: Auto-start Laravel during test runs */
