@@ -270,11 +270,11 @@ test('Guest vs Authenticated User Visual Comparison', async ({ page }) => {
 PERCY_TOKEN=your_percy_token_here
 
 # Optional - v3.6.1 specific
-PERCY_BRANCH=main
-PERCY_TARGET_BRANCH=main
+PERCY_BRANCH=develop
+PERCY_TARGET_BRANCH=develop
 PERCY_PARALLEL_NONCE=build_identifier
 PERCY_PARALLEL_TOTAL=4
-PERCY_PROJECT=ictserve-v3.6.1-visual-testing
+PERCY_PROJECT=ictserve
 ```
 
 **Laravel Configuration**:
@@ -283,7 +283,7 @@ PERCY_PROJECT=ictserve-v3.6.1-visual-testing
 // config/percy.php - Laravel 12.43.1 compatible
 return [
     'token' => env('PERCY_TOKEN'),
-    'project' => env('PERCY_PROJECT', 'ictserve-v3.6.1-visual-testing'),
+    'project' => env('PERCY_PROJECT', 'ictserve'),
     'enabled' => env('PERCY_ENABLED', true),
     'widths' => [375, 768, 1024, 1280, 1920],
     'min_height' => 1024,
