@@ -1,0 +1,141 @@
+{
+  "timestamp": "2025-12-25T17:12:58.434Z",
+  "summary": {
+    "total": 16,
+    "syntaxOk": 16,
+    "syntaxErrors": 0,
+    "timeouts": 0,
+    "notFound": 0,
+    "totalTests": 2436
+  },
+  "results": [
+    {
+      "file": "dashboard.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 76,
+      "error": null,
+      "output": "Found 76 tests",
+      "duration": 6279
+    },
+    {
+      "file": "helpdesk.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 192,
+      "error": null,
+      "output": "Found 192 tests",
+      "duration": 3976
+    },
+    {
+      "file": "loan-module.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 72,
+      "error": null,
+      "output": "Found 72 tests",
+      "duration": 6342
+    },
+    {
+      "file": "loan.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 276,
+      "error": null,
+      "output": "Found 276 tests",
+      "duration": 7770
+    },
+    {
+      "file": "guest-flow-screenshots.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 216,
+      "error": null,
+      "output": "Found 216 tests",
+      "duration": 2994
+    },
+    {
+      "file": "accessibility.comprehensive.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 300,
+      "error": null,
+      "output": "Found 300 tests",
+      "duration": 3469
+    },
+    {
+      "file": "accessibility.interactions.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 120,
+      "error": null,
+      "output": "Found 120 tests",
+      "duration": 3052
+    },
+    {
+      "file": "guest-landing-accessibility.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 144,
+      "error": null,
+      "output": "Found 144 tests",
+      "duration": 2912
+    },
+    {
+      "file": "cross-browser.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 308,
+      "error": null,
+      "output": "Found 308 tests",
+      "duration": 2981
+    },
+    {
+      "file": "staff-flow.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 132,
+      "error": null,
+      "output": "Found 132 tests",
+      "duration": 2830
+    },
+    {
+      "file": "branding-smoke.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 12,
+      "error": null,
+      "output": "Found 12 tests",
+      "duration": 2791
+    },
+    {
+      "file": "ollama-accessibility.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 156,
+      "error": null,
+      "output": "Found 156 tests",
+      "duration": 3080
+    },
+    {
+      "file": "devtools.integration.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 96,
+      "error": null,
+      "output": "Found 96 tests",
+      "duration": 2909
+    },
+    {
+      "file": "filament.components.debug.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 72,
+      "error": null,
+      "output": "Found 72 tests",
+      "duration": 2801
+    },
+    {
+      "file": "helpdesk-performance.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 120,
+      "error": null,
+      "output": "Found 120 tests",
+      "duration": 2839
+    },
+    {
+      "file": "loan-module-performance.spec.ts",
+      "status": "SYNTAX_OK",
+      "testCount": 144,
+      "error": null,
+      "output": "Found 144 tests",
+      "duration": 3027
+    }
+  ]
+}
