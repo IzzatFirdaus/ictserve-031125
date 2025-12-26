@@ -30,10 +30,10 @@ if (! isset($_ENV['APP_ENV']) || $_ENV['APP_ENV'] !== 'testing') {
 // Priority: Codespaces vendor -> Local vendor -> Fallback
 if (isset($_ENV['CODESPACES']) && file_exists('/tmp/vendor/autoload.php')) {
     require '/tmp/vendor/autoload.php';
-} elseif (file_exists(__DIR__.'/../vendor/autoload.php')) {
-    require __DIR__.'/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
 } else {
-    require __DIR__.'/../../../vendor/autoload.php';
+    require __DIR__ . '/../../../vendor/autoload.php';
 }
 
 use Illuminate\Cache\RateLimiting\Limit;
@@ -48,12 +48,12 @@ use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
+        web: __DIR__ . '/../routes/web.php',
         // Explicitly configure API routes with /api prefix to avoid conflicts with admin panel
-        api: __DIR__.'/../routes/api.php',
+        api: __DIR__ . '/../routes/api.php',
         apiPrefix: 'api',
-        commands: __DIR__.'/../routes/console.php',
-        channels: __DIR__.'/../routes/channels.php',
+        commands: __DIR__ . '/../routes/console.php',
+        channels: __DIR__ . '/../routes/channels.php',
         health: '/up',
         then: function () {
             Route::middleware('web')
@@ -94,8 +94,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Configure rate limiting for broadcasting auth endpoint
         // Requirement 7.4: Limit to 60 requests per minute per IP
+        // TODO: Move this to a service provider to avoid facade initialization issues
+        /*
         RateLimiter::for('broadcasting', function (Request $request) {
-            /** @var \Illuminate\Cache\RateLimiting\Limit $limit */
             return Limit::perMinute(60)
                 ->by($request->ip())
                 ->response(function (Request $request, array $headers) {
@@ -105,6 +106,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     ], 429, $headers);
                 });
         });
+        */
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
