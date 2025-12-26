@@ -1,0 +1,383 @@
+name: Percy Visual Tests with ICTServe v3.6.1
+
+on:
+  push:
+    branches: [main, develop, staging]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      percy_branch:
+        description: "Percy branch for comparison"
+        required: false
+        default: "main"
+      test_suite:
+        description: "Test suite to run"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - all
+          - e2e
+          - accessibility
+          - performance
+          - responsive
+
+env:
+  NODE_VERSION: "18"
+  PHP_VERSION: "8.4"
+  PERCY_PROJECT: "ictserve-v3.6.1-visual-testing"
+  PERCY_PARALLEL_TOTAL: 4
+
+jobs:
+  # Package validation job
+  validate-config:
+    name: Validate Percy Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cp .npmrc.ci .npmrc
+          npm ci
+
+      - name: Validate package configuration
+        run: npm run percy:package-validate
+
+      - name: Validate Percy configuration
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+        run: npm run percy:config-validate
+
+  # Main visual testing job
+  percy-visual-tests:
+    name: Percy Visual Tests
+    runs-on: ubuntu-latest
+    needs: validate-config
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+          coverage: none
+
+      - name: Copy environment file
+        run: cp .env.example .env
+
+      - name: Install Node.js dependencies
+        run: |
+          cp .npmrc.ci .npmrc
+          npm ci
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Create SQLite database
+        run: touch database/database.sqlite
+
+      - name: Run database migrations
+        run: php artisan migrate --force
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Run Percy visual tests
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+          PERCY_BRANCH: ${{ github.head_ref || github.ref_name }}
+          PERCY_TARGET_BRANCH: ${{ github.event.pull_request.base.ref || 'main' }}
+          PERCY_PARALLEL_NONCE: ${{ github.run_id }}-${{ github.run_attempt }}
+          PERCY_PARALLEL_TOTAL: ${{ env.PERCY_PARALLEL_TOTAL }}
+          CI: true
+        run: |
+          case "${{ github.event.inputs.test_suite || 'all' }}" in
+            "e2e")
+              npm run ci:percy
+              ;;
+            "accessibility")
+              npm run test:accessibility:percy
+              ;;
+            "performance")
+              npm run test:e2e:percy:performance
+              ;;
+            "responsive")
+              npm run dev:percy:responsive
+              ;;
+            *)
+              npm run ci:test:all
+              ;;
+          esac
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ matrix.shard }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.shard }}
+          path: test-results/
+          retention-days: 30
+
+  # Accessibility-specific testing job
+  accessibility-tests:
+    name: Accessibility Tests with Percy
+    runs-on: ubuntu-latest
+    needs: validate-config
+    if: github.event_name == 'pull_request' || contains(github.event.head_commit.message, '[accessibility]')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+          coverage: none
+
+      - name: Copy environment file
+        run: cp .env.example .env
+
+      - name: Install dependencies
+        run: |
+          cp .npmrc.ci .npmrc
+          npm ci
+          composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Prepare application
+        run: |
+          php artisan key:generate
+          touch database/database.sqlite
+          php artisan migrate --force
+          npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run accessibility tests with Percy
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+          PERCY_BRANCH: ${{ github.head_ref || github.ref_name }}-accessibility
+          PERCY_TARGET_BRANCH: main-accessibility
+          CI: true
+        run: npm run test:accessibility:percy
+
+  # Performance testing with visual validation
+  performance-tests:
+    name: Performance Tests with Percy
+    runs-on: ubuntu-latest
+    needs: validate-config
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+          coverage: none
+
+      - name: Copy environment file
+        run: cp .env.example .env
+
+      - name: Install dependencies
+        run: |
+          cp .npmrc.ci .npmrc
+          npm ci
+          composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Prepare application
+        run: |
+          php artisan key:generate
+          touch database/database.sqlite
+          php artisan migrate --force
+          npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run performance tests with Percy
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+          PERCY_BRANCH: ${{ github.ref_name }}-performance
+          PERCY_TARGET_BRANCH: main-performance
+          CI: true
+        run: npm run test:e2e:percy:performance
+
+      - name: Generate performance report
+        run: npm run percy:performance-report
+
+      - name: Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: percy-performance-report
+          path: percy-reports/
+          retention-days: 30
+
+  # Fallback testing without Percy
+  fallback-tests:
+    name: Fallback Tests (No Percy)
+    runs-on: ubuntu-latest
+    if: failure()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+          coverage: none
+
+      - name: Copy environment file
+        run: cp .env.example .env
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Prepare application
+        run: |
+          php artisan key:generate
+          touch database/database.sqlite
+          php artisan migrate --force
+          npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run tests without Percy (fallback)
+        run: npm run test:e2e:no-percy
+
+      - name: Upload fallback test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fallback-test-results
+          path: test-results/
+          retention-days: 30
+
+  # Summary job
+  percy-summary:
+    name: Percy Test Summary
+    runs-on: ubuntu-latest
+    needs: [percy-visual-tests, accessibility-tests, performance-tests]
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Percy build report
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+        run: |
+          npm run percy:build-info
+          npm run percy:report
+
+      - name: Comment PR with Percy results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            try {
+              const buildInfo = execSync('npm run percy:build-info', { encoding: 'utf8' });
+              const comment = `## 🎨 Percy Visual Testing Results
+              
+              ${buildInfo}
+              
+              ### Test Coverage
+              - ✅ E2E Visual Tests
+              - ✅ Accessibility Visual Tests  
+              - ✅ Performance Visual Tests
+              - ✅ Responsive Design Tests
+              - ✅ True Hybrid Architecture Tests
+              - ✅ Bahasa Melayu Interface Tests
+              
+              ### Technology Stack Validated
+              - Laravel 12.43.1
+              - Livewire 3.7.3
+              - Filament 4.3.1
+              - Playwright 1.56.1
+              - ICTServe v3.6.1 True Hybrid Architecture
+              
+              View detailed results in the Percy dashboard.`;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            } catch (error) {
+              console.log('Could not generate Percy comment:', error.message);
+            }

@@ -1,0 +1,38 @@
+# NPM Configuration for CI/CD Environments with Percy Visual Testing
+# This file is used in CI/CD pipelines for optimized Percy integration
+
+# Registry configuration
+registry=https://registry.npmjs.org/
+
+# CI-specific optimizations
+audit=false
+fund=false
+progress=false
+color=false
+
+# Timeout settings for CI environments
+fetch-timeout=600000
+fetch-retry-mintimeout=20000
+fetch-retry-maxtimeout=120000
+fetch-retries=3
+
+# Cache settings for CI
+cache-min=86400
+prefer-offline=true
+
+# Security settings
+audit-level=high
+
+# Package installation settings
+save-exact=true
+package-lock=true
+package-lock-only=false
+
+# Environment-specific settings
+# These should be set via environment variables in CI:
+# PERCY_TOKEN (required)
+# PERCY_BRANCH (auto-detected from CI)
+# PERCY_TARGET_BRANCH (usually 'main')
+# PERCY_PARALLEL_NONCE (CI build ID)
+# PERCY_PARALLEL_TOTAL (number of parallel jobs)
+# PERCY_PROJECT (ictserve-v3.6.1-visual-testing)
