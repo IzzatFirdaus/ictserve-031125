@@ -1,17 +1,25 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Playwright Configuration for ICTServe E2E Testing
- * Best practices: parallelism optimization, trace debugging, comprehensive reporting
+ * Playwright Configuration for ICTServe E2E Testing with Percy Integration
+ * Best practices: parallelism optimization, trace debugging, comprehensive reporting, visual testing
  *
  * Trace: Research findings per Playwright v1.56.1 official docs
  * - trace: 'on-first-retry' (recommended for CI - lightweight debugging)
  * - fullyParallel: true (parallel execution within files for speed)
  * - workers: adjusted per environment (CI vs local development)
  * - retries: 2 on CI (resilience to temporary failures)
+ *
+ * Percy Integration:
+ * - Percy snapshots are captured via @percy/playwright
+ * - Configuration supports ICTServe v3.6.1 True Hybrid Architecture
+ * - Responsive testing across multiple viewport sizes
+ * - Bahasa Melayu interface visual validation
  */
 export default defineConfig({
 	testDir: "./tests/e2e",
+	/* Additional test directories for Percy-specific tests */
+	testMatch: ["**/tests/e2e/**/*.spec.ts", "**/tests/percy/**/*.spec.ts"],
 	/* Skip performance tests in dev environment (set SKIP_PERFORMANCE=true to skip) */
 	testIgnore:
 		process.env["SKIP_PERFORMANCE"] === "true"
@@ -33,7 +41,7 @@ export default defineConfig({
 	],
 	use: {
 		/* Base URL for all page.goto() calls */
-		baseURL: "http://localhost:8000",
+		baseURL: "http://127.0.0.1:8000",
 		/* Trace viewer: captures actions, DOM snapshots, network for failed tests */
 		trace: "on-first-retry",
 		/* Screenshot only on failure to save space */
@@ -44,6 +52,11 @@ export default defineConfig({
 		actionTimeout: 60000,
 		/* Navigation timeout: time for page loads (increased from 120s to 180s for Laravel server response) */
 		navigationTimeout: 180000,
+		/* Percy integration: Enable visual testing capabilities */
+		extraHTTPHeaders: {
+			// Add headers for Percy integration if needed
+			"X-Percy-Test": process.env.PERCY_TOKEN ? "enabled" : "disabled",
+		},
 	},
 
 	/* Global timeout for all tests (5 minutes for comprehensive flows) */
@@ -82,8 +95,8 @@ export default defineConfig({
 
 	/* Web server: Auto-start Laravel during test runs */
 	webServer: {
-		command: "php artisan serve",
-		url: "http://localhost:8000",
+		command: "php artisan serve --host=127.0.0.1 --port=8000",
+		url: "http://127.0.0.1:8000",
 		reuseExistingServer: !process.env["CI"],
 		timeout: 180000, // 3 minutes for server startup
 	},
