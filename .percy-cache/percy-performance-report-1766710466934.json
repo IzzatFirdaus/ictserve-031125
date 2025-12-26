@@ -1,0 +1,50 @@
+{
+  "summary": {
+    "totalDuration": "11063ms",
+    "uploadsPerSecond": 1.536598430247199,
+    "successRate": "88%",
+    "cacheHitRate": "1%"
+  },
+  "uploads": {
+    "total": 17,
+    "successful": 15,
+    "failed": 0,
+    "totalTime": 22471.318,
+    "averageTime": "1253ms",
+    "concurrentUploads": 1,
+    "queueSize": 0
+  },
+  "network": {
+    "totalRequests": 20,
+    "totalBytes": "14.95MB",
+    "compressionSavings": "12.3MB",
+    "retries": 0,
+    "timeouts": 0,
+    "averageBytesPerRequest": "765.59KB"
+  },
+  "cache": {
+    "hits": 1,
+    "misses": 66,
+    "size": 14,
+    "evictions": 0,
+    "hitRate": "1%"
+  },
+  "memory": {
+    "peak": "4.75MB",
+    "current": "4.75MB",
+    "gcCount": 0
+  },
+  "queue": {
+    "currentSize": 47,
+    "activeUploads": 3,
+    "maxConcurrentUploads": 3
+  },
+  "configuration": {
+    "maxConcurrentUploads": 3,
+    "batchSize": 5,
+    "enableCaching": true,
+    "compressionEnabled": true,
+    "enableAsyncUploads": true
+  },
+  "timestamp": "2025-12-26T00:54:26.934Z"
+}

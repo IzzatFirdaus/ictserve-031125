@@ -1,0 +1,25 @@
+{
+  "success": true,
+  "timestamp": "2025-12-25T23:41:06.154Z",
+  "duration": 59011,
+  "durationFormatted": "59s",
+  "percy": {
+    "buildUrl": "https://percy.io/fb50105c/web/ictserve-89663f40/builds/45756981",
+    "snapshotCount": 5,
+    "output": "[percy] Percy has started!\n[percy] Running \"playwright test tests/e2e/percy-setup-validation.spec.ts --project=chromium\"\n\nRunning 3 tests using 2 workers\n\n[percy] Snapshot taken: Homepage - Percy Setup Validation\n[percy] Snapshot taken: Login Page - Percy Setup Validation\n  ok 1 [chromium] › tests\\e2e\\percy-setup-validation.spec.ts:16:2 › Percy Setup Validation › should capture basic homepage snapshot (10.0s)\n  ok 2 [chromium] › tests\\e2e\\percy-setup-validation.spec.ts:33:2 › Percy Setup Validation › should capture login page snapshot (10.0s)\n[percy] Snapshot taken: Responsive Test - Mobile (375x667)\n[percy] Snapshot taken: Responsive Test - Tablet (768x1024)\n[percy] Snapshot taken: Responsive Test - Desktop (1280x800)\n  ok 3 [chromium] › tests\\e2e\\percy-setup-validation.spec.ts:50:2 › Percy Setup Validation › should capture responsive snapshots (13.0s)\n\n  3 passed (30.0s)\n[percy] Uploading 1 snapshot...\n[percy] Finalized build #6: https://percy.io/fb50105c/web/ictserve-89663f40/builds/45756981\n[percy] Build's CLI and CI logs sent successfully. Please share this log ID with Percy team in case of any issues - 45756981_build_45756981_cli_29532fb89e42211f1efef0a3ef0074e27370db54\n[percy] Command \"playwright test tests/e2e/percy-setup-validation.spec.ts --project=chromium\" exited with status: 0\n"
+  },
+  "ictserve": {
+    "version": "3.6.1",
+    "technologyStack": {
+      "laravel": "12.43.1",
+      "livewire": "3.7.3",
+      "filament": "4.3.1",
+      "playwright": "1.56.1"
+    }
+  },
+  "environment": {
+    "nodeVersion": "v22.14.0",
+    "platform": "win32",
+    "arch": "x64"
+  }
+}

@@ -1,0 +1,439 @@
+{
+  "8641153ae9121c2d083f268af3c10ed3dff38e217f850d57fa2129827002f687": {
+    "data": {
+      "success": true,
+      "snapshotId": "efaabc4b-192c-42e2-9206-7dc52b08ea79",
+      "uploadTime": 808.1375246820533,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 2435168,
+      "optimizedSize": 1231336
+    },
+    "timestamp": 1766710456770,
+    "lastAccessed": 1766710456770
+  },
+  "a003b19aadc15c55b2bbfffca225b6ef3ba85f457282baaf925ee11fa37a7514": {
+    "data": {
+      "success": true,
+      "snapshotId": "bfc90069-c4f5-4612-8c26-88305d65aa08",
+      "uploadTime": 1733.098945725136,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 660442,
+      "optimizedSize": 417293
+    },
+    "timestamp": 1766710457692,
+    "lastAccessed": 1766710457692
+  },
+  "d96db3e381508017d75b640f29a13fae666ec1e0bf9b0c0a2512ea2936da5fd9": {
+    "data": {
+      "success": true,
+      "snapshotId": "091ea913-3610-4618-8b32-8200c4ab5678",
+      "uploadTime": 1481.122888728033,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 2271650,
+      "optimizedSize": 900528
+    },
+    "timestamp": 1766710458358,
+    "lastAccessed": 1766710458358
+  },
+  "7046a315f535610ae8e61228db2caf3c659aa04d8c70ac72ad5a632e20205f17": {
+    "data": {
+      "success": true,
+      "snapshotId": "e7672a6e-a236-425f-b9a1-0bcea6288c7e",
+      "uploadTime": 954.2535055003185,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 2047614,
+      "optimizedSize": 1376716
+    },
+    "timestamp": 1766710458754,
+    "lastAccessed": 1766710458754
+  },
+  "58a2daf010a64cd8e4b35365db1275339be74a61a11fb68e295019d22a2b3b32": {
+    "data": {
+      "success": true,
+      "snapshotId": "e9e7c9ba-726e-4d4f-a373-9a0cf4ebd348",
+      "uploadTime": 2111.936430972468,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 2216288,
+      "optimizedSize": 1218623
+    },
+    "timestamp": 1766710459932,
+    "lastAccessed": 1766710459932
+  },
+  "44662ff006e550c4effb4723615804b48b6244f72c38fa3441962f7fbe493bff": {
+    "data": {
+      "success": true,
+      "snapshotId": "4e9a2d8a-66bc-423b-9949-dab341e75813",
+      "uploadTime": 1768.5294067136742,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 2297549,
+      "optimizedSize": 1399655
+    },
+    "timestamp": 1766710460254,
+    "lastAccessed": 1766710460254
+  },
+  "2c6a0244ebee5898c59afbc14ed56f0735e1566da59812e3192b2cbf119559d2": {
+    "data": {
+      "success": true,
+      "snapshotId": "e1b672ac-2877-44dc-94ec-da5c646b8eef",
+      "uploadTime": 2210.472575146693,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 1757356,
+      "optimizedSize": 1102783
+    },
+    "timestamp": 1766710461013,
+    "lastAccessed": 1766710461013
+  },
+  "c1dd3be4a2ba094170bee78434d4fe38c6f11175b88f070e9c112b2cef45655c": {
+    "data": {
+      "success": true,
+      "snapshotId": "61ba7c50-018c-4ae0-9283-1c5d7f46d916",
+      "uploadTime": 910.0620370004924,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 659510,
+      "optimizedSize": 455187
+    },
+    "timestamp": 1766710461282,
+    "lastAccessed": 1766710461282
+  },
+  "50dea4bc20faf8465dfd14715a823afacad73f033ad1db1d0489d77dd011a8d9": {
+    "data": {
+      "success": true,
+      "snapshotId": "d717aac2-5c3b-4a67-bd74-438d7eca0f99",
+      "uploadTime": 1457.794993662068,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 2206240,
+      "optimizedSize": 1067833
+    },
+    "timestamp": 1766710461513,
+    "lastAccessed": 1766710461513
+  },
+  "92a6a7ba1a4210962b0c4f32d46dd5425ebc7c2d5c0ae25e65aa19afbeec0621": {
+    "data": {
+      "success": true,
+      "snapshotId": "71db9faf-b56b-4396-8862-f83f34cef394",
+      "uploadTime": 760.3759259767062,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 1409090,
+      "optimizedSize": 711221
+    },
+    "timestamp": 1766710461897,
+    "lastAccessed": 1766710461897
+  },
+  "d6ba11412730fceba22bc31be52a74dd7a278b35dbd404827c5578305710ba4b": {
+    "data": {
+      "success": true,
+      "snapshotId": "0949173e-dead-431a-80a3-8918a2a452f4",
+      "uploadTime": 990.5830777420825,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 2244354,
+      "optimizedSize": 965956
+    },
+    "timestamp": 1766710462435,
+    "lastAccessed": 1766710462435
+  },
+  "b0a1a3f284e90e4768112eaf84a1bc8bf97e822c08aefff7881fc2f7a7273c41": {
+    "data": {
+      "success": true,
+      "snapshotId": "c46100fd-c0c7-4340-9c0e-445c1a883243",
+      "uploadTime": 1328.557488749076,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 815108,
+      "optimizedSize": 546220
+    },
+    "timestamp": 1766710463342,
+    "lastAccessed": 1766710463342
+  },
+  "c441496f20ce864c29a010699e8488e595fa5d8d254389c55996599ec590a140": {
+    "data": {
+      "success": true,
+      "snapshotId": "1f2d25da-2856-4964-b6ef-d86b8c5e231b",
+      "uploadTime": 1994.5977769529718,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 526213,
+      "optimizedSize": 178441
+    },
+    "timestamp": 1766710464639,
+    "lastAccessed": 1766710464639
+  },
+  "2da1829e80aa1ff5eae09a61ec7d981761848546e3e654540c7b5c42471186fd": {
+    "data": {
+      "success": true,
+      "snapshotId": "f2bc4221-d852-44aa-9915-90c668bc8198",
+      "uploadTime": 1264.3105159240254,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 1358792,
+      "optimizedSize": 838590
+    },
+    "timestamp": 1766710465772,
+    "lastAccessed": 1766710465772
+  },
+  "47ecdae86e263d22e26f58781a95edb30ad280757f239c96bac19fde14d22813": {
+    "data": {
+      "success": true,
+      "snapshotId": "ed92bd19-f25f-4789-bcec-333777464987",
+      "uploadTime": 2427.6428262318877,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 1501435,
+      "optimizedSize": 935969
+    },
+    "timestamp": 1766710465875,
+    "lastAccessed": 1766710465875
+  },
+  "f6b08a33bc2dfb705bd055a8d6893a6951bd9477b91ec93a9cd28af91b29e07f": {
+    "data": {
+      "result": "success",
+      "uploadId": "test-123"
+    },
+    "timestamp": 1766710465927,
+    "lastAccessed": 1766710465927
+  },
+  "6b735bea091daa7c63d0895ba8b629c462fb66c5e2fbaca47915bb1d8ec4576b": {
+    "data": {
+      "success": true,
+      "snapshotId": "fb838983-8087-401e-94fe-a31994b0f223",
+      "uploadTime": 1102.8537014719327,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 165017,
+      "optimizedSize": 100641
+    },
+    "timestamp": 1766710467039,
+    "lastAccessed": 1766710467039
+  },
+  "483ddfe4eb9ded3186bc960ba2ddc976b4f1bd699e793620e77973144d66cb62": {
+    "data": {
+      "success": true,
+      "snapshotId": "e1ff2d53-9a35-4ec6-8958-e2a3802d68c7",
+      "uploadTime": 1169.5071227064573,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 384022,
+      "optimizedSize": 194208
+    },
+    "timestamp": 1766710467110,
+    "lastAccessed": 1766710467110
+  },
+  "55ecfacee7a4dfe50f3cbfbb311e2bdf66f1ad70c72f248f427e7fdeb0a089f9": {
+    "data": {
+      "success": true,
+      "snapshotId": "f5342371-12be-4def-8957-d00a6f9b4b29",
+      "uploadTime": 1496.2645121566939,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 505955,
+      "optimizedSize": 335800
+    },
+    "timestamp": 1766710467430,
+    "lastAccessed": 1766710467430
+  },
+  "e19b5b74cd6b839abfe8fb48489581f6e48e456bd91510463d5e3672e90504b7": {
+    "data": {
+      "success": true,
+      "snapshotId": "161bfdc2-3b29-4638-b94d-231b0802df2b",
+      "uploadTime": 549.9341151249157,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 919746,
+      "optimizedSize": 385564
+    },
+    "timestamp": 1766710467697,
+    "lastAccessed": 1766710467697
+  },
+  "29b0deae856808e8ec503043f64be77e5031565d4646783e66aaf2a7214e02ca": {
+    "data": {
+      "success": true,
+      "snapshotId": "7d4de6f7-e3ef-48c4-b71c-7880736514ea",
+      "uploadTime": 1246.8370870112722,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 135693,
+      "optimizedSize": 71654
+    },
+    "timestamp": 1766710468391,
+    "lastAccessed": 1766710468391
+  },
+  "54393387b3bbdb43abce54976cd58b020049c643f5c454adfd79a4464147ba26": {
+    "data": {
+      "success": true,
+      "snapshotId": "b4160872-ce16-41f4-8083-f7a7ed4eed39",
+      "uploadTime": 923.9107019241412,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 479339,
+      "optimizedSize": 282255
+    },
+    "timestamp": 1766710468455,
+    "lastAccessed": 1766710468455
+  },
+  "4d9ed0f863e1cb441474e3f30182ba46b7b7d3bc9b5af8e14cdff67984c0e7c7": {
+    "data": {
+      "success": true,
+      "snapshotId": "6428eda4-b7e2-4b0c-b29e-82f4d36ad2b0",
+      "uploadTime": 1014.861327973013,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 321769,
+      "optimizedSize": 195885
+    },
+    "timestamp": 1766710468814,
+    "lastAccessed": 1766710468814
+  },
+  "7812b9e6b8b57d4e32349d426fad58e785800cd16b942fef0ca3822b0c9f4922": {
+    "data": {
+      "success": true,
+      "snapshotId": "a53dd4a7-4fc0-43e8-9529-f44f0ed33a46",
+      "uploadTime": 1779.0313364378517,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 688394,
+      "optimizedSize": 307138
+    },
+    "timestamp": 1766710470280,
+    "lastAccessed": 1766710470280
+  },
+  "c93b123251477b7de85c1f4098d03ffea1e6b4c690056552b54e6bf36b3fceb4": {
+    "data": {
+      "success": true,
+      "snapshotId": "d6207e66-a79e-41b9-b82f-b072f8a2de7f",
+      "uploadTime": 1855.9996087579957,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 406289,
+      "optimizedSize": 273506
+    },
+    "timestamp": 1766710470790,
+    "lastAccessed": 1766710470790
+  },
+  "ead461f1b6a418e44fccb2c46b57e420137a7b815d10de07b02e76e007eba297": {
+    "data": {
+      "success": true,
+      "snapshotId": "b171e7c9-6ecc-48b7-af54-13f9f851b6f8",
+      "uploadTime": 2283.4558430181855,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 1050886,
+      "optimizedSize": 627407
+    },
+    "timestamp": 1766710470801,
+    "lastAccessed": 1766710470801
+  },
+  "cfd5aada1803daee16d67d9a6053a0109187df3898db929bd8dc2ac285339b23": {
+    "data": {
+      "success": true,
+      "snapshotId": "3c9e06e8-22fd-405e-83b8-abde5bfc48ed",
+      "uploadTime": 630.2021677876417,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 931772,
+      "optimizedSize": 341583
+    },
+    "timestamp": 1766710471575,
+    "lastAccessed": 1766710471575
+  },
+  "a7ae8f9621cd556db1f2e2809d968a498a0752a2000d94abcad1b5b7e4337cf1": {
+    "data": {
+      "success": true,
+      "snapshotId": "a88656b3-1006-4d82-aff4-fe177eb17d3c",
+      "uploadTime": 1024.0564177367105,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 1031454,
+      "optimizedSize": 522721
+    },
+    "timestamp": 1766710471963,
+    "lastAccessed": 1766710471963
+  },
+  "f11d804cdd2c409e76c8615bcd09cfae815bb184e3a11cb73dd2f4224b22df2b": {
+    "data": {
+      "success": true,
+      "snapshotId": "91cbe085-a0e5-4e1c-ade3-67c7b1aaa5c2",
+      "uploadTime": 1790.779821793655,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 337811,
+      "optimizedSize": 154025
+    },
+    "timestamp": 1766710472172,
+    "lastAccessed": 1766710472172
+  },
+  "67e925302a204f47f8e690547c63b014990d468ccce8c64a178d975c9ed51433": {
+    "data": {
+      "success": true,
+      "snapshotId": "3639d7e5-1de5-4b5c-b064-edfcb216fd03",
+      "uploadTime": 872.058478989453,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 596824,
+      "optimizedSize": 284961
+    },
+    "timestamp": 1766710473730,
+    "lastAccessed": 1766710473730
+  },
+  "ab27b63776671e3c1ca05663d35f4960058d7caa33c07e6fe0438148fa7b4b8c": {
+    "data": {
+      "success": true,
+      "snapshotId": "79ab90c6-daae-4a71-b982-b9493bb354ad",
+      "uploadTime": 1708.1300032189902,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 498512,
+      "optimizedSize": 278305
+    },
+    "timestamp": 1766710473782,
+    "lastAccessed": 1766710473782
+  },
+  "d1152787aa27f3082e1da98142d38913a61821b5cc93b29861f0526c959c65f3": {
+    "data": {
+      "success": true,
+      "snapshotId": "7799b5c0-af67-480e-8c28-f72cb51a5999",
+      "uploadTime": 639.4315293809077,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 126278,
+      "optimizedSize": 84828
+    },
+    "timestamp": 1766710474518,
+    "lastAccessed": 1766710474518
+  },
+  "632a292b794aa2f11d132679fc89d07cd0f01c174c8784b72636067e2296e4c7": {
+    "data": {
+      "success": true,
+      "snapshotId": "5a0bb151-2dae-46c0-9b7d-93ee8c1ba943",
+      "uploadTime": 1360.6348366162226,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 755178,
+      "optimizedSize": 323726
+    },
+    "timestamp": 1766710475128,
+    "lastAccessed": 1766710475128
+  },
+  "c785016948c47a8275bf0184425142be47f5f7e8e43c549fd72fe0158a4b99ef": {
+    "data": {
+      "success": true,
+      "snapshotId": "b2fb564e-68f1-4054-87d2-c48f46881865",
+      "uploadTime": 1902.222859126825,
+      "optimized": true,
+      "compressed": true,
+      "originalSize": 954293,
+      "optimizedSize": 386084
+    },
+    "timestamp": 1766710476209,
+    "lastAccessed": 1766710476209
+  }
+}

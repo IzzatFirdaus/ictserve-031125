@@ -1,0 +1,25 @@
+{
+  "success": true,
+  "timestamp": "2025-12-25T23:40:02.991Z",
+  "duration": 147210,
+  "durationFormatted": "2m 27s",
+  "percy": {
+    "buildUrl": "https://percy.io/fb50105c/web/ictserve-89663f40/builds/45756955",
+    "snapshotCount": 20,
+    "output": "[percy] Percy has started!\n[percy] Running \"playwright test tests/e2e/percy-setup-validation.spec.ts\"\n\nRunning 12 tests using 2 workers\n\n[percy] Snapshot taken: Login Page - Percy Setup Validation\n[percy] Snapshot taken: Homepage - Percy Setup Validation\n  ok  2 [chromium] › tests\\e2e\\percy-setup-validation.spec.ts:33:2 › Percy Setup Validation › should capture login page snapshot (11.6s)\n  ok  1 [chromium] › tests\\e2e\\percy-setup-validation.spec.ts:16:2 › Percy Setup Validation › should capture basic homepage snapshot (12.4s)\n[percy] Snapshot taken: Responsive Test - Mobile (375x667)\n[percy] Snapshot taken: Responsive Test - Tablet (768x1024)\n[percy] Snapshot taken: Responsive Test - Desktop (1280x800)\n  ok  3 [chromium] › tests\\e2e\\percy-setup-validation.spec.ts:50:2 › Percy Setup Validation › should capture responsive snapshots (15.8s)\n[percy] Snapshot taken: Homepage - Percy Setup Validation\n  ok  4 [firefox] › tests\\e2e\\percy-setup-validation.spec.ts:16:2 › Percy Setup Validation › should capture basic homepage snapshot (11.1s)\n[percy] Snapshot taken: Responsive Test - Mobile (375x667)\n[percy] Snapshot taken: Login Page - Percy Setup Validation\n  ok  6 [firefox] › tests\\e2e\\percy-setup-validation.spec.ts:33:2 › Percy Setup Validation › should capture login page snapshot (11.0s)\n[percy] Snapshot taken: Responsive Test - Tablet (768x1024)\n[percy] Snapshot taken: Responsive Test - Desktop (1280x800)\n  ok  5 [firefox] › tests\\e2e\\percy-setup-validation.spec.ts:50:2 › Percy Setup Validation › should capture responsive snapshots (19.8s)\n[percy] Snapshot taken: Homepage - Percy Setup Validation\n  ok  7 [webkit] › tests\\e2e\\percy-setup-validation.spec.ts:16:2 › Percy Setup Validation › should capture basic homepage snapshot (11.1s)\n[percy] Snapshot taken: Responsive Test - Mobile (375x667)\n[percy] Snapshot taken: Responsive Test - Tablet (768x1024)\n[percy] Snapshot taken: Responsive Test - Desktop (1280x800)\n  ok  9 [webkit] › tests\\e2e\\percy-setup-validation.spec.ts:50:2 › Percy Setup Validation › should capture responsive snapshots (14.3s)\n[percy] Snapshot taken: Login Page - Percy Setup Validation\n  ok  8 [webkit] › tests\\e2e\\percy-setup-validation.spec.ts:33:2 › Percy Setup Validation › should capture login page snapshot (23.0s)\n[percy] Snapshot taken: Homepage - Percy Setup Validation\n  ok 10 [edge] › tests\\e2e\\percy-setup-validation.spec.ts:16:2 › Percy Setup Validation › should capture basic homepage snapshot (11.2s)\n[percy] Snapshot taken: Login Page - Percy Setup Validation\n  ok 11 [edge] › tests\\e2e\\percy-setup-validation.spec.ts:33:2 › Percy Setup Validation › should capture login page snapshot (10.6s)\n[percy] Snapshot taken: Responsive Test - Mobile (375x667)\n[percy] Snapshot taken: Responsive Test - Tablet (768x1024)\n[percy] Snapshot taken: Responsive Test - Desktop (1280x800)\n  ok 12 [edge] › tests\\e2e\\percy-setup-validation.spec.ts:50:2 › Percy Setup Validation › should capture responsive snapshots (14.9s)\n\n  12 passed (1.9m)\n[percy] Finalized build #5: https://percy.io/fb50105c/web/ictserve-89663f40/builds/45756955\n[percy] Build's CLI and CI logs sent successfully. Please share this log ID with Percy team in case of any issues - 45756955_build_45756955_cli_e2f81e066f05bf06dbdd7e891757631a2b90f1b1\n[percy] Command \"playwright test tests/e2e/percy-setup-validation.spec.ts\" exited with status: 0\n"
+  },
+  "ictserve": {
+    "version": "3.6.1",
+    "technologyStack": {
+      "laravel": "12.43.1",
+      "livewire": "3.7.3",
+      "filament": "4.3.1",
+      "playwright": "1.56.1"
+    }
+  },
+  "environment": {
+    "nodeVersion": "v22.14.0",
+    "platform": "win32",
+    "arch": "x64"
+  }
+}
