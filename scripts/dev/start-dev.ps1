@@ -153,8 +153,8 @@ if (-not $SkipChecks) {
         $npmTest = (& npm --version 2>&1)
         if ($LASTEXITCODE -ne 0) {
             Write-Host "[WARN] npm has permission issues - frontend assets may not build" -ForegroundColor Yellow
-            Write-Host "  └─ Run: .\scripts\dev\fix-npm.ps1 to attempt automatic fix" -ForegroundColor Gray
-            Write-Host "  └─ Or reinstall Node.js from: https://nodejs.org/" -ForegroundColor Gray
+            Write-Host "  - Run: .\scripts\dev\fix-npm.ps1 to attempt automatic fix" -ForegroundColor Gray
+            Write-Host "  - Or reinstall Node.js from: https://nodejs.org/" -ForegroundColor Gray
         } else {
             Write-Host "[OK] npm $npmTest" -ForegroundColor Green
         }
@@ -363,20 +363,20 @@ function Test-WSLRedis {
         }
     }
     catch {
-        Write-Host "  └─ WSL detection failed: $_" -ForegroundColor DarkYellow
+        Write-Host "  - WSL detection failed: $_" -ForegroundColor DarkYellow
     }
 
     return $wslInfo
 }
 
 function Start-WSLRedis {
-    Write-Host "  └─ Starting WSL Redis server..." -ForegroundColor Green
+    Write-Host "  - Starting WSL Redis server..." -ForegroundColor Green
 
     # Try to start Redis without sudo first (if user has permissions)
     $startResult = & wsl.exe -e bash -c 'redis-server --daemonize yes --port 6379 --bind 127.0.0.1 2>/dev/null && echo started || echo failed' 2>$null
 
     if ($startResult -eq 'started') {
-        Write-Host "  └─ Redis started successfully (user mode)" -ForegroundColor Green
+        Write-Host "  - Redis started successfully (user mode)" -ForegroundColor Green
         return $true
     }
 
@@ -384,11 +384,11 @@ function Start-WSLRedis {
     $sudoResult = & wsl.exe -e bash -c 'timeout 2 sudo -n redis-server --daemonize yes --port 6379 --bind 127.0.0.1 2>/dev/null && echo started || echo failed' 2>$null
 
     if ($sudoResult -eq 'started') {
-        Write-Host "  └─ Redis started successfully (sudo mode)" -ForegroundColor Green
+        Write-Host "  - Redis started successfully (sudo mode)" -ForegroundColor Green
         return $true
     }
 
-    Write-Host "  └─ [WARN] Could not start WSL Redis automatically" -ForegroundColor Yellow
+    Write-Host "  - [WARN] Could not start WSL Redis automatically" -ForegroundColor Yellow
     Write-Host "      Try manually: wsl.exe redis-server --daemonize yes" -ForegroundColor Gray
     return $false
 }
@@ -417,11 +417,11 @@ if ($servicesToStart -contains "redis") {
 
     if ($wslRedis.Available -and $wslRedis.HasRedis) {
         if ($wslRedis.IsRunning) {
-            Write-Host "  └─ WSL Redis already running" -ForegroundColor Green
+            Write-Host "  - WSL Redis already running" -ForegroundColor Green
         } else {
             $started = Start-WSLRedis
             if (-not $started) {
-                Write-Host "  └─ Manual start required: wsl.exe redis-server --daemonize yes" -ForegroundColor Cyan
+                Write-Host "  - Manual start required: wsl.exe redis-server --daemonize yes" -ForegroundColor Cyan
             }
         }
 
@@ -432,18 +432,18 @@ if ($servicesToStart -contains "redis") {
         Test-Port -Port 6379 -Attempts 10 -DelaySeconds 1 -ServiceName 'Redis (WSL)'
 
     } elseif ($wslRedis.Available -and -not $wslRedis.HasRedis) {
-        Write-Host "  └─ WSL available but Redis not installed" -ForegroundColor Yellow
+        Write-Host "  - WSL available but Redis not installed" -ForegroundColor Yellow
 
         if ($InstallRedis) {
-            Write-Host "  └─ Installing Redis in WSL..." -ForegroundColor Cyan
+            Write-Host "  - Installing Redis in WSL..." -ForegroundColor Cyan
             $installResult = & wsl.exe -e bash -c 'sudo apt update && sudo apt install -y redis-server && echo installed || echo failed' 2>$null
             if ($installResult -eq 'installed') {
-                Write-Host "  └─ Redis installed successfully! Rerun script to start." -ForegroundColor Green
+                Write-Host "  - Redis installed successfully! Rerun script to start." -ForegroundColor Green
             } else {
-                Write-Host "  └─ [ERROR] Redis installation failed" -ForegroundColor Red
+                Write-Host "  - [ERROR] Redis installation failed" -ForegroundColor Red
             }
         } else {
-            Write-Host "  └─ Run with -InstallRedis to auto-install, or manually:" -ForegroundColor Cyan
+            Write-Host "  - Run with -InstallRedis to auto-install, or manually:" -ForegroundColor Cyan
             Write-Host "      wsl.exe sudo apt update" -ForegroundColor Gray
             Write-Host "      wsl.exe sudo apt install -y redis-server" -ForegroundColor Gray
         }
@@ -451,16 +451,16 @@ if ($servicesToStart -contains "redis") {
         # Check for alternative Redis (Laragon, Docker, etc.)
         $redisFound = Test-Port -Port 6379 -Attempts 3 -DelaySeconds 1 -ServiceName 'Alternative Redis'
         if (-not $redisFound) {
-            Write-Host "  └─ [WARN] No Redis found. Some features may not work." -ForegroundColor Yellow
+            Write-Host "  - [WARN] No Redis found. Some features may not work." -ForegroundColor Yellow
         }
 
     } else {
-        Write-Host "  └─ WSL not available, checking for local Redis..." -ForegroundColor Yellow
+        Write-Host "  - WSL not available, checking for local Redis..." -ForegroundColor Yellow
 
         # Check for Laragon, XAMPP, or other local Redis
         $redisFound = Test-Port -Port 6379 -Attempts 5 -DelaySeconds 1 -ServiceName 'Local Redis'
         if (-not $redisFound) {
-            Write-Host "  └─ [WARN] No Redis found. Install via:" -ForegroundColor Yellow
+            Write-Host "  - [WARN] No Redis found. Install via:" -ForegroundColor Yellow
             Write-Host "      - WSL: wsl.exe sudo apt install redis-server" -ForegroundColor Gray
             Write-Host "      - Laragon Redis module" -ForegroundColor Gray
             Write-Host "      - Docker: docker run -d -p 6379:6379 redis:alpine" -ForegroundColor Gray
@@ -477,7 +477,7 @@ if ($servicesToStart -contains "laravel") {
     Start-Service -Title 'Laravel Server (127.0.0.1:8000)' -Command "php artisan serve --host=127.0.0.1 --port=8000" -Color "Blue" -Description "ICTServe v3.6.0 - True Hybrid Architecture" -Critical -Priority 2
 
     # Give Laravel server extra time to initialize
-    Write-Host "  └─ Waiting for Laravel to initialize..." -ForegroundColor Gray
+    Write-Host "  - Waiting for Laravel to initialize..." -ForegroundColor Gray
     Start-Sleep -Seconds 3
 
     Test-Port -Port 8000 -Attempts 15 -DelaySeconds 2 -ServiceName 'Laravel Server' -HealthEndpoint "/api/health" -Critical
@@ -491,7 +491,7 @@ if ($servicesToStart -contains "reverb") {
     Start-Service -Title 'Laravel Reverb (ws://127.0.0.1:8080)' -Command "php artisan reverb:start --host=127.0.0.1 --port=8080" -Color "Magenta" -Description "Real-time notifications, live updates, broadcasting" -Priority 3
 
     # Give Reverb time to initialize
-    Write-Host "  └─ Waiting for Reverb WebSocket server..." -ForegroundColor Gray
+    Write-Host "  - Waiting for Reverb WebSocket server..." -ForegroundColor Gray
     Start-Sleep -Seconds 2
 
     Test-Port -Port 8080 -Attempts 15 -DelaySeconds 1 -ServiceName 'Laravel Reverb'
@@ -511,12 +511,12 @@ if ($servicesToStart -contains "queue" -or $servicesToStart -contains "horizon")
     }
     
     if ($existingWorkers.Count -gt 0) {
-        Write-Host "  └─ Queue workers already running ($($existingWorkers.Count) processes)" -ForegroundColor Green
+        Write-Host "  - Queue workers already running ($($existingWorkers.Count) processes)" -ForegroundColor Green
         $queueWorkersStarted = $true
     } else {
-        Write-Host "  └─ Starting Windows-compatible queue workers..." -ForegroundColor Cyan
-        Write-Host "  └─ Note: Using queue workers instead of Horizon (Windows limitation)" -ForegroundColor Gray
-        Write-Host "  └─ See docs/horizon/WINDOWS_QUEUE_MANAGEMENT.md for details" -ForegroundColor Gray
+        Write-Host "  - Starting Windows-compatible queue workers..." -ForegroundColor Cyan
+        Write-Host "  - Note: Using queue workers instead of Horizon (Windows limitation)" -ForegroundColor Gray
+        Write-Host "  - See docs/horizon/WINDOWS_QUEUE_MANAGEMENT.md for details" -ForegroundColor Gray
         
         # Use our Windows-compatible queue management script
         try {
@@ -533,21 +533,21 @@ if ($servicesToStart -contains "queue" -or $servicesToStart -contains "horizon")
                 }
                 
                 if ($newWorkers.Count -gt 0) {
-                    Write-Host "  └─ [OK] Started $($newWorkers.Count) queue worker processes" -ForegroundColor Green
+                    Write-Host "  - [OK] Started $($newWorkers.Count) queue worker processes" -ForegroundColor Green
                     $queueWorkersStarted = $true
                 } else {
-                    Write-Host "  └─ [WARN] Queue workers may not have started properly" -ForegroundColor Yellow
+                    Write-Host "  - [WARN] Queue workers may not have started properly" -ForegroundColor Yellow
                     $queueWorkersStarted = $false
                 }
             } else {
-                Write-Host "  └─ [WARN] Queue worker script not found, using fallback" -ForegroundColor Yellow
+                Write-Host "  - [WARN] Queue worker script not found, using fallback" -ForegroundColor Yellow
                 # Fallback to single queue worker
                 Start-Service -Title "Laravel Queue Worker" -Command "php artisan queue:work redis --queue=default,helpdesk,notifications,asset-loan,approvals --tries=3 --timeout=300" -Color "Cyan" -Description "Background job processing" -Priority 4
                 $queueWorkersStarted = $true
             }
         }
         catch {
-            Write-Host "  └─ [ERROR] Failed to start queue workers: $($_.Exception.Message)" -ForegroundColor Red
+            Write-Host "  - [ERROR] Failed to start queue workers: $($_.Exception.Message)" -ForegroundColor Red
             $queueWorkersStarted = $false
         }
     }
@@ -576,7 +576,7 @@ if ($servicesToStart -contains "queue" -or $servicesToStart -contains "horizon")
         
         $queueWorking = Test-QueueWorkers
         if (-not $queueWorking) {
-            Write-Host "  └─ [INFO] Queue workers started but may need time to initialize" -ForegroundColor Gray
+            Write-Host "  - [INFO] Queue workers started but may need time to initialize" -ForegroundColor Gray
         }
     }
     
@@ -591,13 +591,13 @@ if ($servicesToStart -contains "vite") {
     # Check if npm is functional before starting Vite
     [void](& npm --version 2>&1)
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "  └─ [WARN] npm not functional - skipping Vite server" -ForegroundColor Yellow
-        Write-Host "  └─ Frontend assets will not hot-reload. Run 'npm run build' manually." -ForegroundColor Gray
-        Write-Host "  └─ To fix: Run .\scripts\dev\fix-npm.ps1 or reinstall Node.js" -ForegroundColor Cyan
+        Write-Host "  - [WARN] npm not functional - skipping Vite server" -ForegroundColor Yellow
+        Write-Host "  - Frontend assets will not hot-reload. Run 'npm run build' manually." -ForegroundColor Gray
+        Write-Host "  - To fix: Run .\scripts\dev\fix-npm.ps1 or reinstall Node.js" -ForegroundColor Cyan
     } else {
         # Check if node_modules is properly installed
         if (-not (Test-Path "node_modules\vite")) {
-            Write-Host "  └─ [WARN] Vite not found, running npm install..." -ForegroundColor Yellow
+            Write-Host "  - [WARN] Vite not found, running npm install..." -ForegroundColor Yellow
             npm install --silent
         }
 
@@ -632,39 +632,39 @@ if ($servicesToStart -contains "ollama") {
     try {
         $ollamaVersion = & ollama --version 2>$null
         if ($LASTEXITCODE -eq 0) {
-            Write-Host "  └─ Ollama found: $ollamaVersion" -ForegroundColor Green
+            Write-Host "  - Ollama found: $ollamaVersion" -ForegroundColor Green
             
             # Check if Ollama service is already running
             $ollamaRunning = Test-Port -Port 11434 -Attempts 3 -DelaySeconds 1 -ServiceName 'Ollama'
             
             if (-not $ollamaRunning) {
-                Write-Host "  └─ Starting Ollama server..." -ForegroundColor Cyan
+                Write-Host "  - Starting Ollama server..." -ForegroundColor Cyan
                 Start-Service -Title "Ollama AI Server (127.0.0.1:11434)" -Command "ollama serve" -Color "DarkMagenta" -Description "Local LLM for AI Chatbot (D18 Integration)" -Priority 8
                 
                 # Wait for Ollama to start
                 Test-Port -Port 11434 -Attempts 10 -DelaySeconds 2 -ServiceName 'Ollama AI Server' -HealthEndpoint "/api/tags"
                 
                 # Check for required models
-                Write-Host "  └─ Checking AI models..." -ForegroundColor Gray
+                Write-Host "  - Checking AI models..." -ForegroundColor Gray
                 $models = & ollama list 2>$null
                 if ($models -match "llama3.2:3b|phi3:mini|qwen2.5:3b") {
-                    Write-Host "  └─ [OK] AI models available for chatbot" -ForegroundColor Green
+                    Write-Host "  - [OK] AI models available for chatbot" -ForegroundColor Green
                 } else {
-                    Write-Host "  └─ [INFO] No optimized models found. Consider installing:" -ForegroundColor Yellow
+                    Write-Host "  - [INFO] No optimized models found. Consider installing:" -ForegroundColor Yellow
                     Write-Host "      ollama pull llama3.2:3b    # Fast, good quality" -ForegroundColor Gray
                     Write-Host "      ollama pull phi3:mini      # Microsoft, efficient" -ForegroundColor Gray
                     Write-Host "      ollama pull qwen2.5:3b     # Multilingual support" -ForegroundColor Gray
                 }
             } else {
-                Write-Host "  └─ Ollama already running on port 11434" -ForegroundColor Green
+                Write-Host "  - Ollama already running on port 11434" -ForegroundColor Green
             }
         } else {
-            Write-Host "  └─ [WARN] Ollama not installed. AI chatbot will use AWS Bedrock only." -ForegroundColor Yellow
+            Write-Host "  - [WARN] Ollama not installed. AI chatbot will use AWS Bedrock only." -ForegroundColor Yellow
             Write-Host "      Install from: https://ollama.ai/download" -ForegroundColor Gray
         }
     }
     catch {
-        Write-Host "  └─ [WARN] Ollama not found. AI chatbot will use AWS Bedrock only." -ForegroundColor Yellow
+        Write-Host "  - [WARN] Ollama not found. AI chatbot will use AWS Bedrock only." -ForegroundColor Yellow
         Write-Host "      Install from: https://ollama.ai/download" -ForegroundColor Gray
     }
     
@@ -677,10 +677,10 @@ if ($servicesToStart -contains "browser" -and -not $NoBrowser) {
     Write-Host "[$currentService/$serviceCount] Opening Browser for Testing" -ForegroundColor Yellow
     try {
         Start-Process 'http://127.0.0.1:8000'
-        Write-Host "  └─ [OK] Browser opened to http://127.0.0.1:8000" -ForegroundColor Green
+        Write-Host "  - [OK] Browser opened to http://127.0.0.1:8000" -ForegroundColor Green
     }
     catch {
-        Write-Host "  └─ [WARN] Could not open browser automatically" -ForegroundColor Yellow
+        Write-Host "  - [WARN] Could not open browser automatically" -ForegroundColor Yellow
     }
 }
 
@@ -730,27 +730,27 @@ if ($servicesToStart -contains "pulse") {
 
 Write-Host ""
 Write-Host "Quick Access URLs:" -ForegroundColor White
-Write-Host "  • Application:     http://127.0.0.1:8000" -ForegroundColor Gray
-Write-Host "  • Admin Panel:     http://127.0.0.1:8000/admin" -ForegroundColor Gray
-Write-Host "  • AI Chatbot:      http://127.0.0.1:8000/chatbot" -ForegroundColor Gray
-Write-Host "  • Telescope:       http://127.0.0.1:8000/telescope" -ForegroundColor Gray
-Write-Host "  • Pulse:           http://127.0.0.1:8000/pulse" -ForegroundColor Gray
+Write-Host "  - Application:     http://127.0.0.1:8000" -ForegroundColor Gray
+Write-Host "  - Admin Panel:     http://127.0.0.1:8000/admin" -ForegroundColor Gray
+Write-Host "  - AI Chatbot:      http://127.0.0.1:8000/chatbot" -ForegroundColor Gray
+Write-Host "  - Telescope:       http://127.0.0.1:8000/telescope" -ForegroundColor Gray
+Write-Host "  - Pulse:           http://127.0.0.1:8000/pulse" -ForegroundColor Gray
 if ($servicesToStart -contains "ollama") {
-    Write-Host "  • Ollama API:      http://127.0.0.1:11434" -ForegroundColor Gray
+    Write-Host "  - Ollama API:      http://127.0.0.1:11434" -ForegroundColor Gray
 }
 
 Write-Host ""
 Write-Host "Development Commands:" -ForegroundColor White
-Write-Host "  • Run Tests:       php artisan test" -ForegroundColor Gray
-Write-Host "  • Code Format:     vendor/bin/pint" -ForegroundColor Gray
-Write-Host "  • Static Analysis: vendor/bin/phpstan analyse" -ForegroundColor Gray
-Write-Host "  • E2E Tests:       npm run test:e2e" -ForegroundColor Gray
-Write-Host "  • Build Assets:    npm run build" -ForegroundColor Gray
-Write-Host "  • Queue Status:    .\scripts\dev\start-queue-workers.ps1 -Action status" -ForegroundColor Gray
-Write-Host "  • Queue Monitor:   php artisan queue:monitor" -ForegroundColor Gray
+Write-Host "  - Run Tests:       php artisan test" -ForegroundColor Gray
+Write-Host "  - Code Format:     vendor/bin/pint" -ForegroundColor Gray
+Write-Host "  - Static Analysis: vendor/bin/phpstan analyse" -ForegroundColor Gray
+Write-Host "  - E2E Tests:       npm run test:e2e" -ForegroundColor Gray
+Write-Host "  - Build Assets:    npm run build" -ForegroundColor Gray
+Write-Host "  - Queue Status:    .\scripts\dev\start-queue-workers.ps1 -Action status" -ForegroundColor Gray
+Write-Host "  - Queue Monitor:   php artisan queue:monitor" -ForegroundColor Gray
 if ($servicesToStart -contains "ollama") {
-    Write-Host "  • AI Models:       ollama list" -ForegroundColor Gray
-    Write-Host "  • Install Model:   ollama pull llama3.2:3b" -ForegroundColor Gray
+    Write-Host "  - AI Models:       ollama list" -ForegroundColor Gray
+    Write-Host "  - Install Model:   ollama pull llama3.2:3b" -ForegroundColor Gray
 }
 
 Write-Host ""
@@ -790,7 +790,7 @@ foreach ($service in $shutdownServices) {
         }
 
         if ($processes) {
-            Write-Host "  └─ Stopping $($service.Name)..." -ForegroundColor Yellow
+            Write-Host "  - Stopping $($service.Name)..." -ForegroundColor Yellow
             $processes | Stop-Process -Force -ErrorAction SilentlyContinue
         }
     }
@@ -812,3 +812,4 @@ catch {
 $finalTime = Get-Date -Format "HH:mm:ss"
 Write-Host "[$finalTime] ICTServe development environment stopped." -ForegroundColor Green
 Write-Host ""
+

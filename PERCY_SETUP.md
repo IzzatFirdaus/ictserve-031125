@@ -14,7 +14,7 @@ This document provides setup instructions for Percy visual testing integration w
 ### Create Percy Project
 
 1. Visit [Percy.io](https://percy.io/) and sign up or log in
-2. Create a new project named `ictserve-v3.6.1-visual-testing`
+2. Create a new project named `ictserve`
 3. Copy your Percy token from the project settings
 
 ### Alternative: BrowserStack Percy
@@ -33,7 +33,7 @@ Add the following Percy configuration to your `.env` file:
 ```bash
 # Percy Visual Testing Configuration
 PERCY_TOKEN=your_percy_token_here
-PERCY_PROJECT=ictserve-v3.6.1-visual-testing
+PERCY_PROJECT=ictserve
 PERCY_ENABLED=true
 PERCY_BRANCH=main
 PERCY_TARGET_BRANCH=main
