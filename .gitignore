@@ -134,3 +134,5 @@ bootstrap/cache/filament/
 # Development tools
 pint.bat
 stubs/
+# Windows system files
+NUL
