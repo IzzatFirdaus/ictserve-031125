@@ -1,0 +1,51 @@
+{
+  "percy": {
+    "buildInfo": {
+      "id": null,
+      "number": null,
+      "state": "pending",
+      "webUrl": null,
+      "totalSnapshots": 0,
+      "createdAt": null,
+      "finishedAt": null
+    },
+    "configuration": {
+      "projectName": "ictserve",
+      "branch": "develop",
+      "targetBranch": "develop",
+      "enabled": true,
+      "percyEnabled": true
+    },
+    "timestamp": "2025-12-25T23:56:51.752Z",
+    "environment": {
+      "nodeVersion": "v22.14.0",
+      "platform": "win32",
+      "arch": "x64"
+    }
+  },
+  "errorHandling": {
+    "summary": {
+      "totalErrors": 0,
+      "criticalErrors": 0,
+      "recoveredErrors": 0,
+      "percyEnabled": true,
+      "gracefulDegradationEnabled": true
+    },
+    "errorsByType": {},
+    "retryOperations": [],
+    "configuration": {
+      "maxRetries": 3,
+      "retryDelay": 1000,
+      "failOnError": false,
+      "logLevel": "info"
+    },
+    "timestamp": "2025-12-25T23:56:51.760Z",
+    "environment": {
+      "nodeVersion": "v22.14.0",
+      "platform": "win32",
+      "percyToken": "[CONFIGURED]",
+      "percyProject": "[NOT SET]"
+    }
+  },
+  "timestamp": "2025-12-25T23:56:51.765Z"
+}

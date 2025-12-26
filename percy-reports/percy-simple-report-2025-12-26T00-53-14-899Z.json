@@ -1,0 +1,18 @@
+{
+  "success": false,
+  "timestamp": "2025-12-26T00:53:14.896Z",
+  "duration": 7,
+  "durationFormatted": "0s",
+  "error": {
+    "message": "PERCY_TOKEN environment variable is not set",
+    "stack": "Error: PERCY_TOKEN environment variable is not set\n    at SimplePercyBuildManager.validatePercy (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\simple-build-manager.cjs:80:10)\n    at SimplePercyBuildManager.executeWithPercy (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\simple-build-manager.cjs:41:15)\n    at main (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\simple-build-manager.cjs:277:35)\n    at Object.<anonymous> (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\simple-build-manager.cjs:311:2)\n    at Module._compile (node:internal/modules/cjs/loader:1554:14)\n    at Object..js (node:internal/modules/cjs/loader:1706:10)\n    at Module.load (node:internal/modules/cjs/loader:1289:32)\n    at Function._load (node:internal/modules/cjs/loader:1108:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)"
+  },
+  "troubleshooting": {
+    "commonSolutions": [
+      "Check PERCY_TOKEN environment variable",
+      "Verify network connectivity to Percy services",
+      "Ensure Percy CLI is properly installed",
+      "Check for rate limiting or quota issues"
+    ]
+  }
+}
