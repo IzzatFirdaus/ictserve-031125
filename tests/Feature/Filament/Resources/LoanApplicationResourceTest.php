@@ -97,17 +97,32 @@ class LoanApplicationResourceTest extends TestCase
     public function can_create_loan_application_with_livewire(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
+        $division = \App\Models\Division::factory()->create();
+
+        $endDate = now()->addDays(7)->format('Y-m-d');
 
         Livewire::actingAs($user)
             ->test(CreateLoanApplication::class)
             ->fillForm([
+                'application_number' => 'LA-2024-001',
                 'applicant_name' => 'Ahmad bin Ali',
                 'applicant_email' => 'ahmad@motac.gov.my',
                 'applicant_phone' => '03-12345678',
+                'applicant_position' => 'Pegawai Tadbir',
+                'applicant_grade' => '44',
+                'staff_id' => 'MOTAC1234',
+                'grade' => '44',
+                'division_id' => $division->id,
                 'purpose' => 'Untuk mesyuarat dengan klien',
+                'location' => 'Putrajaya',
+                'return_location' => 'Putrajaya',
                 'loan_start_date' => now()->addDay()->format('Y-m-d'),
-                'loan_end_date' => now()->addDays(7)->format('Y-m-d'),
+                'loan_end_date' => $endDate,
+                'expected_return_date' => $endDate,
                 'status' => LoanStatus::DRAFT->value,
+                'is_responsible_officer' => true,
+                'terms_acknowledged' => true,
+                'maintenance_required' => false,
             ])
             ->call('create')
             ->assertHasNoFormErrors();

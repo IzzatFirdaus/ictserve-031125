@@ -125,7 +125,8 @@ class GuestLoanApplicationTest extends TestCase
         $futureStart = now()->addDays(5)->format('Y-m-d');
         $futureEnd = now()->addDays(7)->format('Y-m-d');
 
-        Livewire::test(GuestLoanApplication::class)
+        // Test that validation errors are shown for empty required fields
+        $component = Livewire::test(GuestLoanApplication::class)
             ->set('form.applicant_name', '')
             ->set('form.phone', '0123456789')
             ->set('form.applicant_position', 'Pegawai Tadbir N41')
@@ -136,8 +137,19 @@ class GuestLoanApplicationTest extends TestCase
             ->set('form.loan_start_date', $futureStart)
             ->set('form.expected_return_date', $futureEnd)
             ->call('nextStep')
-            ->assertHasErrors(['form.applicant_name'])
+            ->assertHasErrors(['form.applicant_name']);
+
+        // Test that validation passes when all required fields are filled
+        Livewire::test(GuestLoanApplication::class)
             ->set('form.applicant_name', 'Ahmad Bin Valid')
+            ->set('form.phone', '0123456789')
+            ->set('form.applicant_position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_grade', 'N41')
+            ->set('form.division_id', $this->division->id)
+            ->set('form.purpose', 'Official meeting presentation')
+            ->set('form.location', 'Putrajaya')
+            ->set('form.loan_start_date', $futureStart)
+            ->set('form.expected_return_date', $futureEnd)
             ->call('nextStep')
             ->assertHasNoErrors(['form.applicant_name'])
             ->assertSet('currentStep', 2);

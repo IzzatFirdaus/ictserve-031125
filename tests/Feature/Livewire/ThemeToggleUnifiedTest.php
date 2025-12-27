@@ -69,8 +69,8 @@ class ThemeToggleUnifiedTest extends TestCase
         $this->assertStringContainsString('aria-pressed=', $html);
         $this->assertStringContainsString('min-h-11', $html);
         $this->assertStringContainsString('min-w-11', $html);
-        $this->assertStringContainsString('focus:ring-3', $html);
-        $this->assertStringContainsString('focus:ring-primary-500', $html);
+        $this->assertStringContainsString('focus-visible:ring-3', $html);
+        $this->assertStringContainsString('focus-visible:ring-primary-500', $html);
     }
 
     #[Test]
@@ -81,7 +81,7 @@ class ThemeToggleUnifiedTest extends TestCase
             ->set('theme', 'light');
 
         $lightHtml = $lightComponent->html();
-        $this->assertStringContainsString('x-show="theme !== \'dark\'"', $lightHtml);
+        $this->assertStringContainsString('x-show="theme === \'light\'"', $lightHtml);
 
         // Test dark theme (shows sun icon)
         $darkComponent = Livewire::test(ThemeToggleUnified::class)
@@ -150,9 +150,9 @@ class ThemeToggleUnifiedTest extends TestCase
         $html = $component->html();
 
         // Check color classes for WCAG 2.2 AA compliance
-        $this->assertStringContainsString('text-gray-600 dark:text-gray-300', $html);
-        $this->assertStringContainsString('text-yellow-400', $html); // Sun icon
-        $this->assertStringContainsString('hover:bg-gray-100 dark:hover:bg-gray-700', $html);
+        $this->assertStringContainsString('text-slate-600 dark:text-slate-300', $html);
+        $this->assertStringContainsString('text-warning-400', $html); // Sun icon
+        $this->assertStringContainsString('hover:bg-slate-100 dark:hover:bg-slate-700', $html);
     }
 
     #[Test]

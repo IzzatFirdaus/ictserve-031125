@@ -1,28 +1,31 @@
 /**
- * ICTServe v3.6.0 - Guest User Flow E2E Test with Screenshots
+ * ICTServe v3.6.1 - Guest User Flow E2E Test with Percy Visual Testing
  *
- * Purpose: Test and capture screenshots of guest user flows
- * Output: public/images/screenshots/
+ * ENHANCED VERSION with Percy Integration:
+ * - ✅ Original guest flow functionality preserved
+ * - ✅ Percy visual snapshots replace basic screenshots
+ * - ✅ Visual regression testing for guest workflows
+ * - ✅ WCAG 2.2 Level AA visual compliance
+ * - ✅ ICTServe v3.6.1 True Hybrid Architecture support
+ * - ✅ Bahasa Melayu interface visual validation
  *
  * Test Flow:
- * 1. Welcome Page → Screenshot
- * 2. Helpdesk Form (4-step wizard) → Fill & Screenshot
- * 3. Loan Application Form (3-step wizard) → Fill & Screenshot
- * 4. Success Pages → Screenshot
+ * 1. Welcome Page → Percy Visual Snapshot
+ * 2. Helpdesk Form (4-step wizard) → Fill & Percy Snapshots
+ * 3. Loan Application Form (3-step wizard) → Fill & Percy Snapshots
+ * 4. Success Pages → Percy Visual Snapshots
  *
- * Screenshot Naming Convention:
- * <step_number>_<page_name>_<activity>_<user_type>.png
- *
- * UPDATED for v3.6.0:
- * - Uses domcontentloaded instead of networkidle (WebSocket compatibility)
- * - Bahasa Melayu interface (button text: "Seterusnya" not "Next")
- * - Updated form field selectors for current Livewire components
- * - 4-step helpdesk wizard, 3-step loan wizard
+ * UPDATED for v3.6.1:
+ * - Uses Percy visual testing instead of basic screenshots
+ * - Enhanced visual regression detection
+ * - Responsive design validation across viewports
+ * - True Hybrid Architecture guest workflow testing
+ * - Bahasa Melayu interface consistency validation
  *
  * @trace D10 Source Code Documentation
  * @author Pasukan Pembangunan BPM MOTAC
- * @version 3.6.0
- * @updated 2025-12-13
+ * @version 3.6.1
+ * @updated 2025-12-26
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -34,27 +37,51 @@ declare global {
 }
 
 import { test, expect, Page } from "@playwright/test";
-import * as path from "path";
 import * as fs from "fs";
+import * as path from "path";
+import {
+	takePercySnapshot,
+	takeResponsiveSnapshots,
+	takeFormStateSnapshots,
+	waitForStableContent,
+} from "./utils/percy-utils";
 
-// Screenshot directory
-const SCREENSHOT_DIR = "./public/images/screenshots";
+// Base URL for navigation
 const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:8000";
 
-// Ensure screenshot directory exists
-test.beforeAll(async () => {
+// Screenshot directory for fallback screenshots
+const SCREENSHOT_DIR = "./public/images/screenshots";
+
+/**
+ * Helper: Take screenshot with Percy fallback
+ */
+async function takeScreenshot(page: Page, filename: string): Promise<void> {
+	// Ensure directory exists
 	if (!fs.existsSync(SCREENSHOT_DIR)) {
 		fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
 	}
-	console.log("📸 Starting ICTServe Guest Flow Screenshot Automation");
-	console.log(`📁 Output directory: ${SCREENSHOT_DIR}`);
-	console.log(`🌐 Base URL: ${BASE_URL}`);
-});
+
+	// Take Percy snapshot (primary)
+	const snapshotName = filename.replace(".png", "").replace(/_/g, " ");
+	await takePercySnapshot(page, {
+		name: `Guest Flow - ${snapshotName}`,
+		userType: "guest",
+		widths: [375, 768, 1280],
+		validateBahasaMelayu: true,
+	});
+
+	// Also take local screenshot as fallback
+	await page.screenshot({
+		path: path.join(SCREENSHOT_DIR, filename),
+		fullPage: true,
+	});
+}
 
 /**
- * Helper: Wait for Livewire to initialize
+ * Helper: Wait for Livewire to initialize and content to stabilize
  */
 async function waitForLivewire(page: Page, timeout = 2000): Promise<void> {
+	await waitForStableContent(page);
 	await page.waitForTimeout(timeout);
 	// Wait for any Livewire loading indicators to disappear
 	await page
@@ -78,50 +105,61 @@ async function navigateTo(page: Page, url: string): Promise<void> {
 	await waitForLivewire(page);
 }
 
-/**
- * Helper: Take and save screenshot
- */
-async function takeScreenshot(
-	page: Page,
-	filename: string,
-	fullPage = true
-): Promise<void> {
-	const filepath = path.join(SCREENSHOT_DIR, filename);
-	await page.screenshot({ path: filepath, fullPage, animations: "disabled" });
-	console.log(`✅ Screenshot saved: ${filename}`);
-}
+test.describe("Guest User Flow - Percy Enhanced Visual Testing", () => {
+	test(
+		"01 - Welcome Page - Initial Load with Percy",
+		{
+			tag: ["@guest-flow", "@percy", "@welcome"],
+		},
+		async ({ page }) => {
+			await navigateTo(page, "/");
 
-test.describe("Guest User Flow - Welcome → Helpdesk → Loan Application", () => {
-	test("01 - Welcome Page - Initial Load", async ({ page }) => {
-		await navigateTo(page, "/");
+			// Verify welcome page loaded
+			await expect(page).toHaveTitle(/ICTServe|iServe|MOTAC/i);
 
-		// Verify welcome page loaded
-		await expect(page).toHaveTitle(/ICTServe|iServe|MOTAC/i);
-
-		await takeScreenshot(page, "01_welcome_page_home_guest.png");
-	});
-
-	test("02 - Welcome Page - Navigate to Helpdesk", async ({ page }) => {
-		await navigateTo(page, "/");
-
-		// Find helpdesk link/button (Bahasa Melayu: "Aduan" or "Helpdesk")
-		const helpdeskLink = page
-			.locator("a, button")
-			.filter({
-				hasText: /helpdesk|aduan|ticket|tiket|buat aduan/i,
-			})
-			.first();
-
-		if (await helpdeskLink.isVisible({ timeout: 3000 })) {
-			await helpdeskLink.click();
-			await waitForLivewire(page);
-		} else {
-			// Fallback: navigate directly
-			await navigateTo(page, "/helpdesk/create");
+			// Enhanced with Percy visual validation
+			await takePercySnapshot(page, {
+				name: "Guest Flow - Welcome Page Initial Load",
+				userType: "guest",
+				widths: [375, 768, 1280],
+				validateBahasaMelayu: true,
+			});
 		}
+	);
 
-		await takeScreenshot(page, "02_welcome_page_navigation_guest.png");
-	});
+	test(
+		"02 - Welcome Page - Navigate to Helpdesk with Percy",
+		{
+			tag: ["@guest-flow", "@percy", "@navigation"],
+		},
+		async ({ page }) => {
+			await navigateTo(page, "/");
+
+			// Find helpdesk link/button (Bahasa Melayu: "Aduan" or "Helpdesk")
+			const helpdeskLink = page
+				.locator("a, button")
+				.filter({
+					hasText: /helpdesk|aduan|ticket|tiket|buat aduan/i,
+				})
+				.first();
+
+			if (await helpdeskLink.isVisible({ timeout: 3000 })) {
+				await helpdeskLink.click();
+				await waitForLivewire(page);
+			} else {
+				// Fallback: navigate directly
+				await navigateTo(page, "/helpdesk/create");
+			}
+
+			// Enhanced with Percy visual validation
+			await takePercySnapshot(page, {
+				name: "Guest Flow - Welcome Page Navigation to Helpdesk",
+				userType: "guest",
+				widths: [375, 768, 1280],
+				validateBahasaMelayu: true,
+			});
+		}
+	);
 
 	test("03 - Helpdesk Form - Step 1 Loaded (Contact Info)", async ({
 		page,

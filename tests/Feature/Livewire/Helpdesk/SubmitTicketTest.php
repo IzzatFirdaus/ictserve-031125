@@ -74,13 +74,13 @@ class SubmitTicketTest extends TestCase
     {
         // This test verifies that category names are localized to English
         // Categories are created in both test here instead of setUp to keep test isolation
-        $alpha = TicketCategory::factory()->create([
+        TicketCategory::factory()->create([
             'code' => 'CAT-ALPHA',
             'name_en' => 'Alpha Support',
             'name_ms' => 'Sokongan Alfa',
             'is_active' => true,
         ]);
-        $beta = TicketCategory::factory()->create([
+        TicketCategory::factory()->create([
             'code' => 'CAT-BETA',
             'name_en' => 'Beta Support',
             'name_ms' => 'Sokongan Beta',
@@ -91,16 +91,14 @@ class SubmitTicketTest extends TestCase
 
         $component = Livewire::test(SubmitTicket::class)
             ->assertSet('currentStep', 1)
-            ->set('currentStep', 2); // Navigate to Step 2
+            ->set('currentStep', 2) // Navigate to Step 2
+            ->assertViewHas('categories', function ($categories): bool {
+                $this->assertNotEmpty($categories, 'Categories should not be empty');
+                $this->assertCount(2, $categories, 'Should have 2 categories');
 
-        // Access computed property via magic property getter
-        $categories = $component->categories;
-
-        // Verify data was loaded
-        $this->assertNotEmpty($categories, 'Categories should not be empty');
-        $this->assertCount(2, $categories, 'Should have 2 categories');
-
-        $component->assertSee('Alpha Support')
+                return true;
+            })
+            ->assertSee('Alpha Support')
             ->assertSee('Beta Support')
             ->assertDontSee('Sokongan Alfa')
             ->assertDontSee('Sokongan Beta');
@@ -215,11 +213,11 @@ class SubmitTicketTest extends TestCase
             ->set('guest_name', 'John Doe 1')
             ->set('guest_email', 'john1@motac.gov.my')
             ->set('guest_phone', '+60123456789')
-            ->set('division_id', 1)
+            ->set('division_id', $division->id)
             ->set('job_grade', '41')
             ->set('declaration_accepted', true)
             ->set('terms_accepted', true)
-            ->set('category_id', 1)
+            ->set('category_id', $category->id)
             ->set('subject', 'First Issue')
             ->set('description', 'First test description')
             ->call('submit');
@@ -233,11 +231,11 @@ class SubmitTicketTest extends TestCase
             ->set('guest_name', 'John Doe 2')
             ->set('guest_email', 'john2@motac.gov.my')
             ->set('guest_phone', '+60123456788')
-            ->set('division_id', 1)
+            ->set('division_id', $division->id)
             ->set('job_grade', '42')
             ->set('declaration_accepted', true)
             ->set('terms_accepted', true)
-            ->set('category_id', 1)
+            ->set('category_id', $category->id)
             ->set('subject', 'Second Issue')
             ->set('description', 'Second test description')
             ->call('submit');

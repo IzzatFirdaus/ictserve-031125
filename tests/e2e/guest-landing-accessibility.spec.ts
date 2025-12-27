@@ -1,18 +1,24 @@
 /**
- * @file Guest Landing Page - Accessibility & Compliance Tests
+ * @file Guest Landing Page - Accessibility & Compliance Tests with Percy Visual Testing
  *
- * FIXED VERSION (December 2025):
+ * ENHANCED VERSION with Percy Integration (December 2025):
  * - ✅ Uses custom fixtures for consistency
  * - ✅ Proper error handling and timeouts
  * - ✅ Enhanced selector robustness
  * - ✅ Better wait strategies
  * - ✅ Improved accessibility testing
+ * - ✅ Percy visual snapshots for accessibility visual validation
+ * - ✅ ICTServe v3.6.1 True Hybrid Architecture support
+ * - ✅ Bahasa Melayu interface visual validation
  *
  * @description WCAG 2.2 Level AA compliance tests for guest landing page
  * @trace D12 §9 (WCAG 2.2 AA), D13 §6 (Testing), D15 §2 (Bilingual Support)
  * @author Pasukan BPM MOTAC
- * @version 1.0.1
+ * @version 1.0.2
  * @updated 2025-12-26
+ *
+ * Run: npm run test:e2e -- tests/e2e/guest-landing-accessibility.spec.ts
+ * Run with Percy: npm run test:e2e:percy -- tests/e2e/guest-landing-accessibility.spec.ts
  *
  * Test Scenarios:
  * 1. Page language attribute matches content language (D15 §2)
@@ -27,8 +33,12 @@
 
 import { test, expect } from "./fixtures/ictserve-fixtures";
 import AxeBuilder from "@axe-core/playwright";
+import {
+	takePercySnapshot,
+	takeAccessibilitySnapshot,
+} from "./utils/percy-utils";
 
-test.describe("Guest Landing Page - Accessibility & Compliance", () => {
+test.describe("Guest Landing Page - Accessibility & Compliance with Percy", () => {
 	test.beforeEach(async ({ page }) => {
 		// Navigate to guest landing page with proper wait
 		await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -38,10 +48,10 @@ test.describe("Guest Landing Page - Accessibility & Compliance", () => {
 	});
 
 	// ============================================================================
-	// WCAG 2.2 Level AA Compliance Tests
+	// WCAG 2.2 Level AA Compliance Tests with Percy Visual Validation
 	// ============================================================================
 
-	test("P0-001: HTML lang attribute matches page content (D15 §2)", async ({
+	test("P0-001: HTML lang attribute matches page content with Percy (D15 §2)", async ({
 		page,
 	}) => {
 		/**
