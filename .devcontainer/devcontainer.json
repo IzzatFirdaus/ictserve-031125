@@ -11,6 +11,14 @@
 			"extensions": ["ms-azuretools.vscode-docker", "bmewburn.vscode-intelephense-client", "esbenp.prettier-vscode"]
 		}
 	},
-	"postCreateCommand": "sh -lc 'bash .devcontainer/setup-composer.sh'",
-	"remoteUser": "www-data"
+	"postCreateCommand": "sh -lc 'bash scripts/codespaces-post-create.sh'",
+	"remoteUser": "www-data",
+	"containerEnv": {
+		"COMPOSER_CACHE_DIR": "/home/www-data/.composer/cache",
+		"NPM_CONFIG_CACHE": "/home/www-data/.npm/_cacache"
+	},
+	"mounts": [
+		"source=codespaces-composer-cache,target=/home/www-data/.composer/cache,type=volume",
+		"source=codespaces-npm-cache,target=/home/www-data/.npm/_cacache,type=volume"
+	]
 }
