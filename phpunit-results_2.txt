@@ -1,0 +1,66 @@
+=== Running remaining tests after TestCountPreservationPropertyTest ===
+
+   FAIL  Tests\Feature\MemoryApiTest
+  Γ¿» agent can push memory with token                                                                                     10.79s  
+  Γ¿» memory search returns entities and observations                                                                       0.30s  
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\MemoryApiTest > agent can push memory with token                                                        
+  Expected response status code [201] but received 401.
+Failed asserting that 401 is identical to 201.
+
+  at tests\Feature\MemoryApiTest.php:30
+     26Γûò             'content' => 'This is a test from agent',
+     27Γûò             'entity_type' => 'analysis_work',
+     28Γûò         ]);
+     29Γûò 
+  Γ₧£  30Γûò         $response->assertStatus(201);
+     31Γûò         $this->assertDatabaseHas('memory_entities', ['name' => 'API Memory Test']);
+     32Γûò     }
+     33Γûò 
+     34Γûò     #[Test]
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\MemoryApiTest > memory search returns entities and observations                                         
+  Expected response status code [201] but received 401.
+Failed asserting that 401 is identical to 201.
+
+  at tests\Feature\MemoryApiTest.php:47
+     43Γûò         ])->postJson('/api/v1/memory/import', [
+     44Γûò             'title' => 'Searchable Memory',
+     45Γûò             'content' => 'We will search for this phrase: unique-search-token-abc',
+     46Γûò             'entity_type' => 'analysis_work',
+  Γ₧£  47Γûò         ])->assertStatus(201);
+     48Γûò 
+     49Γûò         $response = $this->withHeaders([
+     50Γûò             'Authorization' => 'Bearer test-token-123',
+     51Γûò         ])->getJson('/api/v1/memory/search?q=unique-search-token-abc');
+
+
+  Tests:    2 failed (2 assertions)
+  Duration: 11.27s
+
+
+   FAIL  Tests\Feature\NotificationCenterAriaLiveTest
+  Γ¿» it announces unread count via aria live region                                                                       12.30s  
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\NotificationCenterAriaLiveTest > it announces unread count via aria liveΓÇª   PropertyNotFoundException   
+  Property [$unreadCount] not found on component: [notification-center]
+
+  at vendor\livewire\livewire\src\Component.php:107
+    103Γûò 
+    104Γûò         $value = $finish($value);
+    105Γûò 
+    106Γûò         if ($value === 'noneset') {
+  Γ₧£ 107Γûò             throw new PropertyNotFoundException($property, $this->getName());
+    108Γûò         }
+    109Γûò 
+    110Γûò         return $value;
+    111Γûò     }
+
+  1   vendor\livewire\livewire\src\Component.php:107
+  2   storage\framework\views\dce06f54ce356b78425a7d25ef814961.php:78
+
+
+  Tests:    1 failed (0 assertions)
+  Duration: 12.47s
+
