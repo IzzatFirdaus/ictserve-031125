@@ -69,6 +69,24 @@
 				"browser_select_option"
 			]
 		},
+		"percy": {
+			"command": "node",
+			"args": ["scripts/mcp/percy-mcp-server.cjs"],
+			"env": {
+				"PERCY_TOKEN": "",
+				"PERCY_PROJECT": "ictserve",
+				"PERCY_ENABLED": "true"
+			},
+			"disabled": true,
+			"autoApprove": [
+				"percy_snapshot",
+				"percy_finalize_build",
+				"percy_build_status",
+				"percy_validate_config",
+				"percy_get_build_info",
+				"percy_wait_for_upload"
+			]
+		},
 		"git": {
 			"command": "npx",
 			"args": ["-y", "@modelcontextprotocol/server-git"],

@@ -204,7 +204,7 @@ return [
             'laravel' => '12.43.1',
             'livewire' => '3.7.3',
             'filament' => '4.3.1',
-            'playwright' => '1.56.1',
+            'playwright' => '1.57.0',
             'tailwind' => '4.1.18',
         ],
         'hybrid_architecture' => [
