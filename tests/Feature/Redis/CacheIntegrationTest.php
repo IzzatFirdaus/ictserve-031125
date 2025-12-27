@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -17,7 +18,12 @@ use Tests\TestCase;
  *
  * Tests Redis integration with Laravel's cache system for ICTServe v3.6.1.
  * Validates cache operations, TTL handling, and Redis database separation.
+ *
+ * @group requires-redis
+ * @group environment-specific
  */
+#[Group('requires-redis')]
+#[Group('environment-specific')]
 class CacheIntegrationTest extends TestCase
 {
     use RefreshDatabase;
