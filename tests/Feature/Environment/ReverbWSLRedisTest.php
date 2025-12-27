@@ -6,12 +6,20 @@ namespace Tests\Feature\Environment;
 
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Test Laravel Reverb WebSocket integration with WSL Redis
  * 
  * Requirements: 6.4, 6.5
+ *
+ * @group requires-wsl
+ * @group requires-redis
+ * @group environment-specific
  */
+#[Group('requires-wsl')]
+#[Group('requires-redis')]
+#[Group('environment-specific')]
 class ReverbWSLRedisTest extends TestCase
 {
     #[Test]

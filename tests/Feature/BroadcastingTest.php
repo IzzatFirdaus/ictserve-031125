@@ -14,6 +14,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -23,7 +24,10 @@ use Tests\TestCase;
  *
  * @see D16_BROADCASTING_SETUP.md - WebSocket configuration
  * @see Requirements 8.1, 8.2 - Real-time notifications
+ *
+ * @group environment-specific
  */
+#[Group('environment-specific')]
 final class BroadcastingTest extends TestCase
 {
     use RefreshDatabase;
