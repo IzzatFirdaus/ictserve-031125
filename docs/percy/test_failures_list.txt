@@ -1,0 +1,109 @@
+   FAIL  Tests\Unit\Models\CrossModuleIntegrationTest
+   FAIL  Tests\Unit\Models\MessageLogTest
+   FAIL  Tests\Unit\Services\CrossModuleIntegrationServiceTest
+   FAIL  Tests\Unit\Services\EnhancedUnifiedDashboardServiceTest
+   FAIL  Tests\Unit\Services\ExportServiceTest
+   FAIL  Tests\Unit\Services\LoanApplicationServiceTest
+   FAIL  Tests\Unit\Services\PerformanceAlertServiceTest
+   FAIL  Tests\Unit\Services\SecurityComplianceServiceTest
+   FAIL  Tests\Unit\Services\SubmissionServiceTest
+   FAIL  Tests\Unit\Services\TicketStatusTransitionServiceTest
+   FAIL  Tests\Unit\Services\WidgetErrorHandlerTest
+   FAIL  Tests\Unit\Widgets\AssetStatusDistributionWidgetTest
+   FAIL  Tests\Feature\BroadcastingTest
+   FAIL  Tests\Feature\Broadcasting\ReverbIntegrationTest
+   FAIL  Tests\Feature\ChannelAuthorizationTest
+   FAIL  Tests\Feature\CrossModuleIntegrationTest
+   FAIL  Tests\Feature\EmailSystemIntegrationTest
+   FAIL  Tests\Feature\Email\EmailTemplateBrandingTest
+   FAIL  Tests\Feature\Environment\HorizonWSLRedisTest
+   FAIL  Tests\Feature\Environment\XamppEnvironmentTest
+   FAIL  Tests\Feature\Filament\HelpdeskTicketResourceTest
+   FAIL  Tests\Feature\Filament\Resources\LoanApplicationResourceTest
+   FAIL  Tests\Feature\Filament\Resources\UserResourceTest
+   FAIL  Tests\Feature\HelpdeskTicketPolicyTest
+   FAIL  Tests\Feature\HorizonIntegrationTest
+   FAIL  Tests\Feature\Integration\HelpdeskIntegrationTest
+   FAIL  Tests\Feature\LoanModuleIntegrationTest
+   FAIL  Tests\Feature\Mcp\ICTServeServerTest
+   FAIL  Tests\Feature\PerformanceIntegrationTest
+   FAIL  Tests\Feature\Performance\FilamentPerformanceTest
+   FAIL  Tests\Feature\Portal\ProfileManagementTest
+   FAIL  Tests\Feature\Portal\SubmissionHistoryTest
+   FAIL  Tests\Feature\PublicPages\ContactPageTest
+   FAIL  Tests\Feature\Queue\QueueConfigurationTest
+   FAIL  Tests\Feature\RealtimeFeaturesTest
+   FAIL  Tests\Feature\Services\TicketNotificationServiceTest
+   FAIL  Tests\Feature\Accessibility\LoanModuleWcagComplianceTest
+   FAIL  Tests\Feature\Accessibility\WcagComplianceTest
+   FAIL  Tests\Feature\Auth\TelescopeAccessTest
+   FAIL  Tests\Feature\Broadcasting\UnifiedNotificationBroadcastIntegrationTest
+   FAIL  Tests\Feature\EmailSystemTest
+   FAIL  Tests\Feature\Filament\AccessibilityCompliancePageTest
+   FAIL  Tests\Feature\Filament\ReportBuilderPageTest
+   FAIL  Tests\Feature\Filament\SecurityMonitoringPageTest
+   FAIL  Tests\Feature\Filament\SuperuserConfigurationTest
+   FAIL  Tests\Feature\LanguageControllerTest
+   FAIL  Tests\Feature\MemoryApiTest
+   FAIL  Tests\Feature\Performance\FrontendAssetPerformanceTest
+   FAIL  Tests\Feature\PublicPages\ContactPageTest
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact page displays phone information                          
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact page displays email information                          
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact page displays office hours                               
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact page displays emergency support                          
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact form has all required fields                             
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact form fields have proper labels                           
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact form fields have required attribute                      
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact form has csrf protection                                 
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact page has proper breadcrumbs                              
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact page displays in english                                 
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact page has proper aria attributes                          
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact page uses compliant color palette                        
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact form fields have minimum touch target sizes              
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact form has proper focus indicators                         
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact page has proper grid layout                              
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > contact form placeholders are accessible                         
+   FAILED  Tests\Feature\PublicPages\ContactPageTest > emergency support section has proper styling                     
+   FAIL  Tests\Feature\Queue\QueueConfigurationTest
+   FAILED  Tests\Feature\Queue\QueueConfigurationTest > it has retry mechanism configured                   TypeError   
+   FAILED  Tests\Feature\Queue\QueueConfigurationTest > it has exponential backoff configured               TypeError   
+   FAIL  Tests\Feature\RealtimeFeaturesTest
+   FAILED  Tests\Feature\RealtimeFeaturesTest > ticket status updates trigger real time events                          
+   FAILED  Tests\Feature\RealtimeFeaturesTest > loan status updates trigger real time events           QueryException   
+   FAILED  Tests\Feature\RealtimeFeaturesTest > real time events include proper localization                    Error   
+   FAILED  Tests\Feature\RealtimeFeaturesTest > real time events support hybrid architecture                    Error   
+   FAILED  Tests\Feature\RealtimeFeaturesTest > real time events support guest users                            Error   
+   FAILED  Tests\Feature\RealtimeFeaturesTest > admin notifications are broadcast for high priority events      Error   
+   FAILED  Tests\Feature\RealtimeFeaturesTest > real time events include timestamp information                  Error   
+   FAILED  Tests\Feature\RealtimeFeaturesTest > real time events include unique identifiers                     Error   
+   FAILED  Tests\Feature\RealtimeFeaturesTest > real time events are queued for performance                     Error   
+   FAILED  Tests\Feature\RealtimeFeaturesTest > real time system supports multiple concurrent users                     
+   FAILED  Tests\Feature\RealtimeFeaturesTest > real time events maintain data consistency             QueryException   
+   FAILED  Tests\Feature\RealtimeFeaturesTest > real time events support wcag accessibility                     Error   
+   FAIL  Tests\Feature\Redis\QueueIntegrationTest
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it can dispatch jobs to redis queue                               
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it uses dedicated redis database for queues                       
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it can handle multiple queued jobs                                
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it can handle job priorities                                      
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it maintains queue performance standards                          
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it handles queue size operations                                  
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it handles queue isolation between connections                    
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it can handle concurrent queue operations                         
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it handles queue connection configuration                         
+   FAILED  Tests\Feature\Redis\QueueIntegrationTest > it can clear queue operations                                     
+   FAIL  Tests\Feature\ReverbConfigurationTest
+   FAILED  Tests\Feature\ReverbConfigurationTest > reverb pulse integration is configured                               
+   FAILED  Tests\Feature\ReverbConfigurationTest > reverb telescope integration is configured                           
+   FAILED  Tests\Feature\ReverbConfigurationTest > reverb server settings are reasonable                                
+   FAIL  Tests\Feature\Services\TicketNotificationServiceTest
+   FAILED  Tests\Feature\Services\TicketNotificationServiceTest > it broadcasts user notifications for maintenance tΓÇª   
+   FAIL  Tests\Feature\Staff\DashboardTest
+   FAILED  Tests\Feature\Staff\DashboardTest > it renders the staff dashboard with loan status badge                    
+   FAIL  Tests\Feature\UserProfileTest
+   FAILED  Tests\Feature\UserProfileTest > profile page route is accessible                                             
+   FAILED  Tests\Feature\UserProfileTest > profile form uses bm labels and validation                                   
+   FAILED  Tests\Feature\UserProfileTest > notification preferences use bm labels                                       
+   FAIL  Tests\Feature\WebSocketConnectionTest
+   FAILED  Tests\Feature\WebSocketConnectionTest > reverb server host configuration is valid                            
+   FAILED  Tests\Feature\WebSocketConnectionTest > websocket security settings are configured                           
+   FAILED  Tests\Feature\WebSocketConnectionTest > reverb monitoring integration is configured                          
