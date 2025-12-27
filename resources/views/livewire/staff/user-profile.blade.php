@@ -188,7 +188,7 @@
                     {{-- Editable Fields --}}
                     <div>
                         <x-form.input wire:model="name" id="name" name="name" type="text" :label="__('profile.name')"
-                            :placeholder="__('profile.name_placeholder')" required autocomplete="name" />
+                            :placeholder="__('profile.name_placeholder')" required aria-required="true" autocomplete="name" />
                     </div>
 
                     <div>
@@ -463,13 +463,13 @@
                 <div class="space-y-4">
                     <div>
                         <x-form.input wire:model="current_password" id="current_password" name="current_password"
-                            type="password" :label="__('profile.current_password')" :placeholder="__('profile.current_password_placeholder')" required
+                            type="password" :label="__('profile.current_password')" :placeholder="__('profile.current_password_placeholder')" required aria-required="true"
                             autocomplete="current-password" />
                     </div>
 
                     <div>
                         <x-form.input wire:model="password" id="password" name="password" type="password"
-                            :label="__('profile.new_password')" :placeholder="__('profile.new_password_placeholder')" required autocomplete="new-password" />
+                            :label="__('profile.new_password')" :placeholder="__('profile.new_password_placeholder')" required aria-required="true" autocomplete="new-password" />
                         <p class="mt-2 text-xs text-slate-300">
                             {{ __('profile.password_requirements') }}
                         </p>
@@ -478,7 +478,7 @@
                     <div>
                         <x-form.input wire:model="password_confirmation" id="password_confirmation"
                             name="password_confirmation" type="password" :label="__('profile.confirm_password')" :placeholder="__('profile.confirm_password_placeholder')"
-                            required autocomplete="new-password" />
+                            required aria-required="true" autocomplete="new-password" />
                     </div>
                 </div>
 

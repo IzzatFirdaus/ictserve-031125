@@ -161,21 +161,21 @@
                                 {{-- Guest User Form Fields --}}
                                 <div class="grid gap-6">
                                     <x-form.input name="guest_name" label="{{ __('helpdesk.full_name') }}"
-                                        wire:model.blur="guest_name" required autocomplete="name"
+                                        wire:model.blur="guest_name" required aria-required="true" autocomplete="name"
                                         aria-describedby="guest_name-help" />
 
                                     <x-form.input name="guest_email" type="email"
-                                        label="{{ __('helpdesk.email_address') }}" wire:model.blur="guest_email" required
+                                        label="{{ __('helpdesk.email_address') }}" wire:model.blur="guest_email" required aria-required="true"
                                         autocomplete="email" aria-describedby="guest_email-help" />
 
                                     <x-form.input name="guest_phone" type="tel"
-                                        label="{{ __('helpdesk.phone_number') }}" wire:model.blur="guest_phone" required
+                                        label="{{ __('helpdesk.phone_number') }}" wire:model.blur="guest_phone" required aria-required="true"
                                         autocomplete="tel" aria-describedby="guest_phone-help" />
 
                                     {{-- Bahagian/Unit dropdown - MOTAC organizational structure --}}
                                     <x-form.select name="division_id" label="{{ __('helpdesk.division_unit') }}"
                                         :options="collect($divisions)->pluck('name', 'id')" placeholder="{{ __('helpdesk.select_division') }}"
-                                        wire:model.live="division_id" required aria-describedby="division_id-help" />
+                                        wire:model.live="division_id" required aria-required="true" aria-describedby="division_id-help" />
 
                                     @if (count($divisions) === 0)
                                         <p id="division_id-help" class="text-sm text-warning-600 dark:text-warning-400">
@@ -254,14 +254,14 @@
                                         'TURUS_I' => 'Turus I',
                                     ]"
                                         placeholder="{{ __('helpdesk.select_grade') }}" wire:model.live="job_grade"
-                                        required aria-describedby="job_grade-help" />
+                                        required aria-required="true" aria-describedby="job_grade-help" />
 
                                     <div class="pt-4">
                                         <label class="flex items-start space-x-3 cursor-pointer">
                                             <input type="checkbox" name="declaration_accepted"
                                                 wire:model.live="declaration_accepted"
                                                 class="mt-1 h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
-                                                required aria-describedby="declaration-help" />
+                                                required aria-required="true" aria-describedby="declaration-help" />
                                             <span class="text-sm text-slate-700 dark:text-slate-300">
                                                 Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di
                                                 dalam eBorang Laporan Kerosakan ini adalah benar, dan bersetuju menerima
@@ -282,7 +282,7 @@
                                         <label class="flex items-start space-x-3 cursor-pointer">
                                             <input type="checkbox" name="terms_accepted" wire:model.live="terms_accepted"
                                                 class="mt-1 h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
-                                                required aria-describedby="terms-help" />
+                                                required aria-required="true" aria-describedby="terms-help" />
                                             <span class="text-sm text-slate-700 dark:text-slate-300">
                                                 {!! __('helpdesk.terms_of_service', ['privacy_url' => route('privacy-policy')]) !!}
                                                 <span class="text-danger-600">*</span>
@@ -318,7 +318,7 @@
                             </div>
 
                             <x-form.select name="category_id" label="{{ __('helpdesk.category') }}"
-                                wire:model.live="category_id" required aria-describedby="category_id-help"
+                                wire:model.live="category_id" required aria-required="true" aria-describedby="category_id-help"
                                 :options="$categories->pluck('name', 'id')" :placeholder="__('helpdesk.select_category')" />
 
                             <div wire:loading.delay wire:target="priority">
@@ -329,7 +329,7 @@
                             </div>
 
                             <x-form.select name="priority" label="{{ __('helpdesk.priority') }}"
-                                wire:model.live="priority" required aria-describedby="priority-help"
+                                wire:model.live="priority" required aria-required="true" aria-describedby="priority-help"
                                 :options="[
                                     'low' => __('helpdesk.priority_low'),
                                     'normal' => __('helpdesk.priority_normal'),
@@ -338,11 +338,11 @@
                                 ]" />
 
                             <x-form.input name="subject" label="{{ __('helpdesk.subject') }}"
-                                wire:model.live.debounce.300ms="subject" required maxlength="255"
+                                wire:model.live.debounce.300ms="subject" required aria-required="true" maxlength="255"
                                 aria-describedby="subject-help" />
 
                             <x-form.textarea name="description" label="{{ __('helpdesk.description') }}"
-                                wire:model.lazy="description" required rows="6" minlength="10"
+                                wire:model.lazy="description" required aria-required="true" rows="6" minlength="10"
                                 maxlength="5000" aria-describedby="description-help" />
 
                             <x-form.select name="asset_id" label="{{ __('helpdesk.related_asset') }}"

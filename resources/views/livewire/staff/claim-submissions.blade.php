@@ -49,7 +49,7 @@
                 <label for="search-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     {{ __('staff.claims.email_label') }}
                 </label>
-                <input type="email" id="search-email" wire:model="searchEmail" required autocomplete="email"
+                <input type="email" id="search-email" wire:model="searchEmail" required aria-required="true" autocomplete="email"
                     class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-11"
                     aria-describedby="email-help"
                     @error('searchEmail') aria-invalid="true" aria-describedby="email-error" @enderror>

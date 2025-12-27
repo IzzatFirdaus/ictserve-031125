@@ -26,13 +26,13 @@ use Livewire\Volt\Component;
 
 new #[Layout('layouts.guest')] class extends Component
 {
-    #[Validate('required|string|max:255')]
+    #[Validate('required aria-required="true"|string|max:255')]
     public string $name = '';
 
-    #[Validate(['required', 'string', 'email', 'max:255', 'unique:users,email', new MotacEmailDomain()])]
+    #[Validate(['required aria-required="true"', 'string', 'email', 'max:255', 'unique:users,email', new MotacEmailDomain()])]
     public string $email = '';
 
-    #[Validate('required|string|min:8|confirmed')]
+    #[Validate('required aria-required="true"|string|min:8|confirmed')]
     public string $password = '';
 
     public string $password_confirmation = '';
@@ -200,7 +200,7 @@ new #[Layout('layouts.guest')] class extends Component
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="text"
                 name="name"
-                required
+                required aria-required="true"
                 autofocus
                 autocomplete="name"
                 placeholder="{{ __('auth.name_placeholder') }}"
@@ -220,7 +220,7 @@ new #[Layout('layouts.guest')] class extends Component
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="email"
                 name="email"
-                required
+                required aria-required="true"
                 autocomplete="username"
                 placeholder="{{ __('auth.email_placeholder') }}"
                 aria-describedby="email-hint email-error"
@@ -259,7 +259,7 @@ new #[Layout('layouts.guest')] class extends Component
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="password"
                 name="password"
-                required
+                required aria-required="true"
                 autocomplete="new-password"
                 placeholder="{{ __('auth.password_placeholder') }}"
                 aria-describedby="password-requirements password-strength password-error"
@@ -341,7 +341,7 @@ new #[Layout('layouts.guest')] class extends Component
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
                 type="password"
                 name="password_confirmation"
-                required
+                required aria-required="true"
                 autocomplete="new-password"
                 placeholder="{{ __('auth.confirm_password_placeholder') }}"
                 aria-describedby="password-confirmation-error"

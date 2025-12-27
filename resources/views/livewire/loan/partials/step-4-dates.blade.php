@@ -28,7 +28,7 @@
                     'border-danger-300' => $errorBag->has('loanStartDate'),
                     'border-gray-300' => ! $errorBag->has('loanStartDate'),
                 ])
-                required
+                required aria-required="true"
             >
             @error('loanStartDate')
                 <p class="mt-1 text-sm text-danger-600">{{ $message }}</p>
@@ -52,7 +52,7 @@
                     'border-danger-300' => $errorBag->has('loanEndDate'),
                     'border-gray-300' => ! $errorBag->has('loanEndDate'),
                 ])
-                required
+                required aria-required="true"
             >
             @error('loanEndDate')
                 <p class="mt-1 text-sm text-danger-600">{{ $message }}</p>
@@ -121,7 +121,7 @@
                             'border-gray-300' => ! $errorBag->has('emergencyJustification'),
                         ])
                         placeholder="{{ __('loan.placeholders.emergency_justification') }}"
-                        required
+                        required aria-required="true"
                     ></textarea>
                     <div class="mt-1 flex justify-between text-xs text-gray-500">
                         <span>{{ __('loan.help.min_50_chars') }}</span>
