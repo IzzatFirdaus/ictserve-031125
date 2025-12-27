@@ -1,21 +1,8 @@
 # Laravel Dusk — Browser Testing & Automation
 
-> **⚠️ DEPRECATION NOTICE (v3.6.1)**: Laravel Dusk is **redundant** in ICTServe v3.6.1. This project uses **Percy Visual Testing with Playwright** for E2E and visual regression testing. Dusk is maintained only for reference purposes.
-> 
-> **Recommended Approach**: Use Percy + Playwright for all browser testing needs. See:
-> - `PERCY_SETUP.md` - Percy visual testing setup
-> - `docs/Percy-Playwright-Integration.md` - Complete integration guide
-> - `tests/e2e/` - Playwright E2E test examples
-> - `tests/percy/` - Percy visual regression test examples
-
 ## Overview
 
 Laravel Dusk provides an expressive, easy-to-use browser automation and testing API. By default, Dusk does not require you to install JDK or Selenium on your local computer. Instead, Dusk uses a standalone ChromeDriver installation.
-
-**Version**: Laravel 12.x compatible  
-**Purpose**: Browser automation and end-to-end testing (DEPRECATED)  
-**Status**: ⚠️ **Not recommended for ICTServe v3.6.1**  
-**Alternative**: **Percy + Playwright** (primary testing stack)
 
 > **Note**: For new projects, consider using Pest for browser testing as it offers better performance and usability compared to Laravel Dusk.
 
