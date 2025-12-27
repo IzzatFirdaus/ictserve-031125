@@ -18,19 +18,26 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22.14.0'
           cache: 'npm'
+
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
 
       - run: composer install --no-interaction --prefer-dist
       - run: npm ci
 
       - run: |
           cp .env.example .env
+          touch database/database.sqlite
           php artisan key:generate
+          php artisan migrate --force
           php artisan config:cache
 
       - run: php -S 127.0.0.1:8000 -t public &
-      - run: sleep 3
+      - run: sleep 5
 
       - run: npm install -g pa11y@6
 

@@ -18,13 +18,18 @@ jobs:
         with:
           php-version: '8.2'
 
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
+
       - name: Composer install
         run: composer install --no-interaction --prefer-dist --no-progress
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '22.14.0'
 
       - name: Install Node deps (no optional native)
         run: npm ci --omit=optional
@@ -34,7 +39,7 @@ jobs:
         run: |
           $base = ${{ github.event.pull_request.base.sha }}
           $head = ${{ github.event.pull_request.head.sha }}
-          powershell -File .\scripts\test-changed.ps1 -Range "$base..$head" -ForceSuites
+          powershell -File .\scripts\testing\test-changed.ps1 -Range "$base..$head" -ForceSuites
 
   e2e-ubuntu:
     name: E2E & Build (Ubuntu)
@@ -49,13 +54,18 @@ jobs:
         with:
           php-version: '8.2'
 
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
+
       - name: Composer install
         run: composer install --no-interaction --prefer-dist --no-progress
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '22.14.0'
 
       - name: Install Node deps
         run: npm ci

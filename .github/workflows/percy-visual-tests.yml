@@ -24,8 +24,8 @@ on:
           - responsive
 
 env:
-  NODE_VERSION: "18"
-  PHP_VERSION: "8.4"
+  NODE_VERSION: "22.14.0"
+  PHP_VERSION: "8.2"
   PERCY_PROJECT: "ictserve-v3.6.1-visual-testing"
   PERCY_PARALLEL_TOTAL: 4
 
@@ -82,6 +82,11 @@ jobs:
           php-version: ${{ env.PHP_VERSION }}
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
           coverage: none
+
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
 
       - name: Copy environment file
         run: cp .env.example .env
@@ -176,6 +181,11 @@ jobs:
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
           coverage: none
 
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
+
       - name: Copy environment file
         run: cp .env.example .env
 
@@ -226,6 +236,11 @@ jobs:
           php-version: ${{ env.PHP_VERSION }}
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
           coverage: none
+
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
 
       - name: Copy environment file
         run: cp .env.example .env
@@ -286,6 +301,11 @@ jobs:
           php-version: ${{ env.PHP_VERSION }}
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
           coverage: none
+
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
 
       - name: Copy environment file
         run: cp .env.example .env
