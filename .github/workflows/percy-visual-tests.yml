@@ -24,8 +24,8 @@ on:
           - responsive
 
 env:
-  NODE_VERSION: "18"
-  PHP_VERSION: "8.4"
+  NODE_VERSION: "22.14.0"
+  PHP_VERSION: "8.2"
   PERCY_PROJECT: "ictserve-v3.6.1-visual-testing"
   PERCY_PARALLEL_TOTAL: 4
 
