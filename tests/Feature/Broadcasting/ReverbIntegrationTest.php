@@ -11,6 +11,7 @@ use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -21,7 +22,10 @@ use Tests\TestCase;
  *
  * @see Requirements 6.1, 6.2, 6.3, 6.4, 6.5, 24.1-24.8
  * @see .kiro/specs/ictserve-comprehensive-v3.6/tasks.md - Task 8.4
+ *
+ * @group environment-specific
  */
+#[Group('environment-specific')]
 class ReverbIntegrationTest extends TestCase
 {
     use RefreshDatabase;

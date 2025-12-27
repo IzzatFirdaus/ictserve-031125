@@ -6,6 +6,7 @@ namespace Tests\Feature;
 
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -18,7 +19,10 @@ use Tests\TestCase;
  * @see D16_BROADCASTING_SETUP.md - WebSocket configuration
  *
  * @requirements 6.1, 6.2, 6.3, 6.4, 6.5
+ *
+ * @group environment-specific
  */
+#[Group('environment-specific')]
 class ReverbConfigurationTest extends TestCase
 {
     #[Test]
