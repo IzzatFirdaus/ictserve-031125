@@ -6,6 +6,47 @@ declare(strict_types=1);
 // Require Composer autoload
 require __DIR__.'/../vendor/autoload.php';
 
+// Manually load dev dependencies that were installed via git clone
+// These are not in the autoload classmap because composer install didn't complete
+$devDeps = [
+    __DIR__.'/../vendor/mockery/mockery/library/Mockery.php',
+    __DIR__.'/../vendor/mockery/mockery/library/helpers.php',
+    __DIR__.'/../vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
+];
+
+foreach ($devDeps as $file) {
+    if (file_exists($file)) {
+        require_once $file;
+    }
+}
+
+// Register Mockery PSR-4 namespace
+spl_autoload_register(function ($class) {
+    $prefixes = [
+        'Mockery\\' => __DIR__.'/../vendor/mockery/mockery/library/Mockery/',
+        'Hamcrest\\' => __DIR__.'/../vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest/',
+        'Faker\\' => __DIR__.'/../vendor/fakerphp/faker/src/Faker/',
+        'Whoops\\' => __DIR__.'/../vendor/filp/whoops/src/Whoops/',
+        'NunoMaduro\\Collision\\' => __DIR__.'/../vendor/nunomaduro/collision/src/',
+    ];
+    
+    foreach ($prefixes as $prefix => $baseDir) {
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
+            continue;
+        }
+        
+        $relativeClass = substr($class, $len);
+        $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+        
+        if (file_exists($file)) {
+            require $file;
+            return true;
+        }
+    }
+    return false;
+});
+
 // If a cached config file exists, remove it for tests so environment overrides (phpunit.xml/.env.testing)
 // are respected. This prevents tests from using a production-cached configuration (e.g., 'mysql').
 $cachedConfig = __DIR__.'/../bootstrap/cache/config.php';
