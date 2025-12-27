@@ -65,6 +65,7 @@ return new class extends Migration
                 'draft',
                 'submitted',
                 'under_review',
+                'pending_approval',
                 'pending_info',
                 'approved',
                 'rejected',

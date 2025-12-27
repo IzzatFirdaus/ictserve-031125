@@ -79,9 +79,7 @@ class QueueConfigurationTest extends TestCase
     #[Test]
     public function it_has_retry_mechanism_configured(): void
     {
-        $listener = new CreateMaintenanceTicketForDamagedAsset(
-            app(\App\Services\Notifications\TicketNotificationService::class)
-        );
+        $listener = app(CreateMaintenanceTicketForDamagedAsset::class);
 
         // Verify retry configuration
         $this->assertEquals(3, $listener->tries);
@@ -94,9 +92,7 @@ class QueueConfigurationTest extends TestCase
     #[Test]
     public function it_has_exponential_backoff_configured(): void
     {
-        $listener = new CreateMaintenanceTicketForDamagedAsset(
-            app(\App\Services\Notifications\TicketNotificationService::class)
-        );
+        $listener = app(CreateMaintenanceTicketForDamagedAsset::class);
 
         // Verify exponential backoff pattern
         $backoff = $listener->backoff;
