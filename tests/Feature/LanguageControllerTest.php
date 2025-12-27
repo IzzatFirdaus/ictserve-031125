@@ -48,12 +48,12 @@ class LanguageControllerTest extends TestCase
     #[Test]
     public function english_locale_switching_is_disabled(): void
     {
-        // Act & Assert - English locale switching should return 400 (Invalid locale)
-        // Since language switching is disabled in v3.6.0, only 'ms' is supported
+        // Act & Assert - English locale switching should return 404 (Route disabled)
+        // Since language switching is disabled in v3.6.0, route is commented out
         $response = $this->get('/change-locale/en');
 
-        // Should return 400 Bad Request for invalid locale
-        $response->assertStatus(400);
+        // Should return 404 Not Found since route is disabled in v3.6.0
+        $response->assertStatus(404);
 
         // Locale should remain 'ms'
         $this->assertEquals('ms', app()->getLocale());
@@ -171,11 +171,8 @@ class LanguageControllerTest extends TestCase
         foreach ($invalidLocales as $locale) {
             $response = $this->get("/change-locale/{$locale}");
 
-            // Should return 400 Bad Request for invalid locale or 404 if route doesn't match
-            $this->assertTrue(
-                $response->status() === 400 || $response->status() === 404,
-                "Expected 400 or 404 for locale '{$locale}', got {$response->status()}"
-            );
+            // Should return 404 since route is disabled in v3.6.0
+            $response->assertStatus(404);
 
             // Locale should remain 'ms'
             $this->assertEquals('ms', app()->getLocale());
