@@ -7,6 +7,20 @@ applyTo: '**'
 - Use the Memory MCP JSONL store at `storage/mcp/memory.jsonl` for persistent knowledge
 - Keep helper scripts concise and focused on active services only
 
+## GitHub Actions Workflows (2025-12-27)
+
+**Workflow Configuration Standards:**
+
+- **Node.js Version**: Always use `22.14.0` (matches `.nvmrc` and `.node-version`)
+- **PHP Version**: Always use `8.2` (matches `composer.json` requirement `^8.2`)
+- **Required Services for Laravel Tests**:
+  - MySQL 8 (port 3306, database: testing, user: root, password: root)
+  - Redis Alpine (port 6379) for CACHE_STORE, SESSION_DRIVER, QUEUE_CONNECTION
+- **Test Environment Variables**: Must include DB_CONNECTION, DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD, REDIS_HOST, REDIS_PORT, CACHE_STORE=redis, SESSION_DRIVER=redis, QUEUE_CONNECTION=sync
+- **Script Paths**: Testing scripts are in `scripts/testing/` not `scripts/` (e.g., `test-changed.ps1`, `run-tests-sequential.sh`)
+- **Cache Actions**: Use `actions/cache@v4` for consistency
+- **Accessibility Testing**: Requires SQLite database setup with migrations before pa11y tests
+
 ## GitHub Codespaces Setup (2025-12-15)
 
 **Composer/Vendor Issues RESOLVED** - Configured automatic Composer auth for Codespaces:
