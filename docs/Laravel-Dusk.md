@@ -4,10 +4,6 @@
 
 Laravel Dusk provides an expressive, easy-to-use browser automation and testing API. By default, Dusk does not require you to install JDK or Selenium on your local computer. Instead, Dusk uses a standalone ChromeDriver installation.
 
-**Version**: Laravel 12.x compatible  
-**Purpose**: Browser automation and end-to-end testing  
-**Alternative**: Pest 4 now includes automated browser testing with significant performance improvements
-
 > **Note**: For new projects, consider using Pest for browser testing as it offers better performance and usability compared to Laravel Dusk.
 
 ## Installation
