@@ -145,3 +145,9 @@ NUL# Ignore generated storage artifacts and temporary reports
 /storage/compliance/
 /storage/temp/
 /storage/*.txt
+
+# Ignore generated storage artifacts and temporary reports
+/storage/GEMINI.md
+/storage/compliance/
+/storage/temp/
+/storage/*.txt
