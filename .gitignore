@@ -140,4 +140,8 @@ bootstrap/cache/filament/
 pint.bat
 stubs/
 # Windows system files
-NUL
+NUL# Ignore generated storage artifacts and temporary reports
+/storage/GEMINI.md
+/storage/compliance/
+/storage/temp/
+/storage/*.txt
