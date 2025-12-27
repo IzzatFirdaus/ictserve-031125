@@ -85,7 +85,25 @@ class OllamaDocumentResourceTest extends TestCase
     #[Test]
     public function admin_can_create_document_with_file_upload(): void
     {
-        $this->markTestSkipped('Skipped due to file upload form field validation requirements');
+        $user = User::factory()->admin()->create();
+        $this->actingAs($user);
+
+        $file = UploadedFile::fake()->create('manual-ictserve.pdf', 512, 'application/pdf');
+
+        Livewire::test(DocumentResource\Pages\CreateDocument::class)
+            ->set('data.file_upload', $file)
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $document = Document::first();
+        $this->assertNotNull($document);
+        $this->assertSame('manual-ictserve.pdf', $document->filename);
+        $this->assertSame($user->id, $document->uploaded_by);
+        $this->assertSame(Document::STATUS_PENDING, $document->status);
+        $this->assertIsArray($document->metadata);
+        $this->assertArrayHasKey('stored_name', $document->metadata);
+
+        Storage::disk('local')->assertExists('documents/'.$document->metadata['stored_name']);
     }
 
     #[Test]
