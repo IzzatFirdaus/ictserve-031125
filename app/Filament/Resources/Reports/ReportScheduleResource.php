@@ -16,6 +16,27 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
+/**
+ * Report Schedule Resource (Pengurusan Jadual Laporan)
+ *
+ * Provides CRUD interface for managing scheduled automated reports.
+ * Supports multiple report types across different modules with configurable
+ * frequency and delivery options.
+ *
+ * Features:
+ * - Schedule creation and management
+ * - Multi-module support (Helpdesk, Loans, Assets, Users)
+ * - Multiple export formats (PDF, CSV, Excel)
+ * - Email delivery configuration
+ * - Frequency settings (daily, weekly, monthly)
+ *
+ * @trace D03-FR-012 (Reporting and analytics)
+ * @trace D04-§8.1 (Scheduled reporting architecture)
+ * @trace D12-§8 (Report management UI)
+ *
+ * @see \App\Models\ReportSchedule
+ * @see \App\Filament\Clusters\System
+ */
 class ReportScheduleResource extends Resource
 {
     protected static ?string $model = ReportSchedule::class;

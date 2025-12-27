@@ -19,6 +19,25 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Grade Resource (Pengurusan Gred Jawatan)
+ *
+ * Provides CRUD interface for managing employee grades in the organization.
+ * Grades determine access levels and approval authority in workflows.
+ *
+ * Features:
+ * - Grade code and name management
+ * - Hierarchical grade structure
+ * - Integration with user roles and permissions
+ *
+ * @trace D03-FR-010 (Reference data management)
+ * @trace D04-§5.2 (Reference data architecture)
+ * @trace D09-§4.5 (grades table schema)
+ * @trace D12-§7 (Admin UI patterns)
+ *
+ * @see \App\Models\Grade
+ * @see \App\Filament\Clusters\Management
+ */
 class GradeResource extends Resource
 {
     protected static ?string $model = Grade::class;
