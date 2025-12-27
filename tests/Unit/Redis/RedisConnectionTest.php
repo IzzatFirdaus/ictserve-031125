@@ -17,9 +17,6 @@ use Tests\TestCase;
  *
  * Tests Redis connection functionality, timeout handling, and database separation
  * for ICTServe v3.6.1 Laragon optimization.
- *
- * @group requires-redis
- * @group environment-specific
  */
 #[Group('requires-redis')]
 #[Group('environment-specific')]

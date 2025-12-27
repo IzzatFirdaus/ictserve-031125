@@ -16,9 +16,6 @@ use Tests\TestCase;
  *
  * Tests Redis integration with Laravel's real-time features for ICTServe v3.6.1.
  * Validates Reverb, Pulse, and Horizon Redis database separation and functionality.
- *
- * @group requires-redis
- * @group environment-specific
  */
 #[Group('requires-redis')]
 #[Group('environment-specific')]

@@ -23,11 +23,11 @@ use Tests\TestCase;
  *
  * Tests comprehensive queue management, job processing, and monitoring
  * capabilities for ICTServe v3.6 requirements 23.1-23.8
- *
- * @group requires-redis
- * @group requires-horizon
- * @group environment-specific
  */
+#[Group('requires-redis')]
+#[Group('requires-horizon')]
+#[Group('environment-specific')]
+class HorizonIntegrationTest extends TestCase
 #[Group('requires-redis')]
 #[Group('requires-horizon')]
 #[Group('environment-specific')]

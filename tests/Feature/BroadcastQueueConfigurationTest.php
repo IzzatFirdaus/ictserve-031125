@@ -21,9 +21,6 @@ use Tests\TestCase;
  * @see config/broadcasting.php
  *
  * @requirements 3.4, 7.3
- *
- * @group requires-redis
- * @group environment-specific
  */
 #[Group('requires-redis')]
 #[Group('environment-specific')]
