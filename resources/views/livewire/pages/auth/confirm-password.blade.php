@@ -25,8 +25,7 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
-{
+new #[Layout('layouts.guest')] class extends Component {
     public string $password = '';
 
     /**
@@ -35,13 +34,15 @@ new #[Layout('layouts.guest')] class extends Component
     public function confirmPassword(): void
     {
         $this->validate([
-            'password' => ['required aria-required="true"', 'string'],
+            'password' => ['required', 'string'],
         ]);
 
-        if (! Auth::guard('web')->validate([
-            'email' => Auth::user()->email,
-            'password' => $this->password,
-        ])) {
+        if (
+            !Auth::guard('web')->validate([
+                'email' => Auth::user()->email,
+                'password' => $this->password,
+            ])
+        ) {
             throw ValidationException::withMessages([
                 'password' => __('auth.password'),
             ]);
@@ -63,18 +64,16 @@ new #[Layout('layouts.guest')] class extends Component
         <div>
             <x-input-label for="password" value="Kata Laluan" />
 
-            <x-text-input wire:model="password"
-                          id="password"
-                          class="block mt-1 w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500"
-                          type="password"
-                          name="password"
-                          required aria-required="true" autocomplete="current-password" />
+            <x-text-input wire:model="password" id="password"
+                class="block mt-1 w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500"
+                type="password" name="password" required aria-required="true" autocomplete="current-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <div class="flex justify-end mt-4">
-            <x-primary-button class="min-h-11 px-6 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 transition-colors">
+            <x-primary-button
+                class="min-h-11 px-6 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 transition-colors">
                 Sahkan
             </x-primary-button>
         </div>

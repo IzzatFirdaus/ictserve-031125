@@ -24,15 +24,14 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
-{
-    #[Validate('required aria-required="true"|string|max:255')]
+new #[Layout('layouts.guest')] class extends Component {
+    #[Validate('required|string|max:255')]
     public string $name = '';
 
-    #[Validate(['required aria-required="true"', 'string', 'email', 'max:255', 'unique:users,email', new MotacEmailDomain()])]
+    #[Validate(['required', 'string', 'email', 'max:255', 'unique:users,email', new MotacEmailDomain()])]
     public string $email = '';
 
-    #[Validate('required aria-required="true"|string|min:8|confirmed')]
+    #[Validate('required|string|min:8|confirmed')]
     public string $password = '';
 
     public string $password_confirmation = '';
@@ -160,7 +159,6 @@ new #[Layout('layouts.guest')] class extends Component
 
             // Redirect to email verification page
             $this->redirect(route('verification.notice'), navigate: true);
-
         } catch (InvalidEmailDomainException $e) {
             $this->addError('email', __('auth.email_domain_error'));
             $this->isSubmitting = false;
@@ -193,19 +191,12 @@ new #[Layout('layouts.guest')] class extends Component
     <form wire:submit="register" aria-label="{{ __('auth.register_title') }}">
         {{-- Name Field (MyDS Form Components - D13 §2.7) --}}
         <div class="space-y-2">
-            <x-input-label for="name" :value="__('auth.name')" class="text-slate-900 dark:text-white font-medium font-body" />
-            <x-text-input
-                wire:model.live.debounce.300ms="name"
-                id="name"
+            <x-input-label for="name" :value="__('auth.name')"
+                class="text-slate-900 dark:text-white font-medium font-body" />
+            <x-text-input wire:model.live.debounce.300ms="name" id="name"
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
-                type="text"
-                name="name"
-                required aria-required="true"
-                autofocus
-                autocomplete="name"
-                placeholder="{{ __('auth.name_placeholder') }}"
-                aria-describedby="name-error"
-            />
+                type="text" name="name" required aria-required="true" autofocus autocomplete="name"
+                placeholder="{{ __('auth.name_placeholder') }}" aria-describedby="name-error" />
             @error('name')
                 <x-input-error :messages="$message" class="mt-1" id="name-error" />
             @enderror
@@ -213,31 +204,30 @@ new #[Layout('layouts.guest')] class extends Component
 
         {{-- Email Field with Domain Hint --}}
         <div class="mt-6 space-y-2">
-            <x-input-label for="email" :value="__('auth.email')" class="text-slate-900 dark:text-white font-medium font-body" />
-            <x-text-input
-                wire:model.live.debounce.300ms="email"
-                id="email"
+            <x-input-label for="email" :value="__('auth.email')"
+                class="text-slate-900 dark:text-white font-medium font-body" />
+            <x-text-input wire:model.live.debounce.300ms="email" id="email"
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
-                type="email"
-                name="email"
-                required aria-required="true"
-                autocomplete="username"
-                placeholder="{{ __('auth.email_placeholder') }}"
-                aria-describedby="email-hint email-error"
-            />
+                type="email" name="email" required aria-required="true" autocomplete="username"
+                placeholder="{{ __('auth.email_placeholder') }}" aria-describedby="email-hint email-error" />
             {{-- Email Domain Hint --}}
-            <p id="email-hint" class="mt-2 text-sm font-body {{ $emailDomainValid ? 'text-success-600 dark:text-success-400' : 'text-slate-600 dark:text-slate-400' }}">
-                @if($email && $emailDomainValid)
+            <p id="email-hint"
+                class="mt-2 text-sm font-body {{ $emailDomainValid ? 'text-success-600 dark:text-success-400' : 'text-slate-600 dark:text-slate-400' }}">
+                @if ($email && $emailDomainValid)
                     <span class="flex items-center gap-2">
                         <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
                         </svg>
                         {{ __('auth.email_domain_hint') }}
                     </span>
                 @elseif($email && !$emailDomainValid)
                     <span class="flex items-center gap-2 text-danger-600 dark:text-danger-400">
                         <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                clip-rule="evenodd" />
                         </svg>
                         {{ __('auth.email_domain_error') }}
                     </span>
@@ -252,74 +242,130 @@ new #[Layout('layouts.guest')] class extends Component
 
         {{-- Password Field with Strength Indicator --}}
         <div class="mt-6 space-y-2">
-            <x-input-label for="password" :value="__('common.password')" class="text-slate-900 dark:text-white font-medium font-body" />
-            <x-text-input
-                wire:model.live.debounce.150ms="password"
-                id="password"
+            <x-input-label for="password" :value="__('common.password')"
+                class="text-slate-900 dark:text-white font-medium font-body" />
+            <x-text-input wire:model.live.debounce.150ms="password" id="password"
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
-                type="password"
-                name="password"
-                required aria-required="true"
-                autocomplete="new-password"
+                type="password" name="password" required aria-required="true" autocomplete="new-password"
                 placeholder="{{ __('auth.password_placeholder') }}"
-                aria-describedby="password-requirements password-strength password-error"
-            />
+                aria-describedby="password-requirements password-strength password-error" />
 
             {{-- Password Strength Indicator (MyDS Progress - D13 §2.7) --}}
-            @if($password)
+            @if ($password)
                 <div class="mt-3" id="password-strength" role="status" aria-live="polite">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-slate-600 dark:text-slate-400 font-body">{{ __('auth.password_strength') }}:</span>
-                        <span class="text-sm font-medium font-body {{ $passwordStrength >= 4 ? 'text-success-600 dark:text-success-400' : ($passwordStrength >= 3 ? 'text-primary-600 dark:text-primary-400' : ($passwordStrength >= 2 ? 'text-warning-600 dark:text-warning-400' : 'text-danger-600 dark:text-danger-400')) }}">
+                        <span
+                            class="text-sm text-slate-600 dark:text-slate-400 font-body">{{ __('auth.password_strength') }}:</span>
+                        <span
+                            class="text-sm font-medium font-body {{ $passwordStrength >= 4 ? 'text-success-600 dark:text-success-400' : ($passwordStrength >= 3 ? 'text-primary-600 dark:text-primary-400' : ($passwordStrength >= 2 ? 'text-warning-600 dark:text-warning-400' : 'text-danger-600 dark:text-danger-400')) }}">
                             {{ $this->getPasswordStrengthLabel() }}
                         </span>
                     </div>
-                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2" role="progressbar" aria-valuenow="{{ $passwordStrength * 20 }}" aria-valuemin="0" aria-valuemax="100">
-                        <div class="{{ $this->getPasswordStrengthColor() }} h-2 rounded-full transition-all duration-300" style="width: {{ $passwordStrength * 20 }}%"></div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2" role="progressbar"
+                        aria-valuenow="{{ $passwordStrength * 20 }}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="{{ $this->getPasswordStrengthColor() }} h-2 rounded-full transition-all duration-300"
+                            style="width: {{ $passwordStrength * 20 }}%"></div>
                     </div>
                 </div>
 
                 {{-- Password Requirements Checklist (MyDS Card - D13 §2.7) --}}
-                <div id="password-requirements" class="mt-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
-                    <p class="text-sm font-medium font-body text-slate-700 dark:text-slate-300 mb-3">{{ __('auth.password_requirements') }}:</p>
+                <div id="password-requirements"
+                    class="mt-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
+                    <p class="text-sm font-medium font-body text-slate-700 dark:text-slate-300 mb-3">
+                        {{ __('auth.password_requirements') }}:</p>
                     <ul class="space-y-2 text-sm font-body">
-                        <li class="flex items-center gap-2 {{ $passwordChecks['length'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
-                            @if($passwordChecks['length'])
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                        <li
+                            class="flex items-center gap-2 {{ $passwordChecks['length'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
+                            @if ($passwordChecks['length'])
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @else
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @endif
                             {{ __('auth.password_min_length') }}
                         </li>
-                        <li class="flex items-center gap-2 {{ $passwordChecks['uppercase'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
-                            @if($passwordChecks['uppercase'])
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                        <li
+                            class="flex items-center gap-2 {{ $passwordChecks['uppercase'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
+                            @if ($passwordChecks['uppercase'])
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @else
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @endif
                             {{ __('auth.password_uppercase') }}
                         </li>
-                        <li class="flex items-center gap-2 {{ $passwordChecks['lowercase'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
-                            @if($passwordChecks['lowercase'])
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                        <li
+                            class="flex items-center gap-2 {{ $passwordChecks['lowercase'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
+                            @if ($passwordChecks['lowercase'])
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @else
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @endif
                             {{ __('auth.password_lowercase') }}
                         </li>
-                        <li class="flex items-center gap-2 {{ $passwordChecks['number'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
-                            @if($passwordChecks['number'])
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                        <li
+                            class="flex items-center gap-2 {{ $passwordChecks['number'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
+                            @if ($passwordChecks['number'])
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @else
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @endif
                             {{ __('auth.password_number') }}
                         </li>
-                        <li class="flex items-center gap-2 {{ $passwordChecks['special'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
-                            @if($passwordChecks['special'])
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                        <li
+                            class="flex items-center gap-2 {{ $passwordChecks['special'] ? 'text-success-600 dark:text-success-400' : 'text-slate-500 dark:text-slate-400' }}">
+                            @if ($passwordChecks['special'])
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @else
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             @endif
                             {{ __('auth.password_special') }}
                         </li>
@@ -334,32 +380,34 @@ new #[Layout('layouts.guest')] class extends Component
 
         {{-- Confirm Password Field --}}
         <div class="mt-6 space-y-2">
-            <x-input-label for="password_confirmation" :value="__('auth.confirm_password')" class="text-slate-900 dark:text-white font-medium font-body" />
-            <x-text-input
-                wire:model.live.debounce.300ms="password_confirmation"
-                id="password_confirmation"
+            <x-input-label for="password_confirmation" :value="__('auth.confirm_password')"
+                class="text-slate-900 dark:text-white font-medium font-body" />
+            <x-text-input wire:model.live.debounce.300ms="password_confirmation" id="password_confirmation"
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
-                type="password"
-                name="password_confirmation"
-                required aria-required="true"
-                autocomplete="new-password"
-                placeholder="{{ __('auth.confirm_password_placeholder') }}"
-                aria-describedby="password-confirmation-error"
-            />
+                type="password" name="password_confirmation" required aria-required="true"
+                autocomplete="new-password" placeholder="{{ __('auth.confirm_password_placeholder') }}"
+                aria-describedby="password-confirmation-error" />
             {{-- Password Match Indicator --}}
-            @if($password_confirmation)
-                <p class="mt-2 text-sm font-body {{ $password === $password_confirmation ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400' }}">
-                    @if($password === $password_confirmation)
+            @if ($password_confirmation)
+                <p
+                    class="mt-2 text-sm font-body {{ $password === $password_confirmation ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400' }}">
+                    @if ($password === $password_confirmation)
                         <span class="flex items-center gap-2">
-                            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd" />
                             </svg>
                             {{ __('validation.confirmed', ['attribute' => __('common.password')]) }}
                         </span>
                     @else
                         <span class="flex items-center gap-2">
-                            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clip-rule="evenodd" />
                             </svg>
                             {{ __('validation.same', ['attribute' => __('common.password'), 'other' => __('auth.confirm_password')]) }}
                         </span>
@@ -374,19 +422,22 @@ new #[Layout('layouts.guest')] class extends Component
         {{-- Form Actions (MyDS Touch Targets - D13 §2.7) --}}
         <div class="flex items-center justify-between mt-8 pt-4">
             <a class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 underline rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 dark:focus-visible:ring-offset-slate-800 min-h-11 inline-flex items-center px-2 font-body transition-colors duration-200"
-               href="{{ route('login') }}"
-               wire:navigate>
+                href="{{ route('login') }}" wire:navigate>
                 {{ __('auth.already_registered') }}
             </a>
 
             <button type="submit"
                 class="min-h-11 px-6 py-3 text-base font-medium font-body text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 rounded-lg shadow-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600"
-                @if($isSubmitting) disabled @endif>
-                @if($isSubmitting)
+                @if ($isSubmitting) disabled @endif>
+                @if ($isSubmitting)
                     <span class="flex items-center gap-2">
-                        <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" aria-hidden="true">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
                         </svg>
                         {{ __('common.processing') }}
                     </span>
