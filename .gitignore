@@ -16,6 +16,8 @@
 .env.laragon
 .env.generated.*
 .env.*.local
+# Exception: Allow .env.docker as it contains safe template values
+!.env.docker
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -127,6 +129,9 @@ _ide_helper_models.php
 
 # Docker build artifacts
 docker/php-fpm/
+# Exception: Allow PHP-FPM configuration template
+!docker/php-fpm/
+!docker/php-fpm/www.conf
 
 # Bootstrap cache
 bootstrap/cache/filament/
