@@ -6,28 +6,28 @@ declare(strict_types=1);
 // Require Composer autoload
 require __DIR__.'/../vendor/autoload.php';
 
-// Manually load dev dependencies that were installed via git clone
+// Manually load dev dependencies only if not already loaded
 // These are not in the autoload classmap because composer install didn't complete
-$devDeps = [
-    __DIR__.'/../vendor/mockery/mockery/library/Mockery.php',
-    __DIR__.'/../vendor/mockery/mockery/library/helpers.php',
-    __DIR__.'/../vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
-];
+if (!class_exists('Mockery')) {
+    $devDeps = [
+        __DIR__.'/../vendor/mockery/mockery/library/Mockery.php',
+        __DIR__.'/../vendor/mockery/mockery/library/helpers.php',
+        __DIR__.'/../vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
+    ];
 
-foreach ($devDeps as $file) {
-    if (file_exists($file)) {
-        require_once $file;
+    foreach ($devDeps as $file) {
+        if (file_exists($file)) {
+            require_once $file;
+        }
     }
 }
 
-// Register Mockery PSR-4 namespace
+// Register PSR-4 namespace autoloader for dev dependencies if not already registered
 spl_autoload_register(function ($class) {
     $prefixes = [
         'Mockery\\' => __DIR__.'/../vendor/mockery/mockery/library/Mockery/',
         'Hamcrest\\' => __DIR__.'/../vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest/',
         'Faker\\' => __DIR__.'/../vendor/fakerphp/faker/src/Faker/',
-        'Whoops\\' => __DIR__.'/../vendor/filp/whoops/src/Whoops/',
-        'NunoMaduro\\Collision\\' => __DIR__.'/../vendor/nunomaduro/collision/src/',
     ];
     
     foreach ($prefixes as $prefix => $baseDir) {
