@@ -412,7 +412,7 @@
                             <label for="approval-remarks" class="block text-sm font-medium text-slate-300 mb-2">
                                 {{ __('staff.approvals.remarks') }} <span class="text-danger-400">*</span>
                             </label>
-                            <textarea id="approval-remarks" wire:model="approvalRemarks" rows="4" required
+                            <textarea id="approval-remarks" wire:model="approvalRemarks" rows="4" required aria-required="true"
                                 class="block w-full rounded-lg border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-950"
                                 placeholder="{{ __('staff.approvals.remarks_placeholder') }}"
                                 @error('approvalRemarks') aria-invalid="true" aria-describedby="remarks-error" @enderror></textarea>

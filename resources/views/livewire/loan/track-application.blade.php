@@ -122,11 +122,11 @@ $statusColor = computed(function () {
                     aria-label="{{ __('loan.track_application_form') }}">
                     <div class="grid gap-6 sm:grid-cols-2">
                         <x-form.input name="tracking_number" label="{{ __('Nombor Permohonan') }}"
-                            wire:model.live.debounce.300ms="tracking_number" required autocomplete="off"
+                            wire:model.live.debounce.300ms="tracking_number" required aria-required="true" autocomplete="off"
                             placeholder="LA202511XXXX" />
 
                         <x-form.input name="email" type="email" label="{{ __('Emel Pemohon') }}"
-                            wire:model.live.debounce.300ms="email" required autocomplete="email"
+                            wire:model.live.debounce.300ms="email" required aria-required="true" autocomplete="email"
                             placeholder="nama@motac.gov.my" />
 
                     </div>

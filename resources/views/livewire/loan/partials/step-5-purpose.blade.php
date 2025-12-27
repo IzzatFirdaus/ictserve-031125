@@ -29,7 +29,7 @@
                 'border-gray-300' => ! $errorBag->has('purpose'),
             ])
             placeholder="{{ __('loan.placeholders.purpose') }}"
-            required
+            required aria-required="true"
         ></textarea>
         <div class="mt-1 flex justify-between text-xs text-gray-500">
             <span>{{ __('loan.help.describe_purpose') }}</span>
@@ -56,7 +56,7 @@
                 'border-gray-300' => ! $errorBag->has('location'),
             ])
             placeholder="{{ __('loan.placeholders.location') }}"
-            required
+            required aria-required="true"
         >
         <p class="mt-1 text-xs text-gray-500">{{ __('loan.help.location') }}</p>
         @error('location')

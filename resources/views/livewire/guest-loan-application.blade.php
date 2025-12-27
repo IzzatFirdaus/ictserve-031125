@@ -198,19 +198,19 @@
                             <div class="space-y-6">
                                 {{-- Applicant Name --}}
                                 <x-form.input wire:model.live.debounce.300ms="form.applicant_name" name="form.applicant_name"
-                                    :label="__('loan.fields.applicant_name')" required :placeholder="__('loan.placeholders.applicant_name')" />
+                                    :label="__('loan.fields.applicant_name')" required aria-required="true" :placeholder="__('loan.placeholders.applicant_name')" />
 
                                 {{-- Position and Grade --}}
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <x-form.input wire:model.live.debounce.300ms="form.position" name="form.position"
-                                        :label="__('loan.fields.position_grade')" required :placeholder="__('loan.placeholders.position')" />
+                                        :label="__('loan.fields.position_grade')" required aria-required="true" :placeholder="__('loan.placeholders.position')" />
                                     <x-form.input wire:model.live.debounce.300ms="form.phone" name="form.phone" type="tel"
-                                        :label="__('loan.fields.phone')" required :placeholder="__('loan.placeholders.phone')" />
+                                        :label="__('loan.fields.phone')" required aria-required="true" :placeholder="__('loan.placeholders.phone')" />
                                 </div>
 
                                 {{-- Division/Unit --}}
                                 <x-form.select wire:model.live="form.division_id" name="form.division_id" :label="__('loan.fields.division_unit')"
-                                    required :placeholder="__('loan.placeholders.select_division')">
+                                    required aria-required="true" :placeholder="__('loan.placeholders.select_division')">
                                     @forelse ($divisions as $division)
                                         <option value="{{ $division['id'] }}">{{ $division['name'] }}</option>
                                     @empty
@@ -222,19 +222,19 @@
 
                         {{-- Purpose of Loan --}}
                         <x-form.textarea wire:model.live.debounce.300ms="form.purpose" name="form.purpose"
-                            :label="__('loan.fields.purpose')" rows="4" required :placeholder="__('loan.placeholders.purpose')" :showCharCount="true"
+                            :label="__('loan.fields.purpose')" rows="4" required aria-required="true" :placeholder="__('loan.placeholders.purpose')" :showCharCount="true"
                             maxlength="500" />
 
                         {{-- Location --}}
                         <x-form.input wire:model.live.debounce.300ms="form.location" name="form.location"
-                            :label="__('loan.fields.location')" required :placeholder="__('loan.placeholders.location')" />
+                            :label="__('loan.fields.location')" required aria-required="true" :placeholder="__('loan.placeholders.location')" />
 
                         {{-- Loan Period --}}
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <x-form.input wire:model.live="form.loan_start_date" name="form.loan_start_date"
-                                type="date" :label="__('loan.fields.loan_start_date')" required :min="date('Y-m-d', strtotime('+1 day'))" />
+                                type="date" :label="__('loan.fields.loan_start_date')" required aria-required="true" :min="date('Y-m-d', strtotime('+1 day'))" />
                             <x-form.input wire:model.live="form.loan_end_date" name="form.loan_end_date" type="date"
-                                :label="__('loan.fields.loan_end_date')" required :min="$form['loan_start_date'] ?? date('Y-m-d', strtotime('+2 days'))" />
+                                :label="__('loan.fields.loan_end_date')" required aria-required="true" :min="$form['loan_start_date'] ?? date('Y-m-d', strtotime('+2 days'))" />
                         </div>
 
                         {{-- Emergency Request Toggle --}}
@@ -254,7 +254,7 @@
                             @if ($form['emergency_request'])
                                 <div class="mt-4 animate-fadeIn">
                                     <x-form.textarea wire:model.live.debounce.300ms="form.emergency_justification"
-                                        name="form.emergency_justification" :label="__('loan.fields.emergency_justification')" required
+                                        name="form.emergency_justification" :label="__('loan.fields.emergency_justification')" required aria-required="true"
                                         rows="3" :placeholder="__('loan.placeholders.emergency_justification')" :showCharCount="true"
                                         minlength="50" maxlength="1000" />
                                     <p class="text-xs text-warning-600 dark:text-warning-400 mt-2">
@@ -306,24 +306,24 @@
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_name"
-                                            name="form.responsible_officer_name" type="text" required
+                                            name="form.responsible_officer_name" type="text" required aria-required="true"
                                             label="Nama Penuh Pegawai Bertanggungjawab"
                                             placeholder="Masukkan nama penuh" />
 
                                         <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_position"
-                                            name="form.responsible_officer_position" type="text" required
+                                            name="form.responsible_officer_position" type="text" required aria-required="true"
                                             label="Jawatan"
                                             placeholder="Contoh: Pegawai Tadbir N41" />
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_grade"
-                                            name="form.responsible_officer_grade" type="text" required
+                                            name="form.responsible_officer_grade" type="text" required aria-required="true"
                                             label="Gred"
                                             placeholder="Contoh: N41" />
 
                                         <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_phone"
-                                            name="form.responsible_officer_phone" type="tel" required
+                                            name="form.responsible_officer_phone" type="tel" required aria-required="true"
                                             label="Nombor Telefon"
                                             placeholder="Contoh: 03-2161 2345" />
                                     </div>
@@ -393,20 +393,20 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <x-form.input wire:model.live.debounce.300ms="form.supervisor_name"
                                 name="form.supervisor_name" :label="__('loan.fields.supervisor_name')"
-                                required :placeholder="__('loan.placeholders.supervisor_name')" />
+                                required aria-required="true" :placeholder="__('loan.placeholders.supervisor_name')" />
 
                             <x-form.input wire:model.live.debounce.300ms="form.supervisor_email"
                                 name="form.supervisor_email" type="email" :label="__('loan.fields.supervisor_email')"
-                                required :placeholder="__('loan.placeholders.supervisor_email')" />
+                                required aria-required="true" :placeholder="__('loan.placeholders.supervisor_email')" />
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <x-form.input wire:model.live.debounce.300ms="form.supervisor_position"
                                 name="form.supervisor_position" :label="__('loan.fields.supervisor_position')"
-                                required :placeholder="__('loan.placeholders.supervisor_position')" />
+                                required aria-required="true" :placeholder="__('loan.placeholders.supervisor_position')" />
 
                             <x-form.select wire:model.live="form.supervisor_grade" name="form.supervisor_grade"
-                                :label="__('loan.fields.supervisor_grade')" required :placeholder="__('loan.placeholders.select_grade')">
+                                :label="__('loan.fields.supervisor_grade')" required aria-required="true" :placeholder="__('loan.placeholders.select_grade')">
                                 @foreach (['41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', 'JUSA_C', 'JUSA_B', 'JUSA_A', 'TURUS_III', 'TURUS_II', 'TURUS_I'] as $grade)
                                     <option value="{{ $grade }}">{{ $grade === 'JUSA_C' ? 'JUSA C' : ($grade === 'JUSA_B' ? 'JUSA B' : ($grade === 'JUSA_A' ? 'JUSA A' : ($grade === 'TURUS_III' ? 'Turus III' : ($grade === 'TURUS_II' ? 'Turus II' : ($grade === 'TURUS_I' ? 'Turus I' : 'Gred ' . $grade))))) }}</option>
                                 @endforeach
@@ -416,7 +416,7 @@
                         {{-- Justification --}}
                         <x-form.textarea wire:model.live.debounce.300ms="form.justification"
                             name="form.justification" :label="__('loan.fields.justification')"
-                            rows="4" required :placeholder="__('loan.placeholders.justification')"
+                            rows="4" required aria-required="true" :placeholder="__('loan.placeholders.justification')"
                             :showCharCount="true" minlength="50" maxlength="1000" />
                     </fieldset>
                 </section>
@@ -466,7 +466,7 @@
                                 <input type="checkbox" wire:model.live="form.terms_accepted"
                                     name="form.terms_accepted" id="terms_accepted"
                                     class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800"
-                                    required />
+                                    required aria-required="true" />
                                 <label for="terms_accepted" class="text-sm text-gray-700 dark:text-gray-300">
                                     {{ __('loan.form.terms_acceptance') }}
                                     <span class="text-danger-600">*</span>
@@ -477,7 +477,7 @@
                                 <input type="checkbox" wire:model.live="form.liability_accepted"
                                     name="form.liability_accepted" id="liability_accepted"
                                     class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800"
-                                    required />
+                                    required aria-required="true" />
                                 <label for="liability_accepted" class="text-sm text-gray-700 dark:text-gray-300">
                                     {{ __('loan.form.liability_acceptance') }}
                                     <span class="text-danger-600">*</span>
@@ -660,7 +660,7 @@
                                 <input type="checkbox" wire:model.live="form.final_confirmation"
                                     name="form.final_confirmation" id="final_confirmation"
                                     class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800"
-                                    required />
+                                    required aria-required="true" />
                                 <label for="final_confirmation" class="text-sm text-gray-700 dark:text-gray-300">
                                     {{ __('loan.form.final_confirmation_text') }}
                                     <span class="text-danger-600">*</span>

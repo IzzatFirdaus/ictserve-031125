@@ -59,7 +59,7 @@
                                         <input type="text" id="token" wire:model.live.debounce.300ms="token"
                                             class="block w-full min-h-11 px-4 py-3 rounded-lg border {{ $errorBag->has('token') ? 'border-danger-500 focus:border-danger-500 focus-visible:ring-3 focus-visible:ring-danger-500' : 'border-gray-300 dark:border-gray-600 focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500' }} bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm transition-colors"
                                             placeholder="{{ __('status.token_placeholder') }}" autocomplete="off"
-                                            aria-describedby="token-help token-error" required />
+                                            aria-describedby="token-help token-error" required aria-required="true" />
                                         <div class="absolute inset-y-0 right-0 flex items-center pr-3"
                                             aria-hidden="true">
                                             <x-heroicon-o-shield-check

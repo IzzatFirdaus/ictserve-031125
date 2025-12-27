@@ -48,7 +48,7 @@ class RealtimeFeaturesTest extends TestCase
     {
         Event::fake();
 
-        $loan = LoanApplication::factory()->create(['status' => 'pending']);
+        $loan = LoanApplication::factory()->create(['status' => 'submitted']);
 
         // Simulate status update
         $loan->update(['status' => 'approved']);
@@ -233,7 +233,7 @@ class RealtimeFeaturesTest extends TestCase
     {
         $ticket = HelpdeskTicket::factory()->create([
             'status' => 'open',
-            'title' => 'Test Ticket',
+            'subject' => 'Test Ticket',
         ]);
 
         $event = new TicketStatusUpdated($ticket);
@@ -241,7 +241,7 @@ class RealtimeFeaturesTest extends TestCase
 
         // Broadcast data should match actual model data
         $this->assertEquals($ticket->id, $broadcastData['ticket_id']);
-        $this->assertEquals($ticket->status, $broadcastData['status']);
+        $this->assertEquals($ticket->status, $broadcastData['new_status']);
     }
 
     #[Test]

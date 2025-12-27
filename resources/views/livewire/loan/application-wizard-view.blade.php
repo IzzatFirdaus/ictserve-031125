@@ -157,26 +157,26 @@
                         {{-- Guest User Input Fields --}}
                         <div class="space-y-6">
                             <x-form.input wire:model.live.debounce.300ms="applicantName" name="applicantName"
-                                :label="__('loan.fields.applicant_name')" required :placeholder="__('loan.placeholders.applicant_name')" />
+                                :label="__('loan.fields.applicant_name')" required aria-required="true" :placeholder="__('loan.placeholders.applicant_name')" />
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <x-form.input wire:model.live.debounce.300ms="applicantPosition" name="applicantPosition"
-                                    :label="__('loan.fields.position_grade')" required :placeholder="__('loan.placeholders.position')" />
+                                    :label="__('loan.fields.position_grade')" required aria-required="true" :placeholder="__('loan.placeholders.position')" />
                                 <x-form.input wire:model.live.debounce.300ms="applicantGrade" name="applicantGrade"
-                                    :label="__('loan.fields.grade')" required :placeholder="__('loan.placeholders.grade')" />
+                                    :label="__('loan.fields.grade')" required aria-required="true" :placeholder="__('loan.placeholders.grade')" />
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <x-form.input wire:model.live.debounce.300ms="applicantPhone" name="applicantPhone"
-                                    type="tel" :label="__('loan.fields.phone')" required :placeholder="__('loan.placeholders.phone')" />
+                                    type="tel" :label="__('loan.fields.phone')" required aria-required="true" :placeholder="__('loan.placeholders.phone')" />
                                 <x-form.input wire:model.live.debounce.300ms="applicantEmail" name="applicantEmail"
-                                    type="email" :label="__('loan.fields.email')" required :placeholder="__('loan.placeholders.email')" />
+                                    type="email" :label="__('loan.fields.email')" required aria-required="true" :placeholder="__('loan.placeholders.email')" />
                             </div>
                         </div>
                     @endauth
 
                     {{-- Division Selection --}}
-                    <x-form.select wire:model.live="divisionId" name="divisionId" :label="__('loan.fields.division_unit')" required
+                    <x-form.select wire:model.live="divisionId" name="divisionId" :label="__('loan.fields.division_unit')" required aria-required="true"
                         :placeholder="__('loan.placeholders.select_division')">
                         @foreach ($this->divisions as $division)
                             <option value="{{ $division->id }}">
@@ -232,17 +232,17 @@
                             </div>
 
                             <x-form.input wire:model.live.debounce.300ms="responsibleOfficerName"
-                                name="responsibleOfficerName" :label="__('loan.fields.responsible_officer_name')" required :placeholder="__('loan.placeholders.responsible_officer_name')" />
+                                name="responsibleOfficerName" :label="__('loan.fields.responsible_officer_name')" required aria-required="true" :placeholder="__('loan.placeholders.responsible_officer_name')" />
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <x-form.input wire:model.live.debounce.300ms="responsibleOfficerPosition"
-                                    name="responsibleOfficerPosition" :label="__('loan.fields.responsible_officer_position')" required :placeholder="__('loan.placeholders.responsible_officer_position')" />
+                                    name="responsibleOfficerPosition" :label="__('loan.fields.responsible_officer_position')" required aria-required="true" :placeholder="__('loan.placeholders.responsible_officer_position')" />
                                 <x-form.input wire:model.live.debounce.300ms="responsibleOfficerGrade"
-                                    name="responsibleOfficerGrade" :label="__('loan.fields.responsible_officer_grade')" required :placeholder="__('loan.placeholders.responsible_officer_grade')" />
+                                    name="responsibleOfficerGrade" :label="__('loan.fields.responsible_officer_grade')" required aria-required="true" :placeholder="__('loan.placeholders.responsible_officer_grade')" />
                             </div>
 
                             <x-form.input wire:model.live.debounce.300ms="responsibleOfficerPhone"
-                                name="responsibleOfficerPhone" type="tel" :label="__('loan.fields.responsible_officer_phone')" required
+                                name="responsibleOfficerPhone" type="tel" :label="__('loan.fields.responsible_officer_phone')" required aria-required="true"
                                 :placeholder="__('loan.placeholders.responsible_officer_phone')" />
 
                             {{-- Responsible Officer Acknowledgement Statement --}}
@@ -251,7 +251,7 @@
                                 <label class="flex items-start cursor-pointer">
                                     <input type="checkbox" wire:model.live="responsibleOfficerAcknowledgement"
                                         class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                                        required>
+                                        required aria-required="true">
                                     <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">
                                         {{ __('loan.form.responsible_officer_acknowledgement') }}
                                     </span>

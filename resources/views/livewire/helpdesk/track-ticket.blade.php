@@ -40,11 +40,11 @@
                 aria-label="{{ __('helpdesk.track_ticket_form') }}">
                 <div class="grid gap-6 sm:grid-cols-2">
                     <x-form.input name="ticketNumber" label="{{ __('Nombor Tiket') }}"
-                        wire:model.live.debounce.300ms="ticketNumber" required autocomplete="off"
+                        wire:model.live.debounce.300ms="ticketNumber" required aria-required="true" autocomplete="off"
                         placeholder="HD2025000001" />
 
                     <x-form.input name="email" type="email" label="{{ __('Emel Pendaftar') }}"
-                        wire:model.live.debounce.300ms="email" required autocomplete="email"
+                        wire:model.live.debounce.300ms="email" required aria-required="true" autocomplete="email"
                         placeholder="nama@motac.gov.my" />
                 </div>
 

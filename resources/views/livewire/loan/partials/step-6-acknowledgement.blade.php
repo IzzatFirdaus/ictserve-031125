@@ -31,7 +31,7 @@
                 type="checkbox"
                 wire:model.live="termsAcknowledged"
                 class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                required
+                required aria-required="true"
             >
             <span class="ml-3 text-sm text-gray-700">
                 {{ __('loan.form.terms_acknowledgement') }}
@@ -53,7 +53,7 @@
                 type="checkbox"
                 wire:model.live="pdpaAcknowledged"
                 class="mt-1 h-5 w-5 rounded border-gray-300 text-primary-600 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                required
+                required aria-required="true"
             >
             <span class="ml-3 text-sm text-gray-700">
                 {{ __('loan.form.pdpa_acknowledgement') }}
@@ -162,7 +162,7 @@
                         'border-gray-300' => ! $errorBag->has('applicantSignature'),
                     ])
                     placeholder="{{ __('loan.placeholders.signature_name') }}"
-                    required
+                    required aria-required="true"
                 >
                 @error('applicantSignature')
                     <p class="mt-1 text-sm text-danger-600">{{ $message }}</p>

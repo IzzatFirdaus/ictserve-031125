@@ -127,7 +127,7 @@
                 </label>
                 <input type="text" id="name" wire:model.live.debounce.300ms="name"
                     class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('name') border-danger-500 @enderror"
-                    placeholder="{{ __('Masukkan nama penuh anda') }}" required>
+                    placeholder="{{ __('Masukkan nama penuh anda') }}" required aria-required="true">
                 @error('name')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                 @enderror
@@ -140,7 +140,7 @@
                 </label>
                 <input type="email" id="email" wire:model.live.debounce.300ms="email"
                     class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('email') border-danger-500 @enderror"
-                    placeholder="{{ __('Masukkan alamat e-mel anda') }}" required>
+                    placeholder="{{ __('Masukkan alamat e-mel anda') }}" required aria-required="true">
                 @error('email')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                 @enderror
@@ -166,7 +166,7 @@
                 </label>
                 <input type="text" id="subject" wire:model.live.debounce.300ms="subject"
                     class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('subject') border-danger-500 @enderror"
-                    placeholder="{{ __('Apakah berkenaan mesej anda?') }}" required>
+                    placeholder="{{ __('Apakah berkenaan mesej anda?') }}" required aria-required="true">
                 @error('subject')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                 @enderror
@@ -179,7 +179,7 @@
                 </label>
                 <textarea id="message" wire:model.live.debounce.300ms="message" rows="5"
                     class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm @error('message') border-danger-500 @enderror"
-                    placeholder="{{ __('Sila huraikan pertanyaan anda dengan terperinci...') }}" required></textarea>
+                    placeholder="{{ __('Sila huraikan pertanyaan anda dengan terperinci...') }}" required aria-required="true"></textarea>
                 <div class="mt-1 flex justify-between text-xs text-slate-500 dark:text-slate-400">
                     <span>{{ __('Minimum 10 aksara') }}</span>
                     <span>{{ strlen($message) }}/5000</span>

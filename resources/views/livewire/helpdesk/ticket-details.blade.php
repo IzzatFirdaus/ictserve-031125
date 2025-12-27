@@ -157,7 +157,7 @@
 
             <form wire:submit.prevent="addComment" class="space-y-4">
                 <x-form.textarea name="newComment" wire:model.live.debounce.300ms="newComment" rows="5"
-                    placeholder="{{ __('Masukkan maklum balas anda di sini...') }}" required />
+                    placeholder="{{ __('Masukkan maklum balas anda di sini...') }}" required aria-required="true" />
 
                 <x-ui.button type="submit" icon="heroicon-o-chat-bubble-left-ellipsis" :disabled="$addingComment">
                     {{ __('Hantar Maklum Balas') }}

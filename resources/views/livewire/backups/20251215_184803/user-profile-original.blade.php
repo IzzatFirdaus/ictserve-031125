@@ -304,7 +304,7 @@ new #[Layout('layouts.portal')] class extends Component {
                     <input type="text" id="name" wire:model="name"
                         class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-required="true" aria-describedby="name-error" @error('name') aria-invalid="true" @enderror
-                        required>
+                        required aria-required="true">
                     @error('name')
                         <p id="name-error" class="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">
                             {{ $message }}</p>
@@ -403,7 +403,7 @@ new #[Layout('layouts.portal')] class extends Component {
                         class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-required="true" aria-describedby="current-password-error"
                         @error('current_password') aria-invalid="true" @enderror autocomplete="current-password"
-                        required>
+                        required aria-required="true">
                     @error('current_password')
                         <p id="current-password-error" class="mt-1 text-sm text-danger-600 dark:text-danger-400"
                             role="alert">{{ $message }}</p>
@@ -418,7 +418,7 @@ new #[Layout('layouts.portal')] class extends Component {
                     <input type="password" id="password" wire:model="password"
                         class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         aria-required="true" aria-describedby="password-hint password-error"
-                        @error('password') aria-invalid="true" @enderror autocomplete="new-password" required>
+                        @error('password') aria-invalid="true" @enderror autocomplete="new-password" required aria-required="true">
                     <p id="password-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                         {{ __('profile.password_requirements') ?: 'Minimum 8 characters with uppercase, lowercase, and number' }}
                     </p>
@@ -437,7 +437,7 @@ new #[Layout('layouts.portal')] class extends Component {
                     </label>
                     <input type="password" id="password_confirmation" wire:model="password_confirmation"
                         class="mt-1 block w-full min-h-11 rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
-                        aria-required="true" autocomplete="new-password" required>
+                        aria-required="true" autocomplete="new-password" required aria-required="true">
                 </div>
 
                 <div class="flex justify-end">
