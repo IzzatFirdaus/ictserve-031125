@@ -15,9 +15,9 @@
     "@playwright",
     "@bedrock-opus",
     "@sequentialthinking",
-    "@fetch",
     "@memory",
-    "@gitkraken"
+    "@gitkraken",
+    "@fetch"
   ],
   "toolAliases": {},
   "allowedTools": [
@@ -96,7 +96,6 @@
     "@bedrock-opus/invoke_claude_sonnet",
     "@bedrock-opus/invoke_claude_haiku",
     "@sequentialthinking/sequentialthinking",
-    "@fetch/fetch",
     "@memory/create_entities",
     "@memory/create_relations",
     "@memory/add_observations",
@@ -124,7 +123,8 @@
     "@gitkraken/pull_request_create",
     "@gitkraken/pull_request_create_review",
     "@gitkraken/pull_request_get_comments",
-    "@gitkraken/pull_request_get_detail"
+    "@gitkraken/pull_request_get_detail",
+    "@fetch/fetch"
   ],
   "toolsSettings": {
     "use_aws": {
