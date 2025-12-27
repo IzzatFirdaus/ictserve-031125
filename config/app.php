@@ -150,4 +150,16 @@ return [
 
     'min_approver_grade_level' => env('MIN_APPROVER_GRADE_LEVEL', 41),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Memory API Token
+    |--------------------------------------------------------------------------
+    |
+    | This token is used to authenticate API requests to the Memory Graph API
+    | from external agents and MCP servers. Keep this secure.
+    |
+    */
+
+    'memory_api_token' => env('MEMORY_API_TOKEN'),
+
 ];
