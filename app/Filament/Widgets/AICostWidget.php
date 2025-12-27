@@ -10,14 +10,25 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * AI Cost Widget
+ * AI Cost Widget (Widget Kos Penggunaan AI)
  *
  * Displays daily cost tracking and optimization recommendations for AWS Bedrock
- * usage with cost trend analysis and budget monitoring.
+ * usage with cost trend analysis and budget monitoring. Provides real-time insights
+ * into token consumption and cost efficiency metrics.
  *
- * trace: D18-§4.1 (AI Cost Monitoring), R21 (Cloud Hybrid AI Dashboard Integration)
- * trace: D03-SRS-AI-017 (Cost Optimization), D04-§6.4 (AI Architecture)
+ * Features:
+ * - Daily cost tracking (AWS Bedrock API usage)
+ * - Token consumption metrics
+ * - Cost trend analysis and forecasting
+ * - Budget threshold alerts
+ * - Optimization recommendations
  *
+ * @trace D18-§4.1 (AI Cost Monitoring and Analytics)
+ * @trace D03-SRS-AI-017 (Cost Optimization Requirements)
+ * @trace D04-§6.4 (Cloud Hybrid AI Architecture)
+ * @trace D12-§7 (AI Dashboard Widgets)
+ *
+ * @see \App\Services\AIMetricsCollector
  * @see docs/D18_AI_CHATBOT_OLLAMA_BEDROCK.md
  */
 class AICostWidget extends BaseWidget
