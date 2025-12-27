@@ -8,7 +8,7 @@
       ],
       "disabled": false,
       "autoApprove": [
-        "sequentialthinking"
+        "*"
       ]
     },
     "memory": {
@@ -16,19 +16,11 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-memory",
-C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
+        "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       ],
       "disabled": false,
       "autoApprove": [
-        "create_entities",
-        "create_relations",
-        "add_observations",
-        "delete_entities",
-        "delete_observations",
-        "delete_relations",
-        "read_graph",
-        "search_nodes",
-        "open_nodes"
+        "*"
       ]
     },
     "fetch": {
@@ -38,7 +30,7 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
       ],
       "disabled": false,
       "autoApprove": [
-        "fetch"
+        "*"
       ]
     },
     "chrome-devtools": {
@@ -49,11 +41,7 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
       ],
       "disabled": false,
       "autoApprove": [
-        "navigate_page",
-        "take_snapshot",
-        "click",
-        "fill",
-        "evaluate_script"
+        "*"
       ]
     },
     "firecrawl": {
@@ -66,7 +54,9 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
         "FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
       },
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "*"
+      ]
     },
     "playwright": {
       "command": "npx",
@@ -76,11 +66,7 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
       ],
       "disabled": false,
       "autoApprove": [
-        "browser_navigate",
-        "browser_click",
-        "browser_snapshot",
-        "browser_fill",
-        "browser_evaluate"
+        "*"
       ]
     },
     "context7": {
@@ -94,8 +80,7 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
       },
       "disabled": false,
       "autoApprove": [
-        "resolve-library-id",
-        "get-library-docs"
+        "*"
       ]
     },
     "laravel-boost": {
@@ -106,22 +91,7 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
       ],
       "disabled": false,
       "autoApprove": [
-        "application-info",
-        "browser-logs",
-        "database-connections",
-        "database-query",
-        "database-schema",
-        "get-absolute-url",
-        "get-config",
-        "last-error",
-        "list-artisan-commands",
-        "list-available-config-keys",
-        "list-available-env-vars",
-        "list-routes",
-        "read-log-entries",
-        "report-feedback",
-        "search-docs",
-        "tinker"
+        "*"
       ]
     },
     "github": {
@@ -134,7 +104,9 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
         "GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
       },
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "*"
+      ]
     },
     "gitkraken": {
       "command": "gk",
@@ -142,7 +114,9 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
         "mcp"
       ],
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "*"
+      ]
     },
     "bedrock-opus": {
       "command": "node",
@@ -156,9 +130,7 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
       },
       "disabled": false,
       "autoApprove": [
-        "invoke_claude_opus",
-        "invoke_claude_sonnet",
-        "invoke_claude_haiku"
+        "*"
       ]
     },
     "filesystem": {
@@ -170,18 +142,7 @@ C:\XAMPP\htdocs\ictserve-031125\storage\mcp\memory.jsonl
       ],
       "disabled": false,
       "autoApprove": [
-        "read_text_file",
-        "read_multiple_files",
-        "list_directory",
-        "list_directory_with_sizes",
-        "directory_tree",
-        "search_files",
-        "get_file_info",
-        "list_allowed_directories",
-        "create_directory",
-        "write_file",
-        "edit_file",
-        "move_file"
+        "*"
       ]
     }
   }

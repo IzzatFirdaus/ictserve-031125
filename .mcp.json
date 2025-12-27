@@ -1,138 +1,130 @@
 {
-    "mcpServers": {
-        "memory": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-memory"
-            ],
-            "env": {
-                "MEMORY_FILE_PATH": "c:\\laragon\\www\\ictserve-031125\\storage\\mcp\\memory.jsonl"
-            },
-            "disabled": false,
-            "autoApprove": [
-                "create_entities",
-                "create_relations",
-                "add_observations",
-                "delete_entities",
-                "delete_observations",
-                "delete_relations",
-                "read_graph",
-                "search_nodes",
-                "open_nodes"
-            ]
-        },
-        "sequentialthinking": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-sequential-thinking"
-            ],
-            "env": {
-                "NODE_OPTIONS": "--max-old-space-size=4096"
-            },
-            "disabled": false,
-            "autoApprove": [
-                "sequentialthinking"
-            ]
-        },
-        "laravel-boost": {
-            "command": "php",
-            "args": [
-                "artisan",
-                "boost:mcp"
-            ]
-        },
-        "fetch": {
-            "command": "uvx",
-            "args": [
-                "--native-tls",
-                "mcp-server-fetch"
-            ],
-            "disabled": false,
-            "autoApprove": [
-                "fetch"
-            ]
-        },
-        "chrome-devtools": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "chrome-devtools-mcp@latest"
-            ],
-            "disabled": false,
-            "autoApprove": [
-                "navigate_page",
-                "take_snapshot",
-                "click",
-                "fill",
-                "evaluate_script",
-                "take_screenshot",
-                "list_pages",
-                "list_network_requests",
-                "get_console_message"
-            ]
-        },
-        "playwright": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@playwright/mcp@latest"
-            ],
-            "disabled": false,
-            "autoApprove": [
-                "browser_navigate",
-                "browser_click",
-                "browser_snapshot",
-                "browser_fill",
-                "browser_evaluate",
-                "browser_take_screenshot",
-                "browser_wait_for",
-                "browser_select_option"
-            ]
-        },
-        "git": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-git"
-            ],
-            "disabled": false,
-            "autoApprove": [
-                "git_status",
-                "git_log_or_diff",
-                "git_branch",
-                "git_add_or_commit",
-                "git_blame",
-                "git_stash"
-            ]
-        },
-        "filesystem": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-filesystem"
-            ],
-            "env": {
-                "ALLOWED_DIRECTORIES": "C:\\laragon\\www\\ictserve-031125,C:\\laragon\\www\\ictserve-031125\\storage,C:\\laragon\\www\\ictserve-031125\\public"
-            },
-            "disabled": false,
-            "autoApprove": [
-                "read_file",
-                "write_file",
-                "list_directory",
-                "create_directory",
-                "get_file_info"
-            ]
-        },
-        "herd": {
-            "command": "php",
-            "args": [
-                "C:/Users/izzatfirdaus/.config/herd/bin/herd-mcp.phar"
-            ],
-            "env": {
-                "SITE_PATH": "C:\\laragon\\www\\ictserve-031125"
-            }
-        }
-    }
+	"mcpServers": {
+		"memory": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-memory"],
+			"env": {
+				"MEMORY_FILE_PATH": "c:\\laragon\\www\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+			},
+			"disabled": false,
+			"autoApprove": [
+				"create_entities",
+				"create_relations",
+				"add_observations",
+				"delete_entities",
+				"delete_observations",
+				"delete_relations",
+				"read_graph",
+				"search_nodes",
+				"open_nodes"
+			]
+		},
+		"sequentialthinking": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+			"env": {
+				"NODE_OPTIONS": "--max-old-space-size=4096"
+			},
+			"disabled": false,
+			"autoApprove": ["sequentialthinking"]
+		},
+		"laravel-boost": {
+			"command": "php",
+			"args": ["artisan", "boost:mcp"]
+		},
+		"fetch": {
+			"command": "uvx",
+			"args": ["--native-tls", "mcp-server-fetch"],
+			"disabled": false,
+			"autoApprove": ["fetch"]
+		},
+		"chrome-devtools": {
+			"command": "npx",
+			"args": ["-y", "chrome-devtools-mcp@latest"],
+			"disabled": false,
+			"autoApprove": [
+				"navigate_page",
+				"take_snapshot",
+				"click",
+				"fill",
+				"evaluate_script",
+				"take_screenshot",
+				"list_pages",
+				"list_network_requests",
+				"get_console_message"
+			]
+		},
+		"playwright": {
+			"command": "npx",
+			"args": ["-y", "@playwright/mcp@latest"],
+			"disabled": false,
+			"autoApprove": [
+				"browser_navigate",
+				"browser_click",
+				"browser_snapshot",
+				"browser_fill",
+				"browser_evaluate",
+				"browser_take_screenshot",
+				"browser_wait_for",
+				"browser_select_option"
+			]
+		},
+		"git": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-git"],
+			"disabled": false,
+			"autoApprove": [
+				"git_status",
+				"git_log_or_diff",
+				"git_branch",
+				"git_add_or_commit",
+				"git_blame",
+				"git_stash"
+			]
+		},
+		"filesystem": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-filesystem"],
+			"env": {
+				"ALLOWED_DIRECTORIES": "C:\\laragon\\www\\ictserve-031125,C:\\laragon\\www\\ictserve-031125\\storage,C:\\laragon\\www\\ictserve-031125\\public"
+			},
+			"disabled": false,
+			"autoApprove": [
+				"read_file",
+				"write_file",
+				"list_directory",
+				"create_directory",
+				"get_file_info"
+			]
+		},
+		"herd": {
+			"command": "php",
+			"args": ["C:/Users/izzatfirdaus/.config/herd/bin/herd-mcp.phar"],
+			"env": {
+				"SITE_PATH": "C:\\laragon\\www\\ictserve-031125"
+			}
+		},
+		"browserstack": {
+			"command": "php",
+			"args": ["artisan", "mcp:browserstack"],
+			"env": {
+				"BROWSERSTACK_USERNAME": "",
+				"BROWSERSTACK_ACCESS_KEY": "",
+				"PERCY_TOKEN": "",
+				"PERCY_ENABLED": "false"
+			},
+			"disabled": false,
+			"autoApprove": [
+				"browserstack_validate_config",
+				"browserstack_get_browsers",
+				"browserstack_create_percy_session",
+				"browserstack_run_percy_visual_test",
+				"browserstack_accessibility_test",
+				"browserstack_create_live_session",
+				"browserstack_get_test_report",
+				"browserstack_run_cross_browser_test",
+				"browserstack_mobile_visual_test"
+			]
+		}
+	}
 }
