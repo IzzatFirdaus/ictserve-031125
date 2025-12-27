@@ -78,5 +78,5 @@ export default {
 	// Client configuration
 	clientInfo: "ICTServe v3.6.1 Percy Integration",
 	environmentInfo:
-		"Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, Playwright 1.56.1",
+		"Laravel 12.43.1, Livewire 3.7.3, Filament 4.3.1, Playwright 1.57.0, Tailwind CSS 4.1.18",
 };
