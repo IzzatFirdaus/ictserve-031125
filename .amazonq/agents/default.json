@@ -16,8 +16,8 @@
     "@bedrock-opus",
     "@sequentialthinking",
     "@memory",
-    "@gitkraken",
-    "@fetch"
+    "@fetch",
+    "@gitkraken"
   ],
   "toolAliases": {},
   "allowedTools": [
@@ -105,6 +105,7 @@
     "@memory/read_graph",
     "@memory/search_nodes",
     "@memory/open_nodes",
+    "@fetch/fetch",
     "@gitkraken/git_add_or_commit",
     "@gitkraken/git_blame",
     "@gitkraken/git_checkout",
@@ -123,8 +124,7 @@
     "@gitkraken/pull_request_create",
     "@gitkraken/pull_request_create_review",
     "@gitkraken/pull_request_get_comments",
-    "@gitkraken/pull_request_get_detail",
-    "@fetch/fetch"
+    "@gitkraken/pull_request_get_detail"
   ],
   "toolsSettings": {
     "use_aws": {
