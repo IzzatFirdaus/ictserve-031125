@@ -14,6 +14,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -43,7 +44,12 @@ class TestRedisJob implements ShouldQueue
  *
  * Tests Redis integration with Laravel's queue system for ICTServe v3.6.1.
  * Validates job dispatching, processing, and Redis database separation.
+ *
+ * @group requires-redis
+ * @group environment-specific
  */
+#[Group('requires-redis')]
+#[Group('environment-specific')]
 class QueueIntegrationTest extends TestCase
 {
     use RefreshDatabase;
