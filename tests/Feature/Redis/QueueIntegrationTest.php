@@ -71,13 +71,15 @@ class QueueIntegrationTest extends TestCase
     public function it_can_dispatch_jobs_to_redis_queue(): void
     {
         $testData = 'test_job_data_'.time();
+        $queueName = 'default';
+        $connection = Queue::connection('redis');
 
         // Dispatch job
         $job = new TestRedisJob($testData);
-        Queue::push($job);
+        Queue::push($job, '', $queueName);
 
         // Verify job was queued
-        $this->assertGreaterThan(0, Queue::size(), 'Job should be queued');
+        $this->assertGreaterThan(0, $connection->size($queueName), 'Job should be queued');
     }
 
     #[Test]
@@ -130,6 +132,8 @@ class QueueIntegrationTest extends TestCase
     {
         $jobCount = 5;
         $testJobs = [];
+        $queueName = 'default';
+        $connection = Queue::connection('redis');
 
         // Dispatch multiple jobs
         for ($i = 0; $i < $jobCount; $i++) {
@@ -137,11 +141,11 @@ class QueueIntegrationTest extends TestCase
             $testJobs[] = $testData;
 
             $job = new TestRedisJob($testData);
-            Queue::push($job);
+            Queue::push($job, '', $queueName);
         }
 
         // Verify all jobs are queued
-        $this->assertEquals($jobCount, Queue::size(), 'All jobs should be queued');
+        $this->assertEquals($jobCount, $connection->size($queueName), 'All jobs should be queued');
 
         // Process all jobs
         for ($i = 0; $i < $jobCount; $i++) {
@@ -162,13 +166,15 @@ class QueueIntegrationTest extends TestCase
     {
         $testData = 'delayed_job_'.time();
         $delay = 2; // 2 seconds delay
+        $queueName = 'default';
+        $connection = Queue::connection('redis');
 
         // Dispatch delayed job
         $job = new TestRedisJob($testData);
-        Queue::later($delay, $job);
+        Queue::later($delay, $job, '', $queueName);
 
         // Verify job is not immediately available
-        $this->assertEquals(0, Queue::size(), 'Delayed job should not be immediately available');
+        $this->assertEquals(0, $connection->size($queueName), 'Delayed job should not be immediately available');
 
         // Wait for delay
         sleep($delay + 1);
@@ -224,6 +230,8 @@ class QueueIntegrationTest extends TestCase
     {
         $jobCount = 10;
         $dispatchTimes = [];
+        $queueName = 'default';
+        $connection = Queue::connection('redis');
 
         // Test job dispatch performance
         for ($i = 0; $i < $jobCount; $i++) {
@@ -231,7 +239,7 @@ class QueueIntegrationTest extends TestCase
             $job = new TestRedisJob($testData);
 
             $startTime = microtime(true);
-            Queue::push($job);
+            Queue::push($job, '', $queueName);
             $endTime = microtime(true);
 
             $dispatchTimes[] = ($endTime - $startTime) * 1000;
@@ -241,27 +249,29 @@ class QueueIntegrationTest extends TestCase
 
         echo "\nQueue Performance Metrics:\n";
         echo 'Average Dispatch Time: '.number_format($avgDispatchTime, 2)."ms\n";
-        echo 'Jobs Queued: '.Queue::size()."\n";
+        echo 'Jobs Queued: '.$connection->size($queueName)."\n";
 
         // Performance assertions
         $this->assertLessThan(100, $avgDispatchTime, 'Job dispatch should be fast');
-        $this->assertEquals($jobCount, Queue::size(), 'All jobs should be queued');
+        $this->assertEquals($jobCount, $connection->size($queueName), 'All jobs should be queued');
     }
 
     #[Test]
     public function it_handles_queue_size_operations(): void
     {
-        $initialSize = Queue::size();
+        $queueName = 'default';
+        $connection = Queue::connection('redis');
+        $initialSize = $connection->size($queueName);
 
         // Dispatch jobs
         $jobCount = 3;
         for ($i = 0; $i < $jobCount; $i++) {
             $job = new TestRedisJob('size_test_'.$i);
-            Queue::push($job);
+            Queue::push($job, '', $queueName);
         }
 
         // Verify queue size increased
-        $newSize = Queue::size();
+        $newSize = $connection->size($queueName);
         $this->assertEquals($initialSize + $jobCount, $newSize, 'Queue size should increase by job count');
 
         // Process one job
@@ -271,7 +281,7 @@ class QueueIntegrationTest extends TestCase
         ]);
 
         // Verify queue size decreased
-        $processedSize = Queue::size();
+        $processedSize = $connection->size($queueName);
         $this->assertEquals($newSize - 1, $processedSize, 'Queue size should decrease after processing');
     }
 
@@ -279,17 +289,19 @@ class QueueIntegrationTest extends TestCase
     public function it_handles_queue_isolation_between_connections(): void
     {
         $testData = 'isolation_test_'.time();
+        $queueName = 'default';
+        $connection = Queue::connection('redis');
 
         // Dispatch job to queue
         $job = new TestRedisJob($testData);
-        Queue::push($job);
+        Queue::push($job, '', $queueName);
 
         // Store data in default Redis connection with queue-like key
         $defaultRedis = Redis::connection('default');
         $defaultRedis->lpush('queues:default', 'default_queue_data');
 
         // Verify queue isolation
-        $queueSize = Queue::size();
+        $queueSize = $connection->size($queueName);
         $this->assertGreaterThan(0, $queueSize, 'Queue should have jobs');
 
         $defaultQueueSize = $defaultRedis->llen('queues:default');
@@ -317,6 +329,8 @@ class QueueIntegrationTest extends TestCase
     {
         $jobCount = 20;
         $testJobs = [];
+        $queueName = 'default';
+        $connection = Queue::connection('redis');
 
         // Dispatch multiple jobs concurrently
         for ($i = 0; $i < $jobCount; $i++) {
@@ -324,11 +338,11 @@ class QueueIntegrationTest extends TestCase
             $testJobs[] = $testData;
 
             $job = new TestRedisJob($testData);
-            Queue::push($job);
+            Queue::push($job, '', $queueName);
         }
 
         // Verify all jobs are queued
-        $this->assertEquals($jobCount, Queue::size(), 'All concurrent jobs should be queued');
+        $this->assertEquals($jobCount, $connection->size($queueName), 'All concurrent jobs should be queued');
 
         // Process all jobs
         for ($i = 0; $i < $jobCount; $i++) {
@@ -365,21 +379,24 @@ class QueueIntegrationTest extends TestCase
     #[Test]
     public function it_can_clear_queue_operations(): void
     {
+        $queueName = 'default';
+        $connection = Queue::connection('redis');
+        
         // Dispatch test jobs
         $jobCount = 5;
         for ($i = 0; $i < $jobCount; $i++) {
             $job = new TestRedisJob('clear_test_'.$i);
-            Queue::push($job);
+            Queue::push($job, '', $queueName);
         }
 
         // Verify jobs are queued
-        $this->assertEquals($jobCount, Queue::size(), 'Jobs should be queued');
+        $this->assertEquals($jobCount, $connection->size($queueName), 'Jobs should be queued');
 
         // Clear the queue
         $this->clearRedisQueues();
 
         // Verify queue is empty
-        $this->assertEquals(0, Queue::size(), 'Queue should be empty after clearing');
+        $this->assertEquals(0, $connection->size($queueName), 'Queue should be empty after clearing');
     }
 
     /**
