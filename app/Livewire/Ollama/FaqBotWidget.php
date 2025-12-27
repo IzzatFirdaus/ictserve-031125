@@ -16,15 +16,22 @@ use Livewire\Component;
  * FAQ Bot Widget Component - Floating Chat Bot
  *
  * Komponen widget terapung untuk FAQ Bot AI yang boleh digunakan di mana-mana halaman.
- * Mematuhi WCAG 2.2 Level AA dan D12-D14 v3.6.0.
+ * Mematuhi WCAG 2.2 Level AA dan D12-D14 v3.6.1.
  * Sokongan True Hybrid Architecture (guest + authenticated).
  *
- * @version 3.6.0
+ * Cloud Hybrid AI Architecture:
+ * - Uses Ollama (Local) by default for FAQ queries
+ * - Supports data sovereignty compliance (PKS 4.2)
  *
+ * @version 3.6.1
+ *
+ * @see D18_AI_CHATBOT_OLLAMA_BEDROCK.md (Cloud Hybrid AI Architecture)
  * @see D12_UI_UX_DESIGN_GUIDE.md
  * @see D15_LANGUAGE_MS_EN.md (Bahasa Melayu sahaja)
  *
- * @requirements 1.1, 1.4, 5.1, 5.2, 5.6, 5.7 (D00-D17 v3.6.0)
+ * @requirements 1.1, 1.4, 5.1, 5.2, 5.6, 5.7 (D00-D18 v3.6.1)
+ *
+ * @trace D18-§2.4 (Integration Context), D18-§3.1 (System Architecture)
  */
 class FaqBotWidget extends Component
 {

@@ -15,16 +15,23 @@ use Livewire\Component;
 /**
  * FAQ Bot Main Interface Component
  *
- * Antara muka utama FAQ Bot AI untuk ICTServe v3.6.0.
+ * Antara muka utama FAQ Bot AI untuk ICTServe v3.6.1.
  * Mematuhi True Hybrid Architecture dan WCAG 2.2 Level AA.
- * Bahasa Melayu sahaja mengikut D15 v3.6.0.
+ * Bahasa Melayu sahaja mengikut D15 v3.6.0+.
  *
- * @version 3.6.0
+ * Cloud Hybrid AI Architecture:
+ * - Ollama (Local): Untuk pertanyaan FAQ dan data sensitif (PKS 4.2 compliance)
+ * - AWS Bedrock: Untuk pertanyaan kompleks dengan data awam (selepas DLP filters)
  *
+ * @version 3.6.1
+ *
+ * @see D18_AI_CHATBOT_OLLAMA_BEDROCK.md (Cloud Hybrid AI Architecture)
  * @see D00_SYSTEM_OVERVIEW.md (True Hybrid Architecture)
  * @see D15_LANGUAGE_MS_EN.md (Bahasa Melayu sahaja)
  *
  * @requirements 1.1, 1.2, 1.3, 1.4, 5.1, 5.2, 5.6, 5.7
+ *
+ * @trace D18-§2.4 (Integration Context), D18-§5.1 (Query Classification)
  */
 #[Layout('layouts.faq-bot')]
 class FaqBot extends Component
@@ -64,13 +71,11 @@ class FaqBot extends Component
     /**
      * AI Provider selection (ollama or bedrock)
      */
-    
     public string $aiProvider = 'ollama';
 
     /**
      * Bedrock model selection
      */
-    
     public string $bedrockModel = 'haiku';
 
     /**
@@ -190,6 +195,8 @@ class FaqBot extends Component
 
     /**
      * Process query using Bedrock
+     *
+     * @trace D18-§5.1 (Query Classification), D18-§7.1 (Response Structure)
      */
     private function processBedrockQuery(): array
     {
@@ -204,6 +211,7 @@ class FaqBot extends Component
                     'user_id' => Auth::id(),
                     'context' => 'faq',
                     'use_internet' => false,
+                    'query_type' => 'faq_bedrock',
                 ]
             );
 
@@ -212,11 +220,14 @@ class FaqBot extends Component
                     'success' => true,
                     'answer' => $response['content'],
                     'sources' => [], // Bedrock doesn't provide sources like RAG
+                    'model' => $this->bedrockModel,
+                    'tokens' => $response['usage']['output_tokens'] ?? null,
                 ];
             } else {
                 return [
                     'success' => false,
-                    'error' => 'Ralat semasa memproses dengan Bedrock AI.',
+                    'error' => $response['error'] ?? 'Ralat semasa memproses dengan Bedrock AI.',
+                    'error_code' => $response['error_code'] ?? 'BEDROCK_ERROR',
                 ];
             }
         } catch (\Exception $e) {
@@ -224,42 +235,52 @@ class FaqBot extends Component
                 'error' => $e->getMessage(),
                 'model' => $this->bedrockModel,
                 'query' => $this->query,
+                'component' => 'FaqBot',
             ]);
 
             return [
                 'success' => false,
                 'error' => 'Ralat sambungan ke Bedrock AI.',
+                'error_code' => 'BEDROCK_CONNECTION_ERROR',
             ];
         }
     }
 
     /**
      * Get Bedrock model ID based on selection
+     *
+     * Uses inference profile format as required by AWS Bedrock on-demand throughput.
+     *
+     * @trace D18-§6.2 (Inference Profile Requirements)
+     * @trace D18-§4.4 (Model Rate Limits)
      */
     private function getBedrockModelId(): string
     {
         return match ($this->bedrockModel) {
-            // Claude 4.5 Models
-            'opus' => config('bedrock.models.opus'),
-            'sonnet' => config('bedrock.models.sonnet'),
-            'haiku' => config('bedrock.models.haiku'),
+            // Claude 4.5 Models (Anthropic)
+            // Note: Opus 4.5 requires global inference profile
+            'opus' => config('bedrock.models.opus'),      // global.anthropic.claude-opus-4-5-*
+            'sonnet' => config('bedrock.models.sonnet'),  // us.anthropic.claude-sonnet-4-5-*
+            'haiku' => config('bedrock.models.haiku'),    // us.anthropic.claude-haiku-4-5-*
 
-            // Amazon Nova Models
-            'nova_micro' => config('bedrock.models.nova_micro'),
-            'nova_lite' => config('bedrock.models.nova_lite'),
-            'nova_pro' => config('bedrock.models.nova_pro'),
+            // Amazon Nova Models (New in v3.6.1)
+            'nova_micro' => config('bedrock.models.nova_micro'),  // amazon.nova-micro-v1:0
+            'nova_lite' => config('bedrock.models.nova_lite'),    // amazon.nova-lite-v1:0
+            'nova_pro' => config('bedrock.models.nova_pro'),      // amazon.nova-pro-v1:0
 
             // Amazon Titan Models
-            'titan_text_lite' => config('bedrock.models.titan_text_lite'),
-            'titan_text_express' => config('bedrock.models.titan_text_express'),
+            'titan_text_lite' => config('bedrock.models.titan_text_lite'),      // amazon.titan-text-lite-v1
+            'titan_text_express' => config('bedrock.models.titan_text_express'), // amazon.titan-text-express-v1
 
-            // Default fallback
+            // Default fallback to Haiku (fast response for FAQ)
             default => config('bedrock.models.haiku'),
         };
     }
 
     /**
      * Switch AI provider
+     *
+     * @trace D18-§5.1 (Query Classification), D18-§8.1 (Cost Optimization)
      */
     public function switchProvider(string $provider): void
     {
@@ -268,12 +289,12 @@ class FaqBot extends Component
 
             // Reset model selection when switching
             if ($provider === 'bedrock' && empty($this->bedrockModel)) {
-                $this->bedrockModel = 'haiku';
+                $this->bedrockModel = 'haiku'; // Default to fast model for FAQ
             }
 
             $this->announcement = $provider === 'bedrock'
-                ? __('ollama.bedrock.switch_to_bedrock', [], 'ms')
-                : __('ollama.bedrock.switch_to_ollama', [], 'ms');
+                ? 'Bertukar ke AWS Bedrock AI. Model: '.ucfirst(str_replace('_', ' ', $this->bedrockModel))
+                : 'Bertukar ke Ollama AI tempatan.';
 
             $this->dispatch('announce', message: $this->announcement);
         }
@@ -327,12 +348,11 @@ class FaqBot extends Component
     /**
      * Add message to conversation history
      */
-    
 
-/**
- * @param array<string, mixed> $sources
- */
-private function addMessage(string $role, string $content, array $sources = []): void
+    /**
+     * @param  array<string, mixed>  $sources
+     */
+    private function addMessage(string $role, string $content, array $sources = []): void
     {
         $message = [
             'role' => $role,
@@ -389,7 +409,7 @@ private function addMessage(string $role, string $content, array $sources = []):
      */
     public function getConversationContext(): array
     {
-        return \array_map(fn($msg) => [
+        return \array_map(fn ($msg) => [
             'role' => $msg['role'],
             'content' => $msg['content'],
         ], \array_slice($this->messages, -5 * 2)); // Last 5 turns
@@ -404,7 +424,7 @@ private function addMessage(string $role, string $content, array $sources = []):
 
         foreach ($this->messages as $message) {
             $role = $message['role'] === 'user' ? 'Pengguna' : 'AI Bot';
-            $summary .= "{$role}: " . mb_substr($message['content'], 0, 200) . "\n\n";
+            $summary .= "{$role}: ".mb_substr($message['content'], 0, 200)."\n\n";
         }
 
         return $summary;

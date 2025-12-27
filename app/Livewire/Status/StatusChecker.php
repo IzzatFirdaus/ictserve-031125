@@ -209,8 +209,9 @@ class StatusChecker extends Component
     protected function handleTicketFound(HelpdeskTicket $ticket): void
     {
         // Eager load relationships
+        // Note: is_internal=false means the comment is public (visible to guests)
         $ticket->load(['category', 'division', 'assignedUser', 'comments' => function ($query): void {
-            $query->where('is_public', true)->orderBy('created_at', 'desc');
+            $query->where('is_internal', false)->orderBy('created_at', 'desc');
         }]);
 
         $this->submission = $ticket;
@@ -226,8 +227,9 @@ class StatusChecker extends Component
     protected function handleLoanFound(LoanApplication $loan): void
     {
         // Eager load relationships
+        // Note: PortalActivity doesn't have is_public column, load all activities
         $loan->load(['division', 'loanItems.asset', 'activities' => function ($query): void {
-            $query->where('is_public', true)->orderBy('created_at', 'desc')->limit(10);
+            $query->orderBy('created_at', 'desc')->limit(10);
         }]);
 
         $this->submission = $loan;
@@ -411,11 +413,12 @@ class StatusChecker extends Component
      */
     protected function buildTicketComments(HelpdeskTicket $ticket): array
     {
+        // is_internal=false means the comment is public (visible to guests)
         return $ticket->comments
-            ->where('is_public', true)
+            ->where('is_internal', false)
             ->map(fn ($comment) => [
                 'author' => $comment->user?->name ?? __('status.system'),
-                'content' => $comment->content,
+                'content' => $comment->comment,
                 'created_at' => $comment->created_at->translatedFormat('d M Y, h:i A'),
             ])
             ->values()
@@ -429,11 +432,11 @@ class StatusChecker extends Component
      */
     protected function buildLoanComments(LoanApplication $loan): array
     {
+        // PortalActivity doesn't have is_public column, show all activities
         return $loan->activities
-            ->where('is_public', true)
             ->map(fn ($activity) => [
-                'author' => $activity->causer?->name ?? __('status.system'),
-                'content' => $activity->description,
+                'author' => $activity->user?->name ?? __('status.system'),
+                'content' => $activity->formatted_description,
                 'created_at' => $activity->created_at->translatedFormat('d M Y, h:i A'),
             ])
             ->values()

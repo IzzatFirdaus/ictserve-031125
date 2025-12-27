@@ -17,17 +17,51 @@ class SessionManager extends Component
 
         return collect(
             DB::connection(config('session.connection'))->table(config('session.table', 'sessions'))
-                    ->where('user_id', Auth::user()->getAuthIdentifier())
-                    ->orderBy('last_activity', 'desc')
-                    ->get()
+                ->where('user_id', Auth::user()->getAuthIdentifier())
+                ->orderBy('last_activity', 'desc')
+                ->get()
         )->map(function ($session) {
             return (object) [
                 'agent' => $this->createAgent($session),
                 'ip_address' => $session->ip_address,
-                'is_current_device' => $session->id === request()->session()->getId(),
+                'is_current_device' => $this->isCurrentSession($session->id),
                 'last_active' => Carbon::createFromTimestamp($session->last_activity)->diffForHumans(),
             ];
         });
+    }
+
+    /**
+     * Check if the given session ID is the current session.
+     */
+    protected function isCurrentSession(string $sessionId): bool
+    {
+        try {
+            $request = request();
+            if ($request->hasSession()) {
+                return $sessionId === $request->session()->getId();
+            }
+        } catch (\RuntimeException $e) {
+            // Session store not set on request - this can happen in tests
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the current session ID safely.
+     */
+    protected function getCurrentSessionId(): ?string
+    {
+        try {
+            $request = request();
+            if ($request->hasSession()) {
+                return $request->session()->getId();
+            }
+        } catch (\RuntimeException $e) {
+            // Session store not set on request - this can happen in tests
+        }
+
+        return null;
     }
 
     protected function createAgent($session)
@@ -73,10 +107,16 @@ class SessionManager extends Component
 
     public function logoutOtherBrowserSessions()
     {
-        DB::connection(config('session.connection'))->table(config('session.table', 'sessions'))
-            ->where('user_id', Auth::user()->getAuthIdentifier())
-            ->where('id', '!=', request()->session()->getId())
-            ->delete();
+        $currentSessionId = $this->getCurrentSessionId();
+
+        $query = DB::connection(config('session.connection'))->table(config('session.table', 'sessions'))
+            ->where('user_id', Auth::user()->getAuthIdentifier());
+
+        if ($currentSessionId) {
+            $query->where('id', '!=', $currentSessionId);
+        }
+
+        $query->delete();
 
         $this->dispatch('logged-out-other-devices');
     }
