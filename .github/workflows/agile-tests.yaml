@@ -18,6 +18,11 @@ jobs:
         with:
           php-version: '8.2'
 
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
+
       - name: Composer install
         run: composer install --no-interaction --prefer-dist --no-progress
 
@@ -48,6 +53,11 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
 
       - name: Composer install
         run: composer install --no-interaction --prefer-dist --no-progress

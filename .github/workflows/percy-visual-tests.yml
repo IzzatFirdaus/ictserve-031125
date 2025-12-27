@@ -83,6 +83,11 @@ jobs:
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
           coverage: none
 
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
+
       - name: Copy environment file
         run: cp .env.example .env
 
@@ -176,6 +181,11 @@ jobs:
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
           coverage: none
 
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
+
       - name: Copy environment file
         run: cp .env.example .env
 
@@ -226,6 +236,11 @@ jobs:
           php-version: ${{ env.PHP_VERSION }}
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
           coverage: none
+
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
 
       - name: Copy environment file
         run: cp .env.example .env
@@ -286,6 +301,11 @@ jobs:
           php-version: ${{ env.PHP_VERSION }}
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
           coverage: none
+
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
 
       - name: Copy environment file
         run: cp .env.example .env
