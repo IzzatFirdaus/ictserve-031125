@@ -60,12 +60,16 @@ RUN apk add --no-cache --update \
     sudo \
     $PHPIZE_DEPS
 
-# Install Node.js 18.x (compatible with Vite 6.x)
-# Use Alpine package manager for Node.js 18
+# Install Node.js 18.x or higher (required for Vite 7.x)
+# Alpine 3.18+ includes Node.js 18.x in main repository
 RUN apk add --no-cache nodejs npm
 
-# Verify Node.js installation
-RUN node --version && npm --version
+# Verify Node.js installation meets minimum requirements
+RUN node --version && npm --version && \
+    NODE_MAJOR=$(node --version | cut -d'v' -f2 | cut -d'.' -f1) && \
+    if [ "$NODE_MAJOR" -lt 18 ]; then \
+        echo "ERROR: Node.js version must be 18 or higher for Vite 7.x" && exit 1; \
+    fi
 
 # Configure and install PHP extensions used by Laravel
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
