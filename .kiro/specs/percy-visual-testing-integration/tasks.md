@@ -228,11 +228,23 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - **Property 13: Percy Platform Integration**
   - **Validates: Requirements 1.1, 1.3**
 
-- [ ] 12. Create example tests and documentation
-  - Create example Playwright tests with Percy snapshots
-  - Create example Dusk tests with Percy snapshots
-  - Add inline code documentation and comments
-  - Create configuration examples for different environments
+- [x] 12. Create example tests and documentation
+  - ✅ Create example Playwright tests with Percy snapshots
+    - Created `tests/e2e/examples/percy-example-tests.spec.ts` with 10 comprehensive example categories
+    - Each example includes detailed inline documentation and comments
+  - ✅ Create example Dusk tests with Percy snapshots (redundancy layer)
+    - Created `tests/Browser/Examples/PercyExampleTest.php` with 10 comprehensive example categories
+    - Created `tests/Browser/Traits/PercyDuskTrait.php` with reusable Percy helper methods
+    - Created `tests/Browser/Examples/README.md` with Dusk examples documentation
+    - Dusk examples cover: Basic snapshots, Responsive testing, Form states, Hybrid Architecture, Accessibility, Bahasa Melayu, Error handling, Livewire components, Modals, Performance
+  - ✅ Add inline code documentation and comments
+    - All example tests include JSDoc/PHPDoc comments explaining purpose, configuration, and best practices
+    - Created `tests/e2e/examples/README.md` with Playwright usage instructions
+    - Created `tests/Browser/Examples/README.md` with Dusk usage instructions
+  - ✅ Create configuration examples for different environments
+    - Created `docs/percy/PERCY_EXAMPLES_AND_CONFIGURATION.md` with comprehensive configuration guide
+    - Documented all environment-specific configurations (local, testing, staging, production)
+    - Added Laravel Dusk Percy Integration section with examples and trait documentation
   - _Requirements: All requirements for demonstration_
 
 - [x] 13. Update package.json scripts and npm configuration
@@ -256,8 +268,27 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - Create artisan command for Percy status checking
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-- [ ] 16. Integrate Percy with existing ICTServe v3.6.1 Playwright test suite
-  - Add Percy snapshots to dashboard.spec.ts for responsive layout testing with True Hybrid Architecture
+- [x] 16. Integrate Percy with existing ICTServe v3.6.1 Playwright test suite
+  - ✅ Add Percy snapshots to dashboard.spec.ts for responsive layout testing with True Hybrid Architecture
+  - ✅ Integrate Percy with helpdesk.spec.ts for form and UI state capture (guest + authenticated workflows)
+  - ✅ Add visual testing to loan-module.spec.ts for loan application flows with Bahasa Melayu interface
+  - ✅ Add visual testing to loan.spec.ts for loan processing workflows
+  - ✅ Update guest-flow-screenshots.spec.ts to use Percy instead of basic screenshots
+  - ✅ Add Percy snapshots to accessibility.comprehensive.spec.ts for WCAG 2.2 AA compliance verification
+  - ✅ Add Percy snapshots to accessibility.interactions.spec.ts for interactive accessibility testing
+  - ✅ Add Percy snapshots to guest-landing-accessibility.spec.ts for guest page visual compliance
+  - ✅ Integrate Percy with cross-browser.spec.ts for cross-browser visual consistency
+  - ✅ Add Percy snapshots to staff-flow.spec.ts for complete user journey testing
+  - ✅ Add Percy snapshots to branding-smoke.spec.ts for brand consistency validation
+  - ✅ Add Percy snapshots to ollama-accessibility.spec.ts for AI component visual testing
+  - ✅ Add Percy snapshots to devtools.integration.spec.ts for development tools visual validation
+  - ✅ Add Percy snapshots to filament.components.debug.spec.ts for Filament 4.3.1 admin component visual testing
+  - ✅ Enhance helpdesk-performance.spec.ts with visual performance validation
+  - ✅ Enhance loan-module-performance.spec.ts with visual performance validation
+  - ✅ Update existing screenshot-based tests to use Percy visual comparisons
+  - ✅ Ensure all Percy integrations support Bahasa Melayu interface elements
+  - ✅ Test both guest and authenticated user workflows for True Hybrid Architecture
+  - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 5.1, 5.2, 5.3, 5.4, 10.1-10.18_
   - Integrate Percy with helpdesk.spec.ts for form and UI state capture (guest + authenticated workflows)
   - Add visual testing to loan-module.spec.ts for loan application flows with Bahasa Melayu interface
   - Add visual testing to loan.spec.ts for loan processing workflows
@@ -278,7 +309,7 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - Test both guest and authenticated user workflows for True Hybrid Architecture
   - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 5.1, 5.2, 5.3, 5.4, 10.1-10.18_
 
-- [ ] 16.1. Individual Percy integration testing - Test each modified file individually
+- [x] 16.1. Individual Percy integration testing - Test each modified file individually
   - Execute dashboard.spec.ts with Percy integration and verify functionality
   - Execute helpdesk.spec.ts with Percy integration and verify functionality
   - Execute loan-module.spec.ts with Percy integration and verify functionality
@@ -298,7 +329,7 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - Document any Percy integration issues found and fixes applied
   - _Requirements: 11.4, 11.6, 11.9_
 
-- [ ] 16.2. Fix Percy integration errors and re-validate
+- [x] 16.2. Fix Percy integration errors and re-validate
   - Fix any Percy integration errors found in dashboard.spec.ts and re-test
   - Fix any Percy integration errors found in helpdesk.spec.ts and re-test
   - Fix any Percy integration errors found in loan-module.spec.ts and re-test
@@ -322,24 +353,28 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - **Property 14: Existing Test Suite Integration**
   - **Validates: Requirements 10.1-10.16**
 
-- [ ] 17. Create Percy-enhanced test examples based on existing tests
-  - Create enhanced dashboard responsive test with Percy visual validation
-  - Create enhanced helpdesk form test with Percy snapshot comparisons
-  - Create enhanced loan application test with Percy visual regression detection
-  - Create enhanced loan processing test with Percy workflow validation
-  - Create enhanced accessibility test with Percy visual compliance checking
-  - Create enhanced interactive accessibility test with Percy visual validation
-  - Create enhanced guest landing test with Percy visual compliance validation
-  - Create enhanced cross-browser test with Percy visual consistency validation
-  - Create enhanced branding test with Percy brand consistency validation
-  - Create enhanced AI component test with Percy visual validation
-  - Create enhanced development tools test with Percy visual validation
-  - Create enhanced admin component test with Percy visual validation
-  - Create enhanced performance test examples with Percy visual performance validation
-  - Add Percy snapshot examples for guest flow automation
+- [x] 17. Create Percy-enhanced test examples based on existing tests
+  - ✅ Create enhanced dashboard responsive test with Percy visual validation (Tests 01-04)
+  - ✅ Create enhanced helpdesk form test with Percy snapshot comparisons (Tests 05-08)
+  - ✅ Create enhanced loan application test with Percy visual regression detection (Tests 09-12)
+  - ✅ Create enhanced loan processing test with Percy workflow validation (included in Tests 09-12)
+  - ✅ Create enhanced accessibility test with Percy visual compliance checking (Tests 13-16)
+  - ✅ Create enhanced interactive accessibility test with Percy visual validation (Tests 13-16)
+  - ✅ Create enhanced guest landing test with Percy visual compliance validation (Tests 39-43)
+  - ✅ Create enhanced cross-browser test with Percy visual consistency validation (Tests 17-20)
+  - ✅ Create enhanced branding test with Percy brand consistency validation (Tests 21-24)
+  - ✅ Create enhanced AI component test with Percy visual validation (Tests 25-27)
+  - ✅ Create enhanced development tools test with Percy visual validation (Tests 28-30)
+  - ✅ Create enhanced admin component test with Percy visual validation (Tests 31-34)
+  - ✅ Create enhanced performance test examples with Percy visual performance validation (Tests 35-38)
+  - ✅ Add Percy snapshot examples for guest flow automation (Tests 39-43)
+  - ✅ Add Hybrid Architecture visual comparison tests (Tests 44-46)
+  - ✅ Add Bahasa Melayu interface visual validation tests (Tests 47-50)
+  - ✅ Add Percy integration utilities and validation tests (Tests 51-55)
+  - **File created**: `tests/e2e/percy-enhanced-examples.spec.ts` (55 comprehensive tests)
   - _Requirements: All requirements for demonstration_
 
-- [ ] 17.1. Validate all newly created Percy-enhanced test examples
+- [x] 17.1. Validate all newly created Percy-enhanced test examples
   - Execute each newly created Percy-enhanced test individually
   - Verify all Percy snapshots are captured correctly
   - Validate that enhanced tests maintain original functionality
@@ -348,7 +383,7 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - Document validation results for all enhanced test examples
   - _Requirements: 11.8, 11.9, 11.10_
 
-- [ ] 19. Implement BrowserStack MCP integration for enhanced cross-platform testing
+- [x] 19. Implement BrowserStack MCP integration for enhanced cross-platform testing
   - Configure BrowserStack MCP server integration with Percy visual testing
   - Set up BrowserStack Test Management for organizing Percy visual test cases
   - Implement cross-browser testing capabilities with Percy snapshot integration
@@ -369,7 +404,7 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - **Property 18: Live Session Visual Debugging**
   - **Validates: Requirements 12.5, 12.6**
 
-- [ ] 20. Implement BrowserStack automated test execution with Percy
+- [x] 20. Implement BrowserStack automated test execution with Percy
   - Set up BrowserStack Automate integration for Percy visual tests
   - Configure cross-browser test execution with Percy snapshot capture
   - Implement failure analysis and debugging capabilities
@@ -377,15 +412,42 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - Create performance testing integration for visual validation across devices
   - _Requirements: 12.6, 12.7, 12.8, 12.9, 12.10_
 
-- [ ] 21. Create BrowserStack Test Management integration for Percy tests
-  - Set up test case organization and management for Percy visual tests
-  - Implement test run creation and execution tracking
-  - Add test result reporting and analysis capabilities
-  - Create integration between BrowserStack Test Management and Percy builds
-  - Configure automated test case generation from Percy visual test requirements
+- [x] 21. Create BrowserStack Test Management integration for Percy tests
+  - ✅ Set up test case organization and management for Percy visual tests
+    - Created `tests/e2e/helpers/browserstack-test-management-service.ts` with comprehensive test case management
+    - Implemented TestCase, TestRun, TestStep, and related interfaces
+    - Added support for test case creation, organization, and tracking
+  - ✅ Implement test run creation and execution tracking
+    - Created test run lifecycle management (create, start, update, complete)
+    - Implemented test case result tracking with Percy snapshot integration
+    - Added execution time and status tracking for each test case
+  - ✅ Add test result reporting and analysis capabilities
+    - Implemented JSON and Markdown report export functionality
+    - Added test run summary calculation with pass/fail statistics
+    - Created recommendations generation based on test results
+  - ✅ Create integration between BrowserStack Test Management and Percy builds
+    - Implemented Percy build sync functionality
+    - Added Percy snapshot tracking within test cases
+    - Created combined reporting with Percy build information
+  - ✅ Configure automated test case generation from Percy visual test requirements
+    - Created 8 predefined Percy test case templates for ICTServe v3.6.1
+    - Implemented `generateTestCasesFromRequirements()` for automated test case creation
+    - Added ICTServe-specific context (Bahasa Melayu, Hybrid Architecture, WCAG compliance)
+  - **Files created**:
+    - `tests/e2e/helpers/browserstack-test-management-service.ts` - Test Management service
+    - `tests/e2e/browserstack-test-management-percy.spec.ts` - Integration test suite (15 tests)
+  - **npm scripts added**:
+    - `test:browserstack:test-management` - Run all Test Management tests
+    - `test:browserstack:test-management:organization` - Test case organization tests
+    - `test:browserstack:test-management:execution` - Test execution tests
+    - `test:browserstack:test-management:reporting` - Reporting tests
+    - `test:browserstack:test-management:templates` - Template validation tests
+    - `test:browserstack:all` - Run all BrowserStack integration tests
+    - `ci:browserstack:test-management` - CI pipeline for Test Management
+    - `ci:browserstack:complete` - Complete CI pipeline for all BrowserStack tests
   - _Requirements: 12.3, 12.10_
 
-- [ ] 22. Implement BrowserStack accessibility testing integration
+- [x] 22. Implement BrowserStack accessibility testing integration
   - Configure BrowserStack accessibility scanning alongside Percy visual validation
   - Implement WCAG compliance checking with visual regression detection
   - Add accessibility test reporting combined with Percy visual results
@@ -393,7 +455,7 @@ This implementation plan provides a step-by-step approach to integrate Percy vis
   - Integrate accessibility expert guidance with Percy visual testing workflows
   - _Requirements: 12.4, 12.6_
 
-- [ ] 23. Set up BrowserStack Live sessions for visual debugging
+- [x] 23. Set up BrowserStack Live sessions for visual debugging
   - Configure Live session integration for Percy visual test debugging
   - Implement real-time visual issue investigation capabilities
   - Add Live session screenshot and video capture for Percy comparison
