@@ -57,8 +57,8 @@ class FigmaButtonTest extends TestCase
         // Check for WCAG 2.2 AA compliance features
         $this->assertStringContainsString('min-h-11', $html); // 44px minimum touch target
         $this->assertStringContainsString('focus:outline-none', $html); // Custom focus handling
-        $this->assertStringContainsString('focus:ring-2', $html); // Visible focus indicator
-        $this->assertStringContainsString('focus:ring-offset-2', $html); // Focus ring offset
+        $this->assertStringContainsString('focus-visible:ring-3', $html); // Visible focus indicator (using focus-visible for better UX)
+        $this->assertStringContainsString('focus-visible:ring-offset-2', $html); // Focus ring offset
     }
 
     #[Test]
@@ -74,9 +74,9 @@ class FigmaButtonTest extends TestCase
         $html = $view->render();
 
         // Check for ICTServe-specific design tokens
-        $this->assertStringContainsString('rounded-m', $html); // ICTServe radius token
+        $this->assertStringContainsString('rounded-lg', $html); // ICTServe radius token
         $this->assertStringContainsString('shadow-button', $html); // ICTServe shadow token
         $this->assertStringContainsString('bg-primary-600', $html); // ICTServe color token
-        $this->assertStringContainsString('focus:ring-primary-500', $html); // ICTServe focus token
+        $this->assertStringContainsString('focus-visible:ring-primary-500', $html); // ICTServe focus token
     }
 }
