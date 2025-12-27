@@ -227,7 +227,7 @@
                                         </div>
                                         <div class="shrink-0">
                                             <a href="{{ $action['url'] }}"
-                                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-primary-700 bg-primary-50 hover:bg-primary-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11 min-w-11">
+                                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-primary-700 bg-primary-50 hover:bg-primary-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 min-h-11 min-w-11">
                                                 Lihat
                                             </a>
                                         </div>
@@ -250,7 +250,7 @@
                         <div class="flex space-x-2" role="group" aria-label="Penapis aktiviti">
                             @foreach ($filterOptions as $key => $label)
                                 <button wire:click="setActivityFilter('{{ $key }}')" type="button"
-                                    class="px-3 py-1.5 text-xs font-medium rounded-lg min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 {{ $activityFilter === $key ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300' }}"
+                                    class="px-3 py-1.5 text-xs font-medium rounded-lg min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 {{ $activityFilter === $key ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300' }}"
                                     aria-pressed="{{ $activityFilter === $key ? 'true' : 'false' }}">
                                     {{ $label }}
                                 </button>

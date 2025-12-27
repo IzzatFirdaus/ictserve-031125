@@ -124,7 +124,7 @@
     </div>
 
     {{-- Livewire Scripts --}}
-    @livewireScripts
+    @livewireScriptConfig
 
     {{-- FAQ Bot Widget - Floating Chat Bot (v3.6.0 Ollama AI Integration) --}}
     {{-- Mematuhi WCAG 2.2 Level AA dan D12-D14 v3.6.0 --}}
@@ -135,3 +135,4 @@
 </body>
 
 </html>
+

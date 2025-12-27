@@ -25,7 +25,7 @@
         <div class="mt-4 flex gap-3 sm:ml-4 sm:mt-0">
             {{-- Back Button - 44px touch target per D12 §4.1 --}}
             <a href="{{ route('staff.history') }}"
-                class="inline-flex items-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-button ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-w-11 min-h-11 transition-colors duration-200"
+                class="inline-flex items-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-button ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-w-11 min-h-11 transition-colors duration-200"
                 aria-label="{{ __('portal.back_to_submissions') }}">
                 <x-heroicon-o-arrow-left class="h-5 w-5" aria-hidden="true" />
                 {{ __('portal.back') }}
@@ -33,7 +33,7 @@
 
             {{-- Refresh Button - Primary action per D14 §6.5 --}}
             <button wire:click="refreshSubmission" type="button"
-                class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-button hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 min-w-11 min-h-11 transition-colors duration-200"
+                class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-button hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-w-11 min-h-11 transition-colors duration-200"
                 aria-label="{{ __('portal.refresh_submission') }}">
                 <x-heroicon-o-arrow-path class="h-5 w-5" aria-hidden="true" />
                 {{ __('portal.refresh') }}
@@ -290,10 +290,8 @@
                                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
                                             {{ __('portal.loan_items') }}</dt>
                                         <dd class="mt-1">
-                                            <div
-                                                class="overflow-hidden shadow ring-1 ring-black/5 rounded-lg">
-                                                <table
-                                                    class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+                                            <div class="overflow-hidden shadow ring-1 ring-black/5 rounded-lg">
+                                                <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                                                     <thead class="bg-gray-50 dark:bg-gray-700">
                                                         <tr>
                                                             <th scope="col"
@@ -372,15 +370,20 @@
                                                     <span
                                                         class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white dark:ring-gray-800 {{ $activityColorClass }}">
                                                         @if ($activity['icon'] === 'heroicon-o-plus-circle')
-                                                            <x-heroicon-o-plus-circle class="h-5 w-5 text-white" aria-hidden="true" />
+                                                            <x-heroicon-o-plus-circle class="h-5 w-5 text-white"
+                                                                aria-hidden="true" />
                                                         @elseif($activity['icon'] === 'heroicon-o-check-circle')
-                                                            <x-heroicon-o-check-circle class="h-5 w-5 text-white" aria-hidden="true" />
+                                                            <x-heroicon-o-check-circle class="h-5 w-5 text-white"
+                                                                aria-hidden="true" />
                                                         @elseif($activity['icon'] === 'heroicon-o-x-circle')
-                                                            <x-heroicon-o-x-circle class="h-5 w-5 text-white" aria-hidden="true" />
+                                                            <x-heroicon-o-x-circle class="h-5 w-5 text-white"
+                                                                aria-hidden="true" />
                                                         @elseif($activity['icon'] === 'heroicon-o-arrow-path')
-                                                            <x-heroicon-o-arrow-path class="h-5 w-5 text-white" aria-hidden="true" />
+                                                            <x-heroicon-o-arrow-path class="h-5 w-5 text-white"
+                                                                aria-hidden="true" />
                                                         @else
-                                                            <x-heroicon-o-information-circle class="h-5 w-5 text-white" aria-hidden="true" />
+                                                            <x-heroicon-o-information-circle class="h-5 w-5 text-white"
+                                                                aria-hidden="true" />
                                                         @endif
                                                     </span>
                                                 </div>
@@ -425,7 +428,8 @@
                     <div class="px-4 py-5 sm:p-6">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                             <span class="inline-flex items-center gap-2">
-                                <x-heroicon-o-chat-bubble-left-right class="h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                                <x-heroicon-o-chat-bubble-left-right class="h-5 w-5 text-gray-500 dark:text-gray-400"
+                                    aria-hidden="true" />
                                 {{ __('portal.internal_comments') }}
                             </span>
                         </h2>
@@ -463,7 +467,7 @@
                     <div class="space-y-3">
                         @if ($isClaimable)
                             <button wire:click="openClaimModal" type="button"
-                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-lg bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-600 min-h-11">
+                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-lg bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-600 focus-visible:ring-offset-2 min-h-11">
                                 <x-heroicon-o-user class="h-5 w-5" aria-hidden="true" />
                                 {{ __('portal.claim_submission') }}
                             </button>
@@ -471,14 +475,14 @@
 
                         @if ($isCancellable)
                             <button wire:click="openCancelModal" type="button"
-                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-lg bg-danger-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-danger-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-danger-600 min-h-11">
+                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-lg bg-danger-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-danger-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-600 focus-visible:ring-offset-2 min-h-11">
                                 <x-heroicon-o-x-circle class="h-5 w-5" aria-hidden="true" />
                                 {{ __('portal.cancel_submission') }}
                             </button>
                         @endif
 
                         <button type="button" onclick="window.print()"
-                            class="w-full inline-flex items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-gray-700 px-3.5 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-600 min-h-11">
+                            class="w-full inline-flex items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-gray-700 px-3.5 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-600 focus-visible:ring-offset-2 min-h-11">
                             <x-heroicon-o-printer class="h-5 w-5" aria-hidden="true" />
                             {{ __('portal.print') }}
                         </button>
@@ -498,7 +502,8 @@
                                 <li wire:key="attachment-{{ $attachment->id }}"
                                     class="flex items-center justify-between py-3">
                                     <div class="flex items-center min-w-0">
-                                        <x-heroicon-o-paper-clip class="h-5 w-5 shrink-0 text-gray-400" aria-hidden="true" />
+                                        <x-heroicon-o-paper-clip class="h-5 w-5 shrink-0 text-gray-400"
+                                            aria-hidden="true" />
                                         <span
                                             class="ml-2 truncate text-sm text-gray-900 dark:text-white">{{ $attachment->filename }}</span>
                                     </div>
@@ -525,7 +530,7 @@
         {{ __('portal.submission_not_found_description') }}</p>
     <div class="mt-6">
         <a href="{{ route('staff.history') }}"
-            class="inline-flex items-center rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-600">
+            class="inline-flex items-center rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-600 focus-visible:ring-offset-2">
             {{ __('portal.back_to_submissions') }}
         </a>
     </div>
@@ -544,7 +549,8 @@
                     <div>
                         <div
                             class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900">
-                            <x-heroicon-o-user class="h-6 w-6 text-primary-600 dark:text-primary-400" aria-hidden="true" />
+                            <x-heroicon-o-user class="h-6 w-6 text-primary-600 dark:text-primary-400"
+                                aria-hidden="true" />
                         </div>
                         <div class="mt-3 text-center sm:mt-5">
                             <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
@@ -560,7 +566,7 @@
                     </div>
                     <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                         <button wire:click="claimSubmission" type="button"
-                            class="inline-flex w-full justify-center rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-600 sm:col-start-2 min-h-11">
+                            class="inline-flex w-full justify-center rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-600 focus-visible:ring-offset-2 sm:col-start-2 min-h-11">
                             {{ __('portal.confirm_claim') }}
                         </button>
                         <button wire:click="closeClaimModal" type="button"
@@ -586,7 +592,8 @@
                     <div>
                         <div
                             class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-danger-100 dark:bg-danger-900">
-                            <x-heroicon-o-exclamation-triangle class="h-6 w-6 text-danger-600 dark:text-danger-400" aria-hidden="true" />
+                            <x-heroicon-o-exclamation-triangle class="h-6 w-6 text-danger-600 dark:text-danger-400"
+                                aria-hidden="true" />
                         </div>
                         <div class="mt-3 text-center sm:mt-5">
                             <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
@@ -602,7 +609,7 @@
                                 <label for="cancelReason"
                                     class="sr-only">{{ __('portal.cancellation_reason') }}</label>
                                 <textarea wire:model="cancelReason" id="cancelReason" rows="3"
-                                    class="block w-full rounded-lg border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-700"
+                                    class="block w-full rounded-lg border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus-visible:ring-3 focus-visible:ring-primary-600 focus-visible:ring-inset sm:text-sm sm:leading-6 dark:bg-gray-700"
                                     placeholder="{{ __('portal.cancellation_reason_placeholder') }}" required></textarea>
                                 @error('cancelReason')
                                     <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -612,7 +619,7 @@
                     </div>
                     <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                         <button wire:click="cancelSubmission" type="button"
-                            class="inline-flex w-full justify-center rounded-lg bg-danger-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-danger-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-danger-600 sm:col-start-2 min-h-11">
+                            class="inline-flex w-full justify-center rounded-lg bg-danger-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-danger-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-600 focus-visible:ring-offset-2 sm:col-start-2 min-h-11">
                             {{ __('portal.confirm_cancel') }}
                         </button>
                         <button wire:click="closeCancelModal" type="button"
@@ -634,4 +641,3 @@
     </div>
 </div>
 </div>
-

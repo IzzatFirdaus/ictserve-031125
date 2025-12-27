@@ -27,7 +27,8 @@
 
                     <div class="ml-3">
                         <div class="text-sm text-slate-600 dark:text-slate-400">
-                            {{ $session->agent->platform ? $session->agent->platform : 'Unknown' }} - {{ $session->agent->browser ? $session->agent->browser : 'Unknown' }}
+                            {{ $session->agent->platform ? $session->agent->platform : 'Unknown' }} -
+                            {{ $session->agent->browser ? $session->agent->browser : 'Unknown' }}
                         </div>
 
                         <div>
@@ -35,7 +36,8 @@
                                 {{ $session->ip_address }},
 
                                 @if ($session->is_current_device)
-                                    <span class="text-success-600 dark:text-success-400 font-semibold">{{ __('This device') }}</span>
+                                    <span
+                                        class="text-success-600 dark:text-success-400 font-semibold">{{ __('This device') }}</span>
                                 @else
                                     {{ __('Last active') }} {{ $session->last_active }}
                                 @endif
@@ -48,7 +50,9 @@
     @endif
 
     <div class="flex items-center mt-5">
-        <x-primary-button wire:click="logoutOtherBrowserSessions" wire:loading.attr="disabled" wire:confirm="Are you sure you want to log out of your other browser sessions?" class="min-h-11 focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500">
+        <x-primary-button wire:click="logoutOtherBrowserSessions" wire:loading.attr="disabled"
+            wire:confirm="Are you sure you want to log out of your other browser sessions?"
+            class="min-h-11 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
             {{ __('Log Out Other Browser Sessions') }}
         </x-primary-button>
 
@@ -57,4 +61,3 @@
         </x-action-message>
     </div>
 </x-ui.card>
-

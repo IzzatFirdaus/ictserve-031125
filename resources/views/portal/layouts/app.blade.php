@@ -74,8 +74,9 @@
         @include('portal.components.footer')
     </div>
 
-    @livewireScripts
+    @livewireScriptConfig
     @stack('scripts')
 </body>
 
 </html>
+

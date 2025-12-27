@@ -1,7 +1,13 @@
 {{--
-    FAQ Bot AI Component - Clean Chat-First UI (D00-D18 Compliant)
-    ICTServe v3.6.0 - Bahasa Melayu sahaja (D15 v3.6.0)
+    FAQ Bot AI Component - Clean Chat-First UI (D00-D18 v3.6.1 Compliant)
+    ICTServe v3.6.1 - Bahasa Melayu sahaja (D15 v3.6.0+)
     MyDS Design System v2025.2 - WCAG 2.2 AA Compliant
+
+    Cloud Hybrid AI Architecture:
+    - Ollama (Local): FAQ queries, data sensitif (PKS 4.2 compliance)
+    - AWS Bedrock: Complex queries dengan data awam (selepas DLP filters)
+
+    @trace D18-§3.1 (System Architecture), D18-§5.1 (Query Classification)
 --}}
 <div class="flex flex-col h-full max-w-4xl mx-auto px-4 md:px-6 lg:px-8" lang="ms">
 
@@ -30,9 +36,9 @@
                         </svg>
                     @else
                         {{-- Ollama Local AI Icon (Llama) --}}
-                        <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" aria-hidden="true">
+                        <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
                             <circle cx="12" cy="12" r="9" />
                             <path d="M9 9h.01M15 9h.01" />
                             <path d="M9.5 15a3.5 3.5 0 0 0 5 0" />
@@ -43,6 +49,7 @@
                 <div>
                     <h1 class="text-lg font-semibold text-slate-900 dark:text-white">
                         FAQ Bot AI
+                        <span class="text-xs font-normal text-slate-400 ml-1">v3.6.1</span>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-slate-400">
                         {{ $aiProvider === 'bedrock' ? 'AWS Bedrock' : 'Ollama Tempatan' }}
@@ -174,20 +181,21 @@
             {{-- Bedrock Model Selector (Compact) --}}
             @if ($aiProvider === 'bedrock')
                 <select wire:model.live="bedrockModel"
-                    class="text-xs bg-slate-100 dark:bg-slate-800 border-0 rounded-lg py-2.5 px-3 text-slate-700 dark:text-slate-300 focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11">
-                    <optgroup label="Claude">
-                        <option value="haiku">Haiku (Pantas)</option>
-                        <option value="sonnet">Sonnet (Seimbang)</option>
-                        <option value="opus">Opus (Berkuasa)</option>
+                    class="text-xs bg-slate-100 dark:bg-slate-800 border-0 rounded-lg py-2.5 px-3 text-slate-700 dark:text-slate-300 focus-visible:ring-3 focus-visible:ring-primary-500 min-h-11"
+                    aria-label="Pilih model Bedrock">
+                    <optgroup label="Claude 4.5 (Anthropic)">
+                        <option value="haiku">Haiku 4.5 (Pantas)</option>
+                        <option value="sonnet">Sonnet 4.5 (Seimbang)</option>
+                        <option value="opus">Opus 4.5 (Berkuasa)</option>
                     </optgroup>
-                    <optgroup label="Nova">
-                        <option value="nova_micro">Nova Micro</option>
-                        <option value="nova_lite">Nova Lite</option>
-                        <option value="nova_pro">Nova Pro</option>
+                    <optgroup label="Amazon Nova">
+                        <option value="nova_micro">Nova Micro (Sangat Pantas)</option>
+                        <option value="nova_lite">Nova Lite (Cekap)</option>
+                        <option value="nova_pro">Nova Pro (Serbaguna)</option>
                     </optgroup>
-                    <optgroup label="Titan">
-                        <option value="titan_text_lite">Titan Lite</option>
-                        <option value="titan_text_express">Titan Express</option>
+                    <optgroup label="Amazon Titan">
+                        <option value="titan_text_lite">Titan Lite (Ringan)</option>
+                        <option value="titan_text_express">Titan Express (Ekspres)</option>
                     </optgroup>
                 </select>
             @endif

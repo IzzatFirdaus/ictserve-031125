@@ -29,6 +29,7 @@ import {
 
 // Make Alpine available globally for components
 window.Alpine = Alpine;
+window.Livewire = Livewire;
 
 /**
  * Laravel Echo Configuration
@@ -663,11 +664,3 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	}
 });
-
-/**
- * Start Livewire
- *
- * Initialize Livewire after all Alpine components and Echo configuration is complete.
- * This ensures proper order of initialization for all frontend components.
- */
-Livewire.start();
