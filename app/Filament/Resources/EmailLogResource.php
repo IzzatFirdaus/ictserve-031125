@@ -24,14 +24,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Email Log Resource
+ * Email Log Resource (Log Notifikasi E-mel)
  *
- * Filament resource for managing email notification logs with delivery tracking,
- * retry mechanisms, and comprehensive filtering capabilities.
+ * Comprehensive email notification tracking system with delivery monitoring,
+ * retry mechanisms, and advanced filtering capabilities.
  *
- * Requirements: 17.1, D03-FR-014.1
+ * Features:
+ * - Email delivery status tracking
+ * - Automatic retry for failed emails
+ * - Detailed error logging and diagnostics
+ * - Queue status monitoring
+ * - Recipient history tracking
+ * - Email type categorization
  *
- * @see D04 §12.1 Email notification management
+ * @trace D03-FR-014 (Email notification system)
+ * @trace D04-§12.1 (Email notification architecture)
+ * @trace D09-§4.8 (email_logs table schema)
+ * @trace D12-§9 (Email monitoring UI)
+ *
+ * @see \App\Models\EmailLog
+ * @see \App\Services\EmailNotificationService
+ * @see \App\Filament\Clusters\System
  */
 class EmailLogResource extends Resource
 {

@@ -10,14 +10,25 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * AI Performance Widget
+ * AI Performance Widget (Widget Prestasi AI)
  *
- * Displays real-time performance metrics for Ollama and AWS Bedrock AI services
- * including response times, success rates, and request volumes.
+ * Displays real-time performance metrics for Ollama (local) and AWS Bedrock (cloud)
+ * AI services. Monitors response times, success rates, request volumes, and model
+ * routing efficiency in the True Hybrid AI Architecture.
  *
- * trace: D18-§4.1 (AI Performance Monitoring), R21 (Cloud Hybrid AI Dashboard Integration)
- * trace: D04-§6.4 (AI Architecture), D11-§8.1 (Performance Monitoring)
+ * Features:
+ * - Real-time response time tracking (p50, p95, p99 percentiles)
+ * - Success/failure rate monitoring
+ * - Request volume analytics
+ * - Model routing efficiency metrics
+ * - Comparative performance analysis (Ollama vs Bedrock)
  *
+ * @trace D18-§4.1 (AI Performance Monitoring and Analytics)
+ * @trace D04-§6.4 (Cloud Hybrid AI Architecture)
+ * @trace D11-§8.1 (Performance Monitoring Standards)
+ * @trace D12-§7 (AI Dashboard Widgets UI/UX)
+ *
+ * @see \App\Services\AIMetricsCollector
  * @see docs/D18_AI_CHATBOT_OLLAMA_BEDROCK.md
  */
 class AIPerformanceWidget extends BaseWidget

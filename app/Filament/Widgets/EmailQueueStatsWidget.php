@@ -9,6 +9,28 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Email Queue Stats Widget (Widget Statistik Giliran E-mel)
+ *
+ * Monitors email queue status and failed job counts in the Laravel Horizon
+ * queue system. Provides real-time visibility into email delivery pipeline
+ * health and backlog management.
+ *
+ * Features:
+ * - Pending email count (jobs table)
+ * - Failed email tracking (failed_jobs table)
+ * - Queue health indicators
+ * - Real-time status updates
+ * - Visual alert system for queue backlogs
+ *
+ * @trace D17-§3 (Queue Management with Laravel Horizon)
+ * @trace D04-§3.2 (Dashboard Widgets Architecture)
+ * @trace D11-§9 (Queue Management and Monitoring)
+ * @trace D12-§7 (Queue Monitoring UI/UX)
+ *
+ * @see \App\Services\EmailNotificationService
+ * @see \App\Filament\Traits\WidgetMetadata
+ */
 class EmailQueueStatsWidget extends BaseWidget
 {
     use WidgetMetadata;

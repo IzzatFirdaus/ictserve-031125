@@ -19,6 +19,26 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Division Resource (Pengurusan Bahagian Organisasi)
+ *
+ * Provides CRUD interface for managing organizational divisions within MOTAC.
+ * Supports hierarchical division structure with parent-child relationships.
+ *
+ * Features:
+ * - Division hierarchy management
+ * - Parent division assignment
+ * - User assignment to divisions
+ * - Integration with helpdesk routing
+ *
+ * @trace D03-FR-010 (Reference data management)
+ * @trace D04-§5.2 (Organizational structure)
+ * @trace D09-§4.5 (divisions table schema)
+ * @trace D12-§7 (Admin UI patterns)
+ *
+ * @see \App\Models\Division
+ * @see \App\Filament\Clusters\Management
+ */
 class DivisionResource extends Resource
 {
     protected static ?string $model = Division::class;
