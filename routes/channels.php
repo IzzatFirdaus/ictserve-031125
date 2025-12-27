@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Hash;
  *
  * @see D03 SRS-FR-008, D04 §5.3 (Requirements 6.1, 6.2, 8.1)
  */
-Broadcast::channel('private-user.{userId}', function (User $user, string $userId): bool {
+Broadcast::channel('user.{userId}', function (User $user, string $userId): bool {
     return (int) $user->id === (int) $userId;
 });
 
@@ -39,18 +39,18 @@ Broadcast::channel('private-user.{userId}', function (User $user, string $userId
  *
  * @see Requirements 8.1, 8.2 - High-priority ticket broadcast, SLA breach notification
  */
-Broadcast::channel('private-admin.notifications', function (User $user): bool {
+Broadcast::channel('admin.notifications', function (User $user): bool {
     return $user->hasAdminAccess();
 });
 
 /**
- * Private ticket channel for guests (UUID-based with status token)
+ * Private ticket channel for guests (ticket_number-based with status token)
  *
  * @see D16_BROADCASTING_SETUP.md §6.1 - Hybrid channel authorization
  * @see Requirements 2.1, 2.3 - Status checking and notifications
  */
-Broadcast::channel('private-ticket.{uuid}', function (?User $user, string $uuid): bool {
-    $ticket = HelpdeskTicket::where('uuid', $uuid)->first();
+Broadcast::channel('ticket.{ticketNumber}', function (?User $user, string $ticketNumber): bool {
+    $ticket = HelpdeskTicket::where('ticket_number', $ticketNumber)->first();
 
     if (! $ticket) {
         return false;
@@ -73,13 +73,13 @@ Broadcast::channel('private-ticket.{uuid}', function (?User $user, string $uuid)
 });
 
 /**
- * Private loan channel for guests (UUID-based with status token)
+ * Private loan channel for guests (application_number-based with status token)
  *
  * @see D16_BROADCASTING_SETUP.md §6.1 - Hybrid channel authorization
  * @see Requirements 4.5, 8.3 - Loan notifications and overdue reminders
  */
-Broadcast::channel('private-loan.{uuid}', function (?User $user, string $uuid): bool {
-    $loan = LoanApplication::where('uuid', $uuid)->first();
+Broadcast::channel('loan.{applicationNumber}', function (?User $user, string $applicationNumber): bool {
+    $loan = LoanApplication::where('application_number', $applicationNumber)->first();
 
     if (! $loan) {
         return false;
