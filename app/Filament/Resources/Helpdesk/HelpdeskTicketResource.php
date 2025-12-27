@@ -95,13 +95,20 @@ class HelpdeskTicketResource extends Resource
         ];
     }
 
+    /**
+     * @param  HelpdeskTicket  $record
+     * @return array<string, string|null>
+     */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
+        /** @var HelpdeskTicket $ticket */
+        $ticket = $record;
+
         return [
-            'Subjek' => $record->subject,
-            'Status' => $record->status,
-            'Keutamaan' => $record->priority,
-            'Kategori' => $record->category?->name_ms,
+            __('filament.search.subject') => $ticket->subject,
+            __('filament.search.status') => $ticket->status,
+            __('filament.search.priority') => $ticket->priority,
+            __('filament.search.category') => $ticket->category?->name_ms,
         ];
     }
 

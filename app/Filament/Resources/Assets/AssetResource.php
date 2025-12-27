@@ -54,7 +54,10 @@ class AssetResource extends Resource
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->can('viewAny', Asset::class);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user !== null && $user->can('viewAny', Asset::class);
     }
 
     public static function form(Schema $schema): Schema

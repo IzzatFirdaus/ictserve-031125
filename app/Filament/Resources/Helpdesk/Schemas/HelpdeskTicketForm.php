@@ -23,147 +23,147 @@ class HelpdeskTicketForm
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Maklumat Tiket')
+            Section::make(__('filament.helpdesk.ticket_info'))
                 ->schema([
                     TextInput::make('ticket_number')
-                        ->label('Nombor Tiket')
+                        ->label(__('filament.helpdesk.ticket_number'))
                         ->disabled()
                         ->dehydrated(false),
                     TextInput::make('subject')
-                        ->label('Subjek')
+                        ->label(__('filament.helpdesk.subject'))
                         ->required()
                         ->maxLength(255),
                     Select::make('category_id')
                         ->relationship('category', 'name_ms')
-                        ->label('Kategori')
+                        ->label(__('filament.helpdesk.category'))
                         ->searchable()
                         ->preload()
                         ->required(),
                     ToggleButtons::make('priority')
-                        ->label('Keutamaan')
+                        ->label(__('filament.helpdesk.priority'))
                         ->options(self::priorityOptions())
                         ->inline()
                         ->required()
                         ->rule('in:low,normal,high,urgent'),
                     TextInput::make('damage_type')
-                        ->label('Jenis Kerosakan')
+                        ->label(__('filament.helpdesk.damage_type'))
                         ->maxLength(255),
                     Select::make('asset_id')
                         ->relationship('asset', 'name')
-                        ->label('Aset Berkaitan')
+                        ->label(__('filament.helpdesk.related_asset'))
                         ->searchable()
                         ->preload(),
                     ToggleButtons::make('status')
-                        ->label('Status')
+                        ->label(__('filament.helpdesk.status'))
                         ->options(self::statusOptions())
                         ->inline()
                         ->required(),
                 ])
                 ->columns(2),
-            Section::make('Maklumat Pengadu')
-                ->description('Tiket boleh daripada pengguna berdaftar atau tetamu')
+            Section::make(__('filament.helpdesk.complainant_info'))
+                ->description(__('filament.helpdesk.complainant_info_desc'))
                 ->schema([
                     Select::make('user_id')
                         ->relationship('user', 'name')
-                        ->label('Pengguna Berdaftar')
+                        ->label(__('filament.helpdesk.registered_user'))
                         ->searchable()
                         ->preload()
-                        ->helperText('Pilih pengguna berdaftar ATAU isi maklumat tetamu di bawah')
+                        ->helperText(__('filament.helpdesk.registered_user_help'))
                         ->live()
                         ->afterStateUpdated(fn ($state, callable $set) => $state ? self::clearGuestFields($set) : null),
 
                     // Guest fields - shown when user_id is null
                     TextInput::make('guest_name')
-                        ->label('Nama Tetamu')
+                        ->label(__('filament.helpdesk.guest_name'))
                         ->maxLength(255)
                         ->visible(fn (callable $get) => ! $get('user_id'))
                         ->required(fn (callable $get) => ! $get('user_id')),
                     TextInput::make('guest_email')
-                        ->label('Emel Tetamu')
+                        ->label(__('filament.helpdesk.guest_email'))
                         ->email()
                         ->maxLength(255)
                         ->visible(fn (callable $get) => ! $get('user_id'))
                         ->required(fn (callable $get) => ! $get('user_id')),
                     TextInput::make('guest_phone')
-                        ->label('Telefon Tetamu')
+                        ->label(__('filament.helpdesk.guest_phone'))
                         ->tel()
                         ->maxLength(30)
                         ->visible(fn (callable $get) => ! $get('user_id'))
                         ->required(fn (callable $get) => ! $get('user_id')),
                     TextInput::make('guest_staff_id')
-                        ->label('ID Staf Tetamu')
+                        ->label(__('filament.helpdesk.guest_staff_id'))
                         ->maxLength(50)
                         ->visible(fn (callable $get) => ! $get('user_id'))
                         ->required(fn (callable $get) => ! $get('user_id')),
                     Select::make('division_id')
                         ->relationship('division', 'name_ms')
-                        ->label('Bahagian')
+                        ->label(__('filament.helpdesk.division'))
                         ->searchable()
                         ->preload()
                         ->required(),
                     Select::make('job_grade')
-                        ->label('Gred Jawatan')
+                        ->label(__('filament.helpdesk.job_grade'))
                         ->options(self::jobGradeOptions())
                         ->searchable()
                         ->required(),
                     Checkbox::make('declaration_accepted')
-                        ->label('Saya dengan ini mengakui bahawa maklumat yang diberikan adalah benar dan tepat.')
+                        ->label(__('filament.helpdesk.declaration'))
                         ->accepted()
                         ->validationMessages([
-                            'accepted' => 'Anda mesti menerima pengakuan ini untuk meneruskan.',
+                            'accepted' => __('filament.helpdesk.declaration_error'),
                         ])
                         ->columnSpanFull()
                         ->required(),
 
                     Textarea::make('description')
-                        ->label('Perincian Aduan')
+                        ->label(__('filament.helpdesk.description'))
                         ->rows(4)
                         ->required()
                         ->columnSpanFull(),
                 ])
                 ->columns(2),
-            Section::make('Tugasan & SLA')
+            Section::make(__('filament.helpdesk.assignment_sla'))
                 ->schema([
                     Select::make('assigned_to_division')
                         ->relationship('assignedDivision', 'name_ms')
-                        ->label('Ditugaskan kepada Bahagian')
+                        ->label(__('filament.helpdesk.assigned_division'))
                         ->searchable()
                         ->preload(),
                     TextInput::make('assigned_to_agency')
-                        ->label('Agensi Luar')
+                        ->label(__('filament.helpdesk.external_agency'))
                         ->maxLength(255),
                     Select::make('assigned_to_user')
                         ->relationship('assignedUser', 'name')
-                        ->label('Pegawai Bertugas')
+                        ->label(__('filament.helpdesk.assigned_officer'))
                         ->searchable()
                         ->preload(),
                     DateTimePicker::make('sla_response_due_at')
-                        ->label('SLA Respons')
+                        ->label(__('filament.helpdesk.sla_response'))
                         ->seconds(false),
                     DateTimePicker::make('sla_resolution_due_at')
-                        ->label('SLA Resolusi')
+                        ->label(__('filament.helpdesk.sla_resolution'))
                         ->seconds(false),
                     DateTimePicker::make('responded_at')
-                        ->label('Tarikh Respons')
+                        ->label(__('filament.helpdesk.response_date'))
                         ->seconds(false),
                     DateTimePicker::make('resolved_at')
-                        ->label('Tarikh Selesai')
+                        ->label(__('filament.helpdesk.resolved_date'))
                         ->seconds(false),
                     DateTimePicker::make('closed_at')
-                        ->label('Tarikh Tutup')
+                        ->label(__('filament.helpdesk.closed_date'))
                         ->seconds(false),
                 ])
                 ->columns(3),
-            Section::make('Nota')
+            Section::make(__('filament.helpdesk.notes'))
                 ->schema([
                     Textarea::make('admin_notes')
-                        ->label('Nota Pentadbir')
+                        ->label(__('filament.helpdesk.admin_notes'))
                         ->rows(3),
                     Textarea::make('internal_notes')
-                        ->label('Nota Dalaman')
+                        ->label(__('filament.helpdesk.internal_notes'))
                         ->rows(3),
                     Textarea::make('resolution_notes')
-                        ->label('Nota Penyelesaian')
+                        ->label(__('filament.helpdesk.resolution_notes'))
                         ->rows(3),
                 ])
                 ->columns(1),
@@ -176,12 +176,12 @@ class HelpdeskTicketForm
     private static function statusOptions(): array
     {
         return [
-            'open' => 'Open / Dibuka',
-            'assigned' => 'Assigned / Ditugaskan',
-            'in_progress' => 'In Progress / Dalam Tindakan',
-            'pending_user' => 'Pending User / Menunggu Pengadu',
-            'resolved' => 'Resolved / Selesai',
-            'closed' => 'Closed / Ditutup',
+            'open' => __('filament.helpdesk.status_open'),
+            'assigned' => __('filament.helpdesk.status_assigned'),
+            'in_progress' => __('filament.helpdesk.status_in_progress'),
+            'pending_user' => __('filament.helpdesk.status_pending_user'),
+            'resolved' => __('filament.helpdesk.status_resolved'),
+            'closed' => __('filament.helpdesk.status_closed'),
         ];
     }
 
@@ -191,10 +191,10 @@ class HelpdeskTicketForm
     private static function priorityOptions(): array
     {
         return [
-            'low' => 'Low',
-            'normal' => 'Normal',
-            'high' => 'High',
-            'urgent' => 'Urgent',
+            'low' => __('filament.helpdesk.priority_low'),
+            'normal' => __('filament.helpdesk.priority_normal'),
+            'high' => __('filament.helpdesk.priority_high'),
+            'urgent' => __('filament.helpdesk.priority_urgent'),
         ];
     }
 
@@ -215,27 +215,27 @@ class HelpdeskTicketForm
     private static function jobGradeOptions(): array
     {
         return [
-            '11' => 'Gred 11',
-            '17' => 'Gred 17',
-            '19' => 'Gred 19',
-            '22' => 'Gred 22',
-            '26' => 'Gred 26',
-            '27' => 'Gred 27',
-            '29' => 'Gred 29',
-            '32' => 'Gred 32',
-            '36' => 'Gred 36',
-            '38' => 'Gred 38',
-            '41' => 'Gred 41',
-            '42' => 'Gred 42',
-            '44' => 'Gred 44',
-            '45' => 'Gred 45',
-            '48' => 'Gred 48',
-            '52' => 'Gred 52',
-            '54' => 'Gred 54',
-            '56' => 'Gred 56',
-            'JUSA_A' => 'JUSA A',
-            'JUSA_B' => 'JUSA B',
-            'JUSA_C' => 'JUSA C',
+            '11' => __('filament.grades.grade_11'),
+            '17' => __('filament.grades.grade_17'),
+            '19' => __('filament.grades.grade_19'),
+            '22' => __('filament.grades.grade_22'),
+            '26' => __('filament.grades.grade_26'),
+            '27' => __('filament.grades.grade_27'),
+            '29' => __('filament.grades.grade_29'),
+            '32' => __('filament.grades.grade_32'),
+            '36' => __('filament.grades.grade_36'),
+            '38' => __('filament.grades.grade_38'),
+            '41' => __('filament.grades.grade_41'),
+            '42' => __('filament.grades.grade_42'),
+            '44' => __('filament.grades.grade_44'),
+            '45' => __('filament.grades.grade_45'),
+            '48' => __('filament.grades.grade_48'),
+            '52' => __('filament.grades.grade_52'),
+            '54' => __('filament.grades.grade_54'),
+            '56' => __('filament.grades.grade_56'),
+            'JUSA_A' => __('filament.grades.jusa_a'),
+            'JUSA_B' => __('filament.grades.jusa_b'),
+            'JUSA_C' => __('filament.grades.jusa_c'),
         ];
     }
 }

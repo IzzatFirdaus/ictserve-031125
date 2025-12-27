@@ -29,9 +29,16 @@ class DivisionResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    /**
+     * Check if the current user can view any divisions.
+     * Only admin and superuser roles have access.
+     */
     public static function canViewAny(): bool
     {
-        return Auth::check() && Auth::user()?->hasAdminAccess();
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user !== null && $user->hasAdminAccess();
     }
 
     public static function form(Schema $schema): Schema
@@ -57,5 +64,14 @@ class DivisionResource extends Resource
             'view' => ViewDivision::route('/{record}'),
             'edit' => EditDivision::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder<Division>
+     */
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()
+            ->with(['parent']);
     }
 }

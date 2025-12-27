@@ -49,7 +49,10 @@ class LoanApplicationResource extends Resource
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->can('viewAny', LoanApplication::class);
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user !== null && $user->can('viewAny', LoanApplication::class);
     }
 
     public static function getNavigationLabel(): string

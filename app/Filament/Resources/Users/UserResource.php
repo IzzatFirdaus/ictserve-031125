@@ -61,7 +61,10 @@ class UserResource extends Resource
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->can('viewAny', User::class);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user !== null && $user->can('viewAny', User::class);
     }
 
     public static function form(Schema $schema): Schema

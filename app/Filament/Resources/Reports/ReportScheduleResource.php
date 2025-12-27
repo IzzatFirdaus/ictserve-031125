@@ -32,7 +32,10 @@ class ReportScheduleResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return \Illuminate\Support\Facades\Auth::user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+        return $user !== null && $user->hasAnyRole(['admin', 'superuser']);
     }
 
     public static function form(Schema $schema): Schema
