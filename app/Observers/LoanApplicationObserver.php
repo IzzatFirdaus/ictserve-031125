@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
+use App\Events\LoanStatusUpdated;
 use App\Events\StatusUpdated;
 use App\Models\LoanApplication;
 use Illuminate\Support\Facades\Log;
@@ -38,6 +39,7 @@ class LoanApplicationObserver
 
             // Broadcast real-time status change event
             StatusUpdated::dispatch($loanApplication, $oldStatusString, $newStatusString);
+            LoanStatusUpdated::dispatch($loanApplication, $oldStatusString, $newStatusString);
 
             Log::info('Loan application status updated', [
                 'loan_application_id' => $loanApplication->id,
