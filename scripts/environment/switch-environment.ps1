@@ -1,438 +1,624 @@
 #Requires -Version 5.1
-
 <#
 .SYNOPSIS
-    ICTServe Environment Switching Script for XAMPP Configuration
+    ICTServe Environment Switcher - Switch between XAMPP, Laragon, and Docker environments
 
 .DESCRIPTION
-    This script switches between different environment configurations for ICTServe v3.6.1.
-    Supports switching to XAMPP environment with MySQL and WSL Redis configuration.
-    
-    Requirements 3.5, 4.3, 7.4 - Environment switching and configuration management
+    This script provides a unified interface to switch between different development environments
+    for the ICTServe Laravel application. It handles environment configuration, service management,
+    and dependency installation for each environment type.
 
 .PARAMETER Environment
-    The target environment to switch to. Valid values: xampp, docker, local
+    Target environment: xampp, laragon, or docker
 
-.PARAMETER Backup
-    Create a backup of the current .env file before switching
-
-.PARAMETER Validate
-    Validate the environment configuration after switching
+.PARAMETER Action
+    Action to perform: setup, start, stop, status, or switch
 
 .PARAMETER Force
-    Force the switch without confirmation prompts
+    Force operation without confirmation prompts
+
+.PARAMETER Clean
+    Clean existing configuration before setup
+
+.PARAMETER SkipDeps
+    Skip dependency installation during setup
 
 .EXAMPLE
-    .\switch-environment.ps1 -Environment xampp
-    Switches to XAMPP environment with confirmation
+    .\scripts\switch-environment.ps1 -Environment xampp -Action setup
+    Sets up XAMPP environment with full configuration
 
 .EXAMPLE
-    .\switch-environment.ps1 -Environment xampp -Backup -Validate -Force
-    Switches to XAMPP environment with backup, validation, and no prompts
+    .\scripts\switch-environment.ps1 -Environment docker -Action switch -Force
+    Switches to Docker environment without confirmation
+
+.EXAMPLE
+    .\scripts\switch-environment.ps1 -Environment laragon -Action status
+    Shows status of Laragon environment
 
 .NOTES
     Author: ICTServe Development Team
-    Version: 3.6.1
-    Requirements: PowerShell 5.1+, ICTServe Laravel Application
+    Version: 1.0.0
+    Requires: PowerShell 5.1+, Windows 10+
 #>
 
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('xampp', 'docker', 'local')]
+    [ValidateSet('xampp', 'laragon', 'docker')]
     [string]$Environment,
-    
-    [switch]$Backup,
-    
-    [switch]$Validate,
-    
-    [switch]$Force
+
+    [Parameter(Mandatory = $true)]
+    [ValidateSet('setup', 'start', 'stop', 'status', 'switch')]
+    [string]$Action,
+
+    [switch]$Force,
+    [switch]$Clean,
+    [switch]$SkipDeps
 )
 
-# Script configuration
+Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-$ProgressPreference = 'SilentlyContinue'
 
-# Paths
-$RootPath = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$EnvPath = Join-Path $RootPath '.env'
-$BackupPath = Join-Path $RootPath 'storage/backups/env'
+# Script configuration
+$script:ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$script:ProjectRoot = Split-Path -Parent $script:ScriptRoot
+$script:LogFile = Join-Path $script:ProjectRoot "storage\logs\environment-switch.log"
 
-# Environment file mappings
-$EnvironmentFiles = @{
-    'xampp'  = '.env.xampp'
-    'docker' = '.env.docker'
-    'local'  = '.env.local'
+# Environment configurations
+$script:Environments = @{
+    xampp = @{
+        Name = 'XAMPP'
+        Description = 'XAMPP (Apache + MySQL + PHP)'
+        EnvFile = '.env.xampp'
+        SetupScript = 'scripts\xampp\setup-xampp.ps1'
+        StartScript = 'scripts\xampp\start-xampp.ps1'
+        StopScript = 'scripts\xampp\stop-xampp.ps1'
+        StatusScript = 'scripts\xampp\status-xampp.ps1'
+        DefaultPath = 'C:\xampp'
+        Services = @('Apache', 'MySQL')
+        Ports = @{
+            Apache = 80
+            MySQL = 3306
+            Redis = 6379
+        }
+    }
+    laragon = @{
+        Name = 'Laragon'
+        Description = 'Laragon (Nginx/Apache + MySQL + PHP)'
+        EnvFile = '.env.laragon'
+        SetupScript = 'scripts\laragon\setup-laragon.ps1'
+        StartScript = 'scripts\laragon\start-laragon.ps1'
+        StopScript = 'scripts\laragon\stop-laragon.ps1'
+        StatusScript = 'scripts\laragon\status-laragon.ps1'
+        DefaultPath = 'C:\laragon'
+        Services = @('Nginx', 'Apache', 'MySQL', 'Redis')
+        Ports = @{
+            Nginx = 8080
+            Apache = 80
+            MySQL = 3306
+            Redis = 6379
+        }
+    }
+    docker = @{
+        Name = 'Docker'
+        Description = 'Docker Compose (Nginx + MySQL + Redis + PHP-FPM)'
+        EnvFile = '.env.docker'
+        SetupScript = 'scripts\docker\setup-docker.ps1'
+        StartScript = 'scripts\docker\start-dev.ps1'
+        StopScript = 'scripts\docker\stop-dev.ps1'
+        StatusScript = 'scripts\docker\status-dev.ps1'
+        DefaultPath = 'Docker Desktop'
+        Services = @('app', 'db', 'redis', 'nginx')
+        Ports = @{
+            App = 8000
+            MySQL = 3306
+            Redis = 6379
+            Nginx = 80
+        }
+    }
 }
 
-# Color functions
-function Write-Success {
-    param([string]$Message)
-    Write-Host "✅ $Message" -ForegroundColor Green
+#region Utility Functions
+
+function Write-Log {
+    param(
+        [string]$Message,
+        [ValidateSet('Info', 'Warning', 'Error', 'Success')]
+        [string]$Level = 'Info'
+    )
+
+    $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+    $logEntry = "[$timestamp] [$Level] $Message"
+
+    # Ensure log directory exists
+    $logDir = Split-Path -Parent $script:LogFile
+    if (-not (Test-Path $logDir)) {
+        New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+    }
+
+    # Write to log file
+    Add-Content -Path $script:LogFile -Value $logEntry -Encoding UTF8
+
+    # Write to console with colors
+    switch ($Level) {
+        'Info' { Write-Host "[INFO] $Message" -ForegroundColor Cyan }
+        'Warning' { Write-Host "[WARN] $Message" -ForegroundColor Yellow }
+        'Error' { Write-Host "[ERROR] $Message" -ForegroundColor Red }
+        'Success' { Write-Host "[SUCCESS] $Message" -ForegroundColor Green }
+    }
 }
 
-function Write-Info {
-    param([string]$Message)
-    Write-Host "ℹ️  $Message" -ForegroundColor Cyan
+function Test-Administrator {
+    $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
-function Write-Warning {
-    param([string]$Message)
-    Write-Host "⚠️  $Message" -ForegroundColor Yellow
+function Test-PortAvailable {
+    param([int]$Port)
+
+    try {
+        $listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Any, $Port)
+        $listener.Start()
+        $listener.Stop()
+        return $true
+    }
+    catch {
+        return $false
+    }
 }
 
-function Write-Error {
-    param([string]$Message)
-    Write-Host "❌ $Message" -ForegroundColor Red
-}
-
-function Write-Header {
-    param([string]$Title)
-    Write-Host ""
-    Write-Host "=" * 60 -ForegroundColor Blue
-    Write-Host " $Title" -ForegroundColor Blue
-    Write-Host "=" * 60 -ForegroundColor Blue
-    Write-Host ""
-}
-
-# Backup current environment
 function Backup-Environment {
-    Write-Info "Creating backup of current environment..."
-    
-    if (-not (Test-Path $BackupPath)) {
-        New-Item -ItemType Directory -Path $BackupPath -Force | Out-Null
-    }
-    
-    if (Test-Path $EnvPath) {
-        $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
-        $backupFile = Join-Path $BackupPath ".env.backup.$timestamp"
-        Copy-Item $EnvPath $backupFile
-        Write-Success "Environment backed up to: $backupFile"
+    if (Test-Path '.env') {
+        $timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'
+        $backupFile = ".env.backup.$timestamp"
+        Copy-Item '.env' $backupFile -Force
+        Write-Log "Backed up current .env to $backupFile" -Level Success
         return $backupFile
-    } else {
-        Write-Warning "No existing .env file found to backup"
-        return $null
     }
+    return $null
 }
 
-# Validate environment configuration
-function Test-EnvironmentConfiguration {
-    param([string]$EnvironmentType)
-    
-    Write-Info "Validating $EnvironmentType environment configuration..."
-    
-    $validationResults = @{
-        'EnvFileExists' = $false
-        'DatabaseConfig' = $false
-        'RedisConfig' = $false
-        'ServicesConfig' = $false
-        'RequiredVars' = $false
-    }
-    
-    # Check if .env file exists
-    if (Test-Path $EnvPath) {
-        $validationResults.EnvFileExists = $true
-        $envContent = Get-Content $EnvPath -Raw
-        
-        # Validate based on environment type
-        switch ($EnvironmentType) {
-            'xampp' {
-                # Check XAMPP MySQL configuration
-                if ($envContent -match 'DB_HOST=127\.0\.0\.1' -and 
-                    $envContent -match 'DB_PORT=3306' -and 
-                    $envContent -match 'DB_USERNAME=root' -and 
-                    $envContent -match 'DB_PASSWORD=$') {
-                    $validationResults.DatabaseConfig = $true
-                }
-                
-                # Check WSL Redis configuration
-                if ($envContent -match 'REDIS_HOST=127\.0\.0\.1' -and 
-                    $envContent -match 'REDIS_PORT=6379' -and 
-                    $envContent -match 'CACHE_STORE=redis') {
-                    $validationResults.RedisConfig = $true
-                }
-                
-                # Check Laravel services configuration
-                if ($envContent -match 'PULSE_ENABLED=true' -and 
-                    $envContent -match 'TELESCOPE_ENABLED=true' -and 
-                    $envContent -match 'REVERB_HOST=127\.0\.0\.1') {
-                    $validationResults.ServicesConfig = $true
-                }
-            }
-            'docker' {
-                # Docker-specific validation
-                if ($envContent -match 'DB_HOST=db' -or $envContent -match 'DB_HOST=mysql') {
-                    $validationResults.DatabaseConfig = $true
-                }
-                
-                if ($envContent -match 'REDIS_HOST=redis') {
-                    $validationResults.RedisConfig = $true
-                }
-                
-                $validationResults.ServicesConfig = $true
-            }
-            'local' {
-                # Local development validation
-                $validationResults.DatabaseConfig = $true
-                $validationResults.RedisConfig = $true
-                $validationResults.ServicesConfig = $true
-            }
-        }
-        
-        # Check required variables
-        $requiredVars = @('APP_NAME', 'APP_ENV', 'APP_URL', 'DB_CONNECTION')
-        $missingVars = @()
-        
-        foreach ($var in $requiredVars) {
-            if ($envContent -notmatch "$var=") {
-                $missingVars += $var
-            }
-        }
-        
-        if ($missingVars.Count -eq 0) {
-            $validationResults.RequiredVars = $true
-        } else {
-            Write-Warning "Missing required variables: $($missingVars -join ', ')"
-        }
-    }
-    
-    # Display validation results
-    Write-Host ""
-    Write-Host "Validation Results:" -ForegroundColor Yellow
-    Write-Host "==================" -ForegroundColor Yellow
-    
-    foreach ($check in $validationResults.GetEnumerator()) {
-        $status = if ($check.Value) { "✅ PASS" } else { "❌ FAIL" }
-        $color = if ($check.Value) { "Green" } else { "Red" }
-        Write-Host "  $($check.Key): " -NoNewline
-        Write-Host $status -ForegroundColor $color
-    }
-    
-    $allPassed = ($validationResults.Values | Where-Object { $_ -eq $false }).Count -eq 0
-    
-    if ($allPassed) {
-        Write-Success "All validation checks passed!"
-    } else {
-        Write-Error "Some validation checks failed. Please review the configuration."
-    }
-    
-    return $allPassed
-}
+function Test-Prerequisites {
+    param([string]$Environment)
 
-# Test service connectivity
-function Test-ServiceConnectivity {
-    param([string]$EnvironmentType)
-    
-    Write-Info "Testing service connectivity for $EnvironmentType environment..."
-    
-    $results = @{
-        'MySQL' = $false
-        'Redis' = $false
-        'WebServer' = $false
-    }
-    
-    switch ($EnvironmentType) {
+    Write-Log "Checking prerequisites for $Environment environment..." -Level Info
+
+    $missing = @()
+    $warnings = @()
+
+    switch ($Environment) {
         'xampp' {
-            # Test XAMPP MySQL
-            try {
-                $tcpClient = New-Object System.Net.Sockets.TcpClient
-                $tcpClient.Connect('127.0.0.1', 3306)
-                $tcpClient.Close()
-                $results.MySQL = $true
-                Write-Success "XAMPP MySQL is accessible on 127.0.0.1:3306"
-            } catch {
-                Write-Warning "XAMPP MySQL is not accessible on 127.0.0.1:3306"
-            }
-            
-            # Test WSL Redis
-            try {
-                $tcpClient = New-Object System.Net.Sockets.TcpClient
-                $tcpClient.Connect('127.0.0.1', 6379)
-                $tcpClient.Close()
-                $results.Redis = $true
-                Write-Success "WSL Redis is accessible on 127.0.0.1:6379"
-            } catch {
-                Write-Warning "WSL Redis is not accessible on 127.0.0.1:6379"
-            }
-            
-            # Test XAMPP Apache
-            try {
-                $response = Invoke-WebRequest -Uri 'http://127.0.0.1' -TimeoutSec 5 -ErrorAction SilentlyContinue
-                if ($response.StatusCode -eq 200) {
-                    $results.WebServer = $true
-                    Write-Success "XAMPP Apache is responding on http://127.0.0.1"
+            $xamppPaths = @('C:\xampp', 'D:\xampp', 'E:\xampp')
+            $xamppFound = $false
+
+            foreach ($path in $xamppPaths) {
+                if (Test-Path (Join-Path $path 'xampp-control.exe')) {
+                    $xamppFound = $true
+                    Write-Log "XAMPP found at $path" -Level Success
+                    break
                 }
-            } catch {
-                Write-Warning "XAMPP Apache is not responding on http://127.0.0.1"
+            }
+
+            if (-not $xamppFound) {
+                $missing += 'XAMPP not found in common locations (C:\xampp, D:\xampp, E:\xampp)'
+            }
+
+            # Check if XAMPP services are installed
+            $xamppServices = @('Apache2.4', 'mysql')
+            foreach ($service in $xamppServices) {
+                if (-not (Get-Service -Name $service -ErrorAction SilentlyContinue)) {
+                    $warnings += "XAMPP service '$service' not found (may be managed by XAMPP directly)"
+                }
+            }
+        }
+        'laragon' {
+            $laragonPaths = @('C:\laragon', 'D:\laragon', 'E:\laragon')
+            $laragonFound = $false
+
+            foreach ($path in $laragonPaths) {
+                if (Test-Path (Join-Path $path 'laragon.exe')) {
+                    $laragonFound = $true
+                    Write-Log "Laragon found at $path" -Level Success
+                    break
+                }
+            }
+
+            if (-not $laragonFound) {
+                $missing += 'Laragon not found in common locations (C:\laragon, D:\laragon, E:\laragon)'
             }
         }
         'docker' {
-            Write-Info "Docker connectivity testing requires containers to be running"
-            Write-Info "Run 'docker-compose up -d' to start services"
-        }
-        'local' {
-            Write-Info "Local environment connectivity depends on your local setup"
+            try {
+                $dockerVersion = docker --version 2>$null
+                if ($dockerVersion) {
+                    Write-Log "Docker found: $dockerVersion" -Level Success
+                }
+                else {
+                    $missing += 'Docker not available or not responding'
+                }
+            }
+            catch {
+                $missing += 'Docker not available'
+            }
+
+            try {
+                $composeVersion = docker compose version 2>$null
+                if ($composeVersion) {
+                    Write-Log "Docker Compose found: $composeVersion" -Level Success
+                }
+                else {
+                    # Try legacy docker-compose
+                    $legacyVersion = docker-compose --version 2>$null
+                    if ($legacyVersion) {
+                        Write-Log "Legacy Docker Compose found: $legacyVersion" -Level Success
+                        $warnings += 'Using legacy docker-compose. Consider upgrading to Docker Compose V2'
+                    }
+                    else {
+                        $missing += 'Docker Compose not available'
+                    }
+                }
+            }
+            catch {
+                $missing += 'Docker Compose not available'
+            }
+
+            # Check if Docker daemon is running
+            try {
+                docker info | Out-Null
+                Write-Log "Docker daemon is running" -Level Success
+            }
+            catch {
+                $warnings += 'Docker daemon is not running. Please start Docker Desktop.'
+            }
         }
     }
-    
-    return $results
+
+    # Check common prerequisites
+    $commands = @{
+        'php' = 'PHP interpreter'
+        'composer' = 'Composer dependency manager'
+        'npm' = 'Node.js package manager'
+        'node' = 'Node.js runtime'
+    }
+
+    foreach ($cmd in $commands.Keys) {
+        $command = Get-Command $cmd -ErrorAction SilentlyContinue
+        if ($command) {
+            try {
+                $version = & $cmd --version 2>$null | Select-Object -First 1
+                Write-Log "$($commands[$cmd]) found: $version" -Level Success
+            }
+            catch {
+                Write-Log "$($commands[$cmd]) found at $($command.Source)" -Level Success
+            }
+        }
+        else {
+            if ($cmd -eq 'node' -and (Get-Command 'npm' -ErrorAction SilentlyContinue)) {
+                # npm is available, so Node.js is likely installed
+                $warnings += "$($commands[$cmd]) not found in PATH but npm is available"
+            }
+            else {
+                $missing += "$($commands[$cmd]) not found in PATH"
+            }
+        }
+    }
+
+    # Check for Git (useful for development)
+    if (Get-Command git -ErrorAction SilentlyContinue) {
+        $gitVersion = git --version 2>$null
+        Write-Log "Git found: $gitVersion" -Level Success
+    }
+    else {
+        $warnings += 'Git not found in PATH (recommended for development)'
+    }
+
+    # Display warnings
+    if ($warnings.Count -gt 0) {
+        Write-Log "Warnings:" -Level Warning
+        $warnings | ForEach-Object { Write-Log "  - $_" -Level Warning }
+    }
+
+    # Check for critical missing prerequisites
+    if ($missing.Count -gt 0) {
+        Write-Log "Missing prerequisites:" -Level Error
+        $missing | ForEach-Object { Write-Log "  - $_" -Level Error }
+        return $false
+    }
+
+    Write-Log "All critical prerequisites satisfied" -Level Success
+    return $true
 }
 
-# Main switching function
-function Switch-Environment {
-    param([string]$TargetEnvironment)
-    
-    Write-Header "ICTServe Environment Switcher v3.6.1"
-    
-    # Check if source environment file exists
-    $sourceFile = $EnvironmentFiles[$TargetEnvironment]
-    $sourcePath = Join-Path $RootPath $sourceFile
-    
-    if (-not (Test-Path $sourcePath)) {
-        Write-Error "Source environment file not found: $sourceFile"
-        Write-Info "Available environment files:"
-        foreach ($env in $EnvironmentFiles.GetEnumerator()) {
-            $path = Join-Path $RootPath $env.Value
-            $exists = if (Test-Path $path) { "✅" } else { "❌" }
-            Write-Host "  $($env.Key): $($env.Value) $exists"
+function Stop-AllEnvironments {
+    Write-Log "Stopping all environments..." -Level Info
+
+    # Stop Docker
+    if (Get-Command docker -ErrorAction SilentlyContinue) {
+        try {
+            docker-compose down 2>$null
+            Write-Log "Docker containers stopped" -Level Success
         }
-        exit 1
-    }
-    
-    # Show current environment info
-    if (Test-Path $EnvPath) {
-        $currentContent = Get-Content $EnvPath -Raw
-        if ($currentContent -match 'APP_ENV=(\w+)') {
-            $currentEnv = $matches[1]
-            Write-Info "Current environment: $currentEnv"
-        }
-    } else {
-        Write-Info "No current .env file found"
-    }
-    
-    Write-Info "Switching to: $TargetEnvironment"
-    Write-Info "Source file: $sourceFile"
-    
-    # Confirmation prompt
-    if (-not $Force) {
-        $confirmation = Read-Host "Do you want to continue? (y/N)"
-        if ($confirmation -notmatch '^[Yy]') {
-            Write-Info "Operation cancelled by user"
-            exit 0
+        catch {
+            Write-Log "No Docker containers to stop" -Level Info
         }
     }
-    
-    # Create backup if requested
-    $backupFile = $null
-    if ($Backup) {
-        $backupFile = Backup-Environment
-    }
-    
-    try {
-        # Copy environment file
-        Write-Info "Copying $sourceFile to .env..."
-        Copy-Item $sourcePath $EnvPath -Force
-        Write-Success "Environment switched to $TargetEnvironment"
-        
-        # Validate configuration if requested
-        if ($Validate) {
-            Write-Host ""
-            $validationPassed = Test-EnvironmentConfiguration -EnvironmentType $TargetEnvironment
-            
-            if ($validationPassed) {
-                # Test service connectivity
-                Write-Host ""
-                Test-ServiceConnectivity -EnvironmentType $TargetEnvironment
-            }
+
+    # Stop XAMPP services
+    $xamppServices = @('Apache2.4', 'mysql')
+    foreach ($service in $xamppServices) {
+        $svc = Get-Service -Name $service -ErrorAction SilentlyContinue
+        if ($svc -and $svc.Status -eq 'Running') {
+            Stop-Service -Name $service -Force -ErrorAction SilentlyContinue
+            Write-Log "Stopped $service service" -Level Success
         }
-        
-        # Show next steps
-        Write-Host ""
-        Write-Host "Next Steps:" -ForegroundColor Yellow
-        Write-Host "===========" -ForegroundColor Yellow
-        
-        switch ($TargetEnvironment) {
-            'xampp' {
-                Write-Host "1. Ensure XAMPP MySQL and Apache are running"
-                Write-Host "2. Ensure Redis is running in WSL: wsl sudo service redis-server start"
-                Write-Host "3. Run Laravel migrations: php artisan migrate"
-                Write-Host "4. Clear Laravel caches: php artisan config:clear && php artisan cache:clear"
-                Write-Host "5. Start Laravel development server: php artisan serve --host=127.0.0.1"
-            }
+    }
+
+    # Stop Laragon (if running)
+    $laragonProcess = Get-Process -Name 'laragon' -ErrorAction SilentlyContinue
+    if ($laragonProcess) {
+        Write-Log "Laragon is running. Please stop it manually from the system tray." -Level Warning
+    }
+}
+
+#endregion
+
+#region Main Functions
+
+function Invoke-Setup {
+    param([string]$Environment)
+
+    $config = $script:Environments[$Environment]
+    Write-Log "Setting up $($config.Name) environment..." -Level Info
+
+    # Check prerequisites
+    if (-not (Test-Prerequisites $Environment)) {
+        throw "Prerequisites not met for $Environment environment"
+    }
+
+    # Stop other environments if requested
+    if ($Clean) {
+        Stop-AllEnvironments
+    }
+
+    # Run environment-specific setup
+    $setupScript = Join-Path $script:ProjectRoot $config.SetupScript
+    if (Test-Path $setupScript) {
+        Write-Log "Running setup script: $setupScript" -Level Info
+
+        $params = @{
+            Force = $Force
+            Clean = $Clean
+            SkipDeps = $SkipDeps
+        }
+
+        & $setupScript @params
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "Setup script failed with exit code $LASTEXITCODE"
+        }
+    }
+    else {
+        Write-Log "Setup script not found: $setupScript" -Level Warning
+        Write-Log "Performing basic environment setup..." -Level Info
+
+        # Basic setup: copy environment file
+        if (Test-Path $config.EnvFile) {
+            Backup-Environment
+            Copy-Item $config.EnvFile '.env' -Force
+            Write-Log "Copied $($config.EnvFile) to .env" -Level Success
+        }
+        else {
+            Write-Log "Environment file $($config.EnvFile) not found" -Level Warning
+        }
+    }
+
+    Write-Log "$($config.Name) environment setup completed" -Level Success
+}
+
+function Invoke-Start {
+    param([string]$Environment)
+
+    $config = $script:Environments[$Environment]
+    Write-Log "Starting $($config.Name) environment..." -Level Info
+
+    $startScript = Join-Path $script:ProjectRoot $config.StartScript
+    if (Test-Path $startScript) {
+        & $startScript
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "Start script failed with exit code $LASTEXITCODE"
+        }
+    }
+    else {
+        Write-Log "Start script not found: $startScript" -Level Warning
+        Write-Log "Please start $($config.Name) services manually" -Level Info
+    }
+
+    Write-Log "$($config.Name) environment started" -Level Success
+}
+
+function Invoke-Stop {
+    param([string]$Environment)
+
+    $config = $script:Environments[$Environment]
+    Write-Log "Stopping $($config.Name) environment..." -Level Info
+
+    $stopScript = Join-Path $script:ProjectRoot $config.StopScript
+    if (Test-Path $stopScript) {
+        & $stopScript
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "Stop script failed with exit code $LASTEXITCODE"
+        }
+    }
+    else {
+        Write-Log "Stop script not found: $stopScript" -Level Warning
+
+        # Basic stop logic
+        switch ($Environment) {
             'docker' {
-                Write-Host "1. Start Docker containers: docker-compose up -d"
-                Write-Host "2. Run Laravel migrations: docker-compose exec app php artisan migrate"
-                Write-Host "3. Access application at configured Docker URL"
+                if (Get-Command docker-compose -ErrorAction SilentlyContinue) {
+                    docker-compose down
+                }
             }
-            'local' {
-                Write-Host "1. Ensure local services are running (MySQL, Redis, etc.)"
-                Write-Host "2. Run Laravel migrations: php artisan migrate"
-                Write-Host "3. Start Laravel development server: php artisan serve"
+            'xampp' {
+                $xamppServices = @('Apache2.4', 'mysql')
+                foreach ($service in $xamppServices) {
+                    $svc = Get-Service -Name $service -ErrorAction SilentlyContinue
+                    if ($svc -and $svc.Status -eq 'Running') {
+                        Stop-Service -Name $service -Force
+                        Write-Log "Stopped $service service" -Level Success
+                    }
+                }
             }
         }
-        
+    }
+
+    Write-Log "$($config.Name) environment stopped" -Level Success
+}
+
+function Get-Status {
+    param([string]$Environment)
+
+    $config = $script:Environments[$Environment]
+    Write-Log "Checking $($config.Name) environment status..." -Level Info
+
+    $statusScript = Join-Path $script:ProjectRoot $config.StatusScript
+    if (Test-Path $statusScript) {
+        & $statusScript
+    }
+    else {
+        Write-Log "Status script not found: $statusScript" -Level Warning
+
+        # Basic status check
         Write-Host ""
-        Write-Success "Environment switch completed successfully!"
-        
-    } catch {
-        Write-Error "Failed to switch environment: $($_.Exception.Message)"
-        
-        # Restore backup if available
-        if ($backupFile -and (Test-Path $backupFile)) {
-            Write-Info "Restoring backup..."
-            Copy-Item $backupFile $EnvPath -Force
-            Write-Success "Backup restored"
+        Write-Host "$($config.Name) Environment Status" -ForegroundColor Cyan
+        Write-Host "=" * 40 -ForegroundColor Cyan
+
+        # Check ports
+        foreach ($service in $config.Ports.Keys) {
+            $port = $config.Ports[$service]
+            $available = Test-PortAvailable $port
+            $status = if ($available) { "Available" } else { "In Use" }
+            $color = if ($available) { "Green" } else { "Red" }
+            Write-Host "  $service (Port $port): $status" -ForegroundColor $color
         }
-        
-        exit 1
+
+        # Check environment file
+        $envExists = Test-Path '.env'
+        $envStatus = if ($envExists) { "Present" } else { "Missing" }
+        $envColor = if ($envExists) { "Green" } else { "Red" }
+        Write-Host "  Environment File: $envStatus" -ForegroundColor $envColor
+
+        # Check if current .env matches target environment
+        if ($envExists -and (Test-Path $config.EnvFile)) {
+            $currentEnv = Get-Content '.env' -Raw
+            $targetEnv = Get-Content $config.EnvFile -Raw
+            $matches = $currentEnv -eq $targetEnv
+            $matchStatus = if ($matches) { "Matches $($config.EnvFile)" } else { "Different from $($config.EnvFile)" }
+            $matchColor = if ($matches) { "Green" } else { "Yellow" }
+            Write-Host "  Environment Config: $matchStatus" -ForegroundColor $matchColor
+        }
     }
 }
 
-# Restore environment from backup
-function Restore-Environment {
-    param([string]$BackupFile)
-    
-    if (-not $BackupFile) {
-        # Find latest backup
-        if (Test-Path $BackupPath) {
-            $latestBackup = Get-ChildItem $BackupPath -Filter "*.env.backup.*" | 
-                           Sort-Object LastWriteTime -Descending | 
-                           Select-Object -First 1
-            
-            if ($latestBackup) {
-                $BackupFile = $latestBackup.FullName
-                Write-Info "Using latest backup: $($latestBackup.Name)"
-            } else {
-                Write-Error "No backup files found in $BackupPath"
-                exit 1
-            }
-        } else {
-            Write-Error "Backup directory not found: $BackupPath"
-            exit 1
+function Invoke-Switch {
+    param([string]$Environment)
+
+    $config = $script:Environments[$Environment]
+
+    if (-not $Force) {
+        Write-Host ""
+        Write-Host "Switch to $($config.Name) Environment" -ForegroundColor Cyan
+        Write-Host "=" * 40 -ForegroundColor Cyan
+        Write-Host "Description: $($config.Description)" -ForegroundColor White
+        Write-Host "Services: $($config.Services -join ', ')" -ForegroundColor White
+        Write-Host ""
+
+        $confirm = Read-Host "Continue with environment switch? (y/N)"
+        if ($confirm -notmatch '^[Yy]') {
+            Write-Log "Environment switch cancelled by user" -Level Info
+            return
         }
     }
-    
-    if (-not (Test-Path $BackupFile)) {
-        Write-Error "Backup file not found: $BackupFile"
-        exit 1
+
+    Write-Log "Switching to $($config.Name) environment..." -Level Info
+
+    # Stop current environment
+    Write-Log "Stopping current environment..." -Level Info
+    Stop-AllEnvironments
+
+    # Switch environment file
+    if (Test-Path $config.EnvFile) {
+        Backup-Environment
+        Copy-Item $config.EnvFile '.env' -Force
+        Write-Log "Switched to $($config.EnvFile)" -Level Success
     }
-    
-    Write-Info "Restoring environment from backup: $BackupFile"
-    Copy-Item $BackupFile $EnvPath -Force
-    Write-Success "Environment restored from backup"
+    else {
+        Write-Log "Environment file $($config.EnvFile) not found. Creating from .env.example..." -Level Warning
+        if (Test-Path '.env.example') {
+            Copy-Item '.env.example' '.env' -Force
+            Write-Log "Created .env from .env.example" -Level Success
+        }
+        else {
+            throw "No environment file available for $Environment"
+        }
+    }
+
+    # Clear Laravel caches
+    if (Get-Command php -ErrorAction SilentlyContinue) {
+        Write-Log "Clearing Laravel caches..." -Level Info
+        php artisan config:clear 2>$null
+        php artisan cache:clear 2>$null
+        php artisan route:clear 2>$null
+        php artisan view:clear 2>$null
+        Write-Log "Laravel caches cleared" -Level Success
+    }
+
+    Write-Log "Environment switched to $($config.Name)" -Level Success
+    Write-Log "Next steps:" -Level Info
+    Write-Log "  1. Run: .\scripts\switch-environment.ps1 -Environment $Environment -Action start" -Level Info
+    Write-Log "  2. Verify services are running with: .\scripts\switch-environment.ps1 -Environment $Environment -Action status" -Level Info
 }
 
-# Main execution
+#endregion
+
+#region Main Execution
+
 try {
-    # Change to script directory
-    Set-Location $RootPath
-    
-    # Execute main function
-    Switch-Environment -TargetEnvironment $Environment
-    
-} catch {
-    Write-Error "Script execution failed: $($_.Exception.Message)"
-    Write-Host "Stack trace:" -ForegroundColor Red
-    Write-Host $_.ScriptStackTrace -ForegroundColor Red
+    Write-Host ""
+    Write-Host "ICTServe Environment Switcher" -ForegroundColor Cyan
+    Write-Host "=" * 40 -ForegroundColor Cyan
+    Write-Host "Environment: $($script:Environments[$Environment].Name)" -ForegroundColor White
+    Write-Host "Action: $Action" -ForegroundColor White
+    Write-Host ""
+
+    # Change to project root
+    Push-Location $script:ProjectRoot
+
+    # Execute requested action
+    switch ($Action) {
+        'setup' { Invoke-Setup $Environment }
+        'start' { Invoke-Start $Environment }
+        'stop' { Invoke-Stop $Environment }
+        'status' { Get-Status $Environment }
+        'switch' { Invoke-Switch $Environment }
+    }
+
+    Write-Host ""
+    Write-Host "Operation completed successfully!" -ForegroundColor Green
+    Write-Log "Operation completed: $Action for $Environment" -Level Success
+}
+catch {
+    $errorMessage = $_.Exception.Message
+    Write-Host ""
+    Write-Host "Operation failed: $errorMessage" -ForegroundColor Red
+    Write-Log "Operation failed: $errorMessage" -Level Error
     exit 1
 }
+finally {
+    Pop-Location
+}
+
+#endregion
