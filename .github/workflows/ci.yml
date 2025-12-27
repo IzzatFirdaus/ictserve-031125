@@ -37,6 +37,11 @@ jobs:
           node-version: '22.14.0'
           cache: 'npm'
 
+      - name: Configure Git for HTTPS
+        run: |
+          git config --global url."https://github.com/".insteadOf git://github.com/
+          git config --global url."https://".insteadOf git://
+
       - run: |
           cp .env.example .env
           mkdir -p storage/framework/{sessions,views,cache}
