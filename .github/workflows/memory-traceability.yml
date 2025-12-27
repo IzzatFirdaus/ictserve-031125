@@ -16,20 +16,20 @@ jobs:
       - run: |
           git fetch origin ${{ github.base_ref }}
           CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.sha }})
-          
+
           # Memory system files that require work_session entry
           PATTERNS="app/Console/Commands/SyncMemoryMarkdown.php|app/Services/MemoryGraphService.php|database/migrations/.*create_memory|.github/instructions/memory.instructions.md|app/Http/Controllers/Api/MemoryController.php"
-          
+
           if echo "$CHANGED" | grep -qE "$PATTERNS"; then
             if ! echo "$CHANGED" | grep -q "memory.jsonl"; then
               echo "ERROR: Memory system files changed but memory.jsonl not updated"
               exit 1
             fi
-            
+
             if ! git diff origin/${{ github.base_ref }}...${{ github.sha }} -- memory.jsonl | grep -q '"entityType":"work_session"'; then
               echo "ERROR: memory.jsonl updated but no work_session entry found"
               exit 1
             fi
           fi
-          
+
           echo "Traceability check passed"
