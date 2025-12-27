@@ -30,7 +30,30 @@
 		},
 		"laravel-boost": {
 			"command": "php",
-			"args": ["artisan", "boost:mcp"]
+			"args": ["artisan", "mcp:start", "laravel-boost"],
+			"cwd": "C:\\laragon\\www\\ictserve-031125",
+			"env": {
+				"APP_ENV": "local"
+			},
+			"disabled": false,
+			"autoApprove": [
+				"application-info",
+				"browser-logs",
+				"database-connections",
+				"database-query",
+				"database-schema",
+				"get-absolute-url",
+				"get-config",
+				"last-error",
+				"list-artisan-commands",
+				"list-available-config-keys",
+				"list-available-env-vars",
+				"list-routes",
+				"read-log-entries",
+				"report-feedback",
+				"search-docs",
+				"tinker"
+			]
 		},
 		"fetch": {
 			"command": "uvx",
