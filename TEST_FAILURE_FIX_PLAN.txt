@@ -1,0 +1,351 @@
+================================================================================
+ICTServe v3.6.1 - Test Failure Fix Plan
+Date: 2025-12-27
+Total Tests: ~1,900+
+Passed: ~1,750+  
+Failed: ~109
+================================================================================
+
+EXECUTIVE SUMMARY
+-----------------
+The test suite has 109 failures across 57 test classes. The failures fall into
+several distinct categories with clear root causes that can be systematically
+addressed.
+
+CRITICAL ISSUES IDENTIFIED
+---------------------------
+
+1. MISSING EVENT CLASS (Priority: CRITICAL)
+   - Class: App\Events\TicketStatusUpdated
+   - Impact: 8+ test failures in RealtimeFeaturesTest
+   - Tests affected: All real-time broadcasting tests
+   - Fix: Create the missing event class
+
+2. TYPE ERROR - Service Injection (Priority: CRITICAL)
+   - Location: App\Listeners\CreateMaintenanceTicketForDamagedAsset
+   - Issue: Constructor expects TicketNotificationService but receives wrong type
+   - Impact: 2 Queue configuration tests
+   - Fix: Correct service injection/type hint
+
+3. REDIS/QUEUE CONFIGURATION (Priority: HIGH)
+   - Impact: 10+ Redis/Queue integration tests failing
+   - Issue: Tests expect Redis but CI environment may not have it running
+   - Note from requirements: "redis (predis) is run in wsl only (local)"
+   - Fix: Skip Redis/Horizon tests in CI, or mock Redis appropriately
+
+4. DATABASE SCHEMA ISSUES (Priority: HIGH)
+   - Issue 1: Column 'status' data truncation in loan_applications
+   - Issue 2: Missing 'title' column in helpdesk_tickets  
+   - Impact: 2 RealtimeFeaturesTest failures
+   - Fix: Review migration files and update schema/test data
+
+5. WCAG/ACCESSIBILITY TESTS (Priority: MEDIUM)
+   - Impact: 20+ ContactPageTest failures
+   - Issue: Tests checking for specific HTML attributes/patterns
+   - Likely cause: Template changes or test expectations mismatch
+   - Fix: Review and update contact page templates
+
+6. ENVIRONMENT-SPECIFIC TESTS (Priority: MEDIUM)
+   - Tests: HorizonWSLRedisTest, XamppEnvironmentTest
+   - Issue: These tests expect specific local environments
+   - Fix: Skip in CI or provide proper test doubles
+
+7. FILAMENT RESOURCE TESTS (Priority: MEDIUM)
+   - Impact: Several resource tests failing
+   - Issue: Likely authorization, factory, or configuration issues
+   - Fix: Review individual test failures and update accordingly
+
+DETAILED BREAKDOWN BY CATEGORY
+-------------------------------
+
+A. UNIT TESTS (12 failures)
+   1. Models
+      - CrossModuleIntegrationTest
+      - MessageLogTest
+   
+   2. Services (10 tests)
+      - CrossModuleIntegrationServiceTest
+      - EnhancedUnifiedDashboardServiceTest
+      - ExportServiceTest
+      - LoanApplicationServiceTest
+      - PerformanceAlertServiceTest
+      - SecurityComplianceServiceTest
+      - SubmissionServiceTest
+      - TicketStatusTransitionServiceTest
+      - WidgetErrorHandlerTest
+   
+   3. Widgets
+      - AssetStatusDistributionWidgetTest
+
+B. FEATURE TESTS (45+ failures)
+   1. Broadcasting/Real-time (5 tests)
+      - BroadcastingTest
+      - ReverbIntegrationTest
+      - ChannelAuthorizationTest
+      - UnifiedNotificationBroadcastIntegrationTest
+      - WebSocketConnectionTest
+   
+   2. Email System (3 tests)
+      - EmailSystemIntegrationTest
+      - EmailTemplateBrandingTest
+      - EmailSystemTest
+   
+   3. Environment Specific (3 tests)
+      - HorizonWSLRedisTest
+      - XamppEnvironmentTest
+      - ReverbConfigurationTest
+   
+   4. Filament Resources (7 tests)
+      - HelpdeskTicketResourceTest
+      - LoanApplicationResourceTest
+      - UserResourceTest
+      - AccessibilityCompliancePageTest
+      - ReportBuilderPageTest
+      - SecurityMonitoringPageTest
+      - SuperuserConfigurationTest
+   
+   5. Integration (4 tests)
+      - CrossModuleIntegrationTest
+      - HelpdeskIntegrationTest
+      - LoanModuleIntegrationTest
+      - PerformanceIntegrationTest
+   
+   6. Public Pages (2 tests)
+      - ContactPageTest (multiple failures)
+   
+   7. Queue/Redis (3 tests)
+      - QueueConfigurationTest
+      - QueueIntegrationTest
+      - HorizonIntegrationTest
+   
+   8. Real-time Features (1 test, multiple methods)
+      - RealtimeFeaturesTest (8+ failures)
+   
+   9. Accessibility (2 tests)
+      - LoanModuleWcagComplianceTest
+      - WcagComplianceTest
+   
+   10. Other (15 tests)
+       - HelpdeskTicketPolicyTest
+       - FilamentPerformanceTest
+       - ProfileManagementTest
+       - SubmissionHistoryTest
+       - TicketNotificationServiceTest
+       - TelescopeAccessTest
+       - LanguageControllerTest
+       - MemoryApiTest
+       - FrontendAssetPerformanceTest
+       - DashboardTest
+       - UserProfileTest
+
+PHASED FIX STRATEGY
+-------------------
+
+PHASE 1: CRITICAL FIXES (Immediate)
+------------------------------------
+Goal: Fix blocking issues that cascade to multiple tests
+
+1.1 Create Missing Event Class
+    File: app/Events/TicketStatusUpdated.php
+    Action: Implement ShouldBroadcast event
+    Expected Impact: Fixes 8+ real-time tests
+
+1.2 Fix Type Error in Listener
+    File: app/Listeners/CreateMaintenanceTicketForDamagedAsset.php
+    Action: Correct constructor parameter type
+    Expected Impact: Fixes 2 queue tests
+
+1.3 Database Schema Issues
+    Files: database/migrations/*.php
+    Actions:
+      - Fix status column in loan_applications
+      - Verify title column in helpdesk_tickets
+    Expected Impact: Fixes 2 database tests
+
+PHASE 2: ENVIRONMENT & CONFIGURATION (Day 1-2)
+-----------------------------------------------
+Goal: Handle environment-specific test failures
+
+2.1 Redis/Queue Tests Configuration
+    Files: tests/Feature/Redis/*.php, tests/Feature/Queue/*.php
+    Actions:
+      - Add @group annotations for local-only tests
+      - Mock Redis in CI environment
+      - Update phpunit.xml to skip groups in CI
+    Expected Impact: Fixes 10+ Redis/Queue tests
+
+2.2 Horizon/Reverb Tests
+    Files: tests/Feature/HorizonIntegrationTest.php, etc.
+    Actions:
+      - Add environment checks
+      - Skip if not in WSL/local environment
+    Expected Impact: Fixes 5+ environment tests
+
+PHASE 3: SERVICE & MODEL TESTS (Day 2-3)
+-----------------------------------------
+Goal: Fix unit test failures
+
+3.1 Service Test Fixes
+    Files: tests/Unit/Services/*.php
+    Actions:
+      - Review each failing service test
+      - Fix mocking issues
+      - Update test expectations
+    Expected Impact: Fixes 10 service tests
+
+3.2 Model Test Fixes
+    Files: tests/Unit/Models/*.php
+    Actions:
+      - Review factory usage
+      - Fix relationship tests
+    Expected Impact: Fixes 2 model tests
+
+PHASE 4: FILAMENT & INTEGRATION TESTS (Day 3-4)
+------------------------------------------------
+Goal: Fix resource and integration tests
+
+4.1 Filament Resource Tests
+    Files: tests/Feature/Filament/**/*.php
+    Actions:
+      - Review authorization policies
+      - Fix factory states
+      - Update test assertions
+    Expected Impact: Fixes 7 Filament tests
+
+4.2 Integration Tests
+    Files: tests/Feature/Integration/*.php
+    Actions:
+      - Review cross-module dependencies
+      - Fix data setup
+    Expected Impact: Fixes 4 integration tests
+
+PHASE 5: ACCESSIBILITY & PUBLIC PAGES (Day 4-5)
+------------------------------------------------
+Goal: Fix WCAG compliance and public page tests
+
+5.1 Contact Page Tests
+    File: tests/Feature/PublicPages/ContactPageTest.php
+    View: resources/views/pages/contact.blade.php (or Volt component)
+    Actions:
+      - Review HTML structure
+      - Verify ARIA attributes
+      - Check color contrast
+      - Validate form structure
+    Expected Impact: Fixes 20+ contact page assertions
+
+5.2 WCAG Compliance Tests
+    Files: tests/Feature/Accessibility/*.php
+    Actions:
+      - Review accessibility requirements
+      - Update templates as needed
+    Expected Impact: Fixes 2 accessibility tests
+
+PHASE 6: REMAINING TESTS (Day 5-6)
+-----------------------------------
+Goal: Clean up remaining failures
+
+6.1 Broadcasting Tests
+    Files: tests/Feature/Broadcasting/*.php
+    Actions:
+      - Review event firing
+      - Check channel authorization
+    Expected Impact: Fixes 5 broadcasting tests
+
+6.2 Miscellaneous Tests
+    Files: Various remaining test files
+    Actions:
+      - Address each individually
+      - Update as needed
+    Expected Impact: Fixes 15+ remaining tests
+
+IMPLEMENTATION NOTES
+--------------------
+
+Redis/Horizon Consideration:
+  - Problem statement notes: "redis (predis) is run in wsl only (local)"
+  - This means CI environment likely doesn't have Redis
+  - Strategy: Use @group("requires-redis") and skip in CI
+  - Alternative: Use mockery/prophecy to mock Redis
+
+Database Migrations:
+  - Review v3.6.1 migration files
+  - Ensure all columns exist
+  - Check enum values match factory data
+
+Event Broadcasting:
+  - Review D08 (Integration Specification) for event requirements
+  - Ensure all events implement ShouldBroadcast where needed
+  - Check queue configuration
+
+TESTING STRATEGY
+-----------------
+
+After each phase:
+1. Run affected tests: php artisan test --filter=<TestClass>
+2. Verify no regressions: php artisan test
+3. Document fixes in git commits
+4. Update this plan with actual results
+
+CI/CD Adjustments:
+1. Update phpunit.xml with test groups
+2. Add environment variable checks
+3. Configure CI to skip local-only tests
+
+EXPECTED OUTCOMES
+-----------------
+
+Phase 1: Reduce failures from 109 to ~90
+Phase 2: Reduce failures from ~90 to ~70
+Phase 3: Reduce failures from ~70 to ~50
+Phase 4: Reduce failures from ~50 to ~30
+Phase 5: Reduce failures from ~30 to ~10
+Phase 6: Reduce failures from ~10 to 0
+
+SUCCESS METRICS
+---------------
+
+- All critical event/type issues resolved
+- Redis/Horizon tests properly gated for environment
+- Database schema consistent with tests
+- WCAG compliance tests passing
+- CI pipeline green (or with acceptable skipped tests)
+
+REFERENCE DOCUMENTATION
+-----------------------
+
+Primary Sources:
+- test_results_2.txt - Full test output
+- _reference/versions/v3.6.1_D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md
+- _reference/versions/v3.6.1_D04_SOFTWARE_DESIGN_DOCUMENT.md
+- _reference/versions/v3.6.1_D08_SYSTEM_INTEGRATION_SPECIFICATION.md
+- _reference/versions/v3.6.1_D09_DATABASE_DOCUMENTATION.md
+- _reference/versions/v3.6.1_D10_SOURCE_CODE_DOCUMENTATION.md
+
+Secondary Sources:
+- phpunit.xml - Test configuration
+- .env.example - Environment configuration
+- database/migrations/ - Schema definitions
+- app/Events/ - Event classes
+- app/Listeners/ - Event listeners
+
+RISK MITIGATION
+----------------
+
+Risk: Breaking existing functionality
+Mitigation: Run full test suite after each phase
+
+Risk: Environment-specific fixes not portable
+Mitigation: Use environment detection and graceful degradation
+
+Risk: Time overrun
+Mitigation: Prioritize critical fixes first, document "nice to have" fixes
+
+NEXT STEPS
+----------
+
+1. Review this plan with team/stakeholder
+2. Create feature branch: fix/test-failures-v3.6.1
+3. Begin Phase 1 implementation
+4. Track progress in git commits
+5. Update plan as needed based on findings
+
