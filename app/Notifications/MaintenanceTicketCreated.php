@@ -43,12 +43,14 @@ class MaintenanceTicketCreated extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
+     * Broadcasting is handled by NotificationCreatedListener which dispatches
+     * NotificationCreated events when database notifications are sent.
+     *
      * @return array<int, string>
      */
     public function via(object $notifiable): array
     {
-        // Add broadcast to enable real-time notifications via Echo/Reverb
-        return ['mail', 'database', 'broadcast'];
+        return ['mail', 'database'];
     }
 
     /**

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Notifications;
 
-use App\Events\NotificationCreated;
 use App\Mail\MaintenanceTicketNotification;
 use App\Mail\NewTicketNotification;
 use App\Mail\TicketCreatedConfirmation;
@@ -89,14 +88,8 @@ class TicketNotificationService
 
         foreach ($adminUsers as $recipient) {
             // Create database + broadcast notification for the admin user
+            // The NotificationCreatedListener will handle broadcasting via WebSocket
             $recipient->notify(new \App\Notifications\MaintenanceTicketCreated($ticket));
-
-            // Grab the just-created database notification and broadcast a convenience event
-            $dbNotification = $recipient->notifications()->latest('created_at')->first();
-
-            if ($dbNotification) {
-                event(new NotificationCreated($recipient, $dbNotification));
-            }
         }
 
         Log::info('Maintenance notifications queued', [
