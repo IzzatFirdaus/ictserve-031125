@@ -37,7 +37,7 @@ return [
             'options' => [
                 // Local websockets server (beyondcode/laravel-websockets or compatible)
                 'host' => env('WEBSOCKETS_HOST', env('PUSHER_HOST', '127.0.0.1')),
-                'port' => env('WEBSOCKETS_PORT', env('PUSHER_PORT', 6001)),
+                'port' => (int) env('WEBSOCKETS_PORT', env('PUSHER_PORT', 6001)),
                 'scheme' => env('WEBSOCKETS_SCHEME', env('PUSHER_SCHEME', 'http')),
                 'path' => env('WEBSOCKETS_PATH', '/app'),
                 'useTLS' => (env('WEBSOCKETS_SCHEME', env('PUSHER_SCHEME', 'http')) === 'https'),
@@ -54,7 +54,7 @@ return [
             'app_id' => env('REVERB_APP_ID'),
             'options' => [
                 'host' => env('REVERB_HOST'),
-                'port' => env('REVERB_PORT', 443),
+                'port' => (int) env('REVERB_PORT', 443),
                 'scheme' => env('REVERB_SCHEME', 'https'),
                 'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
             ],
@@ -71,7 +71,7 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'host' => env('PUSHER_HOST') ?: 'api-'.env('PUSHER_APP_CLUSTER', 'mt1').'.pusher.com',
-                'port' => env('PUSHER_PORT', 443),
+                'port' => (int) env('PUSHER_PORT', 443),
                 'scheme' => env('PUSHER_SCHEME', 'https'),
                 'encrypted' => true,
                 'useTLS' => env('PUSHER_SCHEME', 'https') === 'https',
