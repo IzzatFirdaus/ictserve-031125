@@ -6,8 +6,17 @@ namespace Tests\Feature;
 
 use Illuminate\Support\Env;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
+/**
+ * Horizon Configuration Test
+ *
+ * @group requires-horizon
+ * @group environment-specific
+ */
+#[Group('requires-horizon')]
+#[Group('environment-specific')]
 class HorizonConfigTest extends TestCase
 {
     #[Test]
