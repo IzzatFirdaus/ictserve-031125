@@ -30,12 +30,7 @@ class LaravelBoostCompatServer extends Boost
     /**
      * @param  array<int, string>  $supportedProtocolVersions
      */
-    
-
-/**
- * @param array<string, mixed> $supportedProtocolVersions
- */
-private function negotiateProtocolVersion(string $requestedVersion, array $supportedProtocolVersions): string
+    private function negotiateProtocolVersion(string $requestedVersion, array $supportedProtocolVersions): string
     {
         foreach ($supportedProtocolVersions as $supported) {
             if ($supported <= $requestedVersion) {

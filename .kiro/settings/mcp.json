@@ -30,7 +30,7 @@
 		},
 		"laravel-boost": {
 			"command": "php",
-			"args": ["artisan", "boost:mcp"],
+			"args": ["artisan", "mcp:start", "laravel-boost"],
 			"cwd": "C:\\laragon\\www\\ictserve-031125",
 			"env": {
 				"APP_ENV": "local"
