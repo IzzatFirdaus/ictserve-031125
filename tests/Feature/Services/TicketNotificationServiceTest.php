@@ -25,8 +25,6 @@ class TicketNotificationServiceTest extends TestCase
     #[Test]
     public function it_broadcasts_user_notifications_for_maintenance_tickets(): void
     {
-        Event::fake([NotificationCreated::class]);
-
         // Create recipients
         $admin = User::factory()->create(['role' => 'admin']);
         $super = User::factory()->create(['role' => 'superuser']);
@@ -37,6 +35,9 @@ class TicketNotificationServiceTest extends TestCase
         $ticket = HelpdeskTicket::factory()->create([
             'asset_id' => $asset->id,
         ]);
+
+        // Fake events AFTER model creation to avoid counting setup events
+        Event::fake([NotificationCreated::class]);
 
         // Mock dispatcher to prevent actual mail queuing
         $dispatcher = Mockery::mock(EmailDispatcher::class);
