@@ -1,0 +1,253 @@
+================================================================================
+ICTServe v3.6.1 - Quick Fix Reference
+Date: 2025-12-27
+Use this for immediate action items
+================================================================================
+
+IMMEDIATE ACTION ITEMS (Priority Order)
+========================================
+
+1. CREATE MISSING EVENT
+   Action: Create app/Events/TicketStatusUpdated.php
+   Impact: Fixes 8+ tests immediately
+   Time: 15 minutes
+   Command: php artisan make:event TicketStatusUpdated --broadcast
+
+2. FIX TYPE ERROR  
+   Action: Fix CreateMaintenanceTicketForDamagedAsset listener
+   Impact: Fixes 2 tests
+   Time: 5 minutes
+   Location: Check namespace of TicketNotificationService
+
+3. FIX DATABASE SCHEMA
+   Action: Review status column in loan_applications
+   Action: Check 'title' vs 'subject' in helpdesk_tickets
+   Impact: Fixes 2 tests
+   Time: 10 minutes
+
+4. SKIP REDIS TESTS IN CI
+   Action: Add @group annotations to Redis/Queue tests
+   Impact: Reduces noise from 10+ CI failures
+   Time: 20 minutes
+
+QUICK COMMANDS
+==============
+
+# Run specific failing test
+php artisan test --filter=RealtimeFeaturesTest
+
+# Run without Redis tests
+php artisan test --exclude-group=requires-redis
+
+# Check if Redis is available
+php artisan tinker --execute="app('redis')->ping();"
+
+# List all failing tests
+grep "FAILED" test_results_2_utf8.txt | wc -l
+
+# Run parallel tests (faster)
+php artisan test --parallel --processes=4
+
+# Check event exists
+php artisan tinker --execute="class_exists('App\Events\TicketStatusUpdated');"
+
+FILE LOCATIONS QUICK MAP
+=========================
+
+Events:
+  app/Events/TicketStatusUpdated.php (CREATE THIS)
+
+Listeners:
+  app/Listeners/CreateMaintenanceTicketForDamagedAsset.php (FIX TYPE)
+
+Services:
+  app/Services/TicketNotificationService.php (VERIFY LOCATION)
+  app/Services/Notifications/TicketNotificationService.php (CHECK IF EXISTS)
+
+Migrations:
+  database/migrations/*_create_loan_applications_table.php (CHECK STATUS ENUM)
+  database/migrations/*_create_helpdesk_tickets_table.php (CHECK COLUMN NAME)
+
+Tests:
+  tests/Feature/RealtimeFeaturesTest.php (8 failures - needs event)
+  tests/Feature/Queue/QueueConfigurationTest.php (2 failures - needs type fix)
+  tests/Feature/Redis/QueueIntegrationTest.php (10 failures - needs skip)
+  tests/Feature/PublicPages/ContactPageTest.php (20+ failures - needs template)
+
+Templates:
+  resources/views/livewire/contact-form.blade.php (CHECK)
+  resources/views/pages/contact.blade.php (CHECK)
+
+Config:
+  phpunit.xml (ADD GROUP EXCLUSIONS)
+  .github/workflows/ci.yml (ADD SKIP FLAGS)
+
+ERROR TYPE QUICK REFERENCE
+===========================
+
+"Class App\Events\TicketStatusUpdated not found"
+  → Create app/Events/TicketStatusUpdated.php
+  
+"TypeError: TicketNotificationService"
+  → Fix namespace in CreateMaintenanceTicketForDamagedAsset.php
+  
+"SQLSTATE[01000]: Warning: 1265 Data truncated for column 'status'"
+  → Fix status value in test or expand enum in migration
+  
+"SQLSTATE[42S22]: Column not found: 1054 Unknown column 'title'"
+  → Change 'title' to 'subject' in test
+  
+"Failed asserting that 0 is greater than 0" (Queue tests)
+  → Redis not available, add @group("requires-redis")
+  
+"Failed asserting that false is true" (Event tests)
+  → Event not dispatched, check event firing logic
+
+VERIFICATION CHECKLIST
+======================
+
+[ ] Event class created and implements ShouldBroadcast
+[ ] Type error fixed in listener constructor
+[ ] Database migrations checked and corrected
+[ ] Redis tests marked with @group
+[ ] phpunit.xml updated with exclusion groups
+[ ] CI workflow updated to skip local-only tests
+[ ] Contact page template has ARIA attributes
+[ ] All forms have proper labels
+[ ] Color contrast meets WCAG AA
+[ ] Touch targets >= 24px
+
+TEST GROUPING STRATEGY
+=======================
+
+Create these groups:
+
+@group('requires-redis')
+  - All Redis/ tests
+  - Queue integration tests
+  - Horizon tests
+
+@group('requires-wsl')
+  - HorizonWSLRedisTest
+  - Other WSL-specific tests
+
+@group('requires-horizon')
+  - HorizonIntegrationTest
+  - Horizon dashboard tests
+
+@group('environment-specific')
+  - XamppEnvironmentTest
+  - Local development tests
+
+@group('accessibility')
+  - WCAG compliance tests
+  - Can run separately for focused testing
+
+COMMON PHPUNIT PATTERNS
+========================
+
+Skip test conditionally:
+```php
+if (!condition) {
+    $this->markTestSkipped('Reason');
+}
+```
+
+Group annotation:
+```php
+use PHPUnit\Framework\Attributes\Group;
+
+#[Group('requires-redis')]
+class MyTest extends TestCase
+```
+
+Environment check:
+```php
+protected function setUp(): void
+{
+    parent::setUp();
+    if (env('CI') === true) {
+        $this->markTestSkipped('Skip in CI');
+    }
+}
+```
+
+EXPECTED RESULTS AFTER QUICK FIXES
+===================================
+
+After Fix 1 (Event): 109 → ~95 failures
+After Fix 2 (Type):  ~95 → ~93 failures  
+After Fix 3 (DB):    ~93 → ~91 failures
+After Fix 4 (Redis): ~91 → ~75 failures (or 91 with 16 skipped)
+
+Total time for quick fixes: ~50 minutes
+Expected reduction: 34 failures (or marked as skipped)
+
+GIT WORKFLOW
+============
+
+1. Create branch:
+   git checkout -b fix/test-failures-phase1
+
+2. After each fix:
+   git add .
+   git commit -m "fix: create TicketStatusUpdated event"
+
+3. Push and test in CI:
+   git push origin fix/test-failures-phase1
+
+4. If CI passes, merge:
+   Create PR → Review → Merge
+
+ROLLBACK IF NEEDED
+==================
+
+Undo last commit:
+  git reset --soft HEAD~1
+
+Discard changes:
+  git checkout -- <file>
+
+Restore file from previous commit:
+  git checkout HEAD~1 -- <file>
+
+MONITORING PROGRESS
+===================
+
+Track failure count:
+  php artisan test 2>&1 | grep "Tests:" | tee test_progress.log
+
+Compare with baseline:
+  echo "Baseline: 109 failures"
+  echo "Current: $(grep 'failed' test_progress.log | tail -1)"
+
+TROUBLESHOOTING
+===============
+
+Test hangs:
+  - Check for infinite loops
+  - Check for blocking I/O
+  - Add timeout: php artisan test --timeout=30
+
+Memory issues:
+  - Run without parallel: php artisan test
+  - Increase memory: php -d memory_limit=512M artisan test
+
+Database locked:
+  - Find and kill specific PHP process by PID
+  - Clear test database: php artisan db:wipe --env=testing
+
+Cache issues:
+  - Clear all: php artisan optimize:clear
+  - Clear config: php artisan config:clear
+  - Clear events: php artisan event:clear
+
+CONTACT/ESCALATION
+==================
+
+If stuck on:
+  - Event broadcasting: Check D08 Integration Specification
+  - Database schema: Check D09 Database Documentation
+  - WCAG compliance: Check D12 UI/UX Design Guide
+  - Service architecture: Check D10 Source Code Documentation
+
