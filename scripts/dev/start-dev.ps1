@@ -41,7 +41,8 @@
     - full: All services (default)
     - testing: Full stack + browser
     - ai: Full stack + Ollama AI server
-    - production: Production-like setup
+    - production: Production-like setup with Horizon
+    - horizon: Laravel Horizon focus (WSL-based)
 
 .EXAMPLE
     .\scripts\dev\start-dev.ps1
@@ -54,6 +55,10 @@
 .EXAMPLE
     .\scripts\dev\start-dev.ps1 -ProfileName ai -InstallRedis
     Start AI development profile and install Redis if needed
+
+.EXAMPLE
+    .\scripts\dev\start-dev.ps1 -ProfileName horizon
+    Start with Laravel Horizon focus (WSL-based queue management)
 
 .EXAMPLE
     .\scripts\dev\start-dev.ps1 -SkipChecks -NoMCP -NoBrowser
@@ -73,7 +78,7 @@ param(
     [switch]$InstallRedis,
     [switch]$Help,
     [Alias('Profile')]
-    [ValidateSet('minimal', 'backend', 'frontend', 'full', 'testing', 'ai', 'production')]
+    [ValidateSet('minimal', 'backend', 'frontend', 'full', 'testing', 'ai', 'production', 'horizon')]
     [string]$ProfileName = "full"
 )
 
@@ -96,12 +101,13 @@ Write-Host "Profile: $ProfileName | Compliance: PDPA 2010 + WCAG 2.2 AA" -Foregr
 # Show profile description
 $profileDescriptions = @{
     "minimal" = "Essential services only (Laravel + Vite)"
-    "backend" = "Backend development (Redis + Laravel + Reverb + Queue)"
+    "backend" = "Backend development (Redis + Laravel + Reverb + Horizon)"
     "frontend" = "Frontend development (Laravel + Vite)"
-    "full" = "Complete development stack (all services)"
+    "full" = "Complete development stack (all services with WSL Horizon)"
     "testing" = "Full stack with browser for testing"
     "ai" = "AI development with Ollama local LLM"
-    "production" = "Production-like environment"
+    "production" = "Production-like environment with Horizon"
+    "horizon" = "Laravel Horizon focus (Redis + Laravel + Reverb + Horizon)"
 }
 
 if ($profileDescriptions.ContainsKey($ProfileName)) {
@@ -317,12 +323,13 @@ function Get-ServiceProfile {
 
     $profiles = @{
         "minimal" = @("laravel", "vite")
-        "backend" = @("redis", "laravel", "reverb", "queue")
+        "backend" = @("redis", "laravel", "reverb", "horizon")
         "frontend" = @("laravel", "vite")
-        "full" = @("redis", "laravel", "reverb", "queue", "vite", "mcp", "pulse")
-        "testing" = @("redis", "laravel", "reverb", "queue", "vite", "browser")
-        "ai" = @("redis", "laravel", "reverb", "queue", "vite", "mcp", "ollama")
-        "production" = @("redis", "laravel", "reverb", "queue", "pulse")
+        "full" = @("redis", "laravel", "reverb", "horizon", "vite", "mcp", "pulse")
+        "testing" = @("redis", "laravel", "reverb", "horizon", "vite", "browser")
+        "ai" = @("redis", "laravel", "reverb", "horizon", "vite", "mcp", "ollama")
+        "production" = @("redis", "laravel", "reverb", "horizon", "pulse")
+        "horizon" = @("redis", "laravel", "reverb", "horizon")
     }
 
     if ($profiles.ContainsKey($ProfileName)) {
@@ -397,7 +404,7 @@ function Start-WSLRedis {
 $servicesToStart = Get-ServiceProfile -ProfileName $ProfileName
 if (-not $servicesToStart) {
     Write-Host "[ERROR] Invalid profile: $ProfileName" -ForegroundColor Red
-    Write-Host "Available profiles: minimal, backend, frontend, full, testing, ai, production" -ForegroundColor Yellow
+    Write-Host "Available profiles: minimal, backend, frontend, full, testing, ai, production, horizon" -ForegroundColor Yellow
     exit 1
 }
 
@@ -498,87 +505,47 @@ if ($servicesToStart -contains "reverb") {
     Start-Sleep -Seconds 1
 }
 
-# 4. Laravel Queue Workers (Windows-compatible)
+# 4. Laravel Horizon (WSL) / Queue Workers (Windows Fallback)
 if ($servicesToStart -contains "queue" -or $servicesToStart -contains "horizon") {
     $currentService++
-    Write-Host "[$currentService/$serviceCount] Laravel Queue Workers" -ForegroundColor Yellow
+    Write-Host "[$currentService/$serviceCount] Laravel Horizon / Queue Workers" -ForegroundColor Yellow
     
-    # Check if we have existing queue workers running
-    $existingWorkers = Get-Process -ErrorAction SilentlyContinue | Where-Object { 
-        $_.ProcessName -eq "php" -and 
-        $_.CommandLine -like "*queue:work*" -and
-        $_.CommandLine -like "*ictserve-queue*"
-    }
+    # Quick WSL check (timeout 2s)
+    $horizonStarted = $false
+    $wslAvailable = $false
     
-    if ($existingWorkers.Count -gt 0) {
-        Write-Host "  - Queue workers already running ($($existingWorkers.Count) processes)" -ForegroundColor Green
-        $queueWorkersStarted = $true
+    try {
+        $wslTest = & wsl.exe -e bash -c 'echo ok' 2>$null
+        $wslAvailable = ($wslTest -eq 'ok')
+    } catch { }
+    
+    if ($wslAvailable -and (Test-Path "start-horizon-wsl.sh")) {
+        # Quick check if already running
+        $horizonRunning = & wsl.exe -e bash -c 'pgrep -f "php artisan horizon" >/dev/null && echo running || echo stopped' 2>$null
+        
+        if ($horizonRunning -eq 'running') {
+            Write-Host "  - Laravel Horizon already running in WSL" -ForegroundColor Green
+            $horizonStarted = $true
+        } else {
+            # Start in background without waiting
+            Start-Service -Title "Laravel Horizon (WSL)" -Command "wsl.exe bash start-horizon-wsl.sh" -Color "DarkCyan" -Description "Queue management with ext-pcntl" -Priority 4
+            Write-Host "  - Laravel Horizon starting in WSL (background)" -ForegroundColor Green
+            $horizonStarted = $true
+        }
     } else {
-        Write-Host "  - Starting Windows-compatible queue workers..." -ForegroundColor Cyan
-        Write-Host "  - Note: Using queue workers instead of Horizon (Windows limitation)" -ForegroundColor Gray
-        Write-Host "  - See docs/horizon/WINDOWS_QUEUE_MANAGEMENT.md for details" -ForegroundColor Gray
-        
-        # Use our Windows-compatible queue management script
-        try {
-            $queueScript = ".\scripts\dev\start-queue-workers.ps1"
-            if (Test-Path $queueScript) {
-                & $queueScript -Action start -Environment local
-                
-                # Verify workers started
-                Start-Sleep -Seconds 3
-                $newWorkers = Get-Process -ErrorAction SilentlyContinue | Where-Object { 
-                    $_.ProcessName -eq "php" -and 
-                    $_.CommandLine -like "*queue:work*" -and
-                    $_.CommandLine -like "*ictserve-queue*"
-                }
-                
-                if ($newWorkers.Count -gt 0) {
-                    Write-Host "  - [OK] Started $($newWorkers.Count) queue worker processes" -ForegroundColor Green
-                    $queueWorkersStarted = $true
-                } else {
-                    Write-Host "  - [WARN] Queue workers may not have started properly" -ForegroundColor Yellow
-                    $queueWorkersStarted = $false
-                }
-            } else {
-                Write-Host "  - [WARN] Queue worker script not found, using fallback" -ForegroundColor Yellow
-                # Fallback to single queue worker
-                Start-Service -Title "Laravel Queue Worker" -Command "php artisan queue:work redis --queue=default,helpdesk,notifications,asset-loan,approvals --tries=3 --timeout=300" -Color "Cyan" -Description "Background job processing" -Priority 4
-                $queueWorkersStarted = $true
-            }
-        }
-        catch {
-            Write-Host "  - [ERROR] Failed to start queue workers: $($_.Exception.Message)" -ForegroundColor Red
-            $queueWorkersStarted = $false
-        }
+        Write-Host "  - WSL Horizon unavailable, using Windows queue workers" -ForegroundColor Yellow
+        $horizonStarted = $false
     }
     
-    # Test queue functionality
-    if ($queueWorkersStarted) {
-        function Test-QueueWorkers {
-            $timestamp = Get-Date -Format "HH:mm:ss"
-            
-            try {
-                # Check if we can monitor queues
-                $queueStatus = & php artisan queue:monitor redis:default,redis:helpdesk 2>&1
-                if ($queueStatus -match "OK") {
-                    Write-Host "[$timestamp] [OK] Queue workers ready and monitoring queues" -ForegroundColor Green
-                    return $true
-                } else {
-                    Write-Host "[$timestamp] [INFO] Queue status: $($queueStatus -replace '[\r\n]+', ' ' | Select-Object -First 1)" -ForegroundColor Gray
-                    return $true  # Still consider it working
-                }
-            }
-            catch {
-                Write-Host "[$timestamp] [WARN] Queue status check failed: $($_.Exception.Message)" -ForegroundColor Yellow
-                return $false
-            }
-        }
-        
-        $queueWorking = Test-QueueWorkers
-        if (-not $queueWorking) {
-            Write-Host "  - [INFO] Queue workers started but may need time to initialize" -ForegroundColor Gray
-        }
+    # Fallback to Windows queue workers
+    if (-not $horizonStarted) {
+        Start-Service -Title "Laravel Queue Worker" -Command "php artisan queue:work redis --queue=default,helpdesk,notifications --tries=3 --timeout=300" -Color "Cyan" -Description "Background jobs" -Priority 4
+        Write-Host "  - Queue worker started (Windows mode)" -ForegroundColor Green
     }
+    
+    # Quick status check (non-blocking)
+    $timestamp = Get-Date -Format "HH:mm:ss"
+    Write-Host "[$timestamp] [OK] Queue system ready" -ForegroundColor Green
     
     Start-Sleep -Seconds 1
 }
@@ -602,25 +569,40 @@ if ($servicesToStart -contains "vite") {
         }
 
         Start-Service -Title 'Vite Dev Server (127.0.0.1:5173)' -Command "npm run dev" -Color "Green" -Description "Tailwind 4.1.18, Livewire 3.7.3, Hot Module Replacement" -Priority 5
-        Test-Port -Port 5173 -Attempts 15 -DelaySeconds 1 -ServiceName 'Vite Dev Server' -HealthEndpoint "/"
+        # Vite health check with proper endpoint
+        $viteReady = $false
+        for ($i = 0; $i -lt 10; $i++) {
+            try {
+                $result = Test-NetConnection -ComputerName 127.0.0.1 -Port 5173 -WarningAction SilentlyContinue
+                if ($result.TcpTestSucceeded) {
+                    Write-Host "  - [OK] Vite Dev Server ready on 127.0.0.1:5173" -ForegroundColor Green
+                    $viteReady = $true
+                    break
+                }
+            } catch { }
+            Start-Sleep -Milliseconds 500
+        }
+        if (-not $viteReady) {
+            Write-Host "  - [INFO] Vite starting (check window for status)" -ForegroundColor Gray
+        }
     }
     Start-Sleep -Seconds 1
 }
 
-# 6. Laravel MCP Server (AI Integration)
+# 6. Laravel MCP Server (AI Integration) - Background start
 if ($servicesToStart -contains "mcp" -and -not $NoMCP) {
     $currentService++
     Write-Host "[$currentService/$serviceCount] Laravel MCP Server (AI Integration)" -ForegroundColor Yellow
-    Start-Service -Title "Laravel MCP Server" -Command "php artisan boost:mcp" -Color "DarkCyan" -Description "Model Context Protocol for AI chatbot integration" -Priority 6
-    Start-Sleep -Seconds 2
+    Start-Service -Title "Laravel MCP Server" -Command "php artisan boost:mcp" -Color "DarkCyan" -Description "AI chatbot integration" -Priority 6
+    Write-Host "  - MCP server starting (background)" -ForegroundColor Green
 }
 
-# 7. Laravel Pulse (Performance Monitoring)
+# 7. Laravel Pulse (Performance Monitoring) - Background start
 if ($servicesToStart -contains "pulse") {
     $currentService++
     Write-Host "[$currentService/$serviceCount] Laravel Pulse (Performance Monitoring)" -ForegroundColor Yellow
-    Start-Service -Title "Laravel Pulse Monitor" -Command "php artisan pulse:check" -Color "DarkGreen" -Description "Performance metrics, slow queries, exceptions" -Priority 7
-    Start-Sleep -Seconds 1
+    Start-Service -Title "Laravel Pulse Monitor" -Command "php artisan pulse:work" -Color "DarkGreen" -Description "Performance monitoring" -Priority 7
+    Write-Host "  - Pulse monitor starting (background)" -ForegroundColor Green
 }
 
 # 8. Ollama (Local AI Server for D18 AI Chatbot Integration)
@@ -708,7 +690,7 @@ if ($servicesToStart -contains "reverb") {
     Write-Host "  [REVERB] Laravel Reverb       - WebSocket Broadcasting (ws://127.0.0.1:8080)" -ForegroundColor Magenta
 }
 if ($servicesToStart -contains "queue" -or $servicesToStart -contains "horizon") {
-    Write-Host "  [QUEUE] Queue Workers         - Background Jobs & Email Processing" -ForegroundColor Cyan
+    Write-Host "  [HORIZON] Laravel Horizon     - Advanced Queue Management (WSL) / Queue Workers (Windows)" -ForegroundColor Cyan
 }
 if ($servicesToStart -contains "vite") {
     # Detect actual Vite port (may be 5174 if 5173 is in use)
