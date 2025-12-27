@@ -95,16 +95,16 @@
 
                         <div class="space-y-6">
                             <x-form.input name="applicant_name" label="{{ __('loans.full_name') }}"
-                                wire:model.blur="applicant_name" required autocomplete="name"
+                                wire:model.blur="applicant_name" required aria-required="true" autocomplete="name"
                                 aria-describedby="applicant_name-help" />
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <x-form.input name="applicant_email" type="email" label="{{ __('loans.email_address') }}"
-                                    wire:model.blur="applicant_email" required autocomplete="email"
+                                    wire:model.blur="applicant_email" required aria-required="true" autocomplete="email"
                                     aria-describedby="applicant_email-help" />
 
                                 <x-form.input name="applicant_phone" type="tel" label="{{ __('loans.phone_number') }}"
-                                    wire:model.blur="applicant_phone" required autocomplete="tel"
+                                    wire:model.blur="applicant_phone" required aria-required="true" autocomplete="tel"
                                     aria-describedby="applicant_phone-help" />
                             </div>
 
@@ -112,7 +112,7 @@
                                 <x-form.input name="staff_id" label="{{ __('loans.staff_id') }}" wire:model.lazy="staff_id"
                                     aria-describedby="staff_id-help" />
 
-                                <x-form.select name="grade" label="{{ __('loans.grade') }}" wire:model.live="grade" required
+                                <x-form.select name="grade" label="{{ __('loans.grade') }}" wire:model.live="grade" required aria-required="true"
                                     aria-describedby="grade-help">
                                     <option value="41">{{ __('loans.grade_41') }}</option>
                                     <option value="44">{{ __('loans.grade_44') }}</option>
@@ -123,7 +123,7 @@
                             </div>
 
                             <x-form.select name="division_id" label="{{ __('loans.division') }}"
-                                wire:model.live="division_id" required aria-describedby="division_id-help">
+                                wire:model.live="division_id" required aria-required="true" aria-describedby="division_id-help">
                                 <option value="">{{ __('loans.select_division') }}</option>
                                 @foreach ($this->divisions as $division)
                                     <option value="{{ $division->id }}">{{ $division->name }}</option>
@@ -195,11 +195,11 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <x-form.input name="start_date" type="date" label="{{ __('loans.start_date') }}"
-                                wire:model.live="start_date" wire:change="checkAvailability" required
+                                wire:model.live="start_date" wire:change="checkAvailability" required aria-required="true"
                                 min="{{ date('Y-m-d', strtotime('+1 day')) }}" aria-describedby="start_date-help" />
 
                             <x-form.input name="end_date" type="date" label="{{ __('loans.end_date') }}"
-                                wire:model.live="end_date" wire:change="checkAvailability" required
+                                wire:model.live="end_date" wire:change="checkAvailability" required aria-required="true"
                                 min="{{ $start_date ?? date('Y-m-d', strtotime('+2 days')) }}"
                                 aria-describedby="end_date-help" />
                         </div>
@@ -221,11 +221,11 @@
                         @endif
 
                         <x-form.textarea name="purpose" label="{{ __('loans.purpose') }}" wire:model.lazy="purpose"
-                            required rows="4" minlength="10" maxlength="1000"
+                            required aria-required="true" rows="4" minlength="10" maxlength="1000"
                             aria-describedby="purpose-help" />
 
                         <x-form.input name="location" label="{{ __('loans.location') }}"
-                            wire:model.blur="location" required maxlength="255"
+                            wire:model.blur="location" required aria-required="true" maxlength="255"
                             aria-describedby="location-help" />
                     </section>
                 @endif

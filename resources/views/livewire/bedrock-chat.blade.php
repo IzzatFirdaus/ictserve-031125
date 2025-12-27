@@ -125,7 +125,7 @@
                         </label>
                         <select id="model-select" wire:model.live.debounce.150ms="model"
                             class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-primary-900/30 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 shadow-sm min-h-11"
-                            aria-describedby="model-help" required>
+                            aria-describedby="model-help" required aria-required="true">
                             <option value="" disabled>{{ __('Pilih Model') }}</option>
 
                             {{-- Claude 4.5 Models (Anthropic) --}}

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -21,6 +22,8 @@ use Tests\TestCase;
  *
  * @requirements 3.4, 7.3
  */
+#[Group('requires-redis')]
+#[Group('environment-specific')]
 class BroadcastQueueConfigurationTest extends TestCase
 {
     use RefreshDatabase;

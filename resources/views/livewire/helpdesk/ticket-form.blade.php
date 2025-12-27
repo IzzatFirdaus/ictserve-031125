@@ -250,7 +250,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                 wire:model.live.debounce.300ms="submitter_name"
                                 label="{{ __('helpdesk.fields.full_name') }}"
                                 :disabled="$isAuthenticated"
-                                required />
+                                required aria-required="true" />
 
                             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <x-form.input
@@ -258,12 +258,12 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                     wire:model.live.debounce.300ms="submitter_email"
                                     label="{{ __('helpdesk.fields.email_address') }}"
                                     :disabled="$isAuthenticated"
-                                    required />
+                                    required aria-required="true" />
 
                                 <x-form.input
                                     wire:model.live.debounce.300ms="submitter_phone"
                                     label="{{ __('helpdesk.fields.phone_number') }}"
-                                    required />
+                                    required aria-required="true" />
                             </div>
 
                             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -275,7 +275,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                 <x-form.input
                                     wire:model.live.debounce.300ms="job_grade"
                                     label="{{ __('helpdesk.fields.job_grade') }}"
-                                    required />
+                                    required aria-required="true" />
                             </div>
 
                             {{-- Searchable Division Select --}}
@@ -287,7 +287,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                 placeholder="{{ __('helpdesk.fields.division_placeholder') }}"
                                 searchPlaceholder="{{ __('helpdesk.fields.division_search') }}"
                                 wireModel="division_id"
-                                required
+                                required aria-required="true"
                                 maxHeight="300px" />
                         </div>
                     @endif
@@ -299,14 +299,14 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                 {{ __('helpdesk.form.step_issue') }}
                             </h2>
 
-                            <x-form.select wire:model.live="category_id" label="{{ __('helpdesk.fields.issue_category') }}" required>
+                            <x-form.select wire:model.live="category_id" label="{{ __('helpdesk.fields.issue_category') }}" required aria-required="true">
                                 <option value="">{{ __('helpdesk.fields.category_placeholder') }}</option>
                                 @foreach ($this->categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </x-form.select>
 
-                            <x-form.select wire:model.live="priority" label="{{ __('helpdesk.fields.priority') }}" required>
+                            <x-form.select wire:model.live="priority" label="{{ __('helpdesk.fields.priority') }}" required aria-required="true">
                                 <option value="low">{{ __('helpdesk.priorities.low') }}</option>
                                 <option value="normal">{{ __('helpdesk.priorities.normal') }}</option>
                                 <option value="high">{{ __('helpdesk.priorities.high') }}</option>
@@ -316,14 +316,14 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                             <x-form.input
                                 wire:model.live.debounce.300ms="subject"
                                 label="{{ __('helpdesk.fields.subject') }}"
-                                required />
+                                required aria-required="true" />
 
                             <x-form.textarea
                                 wire:model.live.debounce.300ms="description"
                                 label="{{ __('helpdesk.fields.problem_description') }}"
                                 rows="6"
                                 helper="{{ __('helpdesk.fields.description_helper') }}"
-                                required />
+                                required aria-required="true" />
 
                             {{-- File Upload (Max 5 files, 5MB each) --}}
                             <div>
@@ -426,7 +426,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                                     <x-form.checkbox
                                         wire:model.live="declaration_accepted"
                                         label="{{ __('helpdesk.declaration.checkbox_label') }}"
-                                        required />
+                                        required aria-required="true" />
                                     @error('declaration_accepted')
                                         <p class="mt-2 text-sm text-danger-600 dark:text-danger-400" role="alert">
                                             {{ __('helpdesk.validation.declaration_required') }}

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -18,6 +19,9 @@ use Tests\TestCase;
  * Tests Redis integration with Laravel's session system for ICTServe v3.6.1.
  * Validates session storage, retrieval, and Redis database separation.
  */
+#[Group('requires-redis')]
+#[Group('environment-specific')]
+class SessionIntegrationTest extends TestCase
 class SessionIntegrationTest extends TestCase
 {
     use RefreshDatabase;

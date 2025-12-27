@@ -22,7 +22,7 @@
                     name="newEndDate"
                     wire:model.live="newEndDate"
                     label="{{ __('Tarikh Baharu') }}"
-                    required
+                    required aria-required="true"
                 />
             </div>
 
@@ -32,7 +32,7 @@
                 rows="6"
                 label="{{ __('Justifikasi Lanjutan') }}"
                 helper-text="{{ __('Terangkan sebab keperluan lanjutan dan tempoh penggunaan tambahan.') }}"
-                required
+                required aria-required="true"
             />
 
             <div class="flex items-center justify-between">

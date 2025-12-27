@@ -165,7 +165,7 @@ $reject = function () {
         return;
     }
 
-    // Remarks required for rejection
+    // Remarks required aria-required="true" for rejection
     $this->validate(
         [
             'remarks' => 'required|string|min:10|max:1000',

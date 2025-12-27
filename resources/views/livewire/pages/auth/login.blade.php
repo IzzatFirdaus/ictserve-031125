@@ -110,7 +110,7 @@ new #[Layout('layouts.guest')] class extends Component {
             <x-input-label for="email" :value="__('auth.email_or_username')" class="text-slate-900 dark:text-white font-medium font-body" />
             <x-text-input wire:model="form.email" id="email"
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
-                type="text" name="email" required autofocus autocomplete="username"
+                type="text" name="email" required aria-required="true" autofocus autocomplete="username"
                 placeholder="{{ __('auth.email_or_username_placeholder') }}"
                 aria-describedby="login-hint" />
             {{-- Hint text for flexible login (Task 14.1) --}}
@@ -127,7 +127,7 @@ new #[Layout('layouts.guest')] class extends Component {
             <x-input-label for="password" :value="__('auth.password')" class="text-slate-900 dark:text-white font-medium font-body" />
             <x-text-input wire:model="form.password" id="password"
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 font-body transition-colors duration-200"
-                type="password" name="password" required autocomplete="current-password"
+                type="password" name="password" required aria-required="true" autocomplete="current-password"
                 placeholder="{{ __('auth.password_placeholder') }}" />
             @error('form.password')
                 <x-input-error :messages="$message" class="mt-1" />

@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Test Horizon integration with WSL Redis for XAMPP environment
  * 
  * Requirements: 6.2, 6.5
  */
+#[Group('requires-redis')]
+#[Group('requires-wsl')]
+#[Group('environment-specific')]
 class HorizonWSLRedisTest extends TestCase
 {
 

@@ -35,7 +35,7 @@ new #[Layout('layouts.guest')] class extends Component
     public function confirmPassword(): void
     {
         $this->validate([
-            'password' => ['required', 'string'],
+            'password' => ['required aria-required="true"', 'string'],
         ]);
 
         if (! Auth::guard('web')->validate([
@@ -68,7 +68,7 @@ new #[Layout('layouts.guest')] class extends Component
                           class="block mt-1 w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500"
                           type="password"
                           name="password"
-                          required autocomplete="current-password" />
+                          required aria-required="true" autocomplete="current-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>

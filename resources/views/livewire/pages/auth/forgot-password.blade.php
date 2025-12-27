@@ -34,7 +34,7 @@ new #[Layout('layouts.guest')] class extends Component
     public function sendPasswordResetLink(): void
     {
         $this->validate([
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required aria-required="true"', 'string', 'email'],
         ]);
 
         // We will send the password reset link to this user. Once we have attempted
@@ -75,7 +75,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-input-label for="email" :value="__('auth.email')" class="text-slate-900 dark:text-white font-medium font-body theme-transition" />
             <x-text-input wire:model="email" id="email"
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-primary-500 font-body theme-transition"
-                type="email" name="email" required autofocus autocomplete="email"
+                type="email" name="email" required aria-required="true" autofocus autocomplete="email"
                 placeholder="{{ __('auth.email_placeholder') }}"
                 aria-describedby="email-hint" />
             <p id="email-hint" class="text-sm text-slate-600 dark:text-slate-400 font-body theme-transition">

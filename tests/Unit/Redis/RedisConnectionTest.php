@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Redis;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -17,6 +18,8 @@ use Tests\TestCase;
  * Tests Redis connection functionality, timeout handling, and database separation
  * for ICTServe v3.6.1 Laragon optimization.
  */
+#[Group('requires-redis')]
+#[Group('environment-specific')]
 class RedisConnectionTest extends TestCase
 {
     use RefreshDatabase;

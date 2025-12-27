@@ -92,7 +92,7 @@
                         *</label>
                     <input type="text" id="name" wire:model.live.debounce.300ms="name"
                         class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                        required>
+                        required aria-required="true">
                     @error('name')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                     @enderror
@@ -104,7 +104,7 @@
                         *</label>
                     <input type="email" id="email" wire:model.live.debounce.300ms="email"
                         class="mt-1 block w-full px-4 py-2 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                        required>
+                        required aria-required="true">
                     @error('email')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                     @enderror

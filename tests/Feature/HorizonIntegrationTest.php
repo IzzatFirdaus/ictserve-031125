@@ -15,6 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -23,6 +24,13 @@ use Tests\TestCase;
  * Tests comprehensive queue management, job processing, and monitoring
  * capabilities for ICTServe v3.6 requirements 23.1-23.8
  */
+#[Group('requires-redis')]
+#[Group('requires-horizon')]
+#[Group('environment-specific')]
+class HorizonIntegrationTest extends TestCase
+#[Group('requires-redis')]
+#[Group('requires-horizon')]
+#[Group('environment-specific')]
 class HorizonIntegrationTest extends TestCase
 {
     use RefreshDatabase;

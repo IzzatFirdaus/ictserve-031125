@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Redis;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -16,6 +17,8 @@ use Tests\TestCase;
  * Tests Redis integration with Laravel's real-time features for ICTServe v3.6.1.
  * Validates Reverb, Pulse, and Horizon Redis database separation and functionality.
  */
+#[Group('requires-redis')]
+#[Group('environment-specific')]
 class RealtimeIntegrationTest extends TestCase
 {
     use RefreshDatabase;

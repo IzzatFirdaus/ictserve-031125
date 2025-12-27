@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 /**
@@ -23,6 +24,7 @@ use Tests\TestCase;
  *
  * @requirements 6.1, 6.2, 6.3, 8.1, 8.2
  */
+#[Group('environment-specific')]
 class BroadcastingIntegrationTest extends TestCase
 {
     use RefreshDatabase;
