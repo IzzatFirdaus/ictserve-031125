@@ -53,7 +53,7 @@ ICTServe adalah platform pengurusan aset ICT yang komprehensif yang dibangunkan 
 
 **Keperluan Sistem:**
 
-- PHP 8.4+
+- PHP 8.4+ (Minimum 512M memory_limit untuk testing)
 - Laravel 12
 - MySQL 8.0+
 - Redis 7.0+
@@ -82,7 +82,6 @@ npm run build
 
 # Mulakan server pembangunan
 php artisan serve
-```
 
 ## 📚 Dokumentasi Lengkap
 
