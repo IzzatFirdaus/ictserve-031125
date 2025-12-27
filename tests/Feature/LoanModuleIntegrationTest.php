@@ -15,6 +15,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -31,6 +32,7 @@ use Tests\TestCase;
  * @see D03-FR-002.1 Email approval workflow
  * @see D03-FR-007.2 Performance requirements
  */
+#[Group('environment-specific')]
 class LoanModuleIntegrationTest extends TestCase
 {
     use RefreshDatabase;
@@ -50,9 +52,6 @@ class LoanModuleIntegrationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Fake events to prevent broadcast exceptions during testing
-        \Illuminate\Support\Facades\Event::fake();
 
         // Enable auditing for tests
         config(['audit.enabled' => true, 'audit.console' => true]);
