@@ -9,6 +9,29 @@ use App\Services\PerformanceMonitoringService;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Collection;
 
+/**
+ * Slow Queries Table Widget (Widget Jadual Pertanyaan Perlahan)
+ *
+ * Displays database queries exceeding performance thresholds for optimization
+ * analysis. Integrates with Laravel Pulse and performance monitoring to identify
+ * N+1 queries, missing indexes, and inefficient query patterns.
+ *
+ * Features:
+ * - Query execution time tracking
+ * - N+1 query detection
+ * - Missing index identification
+ * - Query frequency analysis
+ * - Performance improvement recommendations
+ * - Integration with Laravel Pulse metrics
+ *
+ * @trace D11-§12.1 (Performance Standards and Monitoring)
+ * @trace D04-§3.2 (Dashboard Widgets Architecture)
+ * @trace D10-§8 (Performance Optimization Guidelines)
+ * @trace D12-§7 (Performance Monitoring UI)
+ *
+ * @see \App\Services\PerformanceMonitoringService
+ * @see \App\Filament\Traits\WidgetMetadata
+ */
 class SlowQueriesTableWidget extends Widget
 {
     use WidgetMetadata;

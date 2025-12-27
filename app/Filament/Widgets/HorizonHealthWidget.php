@@ -10,12 +10,26 @@ use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * Horizon Health Widget
+ * Horizon Health Widget (Widget Status Kesihatan Horizon)
  *
- * Displays Laravel Horizon health status in the Filament admin dashboard.
- * Shows queue metrics, supervisor status, and failed job counts.
+ * Displays Laravel Horizon queue health status in the Filament admin dashboard.
+ * Monitors queue metrics, supervisor status, failed jobs, and provides real-time
+ * queue health diagnostics.
  *
- * @see Requirements 23.1, 23.4, 23.8
+ * Features:
+ * - Queue supervisor status monitoring
+ * - Failed job count tracking
+ * - Queue throughput metrics
+ * - Worker status display
+ * - Real-time health alerts
+ *
+ * @trace D17-§3 (Queue Management with Horizon)
+ * @trace D11-§9 (Laravel Horizon Integration)
+ * @trace D04-§3.2 (Dashboard Widgets Architecture)
+ * @trace D12-§7 (System Monitoring UI)
+ *
+ * @see \App\Services\HorizonMonitoringService
+ * @see \App\Filament\Traits\WidgetMetadata
  */
 class HorizonHealthWidget extends Widget
 {
