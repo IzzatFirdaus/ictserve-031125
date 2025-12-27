@@ -51,6 +51,9 @@ class LoanModuleIntegrationTest extends TestCase
     {
         parent::setUp();
 
+        // Fake events to prevent broadcast exceptions during testing
+        \Illuminate\Support\Facades\Event::fake();
+
         // Enable auditing for tests
         config(['audit.enabled' => true, 'audit.console' => true]);
 
