@@ -34,7 +34,7 @@
                     </li>
                     <li>
                         <span class="text-white font-medium" aria-current="page">
-                            {{ __('Hubungi Kami') }}
+                            {{ __('pages.contact.breadcrumb') }}
                         </span>
                     </li>
                 </ol>
@@ -42,10 +42,10 @@
 
             {{-- Page Title --}}
             <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
-                {{ __('Hubungi Kami') }}
+                {{ __('pages.contact.title') }}
             </h1>
             <p class="text-lg md:text-xl text-primary-100 max-w-2xl leading-relaxed">
-                {{ __('Hubungi pasukan sokongan ICT BPM untuk sebarang pertanyaan atau bantuan.') }}
+                {{ __('pages.contact.subtitle') }}
             </p>
         </div>
     </section>
@@ -54,7 +54,7 @@
     <section id="main-content" class="py-12 md:py-16 bg-slate-50 dark:bg-slate-800 theme-transition"
         aria-labelledby="contact-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="contact-heading" class="sr-only">{{ __('Maklumat Hubungan') }}</h2>
+            <h2 id="contact-heading" class="sr-only">{{ __('pages.contact.info_title') }}</h2>
 
             <div class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8">
                 {{-- Contact Information Cards --}}
@@ -67,7 +67,7 @@
                                 <x-heroicon-o-map-pin class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                             </div>
                             <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100">
-                                {{ __('Alamat Pejabat') }}</h3>
+                                {{ __('pages.contact.address_title') }}</h3>
                         </div>
                         <address class="not-italic text-slate-700 dark:text-slate-300 text-sm space-y-1 leading-relaxed">
                             <p class="font-semibold text-slate-900 dark:text-slate-100">Bahagian Pengurusan Maklumat</p>
@@ -86,36 +86,33 @@
                                 <x-heroicon-o-phone class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                             </div>
                             <h3 class="text-lg font-heading font-semibold text-slate-900 dark:text-slate-100">
-                                {{ __('Saluran Hubungan') }}
+                                {{ __('pages.contact.info_title') }}
                             </h3>
                         </div>
                         <dl class="space-y-4 text-sm">
                             <div>
-                                <dt class="font-medium text-slate-500 dark:text-slate-400">{{ __('Talian Am') }}</dt>
+                                <dt class="font-medium text-slate-500 dark:text-slate-400">{{ __('pages.contact.phone_title') }}</dt>
                                 <dd class="text-slate-900 dark:text-slate-100 font-semibold">
-                                    <a href="tel:+60380008000"
+                                    <a href="tel:+60312345678"
                                         class="hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
-                                        +603-8000 8000
+                                        {{ __('pages.contact.phone_number') }}
                                     </a>
+                                </dd>
+                                <dd class="text-slate-600 dark:text-slate-400 text-xs mt-1">
+                                    {{ __('pages.contact.phone_hours') }}
                                 </dd>
                             </div>
                             <div>
-                                <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('Sokongan Helpdesk') }}
+                                <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('pages.contact.email_title') }}
                                 </dt>
-                                <dd class="text-gray-900 dark:text-gray-100 font-semibold">
-                                    <a href="tel:+60388917000"
-                                        class="hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
-                                        +603-8891 7000
+                                <dd>
+                                    <a href="mailto:ictserve@motac.gov.my"
+                                        class="text-primary-600 hover:text-primary-700 font-semibold focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded">
+                                        {{ __('pages.contact.email_address') }}
                                     </a>
                                 </dd>
-                            </div>
-                            <div>
-                                <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('E-mel') }}</dt>
-                                <dd>
-                                    <a href="mailto:helpdesk@motac.gov.my"
-                                        class="text-primary-600 hover:text-primary-700 font-semibold focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded">
-                                        helpdesk@motac.gov.my
-                                    </a>
+                                <dd class="text-slate-600 dark:text-slate-400 text-xs mt-1">
+                                    {{ __('pages.contact.email_response') }}
                                 </dd>
                             </div>
                         </dl>
@@ -130,27 +127,51 @@
                                 <x-heroicon-o-clock class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                             </div>
                             <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100">
-                                {{ __('Waktu Operasi') }}</h3>
+                                {{ __('pages.contact.hours_title') }}</h3>
                         </div>
                         <dl class="space-y-3 text-sm">
                             <div class="flex justify-between items-center">
-                                <dt class="text-gray-700 dark:text-gray-300">{{ __('Isnin - Jumaat') }}</dt>
+                                <dt class="text-gray-700 dark:text-gray-300">{{ __('pages.contact.hours_weekday') }}</dt>
                                 <dd class="font-semibold text-gray-900 dark:text-gray-100">8:30 PG - 5:30 PTG</dd>
                             </div>
                             <div class="flex justify-between items-center">
-                                <dt class="text-gray-700 dark:text-gray-300">{{ __('Rehat Tengah Hari') }}</dt>
-                                <dd class="font-semibold text-gray-900 dark:text-gray-100">1:00 PTG - 2:00 PTG</dd>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <dt class="text-gray-700 dark:text-gray-300">{{ __('Rehat Jumaat') }}</dt>
+                                <dt class="text-gray-700 dark:text-gray-300">{{ __('pages.contact.hours_friday') }}</dt>
                                 <dd class="font-semibold text-gray-900 dark:text-gray-100">12:15 PTG - 2:45 PTG</dd>
                             </div>
                             <div
                                 class="flex justify-between items-center pt-3 border-t border-gray-200 dark:border-gray-700">
-                                <dt class="text-gray-700 dark:text-gray-300">{{ __('Hujung Minggu & Cuti Umum') }}</dt>
+                                <dt class="text-gray-700 dark:text-gray-300">{{ __('pages.contact.hours_weekend') }}</dt>
                                 <dd class="font-semibold text-danger">{{ __('Tutup') }}</dd>
                             </div>
                         </dl>
+                    </x-ui.card>
+
+                    {{-- Emergency Support Card --}}
+                    <x-ui.card>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="h-10 w-10 bg-danger-50 dark:bg-danger-900/50 rounded-full flex items-center justify-center shrink-0"
+                                aria-hidden="true">
+                                <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-danger-600 dark:text-danger-400" />
+                            </div>
+                            <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-gray-100">
+                                {{ __('pages.contact.emergency_title') }}</h3>
+                        </div>
+                        <p class="text-sm text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
+                            {{ __('pages.contact.emergency_text') }}
+                        </p>
+                        <div class="bg-danger-50 dark:bg-danger-900/20 rounded-lg p-4 border border-danger-200 dark:border-danger-800">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-danger-700 dark:text-danger-300 font-medium mb-1">{{ __('pages.contact.emergency_title') }}</p>
+                                    <a href="tel:+60312349999"
+                                        class="text-xl font-bold text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 rounded">
+                                        {{ __('pages.contact.emergency_phone') }}
+                                    </a>
+                                    <p class="text-xs text-danger-600 dark:text-danger-400 mt-1">{{ __('pages.contact.emergency_available') }}</p>
+                                </div>
+                                <x-heroicon-s-phone class="h-8 w-8 text-danger-500" aria-hidden="true" />
+                            </div>
+                        </div>
                     </x-ui.card>
                 </div>
 
@@ -159,7 +180,7 @@
                     {{-- Contact Form --}}
                     <x-ui.card>
                         <x-slot name="header">
-                            <h3 class="text-xl font-heading font-semibold text-gray-900 mb-6">{{ __('Hantar Pertanyaan') }}
+                            <h3 class="text-xl font-heading font-semibold text-gray-900 mb-6">{{ __('pages.contact.form_title') }}
                             </h3>
                         </x-slot>
                         <livewire:contact-form />
