@@ -84,7 +84,7 @@ abstract class TestCase extends BaseTestCase
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create basic permissions
+        // Use firstOrCreate with try-catch to handle concurrent creation
         $permissions = [
             'helpdesk.view',
             'helpdesk.create',
@@ -100,14 +100,22 @@ abstract class TestCase extends BaseTestCase
         ];
 
         foreach ($permissions as $permission) {
-            \Spatie\Permission\Models\Permission::firstOrCreate(['name' => $permission]);
+            try {
+                \Spatie\Permission\Models\Permission::firstOrCreate(['name' => $permission]);
+            } catch (\Exception $e) {
+                // Permission might already exist due to concurrent creation, ignore
+            }
         }
 
-        // Create roles
-        \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'staff']);
-        \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'approver']);
-        \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin']);
-        \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'superuser']);
+        // Create roles with try-catch to handle concurrent creation
+        $roles = ['staff', 'approver', 'admin', 'superuser'];
+        foreach ($roles as $role) {
+            try {
+                \Spatie\Permission\Models\Role::firstOrCreate(['name' => $role]);
+            } catch (\Exception $e) {
+                // Role might already exist due to concurrent creation, ignore
+            }
+        }
     }
 
     /**

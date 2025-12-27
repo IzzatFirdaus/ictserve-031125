@@ -1,15 +1,26 @@
 /**
- * Cross-Browser Compatibility Tests
+ * Cross-Browser Compatibility Tests with Percy Visual Testing Integration
  *
- * Tests core functionality across Chrome 90+, Firefox 88+, Safari 14+, and Edge 90+
+ * ENHANCED VERSION with Percy Integration (December 2025):
+ * - ✅ Tests core functionality across Chrome 90+, Firefox 88+, Safari 14+, and Edge 90+
+ * - ✅ Percy visual snapshots for cross-browser visual consistency
+ * - ✅ ICTServe v3.6.1 True Hybrid Architecture support
+ * - ✅ Bahasa Melayu interface visual validation
  *
  * Requirements: R16 (Testing and Quality Assurance)
  * Design: Testing Strategy - Cross-browser testing
+ *
+ * Run: npm run test:e2e -- tests/e2e/cross-browser.spec.ts
+ * Run with Percy: npm run test:e2e:percy -- tests/e2e/cross-browser.spec.ts
  *
  * @see .kiro/specs/updated-frontend/tasks.md - Task 6.1.5
  */
 
 import { test, expect, type Page } from "@playwright/test";
+import {
+	takePercySnapshot,
+	takeResponsiveSnapshots,
+} from "./utils/percy-utils";
 
 /**
  * Helper function to check if page loads correctly
@@ -54,7 +65,10 @@ async function verifyAccessibilityBasics(page: Page): Promise<void> {
 
 test.describe("Cross-Browser Compatibility Tests", () => {
 	test.describe("Homepage and Navigation", () => {
-		test("should load homepage correctly", async ({ page, browserName }) => {
+		test("should load homepage correctly with Percy", async ({
+			page,
+			browserName,
+		}) => {
 			test
 				.info()
 				.annotations.push({ type: "browser", description: browserName });
@@ -66,6 +80,14 @@ test.describe("Cross-Browser Compatibility Tests", () => {
 
 			// Verify main content is visible
 			await verifyResponsiveLayout(page);
+
+			// Enhanced with Percy visual validation for cross-browser consistency
+			await takePercySnapshot(page, {
+				name: `Homepage - Cross-Browser (${browserName})`,
+				userType: "guest",
+				widths: [375, 768, 1280],
+				validateBahasaMelayu: true,
+			});
 
 			// Verify no JavaScript errors
 			const errors: string[] = [];
@@ -83,7 +105,7 @@ test.describe("Cross-Browser Compatibility Tests", () => {
 			expect(criticalErrors).toHaveLength(0);
 		});
 
-		test("should render navigation menu correctly", async ({
+		test("should render navigation menu correctly with Percy", async ({
 			page,
 			browserName,
 		}) => {
@@ -96,6 +118,14 @@ test.describe("Cross-Browser Compatibility Tests", () => {
 			// Check for navigation element
 			const nav = page.locator('nav, [role="navigation"]');
 			await expect(nav.first()).toBeVisible();
+
+			// Enhanced with Percy visual validation for navigation
+			await takePercySnapshot(page, {
+				name: `Navigation Menu - Cross-Browser (${browserName})`,
+				userType: "guest",
+				widths: [375, 768, 1280],
+				validateBahasaMelayu: true,
+			});
 		});
 
 		test("should handle language switching", async ({ page, browserName }) => {
@@ -203,7 +233,10 @@ test.describe("Cross-Browser Compatibility Tests", () => {
 	});
 
 	test.describe("Authentication Pages", () => {
-		test("should load login page correctly", async ({ page, browserName }) => {
+		test("should load login page correctly with Percy", async ({
+			page,
+			browserName,
+		}) => {
 			test
 				.info()
 				.annotations.push({ type: "browser", description: browserName });
@@ -224,6 +257,14 @@ test.describe("Cross-Browser Compatibility Tests", () => {
 			await expect(emailInput.first()).toBeVisible();
 			await expect(passwordInput.first()).toBeVisible();
 			await expect(submitButton.first()).toBeVisible();
+
+			// Enhanced with Percy visual validation for login page
+			await takePercySnapshot(page, {
+				name: `Login Page - Cross-Browser (${browserName})`,
+				userType: "guest",
+				widths: [375, 768, 1280],
+				validateBahasaMelayu: true,
+			});
 		});
 
 		test("should handle form validation on login", async ({

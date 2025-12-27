@@ -69,13 +69,33 @@ class GuestLoanApplicationEnhancementTest extends TestCase
     #[Test]
     public function emergency_request_requires_justification(): void
     {
+        // Test that emergency_justification is required when emergency_request is true
         Livewire::test(GuestLoanApplication::class)
+            ->set('form.applicant_name', 'Test User')
+            ->set('form.phone', '0123456789')
+            ->set('form.applicant_position', 'Test Position')
+            ->set('form.applicant_grade', 'N41')
+            ->set('form.division_id', $this->division->id)
+            ->set('form.purpose', 'Test Purpose')
+            ->set('form.location', 'Test Location')
+            ->set('form.loan_start_date', now()->addDays(2)->format('Y-m-d'))
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'))
             ->set('form.emergency_request', true)
             ->set('form.emergency_justification', '')
             ->call('nextStep')
             ->assertHasErrors(['form.emergency_justification']);
 
+        // Test that emergency_justification must be at least 50 characters
         Livewire::test(GuestLoanApplication::class)
+            ->set('form.applicant_name', 'Test User')
+            ->set('form.phone', '0123456789')
+            ->set('form.applicant_position', 'Test Position')
+            ->set('form.applicant_grade', 'N41')
+            ->set('form.division_id', $this->division->id)
+            ->set('form.purpose', 'Test Purpose')
+            ->set('form.location', 'Test Location')
+            ->set('form.loan_start_date', now()->addDays(2)->format('Y-m-d'))
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'))
             ->set('form.emergency_request', true)
             ->set('form.emergency_justification', 'Short')
             ->call('nextStep')

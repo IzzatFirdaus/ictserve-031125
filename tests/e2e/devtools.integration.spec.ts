@@ -1,20 +1,30 @@
 /**
- * Chrome DevTools Integration Tests
+ * Chrome DevTools Integration Tests with Percy Visual Testing
  *
- * FIXED VERSION (December 2025):
+ * ENHANCED VERSION with Percy Integration (December 2025):
  * - ✅ Uses custom fixtures for proper authentication
  * - ✅ Relative URLs instead of hard-coded localhost
  * - ✅ Proper error handling and timeouts
  * - ✅ Enhanced CDP session management
  * - ✅ Modern Playwright best practices
+ * - ✅ Percy visual snapshots for development tools validation
+ * - ✅ ICTServe v3.6.1 True Hybrid Architecture support
+ * - ✅ Bahasa Melayu interface visual validation
  *
  * Uses Playwright's debugging capabilities with Chrome DevTools Protocol
+ *
+ * Run: npm run test:e2e -- tests/e2e/devtools.integration.spec.ts
+ * Run with Percy: npm run test:e2e:percy -- tests/e2e/devtools.integration.spec.ts
  */
 
 import { test, expect } from "./fixtures/ictserve-fixtures";
+import { takePercySnapshot } from "./utils/percy-utils";
 
-test.describe("Chrome DevTools Debugging Suite", () => {
-	test("should capture performance metrics", async ({ page, context }) => {
+test.describe("Chrome DevTools Debugging Suite with Percy", () => {
+	test("should capture performance metrics with Percy", async ({
+		page,
+		context,
+	}) => {
 		// Enable CDP with error handling
 		let client;
 		try {
@@ -28,6 +38,14 @@ test.describe("Chrome DevTools Debugging Suite", () => {
 		await page.goto("/", { waitUntil: "domcontentloaded" });
 		await page.waitForLoadState("load", { timeout: 30000 });
 		await page.waitForTimeout(2000);
+
+		// Enhanced with Percy visual validation for performance baseline
+		await takePercySnapshot(page, {
+			name: "DevTools Integration - Performance Metrics Baseline",
+			userType: "guest",
+			widths: [1280],
+			validateBahasaMelayu: true,
+		});
 
 		// Get performance metrics with error handling
 		const metrics = await page.evaluate(() => {

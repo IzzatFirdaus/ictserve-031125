@@ -1,17 +1,26 @@
 /**
- * Ollama AI Accessibility Testing Suite
+ * Ollama AI Accessibility Testing Suite with Percy Visual Testing
  *
- * Tests WCAG 2.2 Level AA compliance for Ollama AI interfaces
- * Uses axe-core for automated accessibility testing
+ * ENHANCED VERSION with Percy Integration (December 2025):
+ * - ✅ Tests WCAG 2.2 Level AA compliance for Ollama AI interfaces
+ * - ✅ Uses axe-core for automated accessibility testing
+ * - ✅ Percy visual snapshots for AI component visual validation
+ * - ✅ ICTServe v3.6.1 True Hybrid Architecture support
+ * - ✅ Bahasa Melayu interface visual validation
  *
  * Requirements: 5.1, 5.2, 5.3, 5.6, 5.7
  * Standards: WCAG 2.2 Level AA, D12-D14 v3.6.0
  *
  * Run: npm run test:e2e -- tests/e2e/ollama-accessibility.spec.ts
+ * Run with Percy: npm run test:e2e:percy -- tests/e2e/ollama-accessibility.spec.ts
  */
 
 import { test, expect } from "./fixtures/ictserve-fixtures";
 import AxeBuilder from "@axe-core/playwright";
+import {
+	takePercySnapshot,
+	takeAccessibilitySnapshot,
+} from "./utils/percy-utils";
 
 // WCAG 2.2 AA tags for axe-core
 const WCAG_22_AA_TAGS = [
@@ -33,9 +42,16 @@ const OLLAMA_PAGES = [
 ];
 
 /**
- * Helper function to run axe accessibility scan
+ * Helper function to run axe accessibility scan with Percy visual validation
  */
 async function runAxeScan(page: any, pageName: string) {
+	// Enhanced with Percy visual validation for accessibility
+	await takeAccessibilitySnapshot(page, `Ollama AI - ${pageName}`, {
+		userType: "admin",
+		widths: [1024, 1280],
+		validateBahasaMelayu: true,
+	});
+
 	const accessibilityScanResults = await new AxeBuilder({ page })
 		.withTags(WCAG_22_AA_TAGS)
 		.analyze();

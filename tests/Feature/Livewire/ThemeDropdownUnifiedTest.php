@@ -149,11 +149,11 @@ class ThemeDropdownUnifiedTest extends TestCase
 
         $html = $component->html();
 
-        // Check color classes for WCAG 2.2 AA compliance
-        $this->assertStringContainsString('text-gray-600 dark:text-gray-300', $html);
-        $this->assertStringContainsString('bg-white dark:bg-gray-800', $html);
-        $this->assertStringContainsString('hover:bg-gray-100 dark:hover:bg-gray-700', $html);
-        $this->assertStringContainsString('focus:ring-2 focus:ring-primary-500', $html);
+        // Check color classes for WCAG 2.2 AA compliance (using slate colors)
+        $this->assertStringContainsString('text-slate-600 dark:text-slate-300', $html);
+        $this->assertStringContainsString('bg-white dark:bg-slate-800', $html);
+        $this->assertStringContainsString('hover:bg-slate-100 dark:hover:bg-slate-700', $html);
+        $this->assertStringContainsString('focus-visible:ring-3 focus-visible:ring-primary-500', $html);
     }
 
     #[Test]
@@ -190,7 +190,7 @@ class ThemeDropdownUnifiedTest extends TestCase
 
         // Check focus management attributes
         $this->assertStringContainsString('focus:outline-none', $html);
-        $this->assertStringContainsString('focus:ring-2', $html);
-        $this->assertStringContainsString('focus:bg-gray-100 dark:focus:bg-gray-700', $html);
+        $this->assertStringContainsString('focus-visible:ring-3', $html);
+        $this->assertStringContainsString('focus:bg-slate-100 dark:focus:bg-slate-700', $html);
     }
 }
