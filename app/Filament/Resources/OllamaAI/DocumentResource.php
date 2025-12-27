@@ -88,8 +88,12 @@ class DocumentResource extends Resource
                             ->openable()
                             ->helperText(__('ollama.document.file_helper'))
                             ->dehydrated(false)
-                            ->afterStateUpdated(function (?TemporaryUploadedFile $state, callable $set): void {
-                                if (! $state) {
+                            ->afterStateUpdated(function (TemporaryUploadedFile|string|null $state, callable $set): void {
+                                if (is_string($state) && TemporaryUploadedFile::canUnserialize($state)) {
+                                    $state = TemporaryUploadedFile::unserializeFromLivewireRequest($state);
+                                }
+
+                                if (! $state instanceof TemporaryUploadedFile) {
                                     return;
                                 }
 

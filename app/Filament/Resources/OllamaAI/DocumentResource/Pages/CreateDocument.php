@@ -46,6 +46,10 @@ class CreateDocument extends CreateRecord
         /** @var TemporaryUploadedFile|null $file */
         $file = $this->form->getState()['file_upload'] ?? null;
 
+        if (is_string($file) && TemporaryUploadedFile::canUnserialize($file)) {
+            $file = TemporaryUploadedFile::unserializeFromLivewireRequest($file);
+        }
+
         if (! $file instanceof TemporaryUploadedFile) {
             throw new \InvalidArgumentException('Fail diperlukan untuk memuat naik dokumen.');
         }
