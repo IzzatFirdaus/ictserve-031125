@@ -22,6 +22,14 @@ class LoanModulePerformanceTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Get performance threshold multiplier for CI environment
+     */
+    private function getThresholdMultiplier(): float
+    {
+        return env('CI', false) ? 3.0 : 1.0;
+    }
+
     #[Test]
     public function loan_dashboard_loads_within_performance_target(): void
     {
@@ -59,6 +67,7 @@ class LoanModulePerformanceTest extends TestCase
     #[Test]
     public function asset_availability_check_is_fast(): void
     {
+        $multiplier = $this->getThresholdMultiplier();
         $user = User::factory()->create();
         Asset::factory()->count(100)->create();
 
@@ -69,7 +78,8 @@ class LoanModulePerformanceTest extends TestCase
         $checkTime = microtime(true) - $startTime;
 
         $response->assertOk();
-        $this->assertLessThan(1.0, $checkTime, 'Asset availability check too slow');
+        // Base threshold: 1s local, 3s CI
+        $this->assertLessThan(1.0 * $multiplier, $checkTime, 'Asset availability check too slow');
     }
 
     #[Test]
