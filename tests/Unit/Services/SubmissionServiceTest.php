@@ -35,7 +35,6 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test filtering by status
      *
-     *
      * @traceability Requirement 8.2
      */
     #[Test]
@@ -61,7 +60,6 @@ class SubmissionServiceTest extends TestCase
 
     /**
      * Test filtering by date range
-     *
      *
      * @traceability Requirement 8.2
      */
@@ -98,7 +96,6 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test search functionality
      *
-     *
      * @traceability Requirement 8.1
      */
     #[Test]
@@ -125,7 +122,6 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test search by subject
      *
-     *
      * @traceability Requirement 8.1
      */
     #[Test]
@@ -151,7 +147,6 @@ class SubmissionServiceTest extends TestCase
 
     /**
      * Test eager loading prevents N+1 queries
-     *
      *
      * @traceability Requirement 2.1
      */
@@ -184,7 +179,6 @@ class SubmissionServiceTest extends TestCase
 
     /**
      * Test filtering multiple criteria
-     *
      *
      * @traceability Requirement 8.2
      */
@@ -227,7 +221,6 @@ class SubmissionServiceTest extends TestCase
 
     /**
      * Test loan submissions filtering
-     *
      *
      * @traceability Requirement 2.1
      */

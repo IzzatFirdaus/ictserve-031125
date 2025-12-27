@@ -267,21 +267,29 @@ class RedisConfigurationTest extends TestCase
     #[Test]
     public function it_validates_connection_optimization_settings(): void
     {
-        // Test connection optimization environment variables if they exist
-        $optimizationEnvVars = [
-            'REDIS_MAX_RETRIES' => 3,
-            'REDIS_BACKOFF_BASE' => 100,
-            'REDIS_BACKOFF_CAP' => 1000,
+        $expectedDefaults = [
+            'max_retries' => 3,
+            'backoff_base' => 100,
+            'backoff_cap' => 1000,
+            'backoff_algorithm' => 'decorrelated_jitter',
         ];
 
-        foreach ($optimizationEnvVars as $envKey => $expectedValue) {
-            $actualValue = env($envKey);
+        $connections = ['default', 'cache', 'sessions', 'queues', 'reverb', 'pulse', 'horizon'];
 
-            if ($actualValue !== null) {
+        foreach ($connections as $connection) {
+            $config = config("database.redis.{$connection}");
+
+            foreach ($expectedDefaults as $key => $expectedValue) {
+                $this->assertArrayHasKey(
+                    $key,
+                    $config,
+                    "Connection '{$connection}' missing optimization key '{$key}'"
+                );
+
                 $this->assertEquals(
                     $expectedValue,
-                    (int) $actualValue,
-                    "Environment variable {$envKey} should be {$expectedValue} for connection optimization"
+                    $config[$key],
+                    "Connection '{$connection}' should have '{$key}' set to '{$expectedValue}'"
                 );
             }
         }
