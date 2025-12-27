@@ -29,9 +29,16 @@ class GradeResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    /**
+     * Check if the current user can view any grades.
+     * Only admin and superuser roles have access.
+     */
     public static function canViewAny(): bool
     {
-        return Auth::check() && Auth::user()?->hasAdminAccess();
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user !== null && $user->hasAdminAccess();
     }
 
     public static function form(Schema $schema): Schema

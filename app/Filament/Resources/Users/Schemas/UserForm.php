@@ -36,19 +36,19 @@ class UserForm
     {
         return $schema
             ->components([
-                Section::make('Maklumat Asas')
+                Section::make(__('filament.users.basic_info'))
                     ->schema([
                         TextInput::make('name')
                             ->required()
                             ->maxLength(255)
-                            ->label(__('users.full_name')),
+                            ->label(__('filament.users.full_name')),
 
                         TextInput::make('email')
                             ->email()
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
-                            ->label(__('users.email_address')),
+                            ->label(__('filament.users.email_address')),
 
                         TextInput::make('password')
                             ->password()
@@ -56,70 +56,70 @@ class UserForm
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create')
                             ->maxLength(255)
-                            ->label(__('users.password'))
-                            ->helperText('Biarkan kosong untuk kekalkan kata laluan semasa (mod kemaskini)'),
+                            ->label(__('filament.users.password'))
+                            ->helperText(__('filament.users.password_help')),
 
                         Select::make('role')
                             ->options([
-                                'staff' => 'Staf',
-                                'approver' => 'Pelulus (Gred 41+)',
-                                'admin' => 'Admin',
-                                'superuser' => 'Superuser',
+                                'staff' => __('filament.users.role_staff'),
+                                'approver' => __('filament.users.role_approver'),
+                                'admin' => __('filament.users.role_admin'),
+                                'superuser' => __('filament.users.role_superuser'),
                             ])
                             ->default('staff')
                             ->required()
-                            ->label(__('users.role'))
+                            ->label(__('filament.users.role'))
                             ->disabled(function (): bool {
                                 /** @var \App\Models\User|null $user */
                                 $user = Auth::user();
 
                                 return ! ($user?->hasRole('superuser') ?? false);
                             })
-                            ->helperText('Hanya superuser boleh menukar peranan'),
+                            ->helperText(__('filament.users.role_help')),
 
                         Toggle::make('is_active')
                             ->default(true)
-                            ->label(__('users.active_status')),
+                            ->label(__('filament.users.active_status')),
                     ])
                     ->columns(2),
 
-                Section::make('Maklumat Organisasi')
+                Section::make(__('filament.users.org_info'))
                     ->schema([
                         TextInput::make('staff_id')
                             ->maxLength(255)
-                            ->label(__('users.staff_id')),
+                            ->label(__('filament.users.staff_id')),
 
                         Select::make('division_id')
                             ->relationship('division', 'name_ms')
                             ->searchable()
                             ->preload()
-                            ->label(__('users.division')),
+                            ->label(__('filament.users.division')),
 
                         Select::make('grade_id')
                             ->relationship('grade', 'name_ms')
                             ->searchable()
                             ->preload()
-                            ->label(__('users.grade')),
+                            ->label(__('filament.users.grade')),
 
                         Select::make('position_id')
                             ->relationship('position', 'name_ms')
                             ->searchable()
                             ->preload()
-                            ->label(__('users.position')),
+                            ->label(__('filament.users.position')),
                     ])
                     ->columns(2),
 
-                Section::make('Maklumat Perhubungan')
+                Section::make(__('filament.users.contact_info'))
                     ->schema([
                         TextInput::make('phone')
                             ->tel()
                             ->maxLength(255)
-                            ->label(__('users.office_phone')),
+                            ->label(__('filament.users.office_phone')),
 
                         TextInput::make('mobile')
                             ->tel()
                             ->maxLength(255)
-                            ->label(__('users.mobile_phone')),
+                            ->label(__('filament.users.mobile_phone')),
                     ])
                     ->columns(2),
             ]);

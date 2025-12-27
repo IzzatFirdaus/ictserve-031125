@@ -40,12 +40,16 @@ class TicketCategoryResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    /**
+     * Check if the current user can view any ticket categories.
+     * Only admin and superuser roles have access.
+     */
     public static function canViewAny(): bool
     {
         /** @var User|null $user */
         $user = Auth::user();
 
-        return Auth::check() && $user?->hasAdminAccess();
+        return $user !== null && $user->hasAdminAccess();
     }
 
     public static function form(Schema $schema): Schema
