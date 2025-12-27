@@ -67,9 +67,15 @@ export default defineConfig({
 	},
 	// Server configuration for development
 	server: {
-		host: '127.0.0.1', // Force IPv4 to avoid CSP issues with [::1]
+		host: process.env.VITE_DEV_SERVER_HOST || '0.0.0.0', // Use 0.0.0.0 for Docker, fallback for local
+		port: process.env.VITE_DEV_SERVER_PORT ? parseInt(process.env.VITE_DEV_SERVER_PORT) : 5173,
+		strictPort: false, // Allow fallback ports if 5173 is taken
 		hmr: {
+			host: process.env.VITE_HMR_HOST || 'localhost',
 			overlay: true, // Show errors as overlay
+		},
+		watch: {
+			usePolling: process.env.VITE_USE_POLLING === 'true', // Enable for Docker on some systems
 		},
 	},
 	// Suppress false positive esbuild CSS warnings

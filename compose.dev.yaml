@@ -9,7 +9,7 @@ services:
       args:
         INSTALL_DEV: "true" # Install dev dependencies for development
     volumes:
-      - ./:/var/www/html/cached
+      - ./:/var/www/html:cached
       - /var/www/html/vendor # Anonymous volume for vendor directory
       - node_modules:/var/www/html/node_modules
       - npm_cache:/var/www/.npm-cache
