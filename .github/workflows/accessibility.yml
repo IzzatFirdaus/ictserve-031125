@@ -26,11 +26,13 @@ jobs:
 
       - run: |
           cp .env.example .env
+          touch database/database.sqlite
           php artisan key:generate
+          php artisan migrate --force
           php artisan config:cache
 
       - run: php -S 127.0.0.1:8000 -t public &
-      - run: sleep 3
+      - run: sleep 5
 
       - run: npm install -g pa11y@6
 
