@@ -30,6 +30,12 @@ use Illuminate\Support\Facades\Log;
  */
 class UnifiedNotificationDispatcher
 {
+    /**
+     * Flag to indicate if the dispatcher is currently dispatching a notification.
+     * Used by NotificationCreatedListener to avoid duplicate broadcasts.
+     */
+    private static bool $isDispatching = false;
+
     private static array $statistics = [
         'attempts' => 0,
         'failures' => 0,
@@ -46,6 +52,15 @@ class UnifiedNotificationDispatcher
         private NotificationPreferenceRepository $preferences,
         private EmailDispatcher $emailDispatcher
     ) {}
+
+    /**
+     * Check if the dispatcher is currently dispatching a notification.
+     * Used by NotificationCreatedListener to avoid duplicate broadcasts.
+     */
+    public static function isDispatchingNotification(): bool
+    {
+        return self::$isDispatching;
+    }
 
     /**
      * Dispatch notification to user across all applicable channels.
@@ -66,12 +81,11 @@ class UnifiedNotificationDispatcher
      * @param  string|null  $priority  Priority level (critical, high, normal, low)
      * @return array<string, mixed> Result of dispatch with channels used
      */
-    
 
-/**
- * @param array<string, mixed> $meta
- */
-public function dispatch(
+    /**
+     * @param  array<string, mixed>  $meta
+     */
+    public function dispatch(
         User $user,
         Notification $notification,
         ?Mailable $mailable = null,
@@ -85,29 +99,33 @@ public function dispatch(
 
         Log::channel('notifications')->info('UnifiedNotificationDispatcher starting', [
             'user_id' => $user->id,
-            'notification_class' => get_class($notification),
+            'notification_class' => \get_class($notification),
             'type' => $notificationType,
             'priority' => $priority,
             'has_mailable' => $mailable !== null,
         ]);
 
         // CHANNEL 1: DATABASE - ALWAYS send for audit trail
+        // Set flag to prevent NotificationCreatedListener from dispatching duplicate broadcast
+        self::$isDispatching = true;
         try {
             $user->notify($notification);
             $channelsUsed[] = 'database';
 
             Log::channel('notifications')->info('Database notification sent', [
                 'user_id' => $user->id,
-                'notification_class' => get_class($notification),
+                'notification_class' => \get_class($notification),
             ]);
         } catch (\Exception $e) {
             $hadFailure = true;
 
             Log::channel('notifications')->error('Database notification failed', [
                 'user_id' => $user->id,
-                'notification_class' => get_class($notification),
+                'notification_class' => \get_class($notification),
                 'error' => $e->getMessage(),
             ]);
+        } finally {
+            self::$isDispatching = false;
         }
 
         // Get the database notification record for broadcast event
@@ -118,7 +136,7 @@ public function dispatch(
             Log::channel('notifications')->warning('Database notification not found after $user->notify()', [
                 'user_id' => $user->id,
                 'total_notifications_count' => $user->notifications()->count(),
-                'notification_class' => get_class($notification),
+                'notification_class' => \get_class($notification),
             ]);
         }
 
@@ -219,12 +237,11 @@ public function dispatch(
      * @param  string|null  $priority  Priority level
      * @return array<int, array<string, mixed>> Results for each user
      */
-    
 
-/**
- * @param array<string, mixed> $meta
- */
-public function dispatchToMany(
+    /**
+     * @param  array<string, mixed>  $meta
+     */
+    public function dispatchToMany(
         iterable $users,
         Notification $notification,
         ?Mailable $mailable = null,
@@ -270,12 +287,11 @@ public function dispatchToMany(
      * @param  string  $notificationType  Type (for logging)
      * @return array<string, mixed> Dispatch result
      */
-    
 
-/**
- * @param array<string, mixed> $meta
- */
-public function dispatchCritical(
+    /**
+     * @param  array<string, mixed>  $meta
+     */
+    public function dispatchCritical(
         User $user,
         Notification $notification,
         ?Mailable $mailable = null,
@@ -309,12 +325,11 @@ public function dispatchCritical(
      * @param  string  $notificationType  Type for preference check
      * @return array<string, mixed> Dispatch result
      */
-    
 
-/**
- * @param array<string, mixed> $meta
- */
-public function dispatchEmailOnly(
+    /**
+     * @param  array<string, mixed>  $meta
+     */
+    public function dispatchEmailOnly(
         User $user,
         Mailable $mailable,
         array $meta = [],
@@ -385,12 +400,11 @@ public function dispatchEmailOnly(
     /**
      * @param  array<string>  $channelsUsed
      */
-    
 
-/**
- * @param array<string, mixed> $channelsUsed
- */
-private function recordStatistics(string $notificationType, array $channelsUsed, bool $hadFailure): void
+    /**
+     * @param  array<string, mixed>  $channelsUsed
+     */
+    private function recordStatistics(string $notificationType, array $channelsUsed, bool $hadFailure): void
     {
         self::$statistics['attempts']++;
 
