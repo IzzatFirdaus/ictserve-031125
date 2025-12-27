@@ -19,8 +19,6 @@ use Tests\TestCase;
  * @see config/reverb.php - Reverb server configuration
  *
  * @requirements 6.1, 6.2, 6.4, 6.5
- *
- * @group environment-specific
  */
 #[Group('environment-specific')]
 class WebSocketConnectionTest extends TestCase

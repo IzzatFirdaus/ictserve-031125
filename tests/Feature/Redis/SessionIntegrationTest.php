@@ -18,12 +18,10 @@ use Tests\TestCase;
  *
  * Tests Redis integration with Laravel's session system for ICTServe v3.6.1.
  * Validates session storage, retrieval, and Redis database separation.
- *
- * @group requires-redis
- * @group environment-specific
  */
 #[Group('requires-redis')]
 #[Group('environment-specific')]
+class SessionIntegrationTest extends TestCase
 class SessionIntegrationTest extends TestCase
 {
     use RefreshDatabase;

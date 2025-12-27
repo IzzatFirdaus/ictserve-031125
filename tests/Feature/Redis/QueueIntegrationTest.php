@@ -44,9 +44,6 @@ class TestRedisJob implements ShouldQueue
  *
  * Tests Redis integration with Laravel's queue system for ICTServe v3.6.1.
  * Validates job dispatching, processing, and Redis database separation.
- *
- * @group requires-redis
- * @group environment-specific
  */
 #[Group('requires-redis')]
 #[Group('environment-specific')]

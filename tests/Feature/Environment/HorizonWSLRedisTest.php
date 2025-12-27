@@ -14,10 +14,6 @@ use PHPUnit\Framework\Attributes\Group;
  * Test Horizon integration with WSL Redis for XAMPP environment
  * 
  * Requirements: 6.2, 6.5
- *
- * @group requires-redis
- * @group requires-wsl
- * @group environment-specific
  */
 #[Group('requires-redis')]
 #[Group('requires-wsl')]

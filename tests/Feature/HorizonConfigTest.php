@@ -11,9 +11,6 @@ use Tests\TestCase;
 
 /**
  * Horizon Configuration Test
- *
- * @group requires-horizon
- * @group environment-specific
  */
 #[Group('requires-horizon')]
 #[Group('environment-specific')]

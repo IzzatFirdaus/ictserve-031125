@@ -18,9 +18,6 @@ use Tests\TestCase;
  *
  * Tests Redis integration with Laravel's cache system for ICTServe v3.6.1.
  * Validates cache operations, TTL handling, and Redis database separation.
- *
- * @group requires-redis
- * @group environment-specific
  */
 #[Group('requires-redis')]
 #[Group('environment-specific')]
