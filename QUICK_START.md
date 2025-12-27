@@ -14,11 +14,11 @@
 ```bash
 # Option 1: Docker (Workspace - Recommended for Kiro)
 switch-env.bat docker
-.\scripts\docker-start.ps1
+.\scripts\docker\docker-start.ps1
 
 # Option 2: Laragon (Non-Workspace - Optimized for Laragon)
 switch-env.bat laragon
-.\scripts\laragon-start.ps1
+.\scripts\laragon\laragon-start.ps1
 
 # Option 3: Manual environment selection
 .\scripts\switch-env.ps1 -env docker    # or -env laragon
@@ -125,7 +125,7 @@ ICTServe supports two development configurations:
 
 ```bash
 # Complete Docker setup
-.\scripts\docker-start.ps1
+.\scripts\docker\docker-start.ps1
 
 # Or switch to Docker configuration manually
 .\scripts\switch-env.ps1 -env docker
@@ -136,7 +136,7 @@ docker compose up -d
 
 ```bash
 # Complete Laragon setup
-.\scripts\laragon-start.ps1
+.\scripts\laragon\laragon-start.ps1
 
 # Or switch to Laragon configuration manually
 .\scripts\switch-env.ps1 -env laragon
@@ -169,13 +169,13 @@ switch-env.bat docker force
 
 ```bash
 # Complete Laragon setup
-.\scripts\laragon-start.ps1
+.\scripts\laragon\laragon-start.ps1
 
 # Options:
-.\scripts\laragon-start.ps1 -InstallRedis      # Auto-install WSL Redis
-.\scripts\laragon-start.ps1 -SkipRedis         # Use file-based cache
-.\scripts\laragon-start.ps1 -SkipMigrations    # Skip database setup
-.\scripts\laragon-start.ps1 -NoBrowser         # Don't open browser
+.\scripts\laragon\laragon-start.ps1 -InstallRedis      # Auto-install WSL Redis
+.\scripts\laragon\laragon-start.ps1 -SkipRedis         # Use file-based cache
+.\scripts\laragon\laragon-start.ps1 -SkipMigrations    # Skip database setup
+.\scripts\laragon\laragon-start.ps1 -NoBrowser         # Don't open browser
 ```
 
 ##### 2. Manual Laragon Setup
@@ -217,7 +217,7 @@ wsl sudo systemctl enable redis-server && sudo systemctl start redis-server
 
 ```bash
 # Complete Docker setup
-.\scripts\docker-start.ps1
+.\scripts\docker\docker-start.ps1
 
 # Or manual setup
 .\scripts\switch-env.ps1 -env docker
@@ -270,13 +270,13 @@ docker compose exec app chown -R www-data:www-data storage bootstrap/cache
 
 ```bash
 # Complete Laragon setup and start
-.\scripts\laragon-start.ps1
+.\scripts\laragon\laragon-start.ps1
 
 # Options:
-.\scripts\laragon-start.ps1 -InstallRedis      # Auto-install WSL Redis
-.\scripts\laragon-start.ps1 -SkipRedis         # Use file-based cache
-.\scripts\laragon-start.ps1 -SkipMigrations    # Skip database setup
-.\scripts\laragon-start.ps1 -NoBrowser         # Don't open browser
+.\scripts\laragon\laragon-start.ps1 -InstallRedis      # Auto-install WSL Redis
+.\scripts\laragon\laragon-start.ps1 -SkipRedis         # Use file-based cache
+.\scripts\laragon\laragon-start.ps1 -SkipMigrations    # Skip database setup
+.\scripts\laragon\laragon-start.ps1 -NoBrowser         # Don't open browser
 ```
 
 ##### Enhanced Development Script
@@ -334,13 +334,13 @@ npm run dev                  # Vite dev server
 
 ```bash
 # Complete Docker setup and start
-.\scripts\docker-start.ps1
+.\scripts\docker\docker-start.ps1
 
 # Options:
-.\scripts\docker-start.ps1 -Clean              # Clean rebuild
-.\scripts\docker-start.ps1 -SkipBuild          # Skip image building
-.\scripts\docker-start.ps1 -SkipMigrations     # Skip database setup
-.\scripts\docker-start.ps1 -NoBrowser          # Don't open browser
+.\scripts\docker\docker-start.ps1 -Clean              # Clean rebuild
+.\scripts\docker\docker-start.ps1 -SkipBuild          # Skip image building
+.\scripts\docker\docker-start.ps1 -SkipMigrations     # Skip database setup
+.\scripts\docker\docker-start.ps1 -NoBrowser          # Don't open browser
 ```
 
 **Services Started (Docker)**:
