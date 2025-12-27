@@ -7,7 +7,12 @@
  * @trace D03-FR-011 (Optimistic UI), Task 3.1.10 (Searchable Select)
  */
 
-document.addEventListener("alpine:init", () => {
+const registerAlpineComponents = () => {
+	const Alpine = window.Alpine;
+	if (!Alpine || registerAlpineComponents.hasRun) {
+		return;
+	}
+	registerAlpineComponents.hasRun = true;
 	/**
 	 * Searchable Select Alpine.js Component
 	 *
@@ -243,4 +248,98 @@ document.addEventListener("alpine:init", () => {
 			}
 		},
 	}));
+
+	/**
+	 * FAQ Bot Widget Alpine.js Component
+	 *
+	 * Handles widget state sync, focus management, and accessibility behaviors.
+	 *
+	 * @trace D03-FR-AI-001 (FAQ Bot Widget)
+	 */
+	Alpine.data("faqBotWidget", (isOpen, isMinimized, announcement) => ({
+		isOpen,
+		isMinimized,
+		announcement,
+
+		init() {
+			this.$watch("announcement", (value) => {
+				if (value) {
+					this.$dispatch("announce", { message: value });
+				}
+			});
+
+			this.$watch("isOpen", (open) => {
+				if (open) {
+					this.focusFirst();
+				} else {
+					this.$nextTick(() => this.$refs.toggleButton?.focus());
+				}
+			});
+		},
+
+		focusableEls() {
+			return [
+				...(this.$refs.panel?.querySelectorAll(
+					'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+				) || []),
+			].filter((el) => !el.disabled && el.offsetParent !== null);
+		},
+
+		trapFocus(event) {
+			if (!this.isOpen || this.isMinimized) {
+				return;
+			}
+			const els = this.focusableEls();
+			if (!els.length) {
+				return;
+			}
+			const first = els[0];
+			const last = els[els.length - 1];
+			const active = document.activeElement;
+			if (event.shiftKey && active === first) {
+				event.preventDefault();
+				last.focus();
+			} else if (!event.shiftKey && active === last) {
+				event.preventDefault();
+				first.focus();
+			}
+		},
+
+		focusFirst() {
+			this.$nextTick(() => {
+				const target =
+					this.$refs.panel?.querySelector("[data-initial-focus]") ||
+					this.focusableEls()[0];
+				target?.focus();
+			});
+		},
+	}));
+};
+
+if (window.Alpine) {
+	registerAlpineComponents();
+} else {
+	document.addEventListener("alpine:init", registerAlpineComponents);
+}
+
+window.registerAlpineComponents = registerAlpineComponents;
+
+document.addEventListener("livewire:init", () => {
+	window.Livewire?.on("announce", () => {
+		const container = document.querySelector('[x-ref="messagesContainer"]');
+		if (container) {
+			setTimeout(() => {
+				container.scrollTop = container.scrollHeight;
+			}, 100);
+		}
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape") {
+			const widget = document.querySelector('[x-data*="isOpen"]');
+			if (widget && widget.__x?.$data?.isOpen) {
+				window.Livewire?.dispatch("closeWidget");
+			}
+		}
+	});
 });

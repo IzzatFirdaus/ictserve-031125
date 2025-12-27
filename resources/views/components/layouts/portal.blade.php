@@ -86,8 +86,9 @@
         <livewire:session-timeout-warning />
     @endauth
 
-    @livewireScripts
+    @livewireScriptConfig
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 
 </html>
+

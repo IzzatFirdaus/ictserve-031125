@@ -91,7 +91,7 @@
         <livewire:session-timeout-warning />
     @endauth
 
-    @livewireScripts
+    @livewireScriptConfig
     @stack('scripts')
 
     {{-- FAQ Bot Widget - Floating Chat Bot (v3.6.0 Ollama AI Integration) --}}
@@ -103,3 +103,4 @@
 </body>
 
 </html>
+

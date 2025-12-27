@@ -1,4 +1,20 @@
 <div class="min-h-screen flex flex-col bg-white dark:bg-slate-900 theme-transition">
+    {{--
+        Bedrock Chat Component - Cloud Hybrid AI Interface (D00-D18 v3.6.1 Compliant)
+        ICTServe v3.6.1 - Bahasa Melayu sahaja (D15 v3.6.0+)
+        WCAG 2.2 AA Compliant
+
+        Cloud Hybrid AI Architecture:
+        - Claude 4.5 Models: Opus 4.5, Sonnet 4.5, Haiku 4.5
+        - Amazon Nova Models: Nova Micro, Nova Lite, Nova Pro
+        - Amazon Titan Models: Titan Text Lite, Titan Text Express
+
+        @trace D18-§3.1 (System Architecture), D18-§5.3 (Model Routing Logic)
+    --}}
+
+    <!-- Screen Reader Live Region (WCAG 2.2 AA) -->
+    <div class="sr-only" role="status" aria-live="polite" aria-atomic="true" x-text="$wire.announcement"></div>
+
     <!-- Header -->
     <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-primary-500/20 shadow-lg"
         role="banner">
@@ -26,6 +42,7 @@
                     <h1
                         class="text-xl font-bold bg-linear-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">
                         Sembang Bedrock
+                        <span class="text-xs font-normal text-slate-400 ml-1">v3.6.1</span>
                     </h1>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -111,15 +128,15 @@
                             aria-describedby="model-help" required>
                             <option value="" disabled>{{ __('Pilih Model') }}</option>
 
-                            {{-- Claude 4.5 Models --}}
+                            {{-- Claude 4.5 Models (Anthropic) --}}
                             <optgroup label="Claude 4.5 (Anthropic)">
                                 <option value="opus">Claude Opus 4.5 (Paling Berkuasa)</option>
                                 <option value="sonnet">Claude Sonnet 4.5 (Seimbang)</option>
                                 <option value="haiku">Claude Haiku 4.5 (Paling Pantas)</option>
                             </optgroup>
 
-                            {{-- Amazon Nova Models --}}
-                            <optgroup label="Amazon Nova (Baharu)">
+                            {{-- Amazon Nova Models (D18-§4.4) --}}
+                            <optgroup label="Amazon Nova">
                                 <option value="nova_micro">Nova Micro (Sangat Pantas & Murah)</option>
                                 <option value="nova_lite">Nova Lite (Pantas & Cekap)</option>
                                 <option value="nova_pro">Nova Pro (Berkuasa & Serbaguna)</option>
@@ -234,11 +251,10 @@
                     <div class="flex gap-3">
                         <label for="prompt" class="sr-only">{{ __('Mesej') }}</label>
                         <input type="text" id="prompt" wire:model="prompt" wire:keydown.enter="send"
-                            placeholder="{{ 'Taip mesej anda...' }}"
-                            @class([
+                            placeholder="{{ 'Taip mesej anda...' }}" @class([
                                 'flex-1 px-4 py-3 bg-white dark:bg-slate-900 dark:border-primary-900/30 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus:border-transparent',
                                 'border-danger-500' => $errors->has('prompt'),
-                                'border-slate-200' => ! $errors->has('prompt'),
+                                'border-slate-200' => !$errors->has('prompt'),
                             ])>
                         <button type="submit"
                             class="px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold shadow-lg shadow-primary-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-11 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"

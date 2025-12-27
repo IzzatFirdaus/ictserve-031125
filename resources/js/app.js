@@ -42,3 +42,9 @@ window.addEventListener("theme-changed", (event) => {
 window.addEventListener("themeChanged", (event) => {
 	applyThemePreference(event?.detail?.theme);
 });
+
+window.registerAlpineComponents?.();
+
+if (window.Livewire) {
+	window.Livewire.start();
+}

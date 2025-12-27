@@ -58,7 +58,8 @@
         @endauth
     </div>
 
-    @livewireScripts
+    @livewireScriptConfig
 </body>
 
 </html>
+
