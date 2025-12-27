@@ -39,12 +39,11 @@ class ExportService
      * @param  array<string, mixed>  $filters
      * @return string Filename or job ID
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-public function exportSubmissions(User $user, string $format, array $filters = []): string
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    public function exportSubmissions(User $user, string $format, array $filters = []): string
     {
         $submissions = $this->getSubmissionsForExport($user, $filters);
 
@@ -63,12 +62,11 @@ public function exportSubmissions(User $user, string $format, array $filters = [
      * @param  string  $type  helpdesk|loan|all
      * @param  array<string, mixed>  $filters
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-public function exportToCsv(User $user, string $type, array $filters = []): StreamedResponse
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    public function exportToCsv(User $user, string $type, array $filters = []): StreamedResponse
     {
         $filters['type'] = $type;
 
@@ -84,12 +82,11 @@ public function exportToCsv(User $user, string $type, array $filters = []): Stre
      * @param  string  $type  helpdesk|loan|all
      * @param  array<string, mixed>  $filters
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-public function exportToExcel(User $user, string $type, array $filters = []): StreamedResponse
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    public function exportToExcel(User $user, string $type, array $filters = []): StreamedResponse
     {
         $filters['type'] = $type;
 
@@ -105,12 +102,11 @@ public function exportToExcel(User $user, string $type, array $filters = []): St
      * @param  array<string, mixed>  $filters
      * @return Collection<int, mixed>
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-private function getSubmissionsForExport(User $user, array $filters): Collection
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    private function getSubmissionsForExport(User $user, array $filters): Collection
     {
         $typeFilter = $filters['type'] ?? 'all';
         $statuses = array_filter((array) ($filters['statuses'] ?? []));
@@ -134,7 +130,7 @@ private function getSubmissionsForExport(User $user, array $filters): Collection
         if ($typeFilter !== 'loan') {
             $ticketQuery = HelpdeskTicket::query()
                 ->where('user_id', $user->id)
-                ->with(['division:id,name', 'category:id,name']);
+                ->with(['division:id,name_ms,name_en', 'category:id,name']);
 
             if ($statuses) {
                 $ticketQuery->whereIn('status', $statuses);
@@ -343,12 +339,11 @@ private function getSubmissionsForExport(User $user, array $filters): Collection
      * @param  array<string, mixed>  $filters
      * @return string Job ID
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-private function queueLargeExport(User $user, string $format, array $filters): string
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    private function queueLargeExport(User $user, string $format, array $filters): string
     {
         $jobId = Str::uuid()->toString();
 

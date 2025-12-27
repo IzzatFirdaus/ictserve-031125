@@ -33,12 +33,11 @@ class SubmissionService
      * @param  string  $type  'tickets' or 'loans'
      * @param  array<string, mixed>  $filters
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-public function getUserSubmissions(User $user, string $type, array $filters = []): LengthAwarePaginator
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    public function getUserSubmissions(User $user, string $type, array $filters = []): LengthAwarePaginator
     {
         $query = $type === 'tickets'
             ? HelpdeskTicket::where('user_id', $user->id)
@@ -61,7 +60,7 @@ public function getUserSubmissions(User $user, string $type, array $filters = []
                     ->orWhere('subject', 'like', "%{$searchTerm}%")
                     ->orWhere('description', 'like', "%{$searchTerm}%");
             })
-            ->with(['division:id,name', 'category:id,name'])
+            ->with(['division:id,name_ms,name_en', 'category:id,name'])
             ->limit(10)
             ->get();
 
@@ -85,12 +84,11 @@ public function getUserSubmissions(User $user, string $type, array $filters = []
      *
      * @param  array<string, mixed>  $filters
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-private function applyFilters(Builder $query, array $filters): Builder
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    private function applyFilters(Builder $query, array $filters): Builder
     {
         // Status filter (multi-select)
         if (isset($filters['status']) && is_array($filters['status'])) {
@@ -143,7 +141,7 @@ private function applyFilters(Builder $query, array $filters): Builder
     {
         if ($type === 'tickets') {
             return [
-                'division:id,name',
+                'division:id,name_ms,name_en',
                 'category:id,name',
                 'assignedUser:id,name',
                 'latestComment' => function ($query) {
@@ -154,7 +152,7 @@ private function applyFilters(Builder $query, array $filters): Builder
 
         // For loans
         return [
-            'asset:assets.id,name,category,condition',
+            'asset:assets.id,name,category_id,condition',
         ];
     }
 
@@ -205,12 +203,11 @@ private function applyFilters(Builder $query, array $filters): Builder
      * @param  array<string, mixed>  $filters
      * @return LengthAwarePaginator<int, HelpdeskTicket|LoanApplication>
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-public function getSubmissionHistory(User $user, array $filters, int $perPage = 20): LengthAwarePaginator
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    public function getSubmissionHistory(User $user, array $filters, int $perPage = 20): LengthAwarePaginator
     {
         $type = $filters['type'] ?? 'helpdesk';
 
@@ -282,12 +279,11 @@ public function getSubmissionHistory(User $user, array $filters, int $perPage = 
      *
      * @param  array<string, mixed>  $filters
      */
-    
 
-/**
- * @param array<string, mixed> $filters
- */
-public function saveSearch(User $user, string $name, string $type, array $filters): \App\Models\SavedSearch
+    /**
+     * @param  array<string, mixed>  $filters
+     */
+    public function saveSearch(User $user, string $name, string $type, array $filters): \App\Models\SavedSearch
     {
         return \App\Models\SavedSearch::create([
             'user_id' => $user->id,
