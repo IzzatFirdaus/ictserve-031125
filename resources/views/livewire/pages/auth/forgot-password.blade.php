@@ -24,8 +24,7 @@ use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
-{
+new #[Layout('layouts.guest')] class extends Component {
     public string $email = '';
 
     /**
@@ -34,15 +33,13 @@ new #[Layout('layouts.guest')] class extends Component
     public function sendPasswordResetLink(): void
     {
         $this->validate([
-            'email' => ['required aria-required="true"', 'string', 'email'],
+            'email' => ['required', 'string', 'email'],
         ]);
 
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $this->only('email')
-        );
+        $status = Password::sendResetLink($this->only('email'));
 
         if ($status != Password::RESET_LINK_SENT) {
             $this->addError('email', __($status));
@@ -62,7 +59,8 @@ new #[Layout('layouts.guest')] class extends Component
         {{ __('auth.forgot_password') }}
     </h1>
 
-    <p class="text-center text-slate-600 dark:text-slate-300 mb-8 font-body leading-relaxed max-w-md mx-auto theme-transition">
+    <p
+        class="text-center text-slate-600 dark:text-slate-300 mb-8 font-body leading-relaxed max-w-md mx-auto theme-transition">
         {{ __('auth.forgot_password_description') }}
     </p>
 
@@ -72,12 +70,12 @@ new #[Layout('layouts.guest')] class extends Component
     <form wire:submit="sendPasswordResetLink" class="space-y-6">
         {{-- Email Address (MyDS Form Components - D13 §2.7) --}}
         <div class="space-y-2">
-            <x-input-label for="email" :value="__('auth.email')" class="text-slate-900 dark:text-white font-medium font-body theme-transition" />
+            <x-input-label for="email" :value="__('auth.email')"
+                class="text-slate-900 dark:text-white font-medium font-body theme-transition" />
             <x-text-input wire:model="email" id="email"
                 class="block w-full min-h-11 px-4 py-3 border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-primary-500 font-body theme-transition"
                 type="email" name="email" required aria-required="true" autofocus autocomplete="email"
-                placeholder="{{ __('auth.email_placeholder') }}"
-                aria-describedby="email-hint" />
+                placeholder="{{ __('auth.email_placeholder') }}" aria-describedby="email-hint" />
             <p id="email-hint" class="text-sm text-slate-600 dark:text-slate-400 font-body theme-transition">
                 {{ __('auth.email_hint_reset') }}
             </p>
@@ -93,7 +91,8 @@ new #[Layout('layouts.guest')] class extends Component
                 {{ __('auth.back_to_login') }}
             </a>
 
-            <x-primary-button class="min-h-11 px-6 py-3 rounded-lg shadow-button hover:shadow-button-hover focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800 font-medium font-body theme-transition">
+            <x-primary-button
+                class="min-h-11 px-6 py-3 rounded-lg shadow-button hover:shadow-button-hover focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800 font-medium font-body theme-transition">
                 {{ __('auth.send_reset_link') }}
             </x-primary-button>
         </div>
