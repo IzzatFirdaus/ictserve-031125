@@ -133,12 +133,7 @@ class GuestLoanApplication extends Component
     /**
      * @return array<string, string>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-protected function messages(): array
+    protected function messages(): array
     {
         return [
             'form.equipment_items.*.equipment_type.required' => __('loan.validation.equipment_type_required'),
@@ -157,12 +152,7 @@ protected function messages(): array
     /**
      * @return array<string, string>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-protected function validationAttributes(): array
+    protected function validationAttributes(): array
     {
         return [
             'form.equipment_items.*.equipment_type' => __('loan.table.equipment_type'),
@@ -290,12 +280,7 @@ protected function validationAttributes(): array
      *
      * @return array<int, array{id: int, name: string, available: int, total: int}>
      */
-    
-
-/**
- * @return array<string, mixed>
- */
-public function getAvailabilitySummary(): array
+    public function getAvailabilitySummary(): array
     {
         $startDate = $this->form['loan_start_date'] ?? date('Y-m-d', strtotime('+3 days'));
         $endDate = $this->form['expected_return_date'] ?? $this->form['loan_end_date'] ?? date('Y-m-d', strtotime('+10 days'));
@@ -305,7 +290,7 @@ public function getAvailabilitySummary(): array
         return $availabilityService->getCategoryAvailabilitySummary($startDate, $endDate)->toArray();
     }
 
-    protected function validateLeadTime($date): void
+    protected function validateLeadTime(?string $date): void
     {
         if (empty($date)) {
             return;
