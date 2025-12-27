@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Services;
 
-use App\Events\NotificationCreated;
 use App\Models\Asset;
 use App\Models\EmailLog;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
+use App\Notifications\MaintenanceTicketCreated;
 use App\Services\Notifications\EmailDispatcher;
 use App\Services\Notifications\TicketNotificationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -25,6 +25,9 @@ class TicketNotificationServiceTest extends TestCase
     #[Test]
     public function it_broadcasts_user_notifications_for_maintenance_tickets(): void
     {
+        // Fake notifications to prevent actual sending and capture what was sent
+        Notification::fake();
+
         // Create recipients
         $admin = User::factory()->create(['role' => 'admin']);
         $super = User::factory()->create(['role' => 'superuser']);
@@ -36,9 +39,6 @@ class TicketNotificationServiceTest extends TestCase
             'asset_id' => $asset->id,
         ]);
 
-        // Fake events AFTER model creation to avoid counting setup events
-        Event::fake([NotificationCreated::class]);
-
         // Mock dispatcher to prevent actual mail queuing
         $dispatcher = Mockery::mock(EmailDispatcher::class);
         $dispatcher->shouldReceive('queue')
@@ -49,10 +49,9 @@ class TicketNotificationServiceTest extends TestCase
         // Act: send maintenance notifications
         $service->sendMaintenanceNotification($ticket, $asset, $application);
 
-        // Assert: NotificationCreated event dispatched for both admins
-        Event::assertDispatched(NotificationCreated::class, 2);
-        Event::assertDispatched(NotificationCreated::class, function ($event) use ($admin) {
-            return $event->user->id === $admin->id;
-        });
+        // Assert: MaintenanceTicketCreated notification sent to both admins
+        Notification::assertSentTo($admin, MaintenanceTicketCreated::class);
+        Notification::assertSentTo($super, MaintenanceTicketCreated::class);
+        Notification::assertCount(2);
     }
 }
