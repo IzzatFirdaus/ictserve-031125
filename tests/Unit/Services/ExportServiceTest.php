@@ -37,7 +37,6 @@ class ExportServiceTest extends TestCase
     /**
      * Test CSV generation with proper formatting
      *
-     *
      * @traceability Requirement 9.2
      */
     #[Test]
@@ -65,7 +64,6 @@ class ExportServiceTest extends TestCase
     /**
      * Test PDF generation with branding
      *
-     *
      * @traceability Requirement 9.3
      */
     #[Test]
@@ -87,7 +85,6 @@ class ExportServiceTest extends TestCase
 
     /**
      * Test large export queueing
-     *
      *
      * @traceability Requirement 9.4
      */
@@ -113,7 +110,6 @@ class ExportServiceTest extends TestCase
 
     /**
      * Test export with date range filter
-     *
      *
      * @traceability Requirement 9.1
      */
@@ -149,7 +145,6 @@ class ExportServiceTest extends TestCase
     /**
      * Test CSV UTF-8 encoding for bilingual content
      *
-     *
      * @traceability Requirement 9.2
      */
     #[Test]
@@ -172,7 +167,6 @@ class ExportServiceTest extends TestCase
 
     /**
      * Test export includes both tickets and loans
-     *
      *
      * @traceability Requirement 9.1
      */

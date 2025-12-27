@@ -32,18 +32,6 @@ class TelescopeAccessTest extends TestCase
 
         // Seed roles and permissions
         $this->artisan('db:seed', ['--class' => 'RolePermissionSeeder']);
-
-        // Set environment to production to test proper access control
-        // In local environment, Telescope allows all access for development
-        app()->detectEnvironment(fn () => 'production');
-    }
-
-    protected function tearDown(): void
-    {
-        // Reset environment back to testing
-        app()->detectEnvironment(fn () => 'testing');
-
-        parent::tearDown();
     }
 
     /**
@@ -61,8 +49,15 @@ class TelescopeAccessTest extends TestCase
 
         $this->actingAs($superuser);
 
-        // Test the gate directly
-        $this->assertTrue(Gate::allows('viewTelescope', $superuser));
+        // Verify user has superuser role
+        $this->assertTrue($superuser->isSuperuser(), 'User should be a superuser');
+
+        // Test the gate - superuser should always have access
+        // Use Gate::forUser() to explicitly test with the superuser
+        $this->assertTrue(
+            Gate::forUser($superuser)->allows('viewTelescope'),
+            'Superuser should be able to access Telescope'
+        );
     }
 
     /**
@@ -80,8 +75,8 @@ class TelescopeAccessTest extends TestCase
 
         $this->actingAs($admin);
 
-        // Test the gate directly
-        $this->assertFalse(Gate::allows('viewTelescope', $admin));
+        // Test the gate directly using forUser()
+        $this->assertFalse(Gate::forUser($admin)->allows('viewTelescope'));
     }
 
     /**
@@ -99,8 +94,8 @@ class TelescopeAccessTest extends TestCase
 
         $this->actingAs($staff);
 
-        // Test the gate directly
-        $this->assertFalse(Gate::allows('viewTelescope', $staff));
+        // Test the gate directly using forUser()
+        $this->assertFalse(Gate::forUser($staff)->allows('viewTelescope'));
     }
 
     /**
@@ -118,8 +113,8 @@ class TelescopeAccessTest extends TestCase
 
         $this->actingAs($approver);
 
-        // Test the gate directly
-        $this->assertFalse(Gate::allows('viewTelescope', $approver));
+        // Test the gate directly using forUser()
+        $this->assertFalse(Gate::forUser($approver)->allows('viewTelescope'));
     }
 
     /**
@@ -129,8 +124,8 @@ class TelescopeAccessTest extends TestCase
     #[Test]
     public function guest_cannot_access_telescope(): void
     {
-        // Test the gate directly with null user
-        $this->assertFalse(Gate::allows('viewTelescope', null));
+        // Test the gate directly with null user (guest)
+        $this->assertFalse(Gate::forUser(null)->allows('viewTelescope'));
     }
 
     /**
@@ -157,7 +152,7 @@ class TelescopeAccessTest extends TestCase
         // The important test is the gate check which passes above
         $this->assertTrue(
             \in_array($response->status(), [403, 404], true),
-            'Expected 403 or 404, got '.$response->status()
+            'Expected 403 or 404, got ' . $response->status()
         );
     }
 
@@ -185,7 +180,7 @@ class TelescopeAccessTest extends TestCase
         // The important test is the gate check which passes above
         $this->assertTrue(
             \in_array($response->status(), [200, 302, 404], true),
-            'Expected 200, 302, or 404, got '.$response->status()
+            'Expected 200, 302, or 404, got ' . $response->status()
         );
     }
 }

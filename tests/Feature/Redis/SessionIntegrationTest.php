@@ -9,8 +9,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -21,7 +21,6 @@ use Tests\TestCase;
  */
 #[Group('requires-redis')]
 #[Group('environment-specific')]
-class SessionIntegrationTest extends TestCase
 class SessionIntegrationTest extends TestCase
 {
     use RefreshDatabase;
