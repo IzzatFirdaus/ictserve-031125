@@ -204,7 +204,7 @@
 
             {{-- Delegated Approver --}}
             <div>
-                <x-form.select wire:model="delegated_approver_id" :label="__('delegation.delegated_approver')" required>
+                <x-form.select wire:model="delegated_approver_id" :label="__('delegation.delegated_approver')" required aria-required="true">
                     <option value="">{{ __('delegation.select_approver') }}</option>
                     @foreach ($this->availableApprovers as $approver)
                         <option value="{{ $approver->id }}">
@@ -220,13 +220,13 @@
             {{-- Date Range --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <x-form.input wire:model="start_date" type="date" :label="__('delegation.start_date')" :min="now()->format('Y-m-d')" required />
+                    <x-form.input wire:model="start_date" type="date" :label="__('delegation.start_date')" :min="now()->format('Y-m-d')" required aria-required="true" />
                     @error('start_date')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                     @enderror
                 </div>
                 <div>
-                    <x-form.input wire:model="end_date" type="date" :label="__('delegation.end_date')" :min="$start_date" required />
+                    <x-form.input wire:model="end_date" type="date" :label="__('delegation.end_date')" :min="$start_date" required aria-required="true" />
                     @error('end_date')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                     @enderror
@@ -235,7 +235,7 @@
 
             {{-- Reason --}}
             <div>
-                <x-form.textarea wire:model="reason" :label="__('delegation.reason')" :placeholder="__('delegation.reason_placeholder')" rows="3" required />
+                <x-form.textarea wire:model="reason" :label="__('delegation.reason')" :placeholder="__('delegation.reason_placeholder')" rows="3" required aria-required="true" />
                 @error('reason')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                 @enderror

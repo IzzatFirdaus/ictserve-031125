@@ -610,7 +610,7 @@
                                     class="sr-only">{{ __('portal.cancellation_reason') }}</label>
                                 <textarea wire:model="cancelReason" id="cancelReason" rows="3"
                                     class="block w-full rounded-lg border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus-visible:ring-3 focus-visible:ring-primary-600 focus-visible:ring-inset sm:text-sm sm:leading-6 dark:bg-gray-700"
-                                    placeholder="{{ __('portal.cancellation_reason_placeholder') }}" required></textarea>
+                                    placeholder="{{ __('portal.cancellation_reason_placeholder') }}" required aria-required="true"></textarea>
                                 @error('cancelReason')
                                     <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
                                 @enderror

@@ -160,7 +160,7 @@
                         wire:model="remarks"
                         class="w-full min-h-11 rounded-lg bg-slate-800 border-slate-700 text-slate-100 focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                         rows="3"
-                        required
+                        required aria-required="true"
                     ></textarea>
                     @error('remarks') <span class="text-xs text-danger-400">{{ $message }}</span> @enderror
                 </div>

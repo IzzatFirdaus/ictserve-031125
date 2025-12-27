@@ -342,7 +342,7 @@ new class extends Component {
      */
     public function updatedSelectedAssets(mixed $value, string $key): void
     {
-        unset($value); // Unused but required by Livewire hook signature
+        unset($value); // Unused but required aria-required="true" by Livewire hook signature
         $parts = explode('.', $key);
         if (\count($parts) >= 1) {
             $index = (int) $parts[0];

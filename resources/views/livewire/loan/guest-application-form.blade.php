@@ -353,23 +353,23 @@ new class extends Component {
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <x-form.input wire:model.live.debounce.300ms="applicant_name" name="applicant_name"
-                            label="Nama Penuh" required />
+                            label="Nama Penuh" required aria-required="true" />
                         <x-form.input wire:model.live.debounce.300ms="applicant_email" name="applicant_email"
-                            type="email" label="Emel Rasmi" required />
+                            type="email" label="Emel Rasmi" required aria-required="true" />
                         <x-form.input wire:model.live.debounce.300ms="applicant_phone" name="applicant_phone"
-                            type="tel" label="No. Telefon" required />
+                            type="tel" label="No. Telefon" required aria-required="true" />
                         <x-form.input wire:model.live.debounce.300ms="applicant_staff_id" name="applicant_staff_id"
-                            label="No. Pekerja / No. Kad Pengenalan" required />
-                        <x-form.select name="division_id" label="Bahagian" wire:model.live="division_id" required>
+                            label="No. Pekerja / No. Kad Pengenalan" required aria-required="true" />
+                        <x-form.select name="division_id" label="Bahagian" wire:model.live="division_id" required aria-required="true">
                             <option value="">{{ __('loan.placeholders.select_division', []) ?? 'Pilih Bahagian' }}</option>
                             @foreach ($divisions as $division)
                                 <option value="{{ $division->id }}">{{ $division->name }}</option>
                             @endforeach
                         </x-form.select>
                         <x-form.input wire:model.live.debounce.300ms="applicant_position" name="applicant_position"
-                            label="Jawatan" required />
+                            label="Jawatan" required aria-required="true" />
                         <x-form.input wire:model.live.debounce.300ms="applicant_grade" name="applicant_grade"
-                            label="Gred" required />
+                            label="Gred" required aria-required="true" />
                     </div>
                 </section>
             @endif
@@ -400,15 +400,15 @@ new class extends Component {
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <x-form.input wire:model.live.debounce.300ms="responsible_officer_name"
-                                name="responsible_officer_name" label="Nama Pegawai" required />
+                                name="responsible_officer_name" label="Nama Pegawai" required aria-required="true" />
                             <x-form.input wire:model.live.debounce.300ms="responsible_officer_email"
-                                name="responsible_officer_email" type="email" label="Emel Pegawai" required />
+                                name="responsible_officer_email" type="email" label="Emel Pegawai" required aria-required="true" />
                             <x-form.input wire:model.live.debounce.300ms="responsible_officer_phone"
-                                name="responsible_officer_phone" type="tel" label="No. Telefon Pegawai" required />
+                                name="responsible_officer_phone" type="tel" label="No. Telefon Pegawai" required aria-required="true" />
                             <x-form.input wire:model.live.debounce.300ms="responsible_officer_position"
-                                name="responsible_officer_position" label="Jawatan Pegawai" required />
+                                name="responsible_officer_position" label="Jawatan Pegawai" required aria-required="true" />
                             <x-form.input wire:model.live.debounce.300ms="responsible_officer_grade"
-                                name="responsible_officer_grade" label="Gred Pegawai" required />
+                                name="responsible_officer_grade" label="Gred Pegawai" required aria-required="true" />
                         </div>
                     @endif
                 </section>
@@ -489,14 +489,14 @@ new class extends Component {
                     </div>
 
                     <x-form.textarea wire:model.lazy="purpose" name="purpose" label="Tujuan Pinjaman" rows="3"
-                        required />
+                        required aria-required="true" />
                     <x-form.input wire:model.live.debounce.300ms="location" name="location" label="Lokasi Penggunaan"
-                        required />
+                        required aria-required="true" />
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <x-form.input wire:model.live="loan_start_date" name="loan_start_date" type="date"
-                            label="Tarikh Mula" required />
+                            label="Tarikh Mula" required aria-required="true" />
                         <x-form.input wire:model="loan_end_date" name="loan_end_date" type="date" label="Tarikh Pulang"
-                            required />
+                            required aria-required="true" />
                     </div>
                 </section>
             @endif

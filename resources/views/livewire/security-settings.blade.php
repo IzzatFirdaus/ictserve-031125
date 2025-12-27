@@ -69,7 +69,7 @@
                         wire:model="currentPassword"
                         autocomplete="current-password"
                         class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                        required
+                        required aria-required="true"
                     >
                     <button
                         type="button"
@@ -104,7 +104,7 @@
                         wire:model.live.debounce.300ms="newPassword"
                         autocomplete="new-password"
                         class="block w-full px-4 py-2 pr-12 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                        required
+                        required aria-required="true"
                     >
                     <button
                         type="button"
@@ -155,7 +155,7 @@
                     wire:model="newPasswordConfirmation"
                     autocomplete="new-password"
                     class="block w-full px-4 py-2 min-h-11 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                    required
+                    required aria-required="true"
                 >
                 @error('newPasswordConfirmation') <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p> @enderror
             </div>

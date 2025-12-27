@@ -54,9 +54,9 @@ new #[Layout('layouts.guest')] class extends Component
     public function resetPassword(): void
     {
         $this->validate([
-            'token' => ['required'],
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'token' => ['required aria-required="true"'],
+            'email' => ['required aria-required="true"', 'string', 'email'],
+            'password' => ['required aria-required="true"', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
         // Here we will attempt to reset the user's password. If it is successful we
@@ -94,14 +94,14 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" type="email" name="email" required autofocus autocomplete="username" />
+            <x-text-input wire:model="email" id="email" class="block mt-1 w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" type="email" name="email" required aria-required="true" autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-            <x-text-input wire:model="password" id="password" class="block mt-1 w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" type="password" name="password" required autocomplete="new-password" />
+            <x-text-input wire:model="password" id="password" class="block mt-1 w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" type="password" name="password" required aria-required="true" autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
@@ -111,7 +111,7 @@ new #[Layout('layouts.guest')] class extends Component
 
             <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500"
                           type="password"
-                          name="password_confirmation" required autocomplete="new-password" />
+                          name="password_confirmation" required aria-required="true" autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>

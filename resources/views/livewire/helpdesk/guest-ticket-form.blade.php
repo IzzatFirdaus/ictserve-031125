@@ -210,25 +210,25 @@
                         </div>
 
                         <x-form.input wire:model.live.debounce.300ms="guest_name" label="{{ __('Full Name') }}"
-                            required />
+                            required aria-required="true" />
 
                         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <x-form.input type="email" wire:model.live.debounce.300ms="guest_email"
-                                label="{{ __('Email Address') }}" required />
+                                label="{{ __('Email Address') }}" required aria-required="true" />
 
                             <x-form.input wire:model.live.debounce.300ms="guest_phone"
-                                label="{{ __('Phone Number') }}" required />
+                                label="{{ __('Phone Number') }}" required aria-required="true" />
                         </div>
 
                         {{-- Bahagian/Unit dropdown - MOTAC organizational structure --}}
                         {{-- @trace Task 3.1.10 - Implement Searchable Division Select --}}
                         <x-form.searchable-select name="division_id" label="{{ __('helpdesk.division_unit') }}"
                             :options="$this->divisions->map(fn($d) => ['id' => $d->id, 'name' => $d->name])->toArray()" :selected="$division_id" placeholder="{{ __('helpdesk.select_division') }}"
-                            searchPlaceholder="{{ __('Search bahagian/unit...') }}" wireModel="division_id" required
+                            searchPlaceholder="{{ __('Search bahagian/unit...') }}" wireModel="division_id" required aria-required="true"
                             maxHeight="300px" />
 
                         {{-- Gred dropdown - Malaysian Government Service Grades --}}
-                        <x-form.select wire:model.live="job_grade" label="{{ __('helpdesk.grade') }}" required>
+                        <x-form.select wire:model.live="job_grade" label="{{ __('helpdesk.grade') }}" required aria-required="true">
                             <option value="">{{ __('helpdesk.select_grade') }}</option>
                             <optgroup label="Kumpulan Sokongan (Gred 1-40)">
                                 @foreach (range(1, 40) as $grade)
@@ -268,14 +268,14 @@
                             </p>
                         </div>
 
-                        <x-form.select wire:model.live="category_id" label="{{ __('Issue Category') }}" required>
+                        <x-form.select wire:model.live="category_id" label="{{ __('Issue Category') }}" required aria-required="true">
                             <option value="">{{ __('Select a category') }}</option>
                             @foreach ($this->categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </x-form.select>
 
-                        <x-form.select wire:model.live="priority" label="{{ __('Priority') }}" required>
+                        <x-form.select wire:model.live="priority" label="{{ __('Priority') }}" required aria-required="true">
                             <option value="low">{{ __('Low') }}</option>
                             <option value="normal">{{ __('Normal') }}</option>
                             <option value="high">{{ __('High') }}</option>
@@ -283,12 +283,12 @@
                         </x-form.select>
 
                         <x-form.input wire:model.live.debounce.300ms="subject" label="{{ __('Subject') }}"
-                            required />
+                            required aria-required="true" />
 
                         <x-form.textarea wire:model.live.debounce.300ms="description"
                             label="{{ __('Problem Description') }}" rows="6"
                             helper="{{ __('Please describe the issue in detail (minimum 10 characters)') }}"
-                            required />
+                            required aria-required="true" />
 
                         {{-- File Upload --}}
                         <div>
@@ -397,7 +397,7 @@
                             <div class="border-t border-warning-200 dark:border-warning-700 pt-4 space-y-4">
                                 <x-form.checkbox wire:model.live="declaration_accepted"
                                     label="{{ __('Saya telah membaca dan bersetuju dengan perakuan di atas / I have read and agree to the above declaration') }}"
-                                    required />
+                                    required aria-required="true" />
                                 @error('declaration_accepted')
                                     <p class="mt-2 text-sm text-danger-600" role="alert">
                                         {{ __('You must accept the declaration to proceed.') }}
@@ -406,7 +406,7 @@
 
                                 <x-form.checkbox wire:model.live="terms_accepted"
                                     label="{{ __('Saya bersetuju dengan terma dan syarat perkhidmatan / I agree to the terms and conditions of service') }}"
-                                    required />
+                                    required aria-required="true" />
                                 @error('terms_accepted')
                                     <p class="mt-2 text-sm text-danger-600" role="alert">
                                         {{ __('You must accept the terms and conditions to proceed.') }}

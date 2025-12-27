@@ -140,7 +140,7 @@
                                           border-slate-300 dark:border-slate-600
                                           focus-visible:ring-3 focus-visible:ring-primary-500 focus:border-primary-500
                                           @error('newFilterName') border-danger-500 @enderror"
-                                placeholder="{{ __('e.g., High Priority Open Tickets') }}" required
+                                placeholder="{{ __('e.g., High Priority Open Tickets') }}" required aria-required="true"
                                 aria-required="true"
                                 @error('newFilterName') aria-invalid="true" aria-describedby="filter-name-error" @enderror>
                             @error('newFilterName')

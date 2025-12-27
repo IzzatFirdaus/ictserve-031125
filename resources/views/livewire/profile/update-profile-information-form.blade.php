@@ -90,13 +90,13 @@ new class extends Component
     <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
         <div>
             <x-input-label for="name" :value="__('profile.name')" />
-            <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" required autofocus autocomplete="name" :placeholder="__('profile.name_placeholder')" />
+            <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" required aria-required="true" autofocus autocomplete="name" :placeholder="__('profile.name_placeholder')" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
             <x-input-label for="email" :value="__('profile.email')" />
-            <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" required autocomplete="username" />
+            <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full min-h-11 rounded-lg focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500" required aria-required="true" autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())

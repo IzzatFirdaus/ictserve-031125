@@ -107,7 +107,7 @@
                         </label>
                         <select id="model-select" wire:model="model"
                             class="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-primary-900/30 rounded-lg text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 shadow-sm min-h-11"
-                            aria-describedby="model-help" required>
+                            aria-describedby="model-help" required aria-required="true">
                             <option value="" disabled>{{ __('Pilih Model') }}</option>
                             <option value="opus">Claude Opus 4.5 (Paling Berkuasa)</option>
                             <option value="sonnet">Claude Sonnet 4.5 (Seimbang)</option>
