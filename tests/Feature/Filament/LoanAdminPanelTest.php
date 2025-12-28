@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Filament;
 
+use App\Events\LoanStatusUpdated;
+use App\Events\StatusUpdated;
 use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Filament\Resources\Loans\Pages\ListLoanApplications;
 use App\Filament\Resources\Loans\Pages\ViewLoanApplication;
@@ -11,6 +13,7 @@ use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Spatie\Permission\Models\Permission;
@@ -36,11 +39,32 @@ class LoanAdminPanelTest extends TestCase
     {
         parent::setUp();
 
+        // Fake broadcast events to prevent Pusher connection errors in tests
+        Event::fake([
+            StatusUpdated::class,
+            LoanStatusUpdated::class,
+        ]);
+
         // Create necessary permissions (use firstOrCreate to avoid duplicates)
         $permissions = [
-            'helpdesk.view', 'helpdesk.create', 'helpdesk.update', 'helpdesk.assign', 'helpdesk.resolve', 'helpdesk.admin',
-            'loan.view', 'loan.create', 'loan.update', 'loan.approve', 'loan.issue', 'loan.return', 'loan.admin',
-            'asset.view', 'asset.create', 'asset.update', 'asset.manage', 'asset.admin',
+            'helpdesk.view',
+            'helpdesk.create',
+            'helpdesk.update',
+            'helpdesk.assign',
+            'helpdesk.resolve',
+            'helpdesk.admin',
+            'loan.view',
+            'loan.create',
+            'loan.update',
+            'loan.approve',
+            'loan.issue',
+            'loan.return',
+            'loan.admin',
+            'asset.view',
+            'asset.create',
+            'asset.update',
+            'asset.manage',
+            'asset.admin',
             'user.view',
         ];
 

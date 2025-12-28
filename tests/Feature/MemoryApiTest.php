@@ -13,11 +13,18 @@ class MemoryApiTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Set the memory API token in config before any requests
+        // This must be done after parent::setUp() to ensure the app is bootstrapped
+        $this->app['config']->set('app.memory_api_token', 'test-token-123');
+    }
+
     #[Test]
     public function agent_can_push_memory_with_token(): void
     {
-        putenv('MEMORY_API_TOKEN=test-token-123');
-
         $response = $this->withHeaders([
             'Authorization' => 'Bearer test-token-123',
             'Content-Type' => 'application/json',
@@ -34,8 +41,6 @@ class MemoryApiTest extends TestCase
     #[Test]
     public function memory_search_returns_entities_and_observations(): void
     {
-        putenv('MEMORY_API_TOKEN=test-token-123');
-
         // create a memory item
         $this->withHeaders([
             'Authorization' => 'Bearer test-token-123',

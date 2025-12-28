@@ -462,7 +462,7 @@ class ReportingAnalyticsTest extends TestCase
         for ($i = 0; $i < 500; $i++) {
             Asset::factory()->create([
                 'category_id' => $this->category->id,
-                'asset_tag' => 'TEST-2025-' . str_pad((string) ($i + 1), 4, '0', STR_PAD_LEFT),
+                'asset_tag' => 'TEST-2025-'.str_pad((string) ($i + 1), 4, '0', STR_PAD_LEFT),
             ]);
         }
 
