@@ -29,6 +29,9 @@ env:
   PERCY_PROJECT: "ictserve-v3.6.1-visual-testing"
   PERCY_PARALLEL_TOTAL: 4
 
+env:
+  COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.PAT_GITHUB_ACCESS_TOKEN }}"}}'
+
 jobs:
   # Package validation job
   validate-config:
@@ -98,6 +101,8 @@ jobs:
 
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.PAT_GITHUB_ACCESS_TOKEN }}"}}'
 
       - name: Generate application key
         run: php artisan key:generate
@@ -314,6 +319,8 @@ jobs:
         run: |
           npm ci
           composer install --no-dev --optimize-autoloader --no-interaction
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.PAT_GITHUB_ACCESS_TOKEN }}"}}'
 
       - name: Prepare application
         run: |
