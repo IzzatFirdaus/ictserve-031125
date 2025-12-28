@@ -1,0 +1,103 @@
+{
+	"modes": {
+		"Headless": {
+			"description": "Fast execution without browser window (for CI/CD)",
+			"highlightElements": false,
+			"showMouseCursor": false,
+			"addAnnotations": false,
+			"takeScreenshots": false,
+			"recordVideo": false,
+			"stepDelay": 0,
+			"executionSpeed": "Fast"
+		},
+		"Visual": {
+			"description": "Visible browser window showing live automation",
+			"highlightElements": true,
+			"showMouseCursor": true,
+			"addAnnotations": false,
+			"takeScreenshots": true,
+			"recordVideo": false,
+			"stepDelay": 500,
+			"executionSpeed": "Normal"
+		},
+		"Demo": {
+			"description": "Slower execution with highlights and annotations",
+			"highlightElements": true,
+			"showMouseCursor": true,
+			"addAnnotations": true,
+			"takeScreenshots": true,
+			"recordVideo": false,
+			"stepDelay": 1500,
+			"annotationDelay": 2000,
+			"executionSpeed": "Demo"
+		},
+		"Interactive": {
+			"description": "Pauses at key steps for presenter explanation",
+			"highlightElements": true,
+			"showMouseCursor": true,
+			"addAnnotations": true,
+			"takeScreenshots": true,
+			"recordVideo": false,
+			"stepDelay": 2000,
+			"annotationDelay": 3000,
+			"executionSpeed": "Slow",
+			"pauseAtSteps": ["Login", "FormSubmit", "Results", "Navigation"]
+		},
+		"Recording": {
+			"description": "Captures video for training materials",
+			"highlightElements": true,
+			"showMouseCursor": true,
+			"addAnnotations": true,
+			"takeScreenshots": true,
+			"recordVideo": true,
+			"stepDelay": 1500,
+			"annotationDelay": 2500,
+			"executionSpeed": "Demo"
+		}
+	},
+	"executionSpeeds": {
+		"Fast": {
+			"stepDelay": 100,
+			"annotationDelay": 500,
+			"description": "Minimal delays for fast execution"
+		},
+		"Normal": {
+			"stepDelay": 500,
+			"annotationDelay": 1000,
+			"description": "Standard execution speed"
+		},
+		"Demo": {
+			"stepDelay": 1500,
+			"annotationDelay": 2000,
+			"description": "Slower for demonstrations"
+		},
+		"Slow": {
+			"stepDelay": 2500,
+			"annotationDelay": 3000,
+			"description": "Very slow for detailed explanations"
+		}
+	},
+	"visualEffects": {
+		"highlightColor": "#FF6B6B",
+		"highlightBorderWidth": 3,
+		"highlightDuration": 1000,
+		"cursorColor": "rgba(255,107,107,0.8)",
+		"cursorSize": 20,
+		"annotationBackground": "rgba(0,0,0,0.85)",
+		"annotationTextColor": "#FFFFFF",
+		"annotationFontSize": 18
+	},
+	"recording": {
+		"format": "mp4",
+		"quality": "high",
+		"frameRate": 30,
+		"includeAudio": false,
+		"outputDirectory": "reports/videos"
+	},
+	"screenshots": {
+		"format": "png",
+		"quality": 100,
+		"fullPage": false,
+		"outputDirectory": "reports/screenshots"
+	}
+}

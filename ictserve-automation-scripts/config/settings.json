@@ -1,0 +1,58 @@
+{
+	"general": {
+		"defaultEnvironment": "testing",
+		"logLevel": "INFO",
+		"maxRetries": 3,
+		"retryDelaySeconds": 2,
+		"parallelExecution": false,
+		"maxParallelScripts": 4
+	},
+	"browser": {
+		"defaultBrowser": "Chrome",
+		"headless": false,
+		"windowSize": "1920x1080",
+		"implicitWait": 10,
+		"pageLoadTimeout": 30,
+		"disableGpu": true,
+		"disableExtensions": true
+	},
+	"demo": {
+		"defaultMode": "Visual",
+		"executionSpeed": "Normal",
+		"highlightElements": true,
+		"showMouseCursor": true,
+		"addAnnotations": true,
+		"takeScreenshots": true,
+		"recordVideo": false,
+		"annotationDelay": 2000,
+		"stepDelay": 1500,
+		"showNetworkActivity": false
+	},
+	"reporting": {
+		"generateHtmlReports": true,
+		"generateJsonReports": true,
+		"screenshotOnFailure": true,
+		"screenshotOnSuccess": false,
+		"retainReportsDays": 30,
+		"emailReports": false
+	},
+	"testData": {
+		"cleanupAfterTests": true,
+		"useFactories": true,
+		"seedDatabase": false
+	},
+	"api": {
+		"timeout": 30,
+		"retryOnFailure": true,
+		"maxRetries": 3,
+		"logRequests": true,
+		"logResponses": true
+	},
+	"ai": {
+		"ollamaEnabled": true,
+		"bedrockEnabled": true,
+		"defaultModel": "llama3.2",
+		"streamingEnabled": true,
+		"conversationTimeout": 300
+	}
+}

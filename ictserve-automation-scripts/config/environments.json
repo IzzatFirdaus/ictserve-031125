@@ -1,0 +1,86 @@
+{
+	"development": {
+		"name": "Development",
+		"baseUrl": "http://localhost:8000",
+		"apiUrl": "http://localhost:8000/api",
+		"timeout": 30,
+		"headless": false,
+		"debug": true,
+		"database": {
+			"host": "localhost",
+			"port": 3306,
+			"name": "ictserve_dev"
+		},
+		"redis": {
+			"host": "localhost",
+			"port": 6379
+		},
+		"ollama": {
+			"host": "localhost",
+			"port": 11434
+		}
+	},
+	"testing": {
+		"name": "Testing",
+		"baseUrl": "https://test.ictserve.motac.gov.my",
+		"apiUrl": "https://test.ictserve.motac.gov.my/api",
+		"timeout": 30,
+		"headless": true,
+		"debug": false,
+		"database": {
+			"host": "test-db.ictserve.motac.gov.my",
+			"port": 3306,
+			"name": "ictserve_test"
+		},
+		"redis": {
+			"host": "test-redis.ictserve.motac.gov.my",
+			"port": 6379
+		},
+		"ollama": {
+			"host": "test-ai.ictserve.motac.gov.my",
+			"port": 11434
+		}
+	},
+	"staging": {
+		"name": "Staging",
+		"baseUrl": "https://staging.ictserve.motac.gov.my",
+		"apiUrl": "https://staging.ictserve.motac.gov.my/api",
+		"timeout": 45,
+		"headless": true,
+		"debug": false,
+		"database": {
+			"host": "staging-db.ictserve.motac.gov.my",
+			"port": 3306,
+			"name": "ictserve_staging"
+		},
+		"redis": {
+			"host": "staging-redis.ictserve.motac.gov.my",
+			"port": 6379
+		},
+		"ollama": {
+			"host": "staging-ai.ictserve.motac.gov.my",
+			"port": 11434
+		}
+	},
+	"production": {
+		"name": "Production",
+		"baseUrl": "https://ictserve.motac.gov.my",
+		"apiUrl": "https://ictserve.motac.gov.my/api",
+		"timeout": 60,
+		"headless": true,
+		"debug": false,
+		"database": {
+			"host": "db.ictserve.motac.gov.my",
+			"port": 3306,
+			"name": "ictserve_prod"
+		},
+		"redis": {
+			"host": "redis.ictserve.motac.gov.my",
+			"port": 6379
+		},
+		"ollama": {
+			"host": "ai.ictserve.motac.gov.my",
+			"port": 11434
+		}
+	}
+}
