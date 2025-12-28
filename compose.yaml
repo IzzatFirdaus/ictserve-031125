@@ -5,6 +5,7 @@ services:
             dockerfile: Dockerfile
             args:
                 INSTALL_DEV: "false" # Production build by default
+                GITHUB_TOKEN: ${GITHUB_TOKEN:-} # Pass from .env.docker
         image: ictserve-app:latest
         container_name: ictserve-app
         restart: unless-stopped
@@ -34,6 +35,8 @@ services:
             NPM_CONFIG_PREFIX: /var/www/.npm-global
             NPM_CONFIG_FUND: false
             NPM_CONFIG_AUDIT: false
+            # Composer authentication via GitHub token from .env.docker
+            COMPOSER_AUTH: '{"github-oauth": {"github.com": "${GITHUB_TOKEN}"}}'
         entrypoint: ["/usr/local/bin/docker-entrypoint.sh"]
         command: ["php-fpm"]
 

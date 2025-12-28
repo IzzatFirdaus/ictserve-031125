@@ -96,6 +96,17 @@ WORKDIR /var/www/html
 # Build-time flag to control whether dev dependencies should be installed
 ARG INSTALL_DEV=false
 
+# GitHub token for Composer authentication (build-time secret)
+ARG GITHUB_TOKEN=""
+
+# Set COMPOSER_AUTH if GITHUB_TOKEN is provided
+# This allows Composer to authenticate against GitHub to fetch private packages
+ENV COMPOSER_AUTH=""
+RUN if [ -n "$GITHUB_TOKEN" ]; then \
+        export COMPOSER_AUTH="{\"github-oauth\": {\"github.com\": \"$GITHUB_TOKEN\"}}" && \
+        echo "COMPOSER_AUTH configured for GitHub authentication"; \
+    fi
+
 # Copy composer files and install dependencies early to leverage Docker cache
 COPY composer.json composer.lock ./
 

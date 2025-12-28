@@ -53,7 +53,10 @@ jobs:
           path: vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
 
-      - run: composer install --no-interaction --prefer-dist
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
 
       - run: php artisan key:generate
 
