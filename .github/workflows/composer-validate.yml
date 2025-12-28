@@ -43,6 +43,8 @@ jobs:
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.PAT_GITHUB_ACCESS_TOKEN }}"}}'
 
       - name: Validate composer.json
         run: composer validate

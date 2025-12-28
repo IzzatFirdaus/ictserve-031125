@@ -27,6 +27,8 @@ jobs:
           git config --global url."https://".insteadOf git://
 
       - run: composer install --no-interaction --prefer-dist
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.PAT_GITHUB_ACCESS_TOKEN }}"}}'
       - run: npm ci
 
       - run: |
