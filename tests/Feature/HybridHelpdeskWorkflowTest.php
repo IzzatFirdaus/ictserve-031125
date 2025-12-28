@@ -296,6 +296,9 @@ class HybridHelpdeskWorkflowTest extends TestCase
     #[Test]
     public function hybrid_ticket_status_messages_use_bahasa_melayu(): void
     {
+        // Fake events to prevent broadcast exceptions
+        \Illuminate\Support\Facades\Event::fake();
+        
         $user = User::factory()->create(['email' => 'status.test@motac.gov.my']);
 
         // Create authenticated ticket
