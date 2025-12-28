@@ -6,6 +6,47 @@ declare(strict_types=1);
 // Require Composer autoload
 require __DIR__.'/../vendor/autoload.php';
 
+// Manually load dev dependencies only if not already loaded
+// These are not in the autoload classmap because composer install didn't complete
+if (!class_exists('Mockery')) {
+    $devDeps = [
+        __DIR__.'/../vendor/mockery/mockery/library/Mockery.php',
+        __DIR__.'/../vendor/mockery/mockery/library/helpers.php',
+        __DIR__.'/../vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
+    ];
+
+    foreach ($devDeps as $file) {
+        if (file_exists($file)) {
+            require_once $file;
+        }
+    }
+}
+
+// Register PSR-4 namespace autoloader for dev dependencies if not already registered
+spl_autoload_register(function ($class) {
+    $prefixes = [
+        'Mockery\\' => __DIR__.'/../vendor/mockery/mockery/library/Mockery/',
+        'Hamcrest\\' => __DIR__.'/../vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest/',
+        'Faker\\' => __DIR__.'/../vendor/fakerphp/faker/src/Faker/',
+    ];
+    
+    foreach ($prefixes as $prefix => $baseDir) {
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
+            continue;
+        }
+        
+        $relativeClass = substr($class, $len);
+        $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+        
+        if (file_exists($file)) {
+            require $file;
+            return true;
+        }
+    }
+    return false;
+});
+
 // If a cached config file exists, remove it for tests so environment overrides (phpunit.xml/.env.testing)
 // are respected. This prevents tests from using a production-cached configuration (e.g., 'mysql').
 $cachedConfig = __DIR__.'/../bootstrap/cache/config.php';

@@ -11,6 +11,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -25,6 +26,7 @@ use Tests\TestCase;
  *
  * @requirements 6.1, 6.2, 6.3, 6.4, 6.5, 8.1, 8.2
  */
+#[Group('environment-specific')]
 class RealtimeFeaturesTest extends TestCase
 {
     use RefreshDatabase;
