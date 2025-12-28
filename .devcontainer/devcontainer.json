@@ -13,6 +13,9 @@
 	},
 	"postCreateCommand": "sh -lc 'bash scripts/codespaces-post-create.sh'",
 	"remoteUser": "www-data",
+	"remoteEnv": {
+		"GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}"
+	},
 	"containerEnv": {
 		"COMPOSER_CACHE_DIR": "/home/www-data/.composer/cache",
 		"NPM_CONFIG_CACHE": "/home/www-data/.npm/_cacache"
