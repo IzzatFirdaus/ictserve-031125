@@ -37,12 +37,11 @@ class UnifiedSearchService
      * @param  int  $limit  Maximum results per resource
      * @return array<string, Collection> Grouped search results with relevance scores
      */
-    
 
-/**
- * @param array<string, mixed> $resources
- */
-public function search(string $query, array $resources = [], int $limit = 10): array
+    /**
+     * @param  array<string, mixed>  $resources
+     */
+    public function search(string $query, array $resources = [], int $limit = 10): array
     {
         if (empty($query) || strlen($query) < 2) {
             return [];
@@ -159,7 +158,7 @@ public function search(string $query, array $resources = [], int $limit = 10): a
     {
         return Asset::query()
             ->where(function ($q) use ($query) {
-                $q->where('asset_code', 'like', "%{$query}%")
+                $q->where('asset_tag', 'like', "%{$query}%")
                     ->orWhere('name', 'like', "%{$query}%")
                     ->orWhere('description', 'like', "%{$query}%")
                     ->orWhere('serial_number', 'like', "%{$query}%");
@@ -171,11 +170,11 @@ public function search(string $query, array $resources = [], int $limit = 10): a
                 return [
                     'id' => $asset->id,
                     'title' => $asset->name,
-                    'subtitle' => $asset->asset_code,
+                    'subtitle' => $asset->asset_tag,
                     'description' => $asset->description,
                     'url' => route('filament.admin.resources.assets.assets.view', $asset->id),
                     'relevance' => $this->calculateRelevance($query, [
-                        $asset->asset_code,
+                        $asset->asset_tag,
                         $asset->name,
                         $asset->description,
                     ]),
@@ -234,12 +233,11 @@ public function search(string $query, array $resources = [], int $limit = 10): a
      * @param  array<string|null>  $fields  Fields to check
      * @return float Relevance score (0-100)
      */
-    
 
-/**
- * @param array<string, mixed> $fields
- */
-private function calculateRelevance(string $query, array $fields): float
+    /**
+     * @param  array<string, mixed>  $fields
+     */
+    private function calculateRelevance(string $query, array $fields): float
     {
         $score = 0;
         $query = strtolower($query);
@@ -282,12 +280,11 @@ private function calculateRelevance(string $query, array $fields): float
      *
      * @param  array<string>  $resources
      */
-    
 
-/**
- * @param array<string, mixed> $resources
- */
-private function getCacheKey(string $query, array $resources, int $limit): string
+    /**
+     * @param  array<string, mixed>  $resources
+     */
+    private function getCacheKey(string $query, array $resources, int $limit): string
     {
         return 'unified_search:'.md5($query.implode(',', $resources).$limit);
     }

@@ -23,12 +23,11 @@ class DataVisualizationService
     /**
      * Generate chart data for ticket trends
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getTicketTrendsChartData(Carbon $startDate, Carbon $endDate): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getTicketTrendsChartData(Carbon $startDate, Carbon $endDate): array
     {
         $dates = collect();
         $current = $startDate->copy();
@@ -76,12 +75,11 @@ public function getTicketTrendsChartData(Carbon $startDate, Carbon $endDate): ar
     /**
      * Generate chart data for asset utilization
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getAssetUtilizationChartData(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getAssetUtilizationChartData(): array
     {
         $assets = Asset::with(['category', 'loanApplications'])
             ->get()
@@ -129,12 +127,11 @@ public function getAssetUtilizationChartData(): array
     /**
      * Generate SLA compliance chart data
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getSlaComplianceChartData(Carbon $startDate, Carbon $endDate): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getSlaComplianceChartData(Carbon $startDate, Carbon $endDate): array
     {
         $helpdeskCompliance = $this->calculateHelpdeskSlaCompliance($startDate, $endDate);
         $loanCompliance = $this->calculateLoanSlaCompliance($startDate, $endDate);
@@ -181,12 +178,11 @@ public function getSlaComplianceChartData(Carbon $startDate, Carbon $endDate): a
     /**
      * Generate performance dashboard chart data
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getPerformanceDashboardData(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getPerformanceDashboardData(): array
     {
         $last30Days = now()->subDays(30);
 
@@ -202,12 +198,11 @@ public function getPerformanceDashboardData(): array
     /**
      * Generate priority distribution chart data
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getPriorityDistributionData(): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getPriorityDistributionData(): array
     {
         $tickets = HelpdeskTicket::selectRaw('priority, COUNT(*) as count')
             ->groupBy('priority')
@@ -247,12 +242,11 @@ public function getPriorityDistributionData(): array
     /**
      * Generate resolution time trends data
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getResolutionTimeTrendsData(Carbon $startDate, Carbon $endDate): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getResolutionTimeTrendsData(Carbon $startDate, Carbon $endDate): array
     {
         $tickets = HelpdeskTicket::whereNotNull('resolved_at')
             ->whereBetween('resolved_at', [$startDate, $endDate])
@@ -292,14 +286,12 @@ public function getResolutionTimeTrendsData(Carbon $startDate, Carbon $endDate):
     /**
      * Export chart as image (placeholder)
      */
-    
 
-/**
-  * @param array<string, mixed> $chartData
-
- * @return array<string, mixed>
- */
-public function exportChart(array $chartData, string $format = 'png'): array
+    /**
+     * @param  array<string, mixed>  $chartData
+     * @return array<string, mixed>
+     */
+    public function exportChart(array $chartData, string $format = 'png'): array
     {
         // In production, this would use a chart library like Chart.js or ApexCharts
         // to generate actual image exports
@@ -316,12 +308,11 @@ public function exportChart(array $chartData, string $format = 'png'): array
     /**
      * Get drill-down data for ticket trends
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getTicketTrendsDrilldown(Collection $chartData): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getTicketTrendsDrilldown(Collection $chartData): array
     {
         return $chartData->map(function ($dayData) {
             $date = Carbon::parse($dayData['date']);
@@ -345,12 +336,11 @@ private function getTicketTrendsDrilldown(Collection $chartData): array
     /**
      * Get drill-down data for asset utilization
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getAssetUtilizationDrilldown(Collection $chartData): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getAssetUtilizationDrilldown(Collection $chartData): array
     {
         return $chartData->map(function ($categoryData) {
             $assets = Asset::whereHas('category', function ($query) use ($categoryData) {
@@ -362,7 +352,7 @@ private function getAssetUtilizationDrilldown(Collection $chartData): array
 
                 return [
                     'asset_name' => $asset->name,
-                    'asset_code' => $asset->asset_code,
+                    'asset_code' => $asset->asset_tag,
                     'status' => $asset->status,
                     'is_loaned' => $activeLoan ? true : false,
                     'loan_count' => $asset->loanApplications->count(),
@@ -379,14 +369,12 @@ private function getAssetUtilizationDrilldown(Collection $chartData): array
     /**
      * Get drill-down data for SLA compliance
      */
-    
 
-/**
-  * @param array<string, mixed> $chartData
-
- * @return array<string, mixed>
- */
-private function getSlaComplianceDrilldown(array $chartData): array
+    /**
+     * @param  array<string, mixed>  $chartData
+     * @return array<string, mixed>
+     */
+    private function getSlaComplianceDrilldown(array $chartData): array
     {
         return collect($chartData)->map(function ($moduleData) {
             if ($moduleData['module'] === 'Helpdesk') {
@@ -425,12 +413,11 @@ private function getSlaComplianceDrilldown(array $chartData): array
     /**
      * Get ticket category breakdown
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getTicketCategoryBreakdown(Collection $tickets): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getTicketCategoryBreakdown(Collection $tickets): array
     {
         return $tickets->groupBy('category.name_en')->map(function ($categoryTickets, $category) {
             return [
@@ -443,12 +430,11 @@ private function getTicketCategoryBreakdown(Collection $tickets): array
     /**
      * Calculate helpdesk SLA compliance
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function calculateHelpdeskSlaCompliance(Carbon $startDate, Carbon $endDate): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function calculateHelpdeskSlaCompliance(Carbon $startDate, Carbon $endDate): array
     {
         $tickets = HelpdeskTicket::whereBetween('created_at', [$startDate, $endDate])->get();
         $total = $tickets->count();
@@ -459,7 +445,7 @@ private function calculateHelpdeskSlaCompliance(Carbon $startDate, Carbon $endDa
 
         $compliant = $tickets->filter(function ($ticket) {
             return $ticket->resolved_at && $ticket->sla_deadline &&
-                   $ticket->resolved_at <= $ticket->sla_deadline;
+                $ticket->resolved_at <= $ticket->sla_deadline;
         })->count();
 
         return [
@@ -472,12 +458,11 @@ private function calculateHelpdeskSlaCompliance(Carbon $startDate, Carbon $endDa
     /**
      * Calculate loan SLA compliance
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function calculateLoanSlaCompliance(Carbon $startDate, Carbon $endDate): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function calculateLoanSlaCompliance(Carbon $startDate, Carbon $endDate): array
     {
         $loans = LoanApplication::whereBetween('created_at', [$startDate, $endDate])
             ->whereIn('status', ['approved', 'rejected'])->get();
