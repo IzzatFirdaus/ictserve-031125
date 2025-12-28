@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Livewire\NotificationCenter;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +38,7 @@ class NotificationCenterAriaLiveTest extends TestCase
         ]);
 
         Livewire::actingAs($user)
-            ->test(NotificationCenter::class)
+            ->test('notification-center')
             ->assertSeeHtml('aria-live="polite"')
             ->assertSee('Anda mempunyai 1 notifikasi belum dibaca');
     }

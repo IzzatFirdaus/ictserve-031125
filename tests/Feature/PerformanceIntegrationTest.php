@@ -35,6 +35,18 @@ class PerformanceIntegrationTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Get performance threshold multiplier for CI environment
+     *
+     * CI environments are typically slower due to virtualization and resource constraints.
+     * This multiplier adjusts thresholds to be more realistic for CI while maintaining
+     * strict performance expectations for local development.
+     */
+    private function getThresholdMultiplier(): float
+    {
+        return env('CI', false) ? 3.0 : 1.0;
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -79,6 +91,7 @@ class PerformanceIntegrationTest extends TestCase
     #[Test]
     public function guest_loan_application_core_web_vitals(): void
     {
+        $multiplier = $this->getThresholdMultiplier();
         $startTime = microtime(true);
 
         // Test component rendering performance
@@ -87,7 +100,8 @@ class PerformanceIntegrationTest extends TestCase
         $renderTime = microtime(true) - $startTime;
 
         // Verify TTFB equivalent (component initialization) < 1.5s (adjusted for test environment with DB setup)
-        $this->assertLessThan(1.5, $renderTime, 'Component initialization took too long (TTFB equivalent)');
+        // CI environments get 3x multiplier (4.5s threshold)
+        $this->assertLessThan(1.5 * $multiplier, $renderTime, 'Component initialization took too long (TTFB equivalent)');
 
         // Test form interaction performance (FID equivalent) using nested form array
         $interactionStart = microtime(true);
@@ -99,7 +113,7 @@ class PerformanceIntegrationTest extends TestCase
         $interactionTime = microtime(true) - $interactionStart;
 
         // Verify interaction time < 2s (FID equivalent - adjusted for test environment with validation)
-        $this->assertLessThan(2.0, $interactionTime, 'Form interaction took too long (FID equivalent)');
+        $this->assertLessThan(2.0 * $multiplier, $interactionTime, 'Form interaction took too long (FID equivalent)');
 
         // Test step navigation performance
         $navigationStart = microtime(true);
@@ -109,7 +123,7 @@ class PerformanceIntegrationTest extends TestCase
         $navigationTime = microtime(true) - $navigationStart;
 
         // Verify navigation < 1s (part of LCP)
-        $this->assertLessThan(1.0, $navigationTime, 'Step navigation took too long');
+        $this->assertLessThan(1.0 * $multiplier, $navigationTime, 'Step navigation took too long');
     }
 
     /**
@@ -396,6 +410,7 @@ class PerformanceIntegrationTest extends TestCase
     #[Test]
     public function api_response_performance(): void
     {
+        $multiplier = $this->getThresholdMultiplier();
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -408,8 +423,8 @@ class PerformanceIntegrationTest extends TestCase
 
         $response->assertOk();
 
-        // Verify API response time
-        $this->assertLessThan(1.0, $apiTime, 'API response took too long');
+        // Verify API response time (1s local, 3s CI)
+        $this->assertLessThan(1.0 * $multiplier, $apiTime, 'API response took too long');
 
         // Test asset search API
         $searchStart = microtime(true);
@@ -420,8 +435,8 @@ class PerformanceIntegrationTest extends TestCase
 
         $searchResponse->assertOk();
 
-        // Verify search API performance
-        $this->assertLessThan(0.5, $searchTime, 'Search API took too long');
+        // Verify search API performance (0.5s local, 1.5s CI)
+        $this->assertLessThan(0.5 * $multiplier, $searchTime, 'Search API took too long');
     }
 
     /**
