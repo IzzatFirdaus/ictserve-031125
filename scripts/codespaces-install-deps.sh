@@ -18,7 +18,7 @@ echo ""
 if [ -z "$PAT_GITHUB_ACCESS_TOKEN" ]; then
     echo "❌ ERROR: PAT_GITHUB_ACCESS_TOKEN environment variable is not set"
     echo "Please set it in GitHub Codespaces Secrets:"
-    echo "  Settings → Codespaces → Secrets → New secret"
+    echo "  Settings → Codespaces → Repository secrets → New secret"
     echo "  Name: PAT_GITHUB_ACCESS_TOKEN"
     echo "  Value: Your GitHub PAT token"
     exit 1

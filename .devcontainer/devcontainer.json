@@ -16,6 +16,9 @@
 	"remoteEnv": {
 		"PAT_GITHUB_ACCESS_TOKEN": "${localEnv:PAT_GITHUB_ACCESS_TOKEN}",
 		"GH_TOKEN": "${localEnv:GH_TOKEN}",
+		"BROWSERSTACK_ACCESS_KEY": "${localEnv:BROWSERSTACK_ACCESS_KEY}",
+		"BROWSERSTACK_USERNAME": "${localEnv:BROWSERSTACK_USERNAME}",
+		"PERCY_TOKEN": "${localEnv:PERCY_TOKEN}",
 		"COMPOSER_AUTH": "{\"github-oauth\": {\"github.com\": \"${localEnv:PAT_GITHUB_ACCESS_TOKEN}\"}}"
 	},
 	"containerEnv": {
