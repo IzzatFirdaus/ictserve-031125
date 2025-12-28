@@ -24,8 +24,9 @@ class AssetSearchController extends Controller
         $query = $request->string('q')->toString();
 
         $assets = Asset::where('name', 'like', "%{$query}%")
-            ->orWhere('asset_code', 'like', "%{$query}%")
-            ->orWhere('description', 'like', "%{$query}%")
+            ->orWhere('asset_tag', 'like', "%{$query}%")
+            ->orWhere('brand', 'like', "%{$query}%")
+            ->orWhere('model', 'like', "%{$query}%")
             ->with(['category'])
             ->limit(50)
             ->get();
