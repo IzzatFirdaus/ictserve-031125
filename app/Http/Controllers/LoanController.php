@@ -98,7 +98,7 @@ class LoanController extends Controller
     {
         $assets = Asset::where('status', 'available')
             ->with('category')
-            ->select(['id', 'name', 'asset_code', 'category_id', 'status', 'current_value'])
+            ->select(['id', 'name', 'asset_tag', 'category_id', 'status', 'current_value'])
             ->limit(100)
             ->get();
 
