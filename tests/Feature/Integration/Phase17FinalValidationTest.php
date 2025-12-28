@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Integration;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -30,8 +29,6 @@ use Tests\TestCase;
 #[Group('final-validation')]
 class Phase17FinalValidationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected function setUp(): void

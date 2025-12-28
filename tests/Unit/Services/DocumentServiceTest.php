@@ -7,7 +7,6 @@ namespace Tests\Unit\Services;
 use App\Models\Document;
 use App\Services\DocumentService;
 use App\Services\EmbeddingService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use InvalidArgumentException;
@@ -33,8 +32,6 @@ use Tests\TestCase;
  */
 class DocumentServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private DocumentService $documentService;
 
     private MockInterface $embeddingServiceMock;

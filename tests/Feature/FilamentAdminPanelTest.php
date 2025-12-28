@@ -14,15 +14,12 @@ use App\Models\Grade;
 use App\Models\LoanApplication;
 use App\Models\LoanItem;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class FilamentAdminPanelTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $admin;
 
     protected function setUp(): void

@@ -6,15 +6,12 @@ namespace Tests\Feature\Filament;
 
 use App\Models\HelpdeskTicket;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PolicyDebugTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

@@ -19,15 +19,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RegistrationDomainPropertyTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Property 5: Email Domain Restriction Validation
      *

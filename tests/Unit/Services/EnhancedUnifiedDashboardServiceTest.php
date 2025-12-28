@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Services\EnhancedUnifiedDashboardService;
 use App\Services\PerformanceMonitoringService;
 use App\Services\UnifiedAnalyticsService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
@@ -18,8 +17,6 @@ use Tests\TestCase;
 
 class EnhancedUnifiedDashboardServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private EnhancedUnifiedDashboardService $service;
 
     protected function setUp(): void

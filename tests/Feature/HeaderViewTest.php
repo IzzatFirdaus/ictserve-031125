@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -16,8 +15,6 @@ use Tests\TestCase;
  */
 class HeaderViewTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function header_renders_with_name_array(): void
     {

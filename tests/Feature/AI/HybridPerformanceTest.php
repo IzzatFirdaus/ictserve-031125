@@ -8,7 +8,6 @@ use App\Models\BedrockUsageLog;
 use App\Services\BedrockService;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use GuzzleHttp\Psr7\Utils;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -27,8 +26,6 @@ use Tests\TestCase;
 #[Group('performance')]
 class HybridPerformanceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

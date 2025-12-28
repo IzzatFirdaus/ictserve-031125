@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\Components\ThemeDropdownUnified;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -27,8 +26,6 @@ use Tests\TestCase;
  */
 class ThemeDropdownUnifiedTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_defaults_to_light_theme(): void
     {

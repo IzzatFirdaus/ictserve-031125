@@ -6,15 +6,12 @@ namespace Tests\Feature;
 
 use App\Filament\Widgets\CriticalAlertsWidget;
 use App\Livewire\BedrockChat;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ViewRenderingTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function faq_page_view_compiles(): void
     {

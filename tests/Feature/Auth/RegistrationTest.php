@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -21,8 +20,6 @@ use Tests\TestCase;
  */
 class RegistrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function registration_screen_can_be_rendered(): void
     {

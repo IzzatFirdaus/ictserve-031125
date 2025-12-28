@@ -7,7 +7,6 @@ namespace Tests\Unit\Widgets;
 use App\Enums\AssetStatus;
 use App\Filament\Widgets\AssetStatusDistributionWidget;
 use App\Models\Asset;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class AssetStatusDistributionWidgetTest extends TestCase
 {
-    use RefreshDatabase;
-
     private AssetStatusDistributionWidget $widget;
 
     protected function setUp(): void

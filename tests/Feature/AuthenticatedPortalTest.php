@@ -7,21 +7,16 @@ namespace Tests\Feature;
 use App\Enums\LoanStatus;
 use App\Livewire\Approver\ApproverDashboard;
 use App\Livewire\Loans\LoanExtension;
-use App\Livewire\Loans\LoanHistory;
-use App\Livewire\Staff\AuthenticatedDashboard;
 use App\Livewire\UserProfile;
 use App\Models\Grade;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AuthenticatedPortalTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function authenticated_user_can_access_dashboard(): void
     {

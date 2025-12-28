@@ -10,7 +10,6 @@ use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -28,8 +27,6 @@ use Tests\TestCase;
  */
 class LivewireOptimizationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

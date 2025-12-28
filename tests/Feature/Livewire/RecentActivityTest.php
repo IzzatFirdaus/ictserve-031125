@@ -5,18 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\RecentActivity;
-use App\Models\PortalActivity;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RecentActivityTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected function setUp(): void

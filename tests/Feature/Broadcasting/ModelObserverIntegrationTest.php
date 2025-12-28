@@ -8,7 +8,6 @@ use App\Events\StatusUpdated;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -23,8 +22,6 @@ use Tests\TestCase;
  */
 class ModelObserverIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function helpdesk_ticket_status_change_dispatches_status_updated_event(): void
     {

@@ -11,7 +11,6 @@ use App\Models\LoanApplication;
 use App\Models\TicketCategory;
 use App\Models\User;
 use App\Services\DashboardService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -27,8 +26,6 @@ use Tests\TestCase;
  */
 class CachingEffectivenessTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected Division $division;

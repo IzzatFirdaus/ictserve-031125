@@ -7,7 +7,6 @@ namespace Tests\Feature\Filament;
 use App\Filament\Widgets\PerformanceMetricsWidget;
 use App\Filament\Widgets\SystemHealthWidget;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -23,8 +22,6 @@ use Tests\TestCase;
  */
 class PerformanceWidgetsTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $admin;
 
     protected User $superuser;

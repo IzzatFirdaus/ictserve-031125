@@ -7,7 +7,6 @@ namespace Tests\Unit\Services;
 use App\Contracts\OllamaClientContract;
 use App\Models\BedrockUsageLog;
 use App\Services\ModelRouter;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter;
 use Mockery;
@@ -17,8 +16,6 @@ use Tests\TestCase;
 
 class ModelRouterTest extends TestCase
 {
-    use RefreshDatabase;
-
     private ModelRouter $router;
 
     private $mockOllamaClient;

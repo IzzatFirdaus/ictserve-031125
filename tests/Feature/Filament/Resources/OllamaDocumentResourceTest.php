@@ -7,7 +7,6 @@ namespace Tests\Feature\Filament\Resources;
 use App\Filament\Resources\OllamaAI\DocumentResource;
 use App\Models\Document;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -30,8 +29,6 @@ use Tests\TestCase;
  */
 class OllamaDocumentResourceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

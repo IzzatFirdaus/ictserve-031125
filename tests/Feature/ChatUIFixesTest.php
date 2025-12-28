@@ -6,7 +6,6 @@ namespace Tests\Feature;
 
 use App\Livewire\BedrockChat;
 use App\Livewire\Ollama\FaqBotWidget;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -24,8 +23,6 @@ use Tests\TestCase;
  */
 class ChatUIFixesTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function bedrock_chat_component_renders_without_errors(): void
     {

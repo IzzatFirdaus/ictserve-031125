@@ -9,7 +9,6 @@ use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\LoanApplication;
 use App\Services\AssetAvailabilityService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -24,8 +23,6 @@ use Tests\TestCase;
  */
 class AssetManagementServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private AssetAvailabilityService $service;
 
     protected function setUp(): void

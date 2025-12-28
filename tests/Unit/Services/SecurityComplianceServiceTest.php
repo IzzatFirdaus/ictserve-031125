@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Services\ApiTokenService;
 use App\Services\SecurityComplianceService;
 use App\Services\SecurityMonitoringService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Mockery\MockInterface;
@@ -27,8 +26,6 @@ use Tests\TestCase;
 #[CoversClass(SecurityComplianceService::class)]
 class SecurityComplianceServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private SecurityComplianceService $service;
 
     /** @var SecurityMonitoringService&MockInterface */

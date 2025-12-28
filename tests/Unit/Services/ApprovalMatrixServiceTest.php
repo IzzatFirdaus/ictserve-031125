@@ -6,7 +6,6 @@ namespace Tests\Unit\Services;
 
 use App\Models\User;
 use App\Services\ApprovalMatrixService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -20,8 +19,6 @@ use Tests\TestCase;
  */
 class ApprovalMatrixServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private ApprovalMatrixService $service;
 
     protected function setUp(): void

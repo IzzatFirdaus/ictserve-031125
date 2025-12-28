@@ -6,7 +6,6 @@ namespace Tests\Integration;
 
 use App\Filament\Traits\CacheableWidget;
 use Filament\Widgets\Widget;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redis;
@@ -29,8 +28,6 @@ use Tests\TestCase;
  */
 class WidgetCacheIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private TestCacheableWidget $widget;
 
     protected function setUp(): void

@@ -7,7 +7,6 @@ namespace Tests\Unit\Widgets;
 use App\Filament\Widgets\AIPerformanceWidget;
 use App\Models\User;
 use App\Services\AIMetricsCollector;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,9 +21,8 @@ use Tests\TestCase;
  */
 class AIPerformanceWidgetTest extends TestCase
 {
-    use RefreshDatabase;
-
     private AIPerformanceWidget $widget;
+
     private AIMetricsCollector $metricsCollector;
 
     protected function setUp(): void
@@ -34,7 +32,7 @@ class AIPerformanceWidgetTest extends TestCase
         $this->metricsCollector = $this->createMock(AIMetricsCollector::class);
         $this->app->instance(AIMetricsCollector::class, $this->metricsCollector);
 
-        $this->widget = new AIPerformanceWidget();
+        $this->widget = new AIPerformanceWidget;
     }
 
     #[Test]
@@ -137,7 +135,7 @@ class AIPerformanceWidgetTest extends TestCase
         $this->assertCount(4, $stats);
 
         // Check that stats contain expected data
-        $statValues = array_map(fn($stat) => $stat->getValue(), $stats);
+        $statValues = array_map(fn ($stat) => $stat->getValue(), $stats);
         $this->assertContains('501ms', $statValues); // Ollama response time
         $this->assertContains('1.2s', $statValues);  // Bedrock response time
         $this->assertContains('850ms', $statValues); // Combined response time
@@ -165,7 +163,7 @@ class AIPerformanceWidgetTest extends TestCase
     #[Test]
     public function it_formats_response_times_correctly(): void
     {
-        $widget = new AIPerformanceWidget();
+        $widget = new AIPerformanceWidget;
 
         // Test milliseconds
         $this->assertSame('500ms', $this->invokeMethod($widget, 'formatResponseTime', [500.0]));
@@ -182,7 +180,7 @@ class AIPerformanceWidgetTest extends TestCase
     #[Test]
     public function it_translates_status_correctly(): void
     {
-        $widget = new AIPerformanceWidget();
+        $widget = new AIPerformanceWidget;
 
         $this->assertSame('Cemerlang', $this->invokeMethod($widget, 'translateStatus', ['excellent']));
         $this->assertSame('Baik', $this->invokeMethod($widget, 'translateStatus', ['good']));
@@ -278,11 +276,6 @@ class AIPerformanceWidgetTest extends TestCase
 
     /**
      * Invoke a private or protected method on an object
-     *
-     * @param object $object
-     * @param string $methodName
-     * @param array $parameters
-     * @return mixed
      */
     private function invokeMethod(object $object, string $methodName, array $parameters = []): mixed
     {

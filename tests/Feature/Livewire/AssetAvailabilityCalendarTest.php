@@ -9,15 +9,12 @@ use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\LoanTransaction;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AssetAvailabilityCalendarTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function asset_calendar_reacts_to_asset_returned_damaged(): void
     {

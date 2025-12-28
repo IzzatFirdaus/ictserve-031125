@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Filament;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -20,12 +18,11 @@ use Tests\TestCase;
  *
  * Requirements: 17.1, 4.1, 4.2
  * Traceability: D03-FR-017.1, D04 §4.4
+ *
  * @trace Requirements 7.2, 7.3
  */
 class RoleBasedAccessControlTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

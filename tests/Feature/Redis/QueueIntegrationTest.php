@@ -8,13 +8,12 @@ use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -49,8 +48,6 @@ class TestRedisJob implements ShouldQueue
 #[Group('environment-specific')]
 class QueueIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -381,7 +378,7 @@ class QueueIntegrationTest extends TestCase
     {
         $queueName = 'default';
         $connection = Queue::connection('redis');
-        
+
         // Dispatch test jobs
         $jobCount = 5;
         for ($i = 0; $i < $jobCount; $i++) {

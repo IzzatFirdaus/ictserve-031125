@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
@@ -13,8 +12,6 @@ use Tests\TestCase;
 
 class NotificationCenterAriaLiveTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_announces_unread_count_via_aria_live_region(): void
     {
@@ -37,7 +34,7 @@ class NotificationCenterAriaLiveTest extends TestCase
         ]);
 
         // Test that the notification center page renders with aria-live region
-        $response = $this->actingAs($user)->get('/notifications');
+        $response = $this->actingAs($user)->get('/staff/notifications');
 
         $response->assertOk();
         // Check for aria-live attribute in the response

@@ -8,7 +8,6 @@ use App\Contracts\OllamaClientContract;
 use App\Models\Faq;
 use App\Models\User;
 use App\Services\EmbeddingService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
@@ -30,8 +29,6 @@ use Tests\TestCase;
  */
 class OllamaFaqApiTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

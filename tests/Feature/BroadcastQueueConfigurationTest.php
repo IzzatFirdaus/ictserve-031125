@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Queue;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -26,8 +25,6 @@ use Tests\TestCase;
 #[Group('environment-specific')]
 class BroadcastQueueConfigurationTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function broadcast_queue_connection_is_properly_configured(): void
     {

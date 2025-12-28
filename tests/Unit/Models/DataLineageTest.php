@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Models\DataLineage;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -18,8 +17,6 @@ use Tests\TestCase;
  */
 class DataLineageTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_has_correct_fillable_attributes(): void
     {

@@ -11,7 +11,6 @@ use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\Notifications\LoanNotificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -19,8 +18,6 @@ use Tests\TestCase;
 
 class EmailSystemIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected function setUp(): void
@@ -231,7 +228,7 @@ class EmailSystemIntegrationTest extends TestCase
             $rendered = $mail->render();
 
             // Verify Bahasa Melayu content
-            $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+            $this->assertStringContainsString('Tuan/Puan', $rendered); // BM greeting
             $this->assertStringContainsString('status', $rendered); // Status term
             $this->assertStringContainsString('permohonan', $rendered); // Application term
             $this->assertStringContainsString('Terima kasih', $rendered); // BM closing

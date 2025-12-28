@@ -6,7 +6,6 @@ namespace Tests\Feature\Security;
 
 use App\Models\User;
 use App\Services\TwoFactorAuthService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -21,8 +20,6 @@ use Tests\TestCase;
  */
 class FilamentSecurityTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $admin;
 
     private User $superuser;

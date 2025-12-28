@@ -6,15 +6,12 @@ namespace Tests\Feature\Services;
 
 use App\Services\AssetTransactionService;
 use App\Services\LoanReminderService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoanReminderServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function tearDown(): void
     {
         Mockery::close();

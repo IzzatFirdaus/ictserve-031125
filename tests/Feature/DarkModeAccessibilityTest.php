@@ -7,7 +7,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Services\AccessibilityDarkModeManager;
 use App\Services\DashboardColorManager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class DarkModeAccessibilityTest extends TestCase
 {
-    use RefreshDatabase;
-
     private DashboardColorManager $colorManager;
 
     private AccessibilityDarkModeManager $accessibilityManager;

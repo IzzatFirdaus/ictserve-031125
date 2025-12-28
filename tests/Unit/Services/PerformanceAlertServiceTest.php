@@ -7,7 +7,6 @@ namespace Tests\Unit\Services;
 use App\Models\User;
 use App\Notifications\PerformanceThresholdBreached;
 use App\Services\PerformanceAlertService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -26,8 +25,6 @@ use Tests\TestCase;
 #[CoversClass(PerformanceAlertService::class)]
 class PerformanceAlertServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private PerformanceAlertService $service;
 
     protected function setUp(): void

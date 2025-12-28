@@ -9,7 +9,6 @@ use App\Models\Asset;
 use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class ApprovalInterfaceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $approver;
 
     protected User $staff;

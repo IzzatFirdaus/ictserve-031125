@@ -6,7 +6,6 @@ namespace Tests\Feature\Filament;
 
 use App\Models\User;
 use Filament\Facades\Filament;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
@@ -24,8 +23,6 @@ use Tests\TestCase;
  */
 class AdminPanelConfigurationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

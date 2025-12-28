@@ -10,7 +10,6 @@ use App\Livewire\Portal\UserProfile;
 use App\Models\Division;
 use App\Models\User;
 use App\Models\UserNotificationPreference;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -27,8 +26,6 @@ use Tests\TestCase;
  */
 class ProfileManagementTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected Division $division;

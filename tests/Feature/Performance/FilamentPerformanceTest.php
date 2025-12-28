@@ -15,7 +15,6 @@ use App\Models\LoanApplication;
 use App\Models\TicketCategory;
 use App\Models\User;
 use App\Services\DashboardService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -33,7 +32,6 @@ use Tests\TestCase;
  */
 class FilamentPerformanceTest extends TestCase
 {
-    use RefreshDatabase;
     use \Tests\Concerns\CreatesRoles;
 
     private User $admin;

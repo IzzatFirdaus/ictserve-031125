@@ -13,7 +13,6 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\AutoReplyService;
 use App\Services\RagService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use InvalidArgumentException;
 use Mockery;
 use Mockery\MockInterface;
@@ -36,8 +35,6 @@ use Tests\TestCase;
  */
 class AutoReplyServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private AutoReplyService $autoReplyService;
 
     private MockInterface $ollamaClientMock;
@@ -246,7 +243,7 @@ class AutoReplyServiceTest extends TestCase
 
         $token = ApprovalEmailToken::create([
             'auto_reply_draft_id' => $draft->id,
-            'token' => 'valid-token-' . uniqid(),
+            'token' => 'valid-token-'.uniqid(),
             'action' => 'approve',
             'expires_at' => now()->addDays(7),
             'used' => false,

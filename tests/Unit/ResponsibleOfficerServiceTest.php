@@ -7,7 +7,6 @@ namespace Tests\Unit;
 use App\Contracts\ResponsibleOfficerServiceInterface;
 use App\Models\LoanApplication;
 use App\Services\ResponsibleOfficerService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -18,8 +17,6 @@ use Tests\TestCase;
  */
 class ResponsibleOfficerServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected ResponsibleOfficerService $service;
 
     protected function setUp(): void

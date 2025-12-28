@@ -7,15 +7,12 @@ namespace Tests\Feature;
 use App\Livewire\BedrockChat;
 use App\Models\BedrockConversation;
 use App\Services\BedrockService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class BedrockChatTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function send_creates_conversation_and_appends_assistant_message(): void
     {

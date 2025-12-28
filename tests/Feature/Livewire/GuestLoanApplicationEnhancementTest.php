@@ -7,15 +7,12 @@ namespace Tests\Feature\Livewire;
 use App\Livewire\GuestLoanApplication;
 use App\Models\AssetCategory;
 use App\Models\Division;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GuestLoanApplicationEnhancementTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected Division $division;
 
     protected AssetCategory $category;

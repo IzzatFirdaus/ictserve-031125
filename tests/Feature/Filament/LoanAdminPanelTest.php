@@ -12,7 +12,6 @@ use App\Filament\Resources\Loans\Pages\ViewLoanApplication;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,8 +30,6 @@ use Tests\TestCase;
  */
 class LoanAdminPanelTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $admin;
 
     protected function setUp(): void

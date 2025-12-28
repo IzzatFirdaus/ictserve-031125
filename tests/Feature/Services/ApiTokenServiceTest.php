@@ -8,7 +8,6 @@ use App\Models\ApiTokenUsageLog;
 use App\Models\User;
 use App\Services\ApiTokenService;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -27,8 +26,6 @@ use Tests\TestCase;
  */
 class ApiTokenServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private ApiTokenService $service;
 
     protected function setUp(): void

@@ -6,7 +6,6 @@ namespace Tests\Feature;
 
 use App\Livewire\GuestLoanTracking;
 use App\Models\LoanApplication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class GuestLoanTrackingTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function guest_can_view_tracking_page(): void
     {

@@ -13,7 +13,6 @@ use App\Models\LoanApplication;
 use App\Models\LoanItem;
 use App\Models\TicketCategory;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -27,8 +26,6 @@ use Tests\TestCase;
  */
 class ReferentialIntegrityTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function soft_deleting_asset_preserves_helpdesk_ticket_reference(): void
     {

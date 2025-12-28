@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Laravel\Socialite\Facades\Socialite;
@@ -29,8 +28,6 @@ use Tests\TestCase;
 
 class GoogleSsoDomainValidationPropertyTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

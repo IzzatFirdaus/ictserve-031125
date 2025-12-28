@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Livewire\Ollama\FaqBot;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class FaqBotTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function faq_bot_component_can_be_rendered(): void
     {

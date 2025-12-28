@@ -9,7 +9,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\TicketCategory;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -22,209 +21,210 @@ use Tests\TestCase;
  */
 class CrossModuleSearchTest extends TestCase
 {
-	use RefreshDatabase;
+    private User $user;
 
-	private User $user;
-	private User $adminUser;
-	private Division $division;
-	private TicketCategory $category;
+    private User $adminUser;
 
-	protected function setUp(): void
-	{
-		parent::setUp();
+    private Division $division;
 
-		$this->user = User::factory()->create([
-			'name' => 'Test User',
-			'email' => 'testuser@motac.gov.my',
-		]);
+    private TicketCategory $category;
 
-		$this->adminUser = User::factory()->create([
-			'name' => 'Admin User',
-			'email' => 'admin@motac.gov.my',
-		]);
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-		$this->division = Division::factory()->create([
-			'name' => 'ICT Division',
-		]);
+        $this->user = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'testuser@motac.gov.my',
+        ]);
 
-		$this->category = TicketCategory::factory()->create([
-			'name' => 'Technical Support',
-		]);
-	}
+        $this->adminUser = User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@motac.gov.my',
+        ]);
 
-	#[Test]
-	public function can_search_tickets_by_subject(): void
-	{
-		HelpdeskTicket::factory()->create([
-			'subject' => 'Laptop screen broken',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $this->division = Division::factory()->create([
+            'name' => 'ICT Division',
+        ]);
 
-		HelpdeskTicket::factory()->create([
-			'subject' => 'Network connectivity issue',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $this->category = TicketCategory::factory()->create([
+            'name' => 'Technical Support',
+        ]);
+    }
 
-		$results = HelpdeskTicket::where('subject', 'like', '%laptop%')->get();
+    #[Test]
+    public function can_search_tickets_by_subject(): void
+    {
+        HelpdeskTicket::factory()->create([
+            'subject' => 'Laptop screen broken',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-		$this->assertCount(1, $results);
-		$this->assertStringContainsString('Laptop', $results->first()->subject);
-	}
+        HelpdeskTicket::factory()->create([
+            'subject' => 'Network connectivity issue',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-	#[Test]
-	public function can_search_loan_applications_by_purpose(): void
-	{
-		LoanApplication::factory()->create([
-			'user_id' => $this->user->id,
-			'division_id' => $this->division->id,
-			'purpose' => 'Conference presentation equipment',
-		]);
+        $results = HelpdeskTicket::where('subject', 'like', '%laptop%')->get();
 
-		LoanApplication::factory()->create([
-			'user_id' => $this->user->id,
-			'division_id' => $this->division->id,
-			'purpose' => 'Training session materials',
-		]);
+        $this->assertCount(1, $results);
+        $this->assertStringContainsString('Laptop', $results->first()->subject);
+    }
 
-		$results = LoanApplication::where('purpose', 'like', '%conference%')->get();
+    #[Test]
+    public function can_search_loan_applications_by_purpose(): void
+    {
+        LoanApplication::factory()->create([
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+            'purpose' => 'Conference presentation equipment',
+        ]);
 
-		$this->assertCount(1, $results);
-		$this->assertStringContainsString('Conference', $results->first()->purpose);
-	}
+        LoanApplication::factory()->create([
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+            'purpose' => 'Training session materials',
+        ]);
 
-	#[Test]
-	public function can_filter_tickets_by_status(): void
-	{
-		HelpdeskTicket::factory()->create([
-			'status' => 'open',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $results = LoanApplication::where('purpose', 'like', '%conference%')->get();
 
-		HelpdeskTicket::factory()->create([
-			'status' => 'closed',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $this->assertCount(1, $results);
+        $this->assertStringContainsString('Conference', $results->first()->purpose);
+    }
 
-		HelpdeskTicket::factory()->create([
-			'status' => 'open',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+    #[Test]
+    public function can_filter_tickets_by_status(): void
+    {
+        HelpdeskTicket::factory()->create([
+            'status' => 'open',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-		$openTickets = HelpdeskTicket::where('status', 'open')->get();
-		$closedTickets = HelpdeskTicket::where('status', 'closed')->get();
+        HelpdeskTicket::factory()->create([
+            'status' => 'closed',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-		$this->assertCount(2, $openTickets);
-		$this->assertCount(1, $closedTickets);
-	}
+        HelpdeskTicket::factory()->create([
+            'status' => 'open',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-	#[Test]
-	public function can_filter_loan_applications_by_date_range(): void
-	{
-		LoanApplication::factory()->create([
-			'user_id' => $this->user->id,
-			'division_id' => $this->division->id,
-			'created_at' => now()->subDays(5),
-		]);
+        $openTickets = HelpdeskTicket::where('status', 'open')->get();
+        $closedTickets = HelpdeskTicket::where('status', 'closed')->get();
 
-		LoanApplication::factory()->create([
-			'user_id' => $this->user->id,
-			'division_id' => $this->division->id,
-			'created_at' => now()->subDays(15),
-		]);
+        $this->assertCount(2, $openTickets);
+        $this->assertCount(1, $closedTickets);
+    }
 
-		$recentLoans = LoanApplication::where('created_at', '>=', now()->subDays(7))->get();
+    #[Test]
+    public function can_filter_loan_applications_by_date_range(): void
+    {
+        LoanApplication::factory()->create([
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+            'created_at' => now()->subDays(5),
+        ]);
 
-		$this->assertCount(1, $recentLoans);
-	}
+        LoanApplication::factory()->create([
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+            'created_at' => now()->subDays(15),
+        ]);
 
-	#[Test]
-	public function can_filter_by_user(): void
-	{
-		$otherUser = User::factory()->create();
+        $recentLoans = LoanApplication::where('created_at', '>=', now()->subDays(7))->get();
 
-		HelpdeskTicket::factory()->count(3)->create([
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $this->assertCount(1, $recentLoans);
+    }
 
-		HelpdeskTicket::factory()->count(2)->create([
-			'user_id' => $otherUser->id,
-			'category_id' => $this->category->id,
-		]);
+    #[Test]
+    public function can_filter_by_user(): void
+    {
+        $otherUser = User::factory()->create();
 
-		$userTickets = HelpdeskTicket::where('user_id', $this->user->id)->get();
+        HelpdeskTicket::factory()->count(3)->create([
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-		$this->assertCount(3, $userTickets);
-	}
+        HelpdeskTicket::factory()->count(2)->create([
+            'user_id' => $otherUser->id,
+            'category_id' => $this->category->id,
+        ]);
 
-	#[Test]
-	public function search_results_include_related_data(): void
-	{
-		$ticket = HelpdeskTicket::factory()->create([
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $userTickets = HelpdeskTicket::where('user_id', $this->user->id)->get();
 
-		$ticketWithRelations = HelpdeskTicket::with(['user', 'category'])
-			->find($ticket->id);
+        $this->assertCount(3, $userTickets);
+    }
 
-		$this->assertNotNull($ticketWithRelations->user);
-		$this->assertNotNull($ticketWithRelations->category);
-		$this->assertEquals($this->user->id, $ticketWithRelations->user->id);
-	}
+    #[Test]
+    public function search_results_include_related_data(): void
+    {
+        $ticket = HelpdeskTicket::factory()->create([
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-	#[Test]
-	public function can_combine_multiple_filters(): void
-	{
-		HelpdeskTicket::factory()->create([
-			'subject' => 'Laptop issue',
-			'status' => 'open',
-			'priority' => 'high',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $ticketWithRelations = HelpdeskTicket::with(['user', 'category'])
+            ->find($ticket->id);
 
-		HelpdeskTicket::factory()->create([
-			'subject' => 'Laptop problem',
-			'status' => 'closed',
-			'priority' => 'high',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $this->assertNotNull($ticketWithRelations->user);
+        $this->assertNotNull($ticketWithRelations->category);
+        $this->assertEquals($this->user->id, $ticketWithRelations->user->id);
+    }
 
-		HelpdeskTicket::factory()->create([
-			'subject' => 'Network issue',
-			'status' => 'open',
-			'priority' => 'low',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+    #[Test]
+    public function can_combine_multiple_filters(): void
+    {
+        HelpdeskTicket::factory()->create([
+            'subject' => 'Laptop issue',
+            'status' => 'open',
+            'priority' => 'high',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-		$results = HelpdeskTicket::query()
-			->where('subject', 'like', '%laptop%')
-			->where('status', 'open')
-			->where('priority', 'high')
-			->get();
+        HelpdeskTicket::factory()->create([
+            'subject' => 'Laptop problem',
+            'status' => 'closed',
+            'priority' => 'high',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-		$this->assertCount(1, $results);
-	}
+        HelpdeskTicket::factory()->create([
+            'subject' => 'Network issue',
+            'status' => 'open',
+            'priority' => 'low',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-	#[Test]
-	public function search_is_case_insensitive(): void
-	{
-		HelpdeskTicket::factory()->create([
-			'subject' => 'LAPTOP SCREEN BROKEN',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $results = HelpdeskTicket::query()
+            ->where('subject', 'like', '%laptop%')
+            ->where('status', 'open')
+            ->where('priority', 'high')
+            ->get();
 
-		$results = HelpdeskTicket::whereRaw('LOWER(subject) LIKE ?', ['%laptop%'])->get();
+        $this->assertCount(1, $results);
+    }
 
-		$this->assertCount(1, $results);
-	}
+    #[Test]
+    public function search_is_case_insensitive(): void
+    {
+        HelpdeskTicket::factory()->create([
+            'subject' => 'LAPTOP SCREEN BROKEN',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
+
+        $results = HelpdeskTicket::whereRaw('LOWER(subject) LIKE ?', ['%laptop%'])->get();
+
+        $this->assertCount(1, $results);
+    }
 }

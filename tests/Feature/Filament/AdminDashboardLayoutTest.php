@@ -11,7 +11,6 @@ use App\Filament\Widgets\TicketsByStatusChart;
 use App\Filament\Widgets\TicketVolumeChart;
 use App\Models\User;
 use Filament\Facades\Filament;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -24,8 +23,6 @@ use Tests\TestCase;
  */
 class AdminDashboardLayoutTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $admin;
 
     protected function setUp(): void

@@ -6,14 +6,11 @@ namespace Tests\Feature\Database\Seeders;
 
 use App\Models\Division;
 use Database\Seeders\FullDivisionSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class FullDivisionSeederTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function full_divisions_are_seeded_from_csv(): void
     {

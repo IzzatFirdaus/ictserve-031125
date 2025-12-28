@@ -9,7 +9,6 @@ use App\Models\Faq;
 use App\Models\GuestConversation;
 use App\Services\EmbeddingService;
 use App\Services\RagService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Mockery\MockInterface;
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class RagServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function tearDown(): void
     {
         Mockery::close();

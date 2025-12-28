@@ -13,15 +13,12 @@ use App\Models\User;
 use App\Services\AssetTransactionService;
 use App\Services\NotificationService;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AssetReturnedDamagedTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function asset_returned_with_damage_dispatches_broadcast_event(): void
     {

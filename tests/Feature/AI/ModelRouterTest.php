@@ -8,7 +8,6 @@ use App\Models\BedrockModelConfig;
 use App\Services\BedrockService;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use GuzzleHttp\Psr7\Utils;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -28,8 +27,6 @@ use Tests\TestCase;
 #[Group('bedrock')]
 class ModelRouterTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

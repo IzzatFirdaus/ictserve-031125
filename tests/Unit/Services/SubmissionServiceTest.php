@@ -8,7 +8,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\SubmissionService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class SubmissionServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private SubmissionService $service;
 
     protected function setUp(): void

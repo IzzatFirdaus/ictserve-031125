@@ -6,15 +6,12 @@ namespace Tests\Feature\Livewire;
 
 use App\Livewire\GuestLoanApplication;
 use App\Models\Division;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GuestLoanResponsibleOfficerTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function fields_show_and_require_based_on_checkbox(): void
     {

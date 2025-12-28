@@ -15,7 +15,6 @@ use App\Mail\NotificationDigest;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
@@ -31,8 +30,6 @@ use Tests\TestCase;
  */
 class NotificationJobsTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

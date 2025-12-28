@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class LanguageSwitcherTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Test default locale is Bahasa Melayu per D15 §2.1
      */

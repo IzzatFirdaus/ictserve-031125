@@ -8,7 +8,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Services\TokenService;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class TokenServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private TokenService $service;
 
     protected function setUp(): void

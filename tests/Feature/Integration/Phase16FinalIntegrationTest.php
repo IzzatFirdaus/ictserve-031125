@@ -8,7 +8,6 @@ use App\Models\Faq;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -34,8 +33,6 @@ use Tests\TestCase;
 #[Group('integration')]
 class Phase16FinalIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $staffUser;
 
     protected User $approverUser;

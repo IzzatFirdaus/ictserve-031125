@@ -14,7 +14,6 @@ use App\Models\LoanItem;
 use App\Models\TicketCategory;
 use App\Models\User;
 use App\Services\ExportService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -32,8 +31,6 @@ use Tests\TestCase;
  */
 class ExportFunctionalityTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected Division $division;

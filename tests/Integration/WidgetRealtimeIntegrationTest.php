@@ -7,7 +7,6 @@ namespace Tests\Integration;
 use App\Events\WidgetDataUpdated;
 use App\Models\User;
 use App\Services\WidgetRealtimeManager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -31,8 +30,6 @@ use Tests\TestCase;
  */
 class WidgetRealtimeIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $user;
 
     private User $adminUser;

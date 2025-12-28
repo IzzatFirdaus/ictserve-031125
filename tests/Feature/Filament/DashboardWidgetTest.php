@@ -17,7 +17,6 @@ use App\Models\Division;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -33,8 +32,6 @@ use Tests\TestCase;
  */
 class DashboardWidgetTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $admin;
 
     protected User $superuser;

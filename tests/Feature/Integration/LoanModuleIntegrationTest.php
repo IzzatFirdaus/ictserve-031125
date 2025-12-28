@@ -8,7 +8,6 @@ use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\CrossModuleIntegrationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Test;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class LoanModuleIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

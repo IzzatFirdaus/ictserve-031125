@@ -7,7 +7,6 @@ namespace Tests\Unit\Models;
 use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -21,8 +20,6 @@ use Tests\TestCase;
  */
 class CrossModuleIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Test isProcessed() returns false for unprocessed integration
      */

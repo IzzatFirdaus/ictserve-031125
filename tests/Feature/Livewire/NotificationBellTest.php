@@ -6,7 +6,6 @@ namespace Tests\Feature\Livewire;
 
 use App\Livewire\NotificationBell;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class NotificationBellTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function component_renders_for_authenticated_user(): void
     {

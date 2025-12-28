@@ -6,7 +6,6 @@ namespace Tests\Feature\Livewire\Auth;
 
 use App\Livewire\Auth\TwoFactorAuthentication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use PragmaRX\Google2FA\Google2FA;
@@ -14,8 +13,6 @@ use Tests\TestCase;
 
 class TwoFactorAuthenticationTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function two_factor_authentication_can_be_enabled(): void
     {

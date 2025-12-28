@@ -23,7 +23,6 @@ use App\Livewire\GuestLoanApplication;
 use App\Models\Division;
 use App\Models\Grade;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,8 +30,6 @@ use Tests\TestCase;
 
 class AuthenticatedFormAutoFillPropertyTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Property 4: Authenticated Form Auto-Fill Validation
      *

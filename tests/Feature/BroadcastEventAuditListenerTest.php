@@ -9,7 +9,6 @@ use App\Listeners\BroadcastEventAuditListener;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
 use Illuminate\Broadcasting\BroadcastEvent;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Spatie\Activitylog\Models\Activity;
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class BroadcastEventAuditListenerTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_logs_broadcast_events_to_activity_log(): void
     {

@@ -11,7 +11,6 @@ use App\Events\AiStreamingStarted;
 use App\Models\BedrockConversation;
 use App\Models\User;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class AiStreamingEventsTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function ai_streaming_started_event_broadcasts_correctly(): void
     {

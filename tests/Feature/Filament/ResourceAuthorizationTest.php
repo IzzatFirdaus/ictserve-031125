@@ -10,7 +10,6 @@ use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Filament\Resources\Users\UserResource;
 use App\Models\Asset;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class ResourceAuthorizationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

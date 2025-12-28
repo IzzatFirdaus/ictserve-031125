@@ -13,7 +13,6 @@ use App\Models\Division;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -35,8 +34,6 @@ use Tests\TestCase;
 #[Group('environment-specific')]
 class LoanModuleIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $staff;
 
     protected User $approver;

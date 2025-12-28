@@ -6,7 +6,6 @@ namespace Tests\Feature\Email;
 
 use App\Mail\Loans\OTPPickupMail;
 use App\Models\LoanApplication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class EmailTemplateBrandingTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function email_header_contains_jata_negara_image(): void
     {

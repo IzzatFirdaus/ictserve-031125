@@ -10,7 +10,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\TicketCategory;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use OwenIt\Auditing\Models\Audit;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -30,8 +29,6 @@ use Tests\TestCase;
  */
 class DualAuditSystemIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $adminUser;
 
     private User $staffUser;

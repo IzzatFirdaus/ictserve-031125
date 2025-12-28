@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Tests\Feature\Database\Seeders;
 
 use Database\Seeders\TicketCategorySeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class TicketCategorySeederTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function ticket_categories_are_seeded(): void
     {

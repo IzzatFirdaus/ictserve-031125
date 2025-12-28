@@ -6,7 +6,6 @@ namespace Tests\Feature\Portal;
 
 use App\Models\Division;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -21,8 +20,6 @@ use Tests\TestCase;
  */
 class AccessibilityComplianceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected Division $division;

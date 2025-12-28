@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class MemorySyncTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function sync_imports_markdown_file(): void
     {

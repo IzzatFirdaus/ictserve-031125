@@ -4,19 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Integration;
 
-use App\Enums\HelpdeskStatus;
 use App\Enums\LoanStatus;
-use App\Models\Asset;
-use App\Models\AssetCategory;
-use App\Models\Division;
-use App\Models\HelpdeskCategory;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -48,11 +40,12 @@ use Tests\TestCase;
 #[Group('integration')]
 class FrontendComprehensiveIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $staffUser;
+
     protected User $approverUser;
+
     protected User $adminUser;
+
     protected User $superuserUser;
 
     protected function setUp(): void
@@ -201,7 +194,7 @@ class FrontendComprehensiveIntegrationTest extends TestCase
         $expectedCategories = ['ui', 'form', 'layout'];
 
         foreach ($expectedCategories as $category) {
-            $categoryPath = $componentPath . '/' . $category;
+            $categoryPath = $componentPath.'/'.$category;
             $this->assertDirectoryExists($categoryPath, "Component category '{$category}' should exist");
         }
     }

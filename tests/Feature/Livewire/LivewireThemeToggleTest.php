@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\Components\ThemeToggleUnified;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -23,8 +22,6 @@ use Tests\TestCase;
  */
 class LivewireThemeToggleTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_defaults_to_light_when_no_preference_is_set(): void
     {

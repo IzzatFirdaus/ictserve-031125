@@ -7,15 +7,12 @@ namespace Tests\Feature\Livewire;
 use App\Livewire\Staff\SubmissionHistory;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SubmissionHistoryTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function renders_successfully(): void
     {

@@ -6,7 +6,6 @@ namespace Tests\Unit\Models;
 
 use App\Models\HelpdeskTicket;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -20,8 +19,6 @@ use Tests\TestCase;
  */
 class HelpdeskTicketHybridTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Test nullable user_id FK behavior for guest submissions (v3.6.0 Requirement 2.4)
      */

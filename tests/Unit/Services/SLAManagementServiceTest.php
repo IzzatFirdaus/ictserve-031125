@@ -9,7 +9,6 @@ use App\Models\TicketCategory;
 use App\Services\Notifications\SLANotificationService;
 use App\Services\SLAManagementService;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -24,8 +23,6 @@ use Tests\TestCase;
 #[CoversClass(SLAManagementService::class)]
 class SLAManagementServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private SLAManagementService $service;
 
     /** @var SLANotificationService&MockInterface */

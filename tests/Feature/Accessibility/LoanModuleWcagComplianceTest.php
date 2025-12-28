@@ -7,7 +7,6 @@ namespace Tests\Feature\Accessibility;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -21,8 +20,6 @@ use Tests\TestCase;
  */
 class LoanModuleWcagComplianceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected LoanApplication $application;
@@ -75,10 +72,10 @@ class LoanModuleWcagComplianceTest extends TestCase
                 $response->assertSee('<th scope="col"', false)
                     ->assertSee('role="table"', false);
             } else {
-                $this->markTestSkipped('Loan history page returned ' . $response->status());
+                $this->markTestSkipped('Loan history page returned '.$response->status());
             }
         } catch (\Throwable $e) {
-            $this->markTestSkipped('Loan history page error: ' . $e->getMessage());
+            $this->markTestSkipped('Loan history page error: '.$e->getMessage());
         }
     }
 
@@ -318,10 +315,10 @@ class LoanModuleWcagComplianceTest extends TestCase
                     $this->assertTrue(true);
                 }
             } else {
-                $this->markTestSkipped('Loan history page returned ' . $response->status());
+                $this->markTestSkipped('Loan history page returned '.$response->status());
             }
         } catch (\Throwable $e) {
-            $this->markTestSkipped('Loan history page error: ' . $e->getMessage());
+            $this->markTestSkipped('Loan history page error: '.$e->getMessage());
         }
     }
 
@@ -369,10 +366,10 @@ class LoanModuleWcagComplianceTest extends TestCase
                     'Status badges should use accessible color combinations'
                 );
             } else {
-                $this->markTestSkipped('Loan history page returned ' . $response->status());
+                $this->markTestSkipped('Loan history page returned '.$response->status());
             }
         } catch (\Throwable $e) {
-            $this->markTestSkipped('Loan history page error: ' . $e->getMessage());
+            $this->markTestSkipped('Loan history page error: '.$e->getMessage());
         }
     }
 }

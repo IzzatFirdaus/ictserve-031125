@@ -6,7 +6,6 @@ namespace Tests\Feature;
 
 use App\Livewire\Dashboard\WidgetCustomizationPanel;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class WidgetCustomizationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $user;
 
     protected function setUp(): void

@@ -13,7 +13,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Filament\Facades\Filament;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,8 +30,6 @@ use Tests\TestCase;
  */
 class UnifiedDashboardTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $admin;
 
     protected User $superuser;

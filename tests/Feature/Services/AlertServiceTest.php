@@ -7,7 +7,6 @@ namespace Tests\Feature\Services;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Services\AlertService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class AlertServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private AlertService $service;
 
     protected function setUp(): void

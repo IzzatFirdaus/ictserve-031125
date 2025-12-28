@@ -9,7 +9,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\CrossModuleIntegrationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -23,8 +22,6 @@ use Tests\TestCase;
  */
 class CrossModuleIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private CrossModuleIntegrationService $service;
 
     private User $user;

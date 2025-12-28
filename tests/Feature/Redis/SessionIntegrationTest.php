@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Redis;
 
 use Exception;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -23,8 +22,6 @@ use Tests\TestCase;
 #[Group('environment-specific')]
 class SessionIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

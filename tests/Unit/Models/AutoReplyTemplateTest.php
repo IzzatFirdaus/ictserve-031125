@@ -7,7 +7,6 @@ namespace Tests\Unit\Models;
 use App\Models\AutoReplyDraft;
 use App\Models\AutoReplyTemplate;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -20,8 +19,6 @@ use Tests\TestCase;
  */
 class AutoReplyTemplateTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_has_correct_fillable_attributes(): void
     {

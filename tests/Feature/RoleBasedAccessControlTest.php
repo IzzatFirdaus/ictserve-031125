@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -21,12 +20,11 @@ use Tests\TestCase;
  *
  * @see D03-FR-010.1 Role-based access control
  * @see D04 §4.4 RBAC implementation
+ *
  * @trace Requirements 7.1, 7.2, 7.3
  */
 class RoleBasedAccessControlTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -237,7 +235,7 @@ class RoleBasedAccessControlTest extends TestCase
      * @trace Requirements 7.1
      */
     #[Test]
-    public function staffRoleCanAccessMyDashboard(): void
+    public function staff_role_can_access_my_dashboard(): void
     {
         $user = User::factory()->create();
         $user->assignRole('staff');
@@ -257,7 +255,7 @@ class RoleBasedAccessControlTest extends TestCase
      * @trace Requirements 7.1
      */
     #[Test]
-    public function staffRoleCanViewPersonalSubmissionHistory(): void
+    public function staff_role_can_view_personal_submission_history(): void
     {
         $user = User::factory()->create();
         $user->assignRole('staff');
@@ -276,7 +274,7 @@ class RoleBasedAccessControlTest extends TestCase
      * @trace Requirements 7.2
      */
     #[Test]
-    public function adminRoleCanAccessFilamentPanel(): void
+    public function admin_role_can_access_filament_panel(): void
     {
         $user = User::factory()->create();
         $user->assignRole('admin');
@@ -295,7 +293,7 @@ class RoleBasedAccessControlTest extends TestCase
      * @trace Requirements 7.3
      */
     #[Test]
-    public function superuserRoleHasFullSystemAccess(): void
+    public function superuser_role_has_full_system_access(): void
     {
         $user = User::factory()->create();
         $user->assignRole('superuser');
@@ -316,7 +314,7 @@ class RoleBasedAccessControlTest extends TestCase
      */
     #[Test]
     #[DataProvider('rolePermissionProvider')]
-    public function roleHasCorrectPermissions(string $role, string $permission, bool $expected): void
+    public function role_has_correct_permissions(string $role, string $permission, bool $expected): void
     {
         $user = User::factory()->create();
         $user->assignRole($role);
@@ -374,7 +372,7 @@ class RoleBasedAccessControlTest extends TestCase
      * @trace Requirements 7.1, 3.1
      */
     #[Test]
-    public function unauthorizedAccessShowsBmErrorMessage(): void
+    public function unauthorized_access_shows_bm_error_message(): void
     {
         $user = User::factory()->create();
         $user->assignRole('staff');

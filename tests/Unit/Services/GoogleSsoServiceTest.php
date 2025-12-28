@@ -9,7 +9,6 @@ use App\Contracts\SsoHealthCheckInterface;
 use App\Exceptions\InvalidEmailDomainException;
 use App\Models\User;
 use App\Services\GoogleSsoService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 use Mockery;
 use Mockery\MockInterface;
@@ -27,8 +26,6 @@ use Tests\TestCase;
  */
 class GoogleSsoServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private GoogleSsoService $service;
 
     private SsoHealthCheckInterface|MockInterface $healthCheck;

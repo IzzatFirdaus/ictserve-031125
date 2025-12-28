@@ -26,7 +26,6 @@ namespace Tests\Feature\Auth;
 use App\Contracts\SsoHealthCheckInterface;
 use App\Events\GoogleSsoLinked;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User as SocialiteUser;
@@ -37,8 +36,6 @@ use Tests\TestCase;
 
 class GoogleAuthControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

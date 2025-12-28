@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Api;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class ApiRoutesTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function api_requires_authentication(): void
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -17,8 +16,6 @@ use Tests\TestCase;
  */
 class StaffPortalRoutesTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $staff;
 
     protected function setUp(): void

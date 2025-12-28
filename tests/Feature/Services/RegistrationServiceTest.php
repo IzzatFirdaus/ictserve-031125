@@ -9,7 +9,6 @@ use App\Exceptions\InvalidEmailDomainException;
 use App\Models\User;
 use App\Services\RegistrationService;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,8 +30,6 @@ use Tests\TestCase;
  */
 class RegistrationServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private RegistrationService $service;
 
     protected function setUp(): void

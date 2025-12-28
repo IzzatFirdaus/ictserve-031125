@@ -9,7 +9,6 @@ use App\Models\AssetCategory;
 use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -36,8 +35,6 @@ use Tests\TestCase;
  */
 class WcagComplianceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected LoanApplication $loanApplication;
@@ -152,6 +149,7 @@ class WcagComplianceTest extends TestCase
      * System is now Bahasa Melayu exclusive.
      *
      * Requirements: 1.1, 1.2 (BM Exclusive Interface)
+     *
      * @trace D15 §1.1 (Bahasa Melayu Sahaja)
      */
     #[Test]

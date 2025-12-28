@@ -8,7 +8,6 @@ use App\Contracts\PerformanceMonitoringServiceInterface;
 use App\Models\User;
 use App\Notifications\PerformanceAlertNotification;
 use App\Services\PerformanceMonitoringService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class PerformanceMonitoringServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private PerformanceMonitoringService $service;
 
     protected function setUp(): void

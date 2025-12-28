@@ -9,7 +9,6 @@ use App\Enums\AssetStatus;
 use App\Events\AssetReturnedDamaged;
 use App\Listeners\CreateMaintenanceTicketForDamagedAsset;
 use App\Models\Asset;
-use App\Models\CrossModuleIntegration;
 use App\Models\Division;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
@@ -17,7 +16,6 @@ use App\Models\LoanTransaction;
 use App\Models\TicketCategory;
 use App\Models\User;
 use App\Services\Notifications\TicketNotificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
@@ -35,8 +33,6 @@ use Tests\TestCase;
  */
 class EventDrivenIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $user;
 
     private Asset $asset;

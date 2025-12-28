@@ -6,15 +6,12 @@ namespace Tests\Feature\Email;
 
 use App\Mail\Loans\OTPPickupMail;
 use App\Models\LoanApplication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class OTPEmailTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function otp_email_can_be_sent(): void
     {

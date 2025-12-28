@@ -7,7 +7,6 @@ namespace Tests\Integration;
 use App\Models\User;
 use App\Notifications\WidgetErrorNotification;
 use App\Services\WidgetErrorHandler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
@@ -24,8 +23,6 @@ use Tests\TestCase;
  */
 class WidgetErrorHandlingIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected WidgetErrorHandler $errorHandler;
 
     protected function setUp(): void

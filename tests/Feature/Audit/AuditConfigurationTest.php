@@ -8,7 +8,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Resolvers\HashedIpAddressResolver;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use OwenIt\Auditing\Models\Audit;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class AuditConfigurationTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Test that audit configuration is enabled.
      */

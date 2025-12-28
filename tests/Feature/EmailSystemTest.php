@@ -21,7 +21,6 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\DualApprovalService;
 use App\Services\Notifications\EmailDispatcher;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Queue\Events\JobFailed;
@@ -53,8 +52,6 @@ use Tests\TestCase;
  */
 class EmailSystemTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected User $approver;

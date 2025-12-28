@@ -10,7 +10,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\InternalComment;
 use App\Models\TicketCategory;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
@@ -28,8 +27,6 @@ use Tests\TestCase;
  */
 class InternalCommentsTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected User $otherUser;

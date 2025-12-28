@@ -9,7 +9,6 @@ use App\Events\StatusUpdated;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class NotificationBroadcastTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $user;
 
     protected function setUp(): void

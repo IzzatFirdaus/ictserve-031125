@@ -6,7 +6,6 @@ namespace Tests\Feature\Filament;
 
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
-use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
 use App\Filament\Resources\Assets\AssetResource;
 use App\Filament\Resources\Assets\Pages\CreateAsset;
@@ -24,7 +23,6 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Filament\Actions\DeleteAction;
 use Filament\Facades\Filament;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -42,8 +40,6 @@ use Tests\TestCase;
  */
 class AdminPanelResourceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $admin;
 
     protected User $staff;
@@ -330,7 +326,7 @@ class AdminPanelResourceTest extends TestCase
         $division = Division::factory()->create();
         $application = LoanApplication::factory()->create(['division_id' => $division->id]);
 
-        $application->loanItems()->create([
+        $loanItem = $application->loanItems()->create([
             'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
@@ -346,7 +342,11 @@ class AdminPanelResourceTest extends TestCase
         // Verify the loan application has asset relationships loaded via eager loading
         $loadedApplication = LoanApplication::with('loanItems.asset')->find($application->id);
         $this->assertTrue($loadedApplication->loanItems->isNotEmpty());
-        $this->assertEquals($asset->id, $loadedApplication->loanItems->first()->asset->id);
+
+        // Find the specific loan item we created and verify its asset
+        $createdLoanItem = $loadedApplication->loanItems->where('id', $loanItem->id)->first();
+        $this->assertNotNull($createdLoanItem, 'Created loan item should exist');
+        $this->assertEquals($asset->id, $createdLoanItem->asset_id);
 
         // Verify eager loading is configured in the resource query
         $query = LoanApplicationResource::getEloquentQuery();

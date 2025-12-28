@@ -7,7 +7,6 @@ namespace Tests\Feature\Audit;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use OwenIt\Auditing\Models\Audit;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -27,8 +26,6 @@ use Tests\TestCase;
  */
 class DualAuditSystemPropertyTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Property: Both audit systems record model creation events
      * Validates: Requirement 6.1 - Compliance audit (owen-it) and operational log (spatie)

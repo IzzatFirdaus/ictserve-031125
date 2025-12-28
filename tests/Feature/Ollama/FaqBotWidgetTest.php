@@ -7,7 +7,6 @@ namespace Tests\Feature\Ollama;
 use App\Livewire\Ollama\FaqBotWidget;
 use App\Models\Faq;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class FaqBotWidgetTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_can_render_widget_without_errors(): void
     {

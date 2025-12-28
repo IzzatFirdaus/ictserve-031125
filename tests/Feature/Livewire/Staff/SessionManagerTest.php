@@ -6,7 +6,6 @@ namespace Tests\Feature\Livewire\Staff;
 
 use App\Livewire\Staff\SessionManager;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -14,8 +13,6 @@ use Tests\TestCase;
 
 class SessionManagerTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function other_browser_sessions_can_be_logged_out(): void
     {

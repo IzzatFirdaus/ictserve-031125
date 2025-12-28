@@ -7,7 +7,6 @@ namespace Tests\Integration;
 use App\Contracts\WidgetRegistryInterface;
 use App\Models\WidgetRegistry;
 use App\Services\WidgetRegistry as WidgetRegistryService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class ExistingWidgetRegistrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private WidgetRegistryInterface $widgetRegistry;
 
     protected function setUp(): void

@@ -7,7 +7,6 @@ namespace Tests\Feature\Filament\Resources;
 use App\Filament\Resources\OllamaAI\AutoReplyTemplateResource;
 use App\Models\AutoReplyTemplate;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -28,8 +27,6 @@ use Tests\TestCase;
  */
 class OllamaAutoReplyTemplateResourceTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function admin_can_render_template_index_page(): void
     {

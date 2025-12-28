@@ -7,7 +7,6 @@ namespace Tests\Feature\Services;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Services\DataExportService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -20,8 +19,6 @@ use Tests\TestCase;
  */
 class DataExportServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private DataExportService $service;
 
     protected function setUp(): void

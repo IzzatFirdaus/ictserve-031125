@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\AI;
 
 use App\Services\DataClassificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -25,8 +24,6 @@ use Tests\TestCase;
 #[Group('bedrock')]
 class HybridQueryRouterTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

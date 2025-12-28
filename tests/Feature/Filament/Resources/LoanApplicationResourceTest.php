@@ -11,7 +11,6 @@ use App\Filament\Resources\LoanApplications\Pages\EditLoanApplication;
 use App\Filament\Resources\LoanApplications\Pages\ListLoanApplications;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -28,8 +27,6 @@ use Tests\TestCase;
  */
 class LoanApplicationResourceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

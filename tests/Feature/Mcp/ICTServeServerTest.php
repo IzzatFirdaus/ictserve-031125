@@ -10,14 +10,11 @@ use App\Mcp\Tools\QueryHelpdeskTicketsTool;
 use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ICTServeServerTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function query_helpdesk_tickets_tool(): void
     {

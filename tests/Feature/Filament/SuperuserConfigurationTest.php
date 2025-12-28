@@ -7,7 +7,6 @@ namespace Tests\Feature\Filament;
 use App\Filament\Pages\SuperuserConfiguration;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -24,8 +23,6 @@ use Tests\TestCase;
  */
 class SuperuserConfigurationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $superuser;
 
     protected User $admin;

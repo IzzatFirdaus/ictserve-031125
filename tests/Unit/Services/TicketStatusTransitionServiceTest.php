@@ -7,7 +7,6 @@ namespace Tests\Unit\Services;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
 use App\Services\TicketStatusTransitionService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -22,8 +21,6 @@ use Tests\TestCase;
 #[CoversClass(TicketStatusTransitionService::class)]
 class TicketStatusTransitionServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private TicketStatusTransitionService $service;
 
     protected function setUp(): void

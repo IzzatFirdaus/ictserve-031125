@@ -9,7 +9,6 @@ use App\Livewire\GuestLoanApplication;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\Division;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -34,8 +33,6 @@ use Tests\TestCase;
  */
 class GuestLoanApplicationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected Division $division;
 
     protected AssetCategory $category;

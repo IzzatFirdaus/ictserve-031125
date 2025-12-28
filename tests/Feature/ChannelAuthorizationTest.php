@@ -8,7 +8,6 @@ use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class ChannelAuthorizationTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function user_can_access_own_private_channel(): void
     {

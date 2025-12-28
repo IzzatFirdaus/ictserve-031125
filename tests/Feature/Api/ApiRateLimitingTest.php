@@ -6,7 +6,6 @@ namespace Tests\Feature\Api;
 
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use PHPUnit\Framework\Attributes\Test;
@@ -24,8 +23,6 @@ use Tests\TestCase;
  */
 class ApiRateLimitingTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

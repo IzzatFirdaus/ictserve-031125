@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Services\EncryptionService;
 use App\Services\PDPAComplianceService;
 use App\Services\SecurityMonitoringService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
@@ -32,8 +31,6 @@ use Tests\TestCase;
  */
 class SecurityComplianceValidationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private EncryptionService $encryptionService;
 
     private PDPAComplianceService $pdpaService;

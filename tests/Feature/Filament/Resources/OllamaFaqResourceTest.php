@@ -7,7 +7,6 @@ namespace Tests\Feature\Filament\Resources;
 use App\Filament\Resources\OllamaAI\FaqResource;
 use App\Models\Faq;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -27,8 +26,6 @@ use Tests\TestCase;
  */
 class OllamaFaqResourceTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function admin_can_render_faq_index_page(): void
     {

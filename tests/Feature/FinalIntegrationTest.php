@@ -9,21 +9,18 @@ use App\Enums\LoanStatus;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Services\OTPHandoverService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class FinalIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_runs_comprehensive_integration_flow(): void
     {
         // Fake events to prevent broadcast exceptions
         Event::fake();
-        
+
         // Create a loan application and asset
         $loan = LoanApplication::factory()->create();
         $asset = Asset::factory()->create();

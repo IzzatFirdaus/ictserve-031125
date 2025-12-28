@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Redis;
 
 use Exception;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Redis;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -22,8 +21,6 @@ use Tests\TestCase;
 #[Group('environment-specific')]
 class RedisConnectionTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -88,7 +85,7 @@ class RedisConnectionTest extends TestCase
         $this->assertEquals($expectedDatabase, config("database.redis.{$connectionName}.database"));
 
         // Test basic operation
-        $testKey = "test_key_{$connectionName}_" . time();
+        $testKey = "test_key_{$connectionName}_".time();
         $testValue = "test_value_{$connectionName}";
 
         $connection->set($testKey, $testValue);
@@ -110,7 +107,7 @@ class RedisConnectionTest extends TestCase
             $connection = Redis::connection();
             $connection->ping();
         } catch (Exception $e) {
-            $this->fail('Redis connection should not timeout with proper configuration: ' . $e->getMessage());
+            $this->fail('Redis connection should not timeout with proper configuration: '.$e->getMessage());
         }
     }
 
@@ -161,7 +158,7 @@ class RedisConnectionTest extends TestCase
     public function it_can_perform_basic_redis_operations(): void
     {
         $connection = Redis::connection();
-        $testKey = 'test_basic_operations_' . time();
+        $testKey = 'test_basic_operations_'.time();
 
         // Test SET operation (Predis returns Status object, not boolean)
         $result = $connection->set($testKey, 'test_value');
@@ -206,7 +203,7 @@ class RedisConnectionTest extends TestCase
 
         // Test that prefix is applied
         $connection = Redis::connection();
-        $testKey = 'prefix_test_' . time();
+        $testKey = 'prefix_test_'.time();
 
         $connection->set($testKey, 'test_value');
 

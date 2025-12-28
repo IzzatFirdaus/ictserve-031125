@@ -11,7 +11,6 @@ use App\Filament\Resources\Loans\Pages\ViewLoanApplication;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class LoanApplicationResourceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $admin;
 
     private User $superuser;

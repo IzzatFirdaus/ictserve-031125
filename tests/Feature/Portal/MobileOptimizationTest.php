@@ -6,7 +6,6 @@ namespace Tests\Feature\Portal;
 
 use App\Models\User;
 use App\Services\MobileOptimizationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class MobileOptimizationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private MobileOptimizationService $mobileService;
 
     protected function setUp(): void

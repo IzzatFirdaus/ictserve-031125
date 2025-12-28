@@ -11,7 +11,6 @@ use App\Models\InternalComment;
 use App\Models\LoanApplication;
 use App\Models\TicketCategory;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class DatabaseQueryOptimizationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected Division $division;

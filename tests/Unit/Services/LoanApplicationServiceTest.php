@@ -13,7 +13,6 @@ use App\Models\User;
 use App\Services\DualApprovalService;
 use App\Services\LoanApplicationService;
 use App\Services\NotificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -28,8 +27,6 @@ use Tests\TestCase;
  */
 class LoanApplicationServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private LoanApplicationService $service;
 
     private DualApprovalService $approvalService;

@@ -7,14 +7,11 @@ namespace Tests\Feature\Livewire\Loan;
 use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GuestApplicationFormTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function guest_application_form_renders_in_bahasa(): void
     {

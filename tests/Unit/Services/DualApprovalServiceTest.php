@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Services\ApprovalMatrixService;
 use App\Services\DualApprovalService;
 use App\Services\Notifications\LoanNotificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -25,8 +24,6 @@ use Tests\TestCase;
 #[CoversClass(DualApprovalService::class)]
 class DualApprovalServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private DualApprovalService $service;
 
     /** @var ApprovalMatrixService&MockInterface */

@@ -8,15 +8,12 @@ use App\Models\ReportSchedule;
 use App\Services\AutomatedReportService;
 use App\Services\ReportBuilderService;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
 class AutomatedReportServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function tearDown(): void
     {
         Carbon::setTestNow();

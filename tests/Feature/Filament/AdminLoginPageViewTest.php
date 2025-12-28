@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Filament;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AdminLoginPageViewTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function admin_login_page_displays_branding_footer_and_chatbot_slot(): void
     {

@@ -8,7 +8,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\GuestSubmissionClaimService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class GuestSubmissionClaimServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private GuestSubmissionClaimService $service;
 
     protected function setUp(): void

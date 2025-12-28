@@ -6,7 +6,6 @@ namespace Tests\Feature\Livewire\Portal;
 
 use App\Livewire\Portal\UserProfile;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -15,8 +14,6 @@ use Tests\TestCase;
 
 class UserProfileTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected function setUp(): void
@@ -120,7 +117,7 @@ class UserProfileTest extends TestCase
     public function removes_profile_picture_successfully(): void
     {
         Storage::fake('public');
-        
+
         // First upload a picture
         $path = 'profile-pictures/test.jpg';
         Storage::disk('public')->put($path, 'content');

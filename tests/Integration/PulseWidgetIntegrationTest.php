@@ -7,7 +7,6 @@ namespace Tests\Integration;
 use App\Filament\Widgets\PulseOverviewWidget;
 use App\Filament\Widgets\QueueStatsWidget;
 use App\Services\PulseWidgetIntegration;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Pulse\Facades\Pulse;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class PulseWidgetIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected PulseWidgetIntegration $pulseIntegration;
 
     protected function setUp(): void

@@ -6,7 +6,6 @@ namespace Tests\Feature\AI;
 
 use App\Models\BedrockConversation;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -21,8 +20,6 @@ use Tests\TestCase;
 #[Group('bedrock')]
 class ConversationManagerTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_creates_conversation_for_authenticated_user(): void
     {

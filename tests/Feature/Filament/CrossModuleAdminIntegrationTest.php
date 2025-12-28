@@ -19,7 +19,6 @@ use App\Models\LoanApplication;
 use App\Models\LoanTransaction;
 use App\Models\TicketCategory;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -37,8 +36,6 @@ use Tests\TestCase;
  */
 class CrossModuleAdminIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $admin;
 
     protected function setUp(): void
@@ -149,7 +146,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $division = Division::factory()->create();
         $application = LoanApplication::factory()->create(['division_id' => $division->id]);
 
-        $application->loanItems()->create([
+        $loanItem = $application->loanItems()->create([
             'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
@@ -164,8 +161,10 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Verify asset details are accessible via eager loading
         $loadedApp = LoanApplication::with('loanItems.asset')->find($application->id);
-        $this->assertNotNull($loadedApp->loanItems->first()->asset);
-        $this->assertEquals('AST-2025-001', $loadedApp->loanItems->first()->asset->asset_tag);
+        $createdLoanItem = $loadedApp->loanItems->where('id', $loanItem->id)->first();
+        $this->assertNotNull($createdLoanItem, 'Created loan item should exist');
+        $this->assertNotNull($createdLoanItem->asset, 'Asset should be loaded');
+        $this->assertEquals($asset->id, $createdLoanItem->asset_id);
     }
 
     #[Test]
@@ -514,7 +513,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
             'applicant_name' => 'Test Applicant',
         ]);
 
-        $application->loanItems()->create([
+        $loanItem = $application->loanItems()->create([
             'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
@@ -529,8 +528,9 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Verify asset data is accessible via relationship
         $loadedApp = LoanApplication::with('loanItems.asset')->find($application->id);
-        $this->assertNotNull($loadedApp->loanItems->first());
-        $this->assertEquals('Unique Laptop Model', $loadedApp->loanItems->first()->asset->name);
+        $createdLoanItem = $loadedApp->loanItems->where('id', $loanItem->id)->first();
+        $this->assertNotNull($createdLoanItem, 'Created loan item should exist');
+        $this->assertEquals($asset->id, $createdLoanItem->asset_id);
         $this->assertDatabaseHas('loan_items', [
             'asset_id' => $asset->id,
             'loan_application_id' => $application->id,

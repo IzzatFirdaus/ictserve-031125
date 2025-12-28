@@ -11,7 +11,6 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Notifications\TicketAssignedNotification;
 use App\Services\UnifiedNotificationDispatcher;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\Test;
@@ -27,8 +26,6 @@ use Tests\TestCase;
  */
 class UnifiedNotificationBroadcastIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $user;
 
     private UnifiedNotificationDispatcher $dispatcher;

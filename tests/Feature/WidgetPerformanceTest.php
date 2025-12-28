@@ -7,7 +7,6 @@ namespace Tests\Feature;
 use App\Filament\Widgets\WidgetPerformanceWidget;
 use App\Models\User;
 use App\Services\PulseWidgetIntegration;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class WidgetPerformanceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

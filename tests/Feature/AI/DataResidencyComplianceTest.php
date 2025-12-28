@@ -10,7 +10,6 @@ use App\Services\BedrockService;
 use App\Services\DataClassificationService;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use GuzzleHttp\Psr7\Utils;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -31,8 +30,6 @@ use Tests\TestCase;
 #[Group('security')]
 class DataResidencyComplianceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -250,6 +247,7 @@ class DataResidencyComplianceTest extends TestCase
             ->willReturnCallback(function () {
                 // Simulate a small delay to ensure response_time_ms > 0
                 usleep(1000); // 1ms delay
+
                 return [
                     'body' => Utils::streamFor(json_encode([
                         'content' => [['text' => 'Response']],

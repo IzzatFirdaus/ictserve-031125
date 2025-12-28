@@ -7,7 +7,6 @@ namespace Tests\Feature\Livewire;
 use App\Livewire\ExportSubmissions;
 use App\Models\User;
 use App\Services\ExportService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Livewire\Livewire;
 use Mockery;
@@ -17,8 +16,6 @@ use Tests\TestCase;
 
 class ExportSubmissionsTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function custom_range_requires_dates(): void
     {

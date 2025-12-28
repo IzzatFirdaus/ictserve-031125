@@ -24,15 +24,12 @@ use App\Models\Grade;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class HybridSubmissionPathPropertyTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Property 3: Hybrid Submission Path Validation
      *

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Accessibility;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -20,8 +19,6 @@ use Tests\TestCase;
  */
 class FilamentAccessibilityTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $admin;
 
     protected function setUp(): void

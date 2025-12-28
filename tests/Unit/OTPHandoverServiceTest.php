@@ -7,15 +7,12 @@ namespace Tests\Unit;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\OTPHandoverService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class OTPHandoverServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected OTPHandoverService $service;
 
     protected function setUp(): void

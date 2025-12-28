@@ -16,7 +16,6 @@ use App\Models\TicketCategory;
 use App\Models\User;
 use App\Services\CrossModuleIntegrationService;
 use App\Services\Notifications\TicketNotificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -31,8 +30,6 @@ use Tests\TestCase;
 #[CoversClass(CrossModuleIntegrationService::class)]
 class CrossModuleIntegrationServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private CrossModuleIntegrationService $service;
 
     /** @var TicketNotificationService&MockInterface */

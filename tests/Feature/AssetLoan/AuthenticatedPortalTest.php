@@ -11,7 +11,6 @@ use App\Models\AssetCategory;
 use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -30,8 +29,6 @@ use Tests\TestCase;
  */
 class AuthenticatedPortalTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $staff;
 
     protected User $approver;
@@ -349,7 +346,7 @@ class AuthenticatedPortalTest extends TestCase
 
         // Debug: Check for any errors
         if ($response->getStatusCode() !== 302) {
-            $this->fail("Extension request failed. Status: {$response->getStatusCode()}. Session errors: " . json_encode(session('errors')));
+            $this->fail("Extension request failed. Status: {$response->getStatusCode()}. Session errors: ".json_encode(session('errors')));
         }
 
         $response->assertSessionHasNoErrors();

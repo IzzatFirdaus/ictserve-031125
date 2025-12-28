@@ -6,15 +6,12 @@ namespace Tests\Feature\Email;
 
 use App\Mail\Loans\ResponsibleOfficerSponsorshipRequestMail;
 use App\Models\LoanApplication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SponsorshipEmailTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function sponsorship_email_can_be_sent(): void
     {

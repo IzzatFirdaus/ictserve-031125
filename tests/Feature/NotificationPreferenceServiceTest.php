@@ -7,7 +7,6 @@ namespace Tests\Feature;
 use App\Contracts\NotificationPreferenceServiceInterface;
 use App\Models\User;
 use App\Services\NotificationPreferenceService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class NotificationPreferenceServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private NotificationPreferenceServiceInterface $service;
 
     protected function setUp(): void

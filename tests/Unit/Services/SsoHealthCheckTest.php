@@ -6,7 +6,6 @@ namespace Tests\Unit\Services;
 
 use App\Contracts\SsoHealthCheckInterface;
 use App\Services\SsoHealthCheck;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -25,8 +24,6 @@ use Tests\TestCase;
  */
 class SsoHealthCheckTest extends TestCase
 {
-    use RefreshDatabase;
-
     private SsoHealthCheck $service;
 
     protected function setUp(): void

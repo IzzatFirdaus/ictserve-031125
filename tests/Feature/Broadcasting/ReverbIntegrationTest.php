@@ -8,10 +8,9 @@ use App\Events\TicketStatusChanged;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
 use Illuminate\Broadcasting\BroadcastManager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -26,8 +25,6 @@ use Tests\TestCase;
 #[Group('environment-specific')]
 class ReverbIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

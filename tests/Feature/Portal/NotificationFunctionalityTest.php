@@ -9,7 +9,6 @@ use App\Livewire\Portal\NotificationBell;
 use App\Livewire\Portal\NotificationCenter;
 use App\Models\Division;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -26,8 +25,6 @@ use Tests\TestCase;
  */
 class NotificationFunctionalityTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $user;
 
     protected Division $division;

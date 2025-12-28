@@ -17,15 +17,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Volt\Volt;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function login_screen_can_be_rendered(): void
     {

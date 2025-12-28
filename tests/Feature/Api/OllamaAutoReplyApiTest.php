@@ -9,7 +9,6 @@ use App\Models\AutoReplyDraft;
 use App\Models\AutoReplyTemplate;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -32,8 +31,6 @@ use Tests\TestCase;
  */
 class OllamaAutoReplyApiTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

@@ -13,7 +13,6 @@ use App\Filament\Resources\Assets\Pages\ListAssets;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -28,8 +27,6 @@ use Tests\TestCase;
  */
 class AssetResourceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

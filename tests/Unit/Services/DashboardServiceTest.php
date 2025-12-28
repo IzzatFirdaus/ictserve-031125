@@ -9,7 +9,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\DashboardService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -23,8 +22,6 @@ use Tests\TestCase;
  */
 class DashboardServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private DashboardService $service;
 
     protected function setUp(): void

@@ -14,7 +14,6 @@ use App\Models\LoanItem;
 use App\Models\TicketCategory;
 use App\Services\CrossModuleIntegrationService;
 use App\Services\Notifications\TicketNotificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use Mockery;
 use Mockery\MockInterface;
@@ -32,8 +31,6 @@ use Tests\TestCase;
  */
 class CrossModuleIntegrationServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private CrossModuleIntegrationService $service;
 
     /** @var TicketNotificationService&MockInterface */

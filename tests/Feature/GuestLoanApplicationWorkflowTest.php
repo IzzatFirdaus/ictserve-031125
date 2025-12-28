@@ -8,15 +8,12 @@ use App\Livewire\GuestLoanApplication;
 use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GuestLoanApplicationWorkflowTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function guest_can_submit_loan_application_with_null_user_id(): void
     {

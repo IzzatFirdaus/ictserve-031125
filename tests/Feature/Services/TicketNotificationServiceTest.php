@@ -12,7 +12,6 @@ use App\Models\User;
 use App\Notifications\MaintenanceTicketCreated;
 use App\Services\Notifications\EmailDispatcher;
 use App\Services\Notifications\TicketNotificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
@@ -20,8 +19,6 @@ use Tests\TestCase;
 
 class TicketNotificationServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_broadcasts_user_notifications_for_maintenance_tickets(): void
     {

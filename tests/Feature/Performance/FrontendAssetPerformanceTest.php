@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Performance;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class FrontendAssetPerformanceTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Get performance threshold multiplier for CI environment
      */

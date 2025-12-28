@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -24,8 +23,6 @@ use Tests\TestCase;
 #[CoversClass(\App\Providers\TelescopeServiceProvider::class)]
 class TelescopeAccessTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

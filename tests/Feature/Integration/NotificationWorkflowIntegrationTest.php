@@ -9,7 +9,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\TicketCategory;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -30,8 +29,6 @@ use Tests\TestCase;
  */
 class NotificationWorkflowIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $adminUser;
 
     private User $staffUser;

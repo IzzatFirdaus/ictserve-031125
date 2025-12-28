@@ -8,7 +8,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\ExportService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
@@ -23,8 +22,6 @@ use Tests\TestCase;
  */
 class ExportServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private ExportService $service;
 
     protected function setUp(): void

@@ -6,7 +6,6 @@ namespace Tests\Feature;
 
 use App\Models\Division;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -30,8 +29,6 @@ use Tests\TestCase;
  */
 class UserProfileTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $user;
 
     private Division $division;

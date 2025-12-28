@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Tests\Feature\Redis;
 
 use Exception;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -23,8 +22,6 @@ use Tests\TestCase;
 #[Group('environment-specific')]
 class CacheIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

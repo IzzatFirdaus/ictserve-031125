@@ -8,7 +8,6 @@ use App\Livewire\Portal\Dashboard\StatisticsCards;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,8 +21,6 @@ use Tests\TestCase;
  */
 class DashboardTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Test authenticated user can access dashboard
      *

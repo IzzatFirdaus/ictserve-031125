@@ -11,10 +11,9 @@ use App\Events\TicketAssigned;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -28,8 +27,6 @@ use Tests\TestCase;
 #[Group('environment-specific')]
 final class BroadcastingTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function authorizes_private_user_channel_for_owner(): void
     {

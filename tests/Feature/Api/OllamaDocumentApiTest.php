@@ -9,7 +9,6 @@ use App\Models\Document;
 use App\Models\DocumentChunk;
 use App\Models\User;
 use App\Services\DocumentService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
@@ -37,8 +36,6 @@ use Tests\TestCase;
  */
 class OllamaDocumentApiTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

@@ -11,7 +11,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\HorizonMonitoringService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Group;
@@ -28,8 +27,6 @@ use Tests\TestCase;
 #[Group('environment-specific')]
 class HorizonIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private User $adminUser;
 
     private User $superUser;

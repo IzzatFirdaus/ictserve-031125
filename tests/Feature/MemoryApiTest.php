@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class MemoryApiTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected function setUp(): void
     {

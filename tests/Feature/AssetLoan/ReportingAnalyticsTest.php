@@ -14,7 +14,6 @@ use App\Models\AssetCategory;
 use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
@@ -35,8 +34,6 @@ use Tests\TestCase;
  */
 class ReportingAnalyticsTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $admin;
 
     protected User $superuser;

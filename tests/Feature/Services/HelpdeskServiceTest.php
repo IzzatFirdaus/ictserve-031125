@@ -8,7 +8,6 @@ use App\Contracts\HelpdeskServiceInterface;
 use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -24,8 +23,6 @@ use Tests\TestCase;
  */
 class HelpdeskServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     private HelpdeskServiceInterface $service;
 
     protected function setUp(): void
