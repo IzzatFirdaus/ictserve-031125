@@ -15,6 +15,7 @@ use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -64,6 +65,9 @@ class ReportingAnalyticsTest extends TestCase
 
         // Fake mail
         Mail::fake();
+
+        // Fake all events to prevent broadcast exceptions
+        Event::fake();
     }
 
     // ========================================
@@ -458,7 +462,7 @@ class ReportingAnalyticsTest extends TestCase
         for ($i = 0; $i < 500; $i++) {
             Asset::factory()->create([
                 'category_id' => $this->category->id,
-                'asset_tag' => 'TEST-2025-'.str_pad((string) ($i + 1), 4, '0', STR_PAD_LEFT),
+                'asset_tag' => 'TEST-2025-' . str_pad((string) ($i + 1), 4, '0', STR_PAD_LEFT),
             ]);
         }
 
@@ -522,11 +526,14 @@ class ReportingAnalyticsTest extends TestCase
     public function alert_service_can_check_approval_delays(): void
     {
         // Create applications pending approval for more than 48 hours
-        LoanApplication::factory()->count(2)->create([
-            'division_id' => $this->division->id,
-            'status' => LoanStatus::UNDER_REVIEW,
-            'created_at' => now()->subHours(50),
-        ]);
+        // Use withoutEvents to prevent broadcast events
+        LoanApplication::withoutEvents(function () {
+            LoanApplication::factory()->count(2)->create([
+                'division_id' => $this->division->id,
+                'status' => LoanStatus::UNDER_REVIEW,
+                'created_at' => now()->subHours(50),
+            ]);
+        });
 
         $alertService = app(\App\Services\ConfigurableAlertService::class);
 
@@ -544,15 +551,18 @@ class ReportingAnalyticsTest extends TestCase
         $category = AssetCategory::factory()->create();
 
         // Only 1 available out of 10 total (10% availability)
-        Asset::factory()->count(1)->create([
-            'category_id' => $category->id,
-            'status' => AssetStatus::AVAILABLE,
-        ]);
+        // Use withoutEvents to prevent broadcast events
+        Asset::withoutEvents(function () use ($category) {
+            Asset::factory()->count(1)->create([
+                'category_id' => $category->id,
+                'status' => AssetStatus::AVAILABLE,
+            ]);
 
-        Asset::factory()->count(9)->create([
-            'category_id' => $category->id,
-            'status' => AssetStatus::LOANED,
-        ]);
+            Asset::factory()->count(9)->create([
+                'category_id' => $category->id,
+                'status' => AssetStatus::LOANED,
+            ]);
+        });
 
         $alertService = app(\App\Services\ConfigurableAlertService::class);
 

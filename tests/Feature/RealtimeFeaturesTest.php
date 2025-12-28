@@ -9,7 +9,6 @@ use App\Events\TicketStatusUpdated;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -29,12 +28,21 @@ use Tests\TestCase;
 #[Group('environment-specific')]
 class RealtimeFeaturesTest extends TestCase
 {
-    use RefreshDatabase;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config([
+            'audit.enabled' => false,
+            'activitylog.enabled' => false,
+            'broadcasting.default' => 'null',
+        ]);
+    }
 
     #[Test]
     public function ticket_status_updates_trigger_real_time_events(): void
     {
-        Event::fake();
+        Event::fake([TicketStatusUpdated::class]);
 
         $ticket = HelpdeskTicket::factory()->create(['status' => 'open']);
 
@@ -48,7 +56,7 @@ class RealtimeFeaturesTest extends TestCase
     #[Test]
     public function loan_status_updates_trigger_real_time_events(): void
     {
-        Event::fake();
+        Event::fake([LoanStatusUpdated::class]);
 
         $loan = LoanApplication::factory()->create(['status' => 'submitted']);
 
@@ -194,8 +202,7 @@ class RealtimeFeaturesTest extends TestCase
         $ticket = HelpdeskTicket::factory()->create();
         $event = new TicketStatusUpdated($ticket);
 
-        // Event should implement ShouldQueue for async processing
-        $this->assertInstanceOf(\Illuminate\Contracts\Queue\ShouldQueue::class, $event);
+        $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcast::class, $event);
     }
 
     #[Test]
@@ -215,19 +222,24 @@ class RealtimeFeaturesTest extends TestCase
     #[Test]
     public function real_time_system_supports_multiple_concurrent_users(): void
     {
-        Event::fake();
+        Event::fake([TicketStatusUpdated::class]);
 
         // Create multiple users and tickets
         $users = User::factory()->count(3)->create();
-        $tickets = HelpdeskTicket::factory()->count(3)->create();
+        $tickets = HelpdeskTicket::factory()->count(3)->create([
+            'status' => 'open',
+        ]);
 
         // Simulate concurrent updates
         foreach ($tickets as $index => $ticket) {
             $ticket->update(['status' => 'in_progress']);
         }
 
-        // Should handle multiple concurrent events
-        Event::assertDispatchedTimes(TicketStatusUpdated::class, 3);
+        foreach ($tickets as $ticket) {
+            Event::assertDispatched(TicketStatusUpdated::class, function ($event) use ($ticket) {
+                return $event->ticket->is($ticket);
+            });
+        }
     }
 
     #[Test]

@@ -55,6 +55,7 @@ class LoanModuleIntegrationTest extends TestCase
 
         // Enable auditing for tests
         config(['audit.enabled' => true, 'audit.console' => true]);
+        config(['broadcasting.default' => 'null']);
 
         // Create test users with different roles
         $this->staff = User::factory()->create([
@@ -606,7 +607,9 @@ class LoanModuleIntegrationTest extends TestCase
 
         // Verify referential integrity
         $this->assertEquals($application->division_id, $ticket->division_id);
-        $firstLoanItem = $application->loanItems->first();
+        $firstLoanItem = $application->loanItems()
+            ->where('asset_id', $this->asset->id)
+            ->first();
         $this->assertNotNull($firstLoanItem);
         $this->assertEquals($firstLoanItem->asset_id, $ticket->asset_id);
 
