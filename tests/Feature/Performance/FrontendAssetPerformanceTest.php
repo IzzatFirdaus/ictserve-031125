@@ -25,6 +25,14 @@ class FrontendAssetPerformanceTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * Get performance threshold multiplier for CI environment
+     */
+    private function getThresholdMultiplier(): float
+    {
+        return env('CI', false) ? 3.0 : 1.0;
+    }
+
+    /**
      * Test Vite manifest exists and is valid
      *
      * @see D03-FR-015.4 Asset bundling
@@ -281,6 +289,7 @@ class FrontendAssetPerformanceTest extends TestCase
     #[Test]
     public function filament_admin_asset_loading(): void
     {
+        $multiplier = $this->getThresholdMultiplier();
         $admin = \App\Models\User::factory()->create(['role' => 'admin']);
         $admin->assignRole('admin');
 
@@ -296,7 +305,8 @@ class FrontendAssetPerformanceTest extends TestCase
 
         // Admin panel should load within acceptable time for test environment
         // Note: Filament has heavy assets and test environment is slower than production
-        $this->assertLessThan(60.0, $loadTime, 'Filament admin panel loading too slow');
+        // Base threshold: 20s local, 60s CI
+        $this->assertLessThan(20.0 * $multiplier, $loadTime, 'Filament admin panel loading too slow');
 
         // Verify Filament assets are loaded
         $content = $response->getContent();
