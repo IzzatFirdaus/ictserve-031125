@@ -1,6 +1,6 @@
 {
 	"name": "ICTServe (Docker Compose)",
-	"dockerComposeFile": ["../compose.yaml", "../compose.ours.yaml"],
+	"dockerComposeFile": ["../compose.yaml", "../compose.dev.yaml", "../compose.ours.yaml"],
 	"service": "app",
 	"workspaceFolder": "/var/www/html",
 	"runServices": ["db", "app"],
@@ -14,11 +14,14 @@
 	"postCreateCommand": "sh -lc 'bash scripts/codespaces-post-create.sh'",
 	"remoteUser": "www-data",
 	"remoteEnv": {
-		"GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}"
+		"PAT_GITHUB_ACCESS_TOKEN": "${localEnv:PAT_GITHUB_ACCESS_TOKEN}",
+		"GH_TOKEN": "${localEnv:GH_TOKEN}",
+		"COMPOSER_AUTH": "{\"github-oauth\": {\"github.com\": \"${localEnv:PAT_GITHUB_ACCESS_TOKEN}\"}}"
 	},
 	"containerEnv": {
 		"COMPOSER_CACHE_DIR": "/home/www-data/.composer/cache",
-		"NPM_CONFIG_CACHE": "/home/www-data/.npm/_cacache"
+		"NPM_CONFIG_CACHE": "/home/www-data/.npm/_cacache",
+		"COMPOSER_ALLOW_SUPERUSER": "1"
 	},
 	"mounts": [
 		"source=codespaces-composer-cache,target=/home/www-data/.composer/cache,type=volume",
