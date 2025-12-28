@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature\Percy;
 
 use App\Services\PercyService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
  * Percy Configuration Test
- * 
+ *
  * Tests Percy configuration management system for ICTServe v3.6.1
  */
 class PercyConfigurationTest extends TestCase
@@ -24,7 +24,8 @@ class PercyConfigurationTest extends TestCase
         $this->percyService = app(PercyService::class);
     }
 
-    public function test_percy_configuration_loads_correctly(): void
+    #[Test]
+    public function percy_configuration_loads_correctly(): void
     {
         $config = Config::get('percy');
 
@@ -37,7 +38,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertArrayHasKey('messages', $config);
     }
 
-    public function test_percy_service_validates_configuration(): void
+    #[Test]
+    public function percy_service_validates_configuration(): void
     {
         // Test with missing token (should have errors)
         Config::set('percy.token', null);
@@ -47,7 +49,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertStringContainsString('Token Percy tidak ditemui', $errors[0]);
     }
 
-    public function test_percy_service_validates_configuration_with_token(): void
+    #[Test]
+    public function percy_service_validates_configuration_with_token(): void
     {
         // Test with valid token
         Config::set('percy.token', 'test_token_123');
@@ -59,7 +62,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertEmpty($errors);
     }
 
-    public function test_percy_service_gets_environment_configuration(): void
+    #[Test]
+    public function percy_service_gets_environment_configuration(): void
     {
         $config = $this->percyService->getConfiguration();
 
@@ -68,7 +72,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertArrayHasKey('project', $config);
     }
 
-    public function test_percy_service_gets_snapshot_configuration(): void
+    #[Test]
+    public function percy_service_gets_snapshot_configuration(): void
     {
         $snapshotConfig = $this->percyService->getSnapshotConfig();
 
@@ -85,7 +90,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertEquals([768, 1024], $configWithOverrides['widths']);
     }
 
-    public function test_percy_service_gets_hybrid_architecture_selectors(): void
+    #[Test]
+    public function percy_service_gets_hybrid_architecture_selectors(): void
     {
         $selectors = $this->percyService->getHybridArchitectureSelectors();
 
@@ -99,7 +105,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertContains('.filament-admin', $selectors['admin_selectors']);
     }
 
-    public function test_percy_service_gets_bahasa_melayu_config(): void
+    #[Test]
+    public function percy_service_gets_bahasa_melayu_config(): void
     {
         $config = $this->percyService->getBahasaMelayuConfig();
 
@@ -113,7 +120,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertEquals('3.6.0+', $config['interface_version']);
     }
 
-    public function test_percy_service_gets_accessibility_config(): void
+    #[Test]
+    public function percy_service_gets_accessibility_config(): void
     {
         $config = $this->percyService->getAccessibilityConfig();
 
@@ -127,7 +135,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertEquals('2.2', $config['wcag_version']);
     }
 
-    public function test_percy_service_gets_technology_stack_info(): void
+    #[Test]
+    public function percy_service_gets_technology_stack_info(): void
     {
         $techStack = $this->percyService->getTechnologyStackInfo();
 
@@ -145,7 +154,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertEquals('4.1.18', $techStack['tailwind']);
     }
 
-    public function test_percy_service_generates_build_name(): void
+    #[Test]
+    public function percy_service_generates_build_name(): void
     {
         Config::set('percy.project', 'test-project');
 
@@ -159,7 +169,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertStringContainsString('feature-branch', $buildNameWithSuffix);
     }
 
-    public function test_percy_service_handles_errors_gracefully(): void
+    #[Test]
+    public function percy_service_handles_errors_gracefully(): void
     {
         $exception = new \RuntimeException('Test error');
 
@@ -170,7 +181,8 @@ class PercyConfigurationTest extends TestCase
         $this->percyService->handleError('test_operation', $exception);
     }
 
-    public function test_percy_service_gets_available_environment_configs(): void
+    #[Test]
+    public function percy_service_gets_available_environment_configs(): void
     {
         $envConfigs = $this->percyService->getAvailableEnvironmentConfigs();
 
@@ -186,7 +198,8 @@ class PercyConfigurationTest extends TestCase
         $this->assertGreaterThan(0, $envConfigs['local']['size']);
     }
 
-    public function test_environment_specific_configuration_overrides(): void
+    #[Test]
+    public function environment_specific_configuration_overrides(): void
     {
         // Create a temporary environment config for testing
         $testEnvConfig = [
@@ -203,7 +216,7 @@ class PercyConfigurationTest extends TestCase
 
         try {
             // Write test config
-            file_put_contents($tempConfigFile, '<?php return ' . var_export($testEnvConfig, true) . ';');
+            file_put_contents($tempConfigFile, '<?php return '.var_export($testEnvConfig, true).';');
 
             // Get configuration (should include overrides)
             $config = $this->percyService->getConfiguration();
@@ -220,7 +233,8 @@ class PercyConfigurationTest extends TestCase
         }
     }
 
-    public function test_bahasa_melayu_error_messages(): void
+    #[Test]
+    public function bahasa_melayu_error_messages(): void
     {
         $messages = Config::get('percy.messages');
 
