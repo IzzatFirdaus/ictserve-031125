@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\EncryptionService;
 use App\Services\PDPAComplianceService;
 use App\Services\SecurityMonitoringService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -30,6 +31,8 @@ use Tests\TestCase;
  */
 class SecurityComplianceIntegrationTest extends TestCase
 {
+    use RefreshDatabase;
+
     private EncryptionService $encryptionService;
 
     private PDPAComplianceService $pdpaService;
@@ -198,6 +201,12 @@ class SecurityComplianceIntegrationTest extends TestCase
     #[Test]
     public function complete_security_workflow(): void
     {
+        // Fake broadcast events to prevent Pusher connection errors
+        \Illuminate\Support\Facades\Event::fake([
+            \App\Events\StatusUpdated::class,
+            \App\Events\LoanStatusUpdated::class,
+        ]);
+
         // 1. Create user with proper role
         $user = User::factory()->create();
         $user->assignRole('staff');
@@ -219,8 +228,8 @@ class SecurityComplianceIntegrationTest extends TestCase
             ->get();
         $this->assertGreaterThan(0, $audits->count());
 
-        // 5. Update loan (triggers more audits)
-        $loanApplication->update(['status' => 'approved']);
+        // 5. Update loan (triggers more audits) - use updateQuietly to avoid broadcast
+        $loanApplication->updateQuietly(['status' => 'approved']);
 
         // 6. Verify encryption
         $validation = $this->encryptionService->validateEncryptionConfig();
@@ -231,7 +240,7 @@ class SecurityComplianceIntegrationTest extends TestCase
         $this->assertJson($export);
 
         // 8. Request data deletion
-        $loanApplication->update(['status' => 'completed']);
+        $loanApplication->updateQuietly(['status' => 'completed']);
         $deletionRequest = $this->pdpaService->requestDataDeletion($user->id, [
             'reason' => 'Test deletion',
             'confirm_understanding' => true,

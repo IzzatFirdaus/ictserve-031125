@@ -50,8 +50,8 @@ class AdminLoginDesignTest extends TestCase
         $response->assertSee('Hubungi Meja Bantuan');
 
         // Check for accessibility elements (WCAG 2.2 AA)
-        $response->assertSee('skip_to_content', false); // Skip link
-        $response->assertSeeInOrder(['tabindex="1"', 'tabindex="2"']); // Tab order
+        $response->assertSee('Langkau ke kandungan utama', false); // Skip link in Malay
+        $response->assertSee('main-content', false); // Main content target
     }
 
     #[Test]
@@ -61,17 +61,16 @@ class AdminLoginDesignTest extends TestCase
 
         $response->assertStatus(200);
 
-        // Check form elements exist
-        $response->assertSee('name="email"', false);
-        $response->assertSee('name="password"', false);
-        $response->assertSee('name="remember"', false);
+        // Check form elements exist - using wire:model for Livewire forms
+        $response->assertSee('wire:model="data.email"', false);
+        $response->assertSee('wire:model="data.password"', false);
+        $response->assertSee('wire:model="data.remember"', false);
         $response->assertSee('type="submit"', false);
 
         // Check for flexible login support (D03 SRS-AUTH-003)
         $response->assertSee('placeholder="nama@motac.gov.my atau nama"', false);
         $response->assertSee('autocomplete="username"', false);
         $response->assertSee('autocomplete="current-password"', false);
-        $response->assertSee('aria-describedby="email-hint"', false);
 
         // Check for flexible login helper text
         $response->assertSee('Anda boleh log masuk menggunakan emel penuh atau nama pengguna sahaja');

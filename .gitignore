@@ -99,9 +99,6 @@ dist/
 /bootstrap/cache/*.php
 /bootstrap/cache/*.tmp
 
-# Local env for Mimir
-.env.mimir
-
 # OS files
 desktop.ini
 
@@ -143,18 +140,9 @@ stubs/
 # Windows system files
 NUL
 
-# Test results and artifacts
-phpunit-results*.txt
-remaining-tests-results.txt
 
 # Storage cache
 /storage/framework/cache/
-
-# Ignore generated storage artifacts and temporary reports
-/storage/GEMINI.md
-/storage/compliance/
-/storage/temp/
-/storage/*.txt
 
 # Ignore generated storage artifacts and temporary reports
 /storage/GEMINI.md

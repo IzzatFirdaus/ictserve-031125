@@ -14,6 +14,7 @@ use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -69,6 +70,21 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
         ]);
 
         Mail::fake();
+
+        // Fake only broadcast events to prevent Pusher connection errors
+        // while still allowing audit events to be recorded
+        Event::fake([
+            \App\Events\LoanApplicationCreated::class,
+            \App\Events\LoanApplicationApproved::class,
+            \App\Events\LoanApplicationRejected::class,
+            \App\Events\LoanStatusChanged::class,
+            \App\Events\LoanStatusUpdated::class,
+            \App\Events\AssetStatusChanged::class,
+            \App\Events\AssetCheckedIn::class,
+            \App\Events\AssetCheckedOut::class,
+            \App\Events\NotificationCreated::class,
+            \App\Events\StatusUpdated::class,
+        ]);
     }
 
     /**

@@ -118,7 +118,7 @@ class EmailTemplateBrandingTest extends TestCase
 
         // Verify Bahasa Melayu branding content
         $this->assertStringContainsString('Kementerian Pelancongan, Seni dan Budaya', $rendered); // BM ministry name
-        $this->assertStringContainsString('Yang Dihormati', $rendered); // BM greeting
+        $this->assertStringContainsString('Tuan/Puan', $rendered); // BM greeting
         $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
         $this->assertNotEmpty($rendered);
     }

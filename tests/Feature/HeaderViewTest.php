@@ -46,9 +46,9 @@ class HeaderViewTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('ICTServe');
-        $response->assertSee('Log Masuk'); // Login
-        // Note: The main navigation links depend on the current layout implementation
-        // The welcome page uses welcome/navigation which only shows login/register
+        $response->assertSee('Aduan ICT'); // ICT Complaints
+        $response->assertSee('Pinjaman Aset'); // Asset Loan
+        $response->assertSee('Semak Status'); // Check Status
     }
 
     /**
@@ -66,7 +66,9 @@ class HeaderViewTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('ICTServe');
-        // Navigation elements are present in the authenticated layout
+        $response->assertSee('Papan Pemuka'); // Dashboard
+        $response->assertSee('Profil'); // Profile link
+        $response->assertSee('Log keluar'); // Logout (lowercase 'k')
     }
 
     /**
@@ -80,9 +82,8 @@ class HeaderViewTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        // Mobile menu may be rendered via Livewire/Alpine
-        // Just check that the page loads successfully with navigation
-        $response->assertSee('nav', false);
+        $response->assertSee('id="mobile-menu"', false);
+        $response->assertSee('Buka menu utama'); // Mobile menu button aria-label
     }
 
     /**
@@ -100,7 +101,8 @@ class HeaderViewTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Ahmad Bin Ali');
-        // Note: Navigation labels are rendered based on available routes
-        // The auth-header component shows profile/settings conditionally
+        $response->assertSee('Profil'); // Profile link
+        // Note: Settings link may not be present in all views
+        // The logout functionality is handled via Livewire component
     }
 }
