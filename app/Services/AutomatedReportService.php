@@ -169,7 +169,7 @@ class AutomatedReportService
             ->map(function ($asset) {
                 return [
                     'name' => $asset->name,
-                    'asset_code' => $asset->asset_code,
+                    'asset_code' => $asset->asset_tag,
                     'request_count' => $asset->loan_applications_count,
                 ];
             })
