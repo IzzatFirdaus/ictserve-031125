@@ -119,7 +119,7 @@ class HelpdeskTicketInfolist
                 ->description('Maklumat aset yang berkaitan dengan tiket ini, termasuk status pinjaman semasa dan sejarah pinjaman.')
                 ->schema([
                     Grid::make(2)->schema([
-                        TextEntry::make('asset.asset_code')
+                        TextEntry::make('asset.asset_tag')
                             ->label('Kod Aset')
                             ->placeholder('-')
                             ->copyable()
