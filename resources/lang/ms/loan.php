@@ -357,6 +357,7 @@ return [
         'application_approved_subject' => 'Permohonan Pinjaman Diluluskan: :number',
         'application_rejected_subject' => 'Permohonan Pinjaman Ditolak: :number',
         'asset_ready_subject' => 'Aset Sedia Untuk Diambil: :number',
+        'otp_generated_subject' => 'Kod OTP Pengambilan Aset: :number',
         'return_reminder_subject' => 'Peringatan Pulangan Aset (:days hari lagi): :number',
         'return_confirmation_subject' => 'Pengesahan Pulangan Aset: :number',
 
@@ -381,6 +382,13 @@ return [
         'asset_ready_body' => 'Aset untuk permohonan anda (No: :number) telah disediakan dan sedia untuk diambil.',
         'return_reminder_body' => 'Ini adalah peringatan bahawa tempoh pinjaman aset anda (No: :number) akan tamat dalam :days hari.',
         'return_confirmation_body' => 'Kami mengesahkan bahawa aset untuk permohonan No :number telah dipulangkan dengan jayanya.',
+
+        // OTP email content
+        'otp_generated_greeting' => 'Yang Dihormati :name,',
+        'otp_generated_body' => 'Kod OTP untuk pengambilan aset permohonan :number adalah seperti berikut:',
+        'otp_expiry_notice' => 'Kod ini sah sehingga :date. Sila gunakan kod ini semasa pengambilan aset.',
+        'collection_instructions' => 'Sila ke :location untuk mengambil aset anda.',
+        'salutation' => 'Terima kasih',
 
         // Email field labels
         'submitted_date' => 'Tarikh Dihantar',

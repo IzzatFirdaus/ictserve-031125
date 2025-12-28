@@ -23,10 +23,17 @@ class AssetFactory extends Factory
         $purchaseValue = \random_int(1000, 20000) + \random_int(0, 99) / 100;
 
         $names = [
-            'Dell Latitude 5420 Laptop', 'HP EliteBook 840 G8', 'Lenovo ThinkPad X1 Carbon',
-            'Epson EB-X05 Projector', 'BenQ MH535A Projector', 'Apple iPad Pro 12.9"',
-            'Samsung Galaxy Tab S8', 'Canon EOS 90D Camera', 'Sony Alpha a7 III',
-            'Cisco Catalyst 2960 Switch', 'TP-Link Archer AX6000 Router',
+            'Dell Latitude 5420 Laptop',
+            'HP EliteBook 840 G8',
+            'Lenovo ThinkPad X1 Carbon',
+            'Epson EB-X05 Projector',
+            'BenQ MH535A Projector',
+            'Apple iPad Pro 12.9"',
+            'Samsung Galaxy Tab S8',
+            'Canon EOS 90D Camera',
+            'Sony Alpha a7 III',
+            'Cisco Catalyst 2960 Switch',
+            'TP-Link Archer AX6000 Router',
         ];
 
         $brands = ['Dell', 'HP', 'Lenovo', 'Epson', 'BenQ', 'Apple', 'Samsung', 'Canon', 'Sony', 'Cisco', 'TP-Link'];
@@ -76,18 +83,14 @@ class AssetFactory extends Factory
 
     private function generateAssetTag(): string
     {
-        static $counter = 0;
-        $counter++;
-
         $prefixes = ['LAP', 'PRJ', 'TAB', 'CAM', 'NET'];
         $prefix = $prefixes[\array_rand($prefixes)];
         $year = \random_int(2019, 2025);
 
-        // Use microtime, counter, and random to ensure uniqueness across all test runs
-        $microtime = \str_replace('.', '', (string) \microtime(true));
-        $uniquePart = (int) \substr($microtime, -6) + $counter + \random_int(1, 9999);
+        // Use UUID-based approach for guaranteed uniqueness
+        $uniquePart = \hexdec(\substr(\md5(\uniqid((string) \mt_rand(), true)), 0, 6)) % 1000000;
 
-        return \sprintf('%s-%d-%06d', $prefix, $year, $uniquePart % 1000000);
+        return \sprintf('%s-%d-%06d', $prefix, $year, $uniquePart);
     }
 
     public function available(): static
