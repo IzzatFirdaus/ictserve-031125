@@ -461,23 +461,6 @@ Ringkasan fasa pembangunan AI (rujuk D18):
 | 12: Deployment & Monitoring | 1 minggu | Health checks, alerts | Selesai |
 | 13: Cloud Hybrid AI (Bedrock) | 2 minggu | BedrockService, ModelRouter, hybrid responses | Selesai |
 
-```mermaid
-%% Portrait A4: gantt ringkas sebagai jadual perancangan
-gantt
-        title Jadual Perancangan ICTServe 3.6.1 (Ringkas)
-        dateFormat  YYYY-MM-DD
-        section Keperluan & Rekabentuk
-        BRS (D02)                     :done,    a1, 2025-11-29, 7d
-        SRS (D03)                     :done,    a2, 2025-11-29, 7d
-        SDS/SDD (D04)                 :active,  a3, 2025-12-08, 10d
-        section Pelaksanaan
-        Kod Sumber (D10)              :         a4, 2025-12-10, 10d
-        Integrasi (D07,D08)           :         a5, 2025-12-15, 7d
-        section Migrasi & Dokumen
-        Migrasi (D05,D06)             :         a6, 2025-12-18, 7d
-        Dokumentasi (D09-D14, Manual) :         a7, 2025-12-20, 10d
-```
-
 ## 6. KOMPONEN TAMBAHAN
 
 Komponen tambahan yang berkaitan dengan pelaksanaan projek:
