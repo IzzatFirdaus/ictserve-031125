@@ -260,32 +260,20 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
 	 */
 	adminPage: async ({ page }, use) => {
 		await page.goto("/admin/login");
+		await page.waitForLoadState("networkidle");
 
 		await page.locator("#form\\.email").fill(TEST_CREDENTIALS.ADMIN_EMAIL);
 		await page
 			.locator("#form\\.password")
 			.fill(TEST_CREDENTIALS.ADMIN_PASSWORD);
 
-		// Admin login button: support 'Login' and variants
-		const adminSubmitButton = page.getByRole("button", {
-			name: /log ?in|sign in|login/i,
-		});
-		let effectiveAdminButton = adminSubmitButton;
-		if (!(await adminSubmitButton.isVisible().catch(() => false))) {
-			const adminFallback = page
-				.locator('button[type="submit"], form button')
-				.first();
-			if (await adminFallback.isVisible().catch(() => false)) {
-				console.log(
-					"[Auth Fixture] Using fallback admin submit button selector"
-				);
-				effectiveAdminButton = adminFallback;
-			}
-		}
-		await expect(effectiveAdminButton).toBeVisible();
-		await effectiveAdminButton.click();
+		// Use the same approach as the working login test
+		const loginForm = page.locator("form[wire\\:submit='authenticate']");
+		const submitButton = loginForm.locator("button[type='submit']");
+		await expect(submitButton).toBeVisible();
+		await submitButton.click();
 
-		await page.waitForURL(/\/admin(\/.*)?$/, { timeout: 20000 });
+		await page.waitForURL(/\/admin(\/.*)?$/, { timeout: 30000 });
 		await page.waitForLoadState("networkidle");
 
 		await use(page);

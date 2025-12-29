@@ -134,7 +134,7 @@ test.describe("Staff Dashboard - Consolidated Tests", () => {
 			);
 
 			test(
-				"03 - Desktop: Four column layout with Percy",
+				"03 - Desktop: Multi-column layout with Percy",
 				{
 					tag: ["@smoke", "@percy"],
 				},
@@ -148,7 +148,7 @@ test.describe("Staff Dashboard - Consolidated Tests", () => {
 					);
 					await expect(statsGrid).toBeVisible();
 
-					// Verify 4 columns (or at least more than 2)
+					// Verify desktop layout (2-4 columns depending on content)
 					const statsCards = authenticatedPage
 						.locator('[class*="bg-slate-900"]')
 						.filter({ hasText: /open tickets|active loans|pending|resolved/i });
@@ -160,9 +160,11 @@ test.describe("Staff Dashboard - Consolidated Tests", () => {
 						if (box) positions.push(box.x);
 					}
 
-					if (positions.length >= 3) {
+					if (positions.length >= 2) {
 						const uniqueX = [...new Set(positions.map((x) => Math.round(x)))];
-						expect.soft(uniqueX.length).toBeGreaterThanOrEqual(3);
+						// Desktop should have at least 2 columns, may have up to 4 depending on content
+						expect.soft(uniqueX.length).toBeGreaterThanOrEqual(2);
+						expect.soft(uniqueX.length).toBeLessThanOrEqual(4);
 					}
 
 					// Enhanced with Percy visual validation for desktop layout

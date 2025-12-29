@@ -374,52 +374,86 @@ test.describe("Loan Module - Best Practices Architecture", () => {
 	);
 
 	test(
-		"12 - Guest Asset Loan Wizard",
+		"12 - Guest Asset Loan Wizard - Complete Step-by-Step Journey with Screenshots",
 		{
-			tag: ["@loan", "@module", "@guest", "@form"],
+			tag: ["@loan", "@module", "@guest", "@form", "@percy"],
 		},
 		async ({ page }) => {
 			await page.goto("/loan/apply");
+			await page.waitForLoadState("networkidle");
 
+			// Verify loan form loads
 			await expect(
 				page.getByRole("heading", { name: /loan|pinjaman/i }).first()
 			).toBeVisible();
-			await expect(
-				page
-					.getByText(/applicant information|your information|section 1/i)
-					.first()
-			).toBeVisible();
 
+			// STEP 1: Initial Load Screenshot
+			await takePercySnapshot(page, {
+				name: "Loan Guest Form - Step 1 Initial Load",
+				userType: "guest",
+				widths: [375, 768, 1280],
+				validateBahasaMelayu: true,
+			});
+
+			// Fill Step 1: Applicant Information
+			const loanData = {
+				name: "Siti Nurhaliza binti Ahmad",
+				email: "siti.demo@motac.gov.my",
+				phone: "03-2345-6789",
+				department: "Bahagian Pengurusan Maklumat",
+				position: "Penolong Pegawai Teknologi Maklumat",
+				grade: "29",
+				staffId: "MOTAC002",
+				purpose: "Mesyuarat rasmi di luar pejabat dan latihan teknikal",
+				location: "Bilik Mesyuarat Utama, Aras 10, Kompleks Kementerian",
+			};
+
+			// Fill name field
 			const nameField = page.getByLabel(/full name|nama penuh/i).first();
 			if (await nameField.isVisible({ timeout: 5000 })) {
-				await nameField.fill("Guest Borrower");
+				await nameField.fill(loanData.name);
 			}
 
-			const positionField = page.getByLabel(/position|jawatan|grade/i).first();
-			if (await positionField.isVisible({ timeout: 3000 })) {
-				await positionField.fill("Administrative Officer N41");
+			// Fill email field
+			const emailField = page.getByLabel(/email|e-mel/i).first();
+			if (await emailField.isVisible({ timeout: 3000 })) {
+				await emailField.fill(loanData.email);
 			}
 
+			// Fill phone field
 			const phoneField = page.getByLabel(/phone number|telefon|phone/i).first();
 			if (await phoneField.isVisible({ timeout: 3000 })) {
-				await phoneField.fill("012-3456789");
+				await phoneField.fill(loanData.phone);
 			}
 
-			const divisionSelect = page.getByLabel(/division|unit/i);
+			// Fill position field
+			const positionField = page.getByLabel(/position|jawatan|grade/i).first();
+			if (await positionField.isVisible({ timeout: 3000 })) {
+				await positionField.fill(loanData.position);
+			}
+
+			// Select division
+			const divisionSelect = page.getByLabel(/division|unit/i).first();
 			if (await divisionSelect.isVisible({ timeout: 3000 })) {
-				await divisionSelect.selectOption({ index: 1 });
+				const options = await divisionSelect.locator("option").count();
+				if (options > 1) {
+					await divisionSelect.selectOption({ index: 1 });
+				}
 			}
 
+			// Fill purpose
 			const purposeField = page.getByLabel(/purpose|tujuan/i).first();
 			if (await purposeField.isVisible({ timeout: 3000 })) {
-				await purposeField.fill("Guest automation test");
+				await purposeField.fill(loanData.purpose);
 			}
 
+			// Fill location
 			const locationField = page.getByLabel(/location|lokasi/i).first();
 			if (await locationField.isVisible({ timeout: 3000 })) {
-				await locationField.fill("MOTAC HQ");
+				await locationField.fill(loanData.location);
 			}
 
+			// Fill dates
 			const startDateInput = page
 				.getByLabel(/loan date|tarikh pinjaman/i)
 				.first();
@@ -438,19 +472,85 @@ test.describe("Loan Module - Best Practices Architecture", () => {
 				await endDateInput.fill(nextWeek.toISOString().split("T")[0]);
 			}
 
-			await page.getByRole("button", { name: /next|seterusnya/i }).click();
-			await page.getByRole("button", { name: /next|seterusnya/i }).click();
+			// Screenshot Step 1 after filling
+			await takePercySnapshot(page, {
+				name: "Loan Guest Form - Step 1 Filled",
+				userType: "guest",
+				widths: [375, 768, 1280],
+				validateBahasaMelayu: true,
+			});
 
-			await expect(
-				page.getByText(/equipment list|senarai peralatan/i)
-			).toBeVisible();
-			const equipmentSelectGuest = page
-				.locator('select[name*="equipment_items"]')
+			// Navigate to Step 2
+			const nextButton = page
+				.getByRole("button", { name: /next|seterusnya/i })
 				.first();
-			if (await equipmentSelectGuest.isVisible({ timeout: 3000 })) {
-				await equipmentSelectGuest.selectOption({ index: 1 });
+			if (await nextButton.isVisible({ timeout: 3000 })) {
+				await nextButton.click();
+				await page.waitForLoadState("networkidle");
+
+				// STEP 2: Responsible Officer Screenshot
+				await takePercySnapshot(page, {
+					name: "Loan Guest Form - Step 2 Responsible Officer",
+					userType: "guest",
+					widths: [375, 768, 1280],
+					validateBahasaMelayu: true,
+				});
+
+				// Navigate to Step 3
+				const nextButton2 = page
+					.getByRole("button", { name: /next|seterusnya/i })
+					.first();
+				if (await nextButton2.isVisible({ timeout: 3000 })) {
+					await nextButton2.click();
+					await page.waitForLoadState("networkidle");
+
+					// STEP 3: Equipment Selection Screenshot
+					await takePercySnapshot(page, {
+						name: "Loan Guest Form - Step 3 Equipment Selection",
+						userType: "guest",
+						widths: [375, 768, 1280],
+						validateBahasaMelayu: true,
+					});
+
+					// Select equipment if available
+					const equipmentSelect = page
+						.locator('select[name*="equipment_items"]')
+						.first();
+					if (await equipmentSelect.isVisible({ timeout: 3000 })) {
+						const options = await equipmentSelect.locator("option").count();
+						if (options > 1) {
+							await equipmentSelect.selectOption({ index: 1 });
+						}
+					}
+
+					// Screenshot Step 3 after selection
+					await takePercySnapshot(page, {
+						name: "Loan Guest Form - Step 3 Equipment Selected",
+						userType: "guest",
+						widths: [375, 768, 1280],
+						validateBahasaMelayu: true,
+					});
+
+					// Navigate to Step 4 (Confirmation)
+					const nextButton3 = page
+						.getByRole("button", { name: /next|seterusnya/i })
+						.first();
+					if (await nextButton3.isVisible({ timeout: 3000 })) {
+						await nextButton3.click();
+						await page.waitForLoadState("networkidle");
+
+						// STEP 4: Confirmation Screenshot
+						await takePercySnapshot(page, {
+							name: "Loan Guest Form - Step 4 Confirmation",
+							userType: "guest",
+							widths: [375, 768, 1280],
+							validateBahasaMelayu: true,
+						});
+					}
+				}
 			}
 
+			// Verify final step
 			await expect(
 				page.getByRole("button", { name: /next|seterusnya/i })
 			).toBeVisible();

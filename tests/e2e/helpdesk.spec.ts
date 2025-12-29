@@ -378,7 +378,7 @@ test.describe("Helpdesk Ticket Module - Percy Enhanced Tests", () => {
 	);
 
 	test(
-		"11 - Guest Helpdesk Ticket Wizard with Percy",
+		"11 - Guest Helpdesk Ticket Wizard - Complete Step-by-Step Journey with Screenshots",
 		{
 			tag: ["@helpdesk", "@module", "@guest", "@form", "@percy"],
 		},
@@ -389,31 +389,207 @@ test.describe("Helpdesk Ticket Module - Percy Enhanced Tests", () => {
 			// Verify guest form loads
 			await expect(page).toHaveURL(/helpdesk\/create|helpdesk\/submit/);
 
-			// Enhanced with Percy visual validation for guest workflow
+			// STEP 1: Initial Load Screenshot
 			await takePercySnapshot(page, {
-				name: "Helpdesk Guest Form - Initial Load",
+				name: "Helpdesk Guest Form - Step 1 Initial Load",
 				userType: "guest",
 				widths: [375, 768, 1280],
 				validateBahasaMelayu: true,
 			});
 
-			// Fill contact information if present
-			const nameField = page.getByLabel(/name|nama/i);
-			if (await nameField.isVisible({ timeout: 2000 })) {
-				await nameField.fill("E2E Test User");
-				await page.getByLabel(/email|e-mel/i).fill("e2e-test@example.com");
-				await page.getByLabel(/phone|telefon/i).fill("0123456789");
+			// Fill Step 1: Contact Information
+			const testData = {
+				name: "Ahmad bin Abdullah",
+				email: "ahmad.demo@motac.gov.my",
+				phone: "03-1234-5678",
+				department: "Bahagian Teknologi Maklumat",
+				position: "Pegawai Teknologi Maklumat",
+				grade: "41",
+				staffId: "MOTAC001",
+			};
 
-				// Capture filled form state
+			// Fill name field
+			const nameField = page.getByLabel(/name|nama/i).first();
+			if (await nameField.isVisible({ timeout: 3000 })) {
+				await nameField.fill(testData.name);
+			}
+
+			// Fill email field
+			const emailField = page.getByLabel(/email|e-mel/i).first();
+			if (await emailField.isVisible({ timeout: 3000 })) {
+				await emailField.fill(testData.email);
+			}
+
+			// Fill phone field
+			const phoneField = page.getByLabel(/phone|telefon/i).first();
+			if (await phoneField.isVisible({ timeout: 3000 })) {
+				await phoneField.fill(testData.phone);
+			}
+
+			// Select division if dropdown exists
+			const divisionSelect = page
+				.locator('select[wire\\:model*="division_id"]')
+				.first();
+			if (await divisionSelect.isVisible({ timeout: 2000 })) {
+				const options = await divisionSelect.locator("option").count();
+				if (options > 1) {
+					await divisionSelect.selectOption({ index: 1 });
+				}
+			}
+
+			// Fill job grade
+			const gradeInput = page
+				.locator(
+					'input[wire\\:model*="job_grade"], select[wire\\:model*="job_grade"]'
+				)
+				.first();
+			if (await gradeInput.isVisible({ timeout: 2000 })) {
+				const tagName = await gradeInput.evaluate((el) =>
+					el.tagName.toLowerCase()
+				);
+				if (tagName === "select") {
+					const options = await gradeInput.locator("option").count();
+					if (options > 1) {
+						await gradeInput.selectOption({ index: 1 });
+					}
+				} else {
+					await gradeInput.fill(testData.grade);
+				}
+			}
+
+			// Screenshot Step 1 after filling
+			await takePercySnapshot(page, {
+				name: "Helpdesk Guest Form - Step 1 Filled",
+				userType: "guest",
+				widths: [375, 768, 1280],
+				validateBahasaMelayu: true,
+			});
+
+			// Navigate to Step 2
+			const nextButton = page
+				.getByRole("button", { name: /next|seterusnya|continue|lanjut/i })
+				.first();
+			if (await nextButton.isVisible({ timeout: 3000 })) {
+				await nextButton.click();
+				await page.waitForLoadState("networkidle");
+
+				// STEP 2: Issue Details Screenshot
 				await takePercySnapshot(page, {
-					name: "Helpdesk Guest Form - Filled State",
+					name: "Helpdesk Guest Form - Step 2 Initial Load",
 					userType: "guest",
 					widths: [375, 768, 1280],
 					validateBahasaMelayu: true,
 				});
+
+				// Fill issue details
+				const issueData = {
+					category: "Hardware Issue",
+					subject: "Laptop screen flickering intermittently",
+					description:
+						"Screen flickers intermittently, especially when using external monitor. The issue started this morning and affects productivity. Please investigate and provide solution.",
+					priority: "Medium",
+				};
+
+				// Select category
+				const categorySelect = page
+					.locator('select[wire\\:model*="category_id"]')
+					.first();
+				if (await categorySelect.isVisible({ timeout: 3000 })) {
+					const options = await categorySelect.locator("option").count();
+					if (options > 1) {
+						await categorySelect.selectOption({ index: 1 });
+					}
+				}
+
+				// Fill subject
+				const subjectInput = page
+					.locator('input[wire\\:model*="subject"]')
+					.first();
+				if (await subjectInput.isVisible({ timeout: 3000 })) {
+					await subjectInput.fill(issueData.subject);
+				}
+
+				// Fill description
+				const descriptionInput = page
+					.locator('textarea[wire\\:model*="description"]')
+					.first();
+				if (await descriptionInput.isVisible({ timeout: 3000 })) {
+					await descriptionInput.fill(issueData.description);
+				}
+
+				// Select priority
+				const prioritySelect = page
+					.locator('select[wire\\:model*="priority"]')
+					.first();
+				if (await prioritySelect.isVisible({ timeout: 2000 })) {
+					const options = await prioritySelect.locator("option").count();
+					if (options > 1) {
+						await prioritySelect.selectOption({ index: 1 });
+					}
+				}
+
+				// Screenshot Step 2 after filling
+				await takePercySnapshot(page, {
+					name: "Helpdesk Guest Form - Step 2 Filled",
+					userType: "guest",
+					widths: [375, 768, 1280],
+					validateBahasaMelayu: true,
+				});
+
+				// Navigate to Step 3 if available
+				const nextButton2 = page
+					.getByRole("button", { name: /next|seterusnya|continue|lanjut/i })
+					.first();
+				if (await nextButton2.isVisible({ timeout: 3000 })) {
+					await nextButton2.click();
+					await page.waitForLoadState("networkidle");
+
+					// STEP 3: Attachments Screenshot
+					await takePercySnapshot(page, {
+						name: "Helpdesk Guest Form - Step 3 Attachments",
+						userType: "guest",
+						widths: [375, 768, 1280],
+						validateBahasaMelayu: true,
+					});
+
+					// Fill notes if available
+					const notesInput = page
+						.locator('textarea[wire\\:model*="notes"]')
+						.first();
+					if (await notesInput.isVisible({ timeout: 2000 })) {
+						await notesInput.fill(
+							"Lampiran skrin tangkapan masalah untuk rujukan teknikal."
+						);
+					}
+
+					// Screenshot Step 3 after filling
+					await takePercySnapshot(page, {
+						name: "Helpdesk Guest Form - Step 3 Filled",
+						userType: "guest",
+						widths: [375, 768, 1280],
+						validateBahasaMelayu: true,
+					});
+
+					// Navigate to Step 4 (Confirmation)
+					const nextButton3 = page
+						.getByRole("button", { name: /next|seterusnya|continue|lanjut/i })
+						.first();
+					if (await nextButton3.isVisible({ timeout: 3000 })) {
+						await nextButton3.click();
+						await page.waitForLoadState("networkidle");
+
+						// STEP 4: Confirmation Screenshot
+						await takePercySnapshot(page, {
+							name: "Helpdesk Guest Form - Step 4 Confirmation",
+							userType: "guest",
+							widths: [375, 768, 1280],
+							validateBahasaMelayu: true,
+						});
+					}
+				}
 			}
 
-			// Look for any form button
+			// Verify form completion
 			const formButton = page
 				.getByRole("button", { name: /next|seterusnya|submit|hantar|create/i })
 				.first();
