@@ -210,8 +210,7 @@ class SuperuserConfiguration extends Page implements HasForms
             return;
         }
 
-        $loan = LoanApplication::where('reference', $this->selectedLoanReference)
-            ->orWhere('application_number', $this->selectedLoanReference)
+        $loan = LoanApplication::where('application_number', $this->selectedLoanReference)
             ->first();
 
         if (! $loan) {
@@ -237,7 +236,7 @@ class SuperuserConfiguration extends Page implements HasForms
                 'causer_id' => Auth::id(),
                 'properties' => [
                     'reason' => $reason,
-                    'loan_reference' => $loan->reference ?? $loan->application_number,
+                    'loan_reference' => $loan->application_number,
                     'old_expires_at' => $loan->getOriginal('approval_token_expires_at'),
                     'new_expires_at' => $tokenData['expires_at']->toIso8601String(),
                     'ip_address' => request()->ip(),
@@ -252,7 +251,7 @@ class SuperuserConfiguration extends Page implements HasForms
             Notification::make()
                 ->title(__('superuser_config.notifications.token_regenerated'))
                 ->body(__('superuser_config.notifications.token_regenerated_body', [
-                    'reference' => $loan->reference,
+                    'reference' => $loan->application_number,
                     'expires_at' => $tokenData['expires_at']->format('d/m/Y H:i'),
                 ]))
                 ->success()

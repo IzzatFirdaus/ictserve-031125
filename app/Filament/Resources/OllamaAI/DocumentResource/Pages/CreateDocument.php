@@ -43,14 +43,15 @@ class CreateDocument extends CreateRecord
      */
     protected function handleRecordCreation(array $data): Model
     {
-        /** @var TemporaryUploadedFile|null $file */
+        /** @var TemporaryUploadedFile|\Illuminate\Http\UploadedFile|string|null $file */
         $file = $this->form->getState()['file_upload'] ?? null;
 
         if (is_string($file) && TemporaryUploadedFile::canUnserialize($file)) {
             $file = TemporaryUploadedFile::unserializeFromLivewireRequest($file);
         }
 
-        if (! $file instanceof TemporaryUploadedFile) {
+        // Handle both TemporaryUploadedFile and regular UploadedFile (for testing)
+        if (! $file instanceof TemporaryUploadedFile && ! $file instanceof \Illuminate\Http\UploadedFile) {
             throw new \InvalidArgumentException('Fail diperlukan untuk memuat naik dokumen.');
         }
 

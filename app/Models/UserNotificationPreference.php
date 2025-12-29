@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\User $user
  * @property string $preference_key
  * @property int $preference_value
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference query()
@@ -35,12 +36,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference wherePreferenceValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserNotificationPreference whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class UserNotificationPreference extends Model
 {
     protected $fillable = [
         'user_id',
+        'preference_key',
+        'preference_value',
         'email_digest_enabled',
         'email_digest_frequency',
         'email_digest_time',

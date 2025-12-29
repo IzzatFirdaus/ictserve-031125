@@ -129,8 +129,10 @@ class HelpdeskTicketObserver
     private function handleAssetTicketLinking(HelpdeskTicket $ticket): void
     {
         try {
-            // Find active loan applications for this asset
-            $activeLoanApplications = LoanApplication::where('asset_id', $ticket->asset_id)
+            // Find active loan applications for this asset via loan_items
+            $activeLoanApplications = LoanApplication::whereHas('loanItems', function ($query) use ($ticket) {
+                $query->where('asset_id', $ticket->asset_id);
+            })
                 ->whereIn('status', ['approved', 'issued', 'overdue'])
                 ->get();
 
@@ -162,13 +164,14 @@ class HelpdeskTicketObserver
             }
 
             // Update asset maintenance_tickets_count
+            $ticket->load('relatedAsset');
             if ($ticket->relatedAsset) {
                 $ticket->relatedAsset->increment('maintenance_tickets_count');
 
                 Log::info('Asset maintenance ticket count updated', [
                     'asset_id' => $ticket->asset_id,
                     'asset_tag' => $ticket->relatedAsset->asset_tag,
-                    'new_count' => $ticket->relatedAsset->maintenance_tickets_count,
+                    'new_count' => $ticket->relatedAsset->fresh()->maintenance_tickets_count,
                 ]);
             }
         } catch (\Exception $e) {

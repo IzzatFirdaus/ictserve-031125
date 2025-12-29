@@ -50,7 +50,8 @@ class LoanApplicationForm
                 TextInput::make('return_location')
                     ->required(),
                 DatePicker::make('loan_start_date')
-                    ->required(),
+                    ->required()
+                    ->rules(['after:today']),
                 DatePicker::make('loan_end_date')
                     ->required(),
                 Toggle::make('is_responsible_officer')

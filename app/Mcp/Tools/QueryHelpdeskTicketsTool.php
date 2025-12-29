@@ -23,13 +23,13 @@ class QueryHelpdeskTicketsTool extends Tool
 
         $tickets = HelpdeskTicket::query()
             ->with(['user', 'category'])
-            ->when($validated['status'] ?? null, fn($q, $status) => $q->where('status', $status))
+            ->when($validated['status'] ?? null, fn ($q, $status) => $q->where('status', $status))
             ->limit($validated['limit'] ?? 10)
             ->latest()
-            ->get(['id', 'title', 'status', 'priority', 'created_at'])
-            ->map(fn($t) => [
+            ->get(['id', 'subject', 'status', 'priority', 'created_at'])
+            ->map(fn ($t) => [
                 'id' => $t->id,
-                'title' => $t->title,
+                'title' => $t->subject,
                 'status' => $t->status,
                 'priority' => $t->priority,
                 'created_at' => $t->created_at->format('Y-m-d H:i'),
