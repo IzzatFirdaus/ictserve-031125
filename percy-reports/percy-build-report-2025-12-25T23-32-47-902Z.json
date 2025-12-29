@@ -1,8 +1,8 @@
 {
   "success": false,
   "error": {
-    "message": "Failed to create build after 3 attempts. Last error: Command failed: PERCY_TOKEN=web_5d6dc49aa1266a5a9ff36a0edecd719aba085b4a690f001f11415e3db780ae79 PERCY_PROJECT=ictserve-v3.6.1-visual-testing PERCY_BRANCH=main PERCY_TARGET_BRANCH=main npx percy build:create\n'PERCY_TOKEN' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
-    "stack": "Error: Failed to create build after 3 attempts. Last error: Command failed: PERCY_TOKEN=web_5d6dc49aa1266a5a9ff36a0edecd719aba085b4a690f001f11415e3db780ae79 PERCY_PROJECT=ictserve-v3.6.1-visual-testing PERCY_BRANCH=main PERCY_TARGET_BRANCH=main npx percy build:create\n'PERCY_TOKEN' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n\n    at PercyBuildManager.executeWithRetry (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\build-manager.cjs:187:9)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async PercyBuildManager.createBuildWithRetry (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\build-manager.cjs:124:10)\n    at async PercyBuildManager.executeBuildLifecycle (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\build-manager.cjs:51:24)\n    at async main (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\build-manager.cjs:371:21)",
+    "message": "Failed to create build after 3 attempts. Last error: Command failed: PERCY_TOKEN=web_84e16ca9fa7085593d2c0b8112dcc658bcb4e7e1603bc12b08929fb1ef97653d PERCY_PROJECT=ictserve-v3.6.1-visual-testing PERCY_BRANCH=main PERCY_TARGET_BRANCH=main npx percy build:create\n'PERCY_TOKEN' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+    "stack": "Error: Failed to create build after 3 attempts. Last error: Command failed: PERCY_TOKEN=web_84e16ca9fa7085593d2c0b8112dcc658bcb4e7e1603bc12b08929fb1ef97653d PERCY_PROJECT=ictserve-v3.6.1-visual-testing PERCY_BRANCH=main PERCY_TARGET_BRANCH=main npx percy build:create\n'PERCY_TOKEN' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n\n    at PercyBuildManager.executeWithRetry (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\build-manager.cjs:187:9)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async PercyBuildManager.createBuildWithRetry (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\build-manager.cjs:124:10)\n    at async PercyBuildManager.executeBuildLifecycle (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\build-manager.cjs:51:24)\n    at async main (C:\\XAMPP\\htdocs\\ictserve-031125\\scripts\\percy\\build-manager.cjs:371:21)",
     "timestamp": "2025-12-25T23:32:47.900Z"
   },
   "buildManager": {
@@ -15,7 +15,7 @@
   "buildInfo": null,
   "configuration": {
     "projectName": "ictserve-v3.6.1-visual-testing",
-    "token": "web_5d6dc49aa1266a5a9ff36a0edecd719aba085b4a690f001f11415e3db780ae79",
+    "token": "web_84e16ca9fa7085593d2c0b8112dcc658bcb4e7e1603bc12b08929fb1ef97653d",
     "enabled": true,
     "branch": "main",
     "targetBranch": "main",
