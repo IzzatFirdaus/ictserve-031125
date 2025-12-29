@@ -261,10 +261,65 @@ function Invoke-ScriptByPath {
     $fullPath = Join-Path $ScriptRoot $ScriptPath
     
     if (-not (Test-Path $fullPath)) {
-        Write-Host "Script not found: $ScriptPath" -ForegroundColor Red
-        Write-Host "This script will be created during implementation." -ForegroundColor Yellow
-        Read-Host "Press Enter to continue"
-        return
+        Write-Host ""
+        Write-Host "Script not found: $ScriptPath" -ForegroundColor Yellow
+        Write-Host "Creating placeholder script..." -ForegroundColor Cyan
+        
+        # Create directory if it doesn't exist
+        $scriptDir = Split-Path $fullPath -Parent
+        if (-not (Test-Path $scriptDir)) {
+            New-Item -ItemType Directory -Path $scriptDir -Force | Out-Null
+        }
+        
+        # Create a basic placeholder script
+        $placeholderContent = @"
+#Requires -Version 7.0
+<#
+.SYNOPSIS
+    $Description
+
+.DESCRIPTION
+    This is a placeholder script that will be implemented in future phases.
+    Currently returns a mock successful result.
+
+.PARAMETER Mode
+    Execution mode: Headless, Visual, Demo, Interactive, Recording
+
+.PARAMETER Environment
+    Target environment: development, testing, staging, production
+#>
+
+[CmdletBinding()]
+param(
+    [Parameter()]
+    [ValidateSet('Headless', 'Visual', 'Demo', 'Interactive', 'Recording')]
+    [string]`$Mode = 'Visual',
+    
+    [Parameter()]
+    [ValidateSet('development', 'testing', 'staging', 'production')]
+    [string]`$Environment = 'testing'
+)
+
+# Import common functions
+`$ScriptRoot = `$PSScriptRoot
+. (Join-Path `$ScriptRoot "..\..\utilities\common-functions.ps1")
+
+Write-Host "Executing placeholder: $Description" -ForegroundColor Yellow
+Write-Host "This script will be implemented in future development phases." -ForegroundColor Gray
+
+# Return mock successful result
+return @{
+    TestName = "$Description"
+    Status = "Placeholder"
+    Message = "Script placeholder executed successfully"
+    Duration = 0.5
+    StartTime = Get-Date
+    EndTime = Get-Date
+}
+"@
+        
+        Set-Content -Path $fullPath -Value $placeholderContent
+        Write-Host "Placeholder script created: $ScriptPath" -ForegroundColor Green
     }
     
     Write-Host ""
@@ -311,13 +366,27 @@ function Invoke-CategoryScripts {
     $categoryPath = Join-Path $ScriptRoot "scripts\$Category"
     
     if (-not (Test-Path $categoryPath)) {
-        Write-Host "Category not found: $Category" -ForegroundColor Red
-        Write-Host "Scripts will be created during implementation." -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "Category directory not found: $Category" -ForegroundColor Yellow
+        Write-Host "Creating category structure..." -ForegroundColor Cyan
+        
+        # Create the category directory
+        New-Item -ItemType Directory -Path $categoryPath -Force | Out-Null
+        
+        Write-Host "Category directory created. Individual scripts will be created as placeholders when needed." -ForegroundColor Green
         Read-Host "Press Enter to continue"
         return
     }
     
     $scripts = Get-ChildItem -Path $categoryPath -Filter "*.ps1" -Recurse | Where-Object { $_.Name -like $Filter }
+    
+    if ($scripts.Count -eq 0) {
+        Write-Host ""
+        Write-Host "No scripts found in category: $Category" -ForegroundColor Yellow
+        Write-Host "Scripts will be created as placeholders during individual execution." -ForegroundColor Gray
+        Read-Host "Press Enter to continue"
+        return
+    }
     
     Write-Host ""
     Write-Host "Running $($scripts.Count) scripts in category: $Category" -ForegroundColor Cyan

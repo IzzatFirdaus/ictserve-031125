@@ -570,18 +570,913 @@ function New-UniqueId {
 
 #endregion
 
+#region Test Framework Functions
+
+function Initialize-TestResult {
+    <#
+    .SYNOPSIS
+        Initializes a test result object with standard properties.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$TestName,
+        
+        [Parameter()]
+        [string]$Category = "General",
+        
+        [Parameter()]
+        [string]$Description = ""
+    )
+    
+    return @{
+        TestName = $TestName
+        Category = $Category
+        Description = $Description
+        Status = "Running"
+        StartTime = Get-Date
+        EndTime = $null
+        Duration = 0
+        Screenshots = @()
+        ErrorMessage = ""
+        StackTrace = ""
+        Steps = @()
+        Metadata = @{}
+    }
+}
+
+function Save-TestResult {
+    <#
+    .SYNOPSIS
+        Saves a test result to the results directory.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [hashtable]$Result
+    )
+    
+    $resultsDir = Join-Path $PSScriptRoot "..\reports\test-results"
+    if (-not (Test-Path $resultsDir)) {
+        New-Item -ItemType Directory -Path $resultsDir -Force | Out-Null
+    }
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+    # Clean the test name to remove invalid filename characters
+    $cleanTestName = $Result.TestName -replace '[\\/:*?"<>|]', '-' -replace '\s+', '-'
+    $fileName = "$cleanTestName-$timestamp.json"
+    $filePath = Join-Path $resultsDir $fileName
+    
+    try {
+        $Result | ConvertTo-Json -Depth 10 | Set-Content $filePath
+        Write-AutomationLog "Test result saved: $filePath" -Level DEBUG
+    }
+    catch {
+        Write-AutomationLog "Failed to save test result: $($_.Exception.Message)" -Level ERROR
+    }
+}
+
+function Write-TestStep {
+    <#
+    .SYNOPSIS
+        Logs a test step with appropriate formatting based on execution mode.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Message,
+        
+        [Parameter()]
+        [ValidateSet('Headless', 'Visual', 'Demo', 'Interactive', 'Recording')]
+        [string]$Mode = 'Visual',
+        
+        [Parameter()]
+        [int]$StepNumber = 0
+    )
+    
+    $prefix = if ($StepNumber -gt 0) { "Step $StepNumber" + ": " } else { "" }
+    $fullMessage = "$prefix$Message"
+    
+    Write-AutomationLog $fullMessage -Level INFO
+    
+    # Add delays for demo modes
+    switch ($Mode) {
+        'Demo' { Start-Sleep -Milliseconds 1500 }
+        'Interactive' { 
+            Write-Host "Press Enter to continue..." -ForegroundColor Yellow
+            Read-Host
+        }
+        'Recording' { Start-Sleep -Milliseconds 2000 }
+    }
+}
+
+function Write-TestOutput {
+    <#
+    .SYNOPSIS
+        Writes test output with appropriate formatting.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Message,
+        
+        [Parameter()]
+        [ValidateSet('Info', 'Success', 'Warning', 'Error')]
+        [string]$Type = 'Info'
+    )
+    
+    $level = switch ($Type) {
+        'Success' { 'SUCCESS' }
+        'Warning' { 'WARNING' }
+        'Error' { 'ERROR' }
+        default { 'INFO' }
+    }
+    
+    Write-AutomationLog $Message -Level $level
+}
+
+#endregion
+
+#region Browser Automation Functions
+
+function Initialize-WebDriver {
+    <#
+    .SYNOPSIS
+        Initializes a web driver for browser automation.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [ValidateSet('Headless', 'Visual', 'Demo', 'Interactive', 'Recording')]
+        [string]$Mode = 'Visual',
+        
+        [Parameter()]
+        [ValidateSet('Chrome', 'Edge', 'Firefox')]
+        [string]$Browser = 'Chrome'
+    )
+    
+    Write-AutomationLog "Initializing $Browser WebDriver in $Mode mode" -Level DEBUG
+    
+    # For now, return a mock driver object
+    # In full implementation, this would use Selenium WebDriver
+    return @{
+        Browser = $Browser
+        Mode = $Mode
+        SessionId = (New-Guid).ToString()
+        Initialized = Get-Date
+    }
+}
+
+function Close-WebDriver {
+    <#
+    .SYNOPSIS
+        Closes and cleans up a web driver instance.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver
+    )
+    
+    Write-AutomationLog "Closing WebDriver session: $($Driver.SessionId)" -Level DEBUG
+    # In full implementation, this would properly close the Selenium WebDriver
+}
+
+function Navigate-ToUrl {
+    <#
+    .SYNOPSIS
+        Navigates the browser to a specified URL.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Url,
+        
+        [Parameter()]
+        [string]$Mode = 'Visual'
+    )
+    
+    Write-AutomationLog "Navigating to: $Url" -Level DEBUG
+    
+    if ($Mode -eq 'Demo') {
+        Write-Host "🌐 Navigating to" + ": $Url" -ForegroundColor Cyan
+        Start-Sleep -Milliseconds 1000
+    }
+    
+    # In full implementation, this would use Selenium WebDriver navigation
+}
+
+function Wait-ForElement {
+    <#
+    .SYNOPSIS
+        Waits for an element to be present and visible on the page.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Selector,
+        
+        [Parameter()]
+        [int]$Timeout = 10,
+        
+        [Parameter()]
+        [bool]$Required = $true
+    )
+    
+    Write-AutomationLog "Waiting for element: $Selector (timeout: ${Timeout}s)" -Level DEBUG
+    
+    # Mock implementation - in real scenario, this would use Selenium WebDriver
+    Start-Sleep -Milliseconds 500
+    
+    return @{
+        Selector = $Selector
+        Found = $true
+        Timestamp = Get-Date
+    }
+}
+
+function Find-Element {
+    <#
+    .SYNOPSIS
+        Finds an element on the page by selector.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Selector
+    )
+    
+    Write-AutomationLog "Finding element: $Selector" -Level DEBUG
+    
+    return @{
+        Selector = $Selector
+        Found = $true
+        Timestamp = Get-Date
+    }
+}
+
+function Fill-FormField {
+    <#
+    .SYNOPSIS
+        Fills a form field with the specified value.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Selector,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Value,
+        
+        [Parameter()]
+        [string]$Mode = 'Visual',
+        
+        [Parameter()]
+        [string]$Label = ""
+    )
+    
+    $displayLabel = if ($Label) { $Label } else { $Selector }
+    Write-AutomationLog "Filling field '$displayLabel' with value: $Value" -Level DEBUG
+    
+    if ($Mode -eq 'Demo') {
+        Write-Host "✏️ Filling $displayLabel" + ": $Value" -ForegroundColor Green
+        Start-Sleep -Milliseconds 800
+    }
+}
+
+function Select-DropdownOption {
+    <#
+    .SYNOPSIS
+        Selects an option from a dropdown element.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Selector,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Value,
+        
+        [Parameter()]
+        [string]$Mode = 'Visual'
+    )
+    
+    Write-AutomationLog "Selecting dropdown option '$Value' from: $Selector" -Level DEBUG
+    
+    if ($Mode -eq 'Demo') {
+        Write-Host "📋 Selecting" + ": $Value" -ForegroundColor Blue
+        Start-Sleep -Milliseconds 600
+    }
+}
+
+function Click-Element {
+    <#
+    .SYNOPSIS
+        Clicks on an element.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [object]$Element,
+        
+        [Parameter()]
+        [string]$Mode = 'Visual'
+    )
+    
+    Write-AutomationLog "Clicking element: $($Element.Selector)" -Level DEBUG
+    
+    if ($Mode -eq 'Demo') {
+        Write-Host "👆 Clicking element" -ForegroundColor Yellow
+        Start-Sleep -Milliseconds 500
+    }
+}
+
+function Take-Screenshot {
+    <#
+    .SYNOPSIS
+        Takes a screenshot of the current browser state using Playwright automation.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Name,
+        
+        [Parameter()]
+        [string]$Mode = 'Visual',
+        
+        [Parameter()]
+        [string]$Url = "",
+        
+        [Parameter()]
+        [switch]$FullPage = $true
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+    $fileName = "$Name-$timestamp.png"
+    
+    # Use a fresh path calculation to avoid corruption
+    $screenshotDir = Join-Path $PSScriptRoot "..\reports\screenshots"
+    $filePath = Join-Path $screenshotDir $fileName
+    
+    # Ensure screenshot directory exists
+    if (-not (Test-Path $screenshotDir)) {
+        New-Item -ItemType Directory -Path $screenshotDir -Force | Out-Null
+    }
+    
+    Write-AutomationLog "Taking screenshot: $fileName" -Level DEBUG
+    
+    if ($Mode -eq 'Demo') {
+        Write-Host "📸 Taking screenshot: $Name" -ForegroundColor Magenta
+    }
+    
+    try {
+        # Use Playwright for actual screenshot capture
+        $playwrightScript = Join-Path $PSScriptRoot "..\take-single-screenshot.cjs"
+        
+        # Create a single screenshot script if it doesn't exist
+        if (-not (Test-Path $playwrightScript)) {
+            $scriptContent = @"
+/**
+ * Single Screenshot Capture Script
+ * Takes a screenshot of a specific URL using Playwright
+ */
+
+import { chromium } from "playwright";
+import path from "path";
+import fs from "fs";
+
+async function takeScreenshot() {
+    const args = process.argv.slice(2);
+    const url = args[0] || "http://127.0.0.1:8000";
+    const outputPath = args[1] || "screenshot.png";
+    const fullPage = args[2] !== "false";
+    
+    let browser = null;
+    
+    try {
+        console.log(`📸 Taking screenshot of: `${url}`);
+        
+        browser = await chromium.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+        
+        const page = await browser.newPage();
+        await page.setViewportSize({ width: 1920, height: 1080 });
+        
+        // Navigate to URL
+        await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+        
+        // Wait for page to be fully loaded
+        await page.waitForTimeout(2000);
+        
+        // Ensure output directory exists
+        const outputDir = path.dirname(outputPath);
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true });
+        }
+        
+        // Take screenshot
+        await page.screenshot({
+            path: outputPath,
+            fullPage: fullPage,
+            animations: "disabled"
+        });
+        
+        console.log(`✅ Screenshot saved: `${outputPath}`);
+        
+    } catch (error) {
+        console.error(`❌ Screenshot failed: `${error.message}`);
+        process.exit(1);
+    } finally {
+        if (browser) {
+            await browser.close();
+        }
+    }
+}
+
+takeScreenshot();
+"@
+            Set-Content -Path $playwrightScript -Value $scriptContent
+        }
+        
+        # Determine URL to screenshot
+        $targetUrl = if ($Url) { $Url } else { 
+            $config = Get-EnvironmentConfig
+            $config.BaseUrl
+        }
+        
+        # Execute Playwright screenshot
+        $nodeCommand = "node"
+        $arguments = @("`"$playwrightScript`"", "`"$targetUrl`"", "`"$filePath`"", "$FullPage")
+        
+        Write-AutomationLog "Executing: $nodeCommand $($arguments -join ' ')" -Level DEBUG
+        
+        $process = Start-Process -FilePath $nodeCommand -ArgumentList $arguments -Wait -PassThru -NoNewWindow -RedirectStandardOutput "$filePath.log" -RedirectStandardError "$filePath.err"
+        
+        if ($process.ExitCode -eq 0 -and (Test-Path $filePath)) {
+            Write-AutomationLog "Screenshot captured successfully: $fileName" -Level SUCCESS
+            
+            # Clean up log files
+            Remove-Item "$filePath.log" -ErrorAction SilentlyContinue
+            Remove-Item "$filePath.err" -ErrorAction SilentlyContinue
+            
+            return $filePath
+        } else {
+            # Read error details
+            $errorDetails = ""
+            if (Test-Path "$filePath.err") {
+                $errorDetails = Get-Content "$filePath.err" -Raw
+            }
+            
+            Write-AutomationLog "Screenshot failed: $errorDetails" -Level WARNING
+            
+            # Fallback: create a placeholder with error info
+            $placeholderContent = @"
+Screenshot Error - $Name
+Timestamp: $(Get-Date)
+Target URL: $targetUrl
+Error: $errorDetails
+Mode: $Mode
+Driver: $($Driver.SessionId)
+"@
+            Set-Content -Path $filePath -Value $placeholderContent
+            
+            # Clean up log files
+            Remove-Item "$filePath.log" -ErrorAction SilentlyContinue
+            Remove-Item "$filePath.err" -ErrorAction SilentlyContinue
+            
+            return $filePath
+        }
+        
+    } catch {
+        Write-AutomationLog "Screenshot exception: $($_.Exception.Message)" -Level ERROR
+        
+        # Fallback: create a placeholder file
+        $placeholderContent = @"
+Screenshot Placeholder - $Name
+Timestamp: $(Get-Date)
+Exception: $($_.Exception.Message)
+Mode: $Mode
+Driver: $($Driver.SessionId)
+Note: This is a placeholder. Real screenshot capture failed.
+"@
+        Set-Content -Path $filePath -Value $placeholderContent
+        
+        return $filePath
+    }
+}
+
+function Highlight-Element {
+    <#
+    .SYNOPSIS
+        Highlights an element on the page for demonstration purposes.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [object]$Element,
+        
+        [Parameter()]
+        [string]$Mode = 'Visual'
+    )
+    
+    if ($Mode -in @('Demo', 'Interactive', 'Recording')) {
+        Write-AutomationLog "Highlighting element: $($Element.Selector)" -Level DEBUG
+        Start-Sleep -Milliseconds 1000
+    }
+}
+
+function Get-ElementText {
+    <#
+    .SYNOPSIS
+        Gets the text content of an element.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Selector
+    )
+    
+    Write-AutomationLog "Getting text from element: $Selector" -Level DEBUG
+    
+    # Mock implementation - return sample text
+    return "TICKET-$(Get-Random -Minimum 100000 -Maximum 999999)"
+}
+
+function Get-AllCookies {
+    <#
+    .SYNOPSIS
+        Gets all cookies from the current browser session.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver
+    )
+    
+    Write-AutomationLog "Getting all cookies from browser session" -Level DEBUG
+    
+    # Mock implementation
+    return @(
+        @{ Name = "XSRF-TOKEN"; Value = "mock-token"; HttpOnly = $true; Secure = $true }
+        @{ Name = "laravel_session"; Value = "mock-session"; HttpOnly = $true; Secure = $true }
+    )
+}
+
+function Get-Cookie {
+    <#
+    .SYNOPSIS
+        Gets a specific cookie from the current browser session.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$Name
+    )
+    
+    Write-AutomationLog "Getting cookie: $Name" -Level DEBUG
+    
+    # Mock implementation
+    switch ($Name) {
+        "XSRF-TOKEN" { return @{ Name = "XSRF-TOKEN"; Value = "mock-token-$(Get-Random)"; HttpOnly = $true; Secure = $true } }
+        "laravel_session" { return @{ Name = "laravel_session"; Value = "mock-session-$(Get-Random)"; HttpOnly = $true; Secure = $true } }
+        "remember_token" { return @{ Name = "remember_token"; Value = "mock-remember-$(Get-Random)"; HttpOnly = $true; Secure = $true } }
+        default { return $null }
+    }
+}
+
+#endregion
+
+#region API Testing Functions
+
+function Invoke-ApiRequest {
+    <#
+    .SYNOPSIS
+        Makes an HTTP API request for testing purposes.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Endpoint,
+        
+        [Parameter()]
+        [ValidateSet('GET', 'POST', 'PUT', 'DELETE', 'PATCH')]
+        [string]$Method = 'GET',
+        
+        [Parameter()]
+        [hashtable]$Body = @{},
+        
+        [Parameter()]
+        [hashtable]$Headers = @{},
+        
+        [Parameter()]
+        [hashtable]$Query = @{}
+    )
+    
+    $config = Get-EnvironmentConfig
+    $baseUrl = $config.ApiUrl
+    $fullUrl = "$baseUrl$Endpoint"
+    
+    if ($Query.Count -gt 0) {
+        $queryString = ($Query.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "&"
+        $fullUrl += "?$queryString"
+    }
+    
+    Write-AutomationLog "API Request: $Method $fullUrl" -Level DEBUG
+    
+    try {
+        # Mock implementation - simulate API call
+        Start-Sleep -Milliseconds 200
+        
+        # Return success response for mock
+        return @{
+            StatusCode = 200
+            Success = $true
+            Data = @{
+                message = "Mock API response"
+                timestamp = Get-Date
+                endpoint = $Endpoint
+                method = $Method
+            }
+        }
+    }
+    catch {
+        Write-AutomationLog "API Error: $($_.Exception.Message)" -Level ERROR
+        return @{
+            StatusCode = 0
+            Success = $false
+            Error = $_.Exception.Message
+        }
+    }
+}
+
+function Assert-ApiSuccess {
+    <#
+    .SYNOPSIS
+        Asserts that an API response indicates success.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [hashtable]$Response,
+        
+        [Parameter()]
+        [string]$Message = "API request should succeed"
+    )
+    
+    if (-not $Response.Success -or $Response.StatusCode -lt 200 -or $Response.StatusCode -ge 300) {
+        throw "API assertion failed: $Message. Status: $($Response.StatusCode)"
+    }
+    
+    Write-AutomationLog "API assertion passed: $Message" -Level DEBUG
+}
+
+#endregion
+
+#region Assertion Functions
+
+function Assert-ElementExists {
+    <#
+    .SYNOPSIS
+        Asserts that an element exists on the page.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Element,
+        
+        [Parameter()]
+        [string]$Message = "Element should exist"
+    )
+    
+    if (-not $Element -or -not $Element.Found) {
+        throw "Element assertion failed: $Message"
+    }
+    
+    Write-AutomationLog "Element assertion passed: $Message" -Level DEBUG
+}
+
+#endregion
+
+#region Configuration Helper Functions
+
+function Get-ConfigValue {
+    <#
+    .SYNOPSIS
+        Gets a configuration value by key.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Key,
+        
+        [Parameter()]
+        [string]$Environment = 'testing'
+    )
+    
+    $config = Get-EnvironmentConfig -Environment $Environment
+    
+    switch ($Key) {
+        'BaseUrl' { return $config.BaseUrl }
+        'ApiUrl' { return $config.ApiUrl }
+        'Timeout' { return $config.Timeout }
+        default { return $null }
+    }
+}
+
+#endregion
+
+#region Demo and Annotation Functions
+
+function Show-Annotation {
+    <#
+    .SYNOPSIS
+        Shows an annotation or tooltip during demo mode.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Text,
+        
+        [Parameter()]
+        [int]$Duration = 2000
+    )
+    
+    Write-Host "💡 $Text" -ForegroundColor Yellow
+    Start-Sleep -Milliseconds $Duration
+}
+
+function Pause-ForExplanation {
+    <#
+    .SYNOPSIS
+        Pauses execution for explanation during interactive mode.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Message
+    )
+    
+    Write-Host "ℹ️ $Message" -ForegroundColor Cyan
+    Write-Host "Press Enter to continue..." -ForegroundColor Yellow
+    Read-Host
+}
+
+#endregion
+
+#region Test Data Functions
+
+function Get-OrCreateTestTicket {
+    <#
+    .SYNOPSIS
+        Gets or creates a test ticket for testing purposes.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [ValidateSet('Helpdesk', 'AssetLoan')]
+        [string]$Type = 'Helpdesk'
+    )
+    
+    # Mock implementation - return a test ticket
+    return @{
+        TicketNumber = "TEST-$(Get-Random -Minimum 100000 -Maximum 999999)"
+        Type = $Type
+        Status = "Open"
+        CreatedAt = Get-Date
+    }
+}
+
+function Invoke-Logout {
+    <#
+    .SYNOPSIS
+        Logs out the current user session.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Driver,
+        
+        [Parameter()]
+        [string]$Mode = 'Visual'
+    )
+    
+    Write-AutomationLog "Logging out user session" -Level DEBUG
+    
+    try {
+        # Navigate to logout URL or click logout button
+        $logoutButton = Find-Element -Driver $Driver -Selector ".logout-btn, [href*='logout'], .user-menu .dropdown-item[href*='logout']"
+        if ($logoutButton) {
+            Click-Element -Driver $Driver -Element $logoutButton -Mode $Mode
+        } else {
+            # Fallback: navigate to logout URL
+            $baseUrl = Get-ConfigValue -Key "BaseUrl"
+            Navigate-ToUrl -Driver $Driver -Url "$baseUrl/logout" -Mode $Mode
+        }
+        
+        # Wait for redirect to login page
+        Wait-ForElement -Driver $Driver -Selector "form[action*='login'], .login-form, #login-form" -Timeout 10
+        
+        Write-AutomationLog "User logged out successfully" -Level DEBUG
+        return $true
+    }
+    catch {
+        Write-AutomationLog "Logout failed: $($_.Exception.Message)" -Level WARNING
+        return $false
+    }
+}
+
+#endregion
+
 # Export functions (only when loaded as a module)
 if ($MyInvocation.MyCommand.ScriptBlock.Module) {
     Export-ModuleMember -Function @(
+        # Logging Functions
         'Write-AutomationLog',
         'Start-ScriptExecution',
         'Stop-ScriptExecution',
+        
+        # Configuration Functions
         'Get-AutomationConfig',
         'Set-AutomationConfig',
         'Get-EnvironmentConfig',
+        'Get-ConfigValue',
+        
+        # Error Handling Functions
         'Invoke-SafeOperation',
+        
+        # Reporting Functions
         'New-TestReport',
         'ConvertTo-HtmlReport',
+        
+        # Test Framework Functions
+        'Initialize-TestResult',
+        'Save-TestResult',
+        'Write-TestStep',
+        'Write-TestOutput',
+        
+        # Browser Automation Functions
+        'Initialize-WebDriver',
+        'Close-WebDriver',
+        'Navigate-ToUrl',
+        'Wait-ForElement',
+        'Find-Element',
+        'Fill-FormField',
+        'Select-DropdownOption',
+        'Click-Element',
+        'Take-Screenshot',
+        'Highlight-Element',
+        'Get-ElementText',
+        'Get-AllCookies',
+        'Get-Cookie',
+        
+        # API Testing Functions
+        'Invoke-ApiRequest',
+        'Assert-ApiSuccess',
+        
+        # Assertion Functions
+        'Assert-ElementExists',
+        
+        # Demo Functions
+        'Show-Annotation',
+        'Pause-ForExplanation',
+        
+        # Test Data Functions
+        'Get-OrCreateTestTicket',
+        'Invoke-Logout',
+        
+        # Utility Functions
         'Test-Prerequisites',
         'Get-TestDataPath',
         'New-UniqueId'

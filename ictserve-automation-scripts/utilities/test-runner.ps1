@@ -229,10 +229,12 @@ $($Summary.Results | ForEach-Object { "<tr><td>$($_.ScriptName)</td><td class='$
     return $filePath
 }
 
-Export-ModuleMember -Function @(
-    'Start-TestSuite',
-    'Invoke-TestScript',
-    'Invoke-CategoryTests',
-    'Stop-TestSuite',
-    'Export-TestReport'
-)
+if ($MyInvocation.MyCommand.Module) {
+    Export-ModuleMember -Function @(
+        'Start-TestSuite',
+        'Invoke-TestScript',
+        'Invoke-CategoryTests',
+        'Stop-TestSuite',
+        'Export-TestReport'
+    )
+}

@@ -1223,33 +1223,35 @@ function Assert-ElementExists {
 
 #endregion
 
-# Export functions
-Export-ModuleMember -Function @(
-    'Get-DefaultDemoConfig',
-    'Start-BrowserSession',
-    'Stop-BrowserSession',
-    'Navigate-ToUrl',
-    'Wait-ForPageLoad',
-    'Wait-ForElement',
-    'Click-Element',
-    'Type-Text',
-    'Select-DropdownOption',
-    'Highlight-Element',
-    'Animate-MouseToElement',
-    'Show-Annotation',
-    'Pause-ForInteraction',
-    'Take-Screenshot',
-    'Start-VideoRecording',
-    'Stop-VideoRecording',
-    'Apply-StepDelay',
-    'Get-ElementText',
-    'Assert-ElementExists',
-    'Start-NetworkMonitoring',
-    'Show-NetworkActivity',
-    'Stop-NetworkMonitoring',
-    'Show-FormFieldAnnotation',
-    'Show-StepIndicator',
-    'Remove-StepIndicator',
-    'Pulse-Element',
-    'Draw-Arrow'
-)
+# Export functions only when loaded as a module.
+if ($MyInvocation.MyCommand.Module) {
+    Export-ModuleMember -Function @(
+        'Get-DefaultDemoConfig',
+        'Start-BrowserSession',
+        'Stop-BrowserSession',
+        'Navigate-ToUrl',
+        'Wait-ForPageLoad',
+        'Wait-ForElement',
+        'Click-Element',
+        'Type-Text',
+        'Select-DropdownOption',
+        'Highlight-Element',
+        'Animate-MouseToElement',
+        'Show-Annotation',
+        'Pause-ForInteraction',
+        'Take-Screenshot',
+        'Start-VideoRecording',
+        'Stop-VideoRecording',
+        'Apply-StepDelay',
+        'Get-ElementText',
+        'Assert-ElementExists',
+        'Start-NetworkMonitoring',
+        'Show-NetworkActivity',
+        'Stop-NetworkMonitoring',
+        'Show-FormFieldAnnotation',
+        'Show-StepIndicator',
+        'Remove-StepIndicator',
+        'Pulse-Element',
+        'Draw-Arrow'
+    )
+}

@@ -742,27 +742,29 @@ function Start-BatchDemoExecution {
 
 #endregion
 
-# Export functions
-Export-ModuleMember -Function @(
-    'Start-TrainingSession',
-    'Show-TrainingBanner',
-    'Add-TrainingNote',
-    'Stop-TrainingSession',
-    'Start-SideBySideComparison',
-    'Sync-SideBySideAction',
-    'Show-WorkflowStep',
-    'Show-SuccessMessage',
-    'Show-ErrorMessage',
-    'Show-WarningMessage',
-    'Show-InfoBox',
-    'Show-ProgressBar',
-    'Show-TypewriterText',
-    'Show-AnimatedBanner',
-    'Show-CountdownTimer',
-    'Show-SpinnerAnimation',
-    'Get-DemoConfigFromFile',
-    'Save-DemoConfigToFile',
-    'Show-DemoConfigMenu',
-    'Invoke-WorkflowWithDemo',
-    'Start-BatchDemoExecution'
-)
+# Export functions only when loaded as a module.
+if ($MyInvocation.MyCommand.Module) {
+    Export-ModuleMember -Function @(
+        'Start-TrainingSession',
+        'Show-TrainingBanner',
+        'Add-TrainingNote',
+        'Stop-TrainingSession',
+        'Start-SideBySideComparison',
+        'Sync-SideBySideAction',
+        'Show-WorkflowStep',
+        'Show-SuccessMessage',
+        'Show-ErrorMessage',
+        'Show-WarningMessage',
+        'Show-InfoBox',
+        'Show-ProgressBar',
+        'Show-TypewriterText',
+        'Show-AnimatedBanner',
+        'Show-CountdownTimer',
+        'Show-SpinnerAnimation',
+        'Get-DemoConfigFromFile',
+        'Save-DemoConfigToFile',
+        'Show-DemoConfigMenu',
+        'Invoke-WorkflowWithDemo',
+        'Start-BatchDemoExecution'
+    )
+}

@@ -1,58 +1,51 @@
 {
-	"general": {
-		"defaultEnvironment": "testing",
-		"logLevel": "INFO",
-		"maxRetries": 3,
-		"retryDelaySeconds": 2,
+	"automation": {
+		"defaultTimeout": 30,
+		"screenshotOnFailure": true,
+		"videoRecording": false,
 		"parallelExecution": false,
-		"maxParallelScripts": 4
+		"retryFailedTests": 3,
+		"retryDelay": 2000
 	},
 	"browser": {
 		"defaultBrowser": "Chrome",
+		"windowSize": {
+			"width": 1920,
+			"height": 1080
+		},
 		"headless": false,
-		"windowSize": "1920x1080",
-		"implicitWait": 10,
-		"pageLoadTimeout": 30,
-		"disableGpu": true,
-		"disableExtensions": true
+		"incognito": true,
+		"disableExtensions": true,
+		"disableImages": false,
+		"userAgent": "ICTServe-Automation-Bot/1.0"
 	},
 	"demo": {
-		"defaultMode": "Visual",
-		"executionSpeed": "Normal",
-		"highlightElements": true,
-		"showMouseCursor": true,
-		"addAnnotations": true,
-		"takeScreenshots": true,
-		"recordVideo": false,
-		"annotationDelay": 2000,
 		"stepDelay": 1500,
-		"showNetworkActivity": false
+		"highlightDuration": 2000,
+		"annotationDuration": 3000,
+		"pauseOnInteractive": true,
+		"recordVideo": false,
+		"captureScreenshots": true
 	},
 	"reporting": {
-		"generateHtmlReports": true,
-		"generateJsonReports": true,
-		"screenshotOnFailure": true,
-		"screenshotOnSuccess": false,
-		"retainReportsDays": 30,
-		"emailReports": false
+		"generateHtmlReport": true,
+		"generateJsonReport": true,
+		"generateCsvReport": false,
+		"includeScreenshots": true,
+		"includeTimings": true,
+		"includeSystemInfo": true
 	},
-	"testData": {
-		"cleanupAfterTests": true,
-		"useFactories": true,
-		"seedDatabase": false
+	"logging": {
+		"level": "INFO",
+		"logToFile": true,
+		"logToConsole": true,
+		"maxLogFiles": 10,
+		"maxLogSizeMB": 50
 	},
-	"api": {
-		"timeout": 30,
-		"retryOnFailure": true,
-		"maxRetries": 3,
-		"logRequests": true,
-		"logResponses": true
-	},
-	"ai": {
-		"ollamaEnabled": true,
-		"bedrockEnabled": true,
-		"defaultModel": "llama3.2",
-		"streamingEnabled": true,
-		"conversationTimeout": 300
+	"notifications": {
+		"emailOnCompletion": false,
+		"emailOnFailure": true,
+		"slackWebhook": "",
+		"teamsWebhook": ""
 	}
 }
