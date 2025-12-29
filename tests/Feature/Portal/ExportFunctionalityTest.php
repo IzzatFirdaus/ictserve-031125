@@ -61,7 +61,7 @@ class ExportFunctionalityTest extends TestCase
     {
         Livewire::actingAs($this->user)
             ->test(ExportSubmissions::class)
-            ->assertSee('Export Submissions');
+            ->assertSee('Eksport Penyerahan');
     }
 
     #[Test]

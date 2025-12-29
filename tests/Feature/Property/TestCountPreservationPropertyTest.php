@@ -244,11 +244,15 @@ class TestCountPreservationPropertyTest extends TestCase
         // 3. Laravel fluent style: ->assert*()
         // 4. Facade assertions: Event::assert*(), Queue::assert*(), etc.
         // 5. TestCase static assertions: TestCase::assert*()
+        // 6. PHPUnit control methods: markTestSkipped(), markTestIncomplete(), fail(), etc.
         preg_match_all('/\$this->(assert\w+)\(/', $content, $phpunitAssertions);
         preg_match_all('/self::(assert\w+)\(/', $content, $selfAssertions);
         preg_match_all('/static::(assert\w+)\(/', $content, $staticAssertions);
         preg_match_all('/->(assert\w+)\(/', $content, $fluentAssertions);
         preg_match_all('/\w+::(assert\w+)\(/', $content, $facadeAssertions);
+
+        // Also detect PHPUnit test control methods (markTestSkipped, markTestIncomplete, fail, etc.)
+        preg_match_all('/\$this->(markTestSkipped|markTestIncomplete|fail|expectException|expectExceptionMessage)\(/', $content, $controlMethods);
 
         $assertionMethods = array_unique([
             ...$phpunitAssertions[1],
@@ -256,14 +260,18 @@ class TestCountPreservationPropertyTest extends TestCase
             ...$staticAssertions[1],
             ...$fluentAssertions[1],
             ...$facadeAssertions[1],
+            ...$controlMethods[1],
         ]);
 
         // Common PHPUnit assertions that should be preserved
         $validAssertions = $this->getValidAssertionMethods();
+        $validControlMethods = ['markTestSkipped', 'markTestIncomplete', 'fail', 'expectException', 'expectExceptionMessage'];
 
         foreach ($assertionMethods as $assertion) {
-            // Skip if it's a valid assertion or a custom assertion method
-            if (\in_array($assertion, $validAssertions, true) || str_starts_with($assertion, 'assert')) {
+            // Skip if it's a valid assertion, control method, or a custom assertion method
+            if (\in_array($assertion, $validAssertions, true)
+                || \in_array($assertion, $validControlMethods, true)
+                || str_starts_with($assertion, 'assert')) {
                 continue;
             }
 
@@ -512,14 +520,21 @@ class TestCountPreservationPropertyTest extends TestCase
                     // Skip certain files
                     if (
                         str_contains($normalizedPath, 'Concerns/') ||
+                        str_contains($normalizedPath, 'Traits/') ||
                         str_contains($normalizedPath, 'manual/') ||
                         basename($relativePath) === 'TestCase.php'
                     ) {
                         continue;
                     }
 
-                    // Only include files that contain test methods
+                    // Only include files that contain test methods (and are not traits)
                     $content = file_get_contents($file->getPathname());
+
+                    // Skip trait files - they don't have test methods directly
+                    if (str_contains($content, 'trait ') && preg_match('/^trait\s+\w+/m', $content)) {
+                        continue;
+                    }
+
                     if (
                         str_contains($content, 'public function test') ||
                         str_contains($content, '#[Test]') ||

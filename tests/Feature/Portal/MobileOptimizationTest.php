@@ -238,7 +238,7 @@ class MobileOptimizationTest extends TestCase
         $view->assertSee('Laman Utama');
         $view->assertSee('Tiket');
         $view->assertSee('aria-label');
-        $view->assertSee('role="navigation"');
+        $this->assertStringContainsString('role="navigation"', $view->__toString());
     }
 
     #[Test]
@@ -246,8 +246,9 @@ class MobileOptimizationTest extends TestCase
     {
         $view = $this->blade('<x-responsive.floating-action-button href="/create" label="Cipta Baharu" />');
 
-        $view->assertSee('aria-label="Cipta Baharu"');
-        $view->assertSee('href="/create"');
+        $content = $view->__toString();
+        $this->assertStringContainsString('aria-label="Cipta Baharu"', $content);
+        $this->assertStringContainsString('href="/create"', $content);
     }
 
     #[Test]
@@ -257,7 +258,7 @@ class MobileOptimizationTest extends TestCase
 
         $view->assertSee('Menu Content');
         $view->assertSee('aria-label');
-        $view->assertSee('role="dialog"');
+        $this->assertStringContainsString('role="dialog"', $view->__toString());
     }
 
     #[Test]
@@ -266,9 +267,10 @@ class MobileOptimizationTest extends TestCase
         $view = $this->blade('<x-responsive.touch-input name="email" label="Alamat E-mel" type="email" required />');
 
         $view->assertSee('Alamat E-mel');
-        $view->assertSee('type="email"');
-        $view->assertSee('aria-required="true"');
-        $view->assertSee('inputmode="email"');
+        $content = $view->__toString();
+        $this->assertStringContainsString('type="email"', $content);
+        $this->assertStringContainsString('aria-required="true"', $content);
+        $this->assertStringContainsString('inputmode="email"', $content);
     }
 
     // =========================================================================

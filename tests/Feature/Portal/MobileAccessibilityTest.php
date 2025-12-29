@@ -284,7 +284,7 @@ class MobileAccessibilityTest extends TestCase
 
         // Should have main content sections
         $this->assertStringContainsString('Dashboard', $content);
-        $this->assertStringContainsString('Profile', $content);
+        $this->assertStringContainsString('Profil', $content);
     }
 
     #[Test]

@@ -198,8 +198,15 @@ class Php8AttributeCompliancePropertyTest extends TestCase
                     if (
                         str_contains($normalizedPath, 'Concerns/') ||
                         str_contains($normalizedPath, 'manual/') ||
+                        str_contains($normalizedPath, 'Traits/') ||
                         basename($relativePath) === 'TestCase.php'
                     ) {
+                        continue;
+                    }
+
+                    // Skip trait files by checking content
+                    $fileContent = file_get_contents($file->getPathname());
+                    if ($fileContent !== false && preg_match('/^\s*trait\s+\w+/m', $fileContent)) {
                         continue;
                     }
 

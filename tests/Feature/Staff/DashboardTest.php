@@ -33,7 +33,7 @@ class DashboardTest extends TestCase
         // 5. Assert that the dashboard is rendered successfully
         $response->assertStatus(200);
 
-        // 6. Assert that the status badge is rendered with the correct status
-        $response->assertSee('Approved');
+        // 6. Assert that the status badge is rendered with the correct status (Bahasa Melayu)
+        $response->assertSee('Diluluskan');
     }
 }

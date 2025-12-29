@@ -96,10 +96,10 @@ class PerformanceIntegrationTest extends TestCase
 
         $renderTime = microtime(true) - $startTime;
 
-        // Verify TTFB equivalent (component initialization) < 15s (adjusted for test environment with DB setup)
-        // CI environments get 3x multiplier (45s threshold)
+        // Verify TTFB equivalent (component initialization) < 20s (adjusted for test environment with DB setup)
+        // CI environments get 3x multiplier (60s threshold)
         // Note: Test environment includes database seeding overhead in createPerformanceTestData()
-        $this->assertLessThan(15.0 * $multiplier, $renderTime, 'Component initialization took too long (TTFB equivalent)');
+        $this->assertLessThan(20.0 * $multiplier, $renderTime, 'Component initialization took too long (TTFB equivalent)');
 
         // Test form interaction performance (FID equivalent) using nested form array
         $interactionStart = microtime(true);

@@ -520,7 +520,7 @@ class UserProfileTest extends TestCase
             ->assertSee('Profil Saya') // My Profile
             ->assertSee('Maklumat Profil') // Profile Information
             ->assertSee('Nama Penuh') // Full Name
-            ->assertSee('Alamat E-mel') // Email Address
+            ->assertSee('E-mel') // Email
             ->assertSee('Nombor Telefon') // Phone Number
             ->assertSee('ID Kakitangan') // Staff ID
             ->assertSee('Bahagian') // Division
@@ -540,13 +540,13 @@ class UserProfileTest extends TestCase
             ->get(route('staff.profile'));
 
         $response->assertOk()
-            ->assertSee('Kemaskini Profil') // Update Profile
+            ->assertSee('Maklumat Profil') // Profile Information
             ->assertSee('Tukar Kata Laluan') // Change Password
-            ->assertSee('Tetapan Notifikasi') // Notification Settings
+            ->assertSee('Keutamaan Pemberitahuan') // Notification Preferences
             ->assertSee('Simpan Perubahan') // Save Changes
             ->assertSee('Kata Laluan Semasa') // Current Password
             ->assertSee('Kata Laluan Baharu') // New Password
-            ->assertSee('Sahkan Kata Laluan'); // Confirm Password
+            ->assertSee('Sahkan Kata Laluan Baharu'); // Confirm New Password
     }
 
     /**
@@ -561,13 +561,13 @@ class UserProfileTest extends TestCase
             ->get(route('staff.profile'));
 
         $response->assertOk()
-            ->assertSee('Kemaskini Tiket') // Ticket Updates
+            ->assertSee('Kemas Kini Status Tiket') // Ticket Updates
             ->assertSee('Tugasan Tiket') // Ticket Assignments
-            ->assertSee('Komen Tiket') // Ticket Comments
-            ->assertSee('Amaran SLA') // SLA Alerts
-            ->assertSee('Kemaskini Pinjaman') // Loan Updates
-            ->assertSee('Kelulusan Pinjaman') // Loan Approvals
-            ->assertSee('Peringatan Pinjaman') // Loan Reminders
+            ->assertSee('Komen Baharu') // Ticket Comments
+            ->assertSee('Amaran Pelanggaran SLA') // SLA Alerts
+            ->assertSee('Kemas Kini Status Pinjaman') // Loan Updates
+            ->assertSee('Pemberitahuan Kelulusan') // Loan Approvals
+            ->assertSee('Peringatan Pemulangan') // Loan Reminders
             ->assertSee('Pengumuman Sistem'); // System Announcements
     }
 

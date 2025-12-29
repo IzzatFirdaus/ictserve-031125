@@ -153,11 +153,11 @@ class UserResourceTest extends TestCase
             ->assertFormFieldExists('password')
             ->assertFormFieldExists('role')
             ->assertFormFieldExists('is_active')
-            ->assertSee(__('users.full_name'))
-            ->assertSee(__('users.email_address'))
-            ->assertSee(__('users.password'))
-            ->assertSee(__('users.role'))
-            ->assertSee(__('users.active_status'));
+            ->assertSee(__('filament.users.full_name'))
+            ->assertSee(__('filament.users.email_address'))
+            ->assertSee(__('filament.users.password'))
+            ->assertSee(__('filament.users.role'))
+            ->assertSee(__('filament.users.active_status'));
     }
 
     #[Test]

@@ -14,6 +14,7 @@ use App\Services\HorizonMonitoringService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -39,7 +40,8 @@ class HorizonIntegrationTest extends TestCase
         $this->superUser = User::factory()->create(['role' => 'superuser']);
     }
 
-    public function test_it_can_dispatch_and_process_helpdesk_notification_jobs(): void
+    #[Test]
+    public function it_can_dispatch_and_process_helpdesk_notification_jobs(): void
     {
         Queue::fake();
 
@@ -60,7 +62,8 @@ class HorizonIntegrationTest extends TestCase
         );
     }
 
-    public function test_it_can_dispatch_and_process_sla_alert_jobs(): void
+    #[Test]
+    public function it_can_dispatch_and_process_sla_alert_jobs(): void
     {
         Queue::fake();
 
@@ -81,7 +84,8 @@ class HorizonIntegrationTest extends TestCase
         );
     }
 
-    public function test_it_can_dispatch_and_process_asset_loan_jobs(): void
+    #[Test]
+    public function it_can_dispatch_and_process_asset_loan_jobs(): void
     {
         Queue::fake();
 
@@ -101,7 +105,8 @@ class HorizonIntegrationTest extends TestCase
         );
     }
 
-    public function test_it_can_dispatch_and_process_report_generation_jobs(): void
+    #[Test]
+    public function it_can_dispatch_and_process_report_generation_jobs(): void
     {
         Queue::fake();
 
@@ -117,7 +122,8 @@ class HorizonIntegrationTest extends TestCase
         );
     }
 
-    public function test_it_properly_tags_jobs_for_filtering(): void
+    #[Test]
+    public function it_properly_tags_jobs_for_filtering(): void
     {
         Queue::fake();
 
@@ -131,7 +137,8 @@ class HorizonIntegrationTest extends TestCase
         $this->assertContains('email:'.($ticket->contact_email ?? 'test@motac.gov.my'), $tags);
     }
 
-    public function test_it_can_access_horizon_dashboard_with_proper_authorization(): void
+    #[Test]
+    public function it_can_access_horizon_dashboard_with_proper_authorization(): void
     {
         // Skip if Horizon is not properly configured
         if (! class_exists(\Laravel\Horizon\Horizon::class)) {
@@ -165,7 +172,8 @@ class HorizonIntegrationTest extends TestCase
         );
     }
 
-    public function test_it_can_monitor_queue_health_status(): void
+    #[Test]
+    public function it_can_monitor_queue_health_status(): void
     {
         $monitoringService = app(HorizonMonitoringService::class);
 
@@ -177,7 +185,8 @@ class HorizonIntegrationTest extends TestCase
         $this->assertArrayHasKey('queues', $healthStatus);
     }
 
-    public function test_it_can_run_horizon_health_check_command(): void
+    #[Test]
+    public function it_can_run_horizon_health_check_command(): void
     {
         $exitCode = Artisan::call('horizon:health-check', ['--exit-code' => true]);
 
@@ -185,7 +194,8 @@ class HorizonIntegrationTest extends TestCase
         $this->assertContains($exitCode, [0, 1]);
     }
 
-    public function test_it_handles_job_retry_policies_correctly(): void
+    #[Test]
+    public function it_handles_job_retry_policies_correctly(): void
     {
         $job = new SendNotificationJob('test_notification', ['test' => 'data'], $ticket->user ?? null, $ticket->contact_email ?? 'test@motac.gov.my');
 
@@ -195,7 +205,8 @@ class HorizonIntegrationTest extends TestCase
         $this->assertEquals([10, 30, 60], $job->backoff);
     }
 
-    public function test_it_can_handle_failed_job_notifications(): void
+    #[Test]
+    public function it_can_handle_failed_job_notifications(): void
     {
         Queue::fake();
 
@@ -207,7 +218,8 @@ class HorizonIntegrationTest extends TestCase
         $this->assertTrue(method_exists($job, 'failed'));
     }
 
-    public function test_it_integrates_with_laravel_pulse_metrics(): void
+    #[Test]
+    public function it_integrates_with_laravel_pulse_metrics(): void
     {
         // Test that Horizon metrics are being recorded for Pulse
         $monitoringService = app(HorizonMonitoringService::class);
@@ -218,7 +230,8 @@ class HorizonIntegrationTest extends TestCase
         $this->assertIsArray($metrics);
     }
 
-    public function test_it_can_scale_workers_based_on_queue_load(): void
+    #[Test]
+    public function it_can_scale_workers_based_on_queue_load(): void
     {
         // Test auto-scaling configuration
         $config = config('horizon.environments.local.supervisor-default');

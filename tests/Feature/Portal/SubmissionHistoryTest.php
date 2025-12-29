@@ -229,9 +229,9 @@ class SubmissionHistoryTest extends TestCase
             ->get("/portal/submissions/{$ticket->id}?type=ticket");
 
         $response->assertStatus(200);
-        // The detail page shows "Loan details" as the generic title (not ticket-specific)
-        $response->assertSee('Loan details');
-        $response->assertSee('Submission details');
+        // The detail page shows "Butiran pinjaman" (Loan details in Bahasa Melayu)
+        $response->assertSee('Butiran pinjaman');
+        $response->assertSee('Butiran permohonan');
     }
 
     #[Test]
@@ -247,10 +247,10 @@ class SubmissionHistoryTest extends TestCase
             ->get("/portal/submissions/{$ticket->id}?type=ticket");
 
         $response->assertStatus(200);
-        // The actual page shows "Activity timeline" not "Timeline"
-        $response->assertSee('Activity timeline');
-        // When no activities exist, it shows "No activity" not "Submitted"
-        $response->assertSee('No activity');
+        // The actual page shows "Garis masa aktiviti" (Activity timeline in Bahasa Melayu)
+        $response->assertSee('Garis masa aktiviti');
+        // When no activities exist, it shows "Tiada aktiviti" (No activity in Bahasa Melayu)
+        $response->assertSee('Tiada aktiviti');
     }
 
     #[Test]
