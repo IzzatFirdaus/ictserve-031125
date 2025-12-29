@@ -1,0 +1,16 @@
+{
+  "assets": [
+    {
+      "id": "ASSET-001",
+      "name": "Test Laptop",
+      "available": true,
+      "category": "IT Equipment"
+    },
+    {
+      "id": "ASSET-002",
+      "name": "Sample Projector",
+      "available": false,
+      "category": "Presentation"
+    }
+  ]
+}

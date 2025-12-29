@@ -1,0 +1,16 @@
+{
+  "tickets": [
+    {
+      "id": "TICKET-001",
+      "status": "open",
+      "title": "Test Helpdesk Ticket",
+      "priority": "medium"
+    },
+    {
+      "id": "TICKET-002",
+      "status": "closed",
+      "title": "Sample Support Request",
+      "priority": "low"
+    }
+  ]
+}

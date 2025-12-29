@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Test User 1",
+      "email": "test1@motac.gov.my",
+      "role": "user"
+    },
+    {
+      "id": 2,
+      "name": "Test Admin",
+      "email": "admin@motac.gov.my",
+      "role": "admin"
+    }
+  ]
+}
