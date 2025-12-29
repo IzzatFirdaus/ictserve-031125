@@ -1,0 +1,15 @@
+{
+  "name": "Critical Path Test Suite",
+  "description": "Essential user journeys and core functionality",
+  "categories": [
+    "guest-workflows",
+    "authenticated-workflows",
+    "api-backend"
+  ],
+  "filters": [
+    "*critical*",
+    "*essential*",
+    "*core*"
+  ],
+  "priority": "high"
+}

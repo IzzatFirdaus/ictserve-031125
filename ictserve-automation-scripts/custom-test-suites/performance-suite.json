@@ -1,0 +1,15 @@
+{
+  "name": "Performance Testing Suite",
+  "description": "Load testing and accessibility validation",
+  "categories": [
+    "performance-accessibility",
+    "guest-workflows"
+  ],
+  "filters": [
+    "*performance*",
+    "*load*",
+    "*accessibility*",
+    "*responsive*"
+  ],
+  "priority": "medium"
+}

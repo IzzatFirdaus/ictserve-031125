@@ -1,0 +1,15 @@
+{
+  "name": "Security & Compliance Suite",
+  "description": "Security testing and PDPA compliance validation",
+  "categories": [
+    "security-compliance",
+    "guest-workflows"
+  ],
+  "filters": [
+    "*security*",
+    "*csrf*",
+    "*validation*",
+    "*compliance*"
+  ],
+  "priority": "high"
+}
