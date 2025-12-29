@@ -47,6 +47,7 @@ applyTo: '**'
 - When testing Google SSO, bind `SsoHealthCheckInterface` to a Mockery mock and stub `getServiceStatus()` per test to avoid network calls and cached statuses; avoid default stubs that mask per-test expectations.
 - PHPStan/Larastan at Level 9; phpstan.neon has comprehensive ignoreErrors for Laravel type covariance issues (View vs Contracts\View, User vs Authenticatable, etc.). Use phpstan-simple.neon for standalone analysis without vendor dependencies.
 - Larastan may not infer Spatie Permission methods (e.g., `hasRole`) on `Auth::user()`; fix by assigning to a typed `/** @var \App\Models\User|null $user */ $user = Auth::user();` before calling role/permission methods.
+- Documentation deliverables pattern: create paired BM Markdown files `*_PLAN.md` (extensively planned steps) + `*_DIAGRAMS.md` (Mermaid diagrams). Examples: `DFD_PLAN.md` + `DFD_DIAGRAMS.md`.
 
 ## Frontend v3.6.0 Patterns
 

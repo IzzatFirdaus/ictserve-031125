@@ -19,7 +19,7 @@ Added the following Percy configuration to `.env.local`:
 
 ```env
 # Percy Visual Testing Configuration
-PERCY_TOKEN=web_5d6dc49aa1266a5a9ff36a0edecd719aba085b4a690f001f11415e3db780ae79
+PERCY_TOKEN=web_84e16ca9fa7085593d2c0b8112dcc658bcb4e7e1603bc12b08929fb1ef97653d
 PERCY_PROJECT=ictserve
 PERCY_ENABLED=true
 PERCY_BRANCH=develop
