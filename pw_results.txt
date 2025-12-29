@@ -1,0 +1,492 @@
+
+Running 765 tests using 2 workers
+
+[Percy] Skipping snapshot "Accessibility - Accessibility Statement - WCAG 2.2 AA Compliance" - Percy not enabled
+
+Γ¥î Accessibility Statement: 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 4
+   - Element 1: <span class="text-slate-500">Tel:</span>...
+     Target: address > .pt-2 > .text-slate-500
+   - Element 2: <span class="text-slate-500">Faks:</span>...
+     Target: p:nth-child(4) > .text-slate-500
+   - Element 3: <p class="text-xs text-slate-500">┬⌐ 2025 BPM MOTAC.
+                        Hak Cipta Terpelihara.</...
+     Target: .mt-10 > .text-slate-500.text-xs:nth-child(1)
+
+[Percy] Skipping snapshot "Accessibility - Welcome Page - WCAG 2.2 AA Compliance" - Percy not enabled
+  x    2 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-2 - Accessibility Statement should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke (52.6s)
+
+Γ¥î Welcome Page: 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 4
+   - Element 1: <span class="text-slate-500">Tel:</span>...
+     Target: address > .pt-2 > .text-slate-500
+   - Element 2: <span class="text-slate-500">Faks:</span>...
+     Target: p:nth-child(4) > .text-slate-500
+   - Element 3: <p class="text-xs text-slate-500">┬⌐ 2025 BPM MOTAC.
+                        Hak Cipta Terpelihara.</...
+     Target: .mt-10 > .text-xs.text-slate-500:nth-child(1)
+
+  x    1 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-1 - Welcome Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke (57.2s)
+[Percy] Skipping snapshot "Accessibility - Contact Page - WCAG 2.2 AA Compliance" - Percy not enabled
+[Percy] Skipping snapshot "Accessibility - Services Page - WCAG 2.2 AA Compliance" - Percy not enabled
+
+Γ¥î Services Page: 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 5
+   - Element 1: <a href="http://127.0.0.1:8000/loan/apply" class="flex items-center justify-center w-full min-h-11 p...
+     Target: .bg-success
+   - Element 2: <span class="text-slate-500">Tel:</span>...
+     Target: address > .pt-2 > .text-slate-500
+   - Element 3: <span class="text-slate-500">Faks:</span>...
+     Target: p:nth-child(4) > .text-slate-500
+
+
+Γ¥î Contact Page: 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 5
+   - Element 1: <span class="text-slate-400">(Pilihan)</span>...
+     Target: label[for="phone"] > .text-slate-400
+   - Element 2: <span class="text-slate-500">Tel:</span>...
+     Target: address > .pt-2 > .text-slate-500
+   - Element 3: <span class="text-slate-500">Faks:</span>...
+     Target: p:nth-child(4) > .text-slate-500
+
+  x    3 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-3 - Contact Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke (1.2m)
+  x    4 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-4 - Services Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke (1.1m)
+[Percy] Skipping snapshot "Accessibility - Helpdesk Ticket Form (Guest) - WCAG 2.2 AA Compliance" - Percy not enabled
+[Percy] Skipping snapshot "Accessibility - Asset Loan Application Form (Guest) - WCAG 2.2 AA Compliance" - Percy not enabled
+
+Γ¥î Asset Loan Application Form (Guest): 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 2
+   - Element 1: <p class="text-xs text-slate-500">┬⌐ 2025 BPM MOTAC.
+                        Hak Cipta Terpelihara.</...
+     Target: .sm\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(1)
+   - Element 2: <p class="text-xs text-slate-500">Mematuhi WCAG 2.2 Tahap AA</p>...
+     Target: .sm\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(2)
+
+
+Γ¥î Helpdesk Ticket Form (Guest): 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 2
+   - Element 1: <p class="text-xs text-slate-500">┬⌐ 2025 BPM MOTAC.
+                        Hak Cipta Terpelihara.</...
+     Target: .sm\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(1)
+   - Element 2: <p class="text-xs text-slate-500">Mematuhi WCAG 2.2 Tahap AA</p>...
+     Target: .sm\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(2)
+
+  x    5 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-5 - Helpdesk Ticket Form (Guest) should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke (2.0m)
+  x    6 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-6 - Asset Loan Application Form (Guest) should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke (1.9m)
+[Worker 6] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Worker 7] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Login successful!
+
+Γ¥î Staff Dashboard: 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 8
+   - Element 1: <a href="http://127.0.0.1:8000/helpdesk/tickets" class="inline-block py-3 font-medium text-primary-4...
+     Target: .bg-slate-900\/70.shadow.backdrop-blur-sm:nth-child(5) > .bg-slate-800\/50.px-5.py-3 > .text-sm > .inline-block.hover\:text-primary-300.text-primary-400
+   - Element 2: <a href="http://127.0.0.1:8000/loans/history" class="inline-block py-3 font-medium text-primary-400 ...
+     Target: .bg-slate-900\/70.shadow.backdrop-blur-sm:nth-child(6) > .bg-slate-800\/50.px-5.py-3 > .text-sm > .inline-block.hover\:text-primary-300.text-primary-400
+   - Element 3: <span class="ml-2 text-xs text-success-400">Tiada tertunggak</span>...
+     Target: .text-success-400.ml-2.text-xs
+
+  x    8 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-1 - Staff Dashboard should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (3.5m)
+[Worker 8] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+
+Γ¥î User Profile: 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 38
+   - Element 1: <h1 class="text-3xl font-bold text-slate-100">
+            Profil Saya
+        </h1>...
+     Target: h1
+   - Element 2: <p class="mt-2 text-sm text-slate-300">
+            Urus maklumat profil, keutamaan pemberitahuan, d...
+     Target: .mb-6 > .mt-2
+   - Element 3: <h2 class="text-xl font-semibold text-slate-100">
+                    profile.picture_title
+        ...
+     Target: .shadow-card.overflow-hidden.border-gray-200:nth-child(1) > .px-6.py-4.border-b > .text-xl
+
+  x    7 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-2 - User Profile should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (4.3m)
+[Worker 9] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Dashboard selector timeout - checking auth cookies
+[Auth Fixture] Login successful!
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+Γ£à Submission History: No accessibility violations found
+Γ£à Submission History: 19 accessibility checks passed
+  ok   9 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-3 - Submission History should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (2.9m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+Γ£à Claim Submissions: No accessibility violations found
+Γ£à Claim Submissions: 27 accessibility checks passed
+  ok  10 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-4 - Claim Submissions should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (3.7m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Dashboard selector timeout - checking auth cookies
+[Auth Fixture] Login successful!
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+
+Γ¥î Helpdesk Tickets: 3 violation(s) found
+
+1. button-name (critical)
+   Description: Ensure buttons have discernible text
+   Help: Buttons must have discernible text
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/button-name?application=playwright
+   Affected elements: 14
+   - Element 1: <button @click="copyToClipboard()" class="rounded-md w-6 h-6 flex flex-shrink-0 items-center justify...
+     Target: .gap-3.items-center.w-full > .duration-200.ease-in-out.bg-white\/5
+   - Element 2: <button type="button" class="flex h-6 w-6 cursor-..." :class="{
+                't...">...
+     Target: .opacity-90.dark\:bg-white\/1[x-data="{ expanded: false }"]:nth-child(1) > .dark\:hover\:bg-white\/2.h-11[\@click="expanded = !expanded"] > .dark\:border-white\/8.group-hover\:text-blue-500.group-hover\:dark\:text-emerald-500
+   - Element 3: <button type="button" class="flex h-6 w-6 cursor-..." :class="{
+                  ...">...
+     Target: .dark\:bg-white\/5.text-blue-500.dark\:text-emerald-500
+
+2. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 3
+   - Element 1: <span class="text-neutral-400 dark:text-neutral-500">LARAVEL</span>...
+     Target: .px-\[6px\].text-\[13px\].gap-1\.5:nth-child(1) > .text-neutral-400.dark\:text-neutral-500
+   - Element 2: <span class="text-neutral-400 dark:text-neutral-500">PHP</span>...
+     Target: .px-\[6px\].text-\[13px\].gap-1\.5:nth-child(2) > .text-neutral-400.dark\:text-neutral-500
+   - Element 3: <span class="mr-6 text-neutral-500! dark:text-neutral-600! dark:text-white!">118</span>...
+     Target: .overflow-hidden.group.dark\:border-white\/5 > .border-neutral-100.dark\:bg-neutral-900.rounded-b-lg > .overflow-x-auto[x-data="{ highlightedCode: null }"] > div[x-html="highlightedCode"] > .min-w-full.w-fit.shiki > code > .bg-rose-200\!.dark\:bg-rose-900\!.inline-block > .dark\:text-white\!.mr-6.text-neutral-500\!
+
+3. meta-viewport (moderate)
+   Description: Ensure <meta name="viewport"> does not disable text scaling and zooming
+   Help: Zooming and scaling must not be disabled
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/meta-viewport?application=playwright
+   Affected elements: 1
+   - Element 1: <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=n...
+     Target: meta[name="viewport"]
+
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+  x   11 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-5 - Helpdesk Tickets should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (3.0m)
+[Worker 10] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Dashboard selector timeout - checking auth cookies
+[Auth Fixture] Login successful!
+[Auth Fixture] Attempt 1 failed: page.goto: Timeout 60000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Waiting 3000ms before retry...
+[Auth Fixture] Login attempt 2/8
+
+Γ¥î Helpdesk Dashboard: 2 violation(s) found
+
+1. aria-required-children (critical)
+   Description: Ensure elements with an ARIA role that require child roles contain them
+   Help: Certain ARIA roles must contain particular children
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/aria-required-children?application=playwright
+   Affected elements: 1
+   - Element 1: <div class="space-y-4" role="feed" aria-label="Senarai aktiviti terkini">...
+     Target: .space-y-4
+
+2. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 18
+   - Element 1: <h1 class="text-2xl font-heading font-semibold text-slate-100">
+                Papan Pemuka Helpdes...
+     Target: h1
+   - Element 2: <p class="text-slate-300">
+                Pantau perkembangan tiket dan tindakan yang diperlukan.
+ ...
+     Target: header > div > .text-slate-300
+   - Element 3: <h2 class="text-lg font-heading font-semibold text-slate-100">Tindakan Pantas</h2>...
+     Target: .sm\:flex-row.sm\:items-center.sm\:justify-between > h2
+
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+  x   12 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-6 - Helpdesk Dashboard should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (3.6m)
+[Worker 11] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+
+Γ¥î Loan Dashboard: 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 10
+   - Element 1: <h1 class="text-2xl font-semibold text-slate-100" id="dashboard-heading">
+                Papan Pemu...
+     Target: #dashboard-heading
+   - Element 2: <p class="text-slate-300">
+                Urus permohonan pinjaman aset anda dan lihat statistik pe...
+     Target: header > div > .text-slate-300
+   - Element 3: <h2 class="mb-4 text-lg font-semibold text-slate-100">Statistik Pinjaman</h2>...
+     Target: .mb-4
+
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  x   13 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-7 - Loan Dashboard should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (4.7m)
+  x   14 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-8 - Loan History should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (5.3m)
+[Worker 13] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Worker 12] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Login successful!
+Γ£à Admin Dashboard: No accessibility violations found
+Γ£à Admin Dashboard: 25 accessibility checks passed
+Γ£à Approval Interface (Grade 41+): No accessibility violations found
+Γ£à Approval Interface (Grade 41+): 25 accessibility checks passed
+  ok  16 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:303:4 ΓÇ║ 04 - Automated Accessibility Testing - Admin Pages ΓÇ║ 04-1 - Admin Dashboard should pass WCAG 2.2 AA @accessibility @a11y @wcag @admin @authenticated (2.7m)
+[Auth Fixture] Login attempt 1/8
+  ok  15 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:246:4 ΓÇ║ 03 - Automated Accessibility Testing - Approver Pages ΓÇ║ 03-1 - Approval Interface (Grade 41+) should pass WCAG 2.2 AA @accessibility @a11y @wcag @approver @authenticated (2.8m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Login successful!
+Γ£à Helpdesk Tickets Management: No accessibility violations found
+Γ£à Helpdesk Tickets Management: 27 accessibility checks passed
+  ok  17 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:303:4 ΓÇ║ 04 - Automated Accessibility Testing - Admin Pages ΓÇ║ 04-2 - Helpdesk Tickets Management should pass WCAG 2.2 AA @accessibility @a11y @wcag @admin @authenticated (4.4m)
+Γ£à Loan Applications Management: No accessibility violations found
+Γ£à Loan Applications Management: 27 accessibility checks passed
+  ok  18 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:303:4 ΓÇ║ 04 - Automated Accessibility Testing - Admin Pages ΓÇ║ 04-3 - Loan Applications Management should pass WCAG 2.2 AA @accessibility @a11y @wcag @admin @authenticated (4.5m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+
+Γ¥î Welcome Page (Mobile): 2 violation(s) found
+
+1. button-name (critical)
+   Description: Ensure buttons have discernible text
+   Help: Buttons must have discernible text
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/button-name?application=playwright
+   Affected elements: 1
+   - Element 1: <button type="submit" class="px-6 py-3 bg-white t...">...
+     Target: .min-h-12.hover\:bg-slate-50[type="submit"]
+
+2. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 4
+   - Element 1: <span class="text-slate-500">Tel:</span>...
+     Target: address > .pt-2 > .text-slate-500
+   - Element 2: <span class="text-slate-500">Faks:</span>...
+     Target: p:nth-child(4) > .text-slate-500
+   - Element 3: <p class="text-xs text-slate-500">┬⌐ 2025 BPM MOTAC.
+                        Hak Cipta Terpelihara.</...
+     Target: .mt-10 > .text-xs.text-slate-500:nth-child(1)
+
+  x   20 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:359:3 ΓÇ║ 05 - Automated Accessibility Testing - Mobile Viewport ΓÇ║ 05-01 - Welcome Page should pass WCAG 2.2 AA on mobile @accessibility @a11y @wcag @mobile @responsive @smoke (1.8m)
+[Auth Fixture] Login successful!
+
+Γ¥î Helpdesk Form (Mobile): 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 2
+   - Element 1: <p class="text-xs text-slate-500">┬⌐ 2025 BPM MOTAC.
+                        Hak Cipta Terpelihara.</...
+     Target: .sm\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(1)
+   - Element 2: <p class="text-xs text-slate-500">Mematuhi WCAG 2.2 Tahap AA</p>...
+     Target: .sm\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(2)
+
+Γ£à Assets Management: No accessibility violations found
+Γ£à Assets Management: 27 accessibility checks passed
+  ok  19 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:303:4 ΓÇ║ 04 - Automated Accessibility Testing - Admin Pages ΓÇ║ 04-4 - Assets Management should pass WCAG 2.2 AA @accessibility @a11y @wcag @admin @authenticated (3.0m)
+  x   21 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:375:3 ΓÇ║ 05 - Automated Accessibility Testing - Mobile Viewport ΓÇ║ 05-02 - Helpdesk Form should pass WCAG 2.2 AA on mobile @accessibility @a11y @wcag @mobile @responsive (42.1s)
+Γ£à Loan Application Form (Mobile): No accessibility violations found
+  ok  22 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:387:3 ΓÇ║ 05 - Automated Accessibility Testing - Mobile Viewport ΓÇ║ 05-03 - Loan Application Form should pass WCAG 2.2 AA on mobile @accessibility @a11y @wcag @mobile @responsive (1.8m)
+  -   24 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:452:8 ΓÇ║ 06 - Automated Accessibility Testing - Specific WCAG 2.2 Criteria ΓÇ║ 06-02 - Touch targets should be minimum 44x44px (SC 2.5.8) @accessibility @a11y @wcag @criteria
+  ok  23 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:407:3 ΓÇ║ 06 - Automated Accessibility Testing - Specific WCAG 2.2 Criteria ΓÇ║ 06-01 - Focus indicators should be visible (SC 2.4.7) @accessibility @a11y @wcag @criteria @smoke (3.0m)
+[Worker 15] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+
+Γ¥î Color contrast violations found:
+   color-contrast: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+  x   25 [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:480:3 ΓÇ║ 06 - Automated Accessibility Testing - Specific WCAG 2.2 Criteria ΓÇ║ 06-03 - Color contrast should be sufficient (SC 1.4.3, 1.4.11) @accessibility @a11y @wcag @criteria @smoke (2.6m)
+[Worker 16] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Percy] Skipping snapshot "Dashboard Keyboard Navigation - Initial - WCAG 2.2 AA Compliance" - Percy not enabled
+[Percy] Skipping snapshot "Dashboard Keyboard Navigation - Focus State" - Percy not enabled
+  ok  26 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:37:3 ΓÇ║ Accessibility Interactions - Staff Dashboard with Percy ΓÇ║ 01 - Keyboard navigation through dashboard elements with Percy @accessibility @interactions @dashboard @percy @smoke @keyboard (2.6m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  27 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:106:3 ΓÇ║ Accessibility Interactions - Staff Dashboard with Percy ΓÇ║ 02 - Touch targets meet minimum size requirements with Percy @accessibility @interactions @dashboard @percy @smoke @touch (2.8m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  28 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:142:3 ΓÇ║ Accessibility Interactions - Staff Dashboard with Percy ΓÇ║ 03 - ARIA attributes and semantic HTML @accessibility @interactions @dashboard @percy @smoke @aria (2.7m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  x   30 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:207:3 ΓÇ║ Accessibility Interactions - Helpdesk Module ΓÇ║ 05 - Proper ARIA landmarks and labels @accessibility @interactions @helpdesk @aria (3.2m)
+[Worker 17] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+  x   29 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:180:3 ΓÇ║ Accessibility Interactions - Helpdesk Module ΓÇ║ 04 - Full keyboard navigation on helpdesk forms @accessibility @interactions @helpdesk @keyboard (4.5m)
+[Worker 18] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Login successful!
+  x   31 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:233:3 ΓÇ║ Accessibility Interactions - Helpdesk Module ΓÇ║ 06 - Screen reader support with ARIA live regions @accessibility @interactions @helpdesk @screenreader (1.6m)
+  ok  32 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:258:3 ΓÇ║ Accessibility Interactions - Loan Module ΓÇ║ 07 - Keyboard navigation works throughout loan module @accessibility @interactions @loan @keyboard (1.7m)
+[Auth Fixture] Login attempt 1/8
+  ok  33 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:276:3 ΓÇ║ Accessibility Interactions - Loan Module ΓÇ║ 08 - Form validation messages are accessible @accessibility @interactions @loan @forms (27.9s)
+[Worker 19] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Login successful!
+  ok  34 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:308:3 ΓÇ║ Accessibility Interactions - Loan Module ΓÇ║ 09 - Modal dialogs are accessible @accessibility @interactions @loan @modals (1.7m)
+  ok  35 [chromium] ΓÇ║ tests\e2e\accessibility.interactions.spec.ts:342:3 ΓÇ║ Accessibility Interactions - Loan Module ΓÇ║ 10 - Skip navigation link is present and functional @accessibility @interactions @loan @skip-links (1.7m)
+Direct admin access URL: http://127.0.0.1:8000/admin/login
+Direct admin dashboard access URL: http://127.0.0.1:8000/admin/login
+  ok  37 [chromium] ΓÇ║ tests\e2e\admin-auth-bypass.spec.ts:38:2 ΓÇ║ Admin Auth Bypass ΓÇ║ Check if admin routes are accessible without custom login (1.4m)
+Submit button enabled: [33mtrue[39m
+URL after click: http://127.0.0.1:8000/admin/login?
+  ok  38 [chromium] ΓÇ║ tests\e2e\admin-auth-bypass.spec.ts:56:2 ΓÇ║ Admin Auth Bypass ΓÇ║ Test admin login with minimal form interaction (10.9s)
+  x   36 [chromium] ΓÇ║ tests\e2e\admin-auth-bypass.spec.ts:8:2 ΓÇ║ Admin Auth Bypass ΓÇ║ Try accessing admin dashboard directly after manual auth (1.7m)
+[Percy] Skipping snapshot "Admin Login Page - v3.6.1" - Percy not enabled
+Found admin element: main
+[Percy] Skipping snapshot "Admin Dashboard - Post Login - v3.6.1" - Percy not enabled
+  ok  39 [chromium] ΓÇ║ tests\e2e\admin-dashboard.spec.ts:51:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Authentication & Access ΓÇ║ 01 - Admin Login with Seeded Credentials @admin @auth @smoke @smoke @percy (1.2m)
+  x   40 [chromium] ΓÇ║ tests\e2e\admin-dashboard.spec.ts:129:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Authentication & Access ΓÇ║ 02 - Admin Dashboard Access Control @admin @auth @smoke @security (1.8m)
+  x   41 [chromium] ΓÇ║ tests\e2e\admin-dashboard.spec.ts:169:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Dashboard Layout & Navigation ΓÇ║ 03 - Filament Sidebar Navigation @admin @layout @navigation @smoke @percy (2.3m)
+  x   42 [chromium] ΓÇ║ tests\e2e\admin-dashboard.spec.ts:230:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Dashboard Layout & Navigation ΓÇ║ 04 - Admin Dashboard Responsive Layout @admin @layout @navigation @responsive @percy (2.7m)
+  ok  43 [chromium] ΓÇ║ tests\e2e\admin-dashboard.spec.ts:279:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Dashboard Layout & Navigation ΓÇ║ 05 - Admin Dashboard Widgets & Stats @admin @layout @navigation @widgets @percy (2.0m)
+  x   45 [chromium] ΓÇ║ tests\e2e\admin-dashboard.spec.ts:361:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Management Features ΓÇ║ 07 - Loan Applications Management @admin @management @features @loans @percy (19.3s)
+  x   44 [chromium] ΓÇ║ tests\e2e\admin-dashboard.spec.ts:326:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Management Features ΓÇ║ 06 - Helpdesk Tickets Management @admin @management @features @helpdesk @percy (47.7s)

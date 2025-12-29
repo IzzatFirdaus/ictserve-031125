@@ -1,0 +1,767 @@
+Listing tests:
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-1 - Welcome Page should pass WCAG 2.2 AA with Percy
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-2 - Accessibility Statement should pass WCAG 2.2 AA with Percy
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-3 - Contact Page should pass WCAG 2.2 AA with Percy
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-4 - Services Page should pass WCAG 2.2 AA with Percy
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-5 - Helpdesk Ticket Form (Guest) should pass WCAG 2.2 AA with Percy
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-6 - Asset Loan Application Form (Guest) should pass WCAG 2.2 AA with Percy
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-1 - Staff Dashboard should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-2 - User Profile should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-3 - Submission History should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-4 - Claim Submissions should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-5 - Helpdesk Tickets should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-6 - Helpdesk Dashboard should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-7 - Loan Dashboard should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-8 - Loan History should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:246:4 ΓÇ║ 03 - Automated Accessibility Testing - Approver Pages ΓÇ║ 03-1 - Approval Interface (Grade 41+) should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:303:4 ΓÇ║ 04 - Automated Accessibility Testing - Admin Pages ΓÇ║ 04-1 - Admin Dashboard should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:303:4 ΓÇ║ 04 - Automated Accessibility Testing - Admin Pages ΓÇ║ 04-2 - Helpdesk Tickets Management should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:303:4 ΓÇ║ 04 - Automated Accessibility Testing - Admin Pages ΓÇ║ 04-3 - Loan Applications Management should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:303:4 ΓÇ║ 04 - Automated Accessibility Testing - Admin Pages ΓÇ║ 04-4 - Assets Management should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:359:3 ΓÇ║ 05 - Automated Accessibility Testing - Mobile Viewport ΓÇ║ 05-01 - Welcome Page should pass WCAG 2.2 AA on mobile
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:375:3 ΓÇ║ 05 - Automated Accessibility Testing - Mobile Viewport ΓÇ║ 05-02 - Helpdesk Form should pass WCAG 2.2 AA on mobile
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:387:3 ΓÇ║ 05 - Automated Accessibility Testing - Mobile Viewport ΓÇ║ 05-03 - Loan Application Form should pass WCAG 2.2 AA on mobile
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:407:3 ΓÇ║ 06 - Automated Accessibility Testing - Specific WCAG 2.2 Criteria ΓÇ║ 06-01 - Focus indicators should be visible (SC 2.4.7)
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:452:8 ΓÇ║ 06 - Automated Accessibility Testing - Specific WCAG 2.2 Criteria ΓÇ║ 06-02 - Touch targets should be minimum 44x44px (SC 2.5.8)
+  [chromium] ΓÇ║ accessibility.comprehensive.spec.ts:480:3 ΓÇ║ 06 - Automated Accessibility Testing - Specific WCAG 2.2 Criteria ΓÇ║ 06-03 - Color contrast should be sufficient (SC 1.4.3, 1.4.11)
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:37:3 ΓÇ║ Accessibility Interactions - Staff Dashboard with Percy ΓÇ║ 01 - Keyboard navigation through dashboard elements with Percy
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:106:3 ΓÇ║ Accessibility Interactions - Staff Dashboard with Percy ΓÇ║ 02 - Touch targets meet minimum size requirements with Percy
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:142:3 ΓÇ║ Accessibility Interactions - Staff Dashboard with Percy ΓÇ║ 03 - ARIA attributes and semantic HTML
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:180:3 ΓÇ║ Accessibility Interactions - Helpdesk Module ΓÇ║ 04 - Full keyboard navigation on helpdesk forms
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:207:3 ΓÇ║ Accessibility Interactions - Helpdesk Module ΓÇ║ 05 - Proper ARIA landmarks and labels
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:233:3 ΓÇ║ Accessibility Interactions - Helpdesk Module ΓÇ║ 06 - Screen reader support with ARIA live regions
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:258:3 ΓÇ║ Accessibility Interactions - Loan Module ΓÇ║ 07 - Keyboard navigation works throughout loan module
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:276:3 ΓÇ║ Accessibility Interactions - Loan Module ΓÇ║ 08 - Form validation messages are accessible
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:308:3 ΓÇ║ Accessibility Interactions - Loan Module ΓÇ║ 09 - Modal dialogs are accessible
+  [chromium] ΓÇ║ accessibility.interactions.spec.ts:342:3 ΓÇ║ Accessibility Interactions - Loan Module ΓÇ║ 10 - Skip navigation link is present and functional
+  [chromium] ΓÇ║ admin-auth-bypass.spec.ts:8:2 ΓÇ║ Admin Auth Bypass ΓÇ║ Try accessing admin dashboard directly after manual auth
+  [chromium] ΓÇ║ admin-auth-bypass.spec.ts:38:2 ΓÇ║ Admin Auth Bypass ΓÇ║ Check if admin routes are accessible without custom login
+  [chromium] ΓÇ║ admin-auth-bypass.spec.ts:56:2 ΓÇ║ Admin Auth Bypass ΓÇ║ Test admin login with minimal form interaction
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:51:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Authentication & Access ΓÇ║ 01 - Admin Login with Seeded Credentials
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:129:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Authentication & Access ΓÇ║ 02 - Admin Dashboard Access Control
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:169:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Dashboard Layout & Navigation ΓÇ║ 03 - Filament Sidebar Navigation
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:230:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Dashboard Layout & Navigation ΓÇ║ 04 - Admin Dashboard Responsive Layout
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:279:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Dashboard Layout & Navigation ΓÇ║ 05 - Admin Dashboard Widgets & Stats
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:326:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Management Features ΓÇ║ 06 - Helpdesk Tickets Management
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:361:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Management Features ΓÇ║ 07 - Loan Applications Management
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:388:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Management Features ΓÇ║ 08 - User Management Interface
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:431:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Performance & Accessibility ΓÇ║ 09 - Admin Dashboard Load Performance
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:447:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Performance & Accessibility ΓÇ║ 10 - Admin Interface Accessibility
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:486:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Percy Visual Testing - Admin Dashboard ΓÇ║ 11 - Comprehensive Admin Dashboard Visual Validation
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:507:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Percy Visual Testing - Admin Dashboard ΓÇ║ 12 - Admin Dark Mode Visual Validation
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:535:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Percy Visual Testing - Admin Dashboard ΓÇ║ 13 - Admin Filament Components Visual Validation
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:561:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Percy Visual Testing - Admin Dashboard ΓÇ║ 14 - Admin Bahasa Melayu Interface Validation
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:598:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Percy Visual Testing - Admin Dashboard ΓÇ║ 15 - Admin Error States Visual Validation
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:628:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Security & Permissions ΓÇ║ 16 - Admin Role Verification
+  [chromium] ΓÇ║ admin-dashboard.spec.ts:655:4 ΓÇ║ Admin Dashboard - Comprehensive Tests ΓÇ║ Admin Security & Permissions ΓÇ║ 17 - Admin Session Management
+  [chromium] ΓÇ║ admin-debug-fixture.spec.ts:8:2 ΓÇ║ Admin Fixture Debug ΓÇ║ Debug adminPage fixture step by step
+  [chromium] ΓÇ║ admin-debug-fixture.spec.ts:60:2 ΓÇ║ Admin Fixture Debug ΓÇ║ Test adminPage fixture directly
+  [chromium] ΓÇ║ admin-debug.spec.ts:9:2 ΓÇ║ Admin Debug Tests ΓÇ║ Debug Admin Login Step by Step
+  [chromium] ΓÇ║ admin-debug.spec.ts:93:2 ΓÇ║ Admin Debug Tests ΓÇ║ Check Admin User in Database
+  [chromium] ΓÇ║ admin-login-debug.spec.ts:8:2 ΓÇ║ Admin Login Debug ΓÇ║ Check for validation errors during admin login
+  [chromium] ΓÇ║ admin-login-debug.spec.ts:83:2 ΓÇ║ Admin Login Debug ΓÇ║ Try logging in with different admin credentials
+  [chromium] ΓÇ║ admin-simple.spec.ts:8:2 ΓÇ║ Simple Admin Tests ΓÇ║ Admin Login and Basic Navigation
+  [chromium] ΓÇ║ admin-simple.spec.ts:110:2 ΓÇ║ Simple Admin Tests ΓÇ║ Admin Dashboard Access via adminPage Fixture
+  [chromium] ΓÇ║ admin-user-check.spec.ts:8:2 ΓÇ║ Admin User Check ΓÇ║ Check admin user roles via browser console
+  [chromium] ΓÇ║ admin-user-check.spec.ts:39:2 ΓÇ║ Admin User Check ΓÇ║ Try admin login with detailed error checking
+  [chromium] ΓÇ║ branding-smoke.spec.ts:18:2 ΓÇ║ Branding smoke checks with Percy ΓÇ║ header, notification icon, and email asset are available with Percy
+  [chromium] ΓÇ║ branding-smoke.spec.ts:48:2 ΓÇ║ Branding smoke checks with Percy ΓÇ║ brand colors and typography consistency with Percy
+  [chromium] ΓÇ║ branding-smoke.spec.ts:72:2 ΓÇ║ Branding smoke checks with Percy ΓÇ║ responsive branding across viewports with Percy
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:55:2 ΓÇ║ WCAG 2.2 AA Compliance Scanning with Percy ΓÇ║ 01 - Homepage WCAG 2.2 AA compliance scan
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:87:2 ΓÇ║ WCAG 2.2 AA Compliance Scanning with Percy ΓÇ║ 02 - Login page WCAG 2.2 AA compliance scan
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:116:2 ΓÇ║ WCAG 2.2 AA Compliance Scanning with Percy ΓÇ║ 03 - Helpdesk form WCAG 2.2 AA compliance scan
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:144:2 ΓÇ║ WCAG 2.2 AA Compliance Scanning with Percy ΓÇ║ 04 - Services page WCAG 2.2 AA compliance scan
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:174:2 ΓÇ║ Focus State Visual Validation with Percy ΓÇ║ 05 - Homepage focus state accessibility
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:194:2 ΓÇ║ Focus State Visual Validation with Percy ΓÇ║ 06 - Login form focus state accessibility
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:218:2 ΓÇ║ Focus State Visual Validation with Percy ΓÇ║ 07 - Helpdesk form focus state accessibility
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:244:2 ΓÇ║ Color Contrast Validation with Percy ΓÇ║ 08 - Homepage color contrast validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:263:2 ΓÇ║ Color Contrast Validation with Percy ΓÇ║ 09 - Login page color contrast validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:282:2 ΓÇ║ Color Contrast Validation with Percy ΓÇ║ 10 - Helpdesk form color contrast validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:307:2 ΓÇ║ Keyboard Navigation Testing with Percy ΓÇ║ 11 - Homepage keyboard navigation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:327:2 ΓÇ║ Keyboard Navigation Testing with Percy ΓÇ║ 12 - Login form keyboard navigation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:347:2 ΓÇ║ Keyboard Navigation Testing with Percy ΓÇ║ 13 - Helpdesk form keyboard navigation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:373:2 ΓÇ║ Screen Reader Compatibility with Percy ΓÇ║ 14 - Homepage ARIA landmarks validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:392:2 ΓÇ║ Screen Reader Compatibility with Percy ΓÇ║ 15 - Login page ARIA landmarks validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:411:2 ΓÇ║ Screen Reader Compatibility with Percy ΓÇ║ 16 - Helpdesk form ARIA landmarks validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:442:2 ΓÇ║ Responsive Accessibility Testing with Percy ΓÇ║ 17 - Homepage responsive accessibility
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:474:2 ΓÇ║ Responsive Accessibility Testing with Percy ΓÇ║ 18 - Login page responsive accessibility
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:508:2 ΓÇ║ Form Accessibility Validation with Percy ΓÇ║ 19 - Login form label associations
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:555:2 ΓÇ║ Form Accessibility Validation with Percy ΓÇ║ 20 - Helpdesk form error state accessibility
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:593:2 ΓÇ║ Form Accessibility Validation with Percy ΓÇ║ 21 - Form required field indicators
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:631:2 ΓÇ║ Interactive Element Accessibility with Percy ΓÇ║ 22 - Button accessibility validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:663:2 ΓÇ║ Interactive Element Accessibility with Percy ΓÇ║ 23 - Link accessibility validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:699:2 ΓÇ║ Interactive Element Accessibility with Percy ΓÇ║ 24 - Image accessibility validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:741:2 ΓÇ║ Bahasa Melayu Interface Accessibility with Percy ΓÇ║ 25 - Bahasa Melayu text accessibility
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:771:2 ΓÇ║ Bahasa Melayu Interface Accessibility with Percy ΓÇ║ 26 - Bahasa Melayu form labels accessibility
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:805:2 ΓÇ║ Hybrid Architecture Accessibility with Percy ΓÇ║ 27 - Guest user accessibility validation
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:829:2 ΓÇ║ Hybrid Architecture Accessibility with Percy ΓÇ║ 28 - Guest helpdesk form accessibility
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:859:2 ΓÇ║ Accessibility Report Generation ΓÇ║ 29 - Generate comprehensive accessibility report
+  [chromium] ΓÇ║ browserstack-accessibility-percy.spec.ts:907:2 ΓÇ║ BrowserStack Accessibility Integration Summary ΓÇ║ 30 - Complete accessibility integration validation
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:76:2 ΓÇ║ BrowserStack Automate Integration with Percy ΓÇ║ 01 - Cross-browser homepage visual testing with Percy
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:106:2 ΓÇ║ BrowserStack Automate Integration with Percy ΓÇ║ 02 - Cross-browser login page visual testing with Percy
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:135:2 ΓÇ║ BrowserStack Automate Integration with Percy ΓÇ║ 03 - Cross-browser helpdesk form visual testing with Percy
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:166:2 ΓÇ║ Cross-Browser Test Execution with Percy ΓÇ║ 04 - Desktop browser visual consistency
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:202:2 ΓÇ║ Cross-Browser Test Execution with Percy ΓÇ║ 05 - Mobile browser visual consistency
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:239:2 ΓÇ║ Cross-Browser Test Execution with Percy ΓÇ║ 06 - Tablet browser visual consistency
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:281:2 ΓÇ║ Failure Analysis and Debugging Capabilities ΓÇ║ 07 - Error state visual capture for debugging
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:312:2 ΓÇ║ Failure Analysis and Debugging Capabilities ΓÇ║ 08 - 404 page visual capture for debugging
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:333:2 ΓÇ║ Failure Analysis and Debugging Capabilities ΓÇ║ 09 - Interactive element debugging visual capture
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:375:2 ΓÇ║ Performance Testing with Visual Validation ΓÇ║ 10 - Page load performance visual validation
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:409:2 ΓÇ║ Performance Testing with Visual Validation ΓÇ║ 11 - Scroll performance visual validation
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:440:2 ΓÇ║ Performance Testing with Visual Validation ΓÇ║ 12 - Lazy loading visual validation
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:481:2 ΓÇ║ Combined Test Execution Reports ΓÇ║ 13 - Generate combined test execution report
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:515:2 ΓÇ║ Combined Test Execution Reports ΓÇ║ 14 - Validate report data integrity
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:549:2 ΓÇ║ ICTServe v3.6.1 Specific Visual Testing ΓÇ║ 15 - Bahasa Melayu interface visual validation
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:571:2 ΓÇ║ ICTServe v3.6.1 Specific Visual Testing ΓÇ║ 16 - True Hybrid Architecture guest workflow visual validation
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:597:2 ΓÇ║ ICTServe v3.6.1 Specific Visual Testing ΓÇ║ 17 - Livewire component visual validation
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:622:2 ΓÇ║ ICTServe v3.6.1 Specific Visual Testing ΓÇ║ 18 - WCAG 2.2 AA compliance visual validation
+  [chromium] ΓÇ║ browserstack-automate-percy.spec.ts:652:2 ΓÇ║ BrowserStack Automate + Percy Integration Summary ΓÇ║ 19 - Complete BrowserStack Automate + Percy integration validation
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:59:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Live Session Creation and Management ΓÇ║ 01 - Should create Live session for visual debugging
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:89:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Live Session Creation and Management ΓÇ║ 02 - Should capture screenshots during Live session
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:126:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Live Session Creation and Management ΓÇ║ 03 - Should capture Percy snapshots for visual comparison
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:164:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Live Session Creation and Management ΓÇ║ 04 - Should add debugging notes to Live session
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:199:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Live Session Creation and Management ΓÇ║ 05 - Should end Live session and generate summary
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:233:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Visual Issue Investigation ΓÇ║ 06 - Should create visual issue report from Live session
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:288:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Visual Issue Investigation ΓÇ║ 07 - Should update visual issue status
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:331:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Visual Issue Investigation ΓÇ║ 08 - Should list all visual issues
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:369:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Collaborative Debugging ΓÇ║ 09 - Should start collaborative debugging session
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:388:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Collaborative Debugging ΓÇ║ 10 - Should add collaborators to debugging session
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:416:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Collaborative Debugging ΓÇ║ 11 - Should send chat messages in collaborative session
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:441:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Debugging Workflows ΓÇ║ 12 - Should create custom debugging workflow
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:464:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Debugging Workflows ΓÇ║ 13 - Should get predefined Percy visual debugging workflow
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:481:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Debugging Workflows ΓÇ║ 14 - Should update workflow step status
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:510:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Percy Visual Comparison Integration ΓÇ║ 15 - Should capture multiple Percy snapshots for comparison
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:542:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Percy Visual Comparison Integration ΓÇ║ 16 - Should handle Percy snapshot failures gracefully
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:566:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Session Export and Reporting ΓÇ║ 17 - Should generate session summary report
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:595:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ Session Export and Reporting ΓÇ║ 18 - Should export session data to JSON
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:621:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ ICTServe v3.6.1 Specific Visual Debugging ΓÇ║ 19 - Should debug Bahasa Melayu interface visual issues
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:668:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ ICTServe v3.6.1 Specific Visual Debugging ΓÇ║ 20 - Should debug True Hybrid Architecture visual states
+  [chromium] ΓÇ║ browserstack-live-session-percy.spec.ts:704:3 ΓÇ║ BrowserStack Live Session - Percy Visual Debugging ΓÇ║ ICTServe v3.6.1 Specific Visual Debugging ΓÇ║ 21 - Should debug WCAG 2.2 AA visual compliance
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:106:2 ΓÇ║ Test Case Organization and Management ΓÇ║ 01 - Create test cases from Percy templates
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:168:2 ΓÇ║ Test Case Organization and Management ΓÇ║ 02 - Create test run for Percy visual tests
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:188:2 ΓÇ║ Test Case Organization and Management ΓÇ║ 03 - Start test run execution
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:212:2 ΓÇ║ Percy Visual Test Execution with Test Management ΓÇ║ 04 - Execute homepage responsive layout test case
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:298:2 ΓÇ║ Percy Visual Test Execution with Test Management ΓÇ║ 05 - Execute accessibility compliance test case
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:367:2 ΓÇ║ Percy Visual Test Execution with Test Management ΓÇ║ 06 - Execute login form states test case
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:462:2 ΓÇ║ Percy Visual Test Execution with Test Management ΓÇ║ 07 - Execute helpdesk guest workflow test case
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:547:2 ΓÇ║ Test Result Reporting and Analysis ΓÇ║ 08 - Generate test cases from Percy visual test requirements
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:591:2 ΓÇ║ Test Result Reporting and Analysis ΓÇ║ 09 - Validate test run summary calculation
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:627:2 ΓÇ║ Test Result Reporting and Analysis ΓÇ║ 10 - Export test run report to JSON
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:649:2 ΓÇ║ Test Result Reporting and Analysis ΓÇ║ 11 - Export test run report to Markdown
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:669:2 ΓÇ║ Test Result Reporting and Analysis ΓÇ║ 12 - Sync test run with Percy build
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:704:2 ΓÇ║ Test Case Templates Validation ΓÇ║ 13 - Validate all Percy test case templates
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:736:2 ΓÇ║ Test Case Templates Validation ΓÇ║ 14 - Validate ICTServe-specific template configurations
+  [chromium] ΓÇ║ browserstack-test-management-percy.spec.ts:772:2 ΓÇ║ BrowserStack Test Management + Percy Integration Summary ΓÇ║ 15 - Complete BrowserStack Test Management + Percy integration validation
+  [chromium] ΓÇ║ comprehensive-form-screenshots.spec.ts:144:2 ΓÇ║ Comprehensive Form Screenshots - Step by Step ΓÇ║ 01 - Helpdesk Form - Complete Journey with Detailed Screenshots
+  [chromium] ΓÇ║ comprehensive-form-screenshots.spec.ts:375:2 ΓÇ║ Comprehensive Form Screenshots - Step by Step ΓÇ║ 02 - Loan Application Form - Complete Journey with Detailed Screenshots
+  [chromium] ΓÇ║ comprehensive-form-screenshots.spec.ts:619:2 ΓÇ║ Comprehensive Form Screenshots - Step by Step ΓÇ║ 03 - Responsive Screenshots - Mobile and Tablet Views
+  [chromium] ΓÇ║ comprehensive-form-screenshots.spec.ts:689:2 ΓÇ║ Comprehensive Form Screenshots - Step by Step ΓÇ║ 04 - Form Validation States Screenshots
+  [chromium] ΓÇ║ cross-browser.spec.ts:68:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Homepage and Navigation ΓÇ║ should load homepage correctly with Percy
+  [chromium] ΓÇ║ cross-browser.spec.ts:108:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Homepage and Navigation ΓÇ║ should render navigation menu correctly with Percy
+  [chromium] ΓÇ║ cross-browser.spec.ts:151:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Homepage and Navigation ΓÇ║ should handle language switching
+  [chromium] ΓÇ║ cross-browser.spec.ts:170:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Guest Forms ΓÇ║ should load helpdesk form correctly
+  [chromium] ΓÇ║ cross-browser.spec.ts:213:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Guest Forms ΓÇ║ should load asset loan form correctly
+  [chromium] ΓÇ║ cross-browser.spec.ts:256:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Authentication Pages ΓÇ║ should load login page correctly with Percy
+  [chromium] ΓÇ║ cross-browser.spec.ts:290:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Authentication Pages ΓÇ║ should handle form validation on login
+  [chromium] ΓÇ║ cross-browser.spec.ts:315:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ CSS and Layout Rendering ΓÇ║ should render Tailwind CSS correctly
+  [chromium] ΓÇ║ cross-browser.spec.ts:342:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ CSS and Layout Rendering ΓÇ║ should handle responsive breakpoints
+  [chromium] ΓÇ║ cross-browser.spec.ts:370:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ JavaScript and Interactivity ΓÇ║ should load Alpine.js correctly
+  [chromium] ΓÇ║ cross-browser.spec.ts:386:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ JavaScript and Interactivity ΓÇ║ should handle Livewire components
+  [chromium] ΓÇ║ cross-browser.spec.ts:401:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ JavaScript and Interactivity ΓÇ║ should handle dropdown interactions
+  [chromium] ΓÇ║ cross-browser.spec.ts:458:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Accessibility Basics ΓÇ║ should have proper document structure
+  [chromium] ΓÇ║ cross-browser.spec.ts:484:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Accessibility Basics ΓÇ║ should have focusable elements
+  [chromium] ΓÇ║ cross-browser.spec.ts:502:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Accessibility Basics ΓÇ║ should have visible focus indicators
+  [chromium] ΓÇ║ cross-browser.spec.ts:544:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Performance Basics ΓÇ║ should load within acceptable time
+  [chromium] ΓÇ║ cross-browser.spec.ts:561:3 ΓÇ║ Cross-Browser Compatibility Tests ΓÇ║ Performance Basics ΓÇ║ should not have excessive DOM size
+  [chromium] ΓÇ║ cross-browser.spec.ts:582:2 ΓÇ║ Browser-Specific Tests ΓÇ║ should handle CSS Grid correctly
+  [chromium] ΓÇ║ cross-browser.spec.ts:598:2 ΓÇ║ Browser-Specific Tests ΓÇ║ should handle Flexbox correctly
+  [chromium] ΓÇ║ cross-browser.spec.ts:614:2 ΓÇ║ Browser-Specific Tests ΓÇ║ should handle CSS custom properties
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:47:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Responsive Layout with Visual Validation ΓÇ║ 01 - Mobile: Single column layout with Percy
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:81:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Responsive Layout with Visual Validation ΓÇ║ 02 - Tablet: Two column layout with Percy
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:107:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Responsive Layout with Visual Validation ΓÇ║ 03 - Desktop: Full layout with Percy
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:141:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Responsive Layout with Visual Validation ΓÇ║ 04 - Responsive snapshots across all viewports
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:172:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Accessibility with Visual Compliance ΓÇ║ 05 - WCAG 2.2 AA compliance visual validation
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:197:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Accessibility with Visual Compliance ΓÇ║ 06 - Focus indicators visual validation
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:240:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Interactive Elements Visual Testing ΓÇ║ 07 - Dashboard widgets interaction states
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:276:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Interactive Elements Visual Testing ΓÇ║ 08 - Navigation menu visual states
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:329:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Error States Visual Testing ΓÇ║ 09 - Loading states visual validation
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:375:4 ΓÇ║ Staff Dashboard - Percy Enhanced Tests ΓÇ║ Bahasa Melayu Interface Visual Validation ΓÇ║ 10 - Bahasa Melayu text rendering validation
+  [chromium] ΓÇ║ dashboard-percy-enhanced.spec.ts:408:2 ΓÇ║ Percy Integration Utilities ΓÇ║ Percy configuration validation
+  [chromium] ΓÇ║ dashboard.spec.ts:49:4 ΓÇ║ Staff Dashboard - Consolidated Tests ΓÇ║ Responsive Layout Behavior ΓÇ║ 01 - Mobile: Single column layout with Percy
+  [chromium] ΓÇ║ dashboard.spec.ts:99:4 ΓÇ║ Staff Dashboard - Consolidated Tests ΓÇ║ Responsive Layout Behavior ΓÇ║ 02 - Tablet: Two column layout with Percy
+  [chromium] ΓÇ║ dashboard.spec.ts:136:4 ΓÇ║ Staff Dashboard - Consolidated Tests ΓÇ║ Responsive Layout Behavior ΓÇ║ 03 - Desktop: Multi-column layout with Percy
+  [chromium] ΓÇ║ dashboard.spec.ts:181:4 ΓÇ║ Staff Dashboard - Consolidated Tests ΓÇ║ Responsive Layout Behavior ΓÇ║ 04 - Quick Actions Responsive Stacking
+  [chromium] ΓÇ║ dashboard.spec.ts:213:2 ΓÇ║ Staff Dashboard - Consolidated Tests ΓÇ║ 11 - Load Performance
+  [chromium] ΓÇ║ dashboard.spec.ts:238:4 ΓÇ║ Staff Dashboard - Consolidated Tests ΓÇ║ Percy Visual Testing - Dashboard ΓÇ║ 12 - Comprehensive Responsive Dashboard Snapshots
+  [chromium] ΓÇ║ dashboard.spec.ts:259:4 ΓÇ║ Staff Dashboard - Consolidated Tests ΓÇ║ Percy Visual Testing - Dashboard ΓÇ║ 13 - Dashboard Quick Actions Visual Validation
+  [chromium] ΓÇ║ dashboard.spec.ts:282:4 ΓÇ║ Staff Dashboard - Consolidated Tests ΓÇ║ Percy Visual Testing - Dashboard ΓÇ║ 14 - Dashboard Stats Grid Visual Validation
+  [chromium] ΓÇ║ dashboard.spec.ts:302:4 ΓÇ║ Staff Dashboard - Consolidated Tests ΓÇ║ Percy Visual Testing - Dashboard ΓÇ║ 15 - Dashboard Bahasa Melayu Interface Validation
+  [chromium] ΓÇ║ devtools.integration.spec.ts:24:2 ΓÇ║ Chrome DevTools Debugging Suite with Percy ΓÇ║ should capture performance metrics with Percy
+  [chromium] ΓÇ║ devtools.integration.spec.ts:91:2 ΓÇ║ Chrome DevTools Debugging Suite with Percy ΓÇ║ should detect all network requests and responses
+  [chromium] ΓÇ║ devtools.integration.spec.ts:137:2 ΓÇ║ Chrome DevTools Debugging Suite with Percy ΓÇ║ should capture console messages and errors
+  [chromium] ΓÇ║ devtools.integration.spec.ts:186:2 ΓÇ║ Chrome DevTools Debugging Suite with Percy ΓÇ║ should handle page errors gracefully
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:56:2 ΓÇ║ BrowserStack Cross-Browser Visual Testing ΓÇ║ 01 - Cross-browser homepage visual consistency
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:74:2 ΓÇ║ BrowserStack Cross-Browser Visual Testing ΓÇ║ 02 - Cross-browser login page visual consistency
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:93:2 ΓÇ║ BrowserStack Cross-Browser Visual Testing ΓÇ║ 03 - Cross-browser helpdesk form visual consistency
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:110:2 ΓÇ║ BrowserStack Cross-Browser Visual Testing ΓÇ║ 04 - Cross-browser navigation visual consistency
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:144:2 ΓÇ║ BrowserStack Mobile Visual Testing ΓÇ║ 05 - Mobile homepage visual regression
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:156:2 ΓÇ║ BrowserStack Mobile Visual Testing ΓÇ║ 06 - Mobile login form visual regression
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:174:2 ΓÇ║ BrowserStack Mobile Visual Testing ΓÇ║ 07 - Mobile helpdesk form visual regression
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:184:2 ΓÇ║ BrowserStack Mobile Visual Testing ΓÇ║ 08 - Tablet visual regression
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:208:2 ΓÇ║ BrowserStack Accessibility Testing with Percy ΓÇ║ 09 - Homepage accessibility visual compliance
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:220:2 ΓÇ║ BrowserStack Accessibility Testing with Percy ΓÇ║ 10 - Login page accessibility visual compliance
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:248:2 ΓÇ║ BrowserStack Accessibility Testing with Percy ΓÇ║ 11 - Helpdesk form accessibility visual compliance
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:261:2 ΓÇ║ BrowserStack Accessibility Testing with Percy ΓÇ║ 12 - Color contrast validation visual test
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:288:2 ΓÇ║ BrowserStack Live Session Visual Debugging ΓÇ║ 13 - Visual debugging baseline capture
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:303:2 ΓÇ║ BrowserStack Live Session Visual Debugging ΓÇ║ 14 - Interactive element debugging
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:328:2 ΓÇ║ BrowserStack Live Session Visual Debugging ΓÇ║ 15 - Error state visual debugging
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:359:2 ΓÇ║ BrowserStack Test Management Integration ΓÇ║ 16 - Test case organization - Homepage tests
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:374:2 ΓÇ║ BrowserStack Test Management Integration ΓÇ║ 17 - Test case organization - Authentication tests
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:390:2 ΓÇ║ BrowserStack Test Management Integration ΓÇ║ 18 - Test case organization - Form tests
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:404:2 ΓÇ║ BrowserStack Test Management Integration ΓÇ║ 19 - Combined test execution report validation
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:435:2 ΓÇ║ ICTServe Hybrid Architecture Visual Testing ΓÇ║ 20 - Guest user workflow visual validation
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:458:2 ΓÇ║ ICTServe Hybrid Architecture Visual Testing ΓÇ║ 21 - Guest helpdesk submission workflow
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:477:2 ΓÇ║ ICTServe Hybrid Architecture Visual Testing ΓÇ║ 22 - Bahasa Melayu interface visual consistency
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:507:2 ΓÇ║ BrowserStack Performance Visual Testing ΓÇ║ 23 - Page load performance visual validation
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:529:2 ΓÇ║ BrowserStack Performance Visual Testing ΓÇ║ 24 - Lazy loading visual validation
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:549:2 ΓÇ║ Livewire Component Visual Testing ΓÇ║ 25 - Livewire form component visual validation
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:563:2 ΓÇ║ Livewire Component Visual Testing ΓÇ║ 26 - Livewire loading state visual validation
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:584:7 ΓÇ║ Filament Admin Visual Testing ΓÇ║ 27 - Filament admin panel visual validation
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:609:2 ΓÇ║ Error Handling Visual Testing ΓÇ║ 28 - 404 page visual validation
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:619:2 ΓÇ║ Error Handling Visual Testing ΓÇ║ 29 - Form validation error visual validation
+  [chromium] ΓÇ║ examples\browserstack-percy-integration.spec.ts:644:2 ΓÇ║ BrowserStack MCP Integration Summary ΓÇ║ 30 - Complete integration validation
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:55:2 ΓÇ║ Example 1: Basic Percy Snapshot ΓÇ║ Basic homepage snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:107:2 ΓÇ║ Example 2: Responsive Visual Testing ΓÇ║ Automatic responsive snapshots
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:125:2 ΓÇ║ Example 2: Responsive Visual Testing ΓÇ║ Manual mobile viewport snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:148:2 ΓÇ║ Example 2: Responsive Visual Testing ΓÇ║ Manual tablet viewport snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:166:2 ΓÇ║ Example 2: Responsive Visual Testing ΓÇ║ Manual desktop viewport snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:206:2 ΓÇ║ Example 3: Form State Testing ΓÇ║ Empty form state snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:233:2 ΓÇ║ Example 3: Form State Testing ΓÇ║ Filled form state snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:273:2 ΓÇ║ Example 3: Form State Testing ΓÇ║ Validation error state snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:328:2 ΓÇ║ Example 4: Hybrid Architecture Testing ΓÇ║ Guest user workflow snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:349:2 ΓÇ║ Example 4: Hybrid Architecture Testing ΓÇ║ Authenticated user workflow snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:367:2 ΓÇ║ Example 4: Hybrid Architecture Testing ΓÇ║ Admin user workflow snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:410:2 ΓÇ║ Example 5: Accessibility Visual Testing ΓÇ║ Accessibility compliance snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:436:2 ΓÇ║ Example 5: Accessibility Visual Testing ΓÇ║ Focus indicator validation snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:466:2 ΓÇ║ Example 5: Accessibility Visual Testing ΓÇ║ Color contrast validation snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:512:2 ΓÇ║ Example 6: Cross-Browser Testing ΓÇ║ Cross-browser homepage snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:534:2 ΓÇ║ Example 6: Cross-Browser Testing ΓÇ║ CSS layout consistency snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:582:2 ΓÇ║ Example 7: Error Handling ΓÇ║ Graceful degradation when Percy fails
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:601:2 ΓÇ║ Example 7: Error Handling ΓÇ║ Conditional Percy execution
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:624:2 ΓÇ║ Example 7: Error Handling ΓÇ║ Percy build information
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:668:2 ΓÇ║ Example 8: Advanced Configuration ΓÇ║ Custom Percy CSS configuration
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:713:2 ΓÇ║ Example 8: Advanced Configuration ΓÇ║ Scoped element snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:738:2 ΓÇ║ Example 8: Advanced Configuration ΓÇ║ Full configuration example
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:795:2 ΓÇ║ Example 9: Bahasa Melayu Interface Testing ΓÇ║ Bahasa Melayu homepage snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:814:2 ΓÇ║ Example 9: Bahasa Melayu Interface Testing ΓÇ║ Bahasa Melayu form labels snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:857:2 ΓÇ║ Example 10: Performance Optimization ΓÇ║ Quick development snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:876:2 ΓÇ║ Example 10: Performance Optimization ΓÇ║ Comprehensive CI snapshot
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:907:2 ΓÇ║ Utility Examples ΓÇ║ Default configuration reference
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:927:2 ΓÇ║ Utility Examples ΓÇ║ Responsive viewports reference
+  [chromium] ΓÇ║ examples\percy-example-tests.spec.ts:947:2 ΓÇ║ Utility Examples ΓÇ║ User type configurations reference
+  [chromium] ΓÇ║ filament.components.debug.spec.ts:134:3 ΓÇ║ Filament Components Debug Suite ΓÇ║ Dashboard widgets render without console errors
+  [chromium] ΓÇ║ filament.components.debug.spec.ts:166:4 ΓÇ║ Filament Components Debug Suite ΓÇ║ Helpdesk Tickets resource loads without failures
+  [chromium] ΓÇ║ filament.components.debug.spec.ts:166:4 ΓÇ║ Filament Components Debug Suite ΓÇ║ Loan Applications resource loads without failures
+  [chromium] ΓÇ║ filament.components.debug.spec.ts:166:4 ΓÇ║ Filament Components Debug Suite ΓÇ║ Asset Inventory resource loads without failures
+  [chromium] ΓÇ║ filament.components.debug.spec.ts:182:3 ΓÇ║ Filament Components Debug Suite ΓÇ║ Asset availability legend exposes all statuses
+  [chromium] ΓÇ║ filament.components.debug.spec.ts:229:3 ΓÇ║ Filament Components Debug Suite ΓÇ║ Critical alerts widget surfaces empty state or alert actions
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:219:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 01 - Welcome Page - Initial Load with Percy
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:240:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 02 - Welcome Page - Navigate to Helpdesk
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:274:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 03 - Helpdesk Form - Complete Step-by-Step Journey
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:610:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 04 - Loan Application Form - Complete Step-by-Step Journey
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:954:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 05 - Helpdesk Form - Step 2 Issue Details Filled and Move to Step 3
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1106:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 06 - Helpdesk Form - Step 3 Attachments and Move to Step 4
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1185:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 07 - Helpdesk Form - Step 4 Confirmation and Submit
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1235:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 08 - Navigate to Loan Application Form
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1257:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 09 - Loan Application Form - Step 1 Loaded
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1273:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 10 - Loan Application Form - Step 1 Filled and Move to Step 2
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1439:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 11 - Loan Application Form - Step 2 Equipment Selection and Move to Step 3
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1533:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 12 - Loan Application Form - Step 3 Confirmation and Submit
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1593:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 17 - Status Check Page
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1637:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 13 - Login Page with Sample Data
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1685:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 14 - Admin Login Page with Sample Data
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1739:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 15 - Register Page
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1863:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 16 - Forgot Password Page
+  [chromium] ΓÇ║ guest-flow-screenshots.spec.ts:1886:2 ΓÇ║ Guest User Flow - Comprehensive Step-by-Step Testing ΓÇ║ 18 - Complete Flow Summary - Screenshots Verification
+  [chromium] ΓÇ║ guest-landing-accessibility.spec.ts:54:2 ΓÇ║ Guest Landing Page - Accessibility & Compliance with Percy ΓÇ║ P0-001: HTML lang attribute matches page content with Percy (D15 ┬º2)
+  [chromium] ΓÇ║ guest-landing-accessibility.spec.ts:70:2 ΓÇ║ Guest Landing Page - Accessibility & Compliance with Percy ΓÇ║ P0-002: Skip-to-content link is keyboard accessible
+  [chromium] ΓÇ║ guest-landing-accessibility.spec.ts:115:2 ΓÇ║ Guest Landing Page - Accessibility & Compliance with Percy ΓÇ║ P0-003: Language switcher defaults to Bahasa Melayu
+  [chromium] ΓÇ║ guest-landing-accessibility.spec.ts:161:2 ΓÇ║ Guest Landing Page - Accessibility & Compliance with Percy ΓÇ║ P0-004: Form inputs have proper ARIA attributes
+  [chromium] ΓÇ║ guest-landing-accessibility.spec.ts:213:2 ΓÇ║ Guest Landing Page - Accessibility & Compliance with Percy ΓÇ║ P0-005: Images have meaningful alt text
+  [chromium] ΓÇ║ guest-landing-accessibility.spec.ts:247:2 ΓÇ║ Guest Landing Page - Accessibility & Compliance with Percy ΓÇ║ P0-006: No critical WCAG 2.2 violations (axe-core scan)
+  [chromium] ΓÇ║ guest-landing-accessibility.spec.ts:286:2 ΓÇ║ Guest Landing Page - Accessibility & Compliance with Percy ΓÇ║ P0-007: Navigation links have proper ARIA attributes
+  [chromium] ΓÇ║ guest-landing-accessibility.spec.ts:321:2 ΓÇ║ Guest Landing Page - Accessibility & Compliance with Percy ΓÇ║ P0-008: Focus management and keyboard navigation
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:45:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 01 - Core Web Vitals meet performance targets with Percy
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:108:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 02 - Helpdesk ticket list loads within acceptable time
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:126:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 03 - Ticket submission form loads quickly
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:147:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 04 - Pagination performance is acceptable
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:180:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 05 - Form submission response time is fast
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:218:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 06 - No excessive database queries (N+1 prevention)
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:243:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 07 - Static assets are cached effectively
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:274:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 08 - Images use lazy loading
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:300:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 09 - JavaScript bundle size is optimized
+  [chromium] ΓÇ║ helpdesk-performance.spec.ts:334:2 ΓÇ║ Helpdesk Module - Performance Tests with Percy ΓÇ║ 10 - Time to Interactive (TTI) is acceptable
+  [chromium] ΓÇ║ helpdesk.spec.ts:28:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 01 - Helpdesk Module Navigation with Percy
+  [chromium] ΓÇ║ helpdesk.spec.ts:60:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 02 - Helpdesk Ticket List View with Percy
+  [chromium] ΓÇ║ helpdesk.spec.ts:112:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 03 - Create New Ticket - Form Accessibility with Percy
+  [chromium] ΓÇ║ helpdesk.spec.ts:167:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 04 - Create New Ticket - Form Validation with Percy
+  [chromium] ΓÇ║ helpdesk.spec.ts:210:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 05 - Create New Ticket - Successful Submission
+  [chromium] ΓÇ║ helpdesk.spec.ts:225:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 06 - Ticket Filtering and Search
+  [chromium] ΓÇ║ helpdesk.spec.ts:254:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 07 - View Ticket Details
+  [chromium] ΓÇ║ helpdesk.spec.ts:271:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 08 - Ticket Status Update
+  [chromium] ΓÇ║ helpdesk.spec.ts:309:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 09 - Module Navigation - Return to Dashboard
+  [chromium] ΓÇ║ helpdesk.spec.ts:335:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 10 - Module Console Error Check
+  [chromium] ΓÇ║ helpdesk.spec.ts:380:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 11 - Guest Helpdesk Ticket Wizard - Complete Step-by-Step Journey with Screenshots
+  [chromium] ΓÇ║ helpdesk.spec.ts:602:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 12 - Accessibility: Helpdesk Tickets Page (WCAG 2.2 AA)
+  [chromium] ΓÇ║ helpdesk.spec.ts:621:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 13 - Accessibility: Create Ticket Form (WCAG 2.2 AA)
+  [chromium] ΓÇ║ helpdesk.spec.ts:640:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 14 - Accessibility: Keyboard Navigation
+  [chromium] ΓÇ║ helpdesk.spec.ts:667:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 15 - Accessibility: Focus Indicators
+  [chromium] ΓÇ║ helpdesk.spec.ts:700:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 16 - Cross-Module Integration (Assets & Loans)
+  [chromium] ΓÇ║ helpdesk.spec.ts:730:3 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ Percy Visual Testing - Hybrid Architecture ΓÇ║ 17 - Guest vs Authenticated User Visual Comparison
+  [chromium] ΓÇ║ helpdesk.spec.ts:771:3 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ Percy Visual Testing - Hybrid Architecture ΓÇ║ 18 - Responsive Helpdesk Visual Testing
+  [chromium] ΓÇ║ helpdesk.spec.ts:792:3 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ Percy Visual Testing - Hybrid Architecture ΓÇ║ 19 - Bahasa Melayu Interface Visual Validation
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:45:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 01 - Core Web Vitals meet performance targets with Percy
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:108:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 02 - Guest loan request form loads quickly
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:125:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 03 - Asset availability check is performant
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:157:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 04 - Loan history pagination is efficient
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:190:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 05 - Loan search/filter performs efficiently
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:226:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 06 - Progressive loading for asset list
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:259:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 07 - Time to Interactive (TTI) is acceptable
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:295:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 08 - JavaScript bundle size is optimized
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:327:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 09 - Database queries are optimized (no N+1)
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:352:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 10 - Asset images load efficiently
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:385:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 11 - Form submission response time is fast
+  [chromium] ΓÇ║ loan-module-performance.spec.ts:423:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 12 - Static assets are cached effectively
+  [chromium] ΓÇ║ loan-module.spec.ts:31:2 ΓÇ║ Loan Module E2E ΓÇ║ guest can submit loan application with Percy
+  [chromium] ΓÇ║ loan-module.spec.ts:121:2 ΓÇ║ Loan Module E2E ΓÇ║ staff can view loan history with Percy
+  [chromium] ΓÇ║ loan-module.spec.ts:170:2 ΓÇ║ Loan Module E2E ΓÇ║ approver can approve loan with Percy
+  [chromium] ΓÇ║ loan-module.spec.ts:252:2 ΓÇ║ Loan Module E2E ΓÇ║ admin can issue asset with OTP and Percy
+  [chromium] ΓÇ║ loan-module.spec.ts:322:2 ΓÇ║ Loan Module E2E ΓÇ║ accessibility: keyboard navigation
+  [chromium] ΓÇ║ loan-module.spec.ts:336:2 ΓÇ║ Loan Module E2E ΓÇ║ accessibility: screen reader labels
+  [chromium] ΓÇ║ loan.spec.ts:29:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 01 - Loan Module Navigation with Percy
+  [chromium] ΓÇ║ loan.spec.ts:60:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 02 - Loan Application List View with Percy
+  [chromium] ΓÇ║ loan.spec.ts:84:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 03 - Create New Loan Application - Form Accessibility
+  [chromium] ΓÇ║ loan.spec.ts:136:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 04 - Create New Loan Application - Form Validation
+  [chromium] ΓÇ║ loan.spec.ts:159:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 05 - Create New Loan Application - Successful Submission
+  [chromium] ΓÇ║ loan.spec.ts:202:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 06 - Loan Application Filtering and Search
+  [chromium] ΓÇ║ loan.spec.ts:218:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 07 - View Loan Application Details
+  [chromium] ΓÇ║ loan.spec.ts:255:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 08 - Loan Status Filter
+  [chromium] ΓÇ║ loan.spec.ts:285:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 09 - Loan Approval Workflow (if admin)
+  [chromium] ΓÇ║ loan.spec.ts:319:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 10 - Module Navigation - Return to Dashboard
+  [chromium] ΓÇ║ loan.spec.ts:333:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 11 - Module Console Error Check
+  [chromium] ΓÇ║ loan.spec.ts:376:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 12 - Guest Asset Loan Wizard - Complete Step-by-Step Journey with Screenshots
+  [chromium] ΓÇ║ loan.spec.ts:560:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 13 - Loan Application - Email Approval Workflow
+  [chromium] ΓÇ║ loan.spec.ts:581:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 14 - Loan Extension Request
+  [chromium] ΓÇ║ loan.spec.ts:614:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 15 - Asset Availability Check
+  [chromium] ΓÇ║ loan.spec.ts:642:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 16 - Dashboard Analytics Integration
+  [chromium] ΓÇ║ loan.spec.ts:665:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 17 - Notification System Integration
+  [chromium] ΓÇ║ loan.spec.ts:689:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 18 - Accessibility: Guest Loan Form (WCAG 2.2 AA)
+  [chromium] ΓÇ║ loan.spec.ts:709:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 19 - Accessibility: Authenticated Dashboard (WCAG 2.2 AA)
+  [chromium] ΓÇ║ loan.spec.ts:728:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 20 - Accessibility: Keyboard Navigation
+  [chromium] ΓÇ║ loan.spec.ts:746:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 21 - Accessibility: Form Validation
+  [chromium] ΓÇ║ loan.spec.ts:773:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 22 - Cross-Module Navigation (Admin)
+  [chromium] ΓÇ║ loan.spec.ts:801:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 23 - Responsive Design Integration
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-1 - FAQ Management should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-2 - Document Management should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-3 - Auto-Reply Templates should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-4 - Auto-Reply Drafts should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-5 - Message Logs should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-6 - Performance Dashboard should pass WCAG 2.2 AA
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:147:3 ΓÇ║ 02 - FAQ Bot Component Accessibility ΓÇ║ 02-01 - FAQ Bot should have proper ARIA attributes
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:180:3 ΓÇ║ 02 - FAQ Bot Component Accessibility ΓÇ║ 02-02 - FAQ Bot input should be keyboard accessible
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:207:3 ΓÇ║ 02 - FAQ Bot Component Accessibility ΓÇ║ 02-03 - FAQ Bot buttons should meet touch target requirements
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:244:3 ΓÇ║ 03 - Ollama AI Loading States Accessibility ΓÇ║ 03-01 - Loading indicators should have proper ARIA attributes
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:279:3 ΓÇ║ 04 - Ollama AI Error States Accessibility ΓÇ║ 04-01 - Error messages should use role="alert"
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:308:3 ΓÇ║ 05 - Ollama AI Bahasa Melayu Interface ΓÇ║ 05-01 - Page should have lang="ms" attribute
+  [chromium] ΓÇ║ ollama-accessibility.spec.ts:321:3 ΓÇ║ 05 - Ollama AI Bahasa Melayu Interface ΓÇ║ 05-02 - AI interface text should be in Bahasa Melayu
+  [chromium] ΓÇ║ percy-degradation-validation.spec.ts:15:2 ΓÇ║ Percy Degradation Validation ΓÇ║ should handle Percy snapshots gracefully when Percy is disabled
+  [chromium] ΓÇ║ percy-degradation-validation.spec.ts:38:2 ΓÇ║ Percy Degradation Validation ΓÇ║ should handle multiple snapshots gracefully
+  [chromium] ΓÇ║ percy-degradation-validation.spec.ts:60:2 ΓÇ║ Percy Degradation Validation ΓÇ║ should handle responsive snapshots gracefully
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:51:3 ΓÇ║ Percy Enhanced - Dashboard Responsive Visual Testing ΓÇ║ Responsive Layout Visual Validation ΓÇ║ 01 - Mobile Dashboard Layout with Percy Visual Regression
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:119:3 ΓÇ║ Percy Enhanced - Dashboard Responsive Visual Testing ΓÇ║ Responsive Layout Visual Validation ΓÇ║ 02 - Tablet Dashboard Layout with Percy Visual Regression
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:172:3 ΓÇ║ Percy Enhanced - Dashboard Responsive Visual Testing ΓÇ║ Responsive Layout Visual Validation ΓÇ║ 03 - Desktop Dashboard Layout with Percy Visual Regression
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:226:3 ΓÇ║ Percy Enhanced - Dashboard Responsive Visual Testing ΓÇ║ Responsive Layout Visual Validation ΓÇ║ 04 - Comprehensive Responsive Dashboard Snapshots
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:277:3 ΓÇ║ Percy Enhanced - Helpdesk Form Visual Testing ΓÇ║ Form State Visual Validation ΓÇ║ 05 - Helpdesk Form Empty State with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:306:3 ΓÇ║ Percy Enhanced - Helpdesk Form Visual Testing ΓÇ║ Form State Visual Validation ΓÇ║ 06 - Helpdesk Form Filled State with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:349:3 ΓÇ║ Percy Enhanced - Helpdesk Form Visual Testing ΓÇ║ Form State Visual Validation ΓÇ║ 07 - Helpdesk Form Validation Error State with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:385:3 ΓÇ║ Percy Enhanced - Helpdesk Form Visual Testing ΓÇ║ Form State Visual Validation ΓÇ║ 08 - Helpdesk Form Wizard Steps with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:435:3 ΓÇ║ Percy Enhanced - Loan Application Visual Testing ΓÇ║ Loan Workflow Visual Validation ΓÇ║ 09 - Loan Application Form Initial Load with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:458:3 ΓÇ║ Percy Enhanced - Loan Application Visual Testing ΓÇ║ Loan Workflow Visual Validation ΓÇ║ 10 - Loan Application Form Filled State with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:500:3 ΓÇ║ Percy Enhanced - Loan Application Visual Testing ΓÇ║ Loan Workflow Visual Validation ΓÇ║ 11 - Loan Application Equipment Selection with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:541:3 ΓÇ║ Percy Enhanced - Loan Application Visual Testing ΓÇ║ Loan Workflow Visual Validation ΓÇ║ 12 - Loan Application Confirmation Step with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:581:3 ΓÇ║ Percy Enhanced - Accessibility Visual Compliance Testing ΓÇ║ WCAG 2.2 AA Visual Compliance ΓÇ║ 13 - Homepage Accessibility Visual Compliance with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:609:3 ΓÇ║ Percy Enhanced - Accessibility Visual Compliance Testing ΓÇ║ WCAG 2.2 AA Visual Compliance ΓÇ║ 14 - Login Page Accessibility Visual Compliance with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:635:3 ΓÇ║ Percy Enhanced - Accessibility Visual Compliance Testing ΓÇ║ WCAG 2.2 AA Visual Compliance ΓÇ║ 15 - Focus Indicators Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:668:3 ΓÇ║ Percy Enhanced - Accessibility Visual Compliance Testing ΓÇ║ WCAG 2.2 AA Visual Compliance ΓÇ║ 16 - Color Contrast Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:705:3 ΓÇ║ Percy Enhanced - Cross-Browser Visual Consistency Testing ΓÇ║ Cross-Browser Visual Validation ΓÇ║ 17 - Homepage Cross-Browser Visual Consistency with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:731:3 ΓÇ║ Percy Enhanced - Cross-Browser Visual Consistency Testing ΓÇ║ Cross-Browser Visual Validation ΓÇ║ 18 - Navigation Menu Cross-Browser Visual Consistency with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:761:3 ΓÇ║ Percy Enhanced - Cross-Browser Visual Consistency Testing ΓÇ║ Cross-Browser Visual Validation ΓÇ║ 19 - Login Page Cross-Browser Visual Consistency with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:788:3 ΓÇ║ Percy Enhanced - Cross-Browser Visual Consistency Testing ΓÇ║ Cross-Browser Visual Validation ΓÇ║ 20 - CSS Grid and Flexbox Cross-Browser Visual Consistency with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:828:3 ΓÇ║ Percy Enhanced - Branding Visual Consistency Testing ΓÇ║ Brand Consistency Visual Validation ΓÇ║ 21 - Header Logo and Branding with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:854:3 ΓÇ║ Percy Enhanced - Branding Visual Consistency Testing ΓÇ║ Brand Consistency Visual Validation ΓÇ║ 22 - Brand Colors and Typography with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:883:3 ΓÇ║ Percy Enhanced - Branding Visual Consistency Testing ΓÇ║ Brand Consistency Visual Validation ΓÇ║ 23 - Footer Branding with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:909:3 ΓÇ║ Percy Enhanced - Branding Visual Consistency Testing ΓÇ║ Brand Consistency Visual Validation ΓÇ║ 24 - Responsive Branding Across Viewports with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:934:3 ΓÇ║ Percy Enhanced - AI Component Visual Testing ΓÇ║ AI Component Visual Validation ΓÇ║ 25 - AI Chat Interface Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:961:3 ΓÇ║ Percy Enhanced - AI Component Visual Testing ΓÇ║ AI Component Visual Validation ΓÇ║ 26 - AI Assistant Panel Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:989:3 ΓÇ║ Percy Enhanced - AI Component Visual Testing ΓÇ║ AI Component Visual Validation ΓÇ║ 27 - AI Accessibility Features Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1015:3 ΓÇ║ Percy Enhanced - Development Tools Visual Testing ΓÇ║ DevTools Visual Validation ΓÇ║ 28 - Laravel Telescope Dashboard Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1039:3 ΓÇ║ Percy Enhanced - Development Tools Visual Testing ΓÇ║ DevTools Visual Validation ΓÇ║ 29 - Laravel Horizon Dashboard Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1063:3 ΓÇ║ Percy Enhanced - Development Tools Visual Testing ΓÇ║ DevTools Visual Validation ΓÇ║ 30 - Laravel Pulse Dashboard Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1095:3 ΓÇ║ Percy Enhanced - Admin Component Visual Testing ΓÇ║ Filament Admin Panel Visual Validation ΓÇ║ 31 - Filament Admin Dashboard Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1121:3 ΓÇ║ Percy Enhanced - Admin Component Visual Testing ΓÇ║ Filament Admin Panel Visual Validation ΓÇ║ 32 - Filament Resource Table Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1146:3 ΓÇ║ Percy Enhanced - Admin Component Visual Testing ΓÇ║ Filament Admin Panel Visual Validation ΓÇ║ 33 - Filament Form Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1165:3 ΓÇ║ Percy Enhanced - Admin Component Visual Testing ΓÇ║ Filament Admin Panel Visual Validation ΓÇ║ 34 - Filament Sidebar Navigation Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1193:3 ΓÇ║ Percy Enhanced - Performance Visual Testing ΓÇ║ Performance Visual Validation ΓÇ║ 35 - Page Load Performance Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1218:3 ΓÇ║ Percy Enhanced - Performance Visual Testing ΓÇ║ Performance Visual Validation ΓÇ║ 36 - Dashboard Performance Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1243:3 ΓÇ║ Percy Enhanced - Performance Visual Testing ΓÇ║ Performance Visual Validation ΓÇ║ 37 - Helpdesk Module Performance Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1268:3 ΓÇ║ Percy Enhanced - Performance Visual Testing ΓÇ║ Performance Visual Validation ΓÇ║ 38 - Loan Module Performance Visual Validation with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1301:3 ΓÇ║ Percy Enhanced - Guest Flow Automation ΓÇ║ Guest Flow Visual Validation ΓÇ║ 39 - Welcome Page Guest Flow with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1323:3 ΓÇ║ Percy Enhanced - Guest Flow Automation ΓÇ║ Guest Flow Visual Validation ΓÇ║ 40 - Guest Helpdesk Submission Flow with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1361:3 ΓÇ║ Percy Enhanced - Guest Flow Automation ΓÇ║ Guest Flow Visual Validation ΓÇ║ 41 - Guest Loan Application Flow with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1401:3 ΓÇ║ Percy Enhanced - Guest Flow Automation ΓÇ║ Guest Flow Visual Validation ΓÇ║ 42 - Guest Status Check Flow with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1420:3 ΓÇ║ Percy Enhanced - Guest Flow Automation ΓÇ║ Guest Flow Visual Validation ΓÇ║ 43 - Guest Authentication Pages Flow with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1466:3 ΓÇ║ Percy Enhanced - Hybrid Architecture Visual Comparison ΓÇ║ Guest vs Authenticated Visual Comparison ΓÇ║ 44 - Homepage Guest vs Authenticated Visual Comparison
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1487:3 ΓÇ║ Percy Enhanced - Hybrid Architecture Visual Comparison ΓÇ║ Guest vs Authenticated Visual Comparison ΓÇ║ 45 - Helpdesk Module Guest vs Authenticated Visual Comparison
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1505:3 ΓÇ║ Percy Enhanced - Hybrid Architecture Visual Comparison ΓÇ║ Guest vs Authenticated Visual Comparison ΓÇ║ 46 - Loan Module Guest vs Authenticated Visual Comparison
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1531:3 ΓÇ║ Percy Enhanced - Bahasa Melayu Interface Visual Validation ΓÇ║ Bahasa Melayu Text Rendering ΓÇ║ 47 - Homepage Bahasa Melayu Interface with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1558:3 ΓÇ║ Percy Enhanced - Bahasa Melayu Interface Visual Validation ΓÇ║ Bahasa Melayu Text Rendering ΓÇ║ 48 - Form Labels Bahasa Melayu with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1584:3 ΓÇ║ Percy Enhanced - Bahasa Melayu Interface Visual Validation ΓÇ║ Bahasa Melayu Text Rendering ΓÇ║ 49 - Navigation Bahasa Melayu with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1604:3 ΓÇ║ Percy Enhanced - Bahasa Melayu Interface Visual Validation ΓÇ║ Bahasa Melayu Text Rendering ΓÇ║ 50 - Error Messages Bahasa Melayu with Percy
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1645:3 ΓÇ║ Percy Integration Utilities and Validation ΓÇ║ Percy Configuration Validation ΓÇ║ 51 - Percy Integration Status Check
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1675:3 ΓÇ║ Percy Integration Utilities and Validation ΓÇ║ Percy Configuration Validation ΓÇ║ 52 - Percy Snapshot Configuration Test
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1702:3 ΓÇ║ Percy Integration Utilities and Validation ΓÇ║ Percy Configuration Validation ΓÇ║ 53 - Percy Responsive Snapshots Utility Test
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1719:3 ΓÇ║ Percy Integration Utilities and Validation ΓÇ║ Percy Configuration Validation ΓÇ║ 54 - Percy Accessibility Snapshot Utility Test
+  [chromium] ΓÇ║ percy-enhanced-examples.spec.ts:1741:3 ΓÇ║ Percy Integration Utilities and Validation ΓÇ║ Percy Configuration Validation ΓÇ║ 55 - Percy Form State Snapshots Utility Test
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:38:2 ΓÇ║ Percy Integration Demo ΓÇ║ Basic Percy snapshot integration
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:54:2 ΓÇ║ Percy Integration Demo ΓÇ║ Responsive visual testing demo
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:65:2 ΓÇ║ Percy Integration Demo ΓÇ║ Authenticated user visual testing
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:91:2 ΓÇ║ Percy Integration Demo ΓÇ║ Accessibility visual validation demo
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:101:2 ΓÇ║ Percy Integration Demo ΓÇ║ Form state visual testing demo
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:125:2 ΓÇ║ Percy Integration Demo ΓÇ║ Admin panel visual testing demo
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:138:2 ΓÇ║ Percy Integration Demo ΓÇ║ Percy utilities integration test
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:154:2 ΓÇ║ Percy Integration Demo ΓÇ║ Cross-browser visual consistency demo
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:173:2 ΓÇ║ Percy Error Handling Demo ΓÇ║ Graceful degradation when Percy fails
+  [chromium] ΓÇ║ percy-integration-demo.spec.ts:186:2 ΓÇ║ Percy Error Handling Demo ΓÇ║ Percy disabled scenario
+  [chromium] ΓÇ║ percy-integration-validation.spec.ts:20:2 ΓÇ║ Percy Integration Validation ΓÇ║ Percy utilities are properly configured
+  [chromium] ΓÇ║ percy-integration-validation.spec.ts:40:2 ΓÇ║ Percy Integration Validation ΓÇ║ Percy build info is accessible
+  [chromium] ΓÇ║ percy-integration-validation.spec.ts:51:2 ΓÇ║ Percy Integration Validation ΓÇ║ Percy enabled detection works
+  [chromium] ΓÇ║ percy-integration-validation.spec.ts:62:2 ΓÇ║ Percy Integration Validation ΓÇ║ Percy CSS configuration includes ICTServe v3.6.1 specific rules
+  [chromium] ΓÇ║ percy-integration-validation.spec.ts:84:2 ΓÇ║ Percy Integration Validation ΓÇ║ User type configurations have correct CSS overrides
+  [chromium] ΓÇ║ percy-integration-validation.spec.ts:104:2 ΓÇ║ Percy Integration Validation ΓÇ║ Percy configuration file exists and is valid
+  [chromium] ΓÇ║ percy-integration-validation.spec.ts:122:2 ΓÇ║ Percy Integration Validation ΓÇ║ Package.json has correct Percy scripts
+  [chromium] ΓÇ║ percy-integration-validation.spec.ts:142:2 ΓÇ║ Percy Integration Validation ΓÇ║ Playwright configuration supports Percy
+  [chromium] ΓÇ║ percy-performance-validation.spec.ts:18:2 ΓÇ║ Percy Performance Optimization Validation ΓÇ║ should demonstrate asynchronous snapshot capabilities
+  [chromium] ΓÇ║ percy-performance-validation.spec.ts:56:2 ΓÇ║ Percy Performance Optimization Validation ΓÇ║ should demonstrate batch processing optimization
+  [chromium] ΓÇ║ percy-performance-validation.spec.ts:104:2 ΓÇ║ Percy Performance Optimization Validation ΓÇ║ should demonstrate caching optimization
+  [chromium] ΓÇ║ percy-performance-validation.spec.ts:139:2 ΓÇ║ Percy Performance Optimization Validation ΓÇ║ should demonstrate network optimization
+  [chromium] ΓÇ║ percy-performance-validation.spec.ts:174:2 ΓÇ║ Percy Performance Optimization Validation ΓÇ║ should demonstrate performance monitoring
+  [chromium] ΓÇ║ percy-performance-validation.spec.ts:239:2 ΓÇ║ Percy Performance Optimization Validation ΓÇ║ should demonstrate memory optimization
+  [chromium] ΓÇ║ percy-setup-validation.spec.ts:16:2 ΓÇ║ Percy Setup Validation ΓÇ║ should capture basic homepage snapshot
+  [chromium] ΓÇ║ percy-setup-validation.spec.ts:33:2 ΓÇ║ Percy Setup Validation ΓÇ║ should capture login page snapshot
+  [chromium] ΓÇ║ percy-setup-validation.spec.ts:50:2 ΓÇ║ Percy Setup Validation ΓÇ║ should capture responsive snapshots
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:151:9 ΓÇ║ Core Web Vitals - Guest Pages ΓÇ║ Welcome Page meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:151:9 ΓÇ║ Core Web Vitals - Guest Pages ΓÇ║ Accessibility Statement meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:151:9 ΓÇ║ Core Web Vitals - Guest Pages ΓÇ║ Contact Page meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:151:9 ΓÇ║ Core Web Vitals - Guest Pages ΓÇ║ Services Page meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:151:9 ΓÇ║ Core Web Vitals - Guest Pages ΓÇ║ Helpdesk Ticket Form meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:151:9 ΓÇ║ Core Web Vitals - Guest Pages ΓÇ║ Asset Loan Application Form meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:199:9 ΓÇ║ Core Web Vitals - Authenticated Pages ΓÇ║ Staff Dashboard meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:199:9 ΓÇ║ Core Web Vitals - Authenticated Pages ΓÇ║ User Profile meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:199:9 ΓÇ║ Core Web Vitals - Authenticated Pages ΓÇ║ Submission History meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:199:9 ΓÇ║ Core Web Vitals - Authenticated Pages ΓÇ║ Claim Submissions meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:199:9 ΓÇ║ Core Web Vitals - Authenticated Pages ΓÇ║ My Tickets meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:199:9 ΓÇ║ Core Web Vitals - Authenticated Pages ΓÇ║ My Loans meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:249:9 ΓÇ║ Core Web Vitals - Admin Pages ΓÇ║ Admin Dashboard meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:249:9 ΓÇ║ Core Web Vitals - Admin Pages ΓÇ║ Helpdesk Tickets Management meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:249:9 ΓÇ║ Core Web Vitals - Admin Pages ΓÇ║ Loan Applications Management meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:249:9 ΓÇ║ Core Web Vitals - Admin Pages ΓÇ║ Assets Management meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:249:9 ΓÇ║ Core Web Vitals - Admin Pages ΓÇ║ Users Management meets Core Web Vitals thresholds
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:313:9 ΓÇ║ Core Web Vitals - Network Conditions Testing ΓÇ║ Performance under Fast 3G conditions
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:313:9 ΓÇ║ Core Web Vitals - Network Conditions Testing ΓÇ║ Performance under Slow 3G conditions
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:313:9 ΓÇ║ Core Web Vitals - Network Conditions Testing ΓÇ║ Performance under 4G conditions
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:380:9 ΓÇ║ Core Web Vitals - Mobile vs Desktop Performance ΓÇ║ Desktop performance validation
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:380:9 ΓÇ║ Core Web Vitals - Mobile vs Desktop Performance ΓÇ║ Tablet performance validation
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:380:9 ΓÇ║ Core Web Vitals - Mobile vs Desktop Performance ΓÇ║ Mobile performance validation
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:422:5 ΓÇ║ Core Web Vitals - Performance Regression Testing ΓÇ║ Compare current performance against baseline
+  [chromium] ΓÇ║ performance\core-web-vitals.spec.ts:557:5 ΓÇ║ Core Web Vitals - Performance Report Generation ΓÇ║ Generate comprehensive performance report
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Welcome Page meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Accessibility Statement meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Contact Page meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Services Page meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Helpdesk Ticket Form meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Asset Loan Application Form meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:315:3 ΓÇ║ Lighthouse Audit - Authenticated Pages ΓÇ║ Staff Dashboard meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:315:3 ΓÇ║ Lighthouse Audit - Authenticated Pages ΓÇ║ User Profile meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:315:3 ΓÇ║ Lighthouse Audit - Authenticated Pages ΓÇ║ Submission History meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:357:3 ΓÇ║ Lighthouse Audit - Admin Pages ΓÇ║ Admin Dashboard meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:357:3 ΓÇ║ Lighthouse Audit - Admin Pages ΓÇ║ Helpdesk Tickets Management meets Lighthouse thresholds
+  [chromium] ΓÇ║ performance\lighthouse-audit.spec.ts:388:2 ΓÇ║ Lighthouse Audit - Comprehensive Report ΓÇ║ Generate comprehensive Lighthouse report
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ admin-dashboard - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ admin-dashboard - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ admin-dashboard - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-dashboard - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-dashboard - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-dashboard - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-analytics - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-analytics - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-analytics - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ helpdesk-tickets-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ helpdesk-tickets-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ helpdesk-tickets-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ticket-categories-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ticket-categories-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ticket-categories-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ loan-applications-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ loan-applications-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ loan-applications-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ loans-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ loans-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ loans-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ assets-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ assets-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ assets-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-categories-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-categories-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-categories-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-maintenances-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-maintenances-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-maintenances-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-transfers-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-transfers-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-transfers-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ users-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ users-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ users-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ divisions-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ divisions-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ divisions-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ grades-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ grades-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ grades-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ audit-trail-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ audit-trail-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ audit-trail-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-logs-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-logs-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-logs-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ api-tokens-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ api-tokens-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ api-tokens-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-schedules-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-schedules-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-schedules-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ failed-jobs-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ failed-jobs-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ failed-jobs-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-faqs-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-faqs-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-faqs-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-documents-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-documents-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-documents-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-message-logs - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-message-logs - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-message-logs - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-auto-reply-templates - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-auto-reply-templates - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-auto-reply-templates - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-performance - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-performance - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-performance - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ bedrock-routing - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ bedrock-routing - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ bedrock-routing - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notifications-center - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notifications-center - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notifications-center - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notification-preferences - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notification-preferences - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notification-preferences - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ helpdesk-reports - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ helpdesk-reports - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ helpdesk-reports - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-builder - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-builder - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-builder - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-templates - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-templates - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-templates - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-export-center - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-export-center - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-export-center - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-visualization - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-visualization - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-visualization - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-search - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-search - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-search - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-audit-log - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-audit-log - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-audit-log - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ filter-presets - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ filter-presets - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ filter-presets - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sla-threshold-management - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sla-threshold-management - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sla-threshold-management - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ approval-matrix - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ approval-matrix - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ approval-matrix - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ workflow-automation - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ workflow-automation - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ workflow-automation - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ alert-configuration - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ alert-configuration - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ alert-configuration - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-template-management - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-template-management - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-template-management - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-queue-monitoring - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-queue-monitoring - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-queue-monitoring - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ security-monitoring - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ security-monitoring - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ security-monitoring - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pdpa-dashboard - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pdpa-dashboard - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pdpa-dashboard - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ accessibility-compliance - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ accessibility-compliance - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ accessibility-compliance - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ two-factor-authentication - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ two-factor-authentication - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ two-factor-authentication - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ performance-monitoring - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ performance-monitoring - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ performance-monitoring - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pulse-dashboard - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pulse-dashboard - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pulse-dashboard - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-lifecycle-report - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-lifecycle-report - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-lifecycle-report - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ superuser-configuration - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ superuser-configuration - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ superuser-configuration - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-users-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-users-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-users-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-audits-list - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-audits-list - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-audits-list - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ admin-login - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ admin-login - laptop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ admin-login - tablet
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:611:3 ΓÇ║ Quick Admin Screenshots (Bypass Mode) ΓÇ║ quick-admin-dashboard
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:611:3 ΓÇ║ Quick Admin Screenshots (Bypass Mode) ΓÇ║ quick-helpdesk-list
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:611:3 ΓÇ║ Quick Admin Screenshots (Bypass Mode) ΓÇ║ quick-loans-list
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:611:3 ΓÇ║ Quick Admin Screenshots (Bypass Mode) ΓÇ║ quick-assets-list
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:611:3 ΓÇ║ Quick Admin Screenshots (Bypass Mode) ΓÇ║ quick-users-list
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:611:3 ΓÇ║ Quick Admin Screenshots (Bypass Mode) ΓÇ║ quick-audit-trail
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:611:3 ΓÇ║ Quick Admin Screenshots (Bypass Mode) ΓÇ║ quick-notifications
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:678:3 ΓÇ║ Admin Resource Form Screenshots (Bypass Mode) ΓÇ║ helpdesk-ticket-create - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:678:3 ΓÇ║ Admin Resource Form Screenshots (Bypass Mode) ΓÇ║ asset-create - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:678:3 ΓÇ║ Admin Resource Form Screenshots (Bypass Mode) ΓÇ║ user-create - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:678:3 ΓÇ║ Admin Resource Form Screenshots (Bypass Mode) ΓÇ║ loan-application-create - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:678:3 ΓÇ║ Admin Resource Form Screenshots (Bypass Mode) ΓÇ║ ticket-category-create - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:678:3 ΓÇ║ Admin Resource Form Screenshots (Bypass Mode) ΓÇ║ asset-category-create - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:715:2 ΓÇ║ Admin Navigation Screenshots (Bypass Mode) ΓÇ║ sidebar-expanded - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:744:2 ΓÇ║ Admin Navigation Screenshots (Bypass Mode) ΓÇ║ sidebar-collapsed - desktop
+  [chromium] ΓÇ║ screenshots\admin-screenshot-automation.spec.ts:773:2 ΓÇ║ Admin Navigation Screenshots (Bypass Mode) ΓÇ║ global-search-open - desktop
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ welcome - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ welcome - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ welcome - laptop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ welcome - laptop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ welcome - tablet - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ welcome - tablet - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ welcome - mobile - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ welcome - mobile - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-create - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-create - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-create - laptop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-create - laptop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-create - tablet - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-create - tablet - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-create - mobile - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-create - mobile - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-submit - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-submit - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-submit - laptop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-submit - laptop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-submit - tablet - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-submit - tablet - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-submit - mobile - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ helpdesk-submit - mobile - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ loan-create - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ loan-create - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ loan-create - laptop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ loan-create - laptop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ loan-create - tablet - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ loan-create - tablet - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ loan-create - mobile - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ loan-create - mobile - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ status-check - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ status-check - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ status-check - laptop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ status-check - laptop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ status-check - tablet - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ status-check - tablet - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ status-check - mobile - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ status-check - mobile - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ login - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ login - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ login - laptop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ login - laptop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ login - tablet - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ login - tablet - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ login - mobile - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ login - mobile - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ register - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ register - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ register - laptop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ register - laptop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ register - tablet - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ register - tablet - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ register - mobile - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ register - mobile - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ forgot-password - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ forgot-password - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ forgot-password - laptop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ forgot-password - laptop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ forgot-password - tablet - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ forgot-password - tablet - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ forgot-password - mobile - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:127:5 ΓÇ║ ICTServe v3.6.0 Screenshot Automation ΓÇ║ forgot-password - mobile - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:207:4 ΓÇ║ Helpdesk Wizard Steps (Screenshot Only) ΓÇ║ helpdesk-wizard-step1 - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:207:4 ΓÇ║ Helpdesk Wizard Steps (Screenshot Only) ΓÇ║ helpdesk-wizard-step1 - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:207:4 ΓÇ║ Helpdesk Wizard Steps (Screenshot Only) ΓÇ║ helpdesk-wizard-step2 - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:207:4 ΓÇ║ Helpdesk Wizard Steps (Screenshot Only) ΓÇ║ helpdesk-wizard-step2 - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:207:4 ΓÇ║ Helpdesk Wizard Steps (Screenshot Only) ΓÇ║ helpdesk-wizard-step3 - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:207:4 ΓÇ║ Helpdesk Wizard Steps (Screenshot Only) ΓÇ║ helpdesk-wizard-step3 - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:207:4 ΓÇ║ Helpdesk Wizard Steps (Screenshot Only) ΓÇ║ helpdesk-wizard-step4 - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:207:4 ΓÇ║ Helpdesk Wizard Steps (Screenshot Only) ΓÇ║ helpdesk-wizard-step4 - desktop - dark
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:298:3 ΓÇ║ Loan Wizard Steps (Screenshot Only) ΓÇ║ loan-wizard-step1 - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:298:3 ΓÇ║ Loan Wizard Steps (Screenshot Only) ΓÇ║ loan-wizard-step2 - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:298:3 ΓÇ║ Loan Wizard Steps (Screenshot Only) ΓÇ║ loan-wizard-step3 - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:298:3 ΓÇ║ Loan Wizard Steps (Screenshot Only) ΓÇ║ loan-wizard-step4 - desktop - light
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:371:3 ΓÇ║ Quick Page Screenshots ΓÇ║ quick-home
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:371:3 ΓÇ║ Quick Page Screenshots ΓÇ║ quick-helpdesk-form
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:371:3 ΓÇ║ Quick Page Screenshots ΓÇ║ quick-loan-form
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:371:3 ΓÇ║ Quick Page Screenshots ΓÇ║ quick-status-check
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:371:3 ΓÇ║ Quick Page Screenshots ΓÇ║ quick-login
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:371:3 ΓÇ║ Quick Page Screenshots ΓÇ║ quick-register
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:371:3 ΓÇ║ Quick Page Screenshots ΓÇ║ quick-forgot-password
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:395:2 ΓÇ║ Component Screenshots ΓÇ║ faq-bot-widget - open state
+  [chromium] ΓÇ║ screenshots\screenshot-automation.spec.ts:425:2 ΓÇ║ Component Screenshots ΓÇ║ login-modal - open state
+  [chromium] ΓÇ║ staff-flow.spec.ts:39:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 01 - Welcome Page Accessibility Check with Percy
+  [chromium] ΓÇ║ staff-flow.spec.ts:68:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 02 - Navigate to Staff Login with Percy
+  [chromium] ΓÇ║ staff-flow.spec.ts:102:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 03 - Login Page Form Accessibility with Percy
+  [chromium] ΓÇ║ staff-flow.spec.ts:130:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 04 - Successful Authentication
+  [chromium] ΓÇ║ staff-flow.spec.ts:149:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 05 - Dashboard Main View After Login
+  [chromium] ΓÇ║ staff-flow.spec.ts:172:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 06 - Dashboard Quick Actions Interaction
+  [chromium] ΓÇ║ staff-flow.spec.ts:190:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 07 - Navigate to Helpdesk Module
+  [chromium] ΓÇ║ staff-flow.spec.ts:209:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 08 - Navigate to Loan Module
+  [chromium] ΓÇ║ staff-flow.spec.ts:228:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 09 - View User Profile
+  [chromium] ΓÇ║ staff-flow.spec.ts:253:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 10 - Complete Logout
+  [chromium] ΓÇ║ staff-flow.spec.ts:299:2 ΓÇ║ Staff User Optimized Complete Journey ΓÇ║ Complete staff journey: Welcome to Logout (optimized single session)
+Total: 765 tests in 41 files

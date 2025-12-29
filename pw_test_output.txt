@@ -1,0 +1,292 @@
+
+Running 765 tests using 2 workers
+
+[1A[2K[1/765] [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-1 - Welcome Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+[1A[2K[2/765] [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-2 - Accessibility Statement should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+[1A[2K[chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-1 - Welcome Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+[Percy] Skipping snapshot "Accessibility - Welcome Page - WCAG 2.2 AA Compliance" - Percy not enabled
+
+[1A[2K[chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-2 - Accessibility Statement should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+[Percy] Skipping snapshot "Accessibility - Accessibility Statement - WCAG 2.2 AA Compliance" - Percy not enabled
+
+[1A[2K
+Γ¥î Accessibility Statement: 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 4
+   - Element 1: <span class="text-slate-500">Tel:</span>...
+     Target: address > .pt-2 > .text-slate-500
+   - Element 2: <span class="text-slate-500">Faks:</span>...
+     Target: p:nth-child(4) > .text-slate-500
+   - Element 3: <p class="text-xs text-slate-500">┬⌐ 2025 BPM MOTAC.
+                        Hak Cipta Terpelihara.</...
+     Target: .mt-10 > .text-slate-500.text-xs:nth-child(1)
+
+
+[1A[2K[chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-1 - Welcome Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+
+Γ¥î Welcome Page: 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 4
+   - Element 1: <span class="text-slate-500">Tel:</span>...
+     Target: address > .pt-2 > .text-slate-500
+   - Element 2: <span class="text-slate-500">Faks:</span>...
+     Target: p:nth-child(4) > .text-slate-500
+   - Element 3: <p class="text-xs text-slate-500">┬⌐ 2025 BPM MOTAC.
+                        Hak Cipta Terpelihara.</...
+     Target: .mt-10 > .text-xs.text-slate-500:nth-child(1)
+
+
+[1A[2K  1) [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-1 - Welcome Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke 
+
+    Error: Welcome Page should have no accessibility violations
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m1[39m
+    Received array:  [31m[{"description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds", "help": "Elements must meet minimum color contrast ratio thresholds", "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright", "id": "color-contrast", "impact": "serious", "nodes": [{"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "10.5pt (14px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-12 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<span class=\"text-slate-500\">Tel:</span>", "impact": "serious", "none": [], "target": ["address > .pt-2 > .text-slate-500"]}, {"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "10.5pt (14px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-12 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<span class=\"text-slate-500\">Faks:</span>", "impact": "serious", "none": [], "target": ["p:nth-child(4) > .text-slate-500"]}, {"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "9.0pt (12px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-12 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<p class=\"text-xs text-slate-500\">┬⌐ 2025 BPM MOTAC.[39m
+    [31m                        Hak Cipta Terpelihara.</p>", "impact": "serious", "none": [], "target": [".mt-10 > .text-xs.text-slate-500:nth-child(1)"]}, {"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "9.0pt (12px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-12 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<p class=\"text-xs text-slate-500\">Mematuhi WCAG 2.2 Tahap AA</p>", "impact": "serious", "none": [], "target": [".mt-10 > .text-xs.text-slate-500:nth-child(2)"]}], "tags": ["cat.color", "wcag2aa", "wcag143", "TTv5", "TT13.c", "EN-301-549", "EN-9.1.4.3", "ACT", "RGAAv4", "RGAA-3.2.1"]}][39m
+
+      165 | 							`${pageInfo.name} should have no accessibility violations`
+      166 | 						)
+    > 167 | 						.toHaveLength(0);
+          | 						 ^
+      168 |
+      169 | 					// Log success metrics
+      170 | 					if (results.violations.length === 0) {
+        at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\accessibility.comprehensive.spec.ts:167:8
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-61bb8-pass-WCAG-2-2-AA-with-Percy-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-61bb8-pass-WCAG-2-2-AA-with-Percy-chromium\video-1.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #3: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-61bb8-pass-WCAG-2-2-AA-with-Percy-chromium\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\accessibility.comprehensiv-61bb8-pass-WCAG-2-2-AA-with-Percy-chromium\error-context.md
+
+
+[1A[2K[3/765] [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-3 - Contact Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+[1A[2K  2) [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-2 - Accessibility Statement should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke 
+
+    Error: Accessibility Statement should have no accessibility violations
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m1[39m
+    Received array:  [31m[{"description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds", "help": "Elements must meet minimum color contrast ratio thresholds", "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright", "id": "color-contrast", "impact": "serious", "nodes": [{"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "10.5pt (14px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-12 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<span class=\"text-slate-500\">Tel:</span>", "impact": "serious", "none": [], "target": ["address > .pt-2 > .text-slate-500"]}, {"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "10.5pt (14px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-12 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<span class=\"text-slate-500\">Faks:</span>", "impact": "serious", "none": [], "target": ["p:nth-child(4) > .text-slate-500"]}, {"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "9.0pt (12px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-12 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<p class=\"text-xs text-slate-500\">┬⌐ 2025 BPM MOTAC.[39m
+    [31m                        Hak Cipta Terpelihara.</p>", "impact": "serious", "none": [], "target": [".mt-10 > .text-slate-500.text-xs:nth-child(1)"]}, {"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "9.0pt (12px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-12 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<p class=\"text-xs text-slate-500\">Mematuhi WCAG 2.2 Tahap AA</p>", "impact": "serious", "none": [], "target": [".mt-10 > .text-slate-500.text-xs:nth-child(2)"]}], "tags": ["cat.color", "wcag2aa", "wcag143", "TTv5", "TT13.c", "EN-301-549", "EN-9.1.4.3", "ACT", "RGAAv4", "RGAA-3.2.1"]}][39m
+
+      165 | 							`${pageInfo.name} should have no accessibility violations`
+      166 | 						)
+    > 167 | 						.toHaveLength(0);
+          | 						 ^
+      168 |
+      169 | 					// Log success metrics
+      170 | 					if (results.violations.length === 0) {
+        at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\accessibility.comprehensive.spec.ts:167:8
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-61dea-pass-WCAG-2-2-AA-with-Percy-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-61dea-pass-WCAG-2-2-AA-with-Percy-chromium\video-1.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #3: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-61dea-pass-WCAG-2-2-AA-with-Percy-chromium\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\accessibility.comprehensiv-61dea-pass-WCAG-2-2-AA-with-Percy-chromium\error-context.md
+
+
+[1A[2K[4/765] [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-4 - Services Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+[1A[2K  3) [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-3 - Contact Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke 
+
+    TimeoutError: page.goto: Timeout 180000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://127.0.0.1:8000/contact", waiting until "load"[22m
+
+
+      137 | 				async ({ page }) => {
+      138 | 					// Navigate to page
+    > 139 | 					await page.goto(pageInfo.url);
+          | 					           ^
+      140 |
+      141 | 					// Wait for page to be fully loaded (domcontentloaded is faster and more reliable than networkidle)
+      142 | 					await page.waitForLoadState("domcontentloaded");
+        at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\accessibility.comprehensive.spec.ts:139:17
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-056ba-pass-WCAG-2-2-AA-with-Percy-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-056ba-pass-WCAG-2-2-AA-with-Percy-chromium\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\accessibility.comprehensiv-056ba-pass-WCAG-2-2-AA-with-Percy-chromium\error-context.md
+
+
+[1A[2K[5/765] [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-5 - Helpdesk Ticket Form (Guest) should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+[1A[2K  4) [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-4 - Services Page should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke 
+
+    TimeoutError: page.goto: Timeout 180000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://127.0.0.1:8000/services", waiting until "load"[22m
+
+
+      137 | 				async ({ page }) => {
+      138 | 					// Navigate to page
+    > 139 | 					await page.goto(pageInfo.url);
+          | 					           ^
+      140 |
+      141 | 					// Wait for page to be fully loaded (domcontentloaded is faster and more reliable than networkidle)
+      142 | 					await page.waitForLoadState("domcontentloaded");
+        at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\accessibility.comprehensive.spec.ts:139:17
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-dfa0a-pass-WCAG-2-2-AA-with-Percy-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-dfa0a-pass-WCAG-2-2-AA-with-Percy-chromium\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\accessibility.comprehensiv-dfa0a-pass-WCAG-2-2-AA-with-Percy-chromium\error-context.md
+
+
+[1A[2K[6/765] [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-6 - Asset Loan Application Form (Guest) should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+[1A[2K[chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-5 - Helpdesk Ticket Form (Guest) should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke
+[Percy] Skipping snapshot "Accessibility - Helpdesk Ticket Form (Guest) - WCAG 2.2 AA Compliance" - Percy not enabled
+
+[1A[2K
+Γ¥î Helpdesk Ticket Form (Guest): 1 violation(s) found
+
+1. color-contrast (serious)
+   Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
+   Help: Elements must meet minimum color contrast ratio thresholds
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
+   Affected elements: 2
+   - Element 1: <p class="text-xs text-slate-500">┬⌐ 2025 BPM MOTAC.
+                        Hak Cipta Terpelihara.</...
+     Target: .sm\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(1)
+   - Element 2: <p class="text-xs text-slate-500">Mematuhi WCAG 2.2 Tahap AA</p>...
+     Target: .sm\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(2)
+
+
+[1A[2K  5) [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-5 - Helpdesk Ticket Form (Guest) should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke 
+
+    Error: Helpdesk Ticket Form (Guest) should have no accessibility violations
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m1[39m
+    Received array:  [31m[{"description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds", "help": "Elements must meet minimum color contrast ratio thresholds", "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright", "id": "color-contrast", "impact": "serious", "nodes": [{"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "9.0pt (12px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-8 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<p class=\"text-xs text-slate-500\">┬⌐ 2025 BPM MOTAC.[39m
+    [31m                        Hak Cipta Terpelihara.</p>", "impact": "serious", "none": [], "target": [".sm\\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(1)"]}, {"all": [], "any": [{"data": {"bgColor": "#1d293d", "contrastRatio": 3.06, "expectedContrastRatio": "4.5:1", "fgColor": "#62748e", "fontSize": "9.0pt (12px)", "fontWeight": "normal", "messageKey": null}, "id": "color-contrast", "impact": "serious", "message": "Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "relatedNodes": [{"html": "<footer class=\"bg-slate-800 dark:bg-slate-900 text-slate-300 py-8 theme-transition\" role=\"contentinfo\">", "target": ["footer"]}]}], "failureSummary": "Fix any of the following:[39m
+    [31m  Element has insufficient color contrast of 3.06 (foreground color: #62748e, background color: #1d293d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1", "html": "<p class=\"text-xs text-slate-500\">Mematuhi WCAG 2.2 Tahap AA</p>", "impact": "serious", "none": [], "target": [".sm\\:flex-row.gap-4.justify-between > .text-slate-500:nth-child(2)"]}], "tags": ["cat.color", "wcag2aa", "wcag143", "TTv5", "TT13.c", "EN-301-549", "EN-9.1.4.3", "ACT", "RGAAv4", "RGAA-3.2.1"]}][39m
+
+      165 | 							`${pageInfo.name} should have no accessibility violations`
+      166 | 						)
+    > 167 | 						.toHaveLength(0);
+          | 						 ^
+      168 |
+      169 | 					// Log success metrics
+      170 | 					if (results.violations.length === 0) {
+        at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\accessibility.comprehensive.spec.ts:167:8
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-f9c97-pass-WCAG-2-2-AA-with-Percy-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-f9c97-pass-WCAG-2-2-AA-with-Percy-chromium\video-1.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #3: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-f9c97-pass-WCAG-2-2-AA-with-Percy-chromium\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\accessibility.comprehensiv-f9c97-pass-WCAG-2-2-AA-with-Percy-chromium\error-context.md
+
+
+[1A[2K[7/765] [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-1 - Staff Dashboard should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke
+[1A[2K[chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-1 - Staff Dashboard should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke
+[Worker 6] Using email: userstaff@motac.gov.my
+
+[1A[2K[Auth Fixture] Login attempt 1/8
+
+[1A[2K[Auth Fixture] Network idle timeout - continuing anyway
+
+[1A[2K[Auth Fixture] Using fallback submit button selector
+
+[1A[2K[Auth Fixture] Submitting login form
+
+[1A[2K[Auth Fixture] Waiting for dashboard redirect...
+
+[1A[2K  6) [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:130:4 ΓÇ║ 01 - Automated Accessibility Testing - Guest Pages with Percy ΓÇ║ 01-6 - Asset Loan Application Form (Guest) should pass WCAG 2.2 AA with Percy @accessibility @a11y @wcag @guest @percy @smoke 
+
+    TimeoutError: page.goto: Timeout 180000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://127.0.0.1:8000/loan/apply", waiting until "load"[22m
+
+
+      137 | 				async ({ page }) => {
+      138 | 					// Navigate to page
+    > 139 | 					await page.goto(pageInfo.url);
+          | 					           ^
+      140 |
+      141 | 					// Wait for page to be fully loaded (domcontentloaded is faster and more reliable than networkidle)
+      142 | 					await page.waitForLoadState("domcontentloaded");
+        at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\accessibility.comprehensive.spec.ts:139:17
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-f57c4-pass-WCAG-2-2-AA-with-Percy-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\accessibility.comprehensiv-f57c4-pass-WCAG-2-2-AA-with-Percy-chromium\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\accessibility.comprehensiv-f57c4-pass-WCAG-2-2-AA-with-Percy-chromium\error-context.md
+
+
+[1A[2K[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+
+[1A[2K[8/765] [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-2 - User Profile should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke
+[1A[2K[Auth Fixture] Login successful!
+
+[1A[2K  7) [chromium] ΓÇ║ tests\e2e\accessibility.comprehensive.spec.ts:193:4 ΓÇ║ 02 - Automated Accessibility Testing - Authenticated Pages ΓÇ║ 02-2 - User Profile should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke 
+
+    TimeoutError: browserType.launch: Timeout 180000ms exceeded.
+    Call log:
+    [2m  - <launching> C:\Users\exatf\AppData\Local\ms-playwright\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=C:\Users\exatf\AppData\Local\Temp\playwright_chromiumdev_profile-baJgGk --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=19516[22m
+
+
+
