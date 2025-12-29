@@ -9700,3 +9700,176 @@ Call log:
   }
 }
 ΓÜá∩╕Å Skipping bedrock-routing - authentication failed
+≡ƒôä Generated: admin/index.html
+
+≡ƒÄë Admin screenshot automation complete! View gallery at: public/images/development/admin/index.html
+  x   833 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:29:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 01 - Loan Module Navigation with Percy @smoke @loan @module @navigation @percy (42.1m)
+  x   831 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ bedrock-routing - desktop (42.6m)
+  -   835 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ bedrock-routing - laptop
+  -   836 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ bedrock-routing - tablet
+  -   837 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notifications-center - desktop
+  -   838 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notifications-center - laptop
+  -   839 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notifications-center - tablet
+  -   840 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notification-preferences - desktop
+  -   841 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notification-preferences - laptop
+  -   842 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ notification-preferences - tablet
+  -   843 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ helpdesk-reports - desktop
+  -   844 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ helpdesk-reports - laptop
+  -   845 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ helpdesk-reports - tablet
+  -   846 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-builder - desktop
+  -   847 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-builder - laptop
+  -   848 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-builder - tablet
+  -   849 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-templates - desktop
+  -   850 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-templates - laptop
+  -   851 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ report-templates - tablet
+  -   852 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-export-center - desktop
+  -   853 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-export-center - laptop
+  -   854 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-export-center - tablet
+  -   855 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-visualization - desktop
+  -   856 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-visualization - laptop
+  -   857 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ data-visualization - tablet
+  -   858 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-search - desktop
+  -   859 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-search - laptop
+  -   860 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-search - tablet
+  -   861 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-audit-log - desktop
+  -   862 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-audit-log - laptop
+  -   863 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ unified-audit-log - tablet
+  -   864 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ filter-presets - desktop
+  -   865 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ filter-presets - laptop
+  -   866 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ filter-presets - tablet
+  -   867 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sla-threshold-management - desktop
+  -   868 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sla-threshold-management - laptop
+  -   869 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sla-threshold-management - tablet
+  -   870 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ approval-matrix - desktop
+  -   871 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ approval-matrix - laptop
+  -   872 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ approval-matrix - tablet
+  -   873 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ workflow-automation - desktop
+  -   874 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ workflow-automation - laptop
+  -   875 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ workflow-automation - tablet
+  -   876 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ alert-configuration - desktop
+  -   877 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ alert-configuration - laptop
+  -   878 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ alert-configuration - tablet
+  -   879 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-template-management - desktop
+  -   880 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-template-management - laptop
+  -   881 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-template-management - tablet
+  -   882 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-queue-monitoring - desktop
+  -   883 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-queue-monitoring - laptop
+  -   884 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ email-queue-monitoring - tablet
+  -   885 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ security-monitoring - desktop
+  -   886 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ security-monitoring - laptop
+  -   887 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ security-monitoring - tablet
+  -   888 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pdpa-dashboard - desktop
+  -   889 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pdpa-dashboard - laptop
+  -   890 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pdpa-dashboard - tablet
+  -   891 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ accessibility-compliance - desktop
+  -   892 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ accessibility-compliance - laptop
+  -   893 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ accessibility-compliance - tablet
+  -   894 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ two-factor-authentication - desktop
+  -   895 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ two-factor-authentication - laptop
+  -   896 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ two-factor-authentication - tablet
+  -   897 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ performance-monitoring - desktop
+  -   898 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ performance-monitoring - laptop
+  -   899 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ performance-monitoring - tablet
+  -   900 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pulse-dashboard - desktop
+  -   901 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pulse-dashboard - laptop
+  -   902 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ pulse-dashboard - tablet
+  -   903 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-lifecycle-report - desktop
+  -   904 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-lifecycle-report - laptop
+  -   905 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ asset-lifecycle-report - tablet
+  -   906 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ superuser-configuration - desktop
+  -   907 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ superuser-configuration - laptop
+  -   908 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ superuser-configuration - tablet
+  -   909 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-users-list - desktop
+  -   910 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-users-list - laptop
+  -   911 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-users-list - tablet
+  -   912 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-audits-list - desktop
+  -   913 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-audits-list - laptop
+  -   914 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ sso-audits-list - tablet
+  -   915 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ admin-login - desktop
+  -   916 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ admin-login - laptop
+  -   917 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ admin-login - tablet
+[Worker 153] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Worker 154] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Attempt 1 failed: page.goto: Timeout 60000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Attempt 1 failed: page.goto: Timeout 60000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Waiting 3000ms before retry...
+[Auth Fixture] Waiting 3000ms before retry...
+[Auth Fixture] Login attempt 2/8
+[Auth Fixture] Login attempt 2/8
+[Auth Fixture] Attempt 2 failed: page.goto: Timeout 60000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Waiting 6000ms before retry...
+[Auth Fixture] Attempt 2 failed: page.goto: Timeout 60000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Waiting 6000ms before retry...
+[Auth Fixture] Login attempt 3/8
+[Auth Fixture] Login attempt 3/8
+[Auth Fixture] Attempt 3 failed: page.goto: Timeout 60000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Waiting 9000ms before retry...
+[Auth Fixture] Attempt 3 failed: page.goto: Timeout 60000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Waiting 9000ms before retry...
+[Auth Fixture] Login attempt 4/8
+[Auth Fixture] Login attempt 4/8
+[Auth Fixture] Attempt 4 failed: page.goto: Timeout 60000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Waiting 12000ms before retry...
+[Auth Fixture] Attempt 4 failed: page.goto: Timeout 60000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Waiting 12000ms before retry...
+[Auth Fixture] Login attempt 5/8
+[Auth Fixture] Login attempt 5/8
+[Auth Fixture] Attempt 5 failed: page.goto: Test timeout of 300000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:8000/login", waiting until "domcontentloaded"[22m
+
+[Auth Fixture] Waiting 15000ms before retry...
+  x   834 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:60:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 02 - Loan Application List View with Percy @smoke @loan @module @percy (5.1m)
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Attempt 5 failed: locator.fill: Target page, context or browser has been closed
+[Auth Fixture] Waiting 15000ms before retry...
+  x   918 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:84:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 03 - Create New Loan Application - Form Accessibility @loan @module @form (5.0m)
+[Worker 155] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Worker 156] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  x   919 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:136:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 04 - Create New Loan Application - Form Validation @loan @module @form @validation (1.2m)
+[Worker 157] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+  ok  920 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:159:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 05 - Create New Loan Application - Successful Submission @smoke @loan @module @form (3.4m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
