@@ -8894,3 +8894,585 @@ Call log:
 }
 ΓÜá∩╕Å Skipping ollama-documents-list - authentication failed
   ok  790 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-documents-list - desktop (1.3m)
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  792 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:309:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 09 - Module Navigation - Return to Dashboard @smoke @helpdesk @module @navigation (1.5m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+Γ¥î Admin authentication error: page.fill: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator('input[name="email"], input[type="email"]')
+
+    at authenticateAdmin (C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:446:14)
+    at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:521:26 {
+  name: 'TimeoutError',
+  [Symbol(step)]: {
+    location: {
+      file: 'C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts',
+      line: 446,
+      column: 14,
+      function: 'authenticateAdmin'
+    },
+    category: 'pw:api',
+    title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+    apiName: 'page.fill',
+    params: {
+      selector: 'input[name="email"], input[type="email"]',
+      value: 'admin@motac.gov.my',
+      timeout: 60000
+    },
+    group: undefined,
+    stepId: 'pw:api@26',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@26',
+      _title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1767048904022,
+    error: {
+      message: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n`,
+      stack: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n` +
+        '\n' +
+        '    at authenticateAdmin (C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:446:14)\n' +
+        '    at C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:521:26',
+      cause: undefined
+    }
+  }
+}
+ΓÜá∩╕Å Skipping ollama-documents-list - authentication failed
+  ok  793 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-documents-list - laptop (1.3m)
+  ok  794 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:335:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 10 - Module Console Error Check @helpdesk @module @debugging (29.1s)
+[Percy] Skipping snapshot "Helpdesk Guest Form - Step 1 Initial Load" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Guest Form - Step 1 Filled" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Guest Form - Step 2 Initial Load" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Guest Form - Step 2 Filled" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Guest Form - Step 3 Attachments" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Guest Form - Step 3 Filled" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Guest Form - Step 4 Confirmation" - Percy not enabled
+  ok  796 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:380:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 11 - Guest Helpdesk Ticket Wizard - Complete Step-by-Step Journey with Screenshots @helpdesk @module @guest @form @percy (7.3s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  x   797 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:602:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 12 - Accessibility: Helpdesk Tickets Page (WCAG 2.2 AA) @helpdesk @accessibility @wcag @smoke (21.4s)
+[Worker 148] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+Γ¥î Admin authentication error: page.fill: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator('input[name="email"], input[type="email"]')
+
+    at authenticateAdmin (C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:446:14)
+    at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:521:26 {
+  name: 'TimeoutError',
+  [Symbol(step)]: {
+    location: {
+      file: 'C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts',
+      line: 446,
+      column: 14,
+      function: 'authenticateAdmin'
+    },
+    category: 'pw:api',
+    title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+    apiName: 'page.fill',
+    params: {
+      selector: 'input[name="email"], input[type="email"]',
+      value: 'admin@motac.gov.my',
+      timeout: 60000
+    },
+    group: undefined,
+    stepId: 'pw:api@26',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@26',
+      _title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1767048980641,
+    error: {
+      message: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n`,
+      stack: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n` +
+        '\n' +
+        '    at authenticateAdmin (C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:446:14)\n' +
+        '    at C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:521:26',
+      cause: undefined
+    }
+  }
+}
+ΓÜá∩╕Å Skipping ollama-documents-list - authentication failed
+  ok  795 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-documents-list - tablet (1.3m)
+  x   798 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:621:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 13 - Accessibility: Create Ticket Form (WCAG 2.2 AA) @helpdesk @accessibility @wcag (40.9s)
+Γ¥î Admin authentication error: page.fill: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator('input[name="email"], input[type="email"]')
+
+    at authenticateAdmin (C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:446:14)
+    at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:521:26 {
+  name: 'TimeoutError',
+  [Symbol(step)]: {
+    location: {
+      file: 'C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts',
+      line: 446,
+      column: 14,
+      function: 'authenticateAdmin'
+    },
+    category: 'pw:api',
+    title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+    apiName: 'page.fill',
+    params: {
+      selector: 'input[name="email"], input[type="email"]',
+      value: 'admin@motac.gov.my',
+      timeout: 60000
+    },
+    group: undefined,
+    stepId: 'pw:api@26',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@26',
+      _title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1767049053771,
+    error: {
+      message: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n`,
+      stack: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n` +
+        '\n' +
+        '    at authenticateAdmin (C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:446:14)\n' +
+        '    at C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:521:26',
+      cause: undefined
+    }
+  }
+}
+ΓÜá∩╕Å Skipping ollama-message-logs - authentication failed
+  ok  799 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-message-logs - desktop (1.2m)
+[Worker 149] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  x   800 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:640:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 14 - Accessibility: Keyboard Navigation @helpdesk @accessibility @keyboard (40.9s)
+[Worker 150] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  802 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:667:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 15 - Accessibility: Focus Indicators @helpdesk @accessibility @focus (15.8s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  803 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:700:2 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ 16 - Cross-Module Integration (Assets & Loans) @helpdesk @module @integration (8.0s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+Γ¥î Admin authentication error: page.fill: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator('input[name="email"], input[type="email"]')
+
+    at authenticateAdmin (C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:446:14)
+    at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:521:26 {
+  name: 'TimeoutError',
+  [Symbol(step)]: {
+    location: {
+      file: 'C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts',
+      line: 446,
+      column: 14,
+      function: 'authenticateAdmin'
+    },
+    category: 'pw:api',
+    title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+    apiName: 'page.fill',
+    params: {
+      selector: 'input[name="email"], input[type="email"]',
+      value: 'admin@motac.gov.my',
+      timeout: 60000
+    },
+    group: undefined,
+    stepId: 'pw:api@26',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@26',
+      _title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1767049129216,
+    error: {
+      message: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n`,
+      stack: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n` +
+        '\n' +
+        '    at authenticateAdmin (C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:446:14)\n' +
+        '    at C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:521:26',
+      cause: undefined
+    }
+  }
+}
+ΓÜá∩╕Å Skipping ollama-message-logs - authentication failed
+  ok  801 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-message-logs - laptop (1.3m)
+[Percy] Skipping snapshot "Helpdesk Landing - Guest User View" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Landing - Authenticated User View" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Module - Hybrid Architecture Comparison - Guest User" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Module - Hybrid Architecture Comparison - Authenticated User" - Percy not enabled
+  ok  804 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:730:3 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ Percy Visual Testing - Hybrid Architecture ΓÇ║ 17 - Guest vs Authenticated User Visual Comparison @percy @hybrid @comparison (15.8s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Percy] Skipping snapshot "Helpdesk Module - Comprehensive Responsive - Mobile (375px)" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Module - Comprehensive Responsive - Tablet (768px)" - Percy not enabled
+[Percy] Skipping snapshot "Helpdesk Module - Comprehensive Responsive - Desktop (1280px)" - Percy not enabled
+  ok  806 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:771:3 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ Percy Visual Testing - Hybrid Architecture ΓÇ║ 18 - Responsive Helpdesk Visual Testing @percy @responsive @comprehensive (17.4s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Percy] Skipping snapshot "Helpdesk Create Form - Bahasa Melayu Interface" - Percy not enabled
+  ok  807 [firefox] ΓÇ║ tests\e2e\helpdesk.spec.ts:792:3 ΓÇ║ Helpdesk Ticket Module - Percy Enhanced Tests ΓÇ║ Percy Visual Testing - Hybrid Architecture ΓÇ║ 19 - Bahasa Melayu Interface Visual Validation @percy @bahasa-melayu @i18n (25.3s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Percy] Skipping snapshot "Loan Module Performance - Core Web Vitals Baseline" - Percy not enabled
+  ok  808 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:45:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 01 - Core Web Vitals meet performance targets with Percy @loan @performance @vitals @smoke @percy (17.3s)
+  ok  809 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:108:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 02 - Guest loan request form loads quickly @loan @performance @guest @form (1.9s)
+[Auth Fixture] Login attempt 1/8
+Γ¥î Admin authentication error: page.fill: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator('input[name="email"], input[type="email"]')
+
+    at authenticateAdmin (C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:446:14)
+    at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:521:26 {
+  name: 'TimeoutError',
+  [Symbol(step)]: {
+    location: {
+      file: 'C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts',
+      line: 446,
+      column: 14,
+      function: 'authenticateAdmin'
+    },
+    category: 'pw:api',
+    title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+    apiName: 'page.fill',
+    params: {
+      selector: 'input[name="email"], input[type="email"]',
+      value: 'admin@motac.gov.my',
+      timeout: 60000
+    },
+    group: undefined,
+    stepId: 'pw:api@26',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@26',
+      _title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1767049203155,
+    error: {
+      message: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n`,
+      stack: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n` +
+        '\n' +
+        '    at authenticateAdmin (C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:446:14)\n' +
+        '    at C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:521:26',
+      cause: undefined
+    }
+  }
+}
+ΓÜá∩╕Å Skipping ollama-message-logs - authentication failed
+  ok  805 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-message-logs - tablet (1.2m)
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  810 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:125:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 03 - Asset availability check is performant @loan @performance @api (15.6s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  812 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:157:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 04 - Loan history pagination is efficient @loan @performance @pagination (20.9s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  813 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:190:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 05 - Loan search/filter performs efficiently @loan @performance @search (14.8s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  814 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:226:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 06 - Progressive loading for asset list @loan @performance @progressive (12.1s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+Γ¥î Admin authentication error: page.fill: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator('input[name="email"], input[type="email"]')
+
+    at authenticateAdmin (C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:446:14)
+    at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:521:26 {
+  name: 'TimeoutError',
+  [Symbol(step)]: {
+    location: {
+      file: 'C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts',
+      line: 446,
+      column: 14,
+      function: 'authenticateAdmin'
+    },
+    category: 'pw:api',
+    title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+    apiName: 'page.fill',
+    params: {
+      selector: 'input[name="email"], input[type="email"]',
+      value: 'admin@motac.gov.my',
+      timeout: 60000
+    },
+    group: undefined,
+    stepId: 'pw:api@26',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@26',
+      _title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1767049275136,
+    error: {
+      message: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n`,
+      stack: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n` +
+        '\n' +
+        '    at authenticateAdmin (C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:446:14)\n' +
+        '    at C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:521:26',
+      cause: undefined
+    }
+  }
+}
+ΓÜá∩╕Å Skipping ollama-auto-reply-templates - authentication failed
+  ok  811 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-auto-reply-templates - desktop (1.2m)
+  ok  815 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:259:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 07 - Time to Interactive (TTI) is acceptable @loan @performance @tti (15.2s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  817 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:295:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 08 - JavaScript bundle size is optimized @loan @performance @bundle (10.6s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  818 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:327:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 09 - Database queries are optimized (no N+1) @loan @performance @database (10.4s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  819 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:352:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 10 - Asset images load efficiently @loan @performance @images (13.6s)
+  ok  820 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:385:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 11 - Form submission response time is fast @loan @performance @submit (3.3s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  821 [firefox] ΓÇ║ tests\e2e\loan-module-performance.spec.ts:423:2 ΓÇ║ Asset Loan Module - Performance Tests with Percy ΓÇ║ 12 - Static assets are cached effectively @loan @performance @cache (25.9s)
+[Percy] Skipping snapshot "Loan Application Form - Guest Initial Load" - Percy not enabled
+Γ¥î Admin authentication error: page.fill: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator('input[name="email"], input[type="email"]')
+
+    at authenticateAdmin (C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:446:14)
+    at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:521:26 {
+  name: 'TimeoutError',
+  [Symbol(step)]: {
+    location: {
+      file: 'C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts',
+      line: 446,
+      column: 14,
+      function: 'authenticateAdmin'
+    },
+    category: 'pw:api',
+    title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+    apiName: 'page.fill',
+    params: {
+      selector: 'input[name="email"], input[type="email"]',
+      value: 'admin@motac.gov.my',
+      timeout: 60000
+    },
+    group: undefined,
+    stepId: 'pw:api@26',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@26',
+      _title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1767049349656,
+    error: {
+      message: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n`,
+      stack: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n` +
+        '\n' +
+        '    at authenticateAdmin (C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:446:14)\n' +
+        '    at C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:521:26',
+      cause: undefined
+    }
+  }
+}
+ΓÜá∩╕Å Skipping ollama-auto-reply-templates - authentication failed
+  ok  816 [chromium] ΓÇ║ tests\e2e\screenshots\admin-screenshot-automation.spec.ts:511:4 ΓÇ║ ICTServe Admin Panel Screenshot Automation ΓÇ║ ollama-auto-reply-templates - laptop (1.2m)
+Γ¥î Admin authentication error: page.fill: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator('input[name="email"], input[type="email"]')
+
+    at authenticateAdmin (C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:446:14)
+    at C:\XAMPP\htdocs\ictserve-031125\tests\e2e\screenshots\admin-screenshot-automation.spec.ts:521:26 {
+  name: 'TimeoutError',
+  [Symbol(step)]: {
+    location: {
+      file: 'C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts',
+      line: 446,
+      column: 14,
+      function: 'authenticateAdmin'
+    },
+    category: 'pw:api',
+    title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+    apiName: 'page.fill',
+    params: {
+      selector: 'input[name="email"], input[type="email"]',
+      value: 'admin@motac.gov.my',
+      timeout: 60000
+    },
+    group: undefined,
+    stepId: 'pw:api@26',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@26',
+      _title: `Fill "admin@motac.gov.my" locator('input[name="email"], input[type="email"]')`,
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1767051578327,
+    error: {
+      message: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n`,
+      stack: 'TimeoutError: page.fill: Timeout 60000ms exceeded.\n' +
+        'Call log:\n' +
+        `\x1B[2m  - waiting for locator('input[name="email"], input[type="email"]')\x1B[22m\n` +
+        '\n' +
+        '    at authenticateAdmin (C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:446:14)\n' +
+        '    at C:\\XAMPP\\htdocs\\ictserve-031125\\tests\\e2e\\screenshots\\admin-screenshot-automation.spec.ts:521:26',
+      cause: undefined
+    }
+  }
+}
+ΓÜá∩╕Å Skipping ollama-auto-reply-templates - authentication failed
