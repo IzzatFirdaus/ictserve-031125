@@ -18,10 +18,10 @@
 <div class="py-6">
     {{-- Page Header --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <h1 class="text-3xl font-bold text-slate-100">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-900 dark:text-slate-100">
             {{ __('profile.title') }}
         </h1>
-        <p class="mt-2 text-sm text-slate-300">
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300">
             {{ __('profile.description') }}
         </p>
     </div>
@@ -33,10 +33,10 @@
         {{-- Profile Picture Card --}}
         <x-ui.card>
             <x-slot name="header">
-                <h2 class="text-xl font-semibold text-slate-100">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-900 dark:text-slate-100">
                     {{ __('profile.picture_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-slate-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300">
                     {{ __('profile.picture_description') }}
                 </p>
             </x-slot>
@@ -77,13 +77,13 @@
                     <form wire:submit.prevent="updateProfilePicture" class="space-y-4">
                         {{-- File Input --}}
                         <div>
-                            <label for="profilePicture" class="block text-sm font-medium text-slate-300 mb-2">
+                            <label for="profilePicture" class="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
                                 {{ __('profile.upload_picture') }}
                             </label>
                             <div class="flex items-center space-x-3">
                                 <input type="file" wire:model="profilePicture" id="profilePicture"
                                     accept="image/jpeg,image/jpg,image/png,image/webp"
-                                    class="block w-full text-sm text-slate-300
+                                    class="block w-full text-sm text-gray-600 dark:text-slate-300
                                               file:mr-4 file:py-2 file:px-4
                                               file:rounded-lg file:border-0
                                               file:text-sm file:font-semibold
@@ -110,7 +110,7 @@
                             {{-- Preview uploaded image --}}
                             @if ($profilePicture)
                                 <div class="mt-4">
-                                    <p class="text-sm font-medium text-slate-300 mb-2">{{ __('profile.preview') }}</p>
+                                    <p class="text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">{{ __('profile.preview') }}</p>
                                     <img src="{{ $profilePicture->temporaryUrl() }}"
                                         class="h-24 w-24 rounded-full object-cover border-2 border-primary-500 shadow-md"
                                         alt="{{ __('profile.preview_picture') }}">
@@ -161,10 +161,10 @@
         {{-- Profile Information Card --}}
         <x-ui.card>
             <x-slot name="header">
-                <h2 class="text-xl font-semibold text-slate-100">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-slate-100">
                     {{ __('profile.information_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-slate-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-slate-300">
                     {{ __('profile.information_description') }}
                 </p>
             </x-slot>
@@ -198,11 +198,11 @@
 
                     {{-- Read-Only Fields with Request Correction Links --}}
                     <div>
-                        <label for="email" class="block text-sm font-medium text-slate-300 mb-2">
+                        <label for="email" class="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
                             {{ __('common.email') }}
                         </label>
                         <input type="email" id="email" value="{{ $email }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-gray-600 dark:text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p id="email-readonly" class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -215,11 +215,11 @@
                     </div>
 
                     <div>
-                        <label for="staff_id" class="block text-sm font-medium text-slate-300 mb-2">
+                        <label for="staff_id" class="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
                             {{ __('common.staff_id') }}
                         </label>
                         <input type="text" id="staff_id" value="{{ $staff_id }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-gray-600 dark:text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -232,11 +232,11 @@
                     </div>
 
                     <div>
-                        <label for="grade" class="block text-sm font-medium text-slate-300 mb-2">
+                        <label for="grade" class="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
                             {{ __('common.grade') }}
                         </label>
                         <input type="text" id="grade" value="{{ $grade }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-gray-600 dark:text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -249,11 +249,11 @@
                     </div>
 
                     <div>
-                        <label for="division" class="block text-sm font-medium text-slate-300 mb-2">
+                        <label for="division" class="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
                             {{ __('common.division') }}
                         </label>
                         <input type="text" id="division" value="{{ $division }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-gray-600 dark:text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -266,11 +266,11 @@
                     </div>
 
                     <div>
-                        <label for="position" class="block text-sm font-medium text-slate-300 mb-2">
+                        <label for="position" class="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
                             {{ __('common.position') }}
                         </label>
                         <input type="text" id="position" value="{{ $position }}" disabled
-                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-lg shadow-sm bg-slate-800 border border-slate-700 text-gray-600 dark:text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -301,10 +301,10 @@
         {{-- Notification Preferences Card --}}
         <x-ui.card>
             <x-slot name="header">
-                <h2 class="text-xl font-semibold text-slate-100">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-slate-100">
                     {{ __('profile.notifications_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-slate-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-slate-300">
                     {{ __('profile.preferences_description') }}
                 </p>
             </x-slot>
@@ -312,7 +312,7 @@
             <div class="space-y-4">
                 {{-- Helpdesk Notifications --}}
                 <div class="border-b border-slate-800 pb-4">
-                    <h3 class="text-sm font-medium text-slate-100 mb-3">
+                    <h3 class="text-sm font-medium text-gray-900 dark:text-slate-100 mb-3">
                         {{ __('profile.helpdesk_notifications') }}
                     </h3>
                     <div class="space-y-3">
@@ -336,7 +336,7 @@
 
                 {{-- Asset Loan Notifications --}}
                 <div class="border-b border-slate-800 pb-4">
-                    <h3 class="text-sm font-medium text-slate-100 mb-3">
+                    <h3 class="text-sm font-medium text-gray-900 dark:text-slate-100 mb-3">
                         {{ __('profile.loan_notifications') }}
                     </h3>
                     <div class="space-y-3">
@@ -356,7 +356,7 @@
 
                 {{-- System Notifications --}}
                 <div class="border-b border-slate-800 pb-4">
-                    <h3 class="text-sm font-medium text-slate-100 mb-3">
+                    <h3 class="text-sm font-medium text-gray-900 dark:text-slate-100 mb-3">
                         {{ __('profile.system_notifications') }}
                     </h3>
                     <div class="space-y-3">
@@ -368,7 +368,7 @@
 
                 {{-- Email Frequency Settings (Requirement 17.5) --}}
                 <div class="border-b border-slate-800 pb-4">
-                    <h3 class="text-sm font-medium text-slate-100 mb-3">
+                    <h3 class="text-sm font-medium text-gray-900 dark:text-slate-100 mb-3">
                         {{ __('profile.email_frequency_title') ?: 'Email Frequency' }}
                     </h3>
                     <p class="text-xs text-slate-400 mb-3">
@@ -380,7 +380,7 @@
                                 value="immediate" name="email_frequency"
                                 class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900">
                             <span
-                                class="text-sm text-slate-300">{{ __('profile.email_immediate') ?: 'Immediate' }}</span>
+                                class="text-sm text-gray-600 dark:text-slate-300">{{ __('profile.email_immediate') ?: 'Immediate' }}</span>
                             <span
                                 class="text-xs text-slate-400">{{ __('profile.email_immediate_desc') ?: '(Receive emails as events occur)' }}</span>
                         </label>
@@ -389,7 +389,7 @@
                                 value="daily" name="email_frequency"
                                 class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900">
                             <span
-                                class="text-sm text-slate-300">{{ __('profile.email_daily') ?: 'Daily Digest' }}</span>
+                                class="text-sm text-gray-600 dark:text-slate-300">{{ __('profile.email_daily') ?: 'Daily Digest' }}</span>
                             <span
                                 class="text-xs text-slate-400">{{ __('profile.email_daily_desc') ?: '(Receive a daily summary)' }}</span>
                         </label>
@@ -398,7 +398,7 @@
                                 value="weekly" name="email_frequency"
                                 class="h-4 w-4 text-primary-600 border-slate-600 bg-slate-800 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-slate-900">
                             <span
-                                class="text-sm text-slate-300">{{ __('profile.email_weekly') ?: 'Weekly Digest' }}</span>
+                                class="text-sm text-gray-600 dark:text-slate-300">{{ __('profile.email_weekly') ?: 'Weekly Digest' }}</span>
                             <span
                                 class="text-xs text-slate-400">{{ __('profile.email_weekly_desc') ?: '(Receive a weekly summary)' }}</span>
                         </label>
@@ -407,7 +407,7 @@
 
                 {{-- In-App Notifications Toggle (Requirement 17.5) --}}
                 <div>
-                    <h3 class="text-sm font-medium text-slate-100 mb-3">
+                    <h3 class="text-sm font-medium text-gray-900 dark:text-slate-100 mb-3">
                         {{ __('profile.inapp_notifications_title') ?: 'In-App Notifications' }}
                     </h3>
                     <div class="space-y-3">
@@ -419,8 +419,9 @@
                 </div>
 
                 {{-- Auto-save indicator --}}
-                <div class="flex items-center text-sm text-slate-300">
-                    <x-heroicon-o-arrow-path wire:loading wire:target="updateNotificationPreferences" class="animate-spin h-4 w-4 mr-2" />
+                <div class="flex items-center text-sm text-gray-600 dark:text-slate-300">
+                    <x-heroicon-o-arrow-path wire:loading wire:target="updateNotificationPreferences"
+                        class="animate-spin h-4 w-4 mr-2" />
                     <span wire:loading wire:target="updateNotificationPreferences">
                         {{ __('profile.saving_preferences') }}
                     </span>
@@ -437,10 +438,10 @@
         {{-- Password Change Card --}}
         <x-ui.card>
             <x-slot name="header">
-                <h2 class="text-xl font-semibold text-slate-100">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-slate-100">
                     {{ __('profile.password_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-slate-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-slate-300">
                     {{ __('profile.security_description') }}
                 </p>
             </x-slot>
@@ -469,8 +470,9 @@
 
                     <div>
                         <x-form.input wire:model="password" id="password" name="password" type="password"
-                            :label="__('profile.new_password')" :placeholder="__('profile.new_password_placeholder')" required aria-required="true" autocomplete="new-password" />
-                        <p class="mt-2 text-xs text-slate-300">
+                            :label="__('profile.new_password')" :placeholder="__('profile.new_password_placeholder')" required aria-required="true"
+                            autocomplete="new-password" />
+                        <p class="mt-2 text-xs text-gray-600 dark:text-slate-300">
                             {{ __('profile.password_requirements') }}
                         </p>
                     </div>
@@ -549,3 +551,4 @@
         });
     </script>
 @endpush
+

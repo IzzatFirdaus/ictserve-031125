@@ -128,10 +128,10 @@
                 <span class="text-sm text-slate-400">{{ __('common.seven_days_ago') }}</span>
             </div>
 
-            <div class="space-y-4" role="feed" aria-label="{{ __('common.recent_activity_list') }}">
+            <ul class="space-y-4" aria-label="{{ __('common.recent_activity_list') }}">
                 @forelse ($recentActivity as $ticket)
-                    <div class="flex items-start gap-4 border-l-4 border-primary-500/50 bg-slate-800/40 p-4 rounded-r-lg hover:bg-slate-800/60 transition-colors duration-200"
-                        role="article">
+                    <li
+                        class="flex items-start gap-4 border-l-4 border-primary-500/50 bg-slate-800/40 p-4 rounded-r-lg hover:bg-slate-800/60 transition-colors duration-200">
                         <div class="shrink-0">
                             <div
                                 class="flex h-10 w-10 items-center justify-center rounded-full border border-primary-500/30 bg-primary-500/10">
@@ -165,13 +165,13 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
+                    </li>
                 @empty
-                    <div class="py-8 text-center text-sm text-slate-400">
+                    <li class="py-8 text-center text-sm text-slate-400">
                         {{ __('common.no_recent_activity') }}
-                    </div>
+                    </li>
                 @endforelse
-            </div>
+            </ul>
 
             @if ($recentActivity->isNotEmpty())
                 <div class="mt-4 text-center">
