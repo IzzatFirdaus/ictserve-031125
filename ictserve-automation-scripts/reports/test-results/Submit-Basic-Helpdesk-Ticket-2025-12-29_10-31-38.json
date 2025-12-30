@@ -1,0 +1,16 @@
+{
+  "EndTime": "2025-12-29T10:31:38.3904347+08:00",
+  "StartTime": "2025-12-29T10:31:35.1250332+08:00",
+  "Duration": 3.2654015,
+  "ErrorMessage": "API assertion failed: Ticket should exist in database. Status: 0",
+  "StackTrace": "at Assert-ApiSuccess, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\utilities\\common-functions.ps1: line 1092\r\nat Test-SubmitBasicTicket, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\scripts\\guest-workflows\\helpdesk\\submit-basic-ticket.ps1: line 128\r\nat <ScriptBlock>, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\scripts\\guest-workflows\\helpdesk\\submit-basic-ticket.ps1: line 169\r\nat Invoke-GuestWorkflowScript, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\scripts\\guest-workflows\\menu.ps1: line 151\r\nat Start-GuestWorkflowsMenu, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\scripts\\guest-workflows\\menu.ps1: line 221\r\nat <ScriptBlock>, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\scripts\\guest-workflows\\menu.ps1: line 253\r\nat Start-MainMenu, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\Main-Menu.ps1: line 573\r\nat <ScriptBlock>, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\Main-Menu.ps1: line 820\r\nat <ScriptBlock>, <No file>: line 1",
+  "Description": "",
+  "Screenshots": [
+    "C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\utilities\\..\\reports\\screenshots\\helpdesk-submit-failure-2025-12-29_10-31-38.png"
+  ],
+  "Steps": [],
+  "Status": "Failed",
+  "Metadata": {},
+  "TestName": "Submit Basic Helpdesk Ticket",
+  "Category": "Guest Workflows - Helpdesk"
+}

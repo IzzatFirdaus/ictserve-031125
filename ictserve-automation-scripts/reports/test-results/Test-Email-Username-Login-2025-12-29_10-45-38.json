@@ -1,0 +1,20 @@
+{
+  "Duration": 2.0898087,
+  "Category": "Authenticated Workflows - Authentication",
+  "EndTime": "2025-12-29T10:45:38.7216404+08:00",
+  "LoginTests": [
+    {
+      "Status": "Passed",
+      "Method": "Email"
+    }
+  ],
+  "Metadata": {},
+  "Screenshots": [],
+  "TestName": "Test Email/Username Login",
+  "Status": "Failed",
+  "Steps": [],
+  "StartTime": "2025-12-29T10:45:36.6318317+08:00",
+  "StackTrace": "",
+  "ErrorMessage": "The term 'Invoke-Logout' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+  "Description": ""
+}

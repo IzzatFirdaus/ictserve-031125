@@ -1,0 +1,6 @@
+TestOption,Description,Status,ExecutionTime,ScriptsFound
+1,Guest User Workflows,Success,789,16
+2,Authenticated User Workflows,Success,54,13
+3,Admin Panel Operations,Success,103,1
+4,AI Integration Testing,Success,25,7
+5,API Integration & Backend,Success,18,4

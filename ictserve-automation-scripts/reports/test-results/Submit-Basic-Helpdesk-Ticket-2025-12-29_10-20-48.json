@@ -1,0 +1,16 @@
+{
+  "Screenshots": [
+    "C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\utilities\\..\\reports\\screenshots\\helpdesk-submit-failure-2025-12-29_10-20-48.png"
+  ],
+  "Description": "",
+  "Status": "Failed",
+  "Category": "Guest Workflows - Helpdesk",
+  "Duration": 3.6687182,
+  "StartTime": "2025-12-29T10:20:44.4777053+08:00",
+  "Metadata": {},
+  "StackTrace": "at Assert-ApiSuccess, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\utilities\\common-functions.ps1: line 1077\r\nat Test-SubmitBasicTicket, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\scripts\\guest-workflows\\helpdesk\\submit-basic-ticket.ps1: line 128\r\nat <ScriptBlock>, C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\scripts\\guest-workflows\\helpdesk\\submit-basic-ticket.ps1: line 169\r\nat <ScriptBlock>, <No file>: line 1",
+  "EndTime": "2025-12-29T10:20:48.1464235+08:00",
+  "Steps": [],
+  "TestName": "Submit Basic Helpdesk Ticket",
+  "ErrorMessage": "API assertion failed: Ticket should exist in database. Status: 0"
+}

@@ -1,0 +1,304 @@
+[
+  {
+    "Issues": null,
+    "Option": "1",
+    "Details": "Guest workflows executed via automated menu selection\nExecuted guest workflow sub-option: 1\nExecuted guest workflow sub-option: 6\nExecuted guest workflow sub-option: 11",
+    "ScriptsCreated": 0,
+    "Description": "Guest User Workflows",
+    "Status": "SUCCESS",
+    "ExecutionTime": 394,
+    "Warnings": null
+  },
+  {
+    "Issues": [],
+    "Option": "2",
+    "Details": "Authenticated workflows executed via automated menu selection",
+    "ScriptsCreated": 0,
+    "Description": "Authenticated User Workflows",
+    "Status": "SUCCESS",
+    "ExecutionTime": 40,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "3",
+    "Details": "Category executed successfully: admin-operations - Found 1 scripts",
+    "ScriptsCreated": 0,
+    "Description": "Admin Panel Operations",
+    "Status": "SUCCESS",
+    "ExecutionTime": 15,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "4",
+    "Details": "Category executed successfully: ai-integration - Found 7 scripts",
+    "ScriptsCreated": 0,
+    "Description": "AI Integration Testing",
+    "Status": "SUCCESS",
+    "ExecutionTime": 8,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "5",
+    "Details": "Category executed successfully: api-backend - Found 4 scripts",
+    "ScriptsCreated": 0,
+    "Description": "API Integration & Backend Systems",
+    "Status": "SUCCESS",
+    "ExecutionTime": 12,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "6",
+    "Details": "Category executed successfully: performance-accessibility - Found 1 scripts",
+    "ScriptsCreated": 0,
+    "Description": "Performance & Accessibility Testing",
+    "Status": "SUCCESS",
+    "ExecutionTime": 10,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "7",
+    "Details": "Category executed successfully: security-compliance - Found 1 scripts",
+    "ScriptsCreated": 0,
+    "Description": "Security & Compliance Testing",
+    "Status": "SUCCESS",
+    "ExecutionTime": 8,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "8",
+    "Details": "Category executed successfully: monitoring-health - Found 1 scripts",
+    "ScriptsCreated": 0,
+    "Description": "System Monitoring & Health",
+    "Status": "SUCCESS",
+    "ExecutionTime": 7,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "9",
+    "Details": "Category executed successfully: end-to-end - Found 1 scripts",
+    "ScriptsCreated": 0,
+    "Description": "End-to-End Workflow Testing",
+    "Status": "SUCCESS",
+    "ExecutionTime": 9,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "10",
+    "Details": "Side-by-side comparison demo executed successfully - Guest vs Authenticated features compared",
+    "ScriptsCreated": 0,
+    "Description": "Guest vs Authenticated Comparison",
+    "Status": "SUCCESS",
+    "ExecutionTime": 11,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "11",
+    "Details": "Complete user journey demo executed successfully - End-to-end workflow demonstrated with narration",
+    "ScriptsCreated": 0,
+    "Description": "Complete User Journey Demo",
+    "Status": "SUCCESS",
+    "ExecutionTime": 3,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "12",
+    "Details": "Admin panel feature tour executed successfully - Guided tour of all admin features completed",
+    "ScriptsCreated": 0,
+    "Description": "Admin Panel Feature Tour",
+    "Status": "SUCCESS",
+    "ExecutionTime": 7,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "13",
+    "Details": "AI integration showcase executed successfully - Live AI responses and model routing demonstrated",
+    "ScriptsCreated": 0,
+    "Description": "AI Integration Showcase",
+    "Status": "SUCCESS",
+    "ExecutionTime": 3,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "14",
+    "Details": "Security features demo executed successfully - CSRF, validation, and protection measures demonstrated",
+    "ScriptsCreated": 0,
+    "Description": "Security Features Demo",
+    "Status": "SUCCESS",
+    "ExecutionTime": 6,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "19",
+    "Details": "Training video recording executed successfully - Video saved to: C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\reports\\videos\\training-video-2025-12-29_11-56-09.mp4",
+    "ScriptsCreated": 0,
+    "Description": "Record Training Videos",
+    "Status": "SUCCESS",
+    "ExecutionTime": 75,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "20",
+    "Details": "Demo screenshot generation completed with placeholders only - 0 files created. View: C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\reports\\demo-screenshots\\index.html",
+    "ScriptsCreated": 0,
+    "Description": "Generate Demo Screenshots",
+    "Status": "SUCCESS",
+    "ExecutionTime": 343,
+    "Warnings": [
+      "No real screenshots were captured. Check Node.js and Playwright installation for actual image capture."
+    ]
+  },
+  {
+    "Issues": [],
+    "Option": "15",
+    "Details": "Critical path tests executed via automated menu selection",
+    "ScriptsCreated": 0,
+    "Description": "Run All Critical Path Tests",
+    "Status": "SUCCESS",
+    "ExecutionTime": 90,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "16",
+    "Details": "Frontend tests executed via automated menu selection",
+    "ScriptsCreated": 0,
+    "Description": "Run All Frontend Tests",
+    "Status": "SUCCESS",
+    "ExecutionTime": 1127,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "17",
+    "Details": "Backend tests executed via automated menu selection",
+    "ScriptsCreated": 0,
+    "Description": "Run All Backend Tests",
+    "Status": "SUCCESS",
+    "ExecutionTime": 133,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "18",
+    "Details": "Complete test suite executed via automated menu selection",
+    "ScriptsCreated": 0,
+    "Description": "Run Complete Test Suite",
+    "Status": "SUCCESS",
+    "ExecutionTime": 1520,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "21",
+    "Details": "Configuration settings accessed via automated menu selection - BaseUrl: https://ictserve-test.motac.gov.my",
+    "ScriptsCreated": 0,
+    "Description": "Configuration Settings",
+    "Status": "SUCCESS",
+    "ExecutionTime": 46,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "22",
+    "Details": "Execution history accessed via automated menu selection - 1 entries",
+    "ScriptsCreated": 0,
+    "Description": "View Execution History",
+    "Status": "SUCCESS",
+    "ExecutionTime": 20,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "25",
+    "Details": "System health check executed via automated menu selection - PowerShell: OK",
+    "ScriptsCreated": 0,
+    "Description": "System Health Check",
+    "Status": "SUCCESS",
+    "ExecutionTime": 24,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "26",
+    "Details": "Search functionality accessed via automated menu selection",
+    "ScriptsCreated": 0,
+    "Description": "Search Tests by Keyword",
+    "Status": "SUCCESS",
+    "ExecutionTime": 1,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "23",
+    "Details": "Comprehensive report generation executed successfully - HTML report: C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\reports\\comprehensive\\comprehensive-report-2025-12-29_11-56-13.html, CSV analytics: C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\reports\\comprehensive\\test-analytics-2025-12-29_11-56-13.csv",
+    "ScriptsCreated": 0,
+    "Description": "Generate Comprehensive Reports",
+    "Status": "SUCCESS",
+    "ExecutionTime": 12,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "24",
+    "Details": "Test data management executed successfully - Generated 3 test data files in: C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\test-data",
+    "ScriptsCreated": 0,
+    "Description": "Test Data Management",
+    "Status": "SUCCESS",
+    "ExecutionTime": 14,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "27",
+    "Details": "Custom test suites executed successfully - Created 3 suite configurations and executed Critical Path Suite",
+    "ScriptsCreated": 0,
+    "Description": "Custom Test Suites",
+    "Status": "SUCCESS",
+    "ExecutionTime": 37,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "28",
+    "Details": "Quick start guide accessed via automated menu selection",
+    "ScriptsCreated": 0,
+    "Description": "Quick Start Guide",
+    "Status": "SUCCESS",
+    "ExecutionTime": 38,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "29",
+    "Details": "Troubleshooting guide accessed via automated menu selection - 4853 characters",
+    "ScriptsCreated": 0,
+    "Description": "Troubleshooting Guide",
+    "Status": "SUCCESS",
+    "ExecutionTime": 7,
+    "Warnings": []
+  },
+  {
+    "Issues": [],
+    "Option": "INFRA",
+    "Details": "Core infrastructure test completed - Screenshot functionality working (3 real screenshots captured)",
+    "ScriptsCreated": 0,
+    "Description": "Core Infrastructure Test",
+    "Status": "SUCCESS",
+    "ExecutionTime": 25651,
+    "Warnings": []
+  }
+]

@@ -1,0 +1,208 @@
+[
+  {
+    "Option": "1",
+    "FixApplied": false,
+    "Description": "Guest User Workflows",
+    "Status": "Issues Found",
+    "Issues": [
+      "Missing function: Show-GuestWorkflowsMenu",
+      "Missing function: Handle-GuestWorkflowChoice"
+    ]
+  },
+  {
+    "Option": "2",
+    "FixApplied": false,
+    "Description": "Authenticated User Workflows",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Show-AuthenticatedWorkflowsMenu"
+  },
+  {
+    "Option": "3",
+    "FixApplied": false,
+    "Description": "Admin Panel Operations",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "4",
+    "FixApplied": false,
+    "Description": "AI Integration Testing",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "5",
+    "FixApplied": false,
+    "Description": "API Integration & Backend Systems",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "6",
+    "FixApplied": false,
+    "Description": "Performance & Accessibility Testing",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "7",
+    "FixApplied": false,
+    "Description": "Security & Compliance Testing",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "8",
+    "FixApplied": false,
+    "Description": "System Monitoring & Health",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "9",
+    "FixApplied": false,
+    "Description": "End-to-End Workflow Testing",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "10",
+    "FixApplied": false,
+    "Description": "Guest vs Authenticated Comparison",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "11",
+    "FixApplied": false,
+    "Description": "Complete User Journey Demo",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "12",
+    "FixApplied": false,
+    "Description": "Admin Panel Feature Tour",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "13",
+    "FixApplied": false,
+    "Description": "AI Integration Showcase",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "14",
+    "FixApplied": false,
+    "Description": "Security Features Demo",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "15",
+    "FixApplied": false,
+    "Description": "Run All Critical Path Tests",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Invoke-CategoryScripts"
+  },
+  {
+    "Option": "16",
+    "FixApplied": false,
+    "Description": "Run All Frontend Tests",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Invoke-CategoryScripts"
+  },
+  {
+    "Option": "17",
+    "FixApplied": false,
+    "Description": "Run All Backend Tests",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Invoke-CategoryScripts"
+  },
+  {
+    "Option": "18",
+    "FixApplied": false,
+    "Description": "Run Complete Test Suite",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Invoke-CategoryScripts"
+  },
+  {
+    "Option": "19",
+    "FixApplied": false,
+    "Description": "Record Training Videos",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "20",
+    "FixApplied": false,
+    "Description": "Generate Demo Screenshots",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "21",
+    "FixApplied": false,
+    "Description": "Configuration Settings",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Show-ConfigurationMenu"
+  },
+  {
+    "Option": "22",
+    "FixApplied": false,
+    "Description": "View Execution History",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Show-ExecutionHistory"
+  },
+  {
+    "Option": "23",
+    "FixApplied": false,
+    "Description": "Generate Comprehensive Reports",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "24",
+    "FixApplied": false,
+    "Description": "Test Data Management",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "25",
+    "FixApplied": false,
+    "Description": "System Health Check",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Show-SystemHealthCheck"
+  },
+  {
+    "Option": "26",
+    "FixApplied": false,
+    "Description": "Search Tests by Keyword",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Search-Scripts"
+  },
+  {
+    "Option": "27",
+    "FixApplied": false,
+    "Description": "Custom Test Suites",
+    "Status": "OK",
+    "Issues": []
+  },
+  {
+    "Option": "28",
+    "FixApplied": false,
+    "Description": "Quick Start Guide",
+    "Status": "Issues Found",
+    "Issues": "Missing function: Show-QuickStartGuide"
+  },
+  {
+    "Option": "29",
+    "FixApplied": false,
+    "Description": "Troubleshooting Guide",
+    "Status": "Issues Found",
+    "Issues": "Missing troubleshooting guide: C:\\XAMPP\\htdocs\\ictserve-031125\\ictserve-automation-scripts\\docs\\troubleshooting-guide.md"
+  }
+]
