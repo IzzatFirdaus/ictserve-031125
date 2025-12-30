@@ -1,0 +1,73 @@
+{
+  "id": "tr-1767055538280-9x768gw78",
+  "name": "Percy Visual Testing - ICTServe v3.6.1",
+  "description": "Comprehensive Percy visual testing run for ICTServe v3.6.1 application",
+  "status": "completed",
+  "testCases": [
+    {
+      "testCaseId": "tc-1767055538141-bpc2lz8b2",
+      "testCaseName": "Homepage Responsive Layout Visual Test",
+      "status": "pending",
+      "percySnapshots": [],
+      "logs": []
+    },
+    {
+      "testCaseId": "tc-1767055538151-hykncaip0",
+      "testCaseName": "Homepage Accessibility Compliance Visual Test",
+      "status": "pending",
+      "percySnapshots": [],
+      "logs": []
+    },
+    {
+      "testCaseId": "tc-1767055538155-lr5own8s4",
+      "testCaseName": "Login Form States Visual Test",
+      "status": "pending",
+      "percySnapshots": [],
+      "logs": []
+    },
+    {
+      "testCaseId": "tc-1767055538162-bxh8bis01",
+      "testCaseName": "Helpdesk Guest Workflow Visual Test",
+      "status": "pending",
+      "percySnapshots": [],
+      "logs": []
+    }
+  ],
+  "environment": {
+    "baseUrl": "http://127.0.0.1:8000",
+    "browser": "Chromium",
+    "browserVersion": "latest",
+    "os": "Windows",
+    "osVersion": "11",
+    "ictserveVersion": "3.6.1",
+    "technologyStack": {
+      "laravel": "12.43.1",
+      "livewire": "3.7.3",
+      "filament": "4.3.1",
+      "playwright": "1.56.1",
+      "tailwind": "4.1.18"
+    }
+  },
+  "summary": {
+    "totalTestCases": 4,
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0,
+    "blocked": 0,
+    "passRate": 0,
+    "totalSnapshots": 0,
+    "capturedSnapshots": 0,
+    "failedSnapshots": 0,
+    "overallStatus": "passed",
+    "recommendations": [
+      "All test cases passed successfully. No issues detected."
+    ]
+  },
+  "metadata": {
+    "createdAt": "2025-12-30T00:45:38.280Z",
+    "createdBy": "BrowserStack Test Management Service"
+  },
+  "endTime": "2025-12-30T00:45:38.857Z",
+  "duration": 244,
+  "startTime": "2025-12-30T00:45:38.613Z"
+}
