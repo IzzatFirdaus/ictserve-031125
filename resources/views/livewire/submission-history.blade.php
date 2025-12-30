@@ -37,7 +37,7 @@ last-updated: 2025-12-15
     {{-- Tabbed Navigation --}}
     <div class="mb-6">
         <div class="border-b border-gray-200 dark:border-gray-700">
-            <nav class="-mb-px flex space-x-8" role="tablist" aria-label="{{ __('portal.history_tablist_label') }}">
+            <div class="-mb-px flex space-x-8" role="tablist" aria-label="{{ __('portal.history_tablist_label') }}">
                 {{-- Helpdesk Tab --}}
                 <button id="helpdesk-tab" wire:click="switchTab('helpdesk')" type="button" role="tab"
                     aria-selected="{{ $activeTab === 'helpdesk' ? 'true' : 'false' }}" aria-controls="helpdesk-panel"
@@ -53,7 +53,7 @@ last-updated: 2025-12-15
                     <x-heroicon-s-document class="-ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
                     {{ __('portal.history_loans_tab') }}
                 </button>
-            </nav>
+            </div>
         </div>
     </div>
 

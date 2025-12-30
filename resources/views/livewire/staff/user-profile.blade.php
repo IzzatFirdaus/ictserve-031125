@@ -18,10 +18,10 @@
 <div class="py-6">
     {{-- Page Header --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-900 dark:text-slate-100">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-slate-100">
             {{ __('profile.title') }}
         </h1>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300">
+        <p class="mt-2 text-sm text-gray-600 dark:text-slate-300">
             {{ __('profile.description') }}
         </p>
     </div>
@@ -33,10 +33,10 @@
         {{-- Profile Picture Card --}}
         <x-ui.card>
             <x-slot name="header">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-900 dark:text-slate-100">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-slate-100">
                     {{ __('profile.picture_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-slate-300">
                     {{ __('profile.picture_description') }}
                 </p>
             </x-slot>

@@ -10,7 +10,8 @@
  */
 --}}
 
-<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+<div
+    class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
     {{-- Success State --}}
     @if ($submitted && !$submissionFailed)
         <div class="p-8 text-center" x-data="{ copied: false }">
@@ -48,8 +49,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
-                        <svg x-show="copied" x-cloak class="h-5 w-5 text-success-500" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
+                        <svg x-show="copied" x-cloak class="h-5 w-5 text-success-500" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                         </svg>
                     </button>
@@ -68,7 +69,7 @@
             {{-- Track Ticket Link --}}
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('helpdesk.guest.track') }}"
-                    class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 transition-colors min-h-11">
+                    class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 transition-colors min-h-11">
                     <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -76,7 +77,7 @@
                     {{ __('Jejaki Tiket Anda') }}
                 </a>
                 <button type="button" wire:click="resetForm"
-                    class="inline-flex items-center justify-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-base font-medium rounded-xl text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 transition-colors min-h-11">
+                    class="inline-flex items-center justify-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-base font-medium rounded-xl text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 transition-colors min-h-11">
                     {{ __('Hantar Mesej Lain') }}
                 </button>
             </div>
@@ -126,7 +127,7 @@
                     {{ __('Nama Penuh') }} <span class="text-danger-500">*</span>
                 </label>
                 <input type="text" id="name" wire:model.live.debounce.300ms="name"
-                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('name') border-danger-500 @enderror"
+                    class="block w-full rounded-xl dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 {{ $errors->has('name') ? 'border-danger-500 dark:border-danger-400' : 'border-slate-300 dark:border-slate-600' }}"
                     placeholder="{{ __('Masukkan nama penuh anda') }}" required aria-required="true">
                 @error('name')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -139,7 +140,7 @@
                     {{ __('Alamat E-mel') }} <span class="text-danger-500">*</span>
                 </label>
                 <input type="email" id="email" wire:model.live.debounce.300ms="email"
-                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('email') border-danger-500 @enderror"
+                    class="block w-full rounded-xl dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 {{ $errors->has('email') ? 'border-danger-500 dark:border-danger-400' : 'border-slate-300 dark:border-slate-600' }}"
                     placeholder="{{ __('Masukkan alamat e-mel anda') }}" required aria-required="true">
                 @error('email')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -149,10 +150,11 @@
             {{-- Phone Field (Optional) --}}
             <div>
                 <label for="phone" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                    {{ __('Nombor Telefon') }} <span class="text-slate-400">({{ __('Pilihan') }})</span>
+                    {{ __('Nombor Telefon') }} <span
+                        class="text-slate-500 dark:text-slate-400">({{ __('Pilihan') }})</span>
                 </label>
                 <input type="tel" id="phone" wire:model.live.debounce.300ms="phone"
-                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('phone') border-danger-500 @enderror"
+                    class="block w-full rounded-xl dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 {{ $errors->has('phone') ? 'border-danger-500 dark:border-danger-400' : 'border-slate-300 dark:border-slate-600' }}"
                     placeholder="{{ __('Masukkan nombor telefon anda') }}">
                 @error('phone')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -165,7 +167,7 @@
                     {{ __('Subjek') }} <span class="text-danger-500">*</span>
                 </label>
                 <input type="text" id="subject" wire:model.live.debounce.300ms="subject"
-                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 @error('subject') border-danger-500 @enderror"
+                    class="block w-full rounded-xl dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm min-h-11 {{ $errors->has('subject') ? 'border-danger-500 dark:border-danger-400' : 'border-slate-300 dark:border-slate-600' }}"
                     placeholder="{{ __('Apakah berkenaan mesej anda?') }}" required aria-required="true">
                 @error('subject')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -178,11 +180,11 @@
                     {{ __('Mesej') }} <span class="text-danger-500">*</span>
                 </label>
                 <textarea id="message" wire:model.live.debounce.300ms="message" rows="5"
-                    class="block w-full rounded-xl border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm @error('message') border-danger-500 @enderror"
+                    class="block w-full rounded-xl dark:bg-slate-700 dark:text-white shadow-sm focus:border-primary-500 focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:text-sm {{ $errors->has('message') ? 'border-danger-500 dark:border-danger-400' : 'border-slate-300 dark:border-slate-600' }}"
                     placeholder="{{ __('Sila huraikan pertanyaan anda dengan terperinci...') }}" required aria-required="true"></textarea>
                 <div class="mt-1 flex justify-between text-xs text-slate-500 dark:text-slate-400">
                     <span>{{ __('Minimum 10 aksara') }}</span>
-                    <span>{{ strlen($message) }}/5000</span>
+                    <span>{{ strlen($this->message) }}/5000</span>
                 </div>
                 @error('message')
                     <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
@@ -192,7 +194,8 @@
             {{-- Info Notice --}}
             <div class="bg-info-50 dark:bg-info-900/20 border border-info-200 dark:border-info-800 rounded-xl p-4">
                 <div class="flex">
-                    <svg class="h-5 w-5 text-info-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-5 w-5 text-info-400 shrink-0" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -206,7 +209,7 @@
             <div class="pt-4">
                 <button type="submit" wire:loading.attr="disabled"
                     wire:loading.class="opacity-75 cursor-not-allowed"
-                    class="w-full flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-3 focus-visible:ring-primary-500 transition-colors disabled:opacity-75 disabled:cursor-not-allowed min-h-11">
+                    class="w-full flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary-500 transition-colors disabled:opacity-75 disabled:cursor-not-allowed min-h-11">
                     <span wire:loading.remove wire:target="submit" class="flex items-center">
                         <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

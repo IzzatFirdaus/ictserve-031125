@@ -16,17 +16,19 @@
         <div class="border-b border-gray-200 dark:border-gray-700">
             <nav class="-mb-px flex space-x-8" role="tablist" aria-label="{{ __('portal.history_tablist_label') }}">
                 {{-- Tickets Tab --}}
-                <button wire:click="switchTab('tickets')" type="button" role="tab"
+                <button wire:click="switchTab('tickets')" type="button" role="tab" id="tickets-tab"
                     aria-selected="{{ $activeTab === 'tickets' ? 'true' : 'false' }}" aria-controls="tickets-panel"
-                    class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'tickets' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-300 dark:text-gray-300 dark:hover:text-gray-200' }}">
+                    tabindex="{{ $activeTab === 'tickets' ? '0' : '-1' }}"
+                    class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'tickets' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-gray-400 dark:text-gray-200 dark:hover:text-white' }}">
                     <x-heroicon-s-bell class="-ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
                     {{ __('portal.history_helpdesk_tab') }}
                 </button>
 
                 {{-- Loans Tab --}}
-                <button wire:click="switchTab('loans')" type="button" role="tab"
+                <button wire:click="switchTab('loans')" type="button" role="tab" id="loans-tab"
                     aria-selected="{{ $activeTab === 'loans' ? 'true' : 'false' }}" aria-controls="loans-panel"
-                    class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'loans' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-300 dark:text-gray-300 dark:hover:text-gray-200' }}">
+                    tabindex="{{ $activeTab === 'loans' ? '0' : '-1' }}"
+                    class="group inline-flex items-center border-b-2 py-4 px-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 min-h-11 min-w-11 {{ $activeTab === 'loans' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-gray-400 dark:text-gray-200 dark:hover:text-white' }}">
                     <x-heroicon-s-document class="-ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
                     {{ __('portal.history_loans_tab') }}
                 </button>
@@ -113,7 +115,7 @@
 
     {{-- Submissions Table --}}
     <div id="{{ $activeTab }}-panel" role="tabpanel" aria-labelledby="{{ $activeTab }}-tab"
-        class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden" aria-live="polite">
+        class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden" aria-live="polite" tabindex="0"></div>
 
         @php
             $submissions = $activeTab === 'tickets' ? $this->filteredTickets : $this->filteredLoans;
@@ -183,6 +185,11 @@
                             <tr wire:key="submission-{{ $loop->iteration }}-{{ $submission->id }}"
                                 class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group"
                                 role="row">
+                                @php
+                                    $statusLabel = $submission->status instanceof \App\Enums\LoanStatus
+                                        ? $submission->status->label()
+                                        : ucfirst((string) $submission->status);
+                                @endphp
                                 @if ($activeTab === 'tickets')
                                     {{-- Ticket Row --}}
                                     <td scope="row"
@@ -195,7 +202,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
-                                            {{ ucfirst($submission->status) }}
+                                            {{ $statusLabel }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
@@ -213,7 +220,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
-                                            {{ ucfirst($submission->status) }}
+                                            {{ $statusLabel }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
