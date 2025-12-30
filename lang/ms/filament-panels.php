@@ -53,6 +53,32 @@ return [
             'title' => 'Papan Pemuka',
             'navigation_label' => 'Papan Pemuka',
         ],
+        'auth' => [
+            'login' => [
+                'title' => 'Log Masuk',
+                'heading' => 'Log Masuk Pentadbir',
+                'form' => [
+                    'email' => [
+                        'label' => 'Emel',
+                    ],
+                    'password' => [
+                        'label' => 'Kata Laluan',
+                    ],
+                    'remember' => [
+                        'label' => 'Ingat saya',
+                    ],
+                    'actions' => [
+                        'authenticate' => [
+                            'label' => 'Log Masuk',
+                        ],
+                    ],
+                ],
+                'messages' => [
+                    'failed' => 'Kelayakan ini tidak sepadan dengan rekod kami.',
+                    'throttled' => 'Terlalu banyak percubaan log masuk. Sila cuba lagi dalam :seconds saat.',
+                ],
+            ],
+        ],
     ],
 
     'resources' => [

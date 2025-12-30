@@ -49,39 +49,35 @@ class Login extends BaseLogin
     private const MOTAC_EMAIL_DOMAIN = 'motac.gov.my';
 
     /**
-     * Get the email form component with flexible login support (D03 SRS-AUTH-003)
-     * Accepts full email (user@motac.gov.my) OR short username (user)
+     * Get the form schema with flexible login support (D03 SRS-AUTH-003)
+     * Defines all form fields for proper Filament rendering
      */
-    protected function getEmailFormComponent(): TextInput
+    protected function getForms(): array
     {
-        return TextInput::make('email')
-            ->label('Emel atau Nama Pengguna')
-            ->required()
-            ->autocomplete('username')
-            ->autofocus()
-            ->placeholder('nama@motac.gov.my atau nama')
-            ->helperText('Anda boleh log masuk menggunakan emel penuh atau nama pengguna sahaja');
-    }
-
-    /**
-     * Get the password form component with ICTServe styling
-     */
-    protected function getPasswordFormComponent(): TextInput
-    {
-        return TextInput::make('password')
-            ->label('Kata Laluan')
-            ->password()
-            ->required()
-            ->autocomplete('current-password');
-    }
-
-    /**
-     * Get the remember form component with ICTServe styling
-     */
-    protected function getRememberFormComponent(): Checkbox
-    {
-        return parent::getRememberFormComponent()
-            ->label('Ingat saya');
+        return [
+            'form' => $this->form(
+                $this->makeForm()
+                    ->schema([
+                        TextInput::make('email')
+                            ->label('Emel atau Nama Pengguna')
+                            ->required()
+                            ->autocomplete('username')
+                            ->autofocus()
+                            ->placeholder('nama@motac.gov.my atau nama')
+                            ->helperText('Anda boleh log masuk menggunakan emel penuh atau nama pengguna sahaja')
+                            ->extraInputAttributes(['class' => 'w-full']),
+                        TextInput::make('password')
+                            ->label('Kata Laluan')
+                            ->password()
+                            ->required()
+                            ->autocomplete('current-password')
+                            ->extraInputAttributes(['class' => 'w-full']),
+                        Checkbox::make('remember')
+                            ->label('Ingat saya'),
+                    ])
+                    ->statePath('data'),
+            ),
+        ];
     }
 
     /**
@@ -96,6 +92,9 @@ class Login extends BaseLogin
 
         // Normalize the login identifier to email format (D03 SRS-AUTH-003)
         $email = $this->normalizeLoginIdentifier($data['email']);
+
+        // Log login attempt for debugging
+        \Log::info('Admin login attempt', ['normalized_email' => $email]);
 
         // Update the form data with normalized email for parent authentication
         $data['email'] = $email;

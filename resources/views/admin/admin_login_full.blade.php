@@ -43,12 +43,11 @@
                         </label>
                         <div class="mt-2">
                             <input id="email" name="email" type="email" autocomplete="email" required
-                                class="block w-full min-h-11 rounded-lg border-0 px-3 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 sm:text-sm sm:leading-6"
-                                placeholder="nama@motac.gov.my"
-                                aria-describedby="email-error">
+                                class="block w-full min-h-11 rounded-lg border-0 px-3 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 sm:text-sm sm:leading-6"
+                                placeholder="nama@motac.gov.my" aria-describedby="email-error">
                         </div>
                         @error('email')
-                        <p class="mt-2 text-sm text-danger-600" id="email-error">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-danger-600" id="email-error">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -58,11 +57,12 @@
                             Kata Laluan
                         </label>
                         <div class="mt-2">
-                            <input id="password" name="password" type="password" autocomplete="current-password" required
-                                class="block w-full min-h-11 rounded-lg border-0 px-3 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-3 focus-visible:ring-primary-500 sm:text-sm sm:leading-6">
+                            <input id="password" name="password" type="password" autocomplete="current-password"
+                                required
+                                class="block w-full min-h-11 rounded-lg border-0 px-3 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-primary-500 sm:text-sm sm:leading-6">
                         </div>
                         @error('password')
-                        <p class="mt-2 text-sm text-danger-600" id="password-error">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-danger-600" id="password-error">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -109,8 +109,10 @@
                     <div class="mt-6 grid gap-4">
                         <a href="#"
                             class="flex w-full min-h-11 items-center justify-center gap-3 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:outline-offset-0">
-                            <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                            <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
                             </svg>
                             <span class="text-sm font-medium">Hubungi Meja Bantuan</span>
                         </a>
@@ -118,7 +120,7 @@
                 </div>
             </div>
 
-            <p class="mt-10 text-center text-xs text-slate-500">
+            <p class="mt-10 text-center text-xs text-slate-600">
                 &copy; {{ date('Y') }} Kementerian Pelancongan, Seni dan Budaya (MOTAC). <br>Hak Cipta Terpelihara.
             </p>
         </div>

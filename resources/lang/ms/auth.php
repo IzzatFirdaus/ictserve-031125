@@ -11,6 +11,10 @@ declare(strict_types=1);
 return [
     'login_title' => 'Log Masuk',
     'login_subtitle' => 'Akses portal kakitangan ICTServe',
+    'admin_login_title' => 'Log Masuk Pentadbir',
+    'admin_login_subtitle' => 'Akses portal pentadbiran ICTServe',
+    'admin_portal' => 'Portal Pentadbir',
+    'secure_login_notice' => 'Sambungan selamat dan disulitkan',
     'email' => 'E-mel',
     'email_placeholder' => 'nama@motac.gov.my',
     'password_placeholder' => 'Masukkan kata laluan anda',
