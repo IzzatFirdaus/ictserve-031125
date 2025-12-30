@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\ThemeAwareChartColors;
 use App\Filament\Traits\WidgetMetadata;
 use App\Models\Asset;
 use App\Models\CrossModuleIntegration;
@@ -15,10 +16,10 @@ use Illuminate\Support\Facades\Cache;
  * Cross-Module Integration Chart Widget
  *
  * Displays asset-ticket linkage statistics, maintenance workflow metrics, and
- * cross-module integration trends. Uses WCAG 2.2 AA compliant colors for all
- * visualizations with 5-minute caching and real-time updates.
+ * cross-module integration trends. Uses theme-aware WCAG 2.2 AA compliant colors
+ * for all visualizations with 5-minute caching and real-time updates.
  *
- * @trace Requirements: Requirement 3.2, 13.3
+ * @trace Requirements: Requirement 3.2, 6.7, 13.3
  *
  * @see D04 §3.2 Dashboard widgets
  * @see D04 §5.1 Cross-module integration
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Cache;
  */
 class CrossModuleIntegrationChart extends ChartWidget
 {
+    use ThemeAwareChartColors;
     use WidgetMetadata;
 
     protected ?string $heading = 'Integrasi Silang Modul';
@@ -95,25 +97,25 @@ class CrossModuleIntegrationChart extends ChartWidget
         $data = array_values($integrationTypes);
         $labels = array_keys($integrationTypes);
 
-        // WCAG 2.2 AA compliant colors
+        // Theme-aware WCAG 2.2 AA compliant colors
         $colors = [
-            'rgba(181, 12, 12, 0.7)',  // danger - asset damage (#b50c0c)
-            'rgba(255, 140, 0, 0.7)',  // warning - maintenance (#ff8c00)
-            'rgba(0, 86, 179, 0.7)',   // primary - asset link (#0056b3)
-            'rgba(25, 135, 84, 0.7)',  // success - general integration (#198754)
+            $this->getChartDangerColor(0.7),   // danger - asset damage
+            $this->getChartWarningColor(0.7),  // warning - maintenance
+            $this->getChartPrimaryColor(0.7),  // primary - asset link
+            $this->getChartSuccessColor(0.7),  // success - general integration
         ];
 
         $borderColors = [
-            'rgba(181, 12, 12, 1)',
-            'rgba(255, 140, 0, 1)',
-            'rgba(0, 86, 179, 1)',
-            'rgba(25, 135, 84, 1)',
+            $this->getChartDangerColor(1.0),
+            $this->getChartWarningColor(1.0),
+            $this->getChartPrimaryColor(1.0),
+            $this->getChartSuccessColor(1.0),
         ];
 
         // Ensure we have enough colors for all data points
         while (count($colors) < count($data)) {
-            $colors[] = 'rgba(107, 114, 128, 0.7)'; // gray for additional items
-            $borderColors[] = 'rgba(107, 114, 128, 1)';
+            $colors[] = $this->getChartGrayColor(0.7);
+            $borderColors[] = $this->getChartGrayColor(1.0);
         }
 
         return [
@@ -142,34 +144,11 @@ class CrossModuleIntegrationChart extends ChartWidget
                 'legend' => [
                     'display' => false,
                 ],
-                'tooltip' => [
-                    'enabled' => true,
-                    'backgroundColor' => 'rgba(0, 0, 0, 0.8)',
-                    'titleColor' => '#ffffff',
-                    'bodyColor' => '#ffffff',
-                    'borderColor' => 'rgba(255, 255, 255, 0.2)',
-                    'borderWidth' => 1,
-                ],
+                'tooltip' => $this->getChartTooltipConfig(),
             ],
             'scales' => [
-                'y' => [
-                    'beginAtZero' => true,
-                    'ticks' => [
-                        'precision' => 0,
-                        'color' => '#6b7280', // gray-500 for accessibility
-                    ],
-                    'grid' => [
-                        'color' => 'rgba(229, 231, 235, 0.5)', // gray-200 with transparency
-                    ],
-                ],
-                'x' => [
-                    'ticks' => [
-                        'color' => '#6b7280', // gray-500 for accessibility
-                    ],
-                    'grid' => [
-                        'display' => false,
-                    ],
-                ],
+                'y' => $this->getChartYScaleOptions(),
+                'x' => $this->getChartXScaleOptions(false),
             ],
             'maintainAspectRatio' => false,
             'responsive' => true,

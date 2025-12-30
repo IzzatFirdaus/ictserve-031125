@@ -282,6 +282,168 @@
 }
 
 /* ==========================================================================
+   Navigation Sidebar Enhancement (Requirements 4.1-4.8)
+   MyDS Design System v2025.2 Compliant
+   ========================================================================== */
+
+/* Navigation menu item styling */
+.fi-sidebar-nav-item {
+	margin: 0.125rem 0.5rem;
+}
+
+.fi-sidebar-item-btn {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	width: 100%;
+	padding: 0.625rem 0.75rem;
+	border-radius: 0.5rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--ictserve-sidebar-text);
+	transition: all var(--duration-short) var(--motion-easeout);
+}
+
+/* Navigation icon sizing (w-5 h-5 = 20px) */
+.fi-sidebar-item-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+	flex-shrink: 0;
+}
+
+/* Active navigation highlighting */
+.fi-sidebar-item.fi-active .fi-sidebar-item-btn {
+	background-color: var(--ictserve-sidebar-active-bg);
+	color: var(--ictserve-sidebar-active-text);
+	font-weight: 600;
+}
+
+/* Navigation hover states */
+.fi-sidebar-item-btn:hover:not(.fi-active .fi-sidebar-item-btn) {
+	background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Navigation focus indicators (WCAG 2.2 AA) */
+.fi-sidebar-item-btn:focus-visible {
+	outline: 3px solid var(--ictserve-focus-ring);
+	outline-offset: 2px;
+	border-radius: 0.5rem;
+}
+
+/* Keyboard navigation support */
+.fi-sidebar-nav:focus-within .fi-sidebar-item-btn:focus {
+	outline: 3px solid var(--ictserve-focus-ring);
+	outline-offset: 2px;
+}
+
+/* Nested navigation items with chevron icons */
+.fi-sidebar-group-btn {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	width: 100%;
+	padding: 0.625rem 0.75rem;
+	border: none;
+	background: transparent;
+	color: var(--ictserve-sidebar-text);
+	font-weight: 600;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	cursor: pointer;
+	transition: all var(--duration-short) var(--motion-easeout);
+}
+
+.fi-sidebar-group-btn:hover {
+	background-color: rgba(255, 255, 255, 0.05);
+}
+
+.fi-sidebar-group-btn:focus-visible {
+	outline: 3px solid var(--ictserve-focus-ring);
+	outline-offset: 2px;
+	border-radius: 0.5rem;
+}
+
+/* Chevron icon animation for nested items */
+.fi-sidebar-group-collapse-icon {
+	width: 1rem;
+	height: 1rem;
+	margin-left: auto;
+	color: var(--ictserve-sidebar-muted);
+	transition: transform var(--duration-short) var(--motion-easeout);
+}
+
+.fi-sidebar-group-btn[aria-expanded="false"] .fi-sidebar-group-collapse-icon {
+	transform: rotate(-90deg);
+}
+
+.fi-sidebar-group-btn[aria-expanded="true"] .fi-sidebar-group-collapse-icon {
+	transform: rotate(0deg);
+}
+
+/* Collapsed sidebar tooltips */
+.fi-sidebar-collapsed .fi-sidebar-item-btn {
+	justify-content: center;
+	padding: 0.75rem;
+}
+
+.fi-sidebar-collapsed .fi-sidebar-item-label {
+	display: none;
+}
+
+/* Tooltip styling for collapsed sidebar */
+.fi-sidebar-item-tooltip {
+	position: absolute;
+	left: 100%;
+	top: 50%;
+	transform: translateY(-50%);
+	margin-left: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	background-color: #1f2937;
+	color: #ffffff;
+	font-size: 0.875rem;
+	font-weight: 500;
+	border-radius: 0.375rem;
+	white-space: nowrap;
+	box-shadow: var(--shadow-dropdown);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 200ms ease, visibility 200ms ease;
+	z-index: 50;
+}
+
+.fi-sidebar-collapsed .fi-sidebar-item-btn:hover .fi-sidebar-item-tooltip,
+.fi-sidebar-collapsed .fi-sidebar-item-btn:focus .fi-sidebar-item-tooltip {
+	opacity: 1;
+	visibility: visible;
+	transition-delay: 200ms; /* 200ms delay as per requirements */
+}
+
+/* Dark mode tooltip */
+.dark .fi-sidebar-item-tooltip,
+[data-theme="dark"] .fi-sidebar-item-tooltip {
+	background-color: #374151;
+	border: 1px solid #4b5563;
+}
+
+/* Navigation badge styling */
+.fi-sidebar-item-badge {
+	margin-left: auto;
+	padding: 0.125rem 0.5rem;
+	font-size: 0.75rem;
+	font-weight: 600;
+	border-radius: 9999px;
+	background-color: var(--motac-primary);
+	color: #ffffff;
+}
+
+/* Dark mode navigation badge */
+.dark .fi-sidebar-item-badge,
+[data-theme="dark"] .fi-sidebar-item-badge {
+	background-color: #3b82f6;
+}
+
+/* ==========================================================================
    Dashboard Cards (Requirements 5.4)
    ========================================================================== */
 
@@ -312,6 +474,86 @@
 .dark .fi-wi-stats-overview-stat:hover,
 [data-theme="dark"] .fi-wi-stats-overview-stat:hover {
 	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+}
+
+/* ==========================================================================
+   Chart Widget Styling (MyDS Design System v2025.2)
+   ========================================================================== */
+
+/* Chart container minimum height */
+.fi-wi-chart {
+	min-height: 300px;
+}
+
+.fi-wi-chart canvas {
+	min-height: 250px;
+}
+
+/* Chart widget card styling */
+.fi-wi-chart .fi-wi-chart-container {
+	background-color: var(--ictserve-card-bg);
+	border: 1px solid var(--ictserve-card-border);
+	border-radius: 0.75rem;
+	box-shadow: var(--ictserve-card-shadow);
+	padding: 1.5rem;
+}
+
+/* Chart legend styling */
+.fi-wi-chart .chartjs-legend {
+	font-size: 0.875rem;
+	color: var(--txt-black-700);
+}
+
+.dark .fi-wi-chart .chartjs-legend,
+[data-theme="dark"] .fi-wi-chart .chartjs-legend {
+	color: var(--txt-black-500);
+}
+
+/* Chart tooltip styling - dark background with white text */
+.fi-wi-chart .chartjs-tooltip {
+	background-color: #1f2937 !important;
+	color: #ffffff !important;
+	border-radius: 0.5rem;
+	padding: 0.75rem;
+	box-shadow: var(--shadow-dropdown);
+}
+
+/* Ensure 3:1 contrast for chart elements */
+.fi-wi-chart [data-chart-color="primary"] {
+	--chart-color: #0056b3;
+}
+
+.fi-wi-chart [data-chart-color="success"] {
+	--chart-color: #1b7c54;
+}
+
+.fi-wi-chart [data-chart-color="warning"] {
+	--chart-color: #cc7700;
+}
+
+.fi-wi-chart [data-chart-color="danger"] {
+	--chart-color: #b3002d;
+}
+
+/* Dark mode chart colors - adjusted for contrast */
+.dark .fi-wi-chart [data-chart-color="primary"],
+[data-theme="dark"] .fi-wi-chart [data-chart-color="primary"] {
+	--chart-color: #60a5fa;
+}
+
+.dark .fi-wi-chart [data-chart-color="success"],
+[data-theme="dark"] .fi-wi-chart [data-chart-color="success"] {
+	--chart-color: #4ade80;
+}
+
+.dark .fi-wi-chart [data-chart-color="warning"],
+[data-theme="dark"] .fi-wi-chart [data-chart-color="warning"] {
+	--chart-color: #fbbf24;
+}
+
+.dark .fi-wi-chart [data-chart-color="danger"],
+[data-theme="dark"] .fi-wi-chart [data-chart-color="danger"] {
+	--chart-color: #f87171;
 }
 
 /* Stats Card Icon */
@@ -711,6 +953,149 @@
 }
 
 /* ==========================================================================
+   Table Widget Styling (Requirements 5.1, 5.2)
+   MyDS Design System v2025.2 Compliant
+   ========================================================================== */
+
+/* Table container styling */
+.fi-ta-ctn {
+	background-color: var(--ictserve-card-bg);
+	border: 1px solid var(--ictserve-card-border);
+	border-radius: 0.75rem;
+	box-shadow: var(--ictserve-card-shadow);
+	overflow: hidden;
+}
+
+/* Zebra striping for table rows */
+.fi-ta-row:nth-child(odd) {
+	background-color: rgba(249, 250, 251, 0.5); /* gray-50 with transparency */
+}
+
+.fi-ta-row:nth-child(even) {
+	background-color: transparent;
+}
+
+/* Dark mode zebra striping */
+.dark .fi-ta-row:nth-child(odd),
+[data-theme="dark"] .fi-ta-row:nth-child(odd) {
+	background-color: rgba(55, 65, 81, 0.3); /* gray-700 with transparency */
+}
+
+.dark .fi-ta-row:nth-child(even),
+[data-theme="dark"] .fi-ta-row:nth-child(even) {
+	background-color: transparent;
+}
+
+/* Row hover states */
+.fi-ta-row:hover {
+	background-color: rgba(243, 244, 246, 0.8) !important; /* gray-100 */
+}
+
+.dark .fi-ta-row:hover,
+[data-theme="dark"] .fi-ta-row:hover {
+	background-color: rgba(55, 65, 81, 0.5) !important; /* gray-700 */
+}
+
+/* Sticky table headers */
+.fi-ta-header {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	background-color: #ffffff;
+	border-bottom: 2px solid var(--ictserve-card-border);
+}
+
+.dark .fi-ta-header,
+[data-theme="dark"] .fi-ta-header {
+	background-color: var(--ictserve-card-bg);
+	border-bottom-color: var(--ictserve-card-border);
+}
+
+/* Table header cell styling */
+.fi-ta-header-cell {
+	font-weight: 600;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #6b7280; /* gray-500 */
+	padding: 0.75rem 1rem;
+}
+
+.dark .fi-ta-header-cell,
+[data-theme="dark"] .fi-ta-header-cell {
+	color: #9ca3af; /* gray-400 */
+}
+
+/* Table cell padding */
+.fi-ta-cell {
+	padding: 0.75rem 1rem;
+	vertical-align: middle;
+}
+
+/* Sortable column indicators */
+.fi-ta-header-cell-sort-indicator {
+	color: var(--motac-primary);
+	margin-left: 0.25rem;
+}
+
+.dark .fi-ta-header-cell-sort-indicator,
+[data-theme="dark"] .fi-ta-header-cell-sort-indicator {
+	color: #60a5fa; /* blue-400 */
+}
+
+/* Table widget heading */
+.fi-wi-table .fi-ta-heading {
+	font-family: var(--font-heading);
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: #111827; /* gray-900 */
+	padding: 1rem 1.5rem;
+	border-bottom: 1px solid var(--ictserve-card-border);
+}
+
+.dark .fi-wi-table .fi-ta-heading,
+[data-theme="dark"] .fi-wi-table .fi-ta-heading {
+	color: #f9fafb; /* gray-50 */
+}
+
+/* Table action buttons */
+.fi-ta-actions {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: flex-end;
+}
+
+.fi-ta-actions .fi-btn {
+	min-height: 2rem;
+	padding: 0.25rem 0.75rem;
+	font-size: 0.875rem;
+}
+
+/* Table empty state */
+.fi-ta-empty-state {
+	padding: 3rem 1.5rem;
+	text-align: center;
+	color: #6b7280;
+}
+
+.dark .fi-ta-empty-state,
+[data-theme="dark"] .fi-ta-empty-state {
+	color: #9ca3af;
+}
+
+/* Table pagination */
+.fi-ta-pagination {
+	padding: 0.75rem 1rem;
+	border-top: 1px solid var(--ictserve-card-border);
+	background-color: rgba(249, 250, 251, 0.5);
+}
+
+.dark .fi-ta-pagination,
+[data-theme="dark"] .fi-ta-pagination {
+	background-color: rgba(31, 41, 55, 0.5);
+}
+
+/* ==========================================================================
    Theme Transition Utilities (D12 §6.10)
    ========================================================================== */
 
@@ -719,6 +1104,251 @@
 		box-shadow;
 	transition-timing-function: var(--motion-easeout);
 	transition-duration: var(--duration-short);
+}
+
+/* ==========================================================================
+   Resource Page Styling (Requirements 5.1-5.8)
+   MyDS Design System v2025.2 Compliant
+   ========================================================================== */
+
+/* Resource page container */
+.fi-resource-page {
+	padding: 1.5rem;
+}
+
+/* Resource table styling - inherits from table widget styling */
+.fi-resource-table .fi-ta-ctn {
+	background-color: var(--ictserve-card-bg);
+	border: 1px solid var(--ictserve-card-border);
+	border-radius: 0.75rem;
+	box-shadow: var(--ictserve-card-shadow);
+}
+
+/* Sortable column indicators */
+.fi-ta-header-cell-sort-btn {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-weight: 600;
+	color: #374151;
+	transition: color var(--duration-short) var(--motion-easeout);
+}
+
+.fi-ta-header-cell-sort-btn:hover {
+	color: var(--motac-primary);
+}
+
+.dark .fi-ta-header-cell-sort-btn,
+[data-theme="dark"] .fi-ta-header-cell-sort-btn {
+	color: #d1d5db;
+}
+
+.dark .fi-ta-header-cell-sort-btn:hover,
+[data-theme="dark"] .fi-ta-header-cell-sort-btn:hover {
+	color: #60a5fa;
+}
+
+/* Action buttons in resource pages */
+.fi-ta-actions .fi-btn,
+.fi-resource-actions .fi-btn {
+	min-height: 2.75rem; /* 44px touch target */
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+	font-weight: 500;
+	box-shadow: var(--shadow-button);
+	transition: all var(--duration-short) var(--motion-easeout);
+}
+
+.fi-ta-actions .fi-btn:hover,
+.fi-resource-actions .fi-btn:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.fi-ta-actions .fi-btn:focus-visible,
+.fi-resource-actions .fi-btn:focus-visible {
+	outline: 3px solid var(--motac-primary);
+	outline-offset: 2px;
+}
+
+.dark .fi-ta-actions .fi-btn:focus-visible,
+.dark .fi-resource-actions .fi-btn:focus-visible,
+[data-theme="dark"] .fi-ta-actions .fi-btn:focus-visible,
+[data-theme="dark"] .fi-resource-actions .fi-btn:focus-visible {
+	outline-color: #60a5fa;
+}
+
+/* Resource form styling */
+.fi-fo-field-wrp {
+	margin-bottom: 1rem;
+}
+
+/* Form input dimensions (min-h-11 = 44px, px-3 = 12px, rounded-lg = 8px) */
+.fi-fo-field-wrp .fi-input,
+.fi-fo-field-wrp .fi-select,
+.fi-fo-field-wrp .fi-textarea {
+	min-height: 2.75rem; /* 44px */
+	padding: 0.5rem 0.75rem;
+	border-radius: 0.5rem;
+	border: 1px solid #d1d5db;
+	background-color: #ffffff;
+	color: #111827;
+	font-size: 0.875rem;
+	transition: border-color var(--duration-short) var(--motion-easeout),
+		box-shadow var(--duration-short) var(--motion-easeout);
+}
+
+.fi-fo-field-wrp .fi-input:focus,
+.fi-fo-field-wrp .fi-select:focus,
+.fi-fo-field-wrp .fi-textarea:focus {
+	border-color: var(--motac-primary);
+	box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
+	outline: none;
+}
+
+/* Dark mode form inputs */
+.dark .fi-fo-field-wrp .fi-input,
+.dark .fi-fo-field-wrp .fi-select,
+.dark .fi-fo-field-wrp .fi-textarea,
+[data-theme="dark"] .fi-fo-field-wrp .fi-input,
+[data-theme="dark"] .fi-fo-field-wrp .fi-select,
+[data-theme="dark"] .fi-fo-field-wrp .fi-textarea {
+	background-color: #1e293b;
+	border-color: #475569;
+	color: #f1f5f9;
+}
+
+.dark .fi-fo-field-wrp .fi-input:focus,
+.dark .fi-fo-field-wrp .fi-select:focus,
+.dark .fi-fo-field-wrp .fi-textarea:focus,
+[data-theme="dark"] .fi-fo-field-wrp .fi-input:focus,
+[data-theme="dark"] .fi-fo-field-wrp .fi-select:focus,
+[data-theme="dark"] .fi-fo-field-wrp .fi-textarea:focus {
+	border-color: #60a5fa;
+	box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+
+/* Validation error styling */
+.fi-fo-field-wrp.fi-invalid .fi-input,
+.fi-fo-field-wrp.fi-invalid .fi-select,
+.fi-fo-field-wrp.fi-invalid .fi-textarea {
+	border-color: var(--motac-danger);
+}
+
+.fi-fo-field-wrp.fi-invalid .fi-input:focus,
+.fi-fo-field-wrp.fi-invalid .fi-select:focus,
+.fi-fo-field-wrp.fi-invalid .fi-textarea:focus {
+	box-shadow: 0 0 0 3px rgba(181, 12, 12, 0.15);
+}
+
+/* Validation error message */
+.fi-fo-field-wrp-error-message {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	margin-top: 0.375rem;
+	font-size: 0.875rem;
+	color: var(--motac-danger);
+}
+
+.dark .fi-fo-field-wrp-error-message,
+[data-theme="dark"] .fi-fo-field-wrp-error-message {
+	color: #f87171;
+}
+
+/* Form label styling */
+.fi-fo-field-wrp-label {
+	display: block;
+	margin-bottom: 0.375rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #374151;
+}
+
+.dark .fi-fo-field-wrp-label,
+[data-theme="dark"] .fi-fo-field-wrp-label {
+	color: #d1d5db;
+}
+
+/* Required field indicator */
+.fi-fo-field-wrp-label .fi-required {
+	color: var(--motac-danger);
+	margin-left: 0.125rem;
+}
+
+/* Form section styling */
+.fi-section {
+	background-color: var(--ictserve-card-bg);
+	border: 1px solid var(--ictserve-card-border);
+	border-radius: 0.75rem;
+	box-shadow: var(--ictserve-card-shadow);
+	margin-bottom: 1.5rem;
+}
+
+.fi-section-header {
+	padding: 1rem 1.5rem;
+	border-bottom: 1px solid var(--ictserve-card-border);
+}
+
+.fi-section-header-heading {
+	font-family: var(--font-heading);
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: #111827;
+}
+
+.dark .fi-section-header-heading,
+[data-theme="dark"] .fi-section-header-heading {
+	color: #f9fafb;
+}
+
+.fi-section-content {
+	padding: 1.5rem;
+}
+
+/* Accessible pagination */
+.fi-ta-pagination {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.75rem 1rem;
+	border-top: 1px solid var(--ictserve-card-border);
+	background-color: rgba(249, 250, 251, 0.5);
+}
+
+.dark .fi-ta-pagination,
+[data-theme="dark"] .fi-ta-pagination {
+	background-color: rgba(31, 41, 55, 0.5);
+}
+
+.fi-ta-pagination-btn {
+	min-height: 2.25rem;
+	min-width: 2.25rem;
+	padding: 0.375rem 0.75rem;
+	border-radius: 0.375rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	transition: all var(--duration-short) var(--motion-easeout);
+}
+
+.fi-ta-pagination-btn:focus-visible {
+	outline: 3px solid var(--motac-primary);
+	outline-offset: 2px;
+}
+
+.fi-ta-pagination-btn.fi-active {
+	background-color: var(--motac-primary);
+	color: #ffffff;
+}
+
+.dark .fi-ta-pagination-btn:focus-visible,
+[data-theme="dark"] .fi-ta-pagination-btn:focus-visible {
+	outline-color: #60a5fa;
+}
+
+.dark .fi-ta-pagination-btn.fi-active,
+[data-theme="dark"] .fi-ta-pagination-btn.fi-active {
+	background-color: #3b82f6;
 }
 
 /* Respect prefers-reduced-motion */

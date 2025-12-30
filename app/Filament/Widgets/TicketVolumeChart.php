@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\ThemeAwareChartColors;
 use App\Filament\Traits\WidgetMetadata;
 use App\Services\HelpdeskReportService;
 use Filament\Widgets\ChartWidget;
@@ -12,11 +13,15 @@ use Filament\Widgets\ChartWidget;
  * Ticket Volume Chart Widget
  *
  * Displays daily ticket volume trends for the last 30 days.
+ * Uses theme-aware colors for WCAG 2.2 AA compliance.
+ *
+ * @trace Requirements: 3.5, 6.7 (Chart Theme Adaptation)
  *
  * @see D03 Software Requirements Specification - Requirements 8.1, 8.2
  */
 class TicketVolumeChart extends ChartWidget
 {
+    use ThemeAwareChartColors;
     use WidgetMetadata;
 
     /**
@@ -48,8 +53,8 @@ class TicketVolumeChart extends ChartWidget
                 [
                     'label' => 'Tiket Dicipta',
                     'data' => $trends['data'],
-                    'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
-                    'borderColor' => 'rgb(59, 130, 246)',
+                    'backgroundColor' => $this->getChartPrimaryColor(0.1),
+                    'borderColor' => $this->getChartPrimaryColor(1.0),
                     'fill' => true,
                 ],
             ],
@@ -68,16 +73,18 @@ class TicketVolumeChart extends ChartWidget
             'plugins' => [
                 'legend' => [
                     'display' => true,
-                ],
-            ],
-            'scales' => [
-                'y' => [
-                    'beginAtZero' => true,
-                    'ticks' => [
-                        'precision' => 0,
+                    'labels' => [
+                        'color' => $this->getChartTextColor(),
                     ],
                 ],
+                'tooltip' => $this->getChartTooltipConfig(),
             ],
+            'scales' => [
+                'y' => $this->getChartYScaleOptions(),
+                'x' => $this->getChartXScaleOptions(),
+            ],
+            'maintainAspectRatio' => false,
+            'responsive' => true,
         ];
     }
 }
