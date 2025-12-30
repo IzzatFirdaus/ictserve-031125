@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ICTServe v3.6.1 - Comprehensive Form Screenshots</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+				line-height: 1.6;
+				color: #333;
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				min-height: 100vh;
+			}
+
+			.container {
+				max-width: 1400px;
+				margin: 0 auto;
+				padding: 20px;
+				background: rgba(255, 255, 255, 0.95);
+				backdrop-filter: blur(10px);
+				border-radius: 20px;
+				margin-top: 20px;
+				margin-bottom: 20px;
+				box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+			}
+
+			.header {
+				text-align: center;
+				margin-bottom: 40px;
+				padding: 30px 0;
+				background: linear-gradient(135deg, #2c3e50, #3498db);
+				color: white;
+				border-radius: 15px;
+				margin: -20px -20px 40px -20px;
+			}
+
+			.header h1 {
+				font-size: 2.5rem;
+				margin-bottom: 10px;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+			}
+
+			.header p {
+				font-size: 1.2rem;
+				opacity: 0.9;
+			}
+
+			.stats {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				gap: 20px;
+				margin-bottom: 40px;
+			}
+
+			.stat-card {
+				background: linear-gradient(135deg, #74b9ff, #0984e3);
+				color: white;
+				padding: 25px;
+				border-radius: 15px;
+				text-align: center;
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+				transform: translateY(0);
+				transition: transform 0.3s ease;
+			}
+
+			.stat-card:hover {
+				transform: translateY(-5px);
+			}
+
+			.stat-number {
+				font-size: 2.5rem;
+				font-weight: bold;
+				margin-bottom: 10px;
+			}
+
+			.stat-label {
+				font-size: 1rem;
+				opacity: 0.9;
+			}
+
+			.section {
+				margin-bottom: 50px;
+			}
+
+			.section-title {
+				font-size: 2rem;
+				color: #2c3e50;
+				margin-bottom: 25px;
+				padding-bottom: 10px;
+				border-bottom: 3px solid #3498db;
+				position: relative;
+			}
+
+			.section-title::after {
+				content: "";
+				position: absolute;
+				bottom: -3px;
+				left: 0;
+				width: 100px;
+				height: 3px;
+				background: #e74c3c;
+			}
+
+			.screenshot-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+				gap: 30px;
+				margin: 30px 0;
+			}
+
+			.screenshot-item {
+				background: white;
+				border-radius: 15px;
+				overflow: hidden;
+				box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+				transition: transform 0.3s ease, box-shadow 0.3s ease;
+			}
+
+			.screenshot-item:hover {
+				transform: translateY(-10px);
+				box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+			}
+
+			.screenshot-item img {
+				width: 100%;
+				height: auto;
+				display: block;
+				border-bottom: 1px solid #eee;
+			}
+
+			.screenshot-caption {
+				padding: 25px;
+			}
+
+			.screenshot-caption h3 {
+				font-size: 1.3rem;
+				color: #2c3e50;
+				margin-bottom: 15px;
+				font-weight: 600;
+			}
+
+			.screenshot-caption p {
+				color: #666;
+				font-size: 0.95rem;
+				line-height: 1.6;
+			}
+
+			.step-indicator {
+				display: inline-block;
+				background: linear-gradient(135deg, #00b894, #00a085);
+				color: white;
+				padding: 5px 15px;
+				border-radius: 20px;
+				font-size: 0.8rem;
+				font-weight: bold;
+				margin-bottom: 10px;
+			}
+
+			.responsive-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 25px;
+			}
+
+			.device-frame {
+				position: relative;
+				background: #333;
+				border-radius: 20px;
+				padding: 20px;
+				box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+			}
+
+			.device-frame.mobile {
+				max-width: 375px;
+				margin: 0 auto;
+			}
+
+			.device-frame.tablet {
+				max-width: 768px;
+				margin: 0 auto;
+			}
+
+			.device-label {
+				position: absolute;
+				top: -15px;
+				left: 20px;
+				background: #e74c3c;
+				color: white;
+				padding: 5px 15px;
+				border-radius: 15px;
+				font-size: 0.8rem;
+				font-weight: bold;
+			}
+
+			.footer {
+				text-align: center;
+				margin-top: 50px;
+				padding: 30px;
+				background: #f8f9fa;
+				border-radius: 15px;
+				color: #666;
+			}
+
+			.footer h3 {
+				color: #2c3e50;
+				margin-bottom: 15px;
+			}
+
+			.badge {
+				display: inline-block;
+				background: #00b894;
+				color: white;
+				padding: 3px 8px;
+				border-radius: 10px;
+				font-size: 0.7rem;
+				font-weight: bold;
+				margin-left: 10px;
+			}
+
+			@media (max-width: 768px) {
+				.container {
+					margin: 10px;
+					padding: 15px;
+				}
+
+				.header h1 {
+					font-size: 2rem;
+				}
+
+				.screenshot-grid {
+					grid-template-columns: 1fr;
+					gap: 20px;
+				}
+
+				.stats {
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<h1>🖼️ ICTServe v3.6.1</h1>
+				<p>Comprehensive Form Screenshots - Step by Step Journey</p>
+			</div>
+
+			<div class="stats">
+				<div class="stat-card">
+					<div class="stat-number">18</div>
+					<div class="stat-label">Total Screenshots</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number">2</div>
+					<div class="stat-label">Forms Covered</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number">4</div>
+					<div class="stat-label">Device Views</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number">100%</div>
+					<div class="stat-label">WCAG 2.2 AA</div>
+				</div>
+			</div>
+
+			<div class="section">
+				<h2 class="section-title">🎫 Helpdesk Ticket Form Journey</h2>
+				<p style="margin-bottom: 30px; color: #666; font-size: 1.1rem">
+					Complete step-by-step journey through the helpdesk ticket creation
+					process, from initial contact information to final confirmation.
+				</p>
+
+				<div class="screenshot-grid">
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_helpdesk_step_1_initial_load.png"
+							alt="Helpdesk Step 1 Initial Load"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 1</div>
+							<h3>Initial Contact Form</h3>
+							<p>
+								Empty helpdesk form showing contact information fields including
+								name, email, phone, department, and job grade selection.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_helpdesk_step_1_filled.png"
+							alt="Helpdesk Step 1 Filled"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 1</div>
+							<h3>Contact Information Completed</h3>
+							<p>
+								Contact form filled with sample data: Ahmad bin Abdullah from
+								Bahagian Teknologi Maklumat, demonstrating proper field
+								completion.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_helpdesk_step_2_initial_load.png"
+							alt="Helpdesk Step 2 Initial Load"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 2</div>
+							<h3>Issue Details Form</h3>
+							<p>
+								Second step showing empty issue details form with category
+								selection, subject field, description textarea, and priority
+								options.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_helpdesk_step_2_filled.png"
+							alt="Helpdesk Step 2 Filled"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 2</div>
+							<h3>Issue Details Completed</h3>
+							<p>
+								Issue details filled with comprehensive problem description:
+								"Laptop screen flickering intermittently" with detailed
+								explanation and medium priority.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_helpdesk_step_3_initial_load.png"
+							alt="Helpdesk Step 3 Initial Load"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 3</div>
+							<h3>Attachments & Additional Info</h3>
+							<p>
+								Third step showing attachments upload section and additional
+								notes textarea for supplementary information.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_helpdesk_step_3_filled.png"
+							alt="Helpdesk Step 3 Filled"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 3</div>
+							<h3>Additional Information Added</h3>
+							<p>
+								Notes section completed with technical reference information in
+								Bahasa Melayu: "Lampiran skrin tangkapan masalah untuk rujukan
+								teknikal."
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_helpdesk_step_4_confirmation.png"
+							alt="Helpdesk Step 4 Confirmation"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 4</div>
+							<h3>Final Confirmation <span class="badge">COMPLETE</span></h3>
+							<p>
+								Final confirmation page displaying all submitted information for
+								review before ticket submission, ensuring accuracy and
+								completeness.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section">
+				<h2 class="section-title">💼 Asset Loan Application Journey</h2>
+				<p style="margin-bottom: 30px; color: #666; font-size: 1.1rem">
+					Complete walkthrough of the asset loan application process, from
+					applicant information to equipment selection and final confirmation.
+				</p>
+
+				<div class="screenshot-grid">
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_loan_step_1_initial_load.png"
+							alt="Loan Step 1 Initial Load"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 1</div>
+							<h3>Applicant Information Form</h3>
+							<p>
+								Empty loan application form showing applicant information fields
+								including personal details, department, position, and loan
+								purpose.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_loan_step_1_filled.png"
+							alt="Loan Step 1 Filled"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 1</div>
+							<h3>Applicant Details Completed</h3>
+							<p>
+								Form filled with comprehensive applicant data: Siti Nurhaliza
+								from Bahagian Pengurusan Maklumat, including loan purpose and
+								location details.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_loan_step_2_initial_load.png"
+							alt="Loan Step 2 Initial Load"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 2</div>
+							<h3>Equipment Selection Form</h3>
+							<p>
+								Second step displaying equipment selection options, asset type
+								dropdown, quantity fields, and requirements specification area.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_loan_step_2_filled.png"
+							alt="Loan Step 2 Filled"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 2</div>
+							<h3>Equipment Selection Completed</h3>
+							<p>
+								Equipment details filled with specific requirements and
+								justification for official meetings and technical training
+								purposes.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_loan_step_3_confirmation.png"
+							alt="Loan Step 3 Confirmation"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">STEP 3</div>
+							<h3>Final Confirmation <span class="badge">COMPLETE</span></h3>
+							<p>
+								Final confirmation page showing all loan application details
+								including applicant information, equipment selection, and terms
+								acceptance.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section">
+				<h2 class="section-title">📱 Responsive Design Views</h2>
+				<p style="margin-bottom: 30px; color: #666; font-size: 1.1rem">
+					Forms optimized for different device sizes ensuring accessibility and
+					usability across mobile, tablet, and desktop platforms.
+				</p>
+
+				<div class="responsive-grid">
+					<div class="device-frame mobile">
+						<div class="device-label">Mobile (375px)</div>
+						<img
+							src="comprehensive_helpdesk_mobile_view.png"
+							alt="Helpdesk Mobile View"
+							style="width: 100%; border-radius: 10px"
+						/>
+						<div
+							style="
+								text-align: center;
+								color: white;
+								margin-top: 15px;
+								font-size: 0.9rem;
+							"
+						>
+							<strong>Helpdesk Form</strong><br />
+							Optimized for mobile devices
+						</div>
+					</div>
+
+					<div class="device-frame tablet">
+						<div class="device-label">Tablet (768px)</div>
+						<img
+							src="comprehensive_helpdesk_tablet_view.png"
+							alt="Helpdesk Tablet View"
+							style="width: 100%; border-radius: 10px"
+						/>
+						<div
+							style="
+								text-align: center;
+								color: white;
+								margin-top: 15px;
+								font-size: 0.9rem;
+							"
+						>
+							<strong>Helpdesk Form</strong><br />
+							Optimized for tablet devices
+						</div>
+					</div>
+
+					<div class="device-frame mobile">
+						<div class="device-label">Mobile (375px)</div>
+						<img
+							src="comprehensive_loan_mobile_view.png"
+							alt="Loan Mobile View"
+							style="width: 100%; border-radius: 10px"
+						/>
+						<div
+							style="
+								text-align: center;
+								color: white;
+								margin-top: 15px;
+								font-size: 0.9rem;
+							"
+						>
+							<strong>Loan Application</strong><br />
+							Optimized for mobile devices
+						</div>
+					</div>
+
+					<div class="device-frame tablet">
+						<div class="device-label">Tablet (768px)</div>
+						<img
+							src="comprehensive_loan_tablet_view.png"
+							alt="Loan Tablet View"
+							style="width: 100%; border-radius: 10px"
+						/>
+						<div
+							style="
+								text-align: center;
+								color: white;
+								margin-top: 15px;
+								font-size: 0.9rem;
+							"
+						>
+							<strong>Loan Application</strong><br />
+							Optimized for tablet devices
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section">
+				<h2 class="section-title">⚠️ Form Validation States</h2>
+				<p style="margin-bottom: 30px; color: #666; font-size: 1.1rem">
+					Form validation screenshots showing error states and user feedback
+					when required fields are not completed properly.
+				</p>
+
+				<div class="screenshot-grid">
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_helpdesk_empty_form.png"
+							alt="Helpdesk Empty Form"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">VALIDATION</div>
+							<h3>Helpdesk Empty Form</h3>
+							<p>
+								Empty helpdesk form before validation, showing the initial state
+								with all fields unfilled and submit button available.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_helpdesk_validation_errors.png"
+							alt="Helpdesk Validation Errors"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">VALIDATION</div>
+							<h3>
+								Helpdesk Validation Errors
+								<span class="badge">ERROR STATE</span>
+							</h3>
+							<p>
+								Form showing validation error messages for required fields,
+								demonstrating proper user feedback and accessibility compliance.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_loan_empty_form.png"
+							alt="Loan Empty Form"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">VALIDATION</div>
+							<h3>Loan Application Empty Form</h3>
+							<p>
+								Empty loan application form before validation, showing the
+								initial state with all applicant and equipment fields unfilled.
+							</p>
+						</div>
+					</div>
+
+					<div class="screenshot-item">
+						<img
+							src="comprehensive_loan_validation_errors.png"
+							alt="Loan Validation Errors"
+							loading="lazy"
+						/>
+						<div class="screenshot-caption">
+							<div class="step-indicator">VALIDATION</div>
+							<h3>
+								Loan Validation Errors <span class="badge">ERROR STATE</span>
+							</h3>
+							<p>
+								Loan form displaying validation error messages for required
+								fields, ensuring users understand what information is needed.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer">
+				<h3>📊 Technical Specifications</h3>
+				<p>
+					<strong>Generated:</strong> December 29, 2025 |
+					<strong>Version:</strong> ICTServe v3.6.1
+				</p>
+				<p>
+					<strong>Test Framework:</strong> Playwright with Percy Visual Testing
+				</p>
+				<p>
+					<strong>Compliance:</strong> WCAG 2.2 Level AA |
+					<strong>Languages:</strong> Bahasa Melayu & English
+				</p>
+				<p>
+					<strong>Responsive Breakpoints:</strong> Mobile (375px), Tablet
+					(768px), Desktop (1280px+)
+				</p>
+				<br />
+				<p style="font-style: italic; color: #888">
+					Screenshots generated using comprehensive E2E testing with realistic
+					Malaysian government employee data.<br />
+					All forms tested for accessibility, usability, cross-browser
+					compatibility, and validation states.<br />
+					<strong>Total Coverage:</strong> 18 screenshots across 4 categories -
+					Form Steps, Responsive Views, and Validation States.
+				</p>
+			</div>
+		</div>
+	</body>
+</html>
