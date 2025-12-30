@@ -149,7 +149,7 @@
                     <div class="p-4 md:p-6 bg-slate-50 border-t border-slate-200">
                         @if ($loanRouteName)
                             <a href="{{ route($loanRouteName) }}"
-                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-success hover:bg-success/90 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-success focus:ring-offset-2">
+                                class="flex items-center justify-center w-full min-h-11 py-3 px-4 bg-success-600 hover:bg-success-700 text-white text-center font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-success-600 focus:ring-offset-2">
                                 <x-heroicon-s-clipboard-document-list class="h-5 w-5 mr-2" aria-hidden="true" />
                                 {{ __('pages.services.loan_cta') }}
                             </a>

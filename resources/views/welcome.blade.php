@@ -87,7 +87,8 @@
                                     class="flex-1 px-4 py-3 rounded-lg border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-white/60 focus:border-white focus-visible:ring-3 focus-visible:ring-white focus:bg-white/20 transition-all min-h-12"
                                     aria-label="{{ __('No. Rujukan') }}">
                                 <button type="submit"
-                                    class="px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-slate-50 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 min-h-12 flex items-center gap-2">
+                                    class="px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-slate-50 transition-colors duration-200 focus:outline-none focus-visible:ring-3 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 min-h-12 flex items-center gap-2"
+                                    aria-label="{{ __('Cari') }}">
                                     <x-heroicon-s-magnifying-glass class="h-5 w-5" aria-hidden="true" />
                                     <span class="hidden sm:inline">{{ __('Cari') }}</span>
                                 </button>
@@ -186,7 +187,7 @@
                                         aria-describedby="ticket_no_hint" aria-required="true"
                                         class="block w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800 text-base min-h-11"
                                         required>
-                                    <p id="ticket_no_hint" class="text-xs text-slate-500 dark:text-slate-400 text-left">
+                                    <p id="ticket_no_hint" class="text-xs text-slate-600 dark:text-slate-400 text-left">
                                         {{ __('Contoh: HD-2024-001234 atau LA-2024-005678') }}</p>
                                 </div>
                             </div>

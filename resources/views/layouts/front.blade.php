@@ -211,9 +211,9 @@
         <footer class="bg-slate-800 dark:bg-slate-900 text-slate-300 py-8 theme-transition" role="contentinfo">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p class="text-xs text-slate-500">&copy; {{ date('Y') }} BPM MOTAC.
+                    <p class="text-xs text-slate-300">&copy; {{ date('Y') }} BPM MOTAC.
                         {{ __('Hak Cipta Terpelihara') }}.</p>
-                    <p class="text-xs text-slate-500">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
+                    <p class="text-xs text-slate-300">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
                 </div>
             </div>
         </footer>
@@ -231,4 +231,3 @@
 </body>
 
 </html>
-
