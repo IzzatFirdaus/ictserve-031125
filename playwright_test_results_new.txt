@@ -9604,3 +9604,473 @@ Call log:
 [Auth Fixture] Using fallback submit button selector
 [Auth Fixture] Submitting login form
 [Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+  ok  918 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:84:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 03 - Create New Loan Application - Form Accessibility @loan @module @form (4.0m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+  x   919 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:136:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 04 - Create New Loan Application - Form Validation @loan @module @form @validation (2.4m)
+[Worker 157] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  921 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:202:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 06 - Loan Application Filtering and Search @loan @module @filter (1.0m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Attempt 1 failed: page.waitForURL: Timeout 120000ms exceeded.
+=========================== logs ===========================
+waiting for navigation to "/dashboard" until "domcontentloaded"
+  navigated to "http://127.0.0.1:8000/login"
+  navigated to "http://127.0.0.1:8000/login"
+  navigated to "http://127.0.0.1:8000/login"
+============================================================
+[Auth Fixture] Waiting 3000ms before retry...
+[Auth Fixture] Login attempt 2/8
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+  ok  922 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:218:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 07 - View Loan Application Details @loan @module @detail (1.6m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  923 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:255:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 08 - Loan Status Filter @loan @module @filter (42.1s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Attempt 2 failed: page.waitForURL: Test timeout of 300000ms exceeded.
+=========================== logs ===========================
+waiting for navigation to "/dashboard" until "domcontentloaded"
+  navigated to "http://127.0.0.1:8000/login"
+============================================================
+[Auth Fixture] Waiting 6000ms before retry...
+  x   920 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:159:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 05 - Create New Loan Application - Successful Submission @smoke @loan @module @form (5.0m)
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Worker 158] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Attempt 1 failed: page.waitForURL: NS_BINDING_ABORTED; maybe frame was detached?
+=========================== logs ===========================
+waiting for navigation to "/dashboard" until "domcontentloaded"
+============================================================
+[Auth Fixture] Waiting 3000ms before retry...
+[Auth Fixture] Login attempt 2/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  924 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:285:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 09 - Loan Approval Workflow (if admin) @loan @module @approval (2.3m)
+[Auth Fixture] Login attempt 1/8
+  ok  925 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:319:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 10 - Module Navigation - Return to Dashboard @smoke @loan @module @navigation (1.9m)
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Percy] Skipping snapshot "Loan Guest Form - Step 1 Initial Load" - Percy not enabled
+  ok  926 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:333:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 11 - Module Console Error Check @loan @module @debugging (48.0s)
+[Auth Fixture] Login attempt 1/8
+[Percy] Skipping snapshot "Loan Guest Form - Step 1 Filled" - Percy not enabled
+[Percy] Skipping snapshot "Loan Guest Form - Step 2 Responsible Officer" - Percy not enabled
+[Percy] Skipping snapshot "Loan Guest Form - Step 3 Equipment Selection" - Percy not enabled
+[Percy] Skipping snapshot "Loan Guest Form - Step 3 Equipment Selected" - Percy not enabled
+[Percy] Skipping snapshot "Loan Guest Form - Step 4 Confirmation" - Percy not enabled
+  ok  927 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:376:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 12 - Guest Asset Loan Wizard - Complete Step-by-Step Journey with Screenshots @loan @module @guest @form @percy (38.7s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  929 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:581:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 14 - Loan Extension Request @loan @module @workflow (1.2m)
+[Auth Fixture] Login attempt 1/8
+  x   928 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:560:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 13 - Loan Application - Email Approval Workflow @loan @module @workflow @integration (1.1m)
+[Worker 159] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  930 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:614:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 15 - Asset Availability Check @loan @module @integration (1.8m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+  x   931 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:642:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 16 - Dashboard Analytics Integration @loan @module @dashboard @integration (2.2m)
+[Auth Fixture] Attempt 1 failed: page.waitForURL: Timeout 120000ms exceeded.
+=========================== logs ===========================
+waiting for navigation to "/dashboard" until "domcontentloaded"
+  navigated to "http://127.0.0.1:8000/login"
+  navigated to "http://127.0.0.1:8000/login"
+============================================================
+[Auth Fixture] Waiting 3000ms before retry...
+  ok  933 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:689:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 18 - Accessibility: Guest Loan Form (WCAG 2.2 AA) @loan @accessibility @wcag @guest (39.3s)
+[Worker 160] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Login attempt 2/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  x   934 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:709:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 19 - Accessibility: Authenticated Dashboard (WCAG 2.2 AA) @loan @accessibility @wcag (1.6m)
+  ok  932 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:665:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 17 - Notification System Integration @loan @module @notification @integration (4.1m)
+  x   935 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:746:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 21 - Accessibility: Form Validation @loan @accessibility @forms (4.4s)
+[Worker 162] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+  x   936 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:773:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 22 - Cross-Module Navigation (Admin) @loan @module @navigation @admin (1.1m)
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  937 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:728:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 20 - Accessibility: Keyboard Navigation @loan @accessibility @keyboard (1.0m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  938 [firefox] ΓÇ║ tests\e2e\loan.spec.ts:801:2 ΓÇ║ Loan Module - Best Practices Architecture ΓÇ║ 23 - Responsive Design Integration @loan @module @responsive (1.1m)
+[Worker 163] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Percy] Skipping snapshot "Ollama AI - FAQ Management - WCAG 2.2 AA Compliance" - Percy not enabled
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+Γ£à FAQ Management: No accessibility violations found
+Γ£à FAQ Management: 27 accessibility checks passed
+  ok  939 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-1 - FAQ Management should pass WCAG 2.2 AA @accessibility @a11y @wcag @ollama @admin (50.4s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Percy] Skipping snapshot "Ollama AI - Document Management - WCAG 2.2 AA Compliance" - Percy not enabled
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+Γ£à Document Management: No accessibility violations found
+Γ£à Document Management: 27 accessibility checks passed
+  ok  940 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-2 - Document Management should pass WCAG 2.2 AA @accessibility @a11y @wcag @ollama @admin (1.2m)
+[Auth Fixture] Login attempt 1/8
+[Percy] Skipping snapshot "Ollama AI - Auto-Reply Templates - WCAG 2.2 AA Compliance" - Percy not enabled
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+Γ£à Auto-Reply Templates: No accessibility violations found
+Γ£à Auto-Reply Templates: 27 accessibility checks passed
+  ok  941 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-3 - Auto-Reply Templates should pass WCAG 2.2 AA @accessibility @a11y @wcag @ollama @admin (1.2m)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Percy] Skipping snapshot "Ollama AI - Auto-Reply Drafts - WCAG 2.2 AA Compliance" - Percy not enabled
+Γ£à Auto-Reply Drafts: No accessibility violations found
+Γ£à Auto-Reply Drafts: 27 accessibility checks passed
+  ok  942 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-4 - Auto-Reply Drafts should pass WCAG 2.2 AA @accessibility @a11y @wcag @ollama @admin (1.1m)
+[Auth Fixture] Login attempt 1/8
+[Percy] Skipping snapshot "Ollama AI - Message Logs - WCAG 2.2 AA Compliance" - Percy not enabled
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+Γ£à Message Logs: No accessibility violations found
+Γ£à Message Logs: 27 accessibility checks passed
+  ok  943 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-5 - Message Logs should pass WCAG 2.2 AA @accessibility @a11y @wcag @ollama @admin (1.1m)
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Percy] Skipping snapshot "Ollama AI - Performance Dashboard - WCAG 2.2 AA Compliance" - Percy not enabled
+ΓÜá∩╕Å  FAQ Bot not found on page - skipping
+  -   945 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:147:3 ΓÇ║ 02 - FAQ Bot Component Accessibility ΓÇ║ 02-01 - FAQ Bot should have proper ARIA attributes @accessibility @a11y @wcag @ollama @faq-bot
+Γ£à Performance Dashboard: No accessibility violations found
+Γ£à Performance Dashboard: 27 accessibility checks passed
+  ok  944 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:107:4 ΓÇ║ 01 - Ollama AI Admin Pages Accessibility ΓÇ║ 01-6 - Performance Dashboard should pass WCAG 2.2 AA @accessibility @a11y @wcag @ollama @admin (54.3s)
+Γ£à FAQ Bot touch targets verified
+ΓÜá∩╕Å  FAQ Bot input not found - skipping
+  ok  947 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:207:3 ΓÇ║ 02 - FAQ Bot Component Accessibility ΓÇ║ 02-03 - FAQ Bot buttons should meet touch target requirements @accessibility @a11y @wcag @ollama @faq-bot (17.0s)
+  -   946 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:180:3 ΓÇ║ 02 - FAQ Bot Component Accessibility ΓÇ║ 02-02 - FAQ Bot input should be keyboard accessible @accessibility @a11y @wcag @ollama @faq-bot
+Γä╣∩╕Å  No error messages currently visible
+Γä╣∩╕Å  No loading indicators currently visible
+  ok  948 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:244:3 ΓÇ║ 03 - Ollama AI Loading States Accessibility ΓÇ║ 03-01 - Loading indicators should have proper ARIA attributes @accessibility @a11y @wcag @ollama @loading (13.8s)
+  ok  949 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:279:3 ΓÇ║ 04 - Ollama AI Error States Accessibility ΓÇ║ 04-01 - Error messages should use role="alert" @accessibility @a11y @wcag @ollama @errors (13.8s)
+Γ£à Bahasa Melayu interface text verified
+Γ£à Bahasa Melayu language attribute verified
+  ok  950 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:308:3 ΓÇ║ 05 - Ollama AI Bahasa Melayu Interface ΓÇ║ 05-01 - Page should have lang="ms" attribute @accessibility @a11y @wcag @ollama @language (12.1s)
+  ok  951 [firefox] ΓÇ║ tests\e2e\ollama-accessibility.spec.ts:321:3 ΓÇ║ 05 - Ollama AI Bahasa Melayu Interface ΓÇ║ 05-02 - AI interface text should be in Bahasa Melayu @accessibility @a11y @wcag @ollama @language (12.2s)
+[Percy] Skipping snapshot "Disabled Percy Demo - Should Skip" - Percy not enabled
+[Percy] Skipping snapshot "Error Handling Demo - Should Not Fail Test" - Percy not enabled
+  ok  952 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:186:2 ΓÇ║ Percy Error Handling Demo ΓÇ║ Percy disabled scenario (18.0s)
+[Percy] Build Info: { token: [90mundefined[39m, branch: [32m'develop'[39m, project: [32m'ictserve'[39m }
+[Percy] Visual testing disabled - set PERCY_TOKEN to enable
+  ok  953 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:173:2 ΓÇ║ Percy Error Handling Demo ΓÇ║ Graceful degradation when Percy fails (18.0s)
+[Percy] Build Info: { token: [90mundefined[39m, branch: [32m'develop'[39m, project: [32m'ictserve'[39m }
+[Percy] Visual testing disabled - set PERCY_TOKEN to enable
+[Percy] Skipping snapshot "Helpdesk Form - Empty State Demo" - Percy not enabled
+[Percy] Skipping snapshot "Homepage - Basic Integration Test" - Percy not enabled
+  ok  955 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:101:2 ΓÇ║ Percy Integration Demo ΓÇ║ Form state visual testing demo (9.9s)
+  ok  954 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:38:2 ΓÇ║ Percy Integration Demo ΓÇ║ Basic Percy snapshot integration (10.1s)
+[Percy] Skipping snapshot "Admin Panel - Filament Dashboard Demo" - Percy not enabled
+  ok  956 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:125:2 ΓÇ║ Percy Integration Demo ΓÇ║ Admin panel visual testing demo (9.2s)
+[Percy] Skipping snapshot "Homepage - Responsive Demo - Mobile (375px)" - Percy not enabled
+[Percy] Skipping snapshot "Homepage - Responsive Demo - Tablet (768px)" - Percy not enabled
+[Percy] Skipping snapshot "Homepage - Responsive Demo - Desktop (1280px)" - Percy not enabled
+  ok  957 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:54:2 ΓÇ║ Percy Integration Demo ΓÇ║ Responsive visual testing demo (12.3s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Percy] Skipping snapshot "Homepage - Enhanced Page Method Demo" - Percy not enabled
+[Auth Fixture] Waiting for dashboard redirect...
+  ok  958 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:138:2 ΓÇ║ Percy Integration Demo ΓÇ║ Percy utilities integration test (18.0s)
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Percy] Skipping snapshot "Homepage - Firefox Browser Demo" - Percy not enabled
+[Percy] Skipping snapshot "Dashboard - Authenticated User Demo" - Percy not enabled
+  ok  960 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:154:2 ΓÇ║ Percy Integration Demo ΓÇ║ Cross-browser visual consistency demo (25.8s)
+  ok  959 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:65:2 ΓÇ║ Percy Integration Demo ΓÇ║ Authenticated user visual testing (40.7s)
+
+Welcome Page Lighthouse Scores:
+  Performance: 58/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ80)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  961 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Welcome Page meets Lighthouse thresholds (22.1s)
+[Percy] Skipping snapshot "Homepage - Accessibility Demo - WCAG 2.2 AA Compliance" - Percy not enabled
+  ok  962 [firefox] ΓÇ║ tests\e2e\percy-integration-demo.spec.ts:91:2 ΓÇ║ Percy Integration Demo ΓÇ║ Accessibility visual validation demo (35.0s)
+
+Accessibility Statement Lighthouse Scores:
+  Performance: 46/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ80)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  963 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Accessibility Statement meets Lighthouse thresholds (17.5s)
+
+Contact Page Lighthouse Scores:
+  Performance: 7/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ80)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  964 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Contact Page meets Lighthouse thresholds (29.4s)
+
+Services Page Lighthouse Scores:
+  Performance: 1/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ80)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  965 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Services Page meets Lighthouse thresholds (29.7s)
+
+Helpdesk Ticket Form Lighthouse Scores:
+  Performance: 37/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ80)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  966 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Helpdesk Ticket Form meets Lighthouse thresholds (15.8s)
+
+Asset Loan Application Form Lighthouse Scores:
+  Performance: 65/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ80)
+  Best Practices: 95/100
+  SEO: 90/100
+[Auth Fixture] Login attempt 1/8
+  ok  967 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:265:3 ΓÇ║ Lighthouse Audit - Guest Pages ΓÇ║ Asset Loan Application Form meets Lighthouse thresholds (12.5s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+
+Staff Dashboard Lighthouse Scores:
+  Performance: 84/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ80)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  968 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:315:3 ΓÇ║ Lighthouse Audit - Authenticated Pages ΓÇ║ Staff Dashboard meets Lighthouse thresholds (30.9s)
+[Auth Fixture] Login attempt 1/8
+
+User Profile Lighthouse Scores:
+  Performance: 15/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ80)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  969 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:315:3 ΓÇ║ Lighthouse Audit - Authenticated Pages ΓÇ║ User Profile meets Lighthouse thresholds (40.7s)
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+
+Submission History Lighthouse Scores:
+  Performance: 0/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ80)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  970 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:315:3 ΓÇ║ Lighthouse Audit - Authenticated Pages ΓÇ║ Submission History meets Lighthouse thresholds (1.4m)
+
+Admin Dashboard Lighthouse Scores:
+  Performance: 7/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ95)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  971 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:357:3 ΓÇ║ Lighthouse Audit - Admin Pages ΓÇ║ Admin Dashboard meets Lighthouse thresholds (1.5m)
+
+Helpdesk Tickets Management Lighthouse Scores:
+  Performance: 36/100 (target: ΓëÑ0)
+  Accessibility: 100/100 (target: ΓëÑ95)
+  Best Practices: 95/100
+  SEO: 90/100
+  ok  972 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:357:3 ΓÇ║ Lighthouse Audit - Admin Pages ΓÇ║ Helpdesk Tickets Management meets Lighthouse thresholds (46.8s)
+[Percy] Skipping snapshot "Staff Flow - Welcome Page" - Percy not enabled
+  ok  974 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:39:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 01 - Welcome Page Accessibility Check with Percy @smoke @staff @flow @percy (11.9s)
+[Percy] Skipping snapshot "Staff Flow - Login Page Navigation" - Percy not enabled
+  ok  975 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:68:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 02 - Navigate to Staff Login with Percy @smoke @staff @authentication @percy (32.2s)
+
+========================================
+LIGHTHOUSE PERFORMANCE AUDIT REPORT
+========================================
+
+Overall: 6/6 pages passed all thresholds
+
+Welcome Page (/)
+  Status: Γ£ô PASSED
+  Performance: 0/100
+  Accessibility: 100/100
+  Best Practices: 95/100
+  SEO: 90/100
+
+Accessibility Statement (/accessibility)
+  Status: Γ£ô PASSED
+  Performance: 75/100
+  Accessibility: 100/100
+  Best Practices: 95/100
+  SEO: 90/100
+
+Contact Page (/contact)
+  Status: Γ£ô PASSED
+  Performance: 91/100
+  Accessibility: 100/100
+  Best Practices: 95/100
+  SEO: 90/100
+
+Services Page (/services)
+  Status: Γ£ô PASSED
+  Performance: 99/100
+  Accessibility: 100/100
+  Best Practices: 95/100
+  SEO: 90/100
+
+Helpdesk Ticket Form (/helpdesk/create)
+  Status: Γ£ô PASSED
+  Performance: 0/100
+  Accessibility: 100/100
+  Best Practices: 95/100
+  SEO: 90/100
+
+Asset Loan Application Form (/loan/apply)
+  Status: Γ£ô PASSED
+  Performance: 0/100
+  Accessibility: 100/100
+  Best Practices: 95/100
+  SEO: 90/100
+
+Report saved to: test-results/lighthouse-audit-report.json
+
+  ok  973 [firefox] ΓÇ║ tests\e2e\performance\lighthouse-audit.spec.ts:388:2 ΓÇ║ Lighthouse Audit - Comprehensive Report ΓÇ║ Generate comprehensive Lighthouse report (3.3m)
+[Percy] Skipping snapshot "Staff Flow - Login Form Accessibility" - Percy not enabled
+  x   976 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:102:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 03 - Login Page Form Accessibility with Percy @smoke @staff @authentication @percy (2.2m)
+[Worker 164] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  ok  978 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:149:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 05 - Dashboard Main View After Login @smoke @staff @dashboard (31.7s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  x   977 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:130:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 04 - Successful Authentication @smoke @staff @authentication (1.3m)
+[Worker 165] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+  ok  979 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:172:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 06 - Dashboard Quick Actions Interaction @staff @dashboard (45.7s)
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  x   980 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:190:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 07 - Navigate to Helpdesk Module @staff @helpdesk @navigation (1.3m)
+  ok  981 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:209:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 08 - Navigate to Loan Module @staff @loan @navigation (1.3m)
+[Auth Fixture] Login attempt 1/8
+[Worker 166] Using email: userstaff@motac.gov.my
+[Auth Fixture] Login attempt 1/8
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Network idle timeout - continuing anyway
+[Auth Fixture] Using fallback submit button selector
+[Auth Fixture] Submitting login form
+[Auth Fixture] Waiting for dashboard redirect...
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+[Auth Fixture] Redirected to: http://127.0.0.1:8000/dashboard
+[Auth Fixture] Login successful!
+  x   982 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:253:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 10 - Complete Logout @smoke @staff @authentication (2.7m)
+  ok  983 [firefox] ΓÇ║ tests\e2e\staff-flow.spec.ts:228:2 ΓÇ║ Staff User Complete Flow - Best Practices Architecture ΓÇ║ 09 - View User Profile @staff @profile (2.8m)
