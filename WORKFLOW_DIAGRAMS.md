@@ -24,7 +24,7 @@ flowchart TD
 flowchart TD
   classDef async stroke-dasharray: 5 5;
 
-  A([Mula]) --> B{Pengguna berlog masuk? - Auth::check()}
+  A([Mula]) --> B{Pengguna berlog masuk?}
 
   B -- Ya --> C[Staf Authenticated: My Dashboard / Borang Auto-fill]
   B -- Tidak --> D[Quick Access - Tetamu: Borang Manual]
@@ -72,7 +72,7 @@ flowchart TD
   classDef async stroke-dasharray: 5 5;
 
   A([Mula]) --> B[Pengguna akses /helpdesk/create]
-  B --> C{Auth::check()?}
+  B --> C{Pengguna log masuk?}
 
   C -- Ya --> D[Auto-fill maklumat staf]
   C -- Tidak --> E[Input manual + reCAPTCHA - tetamu]
@@ -86,7 +86,7 @@ flowchart TD
 
   H -- Ya --> I[HelpdeskService createTicket]
   I --> J[Jana ticket_number - HD-YYYYMM-XXXX]
-  I --> K{Auth::check()?}
+  I --> K{Pengguna log masuk?}
   K -- Ya --> L[Simpan user_id + data submitter]
   K -- Tidak --> M[Simpan guest_*; user_id = NULL]
 
@@ -123,7 +123,7 @@ flowchart TD
   classDef async stroke-dasharray: 5 5;
 
   A([Mula]) --> B[Pengguna akses /loan/create]
-  B --> C{Auth::check()?}
+  B --> C{Pengguna log masuk?}
 
   C -- Ya --> D[Auto-fill pemohon]
   C -- Tidak --> E[Input manual pemohon]
@@ -137,7 +137,7 @@ flowchart TD
   H -- Tidak --> I[LoanService createApplication]
 
   I --> J[Jana rujukan - LA-YYYYMM-XXXX]
-  I --> K{Auth::check()?}
+  I --> K{Pengguna log masuk?}
   K -- Ya --> L[Simpan user_id + applicant data]
   K -- Tidak --> M[Simpan applicant_*; user_id = NULL]
 
@@ -229,10 +229,10 @@ flowchart TD
   E --> F[Reverb hantar mesej ke saluran]:::async
 
   F --> G{Jenis saluran}
-  G -->|Authenticated| H[private user.{id}]
-  G -->|Guest Ticket| I[private ticket.{uuid}]
-  G -->|Guest Loan| J[private loan.{uuid}]
-  G -->|Admin/AIs| K[private ai-* / admin.notifications]
+  G -->|Authenticated| H[private user dengan id]
+  G -->|Guest Ticket| I[private ticket dengan uuid]
+  G -->|Guest Loan| J[private loan dengan uuid]
+  G -->|Admin/AIs| K[private ai atau admin.notifications]
 
   H --> L[Echo terima event → kemas kini UI]
   I --> L
@@ -303,7 +303,7 @@ flowchart TD
   classDef async stroke-dasharray: 5 5;
 
   A([Mula]) --> B[Staff akses /register]
-  B --> C[Isi nama, e-mel @motac.gov.my, kata laluan, profil]
+  B --> C[Isi nama, e-mel motac.gov.my, kata laluan, profil]
   C --> D[Semak domain e-mel + pendua akaun]
   D --> E{Valid?}
   E -- Tidak --> C
@@ -332,9 +332,9 @@ Berdasarkan D04 §4.7.
 flowchart TD
   A([Mula]) --> B[Staff akses /login]
   B --> C[Input: e-mel penuh atau nama pengguna pendek]
-  C --> D{Input mengandungi '@'?}
+  C --> D{Input mengandungi simbol @?}
   D -- Ya --> E[Anggap sebagai e-mel]
-  D -- Tidak --> F[Append @motac.gov.my]
+  D -- Tidak --> F[Append domain motac.gov.my]
 
   E --> G[Attempt authenticate]
   F --> G
@@ -342,7 +342,7 @@ flowchart TD
   G --> H{Berjaya?}
   H -- Tidak --> I[Rate limit / lockout + mesej generik]
   H -- Ya --> J[Regenerate session + log aktiviti]
-  J --> K[Redirect ke /dashboard - atau intended]
+  J --> K[Redirect ke dashboard atau intended]
 
   I --> L([Tamat])
   K --> L

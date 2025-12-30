@@ -120,19 +120,21 @@ flowchart TD
 ## SDF-ICT-1 — Aliran Milestone & Deliverable (Seksyen 6)
 
 ```mermaid
-flowchart LR
-    M1[Inisiasi & Keperluan\nDeliverable: D02, D03, ERD] -->
-    M2[Rekabentuk Sistem\nDeliverable: D04, Wireframe, Database Schema] -->
-    M3[Setup Development\nDeliverable: Docker environment, CI/CD pipeline] -->
-    M4[Pembangunan Core\nDeliverable: Authentication, Models, Migrations] -->
-    M5[Pembangunan Modules\nDeliverable: Helpdesk, Asset Loan, Filament Admin] -->
-    M6[Real-time Features\nDeliverable: Reverb integration] -->
-    M7[Performance & API\nDeliverable: Pulse, Sanctum API, Google SSO - opsyen] -->
-    M8[UI/UX Implementation\nDeliverable: Livewire components, Styling, Accessibility] -->
-    M9[Ujian & UAT\nDeliverable: PHPUnit, Playwright, Axe-core, UAT] -->
-    M10[Documentation\nDeliverable: D09-D14, Manual Pengguna, API docs] -->
-    M11[Deployment\nDeliverable: Production deployment, monitoring setup] -->
+flowchart TD
+    M1[Inisiasi & Keperluan\nDeliverable: D02, D03, ERD]
+    M2[Rekabentuk Sistem\nDeliverable: D04, Wireframe, Database Schema]
+    M3[Setup Development\nDeliverable: Docker environment, CI/CD pipeline]
+    M4[Pembangunan Core\nDeliverable: Authentication, Models, Migrations]
+    M5[Pembangunan Modules\nDeliverable: Helpdesk, Asset Loan, Filament Admin]
+    M6[Real-time Features\nDeliverable: Reverb integration]
+    M7[Performance & API\nDeliverable: Pulse, Sanctum API, Google SSO - opsyen]
+    M8[UI/UX Implementation\nDeliverable: Livewire components, Styling, Accessibility]
+    M9[Ujian & UAT\nDeliverable: PHPUnit, Playwright, Axe-core, UAT]
+    M10[Documentation\nDeliverable: D09-D14, Manual Pengguna, API docs]
+    M11[Deployment\nDeliverable: Production deployment, monitoring setup]
     M12[Maintenance\nDeliverable: Patch, backup, support, monitoring]
+
+    M1 --> M2 --> M3 --> M4 --> M5 --> M6 --> M7 --> M8 --> M9 --> M10 --> M11 --> M12
 ```
 
 ---
