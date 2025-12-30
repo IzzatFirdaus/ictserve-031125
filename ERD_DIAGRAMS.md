@@ -58,6 +58,7 @@ erDiagram
   GRADES ||--o{ USERS : "has"
   POSITIONS ||--o{ USERS : "has"
 
+  USERS ||--o{ PASSWORD_RESET_TOKENS : "requests - logikal"
   USERS ||--o{ SESSIONS : "has - logikal"
 ```
 
@@ -493,6 +494,10 @@ erDiagram
     BOOL is_staff_response
   }
 
+  USERS ||--o{ AUDITS : "performs - polymorphic"
+  USERS ||--o{ ACTIVITY_LOG : "causes - polymorphic"
+  USERS ||--o{ NOTIFICATIONS : "receives - polymorphic"
+  
   USERS ||--o{ USER_CONSENTS : "records"
   USERS ||--o{ USER_NOTIFICATION_PREFERENCES : "configures"
   USERS ||--o{ BLOCKED_IPS : "blocks"
@@ -507,8 +512,15 @@ erDiagram
   SUPPORT_TICKETS ||--o{ SUPPORT_TICKET_ATTACHMENTS : "has"
   SUPPORT_TICKETS ||--o{ SUPPORT_TICKET_RESPONSES : "has"
   USERS ||--o{ SUPPORT_TICKET_RESPONSES : "writes"
+  
+  EMAIL_TEMPLATES ||--o{ EMAIL_LOGS : "generates - logikal"
+  WORKFLOW_RULES ||--o{ ACTIVITY_LOG : "triggers - logikal"
 ```
 
 Nota polymorphic penting:
 
-- `AUDITS.auditable_*`, `ACTIVITY_LOG.subject_*`/`causer_*`, `NOTIFICATIONS.notifiable_*`, `PORTAL_ACTIVITIES.subject_*`, `INTERNAL_COMMENTS.commentable_*`.
+- `AUDITS.auditable_*` → Semua model (USERS, ASSETS, HELPDESK_TICKETS, LOAN_APPLICATIONS, dll)
+- `ACTIVITY_LOG.subject_*`/`causer_*` → Semua model dengan aktiviti
+- `NOTIFICATIONS.notifiable_*` → USERS (utama)
+- `PORTAL_ACTIVITIES.subject_*` → HELPDESK_TICKETS, LOAN_APPLICATIONS, ASSETS
+- `INTERNAL_COMMENTS.commentable_*` → HELPDESK_TICKETS, SUPPORT_TICKETS, LOAN_APPLICATIONS

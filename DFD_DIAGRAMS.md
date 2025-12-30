@@ -15,61 +15,80 @@ Dokumen ini menghimpunkan rajah DFD berperingkat (Context → Level 0 → Level 
 ## DFD-ICT-0 — Rajah Konteks (Context Diagram)
 
 ```mermaid
-graph TD
-    subgraph External[Entiti Luaran]
-        STAFF_AUTH[Staf MOTAC - Authenticated]
-        GUEST[Staf/Tetamu - Tanpa Log Masuk + Token]
-        ADMIN[Admin BPM]
-        SUPERUSER[Superuser BPM]
-        APPROVER[Pegawai Kelulusan]
+flowchart TD
+    %% User Entities
+    STAFF_AUTH[Staf MOTAC - Authenticated]
+    GUEST[Staf/Tetamu - Tanpa Log Masuk + Token]
+    ADMIN[Admin BPM]
+    SUPERUSER[Superuser BPM]
+    APPROVER[Pegawai Kelulusan]
 
-        EMAIL[Sistem E-mel - SMTP]
-        RECAPTCHA[reCAPTCHA]
-        STORAGE[Storan Lampiran - S3/MinIO/Local Disk]
-        REDIS[Redis - Queue/Cache]
-        REVERB[WebSocket - Laravel Reverb]
-        SSO[SSO/OAuth Provider - Opsyen]
-        AI[Hybrid AI - Ollama + AWS Bedrock]
+    %% Core System
+    ICTSERVE((Sistem ICTServe))
+
+    %% Infrastructure Services
+    EMAIL[Sistem E-mel - SMTP]
+    RECAPTCHA[reCAPTCHA]
+    STORAGE[Storan Lampiran]
+    REDIS[Redis - Queue/Cache]
+    REVERB[WebSocket - Laravel Reverb]
+    SSO[SSO/OAuth Provider - Opsyen]
+    AI[Hybrid AI - Ollama + AWS Bedrock]
+
+    %% User Interactions
+    STAFF_AUTH --> ICTSERVE
+    ICTSERVE --> STAFF_AUTH
+    
+    GUEST --> ICTSERVE
+    ICTSERVE --> GUEST
+    
+    ADMIN --> ICTSERVE
+    ICTSERVE --> ADMIN
+    
+    SUPERUSER --> ICTSERVE
+    ICTSERVE --> SUPERUSER
+    
+    APPROVER --> ICTSERVE
+    ICTSERVE --> APPROVER
+
+    %% Infrastructure Interactions
+    ICTSERVE --> EMAIL
+    EMAIL --> ICTSERVE
+    
+    ICTSERVE --> RECAPTCHA
+    RECAPTCHA --> ICTSERVE
+    
+    ICTSERVE --> STORAGE
+    
+    ICTSERVE --> REDIS
+    REDIS --> ICTSERVE
+    
+    ICTSERVE --> REVERB
+    REVERB --> STAFF_AUTH
+    
+    ICTSERVE --> SSO
+    SSO --> ICTSERVE
+    
+    ICTSERVE --> AI
+    AI --> ICTSERVE
+
+    subgraph Pengguna[Entiti Pengguna]
+        STAFF_AUTH
+        GUEST
+        ADMIN
+        SUPERUSER
+        APPROVER
     end
 
-    subgraph System[Sistem ICTServe]
-        ICTSERVE[Sistem ICTServe]
+    subgraph Infrastruktur[Perkhidmatan Infrastruktur]
+        EMAIL
+        RECAPTCHA
+        STORAGE
+        REDIS
+        REVERB
+        SSO
+        AI
     end
-
-    STAFF_AUTH -->|Borang Tiket/Pinjaman, Semakan Status| ICTSERVE
-    ICTSERVE -->|Status, Notifikasi, Resit/No. Rujukan| STAFF_AUTH
-
-    GUEST -->|Borang Tetamu, Semakan Status (Token)| ICTSERVE
-    ICTSERVE -->|Status, Notifikasi (jika diaktifkan)| GUEST
-
-    ADMIN -->|Proses Operasi (Tiket/Pinjaman/Aset)| ICTSERVE
-    ICTSERVE -->|Dashboard, Laporan, Senarai Tugasan| ADMIN
-
-    SUPERUSER -->|Konfigurasi Sistem, Audit, Pemantauan| ICTSERVE
-    ICTSERVE -->|Audit Trail, Metrik Prestasi| SUPERUSER
-
-    APPROVER -->|Keputusan Kelulusan| ICTSERVE
-    ICTSERVE -->|Pautan Kelulusan (E-mel)| APPROVER
-
-    ICTSERVE -->|Hantar E-mel| EMAIL
-    EMAIL -->|Status Penghantaran / Bounce| ICTSERVE
-
-    ICTSERVE -->|Verifikasi Skor| RECAPTCHA
-    RECAPTCHA -->|Keputusan Verifikasi| ICTSERVE
-
-    ICTSERVE -->|Simpan/Muat Lampiran| STORAGE
-
-    ICTSERVE -->|Hantar Job / Cache| REDIS
-    REDIS -->|Hasil Pemprosesan Job| ICTSERVE
-
-    ICTSERVE -->|Broadcast Events| REVERB
-    REVERB -->|Notifikasi Masa Nyata| STAFF_AUTH
-
-    ICTSERVE -->|Permintaan Autentikasi| SSO
-    SSO -->|Token/Profil Asas| ICTSERVE
-
-    ICTSERVE -->|Prompt/Konteks (ditapis), Permintaan AI| AI
-    AI -->|Respons AI / Cadangan| ICTSERVE
 ```
 
 ---
@@ -107,16 +126,16 @@ graph TD
         DS_AI[(D6: AI/Knowledge/Conversations)]
     end
 
-    STAFF_AUTH -->|Login/SSO + Akses Sistem| P4
-    P4 -->|Sesi/Profil| DS_USERS
+    STAFF_AUTH -->|Login SSO dan Akses Sistem| P4
+    P4 -->|Sesi atau Profil| DS_USERS
 
     STAFF_AUTH -->|Hantar Tiket| P1
-    GUEST -->|Hantar Tiket (Token)| P1
+    GUEST -->|Hantar Tiket dengan Token| P1
     P1 -->|Rekod Tiket| DS_HELPDESK
     P1 -->|Permintaan Notifikasi| P7
 
     STAFF_AUTH -->|Mohon Pinjaman| P2
-    GUEST -->|Mohon Pinjaman (Token)| P2
+    GUEST -->|Mohon Pinjaman dengan Token| P2
     P2 -->|Rekod Pinjaman| DS_LOANS
     P2 -->|Semak Ketersediaan Aset| P3
     P3 -->|Rekod Inventori| DS_ASSETS
@@ -124,7 +143,7 @@ graph TD
 
     APPROVER -->|Keputusan Kelulusan| P2
 
-    ADMIN -->|Operasi / Semakan| P5
+    ADMIN -->|Operasi atau Semakan| P5
     P5 -->|Query Data| DS_HELPDESK
     P5 -->|Query Data| DS_LOANS
     P5 -->|Query Data| DS_ASSETS
@@ -143,9 +162,9 @@ graph TD
     P1 -->|Lampiran| STORAGE
     P2 -->|Lampiran| STORAGE
 
-    STAFF_AUTH -->|Soalan/FAQ| P8
-    GUEST -->|Soalan/FAQ| P8
-    P8 -->|Simpan Log/Conversation| DS_AI
+    STAFF_AUTH -->|Soalan atau FAQ| P8
+    GUEST -->|Soalan atau FAQ| P8
+    P8 -->|Simpan Log atau Conversation| DS_AI
     P8 -->|Panggilan AI| AI_EXT
     AI_EXT -->|Respons| P8
 ```
@@ -162,7 +181,7 @@ graph TD
     EMAIL[Sistem E-mel]
 
     subgraph PP[1.0 Pengurusan Pengguna]
-        PP1[1.1 Daftar Pengguna (opsyen)]
+        PP1[1.1 Daftar Pengguna opsyen]
         PP2[1.2 Login Sistem]
         PP3[1.3 Kemaskini Profil]
         PP4[1.4 Lupa Kata Laluan]
@@ -173,10 +192,10 @@ graph TD
 
     STAFF -->|Maklumat Pendaftaran| PP1
     PP1 -->|Simpan Rekod| DS_USERS
-    PP1 -->|E-mel Pengesahan (jika ada)| EMAIL
+    PP1 -->|E-mel Pengesahan jika ada| EMAIL
 
-    STAFF -->|Kredensial Login / SSO| PP2
-    SSO -->|Token/Profil Asas| PP2
+    STAFF -->|Kredensial Login atau SSO| PP2
+    SSO -->|Token atau Profil Asas| PP2
     PP2 -->|Semak Pengguna| DS_USERS
     PP2 -->|Rekod Audit| DS_AUDIT
     PP2 -->|Akses Sistem| STAFF
@@ -196,9 +215,9 @@ graph TD
 
 ```mermaid
 graph TD
-    STAFF[Staf (Authenticated)]
-    GUEST[Staf/Tetamu (Token)]
-    TECH[Juruteknik/Admin]
+    STAFF[Staf Authenticated]
+    GUEST[Staf atau Tetamu dengan Token]
+    TECH[Juruteknik atau Admin]
 
     EMAIL[Sistem E-mel]
     REVERB[Reverb]
@@ -217,10 +236,10 @@ graph TD
     DS_COMMENTS[(D2.1: Helpdesk Comments)]
     DS_AUDIT[(D5: Audits/Activity/Logs)]
 
-    STAFF -->|Aduan/Permintaan + Lampiran| H1
-    GUEST -->|Aduan/Permintaan + Lampiran| H1
+    STAFF -->|Aduan Permintaan dengan Lampiran| H1
+    GUEST -->|Aduan Permintaan dengan Lampiran| H1
 
-    H1 -->|Cadangan Kategori/Keutamaan| AI_EXT
+    H1 -->|Cadangan Kategori atau Keutamaan| AI_EXT
     AI_EXT -->|Cadangan| H1
 
     H1 -->|Simpan Tiket| DS_TICKETS
@@ -233,16 +252,16 @@ graph TD
     H2 -->|Kemaskini Status| DS_TICKETS
 
     TECH -->|Tindakan Penyelesaian| H3
-    H3 -->|Komen/Progress| DS_COMMENTS
+    H3 -->|Komen atau Progress| DS_COMMENTS
     H3 -->|Kemaskini Status| DS_TICKETS
     H3 -->|Broadcast Status| REVERB
     H3 -->|Rekod Audit| DS_AUDIT
 
     TECH -->|Tutup Tiket| H4
-    STAFF -->|Maklumbalas (jika ada)| H4
+    STAFF -->|Maklumbalas jika ada| H4
     H4 -->|Simpan Maklumbalas| DS_COMMENTS
     H4 -->|Kemaskini Status| DS_TICKETS
-    H4 -->|Hantar Notifikasi (E-mel/Reverb)| EMAIL
+    H4 -->|Hantar Notifikasi E-mel atau Reverb| EMAIL
     H4 -->|Broadcast Status| REVERB
     H4 -->|Rekod Audit| DS_AUDIT
 ```
@@ -253,10 +272,10 @@ graph TD
 
 ```mermaid
 graph TD
-    STAFF[Staf (Authenticated)]
-    GUEST[Staf/Tetamu (Token)]
+    STAFF[Staf Authenticated]
+    GUEST[Staf atau Tetamu dengan Token]
     APPROVER[Pegawai Kelulusan]
-    OFFICER[Pegawai Aset/Admin]
+    OFFICER[Pegawai Aset atau Admin]
 
     EMAIL[Sistem E-mel]
     REDIS[Redis Queue]
@@ -265,8 +284,8 @@ graph TD
     subgraph AL[3.0 Pengurusan Pinjaman Aset]
         A1[3.1 Mohon Pinjaman]
         A2[3.2 Proses Kelulusan]
-        A3[3.3 Rekod Penyerahan (Check-out)]
-        A4[3.4 Rekod Pemulangan (Check-in)]
+        A3[3.3 Rekod Penyerahan Check-out]
+        A4[3.4 Rekod Pemulangan Check-in]
     end
 
     DS_LOANS[(D3: Loan Applications)]
@@ -281,8 +300,8 @@ graph TD
     A1 -->|Simpan Permohonan| DS_LOANS
     A1 -->|Dispatch Permintaan Kelulusan| REDIS
 
-    A2 -->|Pautan Kelulusan (E-mel)| EMAIL
-    APPROVER -->|Keputusan Lulus/Tolak| A2
+    A2 -->|Pautan Kelulusan E-mel| EMAIL
+    APPROVER -->|Keputusan Lulus atau Tolak| A2
     A2 -->|Kemaskini Status| DS_LOANS
     A2 -->|Notifikasi Keputusan| EMAIL
     A2 -->|Broadcast Status| REVERB
@@ -349,12 +368,12 @@ graph TD
 
 ```mermaid
 graph TD
-    STAFF[Staf (Authenticated)]
-    GUEST[Staf/Tetamu (Token)]
-    ADMIN[Admin/Juruteknik]
+    STAFF[Staf Authenticated]
+    GUEST[Staf atau Tetamu dengan Token]
+    ADMIN[Admin atau Juruteknik]
 
     RECAPTCHA[reCAPTCHA]
-    CLAMAV[ClamAV (Imbas Virus)]
+    CLAMAV[ClamAV Imbas Virus]
     STORAGE[Storan Lampiran]
     REDIS[Redis Queue]
     REVERB[Reverb]
@@ -363,13 +382,13 @@ graph TD
 
     subgraph HD2[2.x Pecahan Helpdesk]
         H21[2.1 Terima Input Tiket]
-        H22[2.2 Validasi & Sanitasi]
-        H23[2.3 Verifikasi reCAPTCHA (tetamu)]
-        H24[2.4 Proses Lampiran (Imbas + Simpan)]
+        H22[2.2 Validasi dan Sanitasi]
+        H23[2.3 Verifikasi reCAPTCHA tetamu]
+        H24[2.4 Proses Lampiran Imbas Simpan]
         H25[2.5 Simpan Tiket]
-        H26[2.6 Agihan & Kemas Kini Status]
+        H26[2.6 Agihan dan Kemas Kini Status]
         H27[2.7 Pemantauan SLA]
-        H28[2.8 Notifikasi (E-mel/Reverb)]
+        H28[2.8 Notifikasi E-mel Reverb]
     end
 
     DS_USERS[(D1: Users)]
@@ -378,45 +397,46 @@ graph TD
     DS_ATTACH[(D2.2: Helpdesk Attachments)]
     DS_AUDIT[(D5: Audits/Activity/Logs)]
 
-    STAFF -->|Borang Tiket + Lampiran| H21
-    GUEST -->|Borang Tiket + Lampiran| H21
+    STAFF -->|Borang Tiket Lampiran| H21
+    GUEST -->|Borang Tiket Lampiran| H21
 
     H21 -->|Data Mentah| H22
     H22 -->|Ralat Validasi| STAFF
+    H22 -->|Semak Pengguna| DS_USERS
 
-    GUEST -->|Token/Skor reCAPTCHA| H23
+    GUEST -->|Token atau Skor reCAPTCHA| H23
     H23 -->|Semak Skor| RECAPTCHA
     RECAPTCHA -->|Keputusan| H23
-    H23 -->|Gagal (blok)| GUEST
+    H23 -->|Gagal blok| GUEST
     H23 -->|Lulus| H24
 
     STAFF -->|Lampiran| H24
     H24 -->|Imbas Virus| CLAMAV
-    CLAMAV -->|Bersih/Kuarantin| H24
+    CLAMAV -->|Bersih atau Kuarantin| H24
     H24 -->|Simpan Fail| STORAGE
     H24 -->|Simpan Metadata| DS_ATTACH
 
-    H22 -->|Cadangan AI (kategori/keutamaan)| AI_EXT
+    H22 -->|Cadangan AI kategori atau keutamaan| AI_EXT
     AI_EXT -->|Cadangan| H22
 
     H22 -->|Data Valid| H25
     H25 -->|Simpan Tiket| DS_TICKETS
     H25 -->|Rekod Audit| DS_AUDIT
 
-    ADMIN -->|Ambil / Agih / Kemaskini| H26
+    ADMIN -->|Ambil atau Agih atau Kemaskini| H26
     H26 -->|Baca Tiket| DS_TICKETS
     H26 -->|Kemas Kini Status| DS_TICKETS
-    H26 -->|Komen/Progress| DS_COMMENTS
+    H26 -->|Komen atau Progress| DS_COMMENTS
     H26 -->|Rekod Audit| DS_AUDIT
 
-    H27 -->|Baca Tiket + SLA| DS_TICKETS
+    H27 -->|Baca Tiket dan SLA| DS_TICKETS
     H27 -->|Dispatch SLA alert job| REDIS
 
     H28 -->|Dispatch email job| REDIS
     REDIS -->|Hantar E-mel| EMAIL
 
     H28 -->|Broadcast events| REVERB
-    REVERB -->|Status/Notifikasi| STAFF
+    REVERB -->|Status atau Notifikasi| STAFF
 ```
 
 ---
@@ -425,10 +445,10 @@ graph TD
 
 ```mermaid
 graph TD
-    STAFF[Staf (Authenticated)]
-    GUEST[Staf/Tetamu (Token)]
+    STAFF[Staf Authenticated]
+    GUEST[Staf atau Tetamu dengan Token]
     APPROVER[Pegawai Kelulusan]
-    OFFICER[Pegawai Aset/Admin]
+    OFFICER[Pegawai Aset atau Admin]
 
     EMAIL[Sistem E-mel]
     REDIS[Redis Queue]
@@ -472,7 +492,7 @@ graph TD
     A26 -->|Dispatch email job| REDIS
     REDIS -->|Hantar Pautan Kelulusan| EMAIL
 
-    APPROVER -->|Lulus/Tolak + Token| A27
+    APPROVER -->|Lulus atau Tolak dengan Token| A27
     A27 -->|Simpan Keputusan| DS_APPROVALS
     A27 -->|Kemas Kini Status| DS_LOANS
     A27 -->|Rekod Audit| DS_AUDIT
@@ -500,30 +520,30 @@ graph TD
 
 ```mermaid
 graph TD
-    STAFF[Staf (Authenticated)]
-    GUEST[Staf/Tetamu]
+    STAFF[Staf Authenticated]
+    GUEST[Staf atau Tetamu]
 
-    OLLAMA[Ollama (Local)]
+    OLLAMA[Ollama Local]
     BEDROCK[AWS Bedrock]
     REDIS[Redis Queue]
     REVERB[Reverb]
 
     subgraph AI2[8.x Pecahan AI Integration]
         AI21[8.1 Terima Soalan/Prompt]
-        AI22[8.2 Klasifikasi & Routing (ModelRouter)]
-        AI23[8.3 RAG Retrieval (FAQ/Chunks)]
-        AI24[8.4 Jana Respons (LLM)]
-        AI25[8.5 Simpan Conversation & Logs]
-        AI26[8.6 Auto-Reply Draft (opsyen)]
+        AI22[8.2 Klasifikasi dan Routing ModelRouter]
+        AI23[8.3 RAG Retrieval FAQ/Chunks]
+        AI24[8.4 Jana Respons LLM]
+        AI25[8.5 Simpan Conversation dan Logs]
+        AI26[8.6 Auto-Reply Draft opsyen]
         AI27[8.7 Broadcast Status AI]
     end
 
     DS_FAQ[(D6.1: FAQs)]
     DS_DOCS[(D6.2: Documents)]
-    DS_CHUNKS[(D6.3: Document Chunks + Embedding)]
-    DS_CONV[(D6.4: Conversations - Auth/Guest)]
+    DS_CHUNKS[(D6.3: Document Chunks dan Embedding)]
+    DS_CONV[(D6.4: Conversations Auth/Guest)]
     DS_MSGLOG[(D6.5: Message Logs)]
-    DS_AUTOREPLY[(D6.6: Auto Reply Drafts/Templates)]
+    DS_AUTOREPLY[(D6.6: Auto Reply Drafts Templates)]
 
     STAFF -->|Soalan| AI21
     GUEST -->|Soalan| AI21
@@ -532,10 +552,11 @@ graph TD
     AI22 -->|FAQ lookup| AI23
 
     AI23 -->|Ambil FAQ| DS_FAQ
+    AI23 -->|Ambil Dokumen| DS_DOCS
     AI23 -->|Ambil Chunk Relevan| DS_CHUNKS
 
-    AI22 -->|Route: Local| OLLAMA
-    AI22 -->|Route: Cloud (jika diaktifkan)| BEDROCK
+    AI22 -->|Route Local| OLLAMA
+    AI22 -->|Route Cloud jika diaktifkan| BEDROCK
 
     OLLAMA -->|Respons| AI24
     BEDROCK -->|Respons| AI24
