@@ -71,7 +71,7 @@ export default defineConfig({
 	globalTeardown: "./tests/percy/percy-global-teardown.ts",
 
 	projects: [
-		/* Primary Percy testing on Chrome */
+		/* Primary Percy testing on Chrome - ONLY BROWSER FOR SCREENSHOTS */
 		{
 			name: "percy-chrome",
 			use: {
@@ -81,11 +81,11 @@ export default defineConfig({
 			},
 		},
 
-		/* Responsive Percy testing */
+		/* Responsive Percy testing - Chrome only for screenshots */
 		{
 			name: "percy-mobile",
 			use: {
-				...devices["iPhone 12"],
+				...devices["Desktop Chrome"], // Changed from iPhone 12 to Chrome for consistency
 				viewport: { width: 375, height: 667 },
 				deviceScaleFactor: 1,
 			},
@@ -93,7 +93,7 @@ export default defineConfig({
 		{
 			name: "percy-tablet",
 			use: {
-				...devices["iPad Pro"],
+				...devices["Desktop Chrome"], // Changed from iPad Pro to Chrome for consistency
 				viewport: { width: 768, height: 1024 },
 				deviceScaleFactor: 1,
 			},

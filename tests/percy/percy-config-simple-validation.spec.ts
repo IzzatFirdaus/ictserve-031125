@@ -49,10 +49,12 @@ test.describe("Percy Configuration Simple Validation", () => {
 	}) => {
 		// Validate browser name is available
 		expect(browserName).toBeDefined();
-		expect(["chromium", "firefox", "webkit"].includes(browserName)).toBe(true);
+		// Updated to only expect chromium for screenshot-only configuration
+		expect(["chromium"].includes(browserName)).toBe(true);
 
 		console.log(`✅ Running on browser: ${browserName}`);
 		console.log("✅ Playwright configuration is properly loaded");
+		console.log("ℹ️  Configuration updated for Chrome-only screenshots");
 	});
 
 	test("Percy configuration file structure is valid", async () => {

@@ -110,7 +110,7 @@ export default defineConfig({
 		: undefined,
 
 	projects: [
-		/* Chrome 90+ - Primary browser for Percy visual testing */
+		/* Chrome 90+ - Primary browser for Percy visual testing and screenshots */
 		{
 			name: "chromium",
 			use: {
@@ -121,37 +121,37 @@ export default defineConfig({
 				// headless: false, // Uncomment for debugging
 			},
 		},
-		/* Firefox 88+ - Cross-browser testing with Percy */
-		{
-			name: "firefox",
-			use: {
-				...devices["Desktop Firefox"],
-				// Percy-optimized Firefox configuration
-				viewport: { width: 1280, height: 720 },
-				deviceScaleFactor: 1,
-			},
-		},
-		/* Safari 14+ - WebKit engine (macOS/iOS) with Percy support */
-		{
-			name: "webkit",
-			use: {
-				...devices["Desktop Safari"],
-				// Percy-optimized Safari configuration
-				viewport: { width: 1280, height: 720 },
-				deviceScaleFactor: 1,
-			},
-		},
-		/* Edge 90+ - Chromium-based Microsoft Edge with Percy */
-		{
-			name: "edge",
-			use: {
-				...devices["Desktop Edge"],
-				channel: "msedge",
-				// Percy-optimized Edge configuration
-				viewport: { width: 1280, height: 720 },
-				deviceScaleFactor: 1,
-			},
-		},
+		/* Firefox 88+ - Cross-browser testing with Percy - COMMENTED OUT FOR SCREENSHOTS ONLY */
+		// {
+		// 	name: "firefox",
+		// 	use: {
+		// 		...devices["Desktop Firefox"],
+		// 		// Percy-optimized Firefox configuration
+		// 		viewport: { width: 1280, height: 720 },
+		// 		deviceScaleFactor: 1,
+		// 	},
+		// },
+		/* Safari 14+ - WebKit engine (macOS/iOS) with Percy support - COMMENTED OUT FOR SCREENSHOTS ONLY */
+		// {
+		// 	name: "webkit",
+		// 	use: {
+		// 		...devices["Desktop Safari"],
+		// 		// Percy-optimized Safari configuration
+		// 		viewport: { width: 1280, height: 720 },
+		// 		deviceScaleFactor: 1,
+		// 	},
+		// },
+		/* Edge 90+ - Chromium-based Microsoft Edge with Percy - COMMENTED OUT FOR SCREENSHOTS ONLY */
+		// {
+		// 	name: "edge",
+		// 	use: {
+		// 		...devices["Desktop Edge"],
+		// 		channel: "msedge",
+		// 		// Percy-optimized Edge configuration
+		// 		viewport: { width: 1280, height: 720 },
+		// 		deviceScaleFactor: 1,
+		// 	},
+		// },
 
 		/* Percy-specific responsive testing projects */
 		...(isPercyEnabled
