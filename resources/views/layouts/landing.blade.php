@@ -188,9 +188,9 @@
                         <address class="not-italic text-sm text-slate-400 space-y-1">
                             <p>No. 2, Menara 1, Jalan P5/6</p>
                             <p>Presint 5, 62200 PUTRAJAYA</p>
-                            <p class="pt-2"><span class="text-slate-500">{{ __('Tel') }}:</span> 03 8000 8000
+                            <p class="pt-2"><span class="text-slate-300">{{ __('Tel') }}:</span> 03 8000 8000
                             </p>
-                            <p><span class="text-slate-500">{{ __('Faks') }}:</span> 03 8891 7100</p>
+                            <p><span class="text-slate-300">{{ __('Faks') }}:</span> 03 8891 7100</p>
                         </address>
                     </div>
                     <div>
@@ -284,9 +284,9 @@
                 </div>
                 <div
                     class="mt-10 pt-6 border-t border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p class="text-xs text-slate-500">&copy; {{ date('Y') }} BPM MOTAC.
+                    <p class="text-xs text-slate-400">&copy; {{ date('Y') }} BPM MOTAC.
                         {{ __('Hak Cipta Terpelihara') }}.</p>
-                    <p class="text-xs text-slate-500">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
+                    <p class="text-xs text-slate-400">{{ __('Mematuhi WCAG 2.2 Tahap AA') }}</p>
                 </div>
             </div>
         </footer>
@@ -303,4 +303,3 @@
 </body>
 
 </html>
-
