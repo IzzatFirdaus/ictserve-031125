@@ -91,7 +91,8 @@
                         </div>
                         <dl class="space-y-4 text-sm">
                             <div>
-                                <dt class="font-medium text-slate-500 dark:text-slate-400">{{ __('pages.contact.phone_title') }}</dt>
+                                <dt class="font-medium text-slate-600 dark:text-slate-300">
+                                    {{ __('pages.contact.phone_title') }}</dt>
                                 <dd class="text-slate-900 dark:text-slate-100 font-semibold">
                                     <a href="tel:+60312345678"
                                         class="hover:text-primary-600 focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded">
@@ -103,7 +104,8 @@
                                 </dd>
                             </div>
                             <div>
-                                <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('pages.contact.email_title') }}
+                                <dt class="font-medium text-gray-500 dark:text-gray-400">
+                                    {{ __('pages.contact.email_title') }}
                                 </dt>
                                 <dd>
                                     <a href="mailto:ictserve@motac.gov.my"
@@ -159,15 +161,18 @@
                         <p class="text-sm text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
                             {{ __('pages.contact.emergency_text') }}
                         </p>
-                        <div class="bg-danger-50 dark:bg-danger-900/20 rounded-lg p-4 border border-danger-200 dark:border-danger-800">
+                        <div
+                            class="bg-danger-50 dark:bg-danger-900/20 rounded-lg p-4 border border-danger-200 dark:border-danger-800">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-xs text-danger-700 dark:text-danger-300 font-medium mb-1">{{ __('pages.contact.emergency_title') }}</p>
+                                    <p class="text-xs text-danger-700 dark:text-danger-300 font-medium mb-1">
+                                        {{ __('pages.contact.emergency_title') }}</p>
                                     <a href="tel:+60312349999"
                                         class="text-xl font-bold text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300 focus:outline-none focus-visible:ring-3 focus-visible:ring-danger-500 focus-visible:ring-offset-2 rounded">
                                         {{ __('pages.contact.emergency_phone') }}
                                     </a>
-                                    <p class="text-xs text-danger-600 dark:text-danger-400 mt-1">{{ __('pages.contact.emergency_available') }}</p>
+                                    <p class="text-xs text-danger-600 dark:text-danger-400 mt-1">
+                                        {{ __('pages.contact.emergency_available') }}</p>
                                 </div>
                                 <x-heroicon-s-phone class="h-8 w-8 text-danger-500" aria-hidden="true" />
                             </div>
@@ -180,7 +185,8 @@
                     {{-- Contact Form --}}
                     <x-ui.card>
                         <x-slot name="header">
-                            <h3 class="text-xl font-heading font-semibold text-gray-900 mb-6">{{ __('pages.contact.form_title') }}
+                            <h3 class="text-xl font-heading font-semibold text-gray-900 mb-6">
+                                {{ __('pages.contact.form_title') }}
                             </h3>
                         </x-slot>
                         <livewire:contact-form />

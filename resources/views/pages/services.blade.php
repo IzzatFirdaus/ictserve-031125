@@ -97,7 +97,7 @@
                                 <span>{{ __('pages.services.helpdesk_feature_4') }}</span>
                             </li>
                         </ul>
-                        <p class="text-xs text-slate-500">PK.(S).MOTAC.07.(L1)</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">PK.(S).MOTAC.07.(L1)</p>
                     </div>
                     <div class="p-4 md:p-6 bg-slate-50 border-t border-slate-200">
                         @if ($helpdeskRouteName)
@@ -144,7 +144,7 @@
                                 <span>{{ __('pages.services.loan_feature_4') }}</span>
                             </li>
                         </ul>
-                        <p class="text-xs text-slate-500">PK.(S).MOTAC.07.(L2)</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">PK.(S).MOTAC.07.(L2)</p>
                     </div>
                     <div class="p-4 md:p-6 bg-slate-50 border-t border-slate-200">
                         @if ($loanRouteName)
