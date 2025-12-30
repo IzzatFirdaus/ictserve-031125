@@ -94,6 +94,13 @@ class ContactPageTest extends TestCase
     }
 
     #[Test]
+    public function contact_form_message_counter_starts_at_zero(): void
+    {
+        $response = $this->get(route('contact'));
+        $response->assertSee('0/5000');
+    }
+
+    #[Test]
     public function contact_form_fields_have_proper_labels(): void
     {
         $response = $this->get(route('contact'));

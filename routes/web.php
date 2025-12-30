@@ -33,6 +33,9 @@ Route::get('/dev/figma-examples', function () {
 Route::get('/admin-login-verify', function () {
     return view('admin.admin_login_full');
 });
+
+// Admin login POST handler (used by admin login form when JS not available)
+Route::post('/admin/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'login'])->name('admin.login.post');
 // Public Information Pages (No Authentication Required)
 Route::view('/accessibility', 'pages.accessibility')->name('accessibility');
 Route::view('/contact', 'pages.contact')->name('contact');
