@@ -93,4 +93,98 @@ return [
     'google_sso_unavailable' => 'Google SSO service is currently unavailable. Please use traditional login.',
     'google_sso_account_disabled' => 'Your account has been disabled. Please contact system administrator.',
     'google_sso_fallback_hint' => 'You can login using your email and password.',
+
+    // OAuth Verification Status (Task 1.1 - Requirements 1.1, 2.5, 4.1)
+    'oauth_status' => [
+        'verified' => 'Verified',
+        'pending' => 'Pending Verification',
+        'testing' => 'Testing Mode',
+        'rejected' => 'Rejected',
+        'unknown' => 'Unknown',
+    ],
+    'test_user_required' => 'Account :email needs to be added to the test user list. OAuth application is in :status. Please contact system administrator.',
+    'verification_pending' => 'Application is undergoing Google verification process. Please contact system administrator.',
+    'gmail_quota_exceeded' => 'Gmail API usage limit reached. Email will be sent via standard system.',
+    'gmail_auth_failed' => 'Gmail authentication failed. Email will be sent via standard system.',
+
+    // SSO Error Types
+    'error_types' => [
+        'domain_error' => 'Domain Error',
+        'oauth_error' => 'OAuth Error',
+        'oauth_state_error' => 'OAuth State Error',
+        'network_error' => 'Network Error',
+        'general_error' => 'General Error',
+        'verification_error' => 'Verification Error',
+        'quota_error' => 'Quota Error',
+        'rate_limit_error' => 'Rate Limit Error',
+        'authentication_error' => 'Authentication Error',
+        'configuration_error' => 'Configuration Error',
+        'service_unavailable' => 'Service Unavailable',
+    ],
+
+    // Additional Gmail API Error Messages (Task 8.1 - Requirements 7.1, 7.4)
+    'gmail_rate_limit_exceeded' => 'Gmail API rate limit reached. Please try again in a few minutes.',
+    'gmail_service_unavailable' => 'Gmail service is currently unavailable. Email will be sent via standard system.',
+    'gmail_send_failed' => 'Email sending via Gmail failed. Email will be sent via standard system.',
+
+    // Additional Google SSO Error Messages (Task 8.1 - Requirements 7.1, 7.4)
+    'google_sso_test_user_required' => 'Your account needs to be added to the test user list. Please contact system administrator.',
+    'google_sso_verification_rejected' => 'OAuth application verification was rejected. Please contact system administrator.',
+    'google_sso_configuration_error' => 'Google SSO configuration is incomplete. Please contact system administrator.',
+
+    // Google Services - Detailed Messages (Task 8.1 - Requirements 7.1, 7.2, 7.4, 7.5)
+    'google_services' => [
+        // Verification Status
+        'verification_rejected' => 'OAuth application verification was rejected by Google.',
+        'verification_in_progress' => 'OAuth application verification is in progress.',
+
+        // Gmail Messages
+        'gmail_token_expired' => 'Gmail token has expired. Please re-authorize.',
+        'gmail_not_configured' => 'Gmail API is not configured. Please contact system administrator.',
+        'gmail_fallback_activated' => 'Email will be sent via standard SMTP system.',
+
+        // Help Text
+        'help' => [
+            'domain' => 'Only @motac.gov.my email accounts are allowed to login. Please use your MOTAC Google Workspace account.',
+            'verification' => 'Application is undergoing Google verification process. Please contact system administrator for more information.',
+            'verification_pending' => 'OAuth application verification is being processed by Google. This may take several days.',
+            'verification_rejected' => 'OAuth application verification was rejected. System administrator needs to resubmit the application.',
+            'test_user' => 'Your account needs to be added to the test user list by system administrator before you can use Google SSO.',
+            'quota' => 'Daily Gmail API usage limit has been reached. Quota will reset at midnight.',
+            'rate_limit' => 'Too many requests in a short time. Please wait a few minutes before trying again.',
+            'network' => 'Connection problem with Google servers. Please check your internet connection and try again.',
+            'token_expired' => 'Your Gmail session has expired. Please re-authorize to continue.',
+            'gmail_setup' => 'Gmail API is not configured. System administrator needs to run "php artisan gmail:authorize" command.',
+            'gmail_auth' => 'Gmail authentication failed. Please try again or contact system administrator.',
+            'fallback' => 'You can login using your email and password as an alternative.',
+        ],
+
+        // Success Messages
+        'success' => [
+            'sso_linked' => 'Your Google account has been successfully linked.',
+            'sso_unlinked' => 'Your Google account has been successfully unlinked.',
+            'gmail_authorized' => 'Gmail API has been successfully authorized.',
+            'test_user_added' => 'Test user has been successfully added.',
+            'test_user_removed' => 'Test user has been successfully removed.',
+        ],
+
+        // Warning Messages
+        'warnings' => [
+            'quota_warning' => 'Gmail API quota usage has reached :percentage%. Please monitor usage.',
+            'quota_critical' => 'Gmail API quota usage is critical (:percentage%). Emails may fail to send.',
+            'verification_expiring' => 'OAuth verification will expire in :days days.',
+        ],
+
+        // Status Labels
+        'status' => [
+            'healthy' => 'Healthy',
+            'warning' => 'Warning',
+            'critical' => 'Critical',
+            'unavailable' => 'Unavailable',
+            'authenticated' => 'Authenticated',
+            'not_authenticated' => 'Not Authenticated',
+            'enabled' => 'Enabled',
+            'disabled' => 'Disabled',
+        ],
+    ],
 ];

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ms">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,15 +22,16 @@
     {{-- Allow pages to inject additional head content --}}
     @stack('head')
 </head>
+
 <body class="fi-body">
     {{ $slot }}
 
-    {{-- Alpine + Livewire + App JS --}}
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{-- Livewire 3.x bundles Alpine.js - no CDN needed --}}
     @livewireScripts
     @vite('resources/js/app.js')
 
     {{-- Allow pages to inject footer scripts --}}
     @stack('scripts')
 </body>
+
 </html>

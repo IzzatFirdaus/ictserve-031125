@@ -97,4 +97,98 @@ return [
     'google_sso_unavailable' => 'Perkhidmatan Google SSO tidak tersedia buat masa ini. Sila gunakan log masuk biasa.',
     'google_sso_account_disabled' => 'Akaun anda telah dinyahaktifkan. Sila hubungi pentadbir sistem.',
     'google_sso_fallback_hint' => 'Anda boleh log masuk menggunakan e-mel dan kata laluan anda.',
+
+    // Status Pengesahan OAuth (Tugasan 1.1 - Keperluan 1.1, 2.5, 4.1)
+    'oauth_status' => [
+        'verified' => 'Disahkan',
+        'pending' => 'Menunggu Pengesahan',
+        'testing' => 'Mod Ujian',
+        'rejected' => 'Ditolak',
+        'unknown' => 'Tidak Diketahui',
+    ],
+    'test_user_required' => 'Akaun :email perlu ditambah ke senarai pengguna ujian. Aplikasi OAuth sedang dalam :status. Sila hubungi pentadbir sistem.',
+    'verification_pending' => 'Aplikasi sedang dalam proses pengesahan Google. Sila hubungi pentadbir sistem.',
+    'gmail_quota_exceeded' => 'Had penggunaan Gmail API telah dicapai. E-mel akan dihantar melalui sistem biasa.',
+    'gmail_auth_failed' => 'Pengesahan Gmail tidak berjaya. E-mel akan dihantar melalui sistem biasa.',
+
+    // Jenis Ralat SSO
+    'error_types' => [
+        'domain_error' => 'Ralat Domain',
+        'oauth_error' => 'Ralat OAuth',
+        'oauth_state_error' => 'Ralat Keadaan OAuth',
+        'network_error' => 'Ralat Rangkaian',
+        'general_error' => 'Ralat Umum',
+        'verification_error' => 'Ralat Pengesahan',
+        'quota_error' => 'Ralat Kuota',
+        'rate_limit_error' => 'Ralat Had Kadar',
+        'authentication_error' => 'Ralat Pengesahan',
+        'configuration_error' => 'Ralat Konfigurasi',
+        'service_unavailable' => 'Perkhidmatan Tidak Tersedia',
+    ],
+
+    // Mesej Ralat Gmail API Tambahan (Tugasan 8.1 - Keperluan 7.1, 7.4)
+    'gmail_rate_limit_exceeded' => 'Had kadar Gmail API telah dicapai. Sila cuba lagi dalam beberapa minit.',
+    'gmail_service_unavailable' => 'Perkhidmatan Gmail tidak tersedia buat masa ini. E-mel akan dihantar melalui sistem biasa.',
+    'gmail_send_failed' => 'Penghantaran e-mel melalui Gmail gagal. E-mel akan dihantar melalui sistem biasa.',
+
+    // Mesej Ralat Google SSO Tambahan (Tugasan 8.1 - Keperluan 7.1, 7.4)
+    'google_sso_test_user_required' => 'Akaun anda perlu ditambah ke senarai pengguna ujian. Sila hubungi pentadbir sistem.',
+    'google_sso_verification_rejected' => 'Pengesahan aplikasi OAuth telah ditolak. Sila hubungi pentadbir sistem.',
+    'google_sso_configuration_error' => 'Konfigurasi Google SSO tidak lengkap. Sila hubungi pentadbir sistem.',
+
+    // Perkhidmatan Google - Mesej Terperinci (Tugasan 8.1 - Keperluan 7.1, 7.2, 7.4, 7.5)
+    'google_services' => [
+        // Status Pengesahan
+        'verification_rejected' => 'Pengesahan aplikasi OAuth telah ditolak oleh Google.',
+        'verification_in_progress' => 'Pengesahan aplikasi OAuth sedang dalam proses.',
+
+        // Mesej Gmail
+        'gmail_token_expired' => 'Token Gmail telah tamat tempoh. Sila sahkan semula.',
+        'gmail_not_configured' => 'Gmail API belum dikonfigurasi. Sila hubungi pentadbir sistem.',
+        'gmail_fallback_activated' => 'E-mel akan dihantar melalui sistem SMTP biasa.',
+
+        // Teks Bantuan
+        'help' => [
+            'domain' => 'Hanya akaun e-mel @motac.gov.my dibenarkan untuk log masuk. Sila gunakan akaun Google Workspace MOTAC anda.',
+            'verification' => 'Aplikasi sedang dalam proses pengesahan Google. Sila hubungi pentadbir sistem untuk maklumat lanjut.',
+            'verification_pending' => 'Pengesahan aplikasi OAuth sedang diproses oleh Google. Ini mungkin mengambil masa beberapa hari.',
+            'verification_rejected' => 'Pengesahan aplikasi OAuth telah ditolak. Pentadbir sistem perlu mengemukakan semula permohonan.',
+            'test_user' => 'Akaun anda perlu ditambah ke senarai pengguna ujian oleh pentadbir sistem sebelum boleh menggunakan Google SSO.',
+            'quota' => 'Had penggunaan harian Gmail API telah dicapai. Kuota akan ditetapkan semula pada tengah malam.',
+            'rate_limit' => 'Terlalu banyak permintaan dalam masa singkat. Sila tunggu beberapa minit sebelum mencuba lagi.',
+            'network' => 'Masalah sambungan ke pelayan Google. Sila semak sambungan internet anda dan cuba lagi.',
+            'token_expired' => 'Sesi Gmail anda telah tamat. Sila sahkan semula untuk meneruskan.',
+            'gmail_setup' => 'Gmail API belum dikonfigurasi. Pentadbir sistem perlu menjalankan arahan "php artisan gmail:authorize".',
+            'gmail_auth' => 'Pengesahan Gmail gagal. Sila cuba lagi atau hubungi pentadbir sistem.',
+            'fallback' => 'Anda boleh log masuk menggunakan e-mel dan kata laluan anda sebagai alternatif.',
+        ],
+
+        // Mesej Kejayaan
+        'success' => [
+            'sso_linked' => 'Akaun Google anda telah berjaya dipautkan.',
+            'sso_unlinked' => 'Akaun Google anda telah berjaya diputuskan.',
+            'gmail_authorized' => 'Gmail API telah berjaya disahkan.',
+            'test_user_added' => 'Pengguna ujian telah berjaya ditambah.',
+            'test_user_removed' => 'Pengguna ujian telah berjaya dikeluarkan.',
+        ],
+
+        // Mesej Amaran
+        'warnings' => [
+            'quota_warning' => 'Penggunaan kuota Gmail API telah mencapai :percentage%. Sila pantau penggunaan.',
+            'quota_critical' => 'Penggunaan kuota Gmail API kritikal (:percentage%). E-mel mungkin gagal dihantar.',
+            'verification_expiring' => 'Pengesahan OAuth akan tamat tempoh dalam :days hari.',
+        ],
+
+        // Label Status
+        'status' => [
+            'healthy' => 'Sihat',
+            'warning' => 'Amaran',
+            'critical' => 'Kritikal',
+            'unavailable' => 'Tidak Tersedia',
+            'authenticated' => 'Disahkan',
+            'not_authenticated' => 'Tidak Disahkan',
+            'enabled' => 'Diaktifkan',
+            'disabled' => 'Dinyahaktifkan',
+        ],
+    ],
 ];
