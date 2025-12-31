@@ -53,6 +53,10 @@ return [
             'transport' => 'ses',
         ],
 
+        'gmail' => [
+            'transport' => 'gmail',
+        ],
+
         'postmark' => [
             'transport' => 'postmark',
             // 'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
@@ -111,8 +115,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply.ictserve@motac.gov.com'),
+        'name' => env('MAIL_FROM_NAME', 'ICTServe'),
     ],
 
 ];
