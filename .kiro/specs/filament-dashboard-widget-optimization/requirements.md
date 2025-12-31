@@ -619,3 +619,123 @@ The ICTServe Filament admin dashboard currently displays duplicated widgets, cre
 3. WHEN AI widget data is exported, THE System SHALL include AI metrics in unified dashboard reports and analytics exports
 4. THE System SHALL implement consistent color schemes for AI widgets using MyDS semantic colors and maintaining accessibility standards
 5. WHEN AI widgets are customized, THE System SHALL support the same user preference and layout customization features as other dashboard widgets
+
+### Requirement 22: Filament Dashboard Visual Consistency Fixes (D12 §4, D14 MyDS v2025.2, Screenshot Audit)
+
+**User Story:** As an administrator, I want the Filament dashboard to display consistent, properly styled widgets with correct spacing, shadows, and typography, so that I have a professional and visually coherent admin experience.
+
+**Context:** Visual audit of dashboard screenshots against v3.6.1 documentation (D12, D14) revealed several styling inconsistencies that need to be addressed to achieve full MyDS v2025.2 compliance.
+
+#### Acceptance Criteria
+
+**Widget Layout and Grid System (MyDS 12-8-4):**
+
+1. WHEN widgets are rendered on desktop (≥1024px), THE System SHALL use 12-column grid with 24px gap spacing
+2. WHEN widgets are rendered on tablet (768px-1023px), THE System SHALL use 8-column grid with 24px gap spacing
+3. WHEN widgets are rendered on mobile (<768px), THE System SHALL use 4-column grid with 18px gap spacing
+4. WHEN multiple widgets are displayed in a row, THE System SHALL ensure consistent vertical alignment
+5. WHEN widget sections are rendered, THE System SHALL maintain 24px (--space-6) spacing between sections
+
+**Widget Card Styling (D14 §7.5 Shadow System):**
+
+1. WHEN widget cards are rendered, THE System SHALL apply `shadow-card` elevation (0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05))
+2. WHEN widget cards are displayed, THE System SHALL use `rounded-lg` (12px) border-radius
+3. WHEN widget backgrounds are rendered, THE System SHALL use `bg-white` (light mode) or `bg-gray-800` (dark mode)
+4. WHEN widget borders are needed, THE System SHALL use `border-gray-200` (light mode) or `border-gray-700` (dark mode)
+5. WHEN widget padding is applied, THE System SHALL use consistent `p-6` (24px) internal padding
+
+**Typography Consistency (D14 §5):**
+
+1. WHEN widget headers are displayed, THE System SHALL use Poppins font at `text-xl font-semibold` (20px, 600 weight)
+2. WHEN widget metric numbers are displayed, THE System SHALL use `text-3xl font-bold` (30px, 700 weight) with appropriate color coding
+3. WHEN widget labels are displayed, THE System SHALL use Inter font at `text-sm text-gray-600` (14px)
+4. WHEN widget body text is displayed, THE System SHALL use Inter font at `text-base` (16px) with `line-height: 1.5`
+5. WHEN widget secondary text is shown, THE System SHALL use `text-gray-500` with 4.6:1 contrast ratio
+
+**Status Badge Styling (D14 §6.7):**
+
+1. WHEN "Tidak Aktif" (Inactive) status is displayed, THE System SHALL use `bg-gray-100 text-gray-700` with `heroicon-o-x-circle` icon
+2. WHEN "Aktif" (Active) status is displayed, THE System SHALL use `bg-success-50 text-success-700` with `heroicon-o-check-circle` icon
+3. WHEN "Dalam Proses" (In Progress) status is displayed, THE System SHALL use `bg-warning-50 text-warning-700` with `heroicon-o-clock` icon
+4. WHEN status badges are rendered, THE System SHALL include both icon and text (not color alone per WCAG 1.4.1)
+5. WHEN status badges are displayed, THE System SHALL use `rounded-full px-3 py-1 text-sm font-medium` styling
+
+**Empty State Handling:**
+
+1. WHEN widgets have no data, THE System SHALL display meaningful empty state with icon, title, and description
+2. WHEN chart widgets have no data, THE System SHALL display "Tiada data tersedia" message with appropriate styling
+3. WHEN metric widgets show zero values, THE System SHALL display "0" with `text-gray-400` color and explanatory text
+4. WHEN empty states are displayed, THE System SHALL use `heroicon-o-chart-bar` or relevant icon at `w-12 h-12 text-gray-300`
+5. WHEN empty states include actions, THE System SHALL provide a call-to-action button with proper styling
+
+**Chart Widget Visual Fixes (D14 §8, D12 §7):**
+
+1. WHEN pie charts are rendered, THE System SHALL use MyDS color palette: Primary 500, Success 500, Warning 500, Info 500, Secondary 500
+2. WHEN chart legends are displayed, THE System SHALL use `text-sm` (14px) with proper spacing and color indicators
+3. WHEN chart containers are rendered, THE System SHALL use `min-h-[300px]` for consistent sizing
+4. WHEN chart backgrounds are displayed, THE System SHALL use `bg-gray-50` (light mode) or `bg-gray-800` (dark mode)
+5. WHEN charts have no data, THE System SHALL display centered empty state instead of broken/empty chart
+
+**Stats Overview Widget Fixes:**
+
+1. WHEN stats overview widgets are rendered, THE System SHALL display metrics in consistent card format with icon, value, and label
+2. WHEN stats values are displayed, THE System SHALL use color coding: success (green), warning (orange), danger (red), info (blue)
+3. WHEN stats icons are displayed, THE System SHALL use `w-5 h-5` (20px) Heroicons with matching color
+4. WHEN stats trends are shown, THE System SHALL display trend arrows (↑/↓) with percentage change
+5. WHEN stats cards are arranged, THE System SHALL use `grid grid-cols-2 md:grid-cols-4 gap-4` layout
+
+**Interactive Element Styling:**
+
+1. WHEN hover states are triggered on widgets, THE System SHALL apply `hover:shadow-lg` transition with 200ms duration
+2. WHEN focus states are applied, THE System SHALL display 3px outline with 2px offset using `--fr-primary` token
+3. WHEN buttons within widgets are rendered, THE System SHALL use `shadow-button` elevation
+4. WHEN interactive elements are clicked, THE System SHALL provide visual feedback with `active:scale-98` transform
+5. WHEN tooltips are displayed, THE System SHALL use dark background with white text and 200ms delay
+
+**Responsive Behavior Fixes:**
+
+1. WHEN viewport is below 768px, THE System SHALL stack all widgets vertically with full width
+2. WHEN viewport is between 768px-1023px, THE System SHALL display widgets in 2-column layout
+3. WHEN viewport is 1024px or above, THE System SHALL display widgets in 3-4 column layout based on widget type
+4. WHEN widgets are resized, THE System SHALL maintain aspect ratios for chart widgets
+5. WHEN mobile navigation is triggered, THE System SHALL collapse sidebar and show hamburger menu
+
+### Requirement 23: Screenshot-Identified Visual Defects Resolution
+
+**User Story:** As an administrator, I want all visual defects identified in the dashboard screenshots to be resolved, so that the dashboard matches the v3.6.1 design specifications.
+
+**Context:** Specific visual defects identified from screenshot analysis that require immediate attention.
+
+#### Acceptance Criteria
+
+**Identified Defects from Screenshots:**
+
+1. WHEN the "Carta & Analitik" section is rendered, THE System SHALL display properly styled chart widgets instead of empty gray boxes
+2. WHEN the "Pinjaman Peralatan Perkakasan ICTServe" section is displayed, THE System SHALL show consistent card styling with proper shadows
+3. WHEN stats cards show "Tidak Aktif" status, THE System SHALL use proper badge styling with icon and contrasting colors
+4. WHEN the sidebar navigation is displayed, THE System SHALL use consistent icon sizing (w-5 h-5) and proper active state highlighting
+5. WHEN the dashboard header is rendered, THE System SHALL display user menu, notifications, and theme toggle with proper spacing
+
+**Widget-Specific Fixes:**
+
+1. WHEN `HelpdeskStatsOverview` widget is rendered, THE System SHALL display all metrics with consistent card styling and proper color coding
+2. WHEN `AssetLoanStatsOverview` widget is rendered, THE System SHALL display loan statistics with proper status badges and trend indicators
+3. WHEN `TicketVolumeChart` widget is rendered, THE System SHALL display chart with proper MyDS colors and legend styling
+4. WHEN `AssetUtilizationWidget` widget is rendered, THE System SHALL display utilization data with proper chart styling
+5. WHEN `QuickActionsWidget` widget is rendered, THE System SHALL display action buttons in consistent grid layout with proper hover states
+
+**Color Token Application:**
+
+1. WHEN primary actions are displayed, THE System SHALL use `#0056B3` (Primary 500) consistently
+2. WHEN success states are shown, THE System SHALL use `#1B7C54` (Success 500) with proper contrast
+3. WHEN warning states are displayed, THE System SHALL use `#CC7700` (Warning 500) with proper contrast
+4. WHEN danger states are shown, THE System SHALL use `#B3002D` (Danger 500) with proper contrast
+5. WHEN neutral backgrounds are rendered, THE System SHALL use `#f9fafb` (Gray 50) for page background
+
+**Spacing and Alignment Fixes:**
+
+1. WHEN widget sections are rendered, THE System SHALL maintain consistent 24px vertical spacing between sections
+2. WHEN widget cards are displayed in a row, THE System SHALL use consistent 24px horizontal gap
+3. WHEN widget content is rendered, THE System SHALL use consistent 24px internal padding
+4. WHEN widget headers and content are displayed, THE System SHALL maintain 16px spacing between header and content
+5. WHEN multiple stat cards are displayed, THE System SHALL ensure equal height across all cards in a row

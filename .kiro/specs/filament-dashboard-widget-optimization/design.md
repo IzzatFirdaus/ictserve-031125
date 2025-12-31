@@ -2986,3 +2986,243 @@ class AIMonitoringWidgetSuite
 ```
 
 This comprehensive update addresses all the gaps identified in the requirements analysis and removes the deprecated Figma MCP integration as requested.
+
+---
+
+## Visual Consistency Correctness Properties (R22, R23)
+
+The following correctness properties validate the visual consistency fixes identified from the screenshot audit against v3.6.1 documentation (D12, D14).
+
+### Property 22: Widget Card Shadow Elevation
+
+*For any* widget card rendered in the dashboard, the system should apply `shadow-card` CSS class with the MyDS shadow token value (0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05)).
+
+**Validates: Requirements R22.2.1**
+
+### Property 23: Widget Card Border Radius
+
+*For any* widget card rendered in the dashboard, the system should apply `rounded-lg` class (12px border-radius) for consistent styling.
+
+**Validates: Requirements R22.2.2**
+
+### Property 24: Widget Header Typography
+
+*For any* widget header displayed in the dashboard, the system should apply `text-xl font-semibold` classes with Poppins font family.
+
+**Validates: Requirements R22.3.1**
+
+### Property 25: Widget Metric Typography
+
+*For any* metric number displayed in a widget, the system should apply `text-3xl font-bold` classes with appropriate color coding based on metric type.
+
+**Validates: Requirements R22.3.2**
+
+### Property 26: Status Badge Icon Inclusion
+
+*For any* status badge displayed in the dashboard, the system should include both an icon and text label (not color alone) to comply with WCAG 1.4.1.
+
+**Validates: Requirements R22.4.4**
+
+### Property 27: Empty State Display
+
+*For any* widget with no data, the system should display a meaningful empty state component with icon, title, and description instead of broken/empty display.
+
+**Validates: Requirements R22.5.1**
+
+### Property 28: Chart Color Palette
+
+*For any* chart widget rendered in the dashboard, the system should use MyDS color palette (Primary 500, Success 500, Warning 500, Info 500, Secondary 500) for data series.
+
+**Validates: Requirements R22.6.1**
+
+### Property 29: Chart Container Sizing
+
+*For any* chart widget container, the system should apply `min-h-[300px]` for consistent sizing across all chart types.
+
+**Validates: Requirements R22.6.3**
+
+### Property 30: Grid System Compliance
+
+*For any* widget layout on desktop (≥1024px), the system should use 12-column grid with 24px gap spacing following MyDS 12-8-4 responsive grid system.
+
+**Validates: Requirements R22.1.1**
+
+### Property 31: Section Spacing
+
+*For any* widget section in the dashboard, the system should maintain 24px (--space-6) vertical spacing between sections.
+
+**Validates: Requirements R22.1.5**
+
+### Property 32: Stats Card Layout
+
+*For any* stats overview widget, the system should display metrics in `grid grid-cols-2 md:grid-cols-4 gap-4` layout with equal height cards.
+
+**Validates: Requirements R22.7.5**
+
+### Property 33: Hover State Transition
+
+*For any* interactive widget element, the system should apply `hover:shadow-lg` transition with 200ms duration on hover.
+
+**Validates: Requirements R22.9.1**
+
+### Property 34: Focus Indicator Visibility
+
+*For any* focusable element in widgets, the system should display 3px outline with 2px offset using `--fr-primary` token when focused.
+
+**Validates: Requirements R22.9.2**
+
+### Property 35: Sidebar Icon Sizing
+
+*For any* navigation icon in the sidebar, the system should apply `w-5 h-5` (20px) sizing for consistency.
+
+**Validates: Requirements R23.2.4**
+
+---
+
+## Visual Consistency Implementation Notes
+
+### MyDS Token Mapping for Visual Fixes
+
+```css
+/* resources/css/filament.css - Visual Consistency Tokens */
+@theme {
+    /* Shadow System (D14 §7.5) */
+    --shadow-card: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05);
+    --shadow-button: 0px 1px 3px 0px rgba(0, 0, 0, 0.07);
+    --shadow-dropdown: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 12px 50px 0px rgba(0, 0, 0, 0.10);
+    
+    /* Spacing System (D14 §7.2) */
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+    
+    /* Border Radius (D14 §7.5) */
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+    
+    /* Motion Tokens (D14 §7.6) */
+    --motion-easeout: cubic-bezier(0, 0, 0.58, 1);
+    --duration-short: 200ms;
+    
+    /* Focus Ring (D14 §10.2) */
+    --fr-primary: #0056b3;
+    --focus-ring-width: 3px;
+    --focus-ring-offset: 2px;
+}
+```
+
+### Widget Card Component Template
+
+```blade
+{{-- resources/views/filament/components/widget-card.blade.php --}}
+<div {{ $attributes->merge([
+    'class' => 'bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 transition-shadow duration-200 hover:shadow-lg'
+]) }}>
+    @if(isset($header))
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white font-poppins">
+                {{ $header }}
+            </h3>
+            @if(isset($actions))
+                <div class="flex gap-2">
+                    {{ $actions }}
+                </div>
+            @endif
+        </div>
+    @endif
+
+    <div class="space-y-4">
+        {{ $slot }}
+    </div>
+</div>
+```
+
+### Status Badge Component Template
+
+```blade
+{{-- resources/views/components/status-badge.blade.php --}}
+@props([
+    'status' => 'inactive',
+    'size' => 'sm'
+])
+
+@php
+$statusConfig = [
+    'active' => [
+        'bg' => 'bg-success-50 dark:bg-success-900/20',
+        'text' => 'text-success-700 dark:text-success-400',
+        'icon' => 'heroicon-o-check-circle',
+        'label' => 'Aktif'
+    ],
+    'inactive' => [
+        'bg' => 'bg-gray-100 dark:bg-gray-700',
+        'text' => 'text-gray-700 dark:text-gray-300',
+        'icon' => 'heroicon-o-x-circle',
+        'label' => 'Tidak Aktif'
+    ],
+    'in_progress' => [
+        'bg' => 'bg-warning-50 dark:bg-warning-900/20',
+        'text' => 'text-warning-700 dark:text-warning-400',
+        'icon' => 'heroicon-o-clock',
+        'label' => 'Dalam Proses'
+    ],
+    'pending' => [
+        'bg' => 'bg-warning-50 dark:bg-warning-900/20',
+        'text' => 'text-warning-700 dark:text-warning-400',
+        'icon' => 'heroicon-o-clock',
+        'label' => 'Menunggu'
+    ],
+    'approved' => [
+        'bg' => 'bg-success-50 dark:bg-success-900/20',
+        'text' => 'text-success-700 dark:text-success-400',
+        'icon' => 'heroicon-o-check-circle',
+        'label' => 'Diluluskan'
+    ],
+    'rejected' => [
+        'bg' => 'bg-danger-50 dark:bg-danger-900/20',
+        'text' => 'text-danger-700 dark:text-danger-400',
+        'icon' => 'heroicon-o-x-circle',
+        'label' => 'Ditolak'
+    ],
+];
+
+$config = $statusConfig[$status] ?? $statusConfig['inactive'];
+@endphp
+
+<span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-{{ $size }} font-medium {{ $config['bg'] }} {{ $config['text'] }}">
+    <x-dynamic-component :component="$config['icon']" class="w-4 h-4" />
+    <span>{{ $config['label'] }}</span>
+</span>
+```
+
+### Empty State Component Template
+
+```blade
+{{-- resources/views/components/empty-state.blade.php --}}
+@props([
+    'icon' => 'heroicon-o-chart-bar',
+    'title' => 'Tiada data tersedia',
+    'description' => null,
+    'action' => null
+])
+
+<div {{ $attributes->merge(['class' => 'flex flex-col items-center justify-center py-12 text-center']) }}>
+    <x-dynamic-component :component="$icon" class="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" />
+    
+    <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+        {{ $title }}
+    </h4>
+    
+    @if($description)
+        <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm mb-4">
+            {{ $description }}
+        </p>
+    @endif
+    
+    @if($action)
+        <div class="mt-4">
+            {{ $action }}
+        </div>
+    @endif
+</div>
+```
