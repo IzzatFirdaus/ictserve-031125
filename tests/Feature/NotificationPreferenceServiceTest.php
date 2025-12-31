@@ -545,4 +545,380 @@ class NotificationPreferenceServiceTest extends TestCase
 
         $this->assertFalse($result);
     }
+
+    // ==========================================
+    // Task 3: Enhanced NotificationPreferences Tests
+    // ==========================================
+
+    /**
+     * Test setQuietHours sets quiet hours correctly
+     * Property 22: Quiet hours enforcement
+     */
+    #[Test]
+    public function set_quiet_hours_sets_quiet_hours_correctly(): void
+    {
+        $user = User::factory()->create(['notification_preferences' => null]);
+
+        $this->service->setQuietHours($user, '22:00', '07:00');
+
+        $user->refresh();
+        $preferences = $this->service->getPreferences($user);
+
+        $this->assertTrue($preferences['quiet_hours_enabled']);
+        $this->assertEquals('22:00', $preferences['quiet_hours_start']);
+        $this->assertEquals('07:00', $preferences['quiet_hours_end']);
+    }
+
+    /**
+     * Test setQuietHours with custom timezone
+     */
+    #[Test]
+    public function set_quiet_hours_with_custom_timezone(): void
+    {
+        $user = User::factory()->create(['notification_preferences' => null]);
+
+        $this->service->setQuietHours($user, '22:00', '07:00', 'Asia/Singapore');
+
+        $user->refresh();
+        $preferences = $this->service->getPreferences($user);
+
+        $this->assertEquals('Asia/Singapore', $preferences['timezone']);
+    }
+
+    /**
+     * Test setQuietHours throws exception for invalid time format
+     */
+    #[Test]
+    public function set_quiet_hours_throws_for_invalid_time_format(): void
+    {
+        $user = User::factory()->create();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time format');
+
+        $this->service->setQuietHours($user, 'invalid', '07:00');
+    }
+
+    /**
+     * Test setQuietHours throws exception for invalid timezone
+     */
+    #[Test]
+    public function set_quiet_hours_throws_for_invalid_timezone(): void
+    {
+        $user = User::factory()->create();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid timezone');
+
+        $this->service->setQuietHours($user, '22:00', '07:00', 'Invalid/Timezone');
+    }
+
+    /**
+     * Test isInQuietHours returns false when quiet hours disabled
+     */
+    #[Test]
+    public function is_in_quiet_hours_returns_false_when_disabled(): void
+    {
+        $user = User::factory()->create([
+            'notification_preferences' => [
+                'quiet_hours_enabled' => false,
+                'quiet_hours_start' => '22:00',
+                'quiet_hours_end' => '07:00',
+            ],
+        ]);
+
+        $result = $this->service->isInQuietHours($user);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Test isInQuietHours returns false when times not set
+     */
+    #[Test]
+    public function is_in_quiet_hours_returns_false_when_times_not_set(): void
+    {
+        $user = User::factory()->create([
+            'notification_preferences' => [
+                'quiet_hours_enabled' => true,
+                'quiet_hours_start' => null,
+                'quiet_hours_end' => null,
+            ],
+        ]);
+
+        $result = $this->service->isInQuietHours($user);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Test disableQuietHours disables quiet hours
+     */
+    #[Test]
+    public function disable_quiet_hours_disables_quiet_hours(): void
+    {
+        $user = User::factory()->create([
+            'notification_preferences' => [
+                'quiet_hours_enabled' => true,
+                'quiet_hours_start' => '22:00',
+                'quiet_hours_end' => '07:00',
+            ],
+        ]);
+
+        $this->service->disableQuietHours($user);
+
+        $user->refresh();
+        $preferences = $this->service->getPreferences($user);
+
+        $this->assertFalse($preferences['quiet_hours_enabled']);
+    }
+
+    /**
+     * Test bulkUpdatePreferences updates multiple users
+     * Requirements 5.7: Bulk preference management
+     */
+    #[Test]
+    public function bulk_update_preferences_updates_multiple_users(): void
+    {
+        $users = User::factory()->count(3)->create(['notification_preferences' => null]);
+        $userIds = $users->pluck('id')->toArray();
+
+        $result = $this->service->bulkUpdatePreferences($userIds, [
+            'email_enabled' => false,
+            'digest_frequency' => 'daily',
+        ]);
+
+        $this->assertCount(3, $result['success']);
+        $this->assertEmpty($result['failed']);
+
+        foreach ($users as $user) {
+            $user->refresh();
+            $preferences = $this->service->getPreferences($user);
+            $this->assertFalse($preferences['email_enabled']);
+            $this->assertEquals('daily', $preferences['digest_frequency']);
+        }
+    }
+
+    /**
+     * Test bulkUpdatePreferences throws for invalid keys
+     */
+    #[Test]
+    public function bulk_update_preferences_throws_for_invalid_keys(): void
+    {
+        $users = User::factory()->count(2)->create();
+        $userIds = $users->pluck('id')->toArray();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid preference keys');
+
+        $this->service->bulkUpdatePreferences($userIds, [
+            'invalid_key' => true,
+        ]);
+    }
+
+    /**
+     * Test shouldSendNotification returns true for critical priority
+     * Property 23: Critical notification override in preferences
+     */
+    #[Test]
+    public function should_send_notification_returns_true_for_critical_priority(): void
+    {
+        $user = User::factory()->create([
+            'notification_preferences' => [
+                'email_enabled' => false,
+                'ticket_updates' => false,
+            ],
+        ]);
+
+        $result = $this->service->shouldSendNotification($user, 'ticket_updates', 'mail', 'critical');
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test shouldSendNotification respects channel preferences
+     * Property 21: Channel-specific preferences
+     */
+    #[Test]
+    public function should_send_notification_respects_channel_preferences(): void
+    {
+        $user = User::factory()->create([
+            'notification_preferences' => [
+                'email_enabled' => false,
+                'in_app_enabled' => true,
+                'realtime_notifications' => true,
+                'ticket_updates' => true,
+                'digest_frequency' => 'immediate',
+            ],
+        ]);
+
+        $this->assertFalse($this->service->shouldSendNotification($user, 'ticket_updates', 'mail'));
+        $this->assertTrue($this->service->shouldSendNotification($user, 'ticket_updates', 'database'));
+        $this->assertTrue($this->service->shouldSendNotification($user, 'ticket_updates', 'broadcast'));
+    }
+
+    /**
+     * Test getUserTimezone returns default timezone
+     */
+    #[Test]
+    public function get_user_timezone_returns_default_timezone(): void
+    {
+        $user = User::factory()->create(['notification_preferences' => null]);
+
+        $result = $this->service->getUserTimezone($user);
+
+        $this->assertEquals('Asia/Kuala_Lumpur', $result);
+    }
+
+    /**
+     * Test getUserTimezone returns custom timezone
+     */
+    #[Test]
+    public function get_user_timezone_returns_custom_timezone(): void
+    {
+        $user = User::factory()->create([
+            'notification_preferences' => [
+                'timezone' => 'Asia/Singapore',
+            ],
+        ]);
+
+        $result = $this->service->getUserTimezone($user);
+
+        $this->assertEquals('Asia/Singapore', $result);
+    }
+
+    /**
+     * Test setUserTimezone sets timezone correctly
+     */
+    #[Test]
+    public function set_user_timezone_sets_timezone_correctly(): void
+    {
+        $user = User::factory()->create(['notification_preferences' => null]);
+
+        $this->service->setUserTimezone($user, 'Asia/Tokyo');
+
+        $user->refresh();
+        $result = $this->service->getUserTimezone($user);
+
+        $this->assertEquals('Asia/Tokyo', $result);
+    }
+
+    /**
+     * Test setUserTimezone throws for invalid timezone
+     */
+    #[Test]
+    public function set_user_timezone_throws_for_invalid_timezone(): void
+    {
+        $user = User::factory()->create();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid timezone');
+
+        $this->service->setUserTimezone($user, 'Invalid/Timezone');
+    }
+
+    /**
+     * Test preferences include quiet hours fields
+     * Property 20: Preference persistence
+     */
+    #[Test]
+    public function preferences_include_quiet_hours_fields(): void
+    {
+        $user = User::factory()->create(['notification_preferences' => null]);
+
+        $preferences = $this->service->getPreferences($user);
+
+        $this->assertArrayHasKey('quiet_hours_enabled', $preferences);
+        $this->assertArrayHasKey('quiet_hours_start', $preferences);
+        $this->assertArrayHasKey('quiet_hours_end', $preferences);
+        $this->assertArrayHasKey('timezone', $preferences);
+    }
+
+    /**
+     * Test updatePreferences with timezone
+     */
+    #[Test]
+    public function update_preferences_with_timezone(): void
+    {
+        $user = User::factory()->create(['notification_preferences' => null]);
+
+        $this->service->updatePreferences($user, [
+            'timezone' => 'Europe/London',
+        ]);
+
+        $user->refresh();
+        $preferences = $this->service->getPreferences($user);
+
+        $this->assertEquals('Europe/London', $preferences['timezone']);
+    }
+
+    /**
+     * Test updatePreferences throws for invalid timezone
+     */
+    #[Test]
+    public function update_preferences_throws_for_invalid_timezone(): void
+    {
+        $user = User::factory()->create();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid timezone');
+
+        $this->service->updatePreferences($user, [
+            'timezone' => 'Invalid/Timezone',
+        ]);
+    }
+
+    /**
+     * Test valid time formats for quiet hours
+     */
+    #[Test]
+    #[DataProvider('validTimeFormatProvider')]
+    public function valid_time_formats_are_accepted(string $start, string $end): void
+    {
+        $user = User::factory()->create(['notification_preferences' => null]);
+
+        $this->service->setQuietHours($user, $start, $end);
+
+        $user->refresh();
+        $preferences = $this->service->getPreferences($user);
+
+        $this->assertEquals($start, $preferences['quiet_hours_start']);
+        $this->assertEquals($end, $preferences['quiet_hours_end']);
+    }
+
+    public static function validTimeFormatProvider(): array
+    {
+        return [
+            'standard evening to morning' => ['22:00', '07:00'],
+            'midnight crossing' => ['23:30', '06:30'],
+            'same day hours' => ['09:00', '17:00'],
+            'single digit hour' => ['9:00', '5:00'],
+            'noon to midnight' => ['12:00', '23:59'],
+        ];
+    }
+
+    /**
+     * Test invalid time formats for quiet hours
+     */
+    #[Test]
+    #[DataProvider('invalidTimeFormatProvider')]
+    public function invalid_time_formats_are_rejected(string $start, string $end): void
+    {
+        $user = User::factory()->create();
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->service->setQuietHours($user, $start, $end);
+    }
+
+    public static function invalidTimeFormatProvider(): array
+    {
+        return [
+            'invalid hour' => ['25:00', '07:00'],
+            'invalid minute' => ['22:60', '07:00'],
+            'text format' => ['ten pm', '07:00'],
+            'empty string' => ['', '07:00'],
+            'missing colon' => ['2200', '07:00'],
+        ];
+    }
 }

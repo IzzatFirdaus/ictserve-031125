@@ -226,11 +226,12 @@ class EmailSystemIntegrationTest extends TestCase
         // Assert status update email was queued with BM content
         Mail::assertQueued(LoanStatusUpdated::class, function ($mail) use ($application) {
             $rendered = $mail->render();
+            $renderedLower = strtolower($rendered);
 
-            // Verify Bahasa Melayu content
+            // Verify Bahasa Melayu content (case-insensitive for mixed-case terms)
             $this->assertStringContainsString('Tuan/Puan', $rendered); // BM greeting
-            $this->assertStringContainsString('status', $rendered); // Status term
-            $this->assertStringContainsString('permohonan', $rendered); // Application term
+            $this->assertStringContainsString('status', $renderedLower); // Status term (case-insensitive)
+            $this->assertStringContainsString('permohonan', $renderedLower); // Application term (case-insensitive)
             $this->assertStringContainsString('Terima kasih', $rendered); // BM closing
 
             return $mail->application->id === $application->id

@@ -19,6 +19,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Rules\MotacEmailDomain;
+use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -39,37 +41,58 @@ class RegistrationDomainPropertyTest extends TestCase
     #[DataProvider('validMotacEmailProvider')]
     public function property_email_domain_accepts_valid_motac_emails(string $email): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        $this->assertEmailDomainValidity($email, true);
     }
 
     #[Test]
     #[DataProvider('invalidEmailDomainProvider')]
     public function property_email_domain_rejects_invalid_domains(string $email, string $description): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        $this->assertEmailDomainValidity($email, false, $description);
     }
 
     #[Test]
     public function property_email_domain_is_case_insensitive(): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        $caseVariations = [
+            'testuser@motac.gov.my',
+            'TESTUSER@MOTAC.GOV.MY',
+            'TestUser@Motac.Gov.My',
+        ];
+
+        foreach ($caseVariations as $email) {
+            $this->assertEmailDomainValidity($email, true);
+        }
     }
 
     #[Test]
     public function property_email_domain_rejects_similar_domains(): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        $similarDomains = [
+            'user@m0tac.gov.my',
+            'user@motac.gov.my.evil',
+            'user@motac-gov.my',
+            'user@motacgov.my',
+        ];
+
+        foreach ($similarDomains as $email) {
+            $this->assertEmailDomainValidity($email, false);
+        }
     }
 
     #[Test]
     public function property_email_domain_accepts_various_username_formats(): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        $validUsernames = [
+            'user.name@motac.gov.my',
+            'user_name@motac.gov.my',
+            'user-name@motac.gov.my',
+            'user123@motac.gov.my',
+        ];
+
+        foreach ($validUsernames as $email) {
+            $this->assertEmailDomainValidity($email, true);
+        }
     }
 
     /**
@@ -110,5 +133,23 @@ class RegistrationDomainPropertyTest extends TestCase
             'empty domain' => ['user@', 'Empty domain'],
             'no at symbol' => ['usermotac.gov.my', 'Missing @ symbol'],
         ];
+    }
+
+    private function assertEmailDomainValidity(string $email, bool $expected, ?string $description = null): void
+    {
+        $isValid = $this->isEmailDomainValid($email);
+        $message = $description ? "Failed: {$description}" : "Failed for {$email}";
+
+        $this->assertSame($expected, $isValid, $message);
+    }
+
+    private function isEmailDomainValid(string $email): bool
+    {
+        $validator = Validator::make(
+            ['email' => $email],
+            ['email' => ['required', 'string', 'email', 'max:255', new MotacEmailDomain]]
+        );
+
+        return ! $validator->fails();
     }
 }

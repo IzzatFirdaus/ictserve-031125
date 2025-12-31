@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Contracts\RegistrationServiceInterface;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
+use Livewire\Volt\Volt;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -35,36 +41,112 @@ class RegistrationTest extends TestCase
     #[Test]
     public function new_users_can_register_with_motac_email(): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        Notification::fake();
+
+        $email = 'testuser'.time().'@motac.gov.my';
+        $password = 'StrongP@ssw0rd';
+
+        $component = Volt::test('pages.auth.register')
+            ->set('name', 'Test User')
+            ->set('email', $email)
+            ->set('password', $password)
+            ->set('password_confirmation', $password);
+
+        $component->call('register');
+
+        $component
+            ->assertHasNoErrors()
+            ->assertRedirect(route('verification.notice', absolute: false));
+
+        $this->assertDatabaseHas('users', [
+            'email' => strtolower($email),
+            'role' => 'staff',
+        ]);
     }
 
     #[Test]
     public function registration_rejects_non_motac_email(): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        Notification::fake();
+
+        $email = 'user@gmail.com';
+        $password = 'StrongP@ssw0rd';
+
+        $component = Volt::test('pages.auth.register')
+            ->set('name', 'Test User')
+            ->set('email', $email)
+            ->set('password', $password)
+            ->set('password_confirmation', $password);
+
+        $component->call('register');
+
+        $component
+            ->assertHasErrors(['email'])
+            ->assertNoRedirect();
+
+        $this->assertDatabaseMissing('users', [
+            'email' => strtolower($email),
+        ]);
     }
 
     #[Test]
     public function registration_validates_password_confirmation(): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        Notification::fake();
+
+        $email = 'confirm'.time().'@motac.gov.my';
+        $password = 'StrongP@ssw0rd';
+
+        $component = Volt::test('pages.auth.register')
+            ->set('name', 'Test User')
+            ->set('email', $email)
+            ->set('password', $password)
+            ->set('password_confirmation', 'MismatchP@ssw0rd');
+
+        $component->call('register');
+
+        $component
+            ->assertHasErrors(['password'])
+            ->assertNoRedirect();
+
+        $this->assertDatabaseMissing('users', [
+            'email' => strtolower($email),
+        ]);
     }
 
     #[Test]
     public function registration_validates_required_fields(): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        $component = Volt::test('pages.auth.register');
+
+        $component->call('register');
+
+        $component->assertHasErrors(['name', 'email', 'password']);
     }
 
     #[Test]
     public function registration_prevents_duplicate_email(): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        Notification::fake();
+
+        $email = 'duplicate'.time().'@motac.gov.my';
+        $password = 'StrongP@ssw0rd';
+
+        User::factory()->create([
+            'email' => $email,
+        ]);
+
+        $component = Volt::test('pages.auth.register')
+            ->set('name', 'Test User')
+            ->set('email', $email)
+            ->set('password', $password)
+            ->set('password_confirmation', $password);
+
+        $component->call('register');
+
+        $component
+            ->assertHasErrors(['email'])
+            ->assertNoRedirect();
     }
 
     #[Test]
@@ -92,7 +174,15 @@ class RegistrationTest extends TestCase
     #[Test]
     public function email_verification_flow_uses_signed_url(): void
     {
-        // Skip: Volt::test hangs due to Livewire navigation issues in test environment
-        $this->markTestSkipped('Volt component test hangs in test environment');
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+
+        $registrationService = app(RegistrationServiceInterface::class);
+        $verificationUrl = $registrationService->generateVerificationUrl($user);
+
+        $request = Request::create($verificationUrl);
+
+        $this->assertTrue(URL::hasValidSignature($request));
     }
 }

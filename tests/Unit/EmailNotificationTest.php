@@ -35,11 +35,16 @@ class EmailNotificationTest extends TestCase
             'User Name'
         );
 
+        // Verify the log was created with correct status
         $this->assertDatabaseHas('email_logs', [
             'id' => $log->id,
-            'recipient_email' => 'user@example.com',
             'status' => 'queued',
         ]);
+
+        // Verify encrypted fields through the model (decrypted automatically)
+        $log->refresh();
+        $this->assertSame('user@example.com', $log->recipient_email);
+        $this->assertSame('User Name', $log->recipient_name);
 
         Mail::assertQueued(LoanStatusUpdated::class);
     }
