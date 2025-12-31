@@ -10,6 +10,8 @@ use App\Contracts\AccessoryTrackingServiceInterface;
 use App\Contracts\AccountLinkingServiceInterface;
 use App\Contracts\ApiTokenServiceInterface;
 use App\Contracts\ApprovalServiceInterface;
+use App\Contracts\GoogleOAuthVerificationServiceInterface;
+use App\Contracts\GoogleServicesCacheServiceInterface;
 use App\Contracts\GoogleSsoServiceInterface;
 use App\Contracts\HelpdeskServiceInterface;
 use App\Contracts\NotificationPreferenceServiceInterface;
@@ -43,12 +45,16 @@ use App\Observers\UserObserver;
 use App\Policies\AssetPolicy;
 use App\Policies\HelpdeskTicketPolicy;
 use App\Policies\LoanApplicationPolicy;
+use App\Policies\NotificationPolicy;
 use App\Policies\UserPolicy;
 use App\Services\AccessoryTrackingService;
 use App\Services\AccountLinkingService;
 use App\Services\ApiTokenService;
 use App\Services\ApprovalService;
 use App\Services\BedrockService;
+use App\Services\GoogleOAuthVerificationService;
+use App\Services\GoogleServicesCacheService;
+use App\Services\GoogleServicesPerformanceMonitor;
 use App\Services\GoogleSsoService;
 use App\Services\HelpdeskService;
 use App\Services\ModelRouter;
@@ -64,8 +70,10 @@ use Illuminate\Auth\Events\Failed;
 use Illuminate\Broadcasting\BroadcastEvent;
 use Illuminate\Broadcasting\BroadcastManager as FrameworkBroadcastManager;
 use Illuminate\Mail\Events\MessageSent;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -151,11 +159,37 @@ class AppServiceProvider extends ServiceProvider
         // Per Requirements 8.1, 8.2: SSO health monitoring and configuration validation
         $this->app->singleton(SsoHealthCheckInterface::class, SsoHealthCheck::class);
 
+        // Register GoogleOAuthVerificationService for v3.6.1 OAuth Verification Management
+        // Per Requirements 1.1, 1.2, 2.5, 4.1: OAuth verification status and test user management
+        $this->app->singleton(GoogleOAuthVerificationServiceInterface::class, GoogleOAuthVerificationService::class);
+
+        // Register GoogleServicesErrorHandler for v3.6.1 Enhanced Error Handling
+        // Per Requirements 7.1, 7.2, 7.4, 7.5: Centralized error handling for all Google services
+        $this->app->singleton(
+            \App\Contracts\GoogleServicesErrorHandlerInterface::class,
+            \App\Services\GoogleServicesErrorHandler::class
+        );
+
+        // Register GoogleServicesCacheService for v3.6.1 Performance Optimization
+        // Per Requirements 13.2, 13.3: Redis caching for Google user profiles and OAuth tokens
+        $this->app->singleton(GoogleServicesCacheServiceInterface::class, GoogleServicesCacheService::class);
+
+        // Register GoogleServicesPerformanceMonitor for v3.6.1 Performance Monitoring
+        // Per Requirements 13.5, 17.2: Performance monitoring for all Google services
+        $this->app->singleton(GoogleServicesPerformanceMonitor::class);
+
         // Register AccountLinkingService for v3.5.0 Optional Account Linking
         $this->app->singleton(AccountLinkingServiceInterface::class, AccountLinkingService::class);
 
         // Register NotificationPreferenceService for v3.5.0 Notification Preferences
         $this->app->singleton(NotificationPreferenceServiceInterface::class, NotificationPreferenceService::class);
+
+        // Register NotificationSchedulingService for v3.6.1 Notification Scheduling
+        // Per Requirements 2.7: Notification scheduling for future delivery
+        $this->app->singleton(
+            \App\Contracts\NotificationSchedulingServiceInterface::class,
+            \App\Services\NotificationSchedulingService::class
+        );
 
         // Register ResponsibleOfficerService for v3.5.0 Responsible Officer Management
         $this->app->singleton(ResponsibleOfficerServiceInterface::class, ResponsibleOfficerService::class);
@@ -198,6 +232,11 @@ class AppServiceProvider extends ServiceProvider
             ]);
         }
 
+        // Register Filament custom anonymous components for MyDS v2025.2 compliance
+        // Maps <x-filament.components.widget-card> and <x-filament.components.stats-card>
+        // to the MyDS-compliant views in resources/views/filament/components/
+        Blade::anonymousComponentPath(resource_path('views/filament/components'), 'filament.components');
+
         // Register model observers
         // Note: HelpdeskTicketObserver is registered via #[ObservedBy] attribute on the model
         HelpdeskTicket::observe(HelpdeskTicketCacheObserver::class);
@@ -225,5 +264,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(HelpdeskTicket::class, HelpdeskTicketPolicy::class);
         Gate::policy(LoanApplication::class, LoanApplicationPolicy::class);
         Gate::policy(Asset::class, AssetPolicy::class);
+        Gate::policy(DatabaseNotification::class, NotificationPolicy::class);
     }
 }

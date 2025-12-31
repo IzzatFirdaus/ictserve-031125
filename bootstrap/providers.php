@@ -5,6 +5,7 @@ return [
     App\Providers\AppServiceProvider::class,
     App\Providers\ClamavServiceProvider::class,
     App\Providers\Filament\AdminPanelProvider::class,
+    App\Providers\GmailServiceProvider::class,
     App\Providers\HorizonServiceProvider::class,
     App\Providers\PasswordValidationServiceProvider::class,
     App\Providers\PerformanceServiceProvider::class,
