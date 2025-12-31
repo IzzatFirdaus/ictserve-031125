@@ -6,45 +6,32 @@ namespace App\Services;
 
 use App\Contracts\NotificationPreferenceServiceInterface;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Notification Preference Service Implementation for ICTServe v3.5.0
+ * Notification Preference Service Implementation for ICTServe v3.6.1
  *
  * Manages user notification preferences including email frequency settings
- * (immediate, daily digest, weekly digest) and per-notification-type toggles.
- *
- * This service:
- * - Retrieves and updates user notification preferences
- * - Determines notification channels based on user preferences
- * - Supports digest frequency for email batching
- * - Integrates with multi-channel notification system
- *
- * Security Considerations:
- * - All preference changes are logged for audit compliance
- * - Critical notifications bypass user preferences
- * - Preferences are validated before storage
+ * (immediate, daily digest, weekly digest), per-notification-type toggles,
+ * quiet hours enforcement, and timezone-aware preference handling.
  *
  * @see D16_BROADCASTING_SETUP.md WebSocket configuration
  * @see D03 SRS-ADM-006 Staff Dashboard notification preferences
- * @see Requirements 17.5 - Notification preferences configuration
+ * @see Requirements 5.1-5.7 - Notification preferences configuration
  */
 class NotificationPreferenceService implements NotificationPreferenceServiceInterface
 {
-    /**
-     * Valid digest frequency values
-     */
     private const DIGEST_IMMEDIATE = 'immediate';
 
     private const DIGEST_DAILY = 'daily';
 
     private const DIGEST_WEEKLY = 'weekly';
 
-    /**
-     * Default notification preferences
-     *
-     * @var array<string, bool|string>
-     */
+    private const DEFAULT_TIMEZONE = 'Asia/Kuala_Lumpur';
+
+    /** @var array<string, bool|string|null> */
     private const DEFAULT_PREFERENCES = [
         'ticket_updates' => true,
         'ticket_assignments' => true,
@@ -58,24 +45,20 @@ class NotificationPreferenceService implements NotificationPreferenceServiceInte
         'digest_frequency' => self::DIGEST_IMMEDIATE,
         'email_enabled' => true,
         'in_app_enabled' => true,
+        'quiet_hours_enabled' => false,
+        'quiet_hours_start' => null,
+        'quiet_hours_end' => null,
+        'timezone' => self::DEFAULT_TIMEZONE,
     ];
 
-    /**
-     * Notification types that cannot be disabled (critical/compliance)
-     *
-     * @var array<int, string>
-     */
+    /** @var array<int, string> */
     private const CRITICAL_TYPES = [
         'sla_alerts',
         'system_announcements',
         'security_alerts',
     ];
 
-    /**
-     * Valid preference keys for validation
-     *
-     * @var array<int, string>
-     */
+    /** @var array<int, string> */
     private const VALID_PREFERENCE_KEYS = [
         'ticket_updates',
         'ticket_assignments',
@@ -89,12 +72,15 @@ class NotificationPreferenceService implements NotificationPreferenceServiceInte
         'digest_frequency',
         'email_enabled',
         'in_app_enabled',
+        'quiet_hours_enabled',
+        'quiet_hours_start',
+        'quiet_hours_end',
+        'timezone',
     ];
 
     /**
      * Get all notification preferences for a user
      *
-     * @param  User  $user  The user to get preferences for
      * @return array{
      *     ticket_updates: bool,
      *     ticket_assignments: bool,
@@ -107,187 +93,132 @@ class NotificationPreferenceService implements NotificationPreferenceServiceInte
      *     realtime_notifications: bool,
      *     digest_frequency: string,
      *     email_enabled: bool,
-     *     in_app_enabled: bool
+     *     in_app_enabled: bool,
+     *     quiet_hours_enabled: bool,
+     *     quiet_hours_start: string|null,
+     *     quiet_hours_end: string|null,
+     *     timezone: string
      * }
      */
     public function getPreferences(User $user): array
     {
         $storedPreferences = $user->notification_preferences ?? [];
+        $preferences = [...self::DEFAULT_PREFERENCES, ...$storedPreferences];
 
-        // Merge with defaults to ensure all keys exist
-        $preferences = array_merge(self::DEFAULT_PREFERENCES, $storedPreferences);
-
-        // Normalize boolean values
         foreach ($preferences as $key => $value) {
             if ($key === 'digest_frequency') {
-                // Validate digest frequency value
-                if (! in_array($value, [self::DIGEST_IMMEDIATE, self::DIGEST_DAILY, self::DIGEST_WEEKLY], true)) {
+                if (! \in_array($value, [self::DIGEST_IMMEDIATE, self::DIGEST_DAILY, self::DIGEST_WEEKLY], true)) {
                     $preferences[$key] = self::DIGEST_IMMEDIATE;
                 }
-            } else {
-                // Convert to boolean for toggle preferences
+            } elseif ($key === 'timezone') {
+                if (empty($value) || ! $this->isValidTimezone((string) $value)) {
+                    $preferences[$key] = self::DEFAULT_TIMEZONE;
+                }
+            } elseif (! \in_array($key, ['quiet_hours_start', 'quiet_hours_end'], true)) {
                 $preferences[$key] = (bool) $value;
             }
         }
 
-        /** @var array{ticket_updates: bool, ticket_assignments: bool, ticket_comments: bool, sla_alerts: bool, system_announcements: bool, loan_updates: bool, loan_approvals: bool, loan_reminders: bool, realtime_notifications: bool, digest_frequency: string, email_enabled: bool, in_app_enabled: bool} $preferences */
+        /** @var array{ticket_updates: bool, ticket_assignments: bool, ticket_comments: bool, sla_alerts: bool, system_announcements: bool, loan_updates: bool, loan_approvals: bool, loan_reminders: bool, realtime_notifications: bool, digest_frequency: string, email_enabled: bool, in_app_enabled: bool, quiet_hours_enabled: bool, quiet_hours_start: string|null, quiet_hours_end: string|null, timezone: string} $preferences */
         return $preferences;
     }
 
     /**
-     * Update notification preferences for a user
-     *
-     * @param  User  $user  The user to update preferences for
-     * @param  array<string, bool|string>  $preferences  Preferences to update
-     *
-     * @throws \InvalidArgumentException If invalid preference key or value provided
+     * @param  array<string, mixed>  $preferences
      */
-    
-
-/**
- * @param array<string, mixed> $preferences
- */
-public function updatePreferences(User $user, array $preferences): void
+    public function updatePreferences(User $user, array $preferences): void
     {
-        // Validate preference keys
-        $invalidKeys = array_diff(array_keys($preferences), self::VALID_PREFERENCE_KEYS);
+        $invalidKeys = \array_diff(\array_keys($preferences), self::VALID_PREFERENCE_KEYS);
         if (! empty($invalidKeys)) {
             throw new \InvalidArgumentException(
-                'Invalid preference keys: '.implode(', ', $invalidKeys)
+                'Invalid preference keys: '.\implode(', ', $invalidKeys)
             );
         }
 
-        // Validate digest_frequency value if provided
         if (isset($preferences['digest_frequency'])) {
             $validFrequencies = [self::DIGEST_IMMEDIATE, self::DIGEST_DAILY, self::DIGEST_WEEKLY];
-            if (! in_array($preferences['digest_frequency'], $validFrequencies, true)) {
+            if (! \in_array($preferences['digest_frequency'], $validFrequencies, true)) {
                 throw new \InvalidArgumentException(
-                    'Invalid digest_frequency value. Must be one of: '.implode(', ', $validFrequencies)
+                    'Invalid digest_frequency value. Must be one of: '.\implode(', ', $validFrequencies)
                 );
             }
         }
 
-        // Get current preferences and merge with updates
-        $currentPreferences = $this->getPreferences($user);
-        $updatedPreferences = array_merge($currentPreferences, $preferences);
+        if (isset($preferences['timezone']) && ! $this->isValidTimezone((string) $preferences['timezone'])) {
+            throw new \InvalidArgumentException('Invalid timezone value.');
+        }
 
-        // Normalize values
+        $currentPreferences = $this->getPreferences($user);
+        $updatedPreferences = [...$currentPreferences, ...$preferences];
+
         foreach ($updatedPreferences as $key => $value) {
-            if ($key !== 'digest_frequency') {
+            if (! \in_array($key, ['digest_frequency', 'quiet_hours_start', 'quiet_hours_end', 'timezone'], true)) {
                 $updatedPreferences[$key] = (bool) $value;
             }
         }
 
-        // Store updated preferences
         $user->notification_preferences = $updatedPreferences;
         $user->save();
 
-        // Log the preference change for audit
         $this->logPreferenceUpdate($user, $preferences);
     }
 
-    /**
-     * Determine if email notification should be sent for a specific type
-     *
-     * @param  User  $user  The recipient user
-     * @param  string  $notificationType  The notification type
-     * @return bool True if email should be sent immediately
-     */
     public function shouldSendEmail(User $user, string $notificationType): bool
     {
         $preferences = $this->getPreferences($user);
 
-        // Check if email is globally enabled
         if (! $preferences['email_enabled']) {
             return false;
         }
 
-        // Critical notifications always send
         if ($this->isCriticalType($notificationType)) {
             return true;
         }
 
-        // Check specific notification type preference
         if (isset($preferences[$notificationType]) && ! $preferences[$notificationType]) {
             return false;
         }
 
-        // Check digest frequency - only send immediately if set to immediate
-        $digestFrequency = $this->getDigestFrequency($user);
-
-        return $digestFrequency === self::DIGEST_IMMEDIATE;
+        return $this->getDigestFrequency($user) === self::DIGEST_IMMEDIATE;
     }
 
-    /**
-     * Get the digest frequency setting for a user
-     *
-     * @param  User  $user  The user to check
-     * @return string The digest frequency ('immediate', 'daily', 'weekly')
-     */
     public function getDigestFrequency(User $user): string
     {
         $preferences = $this->getPreferences($user);
         $frequency = $preferences['digest_frequency'] ?? self::DIGEST_IMMEDIATE;
 
-        // Validate and return
-        if (in_array($frequency, [self::DIGEST_IMMEDIATE, self::DIGEST_DAILY, self::DIGEST_WEEKLY], true)) {
+        if (\in_array($frequency, [self::DIGEST_IMMEDIATE, self::DIGEST_DAILY, self::DIGEST_WEEKLY], true)) {
             return $frequency;
         }
 
         return self::DIGEST_IMMEDIATE;
     }
 
-    /**
-     * Check if in-app notifications are enabled for a user
-     *
-     * @param  User  $user  The user to check
-     * @return bool True if in-app notifications are enabled
-     */
     public function isInAppEnabled(User $user): bool
     {
-        $preferences = $this->getPreferences($user);
-
-        return $preferences['in_app_enabled'] ?? true;
+        return $this->getPreferences($user)['in_app_enabled'] ?? true;
     }
 
-    /**
-     * Check if real-time (WebSocket) notifications are enabled
-     *
-     * @param  User  $user  The user to check
-     * @return bool True if real-time notifications are enabled
-     */
     public function isRealtimeEnabled(User $user): bool
     {
-        $preferences = $this->getPreferences($user);
-
-        return $preferences['realtime_notifications'] ?? true;
+        return $this->getPreferences($user)['realtime_notifications'] ?? true;
     }
 
     /**
-     * Get notification channels for a specific notification type
-     *
-     * @param  User  $user  The recipient user
-     * @param  string  $notificationType  The notification type
-     * @return array<int, string> Array of channels
+     * @return array<int, string>
      */
     public function getChannelsForType(User $user, string $notificationType): array
     {
-        $channels = [];
+        $channels = ['database'];
         $preferences = $this->getPreferences($user);
 
-        // Database channel is always included (audit trail requirement)
-        $channels[] = 'database';
-
-        // Check if this notification type is enabled
         $typeEnabled = $preferences[$notificationType] ?? true;
         $isCritical = $this->isCriticalType($notificationType);
 
-        // Email channel
         if ($isCritical || ($typeEnabled && $this->shouldSendEmail($user, $notificationType))) {
             $channels[] = 'mail';
         }
 
-        // Broadcast channel (WebSocket)
         if ($isCritical || ($typeEnabled && $this->isRealtimeEnabled($user))) {
             $channels[] = 'broadcast';
         }
@@ -295,11 +226,6 @@ public function updatePreferences(User $user, array $preferences): void
         return $channels;
     }
 
-    /**
-     * Reset user preferences to defaults
-     *
-     * @param  User  $user  The user to reset preferences for
-     */
     public function resetToDefaults(User $user): void
     {
         $user->notification_preferences = self::DEFAULT_PREFERENCES;
@@ -309,8 +235,6 @@ public function updatePreferences(User $user, array $preferences): void
     }
 
     /**
-     * Get available notification types with metadata
-     *
      * @return array<string, array{label: string, description: string, category: string, user_controllable: bool}>
      */
     public function getAvailableNotificationTypes(): array
@@ -338,13 +262,13 @@ public function updatePreferences(User $user, array $preferences): void
                 'label' => __('notifications.types.sla_alerts'),
                 'description' => __('notifications.descriptions.sla_alerts'),
                 'category' => 'system',
-                'user_controllable' => false, // Critical - cannot be disabled
+                'user_controllable' => false,
             ],
             'system_announcements' => [
                 'label' => __('notifications.types.system_announcements'),
                 'description' => __('notifications.descriptions.system_announcements'),
                 'category' => 'system',
-                'user_controllable' => false, // Critical - cannot be disabled
+                'user_controllable' => false,
             ],
             'loan_updates' => [
                 'label' => __('notifications.types.loan_updates'),
@@ -367,23 +291,14 @@ public function updatePreferences(User $user, array $preferences): void
         ];
     }
 
-    /**
-     * Check if a notification type should be queued for digest
-     *
-     * @param  User  $user  The recipient user
-     * @param  string  $notificationType  The notification type
-     * @return bool True if should be queued for digest
-     */
     public function shouldQueueForDigest(User $user, string $notificationType): bool
     {
-        // Critical notifications are never queued for digest
         if ($this->isCriticalType($notificationType)) {
             return false;
         }
 
         $preferences = $this->getPreferences($user);
 
-        // Check if email is enabled and type is enabled
         if (! $preferences['email_enabled']) {
             return false;
         }
@@ -392,35 +307,215 @@ public function updatePreferences(User $user, array $preferences): void
             return false;
         }
 
-        // Queue for digest if not immediate
-        $digestFrequency = $this->getDigestFrequency($user);
-
-        return $digestFrequency !== self::DIGEST_IMMEDIATE;
+        return $this->getDigestFrequency($user) !== self::DIGEST_IMMEDIATE;
     }
 
     /**
-     * Check if notification type is critical (cannot be disabled)
+     * Set quiet hours for a user
      *
-     * @param  string  $type  The notification type
-     * @return bool True if critical
+     * @throws \InvalidArgumentException If time format is invalid
      */
+    public function setQuietHours(User $user, string $start, string $end, ?string $timezone = null): void
+    {
+        if (! $this->isValidTimeFormat($start) || ! $this->isValidTimeFormat($end)) {
+            throw new \InvalidArgumentException('Invalid time format. Use H:i format (e.g., 22:00).');
+        }
+
+        if ($timezone !== null && ! $this->isValidTimezone($timezone)) {
+            throw new \InvalidArgumentException('Invalid timezone.');
+        }
+
+        $preferences = $this->getPreferences($user);
+        $preferences['quiet_hours_enabled'] = true;
+        $preferences['quiet_hours_start'] = $start;
+        $preferences['quiet_hours_end'] = $end;
+
+        if ($timezone !== null) {
+            $preferences['timezone'] = $timezone;
+        }
+
+        $user->notification_preferences = $preferences;
+        $user->save();
+
+        $this->logPreferenceUpdate($user, [
+            'action' => 'set_quiet_hours',
+            'start' => $start,
+            'end' => $end,
+            'timezone' => $timezone ?? $preferences['timezone'],
+        ]);
+    }
+
+    /**
+     * Check if user is currently in quiet hours (timezone-aware)
+     */
+    public function isInQuietHours(User $user): bool
+    {
+        $preferences = $this->getPreferences($user);
+
+        if (! $preferences['quiet_hours_enabled']) {
+            return false;
+        }
+
+        $start = $preferences['quiet_hours_start'];
+        $end = $preferences['quiet_hours_end'];
+
+        if ($start === null || $end === null) {
+            return false;
+        }
+
+        $timezone = $preferences['timezone'] ?? self::DEFAULT_TIMEZONE;
+        $now = Carbon::now($timezone)->format('H:i');
+
+        if ($start < $end) {
+            return $now >= $start && $now <= $end;
+        }
+
+        // Handle overnight quiet hours (e.g., 22:00 to 06:00)
+        return $now >= $start || $now <= $end;
+    }
+
+    public function disableQuietHours(User $user): void
+    {
+        $preferences = $this->getPreferences($user);
+        $preferences['quiet_hours_enabled'] = false;
+
+        $user->notification_preferences = $preferences;
+        $user->save();
+
+        $this->logPreferenceUpdate($user, ['action' => 'disable_quiet_hours']);
+    }
+
+    /**
+     * Bulk update preferences for multiple users
+     *
+     * @param  array<int>  $userIds
+     * @param  array<string, bool|string>  $preferences
+     * @return array{success: array<int>, failed: array<int, string>}
+     */
+    public function bulkUpdatePreferences(array $userIds, array $preferences): array
+    {
+        $result = ['success' => [], 'failed' => []];
+
+        $invalidKeys = \array_diff(\array_keys($preferences), self::VALID_PREFERENCE_KEYS);
+        if (! empty($invalidKeys)) {
+            throw new \InvalidArgumentException(
+                'Invalid preference keys: '.\implode(', ', $invalidKeys)
+            );
+        }
+
+        DB::beginTransaction();
+
+        try {
+            /** @var \Illuminate\Database\Eloquent\Collection<int, User> $users */
+            $users = User::whereIn('id', $userIds)->get();
+
+            foreach ($users as $user) {
+                try {
+                    $this->updatePreferences($user, $preferences);
+                    $result['success'][] = $user->id;
+                } catch (\Exception $e) {
+                    $result['failed'][$user->id] = $e->getMessage();
+                }
+            }
+
+            DB::commit();
+
+            Log::channel('single')->info('Bulk notification preferences updated', [
+                'action' => 'bulk_notification_preferences_updated',
+                'user_ids' => $userIds,
+                'success_count' => \count($result['success']),
+                'failed_count' => \count($result['failed']),
+                'preferences' => $preferences,
+                'ip_address' => request()->ip(),
+                'timestamp' => now()->toIso8601String(),
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Comprehensive check for notification delivery
+     */
+    public function shouldSendNotification(
+        User $user,
+        string $notificationType,
+        string $channel,
+        ?string $priority = null
+    ): bool {
+        // Critical notifications always go through
+        if ($priority === 'critical' || $this->isCriticalType($notificationType)) {
+            return true;
+        }
+
+        $preferences = $this->getPreferences($user);
+
+        // Check if notification type is enabled
+        if (isset($preferences[$notificationType]) && ! $preferences[$notificationType]) {
+            return false;
+        }
+
+        // Check quiet hours for non-critical notifications
+        if ($this->isInQuietHours($user)) {
+            return false;
+        }
+
+        // Check channel-specific preferences
+        return match ($channel) {
+            'mail' => $preferences['email_enabled'] && $this->getDigestFrequency($user) === self::DIGEST_IMMEDIATE,
+            'database' => $preferences['in_app_enabled'],
+            'broadcast' => $preferences['realtime_notifications'],
+            default => true,
+        };
+    }
+
+    public function getUserTimezone(User $user): string
+    {
+        $preferences = $this->getPreferences($user);
+
+        return $preferences['timezone'] ?? self::DEFAULT_TIMEZONE;
+    }
+
+    /**
+     * @throws \InvalidArgumentException If timezone is invalid
+     */
+    public function setUserTimezone(User $user, string $timezone): void
+    {
+        if (! $this->isValidTimezone($timezone)) {
+            throw new \InvalidArgumentException('Invalid timezone: '.$timezone);
+        }
+
+        $preferences = $this->getPreferences($user);
+        $preferences['timezone'] = $timezone;
+
+        $user->notification_preferences = $preferences;
+        $user->save();
+
+        $this->logPreferenceUpdate($user, ['action' => 'set_timezone', 'timezone' => $timezone]);
+    }
+
     private function isCriticalType(string $type): bool
     {
-        return in_array($type, self::CRITICAL_TYPES, true);
+        return \in_array($type, self::CRITICAL_TYPES, true);
+    }
+
+    private function isValidTimezone(string $timezone): bool
+    {
+        return \in_array($timezone, \DateTimeZone::listIdentifiers(), true);
+    }
+
+    private function isValidTimeFormat(string $time): bool
+    {
+        return (bool) \preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $time);
     }
 
     /**
-     * Log preference update for audit compliance
-     *
-     * @param  User  $user  The user whose preferences were updated
-     * @param  array<string, bool|string>  $changes  The changes made
+     * @param  array<string, mixed>  $changes
      */
-    
-
-/**
- * @param array<string, mixed> $changes
- */
-private function logPreferenceUpdate(User $user, array $changes): void
+    private function logPreferenceUpdate(User $user, array $changes): void
     {
         Log::channel('single')->info('Notification preferences updated', [
             'action' => 'notification_preferences_updated',

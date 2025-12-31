@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\NotificationSecurityAudit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Email Log Model
- * 
+ *
  * Tracks email delivery status, retry attempts, performance metrics, and
  * unified notification system integration (multi-channel tracking).
  *
@@ -43,6 +44,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $sent_at
  * @property \Illuminate\Support\Carbon|null $failed_at
  * @property-read \App\Models\User|null $user
+ *
  * @method static Builder<static>|EmailLog delivered()
  * @method static \Database\Factories\EmailLogFactory factory($count = null, $state = [])
  * @method static Builder<static>|EmailLog failed()
@@ -75,12 +77,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder<static>|EmailLog whereSubject($value)
  * @method static Builder<static>|EmailLog whereUpdatedAt($value)
  * @method static Builder<static>|EmailLog withPriority(string $priority)
+ *
  * @mixin \Eloquent
  */
 class EmailLog extends Model
 {
     /** @use HasFactory<\Database\Factories\EmailLogFactory> */
     use HasFactory;
+
+    use NotificationSecurityAudit;
 
     protected $fillable = [
         'user_id',
@@ -116,8 +121,8 @@ class EmailLog extends Model
     protected function casts(): array
     {
         return [
-            'data' => 'array',
-            'meta' => 'array',
+            'data' => 'encrypted:array',
+            'meta' => 'encrypted:array',
             'delivered_at' => 'datetime',
             'last_retry_at' => 'datetime',
             'retry_attempts' => 'integer',
@@ -128,6 +133,9 @@ class EmailLog extends Model
             'channels' => 'array',
             'next_retry_at' => 'datetime',
             'preference_bypassed' => 'boolean',
+            // Security: Encrypt sensitive recipient data
+            'recipient_email' => 'encrypted',
+            'recipient_name' => 'encrypted',
         ];
     }
 

@@ -37,12 +37,11 @@ class UnifiedAnalyticsService
      *
      * @return array<string, mixed>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getDashboardMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getDashboardMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
         $cacheKey = $this->buildCacheKey('dashboard_metrics', $startDate, $endDate);
 
@@ -94,32 +93,38 @@ public function getDashboardMetrics(?\DateTime $startDate = null, ?\DateTime $en
     /**
      * Get helpdesk-specific metrics
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getHelpdeskMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getHelpdeskMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
-        $query = HelpdeskTicket::query();
+        $baseQuery = function () use ($startDate, $endDate) {
+            $query = HelpdeskTicket::query();
+            if ($startDate) {
+                $query->where('created_at', '>=', $startDate);
+            }
+            if ($endDate) {
+                $query->where('created_at', '<=', $endDate);
+            }
 
-        if ($startDate) {
-            $query->where('created_at', '>=', $startDate);
-        }
+            return $query;
+        };
 
-        if ($endDate) {
-            $query->where('created_at', '<=', $endDate);
-        }
-
-        $total = $query->count();
-        $resolved = $query->where('status', 'resolved')->count();
-        $pending = $query->whereIn('status', ['open', 'in_progress', 'pending_info'])->count();
-        $overdue = $query->where('sla_resolution_due_at', '<', now())
+        $total = $baseQuery()->count();
+        $resolved = $baseQuery()->where('status', 'resolved')->count();
+        $pending = $baseQuery()->whereIn('status', ['open', 'in_progress', 'pending_info'])->count();
+        $overdue = $baseQuery()
+            ->where('sla_resolution_due_at', '<', now())
             ->whereNull('resolved_at')
+            ->whereNotIn('status', ['resolved', 'closed'])
             ->count();
 
         // Database-agnostic: Calculate average resolution time using Carbon
-        $resolvedTickets = $query->whereNotNull('resolved_at')
+        $resolvedTickets = $baseQuery()
+            ->where('status', 'resolved')
+            ->whereNotNull('resolved_at')
+            ->limit(100) // Limit for performance
             ->get(['created_at', 'resolved_at']);
 
         $avgResolutionTime = $resolvedTickets->isEmpty() ? 0 : $resolvedTickets->avg(function ($ticket) {
@@ -141,32 +146,33 @@ private function getHelpdeskMetrics(?\DateTime $startDate = null, ?\DateTime $en
     /**
      * Get loan-specific metrics
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getLoanMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getLoanMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
-        $query = LoanApplication::query();
+        $baseQuery = function () use ($startDate, $endDate) {
+            $query = LoanApplication::query();
+            if ($startDate) {
+                $query->where('created_at', '>=', $startDate);
+            }
+            if ($endDate) {
+                $query->where('created_at', '<=', $endDate);
+            }
 
-        if ($startDate) {
-            $query->where('created_at', '>=', $startDate);
-        }
+            return $query;
+        };
 
-        if ($endDate) {
-            $query->where('created_at', '<=', $endDate);
-        }
-
-        $total = $query->count();
-        $approved = $query->where('status', 'approved')->count();
-        $active = $query->whereIn('status', ['issued', 'in_use'])->count();
-        $overdue = $query->where('loan_end_date', '<', now()->toDateString())
+        $total = $baseQuery()->count();
+        $approved = $baseQuery()->where('status', 'approved')->count();
+        $active = $baseQuery()->whereIn('status', ['issued', 'in_use'])->count();
+        $overdue = $baseQuery()->where('loan_end_date', '<', now()->toDateString())
             ->whereIn('status', ['issued', 'in_use'])
             ->count();
-        $pendingApproval = $query->where('status', 'under_review')->count();
+        $pendingApproval = $baseQuery()->where('status', 'under_review')->count();
 
-        $totalValue = $query->sum('total_value') ?? 0;
+        $totalValue = $baseQuery()->sum('total_value') ?? 0;
 
         return [
             'total_applications' => $total,
@@ -182,12 +188,11 @@ private function getLoanMetrics(?\DateTime $startDate = null, ?\DateTime $endDat
     /**
      * Get asset utilization metrics
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getAssetMetrics(): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getAssetMetrics(): array
     {
         $total = Asset::count();
         $available = Asset::where('status', 'available')->count();
@@ -212,27 +217,28 @@ private function getAssetMetrics(): array
     /**
      * Get cross-module integration metrics
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getCrossModuleIntegrationMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getCrossModuleIntegrationMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
-        $query = CrossModuleIntegration::query();
+        $baseQuery = function () use ($startDate, $endDate) {
+            $query = CrossModuleIntegration::query();
+            if ($startDate) {
+                $query->where('created_at', '>=', $startDate);
+            }
+            if ($endDate) {
+                $query->where('created_at', '<=', $endDate);
+            }
 
-        if ($startDate) {
-            $query->where('created_at', '>=', $startDate);
-        }
+            return $query;
+        };
 
-        if ($endDate) {
-            $query->where('created_at', '<=', $endDate);
-        }
-
-        $total = $query->count();
-        $assetDamageReports = $query->where('integration_type', 'asset_damage_report')->count();
-        $maintenanceRequests = $query->where('integration_type', 'maintenance_request')->count();
-        $assetTicketLinks = $query->where('integration_type', 'asset_ticket_link')->count();
+        $total = $baseQuery()->count();
+        $assetDamageReports = $baseQuery()->where('integration_type', 'asset_damage_report')->count();
+        $maintenanceRequests = $baseQuery()->where('integration_type', 'maintenance_request')->count();
+        $assetTicketLinks = $baseQuery()->where('integration_type', 'asset_ticket_link')->count();
 
         return [
             'total_integrations' => $total,
@@ -250,12 +256,11 @@ private function getCrossModuleIntegrationMetrics(?\DateTime $startDate = null, 
      * @param  array<string, mixed>  $assets
      * @return array<string, mixed>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function calculateSummaryMetrics(array $helpdesk, array $loans, array $assets): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function calculateSummaryMetrics(array $helpdesk, array $loans, array $assets): array
     {
         $totalIssues = $helpdesk['pending_tickets'] + $loans['overdue_loans'] + $assets['maintenance_assets'];
         $totalActive = $helpdesk['pending_tickets'] + $loans['active_loans'];
@@ -274,12 +279,11 @@ private function calculateSummaryMetrics(array $helpdesk, array $loans, array $a
      * @param  array<string, mixed>  $loans
      * @param  array<string, mixed>  $assets
      */
-    
 
-/**
- * @param array<string, mixed> $assets
- */
-private function calculateSystemHealth(array $helpdesk, array $loans, array $assets): float
+    /**
+     * @param  array<string, mixed>  $assets
+     */
+    private function calculateSystemHealth(array $helpdesk, array $loans, array $assets): float
     {
         $helpdeskHealth = min(100, $helpdesk['resolution_rate']);
         $loanHealth = min(100, $loans['approval_rate']);
@@ -292,12 +296,11 @@ private function calculateSystemHealth(array $helpdesk, array $loans, array $ass
     /**
      * Get monthly trends for unified chart
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getMonthlyTrends(int $months = 6): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getMonthlyTrends(int $months = 6): array
     {
         $startDate = now()->subMonths($months)->startOfMonth();
 
@@ -372,12 +375,11 @@ public function getMonthlyTrends(int $months = 6): array
     /**
      * Get asset utilization trends over time
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getAssetUtilizationTrends(int $days = 30): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getAssetUtilizationTrends(int $days = 30): array
     {
         $startDate = now()->subDays($days)->startOfDay();
 
@@ -428,12 +430,11 @@ public function getAssetUtilizationTrends(int $days = 30): array
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function getDrillDownData(string $metric, array $filters = []): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getDrillDownData(string $metric, array $filters = []): array
     {
         return match ($metric) {
             'overdue_tickets' => $this->getOverdueTicketsDetail($filters),
@@ -450,12 +451,11 @@ public function getDrillDownData(string $metric, array $filters = []): array
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getOverdueTicketsDetail(array $filters): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getOverdueTicketsDetail(array $filters): array
     {
         $query = HelpdeskTicket::where('sla_resolution_due_at', '<', now())
             ->whereNull('resolved_at')
@@ -489,12 +489,11 @@ private function getOverdueTicketsDetail(array $filters): array
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getOverdueLoansDetail(array $filters): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getOverdueLoansDetail(array $filters): array
     {
         $query = LoanApplication::where('loan_end_date', '<', now()->toDateString())
             ->whereIn('status', ['issued', 'in_use'])
@@ -520,12 +519,11 @@ private function getOverdueLoansDetail(array $filters): array
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getMaintenanceAssetsDetail(array $filters): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getMaintenanceAssetsDetail(array $filters): array
     {
         $query = Asset::whereIn('status', ['maintenance', 'damaged'])
             ->with(['category']);
@@ -550,12 +548,11 @@ private function getMaintenanceAssetsDetail(array $filters): array
      * @param  array<string, mixed>  $filters
      * @return array<int, array<string, mixed>>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function getCrossModuleIntegrationsDetail(array $filters): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getCrossModuleIntegrationsDetail(array $filters): array
     {
         $query = CrossModuleIntegration::with(['helpdeskTicket', 'loanApplication']);
 
@@ -627,12 +624,11 @@ private function getCrossModuleIntegrationsDetail(array $filters): array
      *
      * @return array<string, mixed>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-public function exportToArray(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    /**
+     * @return array<string, mixed>
+     */
+    public function exportToArray(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
         $metrics = $this->getDashboardMetrics($startDate, $endDate);
 
@@ -674,12 +670,11 @@ public function exportToArray(?\DateTime $startDate = null, ?\DateTime $endDate 
      * @param  array<string, mixed>  $metrics
      * @return array<int, array{metric: string, value: mixed}>
      */
-    
 
-/**
- * @return array<string, mixed>
- */
-private function formatMetricsForExport(array $metrics): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function formatMetricsForExport(array $metrics): array
     {
         $formatted = [];
         foreach ($metrics as $key => $value) {

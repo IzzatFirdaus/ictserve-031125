@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\EmailTemplate;
+use App\Models\EmailTemplateVersion;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class EmailTemplateService
@@ -22,14 +25,11 @@ class EmailTemplateService
         );
     }
 
-    
-
-/**
-  * @param array<string, mixed> $data
-
- * @return array<string, mixed>
- */
-public function renderTemplate(string $category, array $data, string $locale = 'ms'): array
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    public function renderTemplate(string $category, array $data, string $locale = 'ms'): array
     {
         $template = $this->getTemplate($category, $locale);
 
@@ -53,14 +53,11 @@ public function renderTemplate(string $category, array $data, string $locale = '
         ];
     }
 
-    
-
-/**
-  * @param array<string, mixed> $sampleData
-
- * @return array<string, mixed>
- */
-public function previewTemplate(EmailTemplate $template, array $sampleData = []): array
+    /**
+     * @param  array<string, mixed>  $sampleData
+     * @return array<string, mixed>
+     */
+    public function previewTemplate(EmailTemplate $template, array $sampleData = []): array
     {
         $defaultData = $this->getDefaultSampleData($template->category);
         $data = array_merge($defaultData, $sampleData);
@@ -73,12 +70,118 @@ public function previewTemplate(EmailTemplate $template, array $sampleData = [])
         ];
     }
 
-    
+    /**
+     * Create a new version of an email template.
+     */
+    public function createVersion(
+        EmailTemplate $template,
+        string $subject,
+        string $bodyHtml,
+        ?string $bodyText = null,
+        ?array $variables = null,
+        ?string $changeSummary = null
+    ): EmailTemplateVersion {
+        return DB::transaction(function () use ($template, $subject, $bodyHtml, $bodyText, $variables, $changeSummary) {
+            $nextVersion = $template->current_version + 1;
 
-/**
- * @return array<string, mixed>
- */
-public function getAvailableVariables(string $category): array
+            $version = EmailTemplateVersion::create([
+                'email_template_id' => $template->id,
+                'version_number' => $nextVersion,
+                'subject' => $subject,
+                'body_html' => $bodyHtml,
+                'body_text' => $bodyText ?? strip_tags($bodyHtml),
+                'variables' => $variables ?? $template->variables,
+                'change_summary' => $changeSummary,
+                'created_by' => Auth::id(),
+            ]);
+
+            $template->update([
+                'subject' => $subject,
+                'body_html' => $bodyHtml,
+                'body_text' => $bodyText ?? strip_tags($bodyHtml),
+                'variables' => $variables ?? $template->variables,
+                'current_version' => $nextVersion,
+                'updated_by' => Auth::id(),
+            ]);
+
+            $this->clearTemplateCache($template->category, $template->locale);
+
+            Log::info('Email template version created', [
+                'template_id' => $template->id,
+                'version' => $nextVersion,
+                'user_id' => Auth::id(),
+            ]);
+
+            return $version;
+        });
+    }
+
+    /**
+     * Restore a previous version of an email template.
+     */
+    public function restoreVersion(EmailTemplate $template, int $versionNumber): bool
+    {
+        $version = $template->getVersion($versionNumber);
+
+        if (! $version) {
+            Log::warning('Email template version not found for restore', [
+                'template_id' => $template->id,
+                'version' => $versionNumber,
+            ]);
+
+            return false;
+        }
+
+        $this->createVersion(
+            $template,
+            $version->subject,
+            $version->body_html,
+            $version->body_text,
+            $version->variables,
+            "Restored from version {$versionNumber}"
+        );
+
+        return true;
+    }
+
+    /**
+     * Compare two versions of an email template.
+     *
+     * @return array<string, mixed>
+     */
+    public function compareVersions(EmailTemplate $template, int $version1, int $version2): array
+    {
+        $v1 = $template->getVersion($version1);
+        $v2 = $template->getVersion($version2);
+
+        if (! $v1 || ! $v2) {
+            return ['error' => 'One or both versions not found'];
+        }
+
+        return [
+            'version1' => [
+                'number' => $v1->version_number,
+                'subject' => $v1->subject,
+                'body_html' => $v1->body_html,
+                'created_at' => $v1->created_at?->toDateTimeString(),
+                'created_by' => $v1->creator?->name,
+            ],
+            'version2' => [
+                'number' => $v2->version_number,
+                'subject' => $v2->subject,
+                'body_html' => $v2->body_html,
+                'created_at' => $v2->created_at?->toDateTimeString(),
+                'created_by' => $v2->creator?->name,
+            ],
+            'subject_changed' => $v1->subject !== $v2->subject,
+            'body_changed' => $v1->body_html !== $v2->body_html,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getAvailableVariables(string $category): array
     {
         $variables = [
             'ticket_confirmation' => [
@@ -127,15 +230,21 @@ public function getAvailableVariables(string $category): array
         return $variables[$category] ?? [];
     }
 
-    
-
-/**
- * @return array<string, mixed>
- */
-public function validateTemplate(string $subject, string $bodyHtml): array
-    {
+    /**
+     * Validate template content and syntax.
+     *
+     * @param  array<string>  $requiredVariables
+     * @return array<string, mixed>
+     */
+    public function validateTemplate(
+        string $subject,
+        string $bodyHtml,
+        array $requiredVariables = []
+    ): array {
         $errors = [];
+        $warnings = [];
 
+        // Basic validation
         if (empty(trim($subject))) {
             $errors[] = 'Subject is required';
         }
@@ -144,7 +253,7 @@ public function validateTemplate(string $subject, string $bodyHtml): array
             $errors[] = 'Email body is required';
         }
 
-        // Basic HTML validation
+        // HTML validation
         if (! empty($bodyHtml)) {
             $dom = new \DOMDocument;
             libxml_use_internal_errors(true);
@@ -153,17 +262,46 @@ public function validateTemplate(string $subject, string $bodyHtml): array
                 $errors[] = 'Invalid HTML structure';
             }
 
+            $htmlErrors = libxml_get_errors();
+            foreach ($htmlErrors as $error) {
+                if ($error->level === LIBXML_ERR_ERROR || $error->level === LIBXML_ERR_FATAL) {
+                    $warnings[] = "HTML warning: {$error->message}";
+                }
+            }
             libxml_clear_errors();
         }
 
-        // WCAG 2.2 AA compliance checks
-        if (! empty($bodyHtml)) {
-            if (! str_contains($bodyHtml, 'color:') && ! str_contains($bodyHtml, 'style=')) {
-                // Basic check - more comprehensive validation would be needed
-            }
+        // Variable validation
+        $foundVariables = $this->extractVariables($subject.' '.$bodyHtml);
+        $missingVariables = array_diff($requiredVariables, $foundVariables);
+
+        if (! empty($missingVariables)) {
+            $errors[] = 'Missing required variables: '.implode(', ', $missingVariables);
         }
 
-        return $errors;
+        // Check for unclosed variable tags
+        if (preg_match('/\{\{[^}]*$/', $subject.$bodyHtml)) {
+            $errors[] = 'Unclosed variable tag detected';
+        }
+
+        return [
+            'valid' => empty($errors),
+            'errors' => $errors,
+            'warnings' => $warnings,
+            'found_variables' => $foundVariables,
+        ];
+    }
+
+    /**
+     * Extract variable names from template content.
+     *
+     * @return array<string>
+     */
+    public function extractVariables(string $content): array
+    {
+        preg_match_all('/\{\{(\w+)\}\}/', $content, $matches);
+
+        return array_unique($matches[1] ?? []);
     }
 
     public function clearTemplateCache(?string $category = null, ?string $locale = null): void
@@ -171,7 +309,6 @@ public function validateTemplate(string $subject, string $bodyHtml): array
         if ($category && $locale) {
             Cache::forget("email_template_{$category}_{$locale}");
         } else {
-            // Clear all template cache
             $categories = ['ticket_confirmation', 'loan_approval', 'status_update', 'reminder', 'sla_breach'];
             $locales = ['ms', 'en'];
 
@@ -183,12 +320,10 @@ public function validateTemplate(string $subject, string $bodyHtml): array
         }
     }
 
-    
-
-/**
- * @return array<string, mixed>
- */
-private function getDefaultSampleData(string $category): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getDefaultSampleData(string $category): array
     {
         $sampleData = [
             'ticket_confirmation' => [

@@ -327,4 +327,36 @@ class NotificationPreferenceRepository
 
         return $channels;
     }
+
+    /**
+     * Get all notification preferences for a user.
+     *
+     * @param  User  $user  The user to get preferences for
+     * @return array<string, mixed> User's notification preferences
+     */
+    public function getPreferences(User $user): array
+    {
+        return $user->getNotificationPreferences();
+    }
+
+    /**
+     * Set notification preferences for a user.
+     *
+     * @param  User  $user  The user to set preferences for
+     * @param  array<string, mixed>  $preferences  Preferences to set
+     */
+    public function setPreferences(User $user, array $preferences): void
+    {
+        $currentPreferences = $user->getNotificationPreferences();
+        $updatedPreferences = array_merge($currentPreferences, $preferences);
+
+        $user->notification_preferences = $updatedPreferences;
+        $user->save();
+
+        Log::channel('notifications')->info('User notification preferences updated via repository', [
+            'user_id' => $user->id,
+            'updated_keys' => array_keys($preferences),
+            'timestamp' => now()->toIso8601String(),
+        ]);
+    }
 }

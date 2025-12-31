@@ -7,26 +7,35 @@ namespace App\Services;
 use App\Events\NotificationCreated;
 use App\Models\User;
 use App\Services\Notifications\EmailDispatcher;
+use App\Services\Notifications\NotificationSecurityService;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Unified notification dispatcher implementing triple-channel pattern.
+ * Unified notification dispatcher implementing triple-channel pattern with Gmail API support.
  *
  * This service orchestrates notifications across three channels:
  * 1. DATABASE: Always sent (passive storage, audit trail, user can review anytime)
- * 2. EMAIL: Sent based on user preferences (respects wantsEmailNotifications)
+ * 2. EMAIL: Sent based on user preferences (supports Gmail API and SMTP fallback)
  * 3. BROADCAST: Real-time WebSocket notifications (for live UI updates)
+ *
+ * Gmail API Integration:
+ * - Primary: Gmail API for @motac.gov.my users (when authenticated)
+ * - Fallback: SMTP email when Gmail API is unavailable or quota exceeded
+ * - Automatic method selection based on availability and verification status
  *
  * Decision flow:
  * - Check if notification is critical (bypasses preferences)
  * - Query user preferences via NotificationPreferenceRepository
+ * - Select email delivery method (Gmail API or SMTP)
  * - Dispatch to appropriate channels based on preferences
  * - Log all decisions for audit trail
  *
  * Trace: D03 SRS-FR-043 (notification system), D04 §6.2 (multi-channel architecture)
  * Pattern: Inspired by TicketNotificationService.sendMaintenanceNotification()
+ *
+ * @see Requirements 10.1, 10.2, 10.3, 10.4
  */
 class UnifiedNotificationDispatcher
 {
@@ -43,15 +52,23 @@ class UnifiedNotificationDispatcher
         'by_channel' => [
             'database' => 0,
             'email' => 0,
+            'gmail_api' => 0,
+            'smtp' => 0,
             'broadcast' => 0,
         ],
         'by_type' => [],
+        'gmail_api_usage' => 0,
+        'smtp_fallback_count' => 0,
     ];
 
     public function __construct(
         private NotificationPreferenceRepository $preferences,
-        private EmailDispatcher $emailDispatcher
-    ) {}
+        private EmailDispatcher $emailDispatcher,
+        private ?GmailService $gmailService = null,
+        private ?NotificationSecurityService $securityService = null
+    ) {
+        $this->securityService = $securityService ?? new NotificationSecurityService;
+    }
 
     /**
      * Check if the dispatcher is currently dispatching a notification.
@@ -97,6 +114,16 @@ class UnifiedNotificationDispatcher
         $hadFailure = false;
         $notificationType = $notificationType ?? $this->inferNotificationType($notification);
 
+        // Security: Sanitize metadata to prevent XSS and remove PII
+        $sanitizedMeta = $this->securityService->sanitizeNotificationData($meta);
+
+        // Security: Log dispatch attempt for audit trail
+        $this->securityService->logSecurityEvent('notification_dispatch_started', [
+            'notification_type' => $notificationType,
+            'priority' => $priority,
+            'channels_requested' => ['database', 'email', 'broadcast'],
+        ], $user);
+
         Log::channel('notifications')->info('UnifiedNotificationDispatcher starting', [
             'user_id' => $user->id,
             'notification_class' => \get_class($notification),
@@ -140,41 +167,41 @@ class UnifiedNotificationDispatcher
             ]);
         }
 
-        // CHANNEL 2: EMAIL - Send based on preferences
+        // CHANNEL 2: EMAIL - Send based on preferences (Gmail API or SMTP)
         if ($this->preferences->shouldSendEmail($user, $notificationType, $priority)) {
-            try {
-                // Use dedicated Mailable if provided, otherwise let notification handle it
-                if ($mailable !== null) {
-                    $this->emailDispatcher->queue(
-                        $mailable,
-                        $user->email,
-                        $user->name,
-                        $meta,
-                        $notificationType,
-                        $channelsUsed, // Pass actual channels used (email, database, broadcast)
-                        $priority,
-                        $priority === 'critical' // Bypass preferences for critical priority
-                    );
-                } else {
-                    // Notification will send email via its via() and toMail() methods
-                    // EmailLog tracking happens in Notification class if it implements LogsEmailDispatch trait
+            $emailResult = $this->sendEmailWithFallback(
+                $user,
+                $mailable,
+                $notification,
+                $sanitizedMeta,
+                $notificationType,
+                $channelsUsed,
+                $priority
+            );
+
+            if ($emailResult['success']) {
+                $channelsUsed[] = 'email';
+                if ($emailResult['method'] === 'gmail_api') {
+                    self::$statistics['gmail_api_usage']++;
+                } elseif ($emailResult['method'] === 'smtp') {
+                    self::$statistics['smtp_fallback_count']++;
                 }
 
-                $channelsUsed[] = 'email';
-
-                Log::channel('notifications')->info('Email notification queued', [
+                Log::channel('notifications')->info('Email notification sent', [
                     'user_id' => $user->id,
                     'user_email' => $user->email,
                     'notification_type' => $notificationType,
+                    'method' => $emailResult['method'],
                     'mailable_class' => $mailable ? get_class($mailable) : 'via_notification',
                 ]);
-            } catch (\Exception $e) {
+            } else {
                 $hadFailure = true;
 
                 Log::channel('notifications')->error('Email notification failed', [
                     'user_id' => $user->id,
                     'notification_type' => $notificationType,
-                    'error' => $e->getMessage(),
+                    'error' => $emailResult['error'] ?? 'Unknown error',
+                    'method_attempted' => $emailResult['method'] ?? 'unknown',
                 ]);
             }
         } else {
@@ -498,6 +525,349 @@ class UnifiedNotificationDispatcher
             'by_channel' => $stats['by_channel'],
             'by_type' => $stats['by_type'],
             'failure_rate' => $failureRate,
+            'gmail_api_usage' => $stats['gmail_api_usage'],
+            'smtp_fallback_count' => $stats['smtp_fallback_count'],
+            'gmail_api_percentage' => $stats['gmail_api_usage'] > 0
+                ? round(($stats['gmail_api_usage'] / ($stats['gmail_api_usage'] + $stats['smtp_fallback_count'])) * 100, 2)
+                : 0,
         ];
+    }
+
+    /**
+     * Send email with Gmail API as primary and SMTP as fallback.
+     *
+     * @param  User  $user  The recipient
+     * @param  Mailable|null  $mailable  Optional Mailable
+     * @param  Notification  $notification  The notification
+     * @param  array<string, mixed>  $meta  Metadata
+     * @param  string|null  $notificationType  Notification type
+     * @param  array<string>  $channelsUsed  Channels already used
+     * @param  string|null  $priority  Priority level
+     * @return array{success: bool, method: string, error?: string}
+     */
+    private function sendEmailWithFallback(
+        User $user,
+        ?Mailable $mailable,
+        Notification $notification,
+        array $meta,
+        ?string $notificationType,
+        array $channelsUsed,
+        ?string $priority
+    ): array {
+        // Try Gmail API first if available and user is @motac.gov.my
+        if ($this->shouldUseGmailApi($user)) {
+            $gmailResult = $this->sendViaGmailApi($user, $mailable, $notification, $meta, $notificationType);
+
+            if ($gmailResult['success']) {
+                return $gmailResult;
+            }
+
+            // Log Gmail API failure and fall back to SMTP
+            Log::channel('notifications')->warning('Gmail API failed, falling back to SMTP', [
+                'user_id' => $user->id,
+                'error' => $gmailResult['error'] ?? 'Unknown error',
+            ]);
+        }
+
+        // Fall back to SMTP via EmailDispatcher
+        return $this->sendViaSmtp($user, $mailable, $meta, $notificationType, $channelsUsed, $priority);
+    }
+
+    /**
+     * Check if Gmail API should be used for this user.
+     */
+    private function shouldUseGmailApi(User $user): bool
+    {
+        // Check if Gmail service is available
+        if (! $this->gmailService) {
+            return false;
+        }
+
+        // Check if Gmail API is authenticated
+        if (! $this->gmailService->isAuthenticated()) {
+            return false;
+        }
+
+        // Check if user email is @motac.gov.my
+        if (! str_ends_with(strtolower($user->email), '@motac.gov.my')) {
+            return false;
+        }
+
+        // Check if Gmail API can send (quota and rate limits)
+        if (! $this->gmailService->canSendEmail()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Send email via Gmail API.
+     *
+     * @return array{success: bool, method: string, message_id?: string, error?: string}
+     */
+    private function sendViaGmailApi(
+        User $user,
+        ?Mailable $mailable,
+        Notification $notification,
+        array $meta,
+        ?string $notificationType
+    ): array {
+        try {
+            // Get email content from mailable or notification
+            $emailContent = $this->getEmailContent($mailable, $notification, $user);
+
+            if (! $emailContent) {
+                return [
+                    'success' => false,
+                    'method' => 'gmail_api',
+                    'error' => 'Could not extract email content',
+                ];
+            }
+
+            $messageId = $this->gmailService->sendEmail(
+                $user->email,
+                $emailContent['subject'],
+                $emailContent['body'],
+                config('mail.from.address'),
+                $emailContent['attachments'] ?? []
+            );
+
+            // Log for audit
+            activity('gmail_api_email')
+                ->causedBy($user)
+                ->withProperties([
+                    'message_id' => $messageId,
+                    'recipient' => $user->email,
+                    'subject' => $emailContent['subject'],
+                    'notification_type' => $notificationType,
+                    'meta' => $meta,
+                    'timestamp' => now()->toIso8601String(),
+                ])
+                ->log('Email sent via Gmail API');
+
+            return [
+                'success' => true,
+                'method' => 'gmail_api',
+                'message_id' => $messageId,
+            ];
+        } catch (GmailQuotaExceededException $e) {
+            Log::channel('notifications')->warning('Gmail API quota exceeded', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return [
+                'success' => false,
+                'method' => 'gmail_api',
+                'error' => 'Quota exceeded: '.$e->getMessage(),
+            ];
+        } catch (GmailRateLimitException $e) {
+            Log::channel('notifications')->warning('Gmail API rate limited', [
+                'user_id' => $user->id,
+                'retry_after' => $e->getRetryAfterSeconds(),
+            ]);
+
+            return [
+                'success' => false,
+                'method' => 'gmail_api',
+                'error' => 'Rate limited: '.$e->getMessage(),
+            ];
+        } catch (\Exception $e) {
+            Log::channel('notifications')->error('Gmail API send failed', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return [
+                'success' => false,
+                'method' => 'gmail_api',
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    /**
+     * Send email via SMTP (EmailDispatcher).
+     *
+     * @return array{success: bool, method: string, email_log_id?: int, error?: string}
+     */
+    private function sendViaSmtp(
+        User $user,
+        ?Mailable $mailable,
+        array $meta,
+        ?string $notificationType,
+        array $channelsUsed,
+        ?string $priority
+    ): array {
+        try {
+            if ($mailable !== null) {
+                $emailLog = $this->emailDispatcher->queue(
+                    $mailable,
+                    $user->email,
+                    $user->name,
+                    $meta,
+                    $notificationType,
+                    $channelsUsed,
+                    $priority,
+                    $priority === 'critical'
+                );
+
+                return [
+                    'success' => true,
+                    'method' => 'smtp',
+                    'email_log_id' => $emailLog->id,
+                ];
+            }
+
+            // Notification will send email via its via() and toMail() methods
+            return [
+                'success' => true,
+                'method' => 'smtp',
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'method' => 'smtp',
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    /**
+     * Extract email content from Mailable or Notification.
+     *
+     * @return array{subject: string, body: string, attachments?: array}|null
+     */
+    private function getEmailContent(?Mailable $mailable, Notification $notification, User $user): ?array
+    {
+        if ($mailable !== null) {
+            try {
+                $rendered = $mailable->render();
+                $subject = 'No Subject';
+
+                if (method_exists($mailable, 'envelope')) {
+                    $envelope = $mailable->envelope();
+                    $subject = $envelope->subject ?? 'No Subject';
+                }
+
+                return [
+                    'subject' => $subject,
+                    'body' => $rendered,
+                    'attachments' => [],
+                ];
+            } catch (\Exception $e) {
+                Log::channel('notifications')->error('Failed to render mailable', [
+                    'mailable_class' => get_class($mailable),
+                    'error' => $e->getMessage(),
+                ]);
+
+                return null;
+            }
+        }
+
+        // Try to get content from notification's toMail method
+        if (method_exists($notification, 'toMail')) {
+            try {
+                $mailMessage = $notification->toMail($user);
+
+                if ($mailMessage) {
+                    return [
+                        'subject' => $mailMessage->subject ?? 'Notification',
+                        'body' => $this->renderMailMessage($mailMessage),
+                        'attachments' => [],
+                    ];
+                }
+            } catch (\Exception $e) {
+                Log::channel('notifications')->error('Failed to get notification mail content', [
+                    'notification_class' => get_class($notification),
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Render a MailMessage to HTML.
+     */
+    private function renderMailMessage($mailMessage): string
+    {
+        // Simple HTML rendering of mail message
+        $html = '<html><body>';
+
+        if (property_exists($mailMessage, 'greeting') && $mailMessage->greeting) {
+            $html .= '<h1>'.e($mailMessage->greeting).'</h1>';
+        }
+
+        if (property_exists($mailMessage, 'introLines')) {
+            foreach ($mailMessage->introLines as $line) {
+                $html .= '<p>'.e($line).'</p>';
+            }
+        }
+
+        if (property_exists($mailMessage, 'actionText') && property_exists($mailMessage, 'actionUrl')) {
+            $html .= '<p><a href="'.e($mailMessage->actionUrl).'">'.e($mailMessage->actionText).'</a></p>';
+        }
+
+        if (property_exists($mailMessage, 'outroLines')) {
+            foreach ($mailMessage->outroLines as $line) {
+                $html .= '<p>'.e($line).'</p>';
+            }
+        }
+
+        $html .= '</body></html>';
+
+        return $html;
+    }
+
+    /**
+     * Get channel status for all notification channels.
+     *
+     * @return array{database: bool, email: array, broadcast: bool}
+     */
+    public function getChannelStatus(): array
+    {
+        $gmailStatus = $this->gmailService?->getHealthStatus() ?? ['is_authenticated' => false];
+
+        return [
+            'database' => true, // Always available
+            'email' => [
+                'smtp_available' => true,
+                'gmail_api_available' => $gmailStatus['is_authenticated'] ?? false,
+                'gmail_api_can_send' => $this->gmailService?->canSendEmail() ?? false,
+                'gmail_quota' => $this->gmailService?->getQuotaUsage() ?? null,
+                'preferred_method' => $this->gmailService?->isAuthenticated() ? 'gmail_api' : 'smtp',
+            ],
+            'broadcast' => config('broadcasting.default') !== null,
+        ];
+    }
+
+    /**
+     * Set user notification preferences.
+     *
+     * @param  User  $user  The user
+     * @param  array<string, mixed>  $preferences  Preferences to set
+     */
+    public function setUserPreferences(User $user, array $preferences): void
+    {
+        $this->preferences->setPreferences($user, $preferences);
+
+        Log::channel('notifications')->info('User notification preferences updated', [
+            'user_id' => $user->id,
+            'preferences' => $preferences,
+        ]);
+    }
+
+    /**
+     * Get user notification preferences.
+     *
+     * @param  User  $user  The user
+     * @return array<string, mixed>
+     */
+    public function getUserPreferences(User $user): array
+    {
+        return $this->preferences->getPreferences($user);
     }
 }

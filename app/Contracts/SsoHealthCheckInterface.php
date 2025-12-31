@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace App\Contracts;
 
 /**
- * SSO Health Check Service Interface for ICTServe v3.6.0
+ * SSO Health Check Service Interface for ICTServe v3.6.1
  *
- * Provides health monitoring and configuration validation for Google SSO:
- * - Google OAuth service availability checking
- * - Configuration validation for client ID, secret, and redirect URI
- * - Network connectivity testing to Google OAuth endpoints
+ * Provides comprehensive health monitoring for all Google services:
+ * - Google OAuth/SSO service availability checking
+ * - Gmail API availability and quota monitoring
+ * - OAuth verification status monitoring
+ * - Configuration validation for all Google services
+ * - Network connectivity testing to Google endpoints
  * - Service status reporting for admin dashboards
  *
  * @see D00 §4.1 True Hybrid Architecture
  * @see D03-FR-001.3 Google SSO Authentication
  * @see D11 Technical Design Documentation
- * @see Requirements 8.1, 8.2
+ * @see Requirements 8.1, 8.2, 14.1, 14.2, 14.5
  */
 interface SsoHealthCheckInterface
 {
@@ -31,6 +33,16 @@ interface SsoHealthCheckInterface
     public function checkGoogleOAuthAvailability(): bool;
 
     /**
+     * Check if Gmail API service is available
+     *
+     * Tests connectivity to Gmail API endpoints and validates
+     * that the service can accept API requests.
+     *
+     * @return bool True if Gmail API is available and responding
+     */
+    public function checkGmailApiAvailability(): bool;
+
+    /**
      * Validate Google OAuth configuration
      *
      * Checks that all required configuration values are present:
@@ -41,6 +53,18 @@ interface SsoHealthCheckInterface
      * @return array{valid: bool, errors: array<string>, warnings: array<string>}
      */
     public function validateConfiguration(): array;
+
+    /**
+     * Validate Gmail API configuration
+     *
+     * Checks that all required Gmail API configuration values are present:
+     * - Service account credentials or OAuth tokens
+     * - Required scopes
+     * - Sender email configuration
+     *
+     * @return array{valid: bool, errors: array<string>, warnings: array<string>}
+     */
+    public function validateGmailConfiguration(): array;
 
     /**
      * Test network connectivity to Google OAuth endpoints
@@ -85,4 +109,31 @@ interface SsoHealthCheckInterface
      * @return bool True if SSO feature is enabled and ready
      */
     public function isSsoEnabled(): bool;
+
+    /**
+     * Get OAuth verification status
+     *
+     * Returns the current OAuth app verification status and details.
+     *
+     * @return array{status: string, is_production: bool, is_testing: bool, test_users_count: int, message: string}
+     */
+    public function getVerificationStatus(): array;
+
+    /**
+     * Check quota limits for all Google services
+     *
+     * Returns quota usage and limits for SSO and Gmail API.
+     *
+     * @return array{sso: array<string, mixed>, gmail: array<string, mixed>, overall_status: string}
+     */
+    public function checkQuotaLimits(): array;
+
+    /**
+     * Get overall status for all Google services
+     *
+     * Returns comprehensive status for SSO, Gmail API, and verification.
+     *
+     * @return array{sso: array<string, mixed>, gmail: array<string, mixed>, verification: array<string, mixed>, overall_status: string, checked_at: string}
+     */
+    public function getOverallServiceStatus(): array;
 }

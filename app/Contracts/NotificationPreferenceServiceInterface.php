@@ -69,12 +69,11 @@ interface NotificationPreferenceServiceInterface
      *
      * @see Requirements 17.5 - Notification preferences configuration
      */
-    
 
-/**
- * @param array<string, mixed> $preferences
- */
-public function updatePreferences(User $user, array $preferences): void;
+    /**
+     * @param  array<string, mixed>  $preferences
+     */
+    public function updatePreferences(User $user, array $preferences): void;
 
     /**
      * Determine if email notification should be sent for a specific type
@@ -173,4 +172,98 @@ public function updatePreferences(User $user, array $preferences): void;
      * @return bool True if should be queued for digest
      */
     public function shouldQueueForDigest(User $user, string $notificationType): bool;
+
+    /**
+     * Set quiet hours for a user
+     *
+     * Configures the time period during which non-critical
+     * notifications should be suppressed or delayed.
+     *
+     * @param  User  $user  The user to configure
+     * @param  string  $start  Start time in H:i format (e.g., '22:00')
+     * @param  string  $end  End time in H:i format (e.g., '07:00')
+     * @param  string|null  $timezone  User's timezone (defaults to Asia/Kuala_Lumpur)
+     *
+     * @throws \InvalidArgumentException If time format is invalid
+     *
+     * @see Requirements 5.3 - Quiet hours configuration
+     */
+    public function setQuietHours(User $user, string $start, string $end, ?string $timezone = null): void;
+
+    /**
+     * Check if user is currently in quiet hours
+     *
+     * Determines if the current time falls within the user's
+     * configured quiet hours period, considering their timezone.
+     *
+     * @param  User  $user  The user to check
+     * @return bool True if currently in quiet hours
+     *
+     * @see Requirements 5.3 - Quiet hours enforcement
+     */
+    public function isInQuietHours(User $user): bool;
+
+    /**
+     * Disable quiet hours for a user
+     *
+     * @param  User  $user  The user to disable quiet hours for
+     */
+    public function disableQuietHours(User $user): void;
+
+    /**
+     * Bulk update preferences for multiple users
+     *
+     * Efficiently updates preferences for multiple users in a single operation.
+     * Returns array of results with success/failure status per user.
+     *
+     * @param  array<int>  $userIds  Array of user IDs to update
+     * @param  array<string, bool|string>  $preferences  Preferences to apply
+     * @return array{success: array<int>, failed: array<int, string>}
+     *
+     * @see Requirements 5.7 - Bulk preference management
+     */
+    public function bulkUpdatePreferences(array $userIds, array $preferences): array;
+
+    /**
+     * Check if notification should be sent based on all preference rules
+     *
+     * Comprehensive check that considers:
+     * - Notification type enabled/disabled
+     * - Channel preferences
+     * - Quiet hours
+     * - Critical notification override
+     * - Digest frequency
+     *
+     * @param  User  $user  The recipient user
+     * @param  string  $notificationType  The notification type
+     * @param  string  $channel  The delivery channel (mail, database, broadcast)
+     * @param  string|null  $priority  Notification priority (critical, high, normal, low)
+     * @return bool True if notification should be sent
+     *
+     * @see Requirements 5.1, 5.2, 5.3, 5.6
+     */
+    public function shouldSendNotification(
+        User $user,
+        string $notificationType,
+        string $channel,
+        ?string $priority = null
+    ): bool;
+
+    /**
+     * Get user's timezone setting
+     *
+     * @param  User  $user  The user to get timezone for
+     * @return string The timezone identifier (e.g., 'Asia/Kuala_Lumpur')
+     */
+    public function getUserTimezone(User $user): string;
+
+    /**
+     * Set user's timezone
+     *
+     * @param  User  $user  The user to set timezone for
+     * @param  string  $timezone  Valid timezone identifier
+     *
+     * @throws \InvalidArgumentException If timezone is invalid
+     */
+    public function setUserTimezone(User $user, string $timezone): void;
 }
