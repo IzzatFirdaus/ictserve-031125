@@ -1,12 +1,7 @@
 <x-filament-widgets::widget>
-    <x-filament::section>
-        <x-slot name="heading">
-            {{ __('Amaran Kritikal') }}
-        </x-slot>
-
-        <x-slot name="description">
-            {{ __('Perkara yang memerlukan perhatian segera') }}
-        </x-slot>
+    <x-filament.components::widget-card title="{{ __('Amaran Kritikal') }}"
+        description="{{ __('Perkara yang memerlukan perhatian segera') }}" icon="heroicon-o-exclamation-triangle"
+        color="warning" :interactive="false">
 
         <div data-testid="critical-alerts-widget" wire:poll.60s>
             @if ($alerts->isEmpty())
@@ -51,5 +46,5 @@
                 </div>
             @endif
         </div>
-    </x-filament::section>
+    </x-filament.components::widget-card>
 </x-filament-widgets::widget>

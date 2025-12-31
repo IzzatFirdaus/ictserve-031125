@@ -17,11 +17,10 @@
 <x-theme-init />
 
 @livewireStyles
-<link rel="stylesheet" href="/css/app.css">
+@vite('resources/css/app.css')
 
-<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<script defer src="/vendor/livewire/livewire.js"></script>
-<script defer src="/js/app.js"></script>
+{{-- Livewire 3.x bundles Alpine.js - no CDN needed --}}
+{{-- Scripts loaded at end of page via @livewireScripts and @vite --}}
 
 {{-- Main Container - Centered Layout with MyDS Background --}}
 <div class="min-h-screen flex items-center justify-center bg-washed dark:bg-gray-900 px-4 py-8 sm:px-6 lg:px-8"
@@ -225,3 +224,6 @@
         </div>
     </div>
 </div>
+
+@livewireScripts
+@vite('resources/js/app.js')

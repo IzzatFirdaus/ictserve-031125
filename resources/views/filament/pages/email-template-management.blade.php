@@ -5,11 +5,163 @@
             {{ $this->form }}
         </div>
 
+        <!-- Version History Section -->
+        @if($this->showVersionHistory && $this->selectedTemplate)
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        Sejarah Versi - {{ $this->selectedTemplate->name }}
+                    </h3>
+                    <button 
+                        type="button"
+                        wire:click="closeVersionHistory"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                        aria-label="Tutup sejarah versi"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Version Comparison -->
+                <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h4 class="font-medium text-gray-900 dark:text-white mb-3">Bandingkan Versi</h4>
+                    <div class="flex flex-wrap items-end gap-4">
+                        <div class="flex-1 min-w-[150px]">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Versi 1</label>
+                            <select 
+                                wire:model="compareVersion1"
+                                class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            >
+                                <option value="">Pilih versi...</option>
+                                @foreach($this->getVersionOptions() as $num => $label)
+                                    <option value="{{ $num }}">{{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="flex-1 min-w-[150px]">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Versi 2</label>
+                            <select 
+                                wire:model="compareVersion2"
+                                class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            >
+                                <option value="">Pilih versi...</option>
+                                @foreach($this->getVersionOptions() as $num => $label)
+                                    <option value="{{ $num }}">{{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button 
+                            type="button"
+                            wire:click="compareVersions"
+                            class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                        >
+                            Bandingkan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Version Comparison Results -->
+                @if(!empty($this->versionComparison) && !isset($this->versionComparison['error']))
+                    <div class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                        <h4 class="font-medium text-gray-900 dark:text-white mb-3">Hasil Perbandingan</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-3 bg-white dark:bg-gray-800 rounded border {{ $this->versionComparison['subject_changed'] ? 'border-warning-500' : 'border-gray-200 dark:border-gray-600' }}">
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Versi {{ $this->versionComparison['version1']['number'] }}</div>
+                                <div class="font-medium text-gray-900 dark:text-white">{{ $this->versionComparison['version1']['subject'] }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">{{ $this->versionComparison['version1']['created_at'] }} oleh {{ $this->versionComparison['version1']['created_by'] }}</div>
+                            </div>
+                            <div class="p-3 bg-white dark:bg-gray-800 rounded border {{ $this->versionComparison['subject_changed'] ? 'border-warning-500' : 'border-gray-200 dark:border-gray-600' }}">
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Versi {{ $this->versionComparison['version2']['number'] }}</div>
+                                <div class="font-medium text-gray-900 dark:text-white">{{ $this->versionComparison['version2']['subject'] }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">{{ $this->versionComparison['version2']['created_at'] }} oleh {{ $this->versionComparison['version2']['created_by'] }}</div>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex gap-4 text-sm">
+                            <span class="{{ $this->versionComparison['subject_changed'] ? 'text-warning-600 dark:text-warning-400' : 'text-success-600 dark:text-success-400' }}">
+                                Subjek: {{ $this->versionComparison['subject_changed'] ? 'Berubah' : 'Sama' }}
+                            </span>
+                            <span class="{{ $this->versionComparison['body_changed'] ? 'text-warning-600 dark:text-warning-400' : 'text-success-600 dark:text-success-400' }}">
+                                Kandungan: {{ $this->versionComparison['body_changed'] ? 'Berubah' : 'Sama' }}
+                            </span>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Version List -->
+                @if(!empty($this->versionHistory))
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Versi</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Subjek</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Ringkasan Perubahan</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Dicipta</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Oleh</th>
+                                    <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tindakan</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                @foreach($this->versionHistory as $version)
+                                    <tr class="{{ $version['version_number'] === $this->selectedTemplate->current_version ? 'bg-primary-50 dark:bg-primary-900/20' : '' }}">
+                                        <td class="px-4 py-3 whitespace-nowrap">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $version['version_number'] === $this->selectedTemplate->current_version ? 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' }}">
+                                                v{{ $version['version_number'] }}
+                                                @if($version['version_number'] === $this->selectedTemplate->current_version)
+                                                    <span class="ml-1">(Semasa)</span>
+                                                @endif
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-white max-w-xs truncate">{{ $version['subject'] }}</td>
+                                        <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">{{ $version['change_summary'] ?? '-' }}</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $version['created_at'] }}</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $version['created_by'] }}</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+                                            <div class="flex justify-end gap-2">
+                                                <button 
+                                                    type="button"
+                                                    wire:click="previewVersion({{ $version['version_number'] }})"
+                                                    class="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
+                                                    title="Pratonton versi ini"
+                                                >
+                                                    Pratonton
+                                                </button>
+                                                @if($version['version_number'] !== $this->selectedTemplate->current_version)
+                                                    <button 
+                                                        type="button"
+                                                        wire:click="restoreVersion({{ $version['version_number'] }})"
+                                                        wire:confirm="Adakah anda pasti mahu memulihkan versi {{ $version['version_number'] }}? Ini akan mencipta versi baru."
+                                                        class="text-warning-600 hover:text-warning-800 dark:text-warning-400 dark:hover:text-warning-300"
+                                                        title="Pulihkan versi ini"
+                                                    >
+                                                        Pulihkan
+                                                    </button>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                        <p class="text-sm">Tiada sejarah versi untuk templat ini.</p>
+                    </div>
+                @endif
+            </div>
+        @endif
+
         <!-- Preview Section -->
         @if($this->previewData)
             <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                     Template Preview
+                    @if(isset($this->previewData['version']))
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">(Versi {{ $this->previewData['version'] }})</span>
+                    @endif
                 </h3>
                 
                 <div class="space-y-4">
@@ -31,7 +183,7 @@
                             HTML Body
                         </label>
                         <div class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 max-h-96 overflow-y-auto">
-                            <div class="prose prose-sm max-w-none">
+                            <div class="prose prose-sm max-w-none dark:prose-invert">
                                 {!! $this->previewData['body_html'] !!}
                             </div>
                         </div>
@@ -90,7 +242,7 @@
                                     <div class="p-4">
                                         <div class="flex items-center justify-between">
                                             <div class="flex-1">
-                                                <div class="flex items-center gap-3">
+                                                <div class="flex items-center gap-3 flex-wrap">
                                                     <h5 class="font-medium text-gray-900 dark:text-white">
                                                         {{ $template['name'] }}
                                                     </h5>
@@ -106,6 +258,12 @@
                                                     @else
                                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
                                                             Inactive
+                                                        </span>
+                                                    @endif
+
+                                                    @if(isset($template['current_version']))
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-info-100 text-info-800 dark:bg-info-900 dark:text-info-200">
+                                                            v{{ $template['current_version'] }}
                                                         </span>
                                                     @endif
                                                 </div>

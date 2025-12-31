@@ -1,8 +1,6 @@
 <x-filament-widgets::widget>
-    <x-filament::section>
-        <x-slot name="heading">
-            Slow Database Queries
-        </x-slot>
+    <x-filament.components::widget-card title="Slow Database Queries"
+        description="Pertanyaan pangkalan data yang perlahan" icon="heroicon-o-clock" color="warning" :interactive="false">
 
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
@@ -30,5 +28,5 @@
                 </tbody>
             </table>
         </div>
-    </x-filament::section>
+    </x-filament.components::widget-card>
 </x-filament-widgets::widget>

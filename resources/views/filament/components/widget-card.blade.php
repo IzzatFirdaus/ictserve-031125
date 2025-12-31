@@ -1,123 +1,105 @@
 {{--
-    ICTServe Base Widget Card Component - MyDS Design System v2025.2
+    Widget Card Component - MyDS v2025.2 Compliant
     
-    Provides consistent styling for all dashboard widgets with:
-    - MyDS shadow-card elevation
-    - WCAG 2.2 AA accessibility compliance
-    - Dark mode support
-    - Proper ARIA labels
-    - Loading state skeleton
-    
-    @props
-    - heading: Widget title (optional)
-    - description: Widget description (optional)
-    - icon: Heroicon name (optional)
-    - color: Widget accent color (primary, success, warning, danger)
-    - loading: Show loading skeleton (boolean)
-    - actions: Slot for action buttons
-    
-    @trace D12 §6.9 (Shadow System), D13 §2.2-2.7 (MyDS), D14 §4 (MOTAC Branding)
+    @description Base widget card component with consistent styling
+    @trace Task 5.1.2; R22.2.1-R22.2.5; D14 §5.3
     @version 3.6.1
+    @since 2025-01-01
 --}}
 
 @props([
-    'heading' => null,
+    'title' => null,
     'description' => null,
     'icon' => null,
     'color' => 'primary',
+    'size' => 'default',
+    'interactive' => false,
     'loading' => false,
-    'columnSpan' => null,
 ])
 
 @php
-    $colorClasses = match ($color) {
-        'success' => 'text-success-600 dark:text-success-400',
-        'warning' => 'text-warning-600 dark:text-warning-400',
-        'danger' => 'text-danger-600 dark:text-danger-400',
-        'info' => 'text-info-600 dark:text-info-400',
-        default => 'text-primary-600 dark:text-primary-400',
+    $cardClasses = [
+        'widget-card',
+        'bg-white dark:bg-gray-800',
+        'border border-gray-200 dark:border-gray-700',
+        'rounded-lg', // 12px border-radius
+        'p-6', // 24px internal padding
+        'transition-all duration-200 ease-out',
+        'theme-transition',
+        'shadow-card', // MyDS shadow-card elevation
+    ];
+
+    // Interactive hover states
+    if ($interactive) {
+        $cardClasses[] = 'hover:shadow-lg hover:-translate-y-0.5 cursor-pointer';
+    }
+
+    // Size variations
+    $sizeClasses = match ($size) {
+        'small' => 'p-4',
+        'large' => 'p-8',
+        default => 'p-6',
     };
 
-    $iconBgClasses = match ($color) {
-        'success' => 'bg-success-50 dark:bg-success-900/20',
-        'warning' => 'bg-warning-50 dark:bg-warning-900/20',
-        'danger' => 'bg-danger-50 dark:bg-danger-900/20',
-        'info' => 'bg-info-50 dark:bg-info-900/20',
-        default => 'bg-primary-50 dark:bg-primary-900/20',
+    // Color variations for accent
+    $colorClasses = match ($color) {
+        'success' => 'border-l-4 border-l-success-500',
+        'warning' => 'border-l-4 border-l-warning-500',
+        'danger' => 'border-l-4 border-l-danger-500',
+        'info' => 'border-l-4 border-l-info-500',
+        default => '',
     };
+
+    $finalClasses = implode(' ', [...$cardClasses, $sizeClasses, $colorClasses]);
 @endphp
 
-<div {{ $attributes->merge([
-    'class' => 'bg-white dark:bg-gray-800 rounded-lg p-6 theme-transition',
-    'style' => 'box-shadow: var(--shadow-card);',
-    'role' => 'region',
-]) }}
-    @if ($heading) aria-labelledby="widget-heading-{{ Str::slug($heading) }}" @endif
-    @if ($loading) aria-busy="true" @endif>
-
-    {{-- Loading Skeleton --}}
+<div {{ $attributes->merge(['class' => $finalClasses]) }} role="region"
+    @if ($title) aria-labelledby="widget-title-{{ Str::slug($title) }}" @endif
+    @if ($description) aria-describedby="widget-desc-{{ Str::slug($title ?? 'widget') }}" @endif>
+    {{-- Loading State --}}
     @if ($loading)
-        <div class="animate-pulse" aria-label="{{ __('filament.widget.loading') ?? 'Memuatkan...' }}">
-            {{-- Header Skeleton --}}
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-                    <div>
-                        <div class="h-5 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                        <div class="h-3 w-48 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                    </div>
-                </div>
-                <div class="h-8 w-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        <div class="animate-pulse">
+            <div class="flex items-center space-x-3 mb-4">
+                @if ($icon)
+                    <div class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                @endif
+                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
             </div>
-
-            {{-- Content Skeleton --}}
-            <div class="space-y-3">
-                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+            <div class="space-y-2">
+                <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
             </div>
         </div>
     @else
         {{-- Widget Header --}}
-        @if ($heading || $icon || isset($actions))
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    {{-- Icon --}}
-                    @if ($icon)
-                        <div class="p-2 rounded-lg {{ $iconBgClasses }}">
-                            <x-dynamic-component :component="'heroicon-o-' . $icon" class="w-5 h-5 {{ $colorClasses }}"
-                                aria-hidden="true" />
+        @if ($title || $icon)
+            <div class="flex items-center space-x-3 mb-4">
+                @if ($icon)
+                    <div class="shrink-0">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-{{ $color }}-50 dark:bg-{{ $color }}-900/20">
+                            @svg($icon, "w-5 h-5 text-{$color}-600 dark:text-{$color}-400")
                         </div>
-                    @endif
-
-                    {{-- Title & Description --}}
-                    <div>
-                        @if ($heading)
-                            <h3 id="widget-heading-{{ Str::slug($heading) }}"
-                                class="text-xl font-semibold text-gray-900 dark:text-white font-heading">
-                                {{ $heading }}
-                            </h3>
-                        @endif
-
-                        @if ($description)
-                            <p class="text-sm text-gray-600 dark:text-gray-400 font-body mt-0.5">
-                                {{ $description }}
-                            </p>
-                        @endif
                     </div>
-                </div>
+                @endif
 
-                {{-- Actions Slot --}}
-                @if (isset($actions))
-                    <div class="flex items-center gap-2">
-                        {{ $actions }}
-                    </div>
+                @if ($title)
+                    <h3 id="widget-title-{{ Str::slug($title) }}" class="widget-header">
+                        {{ $title }}
+                    </h3>
                 @endif
             </div>
         @endif
 
+        {{-- Widget Description --}}
+        @if ($description)
+            <div id="widget-desc-{{ Str::slug($title ?? 'widget') }}" class="widget-description mb-4">
+                {{ $description }}
+            </div>
+        @endif
+
         {{-- Widget Content --}}
-        <div class="space-y-4">
+        <div class="widget-content">
             {{ $slot }}
         </div>
     @endif

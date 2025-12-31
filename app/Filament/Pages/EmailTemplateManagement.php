@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use App\Models\EmailTemplate;
+use App\Models\EmailTemplateVersion;
 use App\Services\EmailTemplateService;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -27,7 +28,7 @@ class EmailTemplateManagement extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
     protected static ?string $navigationLabel = null;
 
@@ -44,6 +45,18 @@ class EmailTemplateManagement extends Page implements HasForms
 
     /** @var array<string, mixed> */
     public array $previewData = [];
+
+    /** @var array<int, array<string, mixed>> */
+    public array $versionHistory = [];
+
+    public bool $showVersionHistory = false;
+
+    public ?int $compareVersion1 = null;
+
+    public ?int $compareVersion2 = null;
+
+    /** @var array<string, mixed> */
+    public array $versionComparison = [];
 
     public static function shouldRegisterNavigation(): bool
     {
@@ -137,6 +150,12 @@ class EmailTemplateManagement extends Page implements HasForms
                                 ->label('Email Body (Plain Text)')
                                 ->rows(8)
                                 ->helperText('Plain text version for accessibility'),
+
+                            TextInput::make('change_summary')
+                                ->label('Change Summary')
+                                ->maxLength(255)
+                                ->helperText('Brief description of changes (for version history)')
+                                ->visible(fn (): bool => $this->selectedTemplate !== null),
                         ]),
                 ])
                 ->statePath('data'),
@@ -144,7 +163,7 @@ class EmailTemplateManagement extends Page implements HasForms
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<Action>
      */
     protected function getHeaderActions(): array
     {
@@ -163,6 +182,12 @@ class EmailTemplateManagement extends Page implements HasForms
                 ->label('Lihat Pembolehubah')
                 ->action('showVariables')
                 ->color('info'),
+
+            Action::make('versionHistory')
+                ->label('Sejarah Versi')
+                ->action('loadVersionHistory')
+                ->color('gray')
+                ->visible(fn (): bool => $this->selectedTemplate !== null),
         ];
     }
 
@@ -171,14 +196,14 @@ class EmailTemplateManagement extends Page implements HasForms
         $data = $this->getFormState();
 
         $service = app(EmailTemplateService::class);
-        $subject = is_string($data['subject'] ?? null) ? $data['subject'] : '';
-        $bodyHtml = is_string($data['body_html'] ?? null) ? $data['body_html'] : '';
-        $errors = $service->validateTemplate($subject, $bodyHtml);
+        $subject = \is_string($data['subject'] ?? null) ? $data['subject'] : '';
+        $bodyHtml = \is_string($data['body_html'] ?? null) ? $data['body_html'] : '';
+        $validation = $service->validateTemplate($subject, $bodyHtml);
 
-        if (! empty($errors)) {
+        if (! $validation['valid']) {
             Notification::make()
                 ->title('Pengesahan Gagal')
-                ->body(implode(', ', $errors))
+                ->body(implode(', ', $validation['errors']))
                 ->danger()
                 ->send();
 
@@ -186,21 +211,60 @@ class EmailTemplateManagement extends Page implements HasForms
         }
 
         // Check for existing template with same category and locale
+        /** @var EmailTemplate|null $existing */
         $existing = EmailTemplate::where('category', $data['category'])
             ->where('locale', $data['locale'])
             ->first();
 
         if ($existing) {
-            $existing->update($data);
-            $message = 'Templat dikemaskini berjaya';
+            // Create a new version before updating
+            $changeSummary = $data['change_summary'] ?? 'Updated via admin interface';
+            $service->createVersion(
+                $existing,
+                $subject,
+                $bodyHtml,
+                \is_string($data['body_text'] ?? null) ? $data['body_text'] : null,
+                \is_array($data['variables'] ?? null) ? $data['variables'] : null,
+                \is_string($changeSummary) ? $changeSummary : 'Updated via admin interface'
+            );
+            $this->selectedTemplate = $existing->fresh();
+            $message = 'Templat dikemaskini berjaya (Versi baru dicipta)';
         } else {
-            EmailTemplate::create($data);
+            /** @var EmailTemplate $template */
+            $template = EmailTemplate::create([
+                'name' => $data['name'],
+                'category' => $data['category'],
+                'locale' => $data['locale'],
+                'subject' => $subject,
+                'body_html' => $bodyHtml,
+                'body_text' => $data['body_text'] ?? strip_tags($bodyHtml),
+                'variables' => $data['variables'] ?? [],
+                'is_active' => $data['is_active'] ?? true,
+                'current_version' => 1,
+                'created_by' => Auth::id(),
+                'updated_by' => Auth::id(),
+            ]);
+
+            // Create initial version
+            /** @var EmailTemplateVersion $version */
+            $version = EmailTemplateVersion::create([
+                'email_template_id' => $template->id,
+                'version_number' => 1,
+                'subject' => $subject,
+                'body_html' => $bodyHtml,
+                'body_text' => $data['body_text'] ?? strip_tags($bodyHtml),
+                'variables' => $data['variables'] ?? [],
+                'change_summary' => 'Initial version',
+                'created_by' => Auth::id(),
+            ]);
+
+            $this->selectedTemplate = $template;
             $message = 'Templat dicipta berjaya';
         }
 
         // Clear template cache
-        $category = is_string($data['category'] ?? null) ? $data['category'] : null;
-        $locale = is_string($data['locale'] ?? null) ? $data['locale'] : null;
+        $category = \is_string($data['category'] ?? null) ? $data['category'] : null;
+        $locale = \is_string($data['locale'] ?? null) ? $data['locale'] : null;
         $service->clearTemplateCache($category, $locale);
 
         Notification::make()
@@ -208,7 +272,7 @@ class EmailTemplateManagement extends Page implements HasForms
             ->success()
             ->send();
 
-        $this->fillForm();
+        $this->fillForm($this->selectedTemplate?->toArray());
     }
 
     public function preview(): void
@@ -254,6 +318,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
         $variableList = collect($variables)
             ->map(fn ($description, $name) => "{{$name}} - $description")
+            ->values()
             ->implode("\n");
 
         Notification::make()
@@ -273,19 +338,23 @@ class EmailTemplateManagement extends Page implements HasForms
      */
     public function getExistingTemplates(): array
     {
-        /** @var array<string, array<int, array<string, mixed>>> $templates */
-        $templates = EmailTemplate::orderBy('category')
+        /** @var \Illuminate\Database\Eloquent\Collection<int, EmailTemplate> $collection */
+        $collection = EmailTemplate::orderBy('category')
             ->orderBy('locale')
-            ->get()
+            ->get();
+
+        /** @var array<string, array<int, array<string, mixed>>> $templates */
+        $templates = $collection
             ->groupBy('category')
             ->map(fn ($templates) => collect($templates)->map(fn (EmailTemplate $template) => $template->toArray())->all())
-            ->toArray();
+            ->all();
 
         return $templates;
     }
 
     public function loadTemplate(int $templateId): void
     {
+        /** @var EmailTemplate|null $template */
         $template = EmailTemplate::find($templateId);
 
         if ($template) {
@@ -301,6 +370,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
     public function deleteTemplate(int $templateId): void
     {
+        /** @var EmailTemplate|null $template */
         $template = EmailTemplate::find($templateId);
 
         if ($template) {
@@ -314,6 +384,185 @@ class EmailTemplateManagement extends Page implements HasForms
                 ->success()
                 ->send();
         }
+    }
+
+    /**
+     * Load version history for the selected template.
+     */
+    public function loadVersionHistory(): void
+    {
+        if (! $this->selectedTemplate) {
+            Notification::make()
+                ->title('Sila pilih templat terlebih dahulu')
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        /** @var \Illuminate\Database\Eloquent\Collection<int, EmailTemplateVersion> $versions */
+        $versions = $this->selectedTemplate->versions()
+            ->with('creator')
+            ->orderByDesc('version_number')
+            ->get();
+
+        $this->versionHistory = $versions->map(fn (EmailTemplateVersion $version) => [
+            'id' => $version->id,
+            'version_number' => $version->version_number,
+            'subject' => $version->subject,
+            'change_summary' => $version->change_summary,
+            'created_at' => $version->created_at?->format('d/m/Y H:i'),
+            'created_by' => $version->creator?->name ?? 'System',
+        ])
+            ->toArray();
+
+        $this->showVersionHistory = true;
+    }
+
+    /**
+     * Restore a specific version of the template.
+     */
+    public function restoreVersion(int $versionNumber): void
+    {
+        if (! $this->selectedTemplate) {
+            Notification::make()
+                ->title('Tiada templat dipilih')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $service = app(EmailTemplateService::class);
+        $result = $service->restoreVersion($this->selectedTemplate, $versionNumber);
+
+        if ($result) {
+            /** @var EmailTemplate $refreshed */
+            $refreshed = $this->selectedTemplate->refresh();
+            $this->selectedTemplate = $refreshed;
+            $this->fillForm($this->selectedTemplate->toArray());
+            $this->loadVersionHistory();
+
+            Notification::make()
+                ->title("Versi {$versionNumber} dipulihkan berjaya")
+                ->success()
+                ->send();
+        } else {
+            Notification::make()
+                ->title('Gagal memulihkan versi')
+                ->danger()
+                ->send();
+        }
+    }
+
+    /**
+     * Compare two versions of the template.
+     */
+    public function compareVersions(): void
+    {
+        if (! $this->selectedTemplate || ! $this->compareVersion1 || ! $this->compareVersion2) {
+            Notification::make()
+                ->title('Sila pilih dua versi untuk dibandingkan')
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        $service = app(EmailTemplateService::class);
+        $this->versionComparison = $service->compareVersions(
+            $this->selectedTemplate,
+            $this->compareVersion1,
+            $this->compareVersion2
+        );
+
+        if (isset($this->versionComparison['error'])) {
+            Notification::make()
+                ->title($this->versionComparison['error'])
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        Notification::make()
+            ->title('Perbandingan versi dijana')
+            ->success()
+            ->send();
+    }
+
+    /**
+     * Preview a specific version.
+     */
+    public function previewVersion(int $versionNumber): void
+    {
+        if (! $this->selectedTemplate) {
+            return;
+        }
+
+        $version = $this->selectedTemplate->getVersion($versionNumber);
+
+        if (! $version) {
+            Notification::make()
+                ->title('Versi tidak dijumpai')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $service = app(EmailTemplateService::class);
+        $defaultData = $service->getAvailableVariables($this->selectedTemplate->category);
+
+        // Create sample data from available variables
+        $sampleData = [];
+        foreach ($defaultData as $key => $description) {
+            $sampleData[$key] = "[{$key}]";
+        }
+
+        $this->previewData = [
+            'subject' => $version->renderSubject($sampleData),
+            'body_html' => $version->renderBody($sampleData),
+            'body_text' => strip_tags($version->renderBody($sampleData)),
+            'sample_data' => $sampleData,
+            'version' => $versionNumber,
+        ];
+
+        Notification::make()
+            ->title("Pratonton versi {$versionNumber}")
+            ->success()
+            ->send();
+    }
+
+    /**
+     * Close version history panel.
+     */
+    public function closeVersionHistory(): void
+    {
+        $this->showVersionHistory = false;
+        $this->versionHistory = [];
+        $this->versionComparison = [];
+        $this->compareVersion1 = null;
+        $this->compareVersion2 = null;
+    }
+
+    /**
+     * Get available versions for comparison dropdown.
+     *
+     * @return array<int, string>
+     */
+    public function getVersionOptions(): array
+    {
+        if (empty($this->versionHistory)) {
+            return [];
+        }
+
+        $options = [];
+        foreach ($this->versionHistory as $version) {
+            $options[$version['version_number']] = "Versi {$version['version_number']} - {$version['created_at']}";
+        }
+
+        return $options;
     }
 
     /**

@@ -1,12 +1,7 @@
 <x-filament-widgets::widget>
-    <x-filament::section>
-        <x-slot name="heading">
-            {{ __('Tindakan Pantas') }}
-        </x-slot>
-
-        <x-slot name="description">
-            {{ __('Akses aliran kerja biasa tanpa meninggalkan papan pemuka.') }}
-        </x-slot>
+    <x-filament.components::widget-card title="{{ __('Tindakan Pantas') }}"
+        description="{{ __('Akses aliran kerja biasa tanpa meninggalkan papan pemuka.') }}" icon="heroicon-o-bolt"
+        color="primary" :interactive="false">
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             @foreach ($actions as $action)
@@ -42,5 +37,5 @@
                 @endcan
             @endforeach
         </div>
-    </x-filament::section>
+    </x-filament.components::widget-card>
 </x-filament-widgets::widget>

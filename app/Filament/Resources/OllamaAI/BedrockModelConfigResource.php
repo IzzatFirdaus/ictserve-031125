@@ -360,21 +360,21 @@ class BedrockModelConfigResource extends Resource
     {
         $user = Auth::user();
 
-        return $user instanceof User && $user->hasRole('superuser');
+        return $user instanceof User && $user->hasAnyRole(['admin', 'superuser']);
     }
 
     public static function canEdit(Model $record): bool
     {
         $user = Auth::user();
 
-        return $user instanceof User && $user->hasRole('superuser');
+        return $user instanceof User && $user->hasAnyRole(['admin', 'superuser']);
     }
 
     public static function canDelete(Model $record): bool
     {
         $user = Auth::user();
 
-        return $user instanceof User && $user->hasRole('superuser');
+        return $user instanceof User && $user->hasAnyRole(['admin', 'superuser']);
     }
 
     /**

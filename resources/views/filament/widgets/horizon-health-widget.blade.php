@@ -9,21 +9,15 @@
 --}}
 
 <x-filament-widgets::widget>
-    <x-filament::section>
-        <x-slot name="heading">
-            <div class="flex items-center gap-2">
-                <x-heroicon-o-queue-list class="h-5 w-5 text-primary-600 dark:text-primary-400" />
-                <span>Laravel Horizon - Status Queue</span>
-            </div>
-        </x-slot>
+    <x-filament.components::widget-card title="Laravel Horizon - Status Queue"
+        description="Status kesihatan Laravel Horizon dan queue" icon="heroicon-o-queue-list" color="primary"
+        :interactive="false">
 
-        <x-slot name="headerEnd">
-            @if (isset($last_updated))
-                <span class="text-xs text-gray-500 dark:text-gray-400">
-                    Dikemaskini: {{ $last_updated }}
-                </span>
-            @endif
-        </x-slot>
+        @if (isset($last_updated))
+            <div class="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                Dikemaskini: {{ $last_updated }}
+            </div>
+        @endif
 
         <div class="space-y-6">
             @if (isset($error))
@@ -290,5 +284,5 @@
                 </div>
             @endif
         </div>
-    </x-filament::section>
+    </x-filament.components::widget-card>
 </x-filament-widgets::widget>

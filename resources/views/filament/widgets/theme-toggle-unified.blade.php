@@ -13,188 +13,190 @@
  */
 --}}
 <x-filament-widgets::widget>
-    <div class="theme-toggle-widget p-4 rounded-lg border" x-data="themeToggleWidget()" x-init="init()" role="region"
-        aria-label="{{ __('Kawalan Tema Dashboard') }}">
+    <x-filament.components::widget-card title="{{ __('Tetapan Tema') }}"
+        description="{{ __('Kawalan tema dashboard dengan aksesibiliti WCAG 2.2 AA') }}" icon="heroicon-o-swatch"
+        color="primary" :interactive="false">
 
-        {{-- Widget Header --}}
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                {{ __('Tetapan Tema') }}
-            </h3>
+        <div x-data="themeToggleWidget()" x-init="init()" role="region" aria-label="{{ __('Kawalan Tema Dashboard') }}">
 
             {{-- Accessibility Info Button --}}
-            <button type="button" @click="showAccessibilityInfo = !showAccessibilityInfo"
-                class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-                :aria-expanded="showAccessibilityInfo" aria-label="{{ __('Maklumat Aksesibiliti') }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-            </button>
-        </div>
-
-        {{-- Theme Preference Selection --}}
-        <div class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {{ __('Pilihan Tema') }}
-                </label>
-
-                <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="{{ __('Pilihan Tema') }}">
-                    {{-- Light Theme --}}
-                    <button type="button" @click="setThemePreference('light')" wire:loading.attr="disabled"
-                        class="theme-option-button" :class="{ 'active': themePreference === 'light' }" role="radio"
-                        :aria-checked="themePreference === 'light'" aria-label="{{ __('Tema Terang') }}">
-                        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
-                            </path>
-                        </svg>
-                        <span class="text-xs font-medium">{{ __('Terang') }}</span>
-                    </button>
-
-                    {{-- Dark Theme --}}
-                    <button type="button" @click="setThemePreference('dark')" wire:loading.attr="disabled"
-                        class="theme-option-button" :class="{ 'active': themePreference === 'dark' }" role="radio"
-                        :aria-checked="themePreference === 'dark'" aria-label="{{ __('Tema Gelap') }}">
-                        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
-                            </path>
-                        </svg>
-                        <span class="text-xs font-medium">{{ __('Gelap') }}</span>
-                    </button>
-
-                    {{-- System Theme --}}
-                    <button type="button" @click="setThemePreference('system')" wire:loading.attr="disabled"
-                        class="theme-option-button" :class="{ 'active': themePreference === 'system' }" role="radio"
-                        :aria-checked="themePreference === 'system'" aria-label="{{ __('Tema Sistem') }}">
-                        <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                        <span class="text-xs font-medium">{{ __('Sistem') }}</span>
-                    </button>
-                </div>
-            </div>
-
-            {{-- High Contrast Toggle --}}
-            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div>
-                    <label for="high-contrast-toggle" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Mod Kontras Tinggi') }}
-                    </label>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">
-                        {{ __('Tingkatkan kontras untuk aksesibiliti yang lebih baik') }}
-                    </p>
-                </div>
-
-                <button type="button" id="high-contrast-toggle" @click="toggleHighContrast()"
-                    wire:loading.attr="disabled"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                    :class="highContrastMode ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700'" role="switch"
-                    :aria-checked="highContrastMode" aria-label="{{ __('Togol Mod Kontras Tinggi') }}">
-                    <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
-                        :class="highContrastMode ? 'translate-x-6' : 'translate-x-1'"></span>
+            <div class="flex justify-end mb-4">
+                <button type="button" @click="showAccessibilityInfo = !showAccessibilityInfo"
+                    class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                    :aria-expanded="showAccessibilityInfo" aria-label="{{ __('Maklumat Aksesibiliti') }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
                 </button>
             </div>
 
-            {{-- Current Theme Status --}}
-            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <div class="flex items-center space-x-2">
-                    <div class="w-3 h-3 rounded-full"
-                        :class="currentTheme === 'dark' ? 'bg-gray-800' : 'bg-yellow-400'"></div>
-                    <span class="text-sm font-medium text-blue-800 dark:text-blue-200">
-                        {{ __('Tema Semasa') }}:
-                        <span x-text="getThemeDisplayName(currentTheme)"></span>
-                    </span>
+            {{-- Theme Preference Selection --}}
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Pilihan Tema') }}
+                    </label>
+
+                    <div class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="{{ __('Pilihan Tema') }}">
+                        {{-- Light Theme --}}
+                        <button type="button" @click="setThemePreference('light')" wire:loading.attr="disabled"
+                            class="theme-option-button" :class="{ 'active': themePreference === 'light' }"
+                            role="radio" :aria-checked="themePreference === 'light'"
+                            aria-label="{{ __('Tema Terang') }}">
+                            <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
+                            </svg>
+                            <span class="text-xs font-medium">{{ __('Terang') }}</span>
+                        </button>
+
+                        {{-- Dark Theme --}}
+                        <button type="button" @click="setThemePreference('dark')" wire:loading.attr="disabled"
+                            class="theme-option-button" :class="{ 'active': themePreference === 'dark' }"
+                            role="radio" :aria-checked="themePreference === 'dark'"
+                            aria-label="{{ __('Tema Gelap') }}">
+                            <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                                </path>
+                            </svg>
+                            <span class="text-xs font-medium">{{ __('Gelap') }}</span>
+                        </button>
+
+                        {{-- System Theme --}}
+                        <button type="button" @click="setThemePreference('system')" wire:loading.attr="disabled"
+                            class="theme-option-button" :class="{ 'active': themePreference === 'system' }"
+                            role="radio" :aria-checked="themePreference === 'system'"
+                            aria-label="{{ __('Tema Sistem') }}">
+                            <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <span class="text-xs font-medium">{{ __('Sistem') }}</span>
+                        </button>
+                    </div>
                 </div>
 
-                <div x-show="themePreference === 'system'" class="mt-2 text-xs text-blue-600 dark:text-blue-300">
-                    <span class="flex items-center space-x-1">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span>{{ __('Mengikut tetapan sistem') }}</span>
-                    </span>
+                {{-- High Contrast Toggle --}}
+                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div>
+                        <label for="high-contrast-toggle" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ __('Mod Kontras Tinggi') }}
+                        </label>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                            {{ __('Tingkatkan kontras untuk aksesibiliti yang lebih baik') }}
+                        </p>
+                    </div>
+
+                    <button type="button" id="high-contrast-toggle" @click="toggleHighContrast()"
+                        wire:loading.attr="disabled"
+                        class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                        :class="highContrastMode ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700'" role="switch"
+                        :aria-checked="highContrastMode" aria-label="{{ __('Togol Mod Kontras Tinggi') }}">
+                        <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                            :class="highContrastMode ? 'translate-x-6' : 'translate-x-1'"></span>
+                    </button>
+                </div>
+
+                {{-- Current Theme Status --}}
+                <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full"
+                            :class="currentTheme === 'dark' ? 'bg-gray-800' : 'bg-yellow-400'"></div>
+                        <span class="text-sm font-medium text-blue-800 dark:text-blue-200">
+                            {{ __('Tema Semasa') }}:
+                            <span x-text="getThemeDisplayName(currentTheme)"></span>
+                        </span>
+                    </div>
+
+                    <div x-show="themePreference === 'system'" class="mt-2 text-xs text-blue-600 dark:text-blue-300">
+                        <span class="flex items-center space-x-1">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span>{{ __('Mengikut tetapan sistem') }}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Accessibility Information Panel --}}
+            <div x-show="showAccessibilityInfo" x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-1 transform scale-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-1 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                class="mt-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+                role="region" aria-label="{{ __('Maklumat Aksesibiliti') }}">
+
+                <h4 class="text-sm font-semibold text-green-800 dark:text-green-200 mb-2">
+                    {{ __('Maklumat Aksesibiliti') }}
+                </h4>
+
+                <div class="space-y-2 text-xs text-green-700 dark:text-green-300">
+                    <div class="flex items-center justify-between">
+                        <span>{{ __('Pematuhan WCAG 2.2 AA') }}:</span>
+                        <span class="flex items-center space-x-1">
+                            <svg class="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span>{{ __('Mematuhi') }}</span>
+                        </span>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span>{{ __('Nisbah Kontras Teks') }}:</span>
+                        <span>{{ __('4.5:1 (Minimum)') }}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span>{{ __('Nisbah Kontras UI') }}:</span>
+                        <span>{{ __('3:1 (Minimum)') }}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span>{{ __('Navigasi Papan Kekunci') }}:</span>
+                        <span class="flex items-center space-x-1">
+                            <svg class="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span>{{ __('Disokong') }}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Loading State --}}
+            <div wire:loading
+                class="absolute inset-0 bg-white/50 dark:bg-gray-900/50 rounded-lg flex items-center justify-center">
+                <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                    <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                            stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span>{{ __('Mengemas kini tema...') }}</span>
                 </div>
             </div>
         </div>
-
-        {{-- Accessibility Information Panel --}}
-        <div x-show="showAccessibilityInfo" x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 transform scale-95"
-            x-transition:enter-end="opacity-1 transform scale-100"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-1 transform scale-100"
-            x-transition:leave-end="opacity-0 transform scale-95"
-            class="mt-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
-            role="region" aria-label="{{ __('Maklumat Aksesibiliti') }}">
-
-            <h4 class="text-sm font-semibold text-green-800 dark:text-green-200 mb-2">
-                {{ __('Maklumat Aksesibiliti') }}
-            </h4>
-
-            <div class="space-y-2 text-xs text-green-700 dark:text-green-300">
-                <div class="flex items-center justify-between">
-                    <span>{{ __('Pematuhan WCAG 2.2 AA') }}:</span>
-                    <span class="flex items-center space-x-1">
-                        <svg class="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20"
-                            aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span>{{ __('Mematuhi') }}</span>
-                    </span>
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <span>{{ __('Nisbah Kontras Teks') }}:</span>
-                    <span>{{ __('4.5:1 (Minimum)') }}</span>
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <span>{{ __('Nisbah Kontras UI') }}:</span>
-                    <span>{{ __('3:1 (Minimum)') }}</span>
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <span>{{ __('Navigasi Papan Kekunci') }}:</span>
-                    <span class="flex items-center space-x-1">
-                        <svg class="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20"
-                            aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span>{{ __('Disokong') }}</span>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        {{-- Loading State --}}
-        <div wire:loading
-            class="absolute inset-0 bg-white/50 dark:bg-gray-900/50 rounded-lg flex items-center justify-center">
-            <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                        stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
-                </svg>
-                <span>{{ __('Mengemas kini tema...') }}</span>
-            </div>
-        </div>
-    </div>
+    </x-filament.components::widget-card>
 
     {{-- Alpine.js Component --}}
     <script>

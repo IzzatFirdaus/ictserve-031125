@@ -12,7 +12,6 @@ use BackedEnum;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
@@ -123,22 +122,6 @@ class AutoReplyTemplateResource extends Resource
                             ->addActionLabel('Tambah Pembolehubah')
                             ->helperText(__('ollama.template.variables_helper'))
                             ->columnSpanFull(),
-
-                        Textarea::make('available_variables_display')
-                            ->label('Pembolehubah Tersedia')
-                            ->state(function (?AutoReplyTemplate $record): string {
-                                if (! $record) {
-                                    return 'Simpan template untuk melihat pembolehubah yang dikesan';
-                                }
-
-                                $vars = $record->getRequiredVariables();
-
-                                return empty($vars) ? 'Tiada pembolehubah dikesan' : implode(', ', array_map(fn ($v) => '{{'.$v.'}}', $vars));
-                            })
-                            ->rows(2)
-                            ->dehydrated(false)
-                            ->readOnly()
-                            ->visible(fn (?AutoReplyTemplate $record): bool => $record !== null),
                     ])
                     ->collapsed(),
             ]);
