@@ -139,4 +139,19 @@ enum LoanStatus: string
             self::MAINTENANCE_REQUIRED,
         ];
     }
+
+    /**
+     * Get all active status values as strings
+     *
+     * @return array<string>
+     */
+    public static function activeStatuses(): array
+    {
+        return [
+            self::ISSUED->value,
+            self::IN_USE->value,
+            self::RETURN_DUE->value,
+            self::RETURNING->value,
+        ];
+    }
 }

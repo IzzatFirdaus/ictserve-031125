@@ -1,46 +1,66 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * ImpersonationController - Handles user impersonation for superusers
+ *
+ * @trace D03-FR-002.1 (User Management)
+ * @trace D04 §3.1 (Admin Panel)
+ */
 class ImpersonationController extends Controller
 {
-    public function impersonate(User $user)
+    /**
+     * Start impersonating a user.
+     * Only superusers can impersonate other users.
+     */
+    public function impersonate(User $user): RedirectResponse
     {
-        // Only admins can impersonate
-        // Assuming 'Super Admin' role exists, or check specific permission
-        if (!auth()->user()->can('impersonate users') && !auth()->user()->hasRole('Super Admin')) {
-            abort(403, 'Unauthorized action.');
+        /** @var User|null $currentUser */
+        $currentUser = Auth::user();
+
+        // Only superusers can impersonate
+        if (! $currentUser || ! $currentUser->hasRole('superuser')) {
+            abort(403, __('users.impersonate_unauthorized'));
         }
 
         // Prevent impersonating yourself
-        if ($user->id === auth()->id()) {
-            return back()->with('error', 'You cannot impersonate yourself.');
+        if ($user->id === Auth::id()) {
+            return back()->with('error', __('users.impersonate_self_error'));
         }
 
-        // Prevent impersonating other admins (optional security measure)
-        if ($user->hasRole('Super Admin')) {
-             return back()->with('error', 'You cannot impersonate another Super Admin.');
+        // Prevent impersonating other superusers (security measure)
+        if ($user->hasRole('superuser')) {
+            return back()->with('error', __('users.impersonate_superuser_error'));
         }
 
-        session()->put('impersonator_id', auth()->id());
+        session()->put('impersonator_id', Auth::id());
         Auth::login($user);
 
         return redirect()->route('portal.dashboard');
     }
 
-    public function stop()
+    /**
+     * Stop impersonating and return to original user.
+     */
+    public function stop(): RedirectResponse
     {
-        if (!session()->has('impersonator_id')) {
+        if (! session()->has('impersonator_id')) {
             return redirect()->route('portal.dashboard');
         }
 
-        Auth::loginUsingId(session('impersonator_id'));
+        $impersonatorId = session('impersonator_id');
+        if (is_int($impersonatorId) || is_string($impersonatorId)) {
+            Auth::loginUsingId($impersonatorId);
+        }
         session()->forget('impersonator_id');
 
-        return redirect()->to('/admin'); // Redirect back to Filament admin
+        return redirect()->to('/admin');
     }
 }

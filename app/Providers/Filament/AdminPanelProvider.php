@@ -7,15 +7,9 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\AdminDashboard;
-use App\Filament\Widgets\AssetLoanStatsOverview;
-use App\Filament\Widgets\AssetUtilizationWidget;
-use App\Filament\Widgets\CrossModuleIntegrationChart;
-use App\Filament\Widgets\HelpdeskStatsOverview;
-use App\Filament\Widgets\LoanAnalyticsWidget;
-use App\Filament\Widgets\LoanApprovalQueueWidget;
-use App\Filament\Widgets\UnifiedAnalyticsChart;
 use App\Http\Middleware\AdminAccessMiddleware;
 use App\Http\Middleware\AdminRateLimitMiddleware;
+use App\Http\Middleware\RedirectAliasResources;
 use App\Http\Middleware\SessionTimeoutMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -383,17 +377,10 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 // Theme Toggle Widget (v3.6.0)
                 \App\Filament\Widgets\ThemeToggleWidget::class,
-                // Unified Dashboard Widgets
-                HelpdeskStatsOverview::class,
-                AssetLoanStatsOverview::class,
-                LoanAnalyticsWidget::class, // Using the widget from App\Filament\Widgets
-                CrossModuleIntegrationChart::class,
-                AssetUtilizationWidget::class,
-                UnifiedAnalyticsChart::class,
-                LoanApprovalQueueWidget::class,
             ])
             // Middleware Stack (Requirements 17.2, 17.5)
             ->middleware([
+                RedirectAliasResources::class, // Redirect deprecated alias URLs (Task 36)
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
