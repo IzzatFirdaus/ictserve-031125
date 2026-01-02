@@ -29,6 +29,11 @@ class Operations extends Cluster
 
     public static function getNavigationLabel(): string
     {
-        return static::trans('filament.navigation.operations', 'Operations');
+        return static::trans('filament.navigation.operations', 'Operasi');
+    }
+
+    public static function getClusterBreadcrumb(): ?string
+    {
+        return static::trans('filament.navigation.operations', 'Operasi');
     }
 }

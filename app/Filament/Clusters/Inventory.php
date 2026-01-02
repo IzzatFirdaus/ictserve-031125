@@ -27,6 +27,11 @@ class Inventory extends Cluster
 
     public static function getNavigationLabel(): string
     {
-        return static::trans('filament.navigation.inventory', 'Inventory');
+        return static::trans('filament.navigation.inventory', 'Inventori');
+    }
+
+    public static function getClusterBreadcrumb(): ?string
+    {
+        return static::trans('filament.navigation.inventory', 'Inventori');
     }
 }

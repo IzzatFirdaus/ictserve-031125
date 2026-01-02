@@ -234,6 +234,14 @@ return [
         'page_title' => 'Papan Pemuka Prestasi Ollama AI',
         'page_description' => 'Pantau prestasi dan kesihatan sistem AI',
 
+        // Period and timestamp
+        'period_context' => 'Tempoh: 24 jam terakhir',
+        'last_updated' => 'Kemaskini terakhir: :time',
+
+        // No data states
+        'no_data' => 'Tiada data',
+        'no_data_guidance' => 'Data prestasi akan dipaparkan selepas pengguna berinteraksi dengan sistem AI.',
+
         // Widgets
         'response_time' => 'Masa Respons',
         'response_time_p50' => 'P50',

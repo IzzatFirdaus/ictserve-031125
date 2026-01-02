@@ -29,7 +29,12 @@ class System extends Cluster
 
     public static function getNavigationLabel(): string
     {
-        return static::trans('filament.navigation.system', 'System');
+        return static::trans('filament.navigation.system', 'Sistem');
+    }
+
+    public static function getClusterBreadcrumb(): ?string
+    {
+        return static::trans('filament.navigation.system', 'Sistem');
     }
 
     public static function canAccess(): bool

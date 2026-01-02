@@ -480,7 +480,7 @@ This implementation plan breaks down the Filament admin frontend redesign into d
     - Test responsive forms
     - _Requirements: 8.1, 8.2, 8.3, 8.5, 8.7_
 
-  - [ ] 15.7 Verify no horizontal scroll on 1280px+ viewports
+  - [x] 15.7 Verify no horizontal scroll on 1280px+ viewports
     - Test HelpdeskTicketsTable
     - Test TicketCategoriesTable
     - Test AssetsTable
@@ -963,7 +963,7 @@ This implementation plan breaks down the Filament admin frontend redesign into d
     - **Property 43: AssetsTable Filter Query Grouping**
     - **Validates: Requirements 35.1, 35.2**
 
-  - [ ] 35.3 Write unit test for needs_maintenance filter
+  - [x] 35.3 Write unit test for needs_maintenance filter
     - Test filter returns correct assets
     - Test filter excludes assets that don't match criteria
     - _Requirements: 35.3, 35.4_
@@ -1341,7 +1341,7 @@ This implementation plan breaks down the Filament admin frontend redesign into d
     - **Property 56: FileUpload Malay Strings**
     - **Validates: Requirements 48.1, 48.2**
 
-- [-] 52. Fix Performance Dashboard "No Data" Semantics
+- [x] 52. Fix Performance Dashboard "No Data" Semantics
   - [x] 52.1 Update Performance Dashboard Metrics Display
     - When `sample_count = 0`, display "Tiada data" instead of "0ms"
     - Add period context: "Tempoh: 24 jam terakhir"
