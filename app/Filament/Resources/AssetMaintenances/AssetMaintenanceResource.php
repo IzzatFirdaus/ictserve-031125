@@ -44,17 +44,17 @@ class AssetMaintenanceResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'Penyelenggaraan Aset';
+        return __('asset_maintenance.navigation_label');
     }
 
     public static function getModelLabel(): string
     {
-        return 'Penyelenggaraan Aset';
+        return __('asset_maintenance.model_label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'Penyelenggaraan Aset';
+        return __('asset_maintenance.plural_label');
     }
 
     public static function form(Schema $schema): Schema
@@ -107,6 +107,6 @@ class AssetMaintenanceResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with(['asset', 'performedBy']);
+            ->with(['asset', 'performedByUser']);
     }
 }

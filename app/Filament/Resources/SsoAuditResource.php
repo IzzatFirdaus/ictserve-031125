@@ -47,17 +47,17 @@ class SsoAuditResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('admin.sso_audit_logs');
+        return __('sso.audit.navigation_label');
     }
 
     public static function getModelLabel(): string
     {
-        return __('admin.sso_audit_log');
+        return __('sso.audit.model_label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('admin.sso_audit_logs');
+        return __('sso.audit.plural_model_label');
     }
 
     public static function form(Schema $schema): Schema
@@ -115,27 +115,32 @@ class SsoAuditResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('email')
-                    ->label(__('admin.email'))
+                    ->label(__('sso.audit.columns.email'))
                     ->searchable()
                     ->sortable()
-                    ->copyable(),
+                    ->copyable()
+                    ->limit(30)
+                    ->tooltip(fn ($record): string => $record->email),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label(__('admin.user'))
+                    ->label(__('sso.audit.columns.user'))
                     ->searchable()
                     ->sortable()
                     ->placeholder(__('admin.guest')),
 
-                Tables\Columns\IconColumn::make('success')
-                    ->label(__('admin.status'))
-                    ->boolean()
-                    ->trueIcon(Heroicon::OutlinedCheckCircle)
-                    ->falseIcon(Heroicon::OutlinedXCircle)
-                    ->trueColor('success')
-                    ->falseColor('danger'),
+                Tables\Columns\TextColumn::make('success')
+                    ->label(__('sso.audit.columns.status'))
+                    ->badge()
+                    ->formatStateUsing(fn (bool $state): string => $state
+                        ? __('sso.audit.status.success')
+                        : __('sso.audit.status.failed'))
+                    ->icon(fn (bool $state): string => $state
+                        ? 'heroicon-o-check-circle'
+                        : 'heroicon-o-x-circle')
+                    ->color(fn (bool $state): string => $state ? 'success' : 'danger'),
 
                 Tables\Columns\TextColumn::make('error_type')
-                    ->label(__('admin.error_type'))
+                    ->label(__('sso.audit.columns.error_type'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'domain_error' => 'warning',
@@ -144,15 +149,18 @@ class SsoAuditResource extends Resource
                         'network_error' => 'warning',
                         default => 'gray',
                     })
-                    ->placeholder('-'),
+                    ->placeholder('-')
+                    ->limit(20)
+                    ->tooltip(fn ($record): ?string => $record->error_type)
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('ip_address')
-                    ->label(__('admin.ip_address'))
+                    ->label(__('sso.audit.columns.ip_address'))
                     ->searchable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('attempted_at')
-                    ->label(__('admin.attempted_at'))
+                    ->label(__('sso.audit.columns.attempted_at'))
                     ->dateTime('d M Y, H:i:s')
                     ->sortable(),
 
@@ -164,14 +172,14 @@ class SsoAuditResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('success')
-                    ->label(__('admin.status'))
+                    ->label(__('sso.audit.columns.status'))
                     ->options([
-                        '1' => __('admin.successful'),
-                        '0' => __('admin.failed'),
+                        '1' => __('sso.audit.status.success'),
+                        '0' => __('sso.audit.status.failed'),
                     ]),
 
                 Tables\Filters\SelectFilter::make('error_type')
-                    ->label(__('admin.error_type'))
+                    ->label(__('sso.audit.columns.error_type'))
                     ->options([
                         'domain_error' => __('admin.domain_error'),
                         'oauth_error' => __('admin.oauth_error'),
@@ -181,7 +189,7 @@ class SsoAuditResource extends Resource
                     ]),
 
                 Tables\Filters\SelectFilter::make('user_id')
-                    ->label(__('admin.user'))
+                    ->label(__('sso.audit.columns.user'))
                     ->relationship('user', 'name')
                     ->searchable()
                     ->preload(),
@@ -218,6 +226,9 @@ class SsoAuditResource extends Resource
                         ->label(__('admin.export_selected')),
                 ]),
             ])
+            ->emptyStateHeading(__('sso.audit.empty_state.heading'))
+            ->emptyStateDescription(__('sso.audit.empty_state.description'))
+            ->emptyStateIcon('heroicon-o-clipboard-document-list')
             ->defaultSort('attempted_at', 'desc');
     }
 

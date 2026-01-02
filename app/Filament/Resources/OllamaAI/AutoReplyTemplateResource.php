@@ -46,7 +46,7 @@ class AutoReplyTemplateResource extends Resource
 
     protected static ?string $cluster = OllamaAI::class;
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 11;
 
     public static function getNavigationLabel(): string
     {
@@ -235,14 +235,26 @@ class AutoReplyTemplateResource extends Resource
                     ->icon('heroicon-o-document-duplicate')
                     ->color('gray')
                     ->action(function (AutoReplyTemplate $record): void {
+                        $userId = Auth::id();
+
+                        if (! is_int($userId)) {
+                            Notification::make()
+                                ->danger()
+                                ->title(__('ollama.common.session_expired_title'))
+                                ->body(__('ollama.common.session_expired_body'))
+                                ->send();
+
+                            return;
+                        }
+
                         $newTemplate = $record->replicate();
-                        $newTemplate->name = $record->name.' (Salinan)';
+                        $newTemplate->name = "{$record->name} (Salinan)";
                         $newTemplate->status = AutoReplyTemplate::STATUS_DRAFT;
-                        $newTemplate->created_by = Auth::id();
+                        $newTemplate->created_by = $userId;
                         $newTemplate->save();
 
                         Notification::make()
-                            ->title('Template diduplikasi')
+                            ->title(__('ollama.template.duplicated_success'))
                             ->success()
                             ->send();
                     }),
@@ -257,7 +269,14 @@ class AutoReplyTemplateResource extends Resource
                     Actions\ForceDeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('updated_at', 'desc');
+            ->defaultSort('updated_at', 'desc')
+            ->emptyStateHeading(__('ollama.empty_states.template.heading'))
+            ->emptyStateDescription(__('ollama.empty_states.template.description'))
+            ->emptyStateIcon('heroicon-o-document-duplicate')
+            ->emptyStateActions([
+                Actions\CreateAction::make()
+                    ->label(__('ollama.empty_states.template.action')),
+            ]);
     }
 
     public static function getPages(): array

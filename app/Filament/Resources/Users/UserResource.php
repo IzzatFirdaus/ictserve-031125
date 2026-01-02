@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Users;
 
 use App\Filament\Clusters\Management;
+use App\Filament\Concerns\HandlesTranslations;
 use App\Filament\Resources\Users\Pages\CreateUser;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
@@ -40,6 +41,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class UserResource extends Resource
 {
+    use HandlesTranslations;
+
     protected static ?string $model = User::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
@@ -47,6 +50,21 @@ class UserResource extends Resource
     protected static ?string $cluster = Management::class;
 
     protected static ?int $navigationSort = 1;
+
+    public static function getModelLabel(): string
+    {
+        return static::trans('filament.resources.user.singular', 'Pengguna');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return static::trans('filament.resources.user.plural', 'Pengguna');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return static::trans('filament.resources.user.navigation', 'Pengguna');
+    }
 
     /**
      * Filament will automatically use UserPolicy for authorization.

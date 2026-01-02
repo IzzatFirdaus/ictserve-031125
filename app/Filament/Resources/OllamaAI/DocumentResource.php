@@ -52,7 +52,7 @@ class DocumentResource extends Resource
 
     protected static ?string $navigationLabel = null;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 10;
 
     public static function getNavigationLabel(): string
     {
@@ -86,7 +86,9 @@ class DocumentResource extends Resource
                             ->visibility('private')
                             ->downloadable()
                             ->openable()
-                            ->helperText(__('ollama.document.file_helper'))
+                            ->placeholder(__('ollama.document.file_upload_placeholder'))
+                            ->helperText(__('ollama.document.file_upload_max_size', ['size' => '10MB']))
+                            ->uploadingMessage(__('ollama.document.file_upload_uploading'))
                             ->dehydrated(false)
                             ->afterStateUpdated(function (TemporaryUploadedFile|string|null $state, callable $set): void {
                                 if (is_string($state) && TemporaryUploadedFile::canUnserialize($state)) {
@@ -289,7 +291,14 @@ class DocumentResource extends Resource
                 ]),
             ])
             ->defaultSort('created_at', 'desc')
-            ->searchPlaceholder(__('ollama.document.search_placeholder'));
+            ->searchPlaceholder(__('ollama.document.search_placeholder'))
+            ->emptyStateHeading(__('ollama.empty_states.document.heading'))
+            ->emptyStateDescription(__('ollama.empty_states.document.description'))
+            ->emptyStateIcon('heroicon-o-document-text')
+            ->emptyStateActions([
+                Actions\CreateAction::make()
+                    ->label(__('ollama.empty_states.document.action')),
+            ]);
     }
 
     public static function getPages(): array

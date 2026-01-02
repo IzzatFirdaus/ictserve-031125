@@ -36,6 +36,21 @@ class AssetCategoryResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.resources.asset_category.navigation');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.asset_category.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.asset_category.plural');
+    }
+
     public static function canViewAny(): bool
     {
         return Auth::check() && Auth::user()?->hasAdminAccess();

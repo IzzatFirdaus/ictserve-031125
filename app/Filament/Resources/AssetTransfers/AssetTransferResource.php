@@ -44,17 +44,17 @@ class AssetTransferResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'Pemindahan Aset';
+        return __('asset_transfer.navigation_label');
     }
 
     public static function getModelLabel(): string
     {
-        return 'Pemindahan Aset';
+        return __('asset_transfer.model_label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'Pemindahan Aset';
+        return __('asset_transfer.plural_label');
     }
 
     public static function form(Schema $schema): Schema
@@ -107,6 +107,6 @@ class AssetTransferResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with(['asset', 'fromDivision', 'toDivision', 'transferredBy', 'approvedBy']);
+            ->with(['asset', 'fromUser', 'toUser', 'initiator', 'approver']);
     }
 }

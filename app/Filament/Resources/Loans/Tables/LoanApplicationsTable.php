@@ -516,23 +516,29 @@ class LoanApplicationsTable
                     }),
             ])
             ->headerActions([
-                \Filament\Actions\ExportAction::make()
-                    ->exporter(\App\Filament\Exports\LoanApplicationExporter::class)
-                    ->label(__('filament.actions.export_excel'))
-                    ->icon('heroicon-o-table-cells')
-                    ->color('success'),
-                Action::make('exportPdfReport')
-                    ->label(__('filament.actions.export_report'))
-                    ->icon('heroicon-o-document-chart-bar')
-                    ->color('warning')
-                    ->requiresConfirmation()
-                    ->modalHeading('Eksport Laporan PDF')
-                    ->modalDescription('Ini akan menjana laporan PDF dengan statistik untuk semua permohonan pinjaman.')
-                    ->action(function () {
-                        $applications = LoanApplication::with(['division'])->get();
+                \Filament\Actions\ActionGroup::make([
+                    \Filament\Actions\ExportAction::make('exportExcel')
+                        ->exporter(\App\Filament\Exports\LoanApplicationExporter::class)
+                        ->label(__('filament.actions.export_excel'))
+                        ->icon('heroicon-o-table-cells')
+                        ->color('success'),
+                    Action::make('exportPdfReport')
+                        ->label(__('filament.actions.export_report'))
+                        ->icon('heroicon-o-document-chart-bar')
+                        ->color('warning')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('filament.actions.export_report'))
+                        ->modalDescription(__('filament.actions.export_report_description'))
+                        ->action(function () {
+                            $applications = LoanApplication::with(['division'])->get();
 
-                        return app(\App\Services\LoanApplicationPdfExporter::class)->exportReport($applications);
-                    }),
+                            return app(\App\Services\LoanApplicationPdfExporter::class)->exportReport($applications);
+                        }),
+                ])
+                    ->label(__('filament.actions.export'))
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('primary')
+                    ->button(),
             ])
             ->groupedBulkActions([
                 BulkActionGroup::make([

@@ -63,11 +63,13 @@ class HelpdeskTicketsTable
                 Tables\Columns\TextColumn::make('subject')
                     ->label((string) __('helpdesk.subject'))
                     ->limit(40)
+                    ->tooltip(fn ($record) => $record->subject)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category.name_ms')
                     ->label((string) __('helpdesk.category'))
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('priority')
                     ->label((string) __('helpdesk.priority'))
                     ->badge()
@@ -95,12 +97,14 @@ class HelpdeskTicketsTable
                     ->tooltip(fn ($record) => $record->relatedAsset
                         ? "Asset Tag: {$record->relatedAsset->asset_tag}"
                         : null)
-                    ->toggleable(),
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
 
                 Tables\Columns\TextColumn::make('assignedUser.name')
                     ->label(__('helpdesk.assigned_to'))
                     ->placeholder('-')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('sla_resolution_due_at')
                     ->label(__('helpdesk.sla_resolution_due_at'))
                     ->formatStateUsing(fn (?Carbon $state): string => $state ? $state->diffForHumans() : '-')
@@ -110,11 +114,14 @@ class HelpdeskTicketsTable
                         return $dueAt instanceof Carbon ? $dueAt->toDayDateTimeString() : null;
                     })
                     ->color(fn (HelpdeskTicket $record): string => $record->sla_resolution_due_at && now()->greaterThan($record->sla_resolution_due_at) ? 'danger' : 'success')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('helpdesk.created_at'))
                     ->dateTime('d M Y h:i A')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
 
                 // SLA status indicator with warning for approaching breach (25% remaining time)
                 // Per Requirements 5.5 - SLA indicators and warning display
@@ -294,7 +301,21 @@ class HelpdeskTicketsTable
                 Tables\Filters\Filter::make('my_tickets')
                     ->label(__('helpdesk.filter_my_tickets'))
                     ->query(fn ($query) => $query->where('assigned_to_user', Auth::id()))
-                    ->toggle(),
+                    ->toggle()
+                    ->indicator(__('helpdesk.filter_indicator_my_tickets')),
+
+                // Quick-access operational filters - Per Requirements 31.1-31.4
+                Tables\Filters\Filter::make('urgent_priority')
+                    ->label(__('helpdesk.filter_urgent_priority'))
+                    ->query(fn ($query) => $query->where('priority', 'urgent'))
+                    ->toggle()
+                    ->indicator(__('helpdesk.filter_indicator_urgent')),
+
+                Tables\Filters\Filter::make('open_status')
+                    ->label(__('helpdesk.filter_open_status'))
+                    ->query(fn ($query) => $query->where('status', 'open'))
+                    ->toggle()
+                    ->indicator(__('helpdesk.filter_indicator_open')),
 
                 // Date range filter
                 Tables\Filters\Filter::make('created_at')

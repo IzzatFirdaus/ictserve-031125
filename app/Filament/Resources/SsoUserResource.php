@@ -47,17 +47,32 @@ class SsoUserResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('admin.sso_users');
+        return __('sso.users.navigation_label');
     }
 
     public static function getModelLabel(): string
     {
-        return __('admin.sso_user');
+        return __('sso.users.model_label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('admin.sso_users');
+        return __('sso.users.plural_model_label');
+    }
+
+    /**
+     * Get contextual empty state description based on SSO configuration status.
+     */
+    protected static function getEmptyStateDescription(): string
+    {
+        $clientId = config('services.google.client_id');
+        $clientSecret = config('services.google.client_secret');
+
+        if (empty($clientId) || empty($clientSecret)) {
+            return __('sso.users.empty_state.not_configured');
+        }
+
+        return __('sso.users.empty_state.description');
     }
 
     public static function form(Schema $schema): Schema
@@ -99,25 +114,29 @@ class SsoUserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('admin.name'))
+                    ->label(__('sso.users.columns.name'))
                     ->searchable()
                     ->sortable()
-                    ->weight('medium'),
+                    ->weight('medium')
+                    ->limit(30)
+                    ->tooltip(fn (User $record): string => $record->name),
 
                 Tables\Columns\TextColumn::make('email')
-                    ->label(__('admin.email'))
+                    ->label(__('sso.users.columns.email'))
                     ->searchable()
                     ->sortable()
-                    ->copyable(),
+                    ->copyable()
+                    ->limit(30)
+                    ->tooltip(fn (User $record): string => $record->email),
 
                 Tables\Columns\TextColumn::make('google_id')
-                    ->label(__('admin.google_id'))
+                    ->label(__('sso.users.columns.google_id'))
                     ->searchable()
                     ->toggleable()
                     ->limit(20),
 
                 Tables\Columns\IconColumn::make('email_verified_at')
-                    ->label(__('admin.verified'))
+                    ->label(__('sso.users.columns.verified'))
                     ->boolean()
                     ->trueIcon(Heroicon::OutlinedCheckCircle)
                     ->falseIcon(Heroicon::OutlinedXCircle)
@@ -125,15 +144,17 @@ class SsoUserResource extends Resource
                     ->falseColor('danger'),
 
                 Tables\Columns\TextColumn::make('ssoAuditLogs_count')
-                    ->label(__('admin.login_count'))
+                    ->label(__('sso.users.columns.sso_login_count'))
                     ->counts('ssoAuditLogs')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('ssoAuditLogs.attempted_at')
-                    ->label(__('admin.last_sso_login'))
+                Tables\Columns\TextColumn::make('last_sso_login_at')
+                    ->label(__('sso.users.columns.last_sso_login'))
+                    ->getStateUsing(fn (User $record) => $record->ssoAuditLogs->first()?->attempted_at)
                     ->dateTime('d M Y, H:i')
-                    ->sortable()
-                    ->placeholder(__('admin.never')),
+                    ->sortable(false)
+                    ->placeholder(__('admin.never'))
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('admin.created_at'))
@@ -208,6 +229,9 @@ class SsoUserResource extends Resource
                         }),
                 ]),
             ])
+            ->emptyStateHeading(__('sso.users.empty_state.heading'))
+            ->emptyStateDescription(self::getEmptyStateDescription())
+            ->emptyStateIcon('heroicon-o-user-group')
             ->defaultSort('created_at', 'desc');
     }
 

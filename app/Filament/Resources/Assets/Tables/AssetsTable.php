@@ -194,10 +194,14 @@ class AssetsTable
                 // Enhanced maintenance filters
                 Tables\Filters\Filter::make('needs_maintenance')
                     ->label(__('filament.filters.needs_maintenance'))
-                    ->query(fn ($query) => $query->where('status', AssetStatus::MAINTENANCE->value)
-                        ->orWhere('condition', AssetCondition::DAMAGED->value)
-                        ->orWhereNotNull('next_maintenance_date')
-                        ->where('next_maintenance_date', '<=', now()->addDays(30)))
+                    ->query(fn ($query) => $query->where(function ($q) {
+                        $q->where('status', AssetStatus::MAINTENANCE->value)
+                            ->orWhere('condition', AssetCondition::DAMAGED->value)
+                            ->orWhere(function ($subQ) {
+                                $subQ->whereNotNull('next_maintenance_date')
+                                    ->where('next_maintenance_date', '<=', now()->addDays(30));
+                            });
+                    }))
                     ->toggle()
                     ->indicator(__('filament.filters.maintenance_indicator')),
 

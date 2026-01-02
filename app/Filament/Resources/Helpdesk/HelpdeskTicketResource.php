@@ -40,6 +40,21 @@ class HelpdeskTicketResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.resources.helpdesk_ticket.navigation');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.helpdesk_ticket.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.helpdesk_ticket.plural');
+    }
+
     /**
      * Filament will automatically use HelpdeskTicketPolicy for authorization.
      * Policy methods: viewAny(), view(), create(), update(), delete()

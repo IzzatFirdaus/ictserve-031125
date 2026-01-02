@@ -88,8 +88,8 @@ class CreateUser extends CreateRecord
             // Show success notification
             Notification::make()
                 ->success()
-                ->title(__('User Created Successfully'))
-                ->body(__('Welcome email sent to :email with temporary password.', ['email' => $user->email]))
+                ->title(__('users.created_success'))
+                ->body(__('users.welcome_email_sent', ['email' => $user->email]))
                 ->send();
         }
     }
@@ -130,6 +130,6 @@ class CreateUser extends CreateRecord
      */
     protected function getCreatedNotificationTitle(): ?string
     {
-        return __('User created and welcome email sent');
+        return __('users.created_success');
     }
 }

@@ -49,7 +49,7 @@ class FaqResource extends Resource
 
     protected static ?string $navigationLabel = null;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 12;
 
     public static function getNavigationLabel(): string
     {
@@ -254,7 +254,14 @@ class FaqResource extends Resource
                 ]),
             ])
             ->defaultSort('created_at', 'desc')
-            ->searchPlaceholder(__('ollama.faq.search_placeholder'));
+            ->searchPlaceholder(__('ollama.faq.search_placeholder'))
+            ->emptyStateHeading(__('ollama.empty_states.faq.heading'))
+            ->emptyStateDescription(__('ollama.empty_states.faq.description'))
+            ->emptyStateIcon('heroicon-o-question-mark-circle')
+            ->emptyStateActions([
+                Actions\CreateAction::make()
+                    ->label(__('ollama.empty_states.faq.action')),
+            ]);
     }
 
     public static function getPages(): array

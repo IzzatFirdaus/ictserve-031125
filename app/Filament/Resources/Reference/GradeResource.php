@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Reference;
 
 use App\Filament\Clusters\Management;
+use App\Filament\Concerns\HandlesTranslations;
 use App\Filament\Resources\Reference\Pages\CreateGrade;
 use App\Filament\Resources\Reference\Pages\EditGrade;
 use App\Filament\Resources\Reference\Pages\ListGrades;
@@ -40,6 +41,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class GradeResource extends Resource
 {
+    use HandlesTranslations;
+
     protected static ?string $model = Grade::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedIdentification;
@@ -47,6 +50,21 @@ class GradeResource extends Resource
     protected static ?string $cluster = Management::class;
 
     protected static ?int $navigationSort = 3;
+
+    public static function getModelLabel(): string
+    {
+        return static::trans('filament.resources.grade.singular', 'Gred');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return static::trans('filament.resources.grade.plural', 'Gred');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return static::trans('filament.resources.grade.navigation', 'Gred');
+    }
 
     /**
      * Check if the current user can view any grades.

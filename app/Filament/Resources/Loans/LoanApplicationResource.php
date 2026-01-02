@@ -24,8 +24,16 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
 
+/**
+ * Loan Application Resource (Alias)
+ *
+ * @deprecated This is an alias resource for backward compatibility.
+ * @see \App\Filament\Resources\LoanApplications\LoanApplicationResource (canonical)
+ *
+ * Navigation is disabled to prevent duplicate entries in the admin panel.
+ * This resource should only be used for direct URL access or API compatibility.
+ */
 class LoanApplicationResource extends Resource
 {
     protected static ?string $model = LoanApplication::class;
@@ -45,14 +53,15 @@ class LoanApplicationResource extends Resource
 
     /**
      * Control navigation visibility based on user permissions.
-     * Only show in navigation if user has permission to view loan applications.
+     *
+     * @deprecated This is an alias resource. Navigation disabled to prevent duplicates.
+     * @see \App\Filament\Resources\LoanApplications\LoanApplicationResource (canonical)
      */
     public static function shouldRegisterNavigation(): bool
     {
-        /** @var User|null $user */
-        $user = Auth::user();
-
-        return $user !== null && $user->can('viewAny', LoanApplication::class);
+        // Disable navigation for alias resource to prevent duplicate entries
+        // The canonical resource is LoanApplications/LoanApplicationResource
+        return false;
     }
 
     public static function getNavigationLabel(): string

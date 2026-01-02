@@ -50,7 +50,7 @@ class BedrockModelConfigResource extends Resource
 
     protected static ?string $navigationLabel = null;
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationLabel(): string
     {
@@ -214,18 +214,27 @@ class BedrockModelConfigResource extends Resource
                 TextColumn::make('cost_per_token')
                     ->label(__('ollama.bedrock.cost_per_token'))
                     ->money('USD', 8)
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('max_tokens')
                     ->label(__('ollama.bedrock.max_tokens'))
                     ->numeric()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 IconColumn::make('enabled')
                     ->label(__('ollama.bedrock.enabled'))
                     ->boolean()
-                    ->sortable(),
+                    ->sortable()
+                    ->tooltip(fn (BedrockModelConfig $record): string => $record->enabled
+                        ? __('ollama.bedrock.model_enabled')
+                        : __('ollama.bedrock.model_disabled'))
+                    ->extraAttributes(fn (BedrockModelConfig $record): array => [
+                        'aria-label' => $record->enabled
+                            ? __('ollama.bedrock.model_enabled')
+                            : __('ollama.bedrock.model_disabled'),
+                    ]),
 
                 TextColumn::make('creator.name')
                     ->label(__('ollama.bedrock.created_by'))
@@ -287,7 +296,14 @@ class BedrockModelConfigResource extends Resource
                 ]),
             ])
             ->defaultSort('model_name', 'asc')
-            ->searchPlaceholder(__('ollama.bedrock.search_placeholder'));
+            ->searchPlaceholder(__('ollama.bedrock.search_placeholder'))
+            ->emptyStateHeading(__('ollama.empty_states.bedrock.heading'))
+            ->emptyStateDescription(__('ollama.empty_states.bedrock.description'))
+            ->emptyStateIcon('heroicon-o-cog-6-tooth')
+            ->emptyStateActions([
+                Actions\CreateAction::make()
+                    ->label(__('ollama.empty_states.bedrock.action')),
+            ]);
     }
 
     public static function getPages(): array

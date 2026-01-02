@@ -29,10 +29,14 @@ class TicketCategoriesTable
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name_ms')
                     ->label('Nama')
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(50)
+                    ->tooltip(fn ($record) => $record->name_ms),
                 Tables\Columns\TextColumn::make('parent.name_ms')
                     ->label('Kategori Induk')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('sla_response_hours')
                     ->label('SLA Respons')
                     ->suffix(' jam')
@@ -40,7 +44,9 @@ class TicketCategoriesTable
                 Tables\Columns\TextColumn::make('sla_resolution_hours')
                     ->label('SLA Penyelesaian')
                     ->suffix(' jam')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
                     ->boolean()

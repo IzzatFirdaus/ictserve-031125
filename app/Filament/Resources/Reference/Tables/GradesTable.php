@@ -23,13 +23,17 @@ class GradesTable
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name_ms')
                     ->label(__('filament.reference.name_ms'))
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(50)
+                    ->tooltip(fn ($record) => $record->name_ms),
                 Tables\Columns\TextColumn::make('level')
                     ->label(__('filament.reference.level'))
                     ->sortable(),
                 Tables\Columns\IconColumn::make('can_approve_loans')
                     ->label(__('filament.reference.can_approve'))
-                    ->boolean(),
+                    ->boolean()
+                    ->tooltip(fn ($state) => $state ? __('filament.boolean.yes') : __('filament.boolean.no'))
+                    ->extraAttributes(fn ($state) => ['aria-label' => $state ? __('filament.boolean.yes') : __('filament.boolean.no')]),
             ])
             ->filters([])
             ->recordActions([

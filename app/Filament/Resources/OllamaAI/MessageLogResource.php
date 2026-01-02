@@ -45,7 +45,7 @@ class MessageLogResource extends Resource
 
     protected static ?string $cluster = OllamaAI::class;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 20;
 
     public static function getNavigationLabel(): string
     {
@@ -132,17 +132,25 @@ class MessageLogResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('request_id')
-                    ->label(__('ollama.message_log.request_id'))
-                    ->searchable()
+                // Visible by default columns (Requirements 47.1, 51.1)
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label(__('ollama.message_log.columns.user'))
+                    ->default(__('ollama.common.guest'))
                     ->sortable()
-                    ->limit(12)
-                    ->tooltip(fn (MessageLog $record): string => $record->request_id)
-                    ->copyable()
-                    ->copyMessage('ID disalin'),
+                    ->searchable()
+                    ->limit(35)
+                    ->tooltip(fn (MessageLog $record): string => $record->user?->name ?? __('ollama.common.guest')),
+
+                Tables\Columns\TextColumn::make('bedrock_model_used')
+                    ->label(__('ollama.message_log.columns.model'))
+                    ->sortable()
+                    ->searchable()
+                    ->limit(30)
+                    ->tooltip(fn (MessageLog $record): string => $record->bedrock_model_used ?? __('ollama.common.unknown'))
+                    ->default(__('ollama.common.unknown')),
 
                 Tables\Columns\TextColumn::make('operation_type')
-                    ->label(__('ollama.message_log.operation_type'))
+                    ->label(__('ollama.message_log.columns.status'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'faq_query' => 'primary',
@@ -157,35 +165,63 @@ class MessageLogResource extends Resource
                         default => $state,
                     }),
 
-                Tables\Columns\TextColumn::make('user.name')
-                    ->label(__('ollama.message_log.user'))
-                    ->default(__('ollama.common.guest'))
+                Tables\Columns\TextColumn::make('metadata.response_time_ms')
+                    ->label(__('ollama.message_log.columns.response_time_ms'))
                     ->sortable()
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('sanitized_input')
-                    ->label(__('ollama.message_log.sanitized_input'))
-                    ->searchable()
-                    ->limit(50)
-                    ->wrap()
-                    ->toggleable(),
-
-                Tables\Columns\TextColumn::make('response_summary')
-                    ->label(__('ollama.message_log.response_summary'))
-                    ->searchable()
-                    ->limit(50)
-                    ->wrap()
-                    ->toggleable(),
-
-                Tables\Columns\TextColumn::make('processed_at')
-                    ->label(__('ollama.message_log.processed_at'))
-                    ->dateTime('d M Y H:i:s')
-                    ->sortable(),
+                    ->numeric()
+                    ->suffix(' ms')
+                    ->default('-'),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('ollama.message_log.created_at'))
+                    ->label(__('ollama.message_log.columns.created_at'))
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
+
+                // Hidden by default columns (Requirements 47.1, 51.2)
+                Tables\Columns\TextColumn::make('sanitized_input')
+                    ->label(__('ollama.message_log.columns.sanitized_input'))
+                    ->searchable()
+                    ->limit(50)
+                    ->tooltip(fn (MessageLog $record): string => $record->sanitized_input ?? '')
+                    ->wrap()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('response_summary')
+                    ->label(__('ollama.message_log.columns.response_summary'))
+                    ->searchable()
+                    ->limit(50)
+                    ->tooltip(fn (MessageLog $record): string => $record->response_summary ?? '')
+                    ->wrap()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('metadata.token_count')
+                    ->label(__('ollama.message_log.columns.token_count'))
+                    ->sortable()
+                    ->numeric()
+                    ->default('-')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('bedrock_cost')
+                    ->label(__('ollama.message_log.columns.cost_estimate'))
+                    ->sortable()
+                    ->money('USD', 6)
+                    ->default('-')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('processed_at')
+                    ->label(__('ollama.message_log.columns.processed_at'))
                     ->dateTime('d M Y H:i')
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('request_id')
+                    ->label(__('ollama.message_log.columns.request_id'))
+                    ->searchable()
+                    ->sortable()
+                    ->limit(12)
+                    ->tooltip(fn (MessageLog $record): string => $record->request_id)
+                    ->copyable()
+                    ->copyMessage('ID disalin')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -228,7 +264,10 @@ class MessageLogResource extends Resource
             ->groupedBulkActions([])
             ->defaultSort('processed_at', 'desc')
             ->paginated([25, 50, 100])
-            ->poll('60s');
+            ->poll('60s')
+            ->emptyStateHeading(__('ollama.empty_states.message_log.heading'))
+            ->emptyStateDescription(__('ollama.empty_states.message_log.description'))
+            ->emptyStateIcon('heroicon-o-clipboard-document-list');
     }
 
     public static function getPages(): array

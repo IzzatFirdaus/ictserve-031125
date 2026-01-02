@@ -48,16 +48,28 @@ class ViewAutoReplyTemplate extends ViewRecord
                 ->icon('heroicon-o-document-duplicate')
                 ->color('gray')
                 ->action(function (): void {
+                    $userId = Auth::id();
+
+                    if (! is_int($userId)) {
+                        Notification::make()
+                            ->danger()
+                            ->title(__('ollama.common.session_expired_title'))
+                            ->body(__('ollama.common.session_expired_body'))
+                            ->send();
+
+                        return;
+                    }
+
                     /** @var AutoReplyTemplate $record */
                     $record = $this->record;
                     $newTemplate = $record->replicate();
-                    $newTemplate->name = $record->name.' (Salinan)';
+                    $newTemplate->name = "{$record->name} (Salinan)";
                     $newTemplate->status = AutoReplyTemplate::STATUS_DRAFT;
-                    $newTemplate->created_by = Auth::id();
+                    $newTemplate->created_by = $userId;
                     $newTemplate->save();
 
                     Notification::make()
-                        ->title('Template diduplikasi')
+                        ->title(__('ollama.template.duplicated_success'))
                         ->success()
                         ->send();
 

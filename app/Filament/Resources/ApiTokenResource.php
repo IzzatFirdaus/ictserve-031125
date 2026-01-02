@@ -44,17 +44,27 @@ class ApiTokenResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('admin.api_tokens');
+        return __('api_tokens.navigation_label');
     }
 
     public static function getModelLabel(): string
     {
-        return __('admin.api_token');
+        return __('api_tokens.model_label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('admin.api_tokens');
+        return __('api_tokens.plural_model_label');
+    }
+
+    /**
+     * Map technical scope strings to Malay labels.
+     */
+    public static function getScopeLabel(string $scope): string
+    {
+        return __("api_tokens.scopes.{$scope}") !== "api_tokens.scopes.{$scope}"
+            ? __("api_tokens.scopes.{$scope}")
+            : $scope;
     }
 
     public static function form(Schema $schema): Schema
@@ -64,17 +74,17 @@ class ApiTokenResource extends Resource
                 Section::make(__('admin.token_details'))
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label(__('admin.token_name'))
+                            ->label(__('api_tokens.fields.name'))
                             ->required()
                             ->maxLength(255)
-                            ->placeholder(__('admin.token_name_placeholder'))
-                            ->helperText(__('admin.token_name_help'))
+                            ->placeholder(__('api_tokens.fields.name_placeholder'))
+                            ->helperText(__('api_tokens.fields.name_help'))
                             ->autofocus(),
 
                         Forms\Components\TagsInput::make('abilities')
-                            ->label(__('admin.token_scopes'))
-                            ->placeholder(__('admin.token_scopes_placeholder'))
-                            ->helperText(__('admin.token_scopes_help'))
+                            ->label(__('api_tokens.fields.abilities'))
+                            ->placeholder(__('api_tokens.fields.abilities_placeholder'))
+                            ->helperText(__('api_tokens.fields.abilities_help'))
                             ->suggestions([
                                 'read:tickets',
                                 'write:tickets',
@@ -88,9 +98,9 @@ class ApiTokenResource extends Resource
                             ->required(),
 
                         Forms\Components\DateTimePicker::make('expires_at')
-                            ->label(__('admin.token_expires_at'))
+                            ->label(__('api_tokens.fields.expires_at'))
                             ->nullable()
-                            ->helperText(__('admin.token_expires_help'))
+                            ->helperText(__('api_tokens.fields.expires_help'))
                             ->minDate(now())
                             ->default(now()->addMonths(6)),
                     ]),
@@ -102,48 +112,52 @@ class ApiTokenResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('admin.token_name'))
+                    ->label(__('api_tokens.columns.name'))
                     ->searchable()
                     ->sortable()
                     ->weight('medium'),
 
                 Tables\Columns\TextColumn::make('tokenable.name')
-                    ->label(__('admin.user'))
+                    ->label(__('api_tokens.columns.user'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('abilities')
-                    ->label(__('admin.token_scopes'))
+                    ->label(__('api_tokens.columns.abilities'))
                     ->badge()
+                    ->formatStateUsing(fn ($state): string => is_array($state)
+                        ? implode(', ', array_map(fn ($s) => self::getScopeLabel($s), $state))
+                        : self::getScopeLabel((string) $state))
+                    ->tooltip(fn ($record): string => implode(', ', $record->abilities ?? []))
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('last_used_at')
-                    ->label(__('admin.last_used'))
+                    ->label(__('api_tokens.columns.last_used_at'))
                     ->dateTime('d M Y, H:i')
                     ->sortable()
-                    ->placeholder(__('admin.never_used')),
+                    ->placeholder(__('api_tokens.never_used')),
 
                 Tables\Columns\TextColumn::make('expires_at')
-                    ->label(__('admin.expires'))
+                    ->label(__('api_tokens.columns.expires_at'))
                     ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->badge()
                     ->color(fn ($record) => $record->expires_at && $record->expires_at->isPast() ? 'danger' : 'success')
-                    ->placeholder(__('admin.never_expires')),
+                    ->placeholder(__('api_tokens.never_expires')),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('admin.created_at'))
+                    ->label(__('api_tokens.columns.created_at'))
                     ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\Filter::make('expired')
-                    ->label(__('admin.show_expired'))
+                    ->label(__('api_tokens.filters.show_expired'))
                     ->query(fn (Builder $query): Builder => $query->where('expires_at', '<', now())),
 
                 Tables\Filters\Filter::make('my_tokens')
-                    ->label(__('admin.my_tokens_only'))
+                    ->label(__('api_tokens.filters.my_tokens_only'))
                     ->query(fn (Builder $query): Builder => $query->where('tokenable_id', Auth::id())),
             ])
             ->recordActions([
@@ -151,6 +165,9 @@ class ApiTokenResource extends Resource
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
+            ->emptyStateHeading(__('api_tokens.empty_state.heading'))
+            ->emptyStateDescription(__('api_tokens.empty_state.description'))
+            ->emptyStateIcon('heroicon-o-key')
             ->defaultSort('created_at', 'desc');
     }
 

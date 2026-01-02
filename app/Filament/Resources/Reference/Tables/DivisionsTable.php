@@ -23,13 +23,17 @@ class DivisionsTable
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name_ms')
                     ->label(__('filament.reference.name_ms'))
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(50)
+                    ->tooltip(fn ($record) => $record->name_ms),
                 Tables\Columns\TextColumn::make('parent.name_ms')
                     ->label(__('filament.reference.parent'))
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label(__('filament.reference.active'))
-                    ->boolean(),
+                    ->boolean()
+                    ->tooltip(fn ($state) => $state ? __('filament.boolean.yes') : __('filament.boolean.no'))
+                    ->extraAttributes(fn ($state) => ['aria-label' => $state ? __('filament.boolean.yes') : __('filament.boolean.no')]),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')->label(__('filament.reference.status')),

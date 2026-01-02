@@ -67,17 +67,17 @@ class LoanApplicationResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'Permohonan Pinjaman';
+        return __('filament.resources.loan_application.navigation');
     }
 
     public static function getModelLabel(): string
     {
-        return 'Permohonan Pinjaman';
+        return __('filament.resources.loan_application.singular');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'Permohonan Pinjaman';
+        return __('filament.resources.loan_application.plural');
     }
 
     public static function form(Schema $schema): Schema

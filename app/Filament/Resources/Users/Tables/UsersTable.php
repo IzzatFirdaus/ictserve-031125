@@ -45,12 +45,16 @@ class UsersTable
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()
-                    ->label(__('widgets.name')),
+                    ->label(__('widgets.name'))
+                    ->limit(35)
+                    ->tooltip(fn ($record) => $record->name),
 
                 TextColumn::make('email')
                     ->searchable()
                     ->sortable()
-                    ->label(__('widgets.email')),
+                    ->label(__('widgets.email'))
+                    ->limit(35)
+                    ->tooltip(fn ($record) => $record->email),
 
                 TextColumn::make('role')
                     ->badge()
@@ -66,30 +70,42 @@ class UsersTable
                 TextColumn::make('staff_id')
                     ->searchable()
                     ->label(__('widgets.staff_id'))
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('division.name_ms')
                     ->searchable()
                     ->sortable()
                     ->label(__('widgets.division'))
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('grade.name_ms')
                     ->searchable()
                     ->sortable()
                     ->label(__('widgets.grade'))
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('position.name_ms')
+                    ->searchable()
+                    ->sortable()
+                    ->label(__('filament.users.position'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('phone')
+                    ->label(__('filament.users.mobile_phone'))
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 IconColumn::make('is_active')
                     ->boolean()
                     ->sortable()
-                    ->label(__('widgets.active')),
+                    ->label(__('widgets.active'))
+                    ->tooltip(fn ($state) => $state ? __('filament.boolean.yes') : __('filament.boolean.no'))
+                    ->extraAttributes(fn ($state) => ['aria-label' => $state ? __('filament.boolean.yes') : __('filament.boolean.no')]),
 
                 TextColumn::make('last_login_at')
                     ->dateTime()
                     ->sortable()
                     ->label(__('widgets.last_login'))
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -136,15 +152,18 @@ class UsersTable
             ])
             ->recordActions([
                 Action::make('impersonate')
-                    ->label('Lakon Sebagai')
+                    ->label(__('users.impersonate'))
                     ->icon('heroicon-o-user-plus')
                     ->url(fn (User $record) => route('impersonate.start', $record))
                     ->openUrlInNewTab(false)
+                    ->requiresConfirmation()
+                    ->modalHeading(__('users.impersonate_confirm_title'))
+                    ->modalDescription(__('users.impersonate_confirm_body'))
                     ->visible(function (User $record): bool {
                         /** @var User|null $user */
                         $user = Auth::user();
 
-                        return $user?->hasRole('Super Admin') && $record->id !== Auth::id();
+                        return $user?->hasRole('superuser') && $record->id !== Auth::id();
                     }),
                 ViewAction::make(),
                 EditAction::make(),

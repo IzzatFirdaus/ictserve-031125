@@ -40,6 +40,21 @@ class TicketCategoryResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.resources.ticket_category.navigation');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.ticket_category.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.ticket_category.plural');
+    }
+
     /**
      * Check if the current user can view any ticket categories.
      * Only admin and superuser roles have access.

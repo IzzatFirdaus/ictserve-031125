@@ -41,6 +41,21 @@ class AssetResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.resources.asset.navigation');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.asset.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.asset.plural');
+    }
+
     /**
      * Filament will automatically use AssetPolicy for authorization.
      * Policy methods: viewAny(), view(), create(), update(), delete(), restore(), forceDelete()
