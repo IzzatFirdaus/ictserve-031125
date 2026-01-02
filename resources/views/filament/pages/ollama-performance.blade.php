@@ -81,47 +81,71 @@
             <x-slot name="heading">
                 {{ __('ollama.performance.response_time') }}
             </x-slot>
+            <x-slot name="description">
+                {{ __('ollama.performance.period_context') }} ·
+                {{ __('ollama.performance.last_updated', ['time' => now()->format('H:i')]) }}
+            </x-slot>
 
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {{-- P50 --}}
-                <div class="rounded-lg bg-primary-50 p-4 dark:bg-primary-900/20">
-                    <dt class="text-sm font-medium text-primary-600 dark:text-primary-400">
-                        {{ __('ollama.performance.response_time_p50') }}
-                    </dt>
-                    <dd class="mt-2 text-3xl font-bold text-primary-900 dark:text-primary-100">
-                        {{ number_format($performanceStats['response_time_p50']) }}ms
-                    </dd>
-                    <p class="mt-1 text-xs text-primary-600 dark:text-primary-400">
-                        Median (50th percentile)
+            @php
+                $hasResponseData =
+                    $performanceStats['response_time_p50'] > 0 ||
+                    $performanceStats['response_time_p95'] > 0 ||
+                    $performanceStats['response_time_p99'] > 0;
+            @endphp
+
+            @if ($hasResponseData)
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    {{-- P50 --}}
+                    <div class="rounded-lg bg-primary-50 p-4 dark:bg-primary-900/20">
+                        <dt class="text-sm font-medium text-primary-600 dark:text-primary-400">
+                            {{ __('ollama.performance.response_time_p50') }}
+                        </dt>
+                        <dd class="mt-2 text-3xl font-bold text-primary-900 dark:text-primary-100">
+                            {{ number_format($performanceStats['response_time_p50']) }}ms
+                        </dd>
+                        <p class="mt-1 text-xs text-primary-600 dark:text-primary-400">
+                            Median (50th percentile)
+                        </p>
+                    </div>
+
+                    {{-- P95 --}}
+                    <div class="rounded-lg bg-warning-50 p-4 dark:bg-warning-900/20">
+                        <dt class="text-sm font-medium text-warning-600 dark:text-warning-400">
+                            {{ __('ollama.performance.response_time_p95') }}
+                        </dt>
+                        <dd class="mt-2 text-3xl font-bold text-warning-900 dark:text-warning-100">
+                            {{ number_format($performanceStats['response_time_p95']) }}ms
+                        </dd>
+                        <p class="mt-1 text-xs text-warning-600 dark:text-warning-400">
+                            95th percentile
+                        </p>
+                    </div>
+
+                    {{-- P99 --}}
+                    <div class="rounded-lg bg-danger-50 p-4 dark:bg-danger-900/20">
+                        <dt class="text-sm font-medium text-danger-600 dark:text-danger-400">
+                            {{ __('ollama.performance.response_time_p99') }}
+                        </dt>
+                        <dd class="mt-2 text-3xl font-bold text-danger-900 dark:text-danger-100">
+                            {{ number_format($performanceStats['response_time_p99']) }}ms
+                        </dd>
+                        <p class="mt-1 text-xs text-danger-600 dark:text-danger-400">
+                            99th percentile
+                        </p>
+                    </div>
+                </div>
+            @else
+                <div
+                    class="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center dark:border-gray-700 dark:bg-gray-800">
+                    <x-heroicon-o-chart-bar class="mx-auto h-12 w-12 text-gray-400" />
+                    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ __('ollama.performance.no_data') }}
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        {{ __('ollama.performance.no_data_guidance') }}
                     </p>
                 </div>
-
-                {{-- P95 --}}
-                <div class="rounded-lg bg-warning-50 p-4 dark:bg-warning-900/20">
-                    <dt class="text-sm font-medium text-warning-600 dark:text-warning-400">
-                        {{ __('ollama.performance.response_time_p95') }}
-                    </dt>
-                    <dd class="mt-2 text-3xl font-bold text-warning-900 dark:text-warning-100">
-                        {{ number_format($performanceStats['response_time_p95']) }}ms
-                    </dd>
-                    <p class="mt-1 text-xs text-warning-600 dark:text-warning-400">
-                        95th percentile
-                    </p>
-                </div>
-
-                {{-- P99 --}}
-                <div class="rounded-lg bg-danger-50 p-4 dark:bg-danger-900/20">
-                    <dt class="text-sm font-medium text-danger-600 dark:text-danger-400">
-                        {{ __('ollama.performance.response_time_p99') }}
-                    </dt>
-                    <dd class="mt-2 text-3xl font-bold text-danger-900 dark:text-danger-100">
-                        {{ number_format($performanceStats['response_time_p99']) }}ms
-                    </dd>
-                    <p class="mt-1 text-xs text-danger-600 dark:text-danger-400">
-                        99th percentile
-                    </p>
-                </div>
-            </div>
+            @endif
         </x-filament::section>
 
         {{-- Operations Statistics --}}

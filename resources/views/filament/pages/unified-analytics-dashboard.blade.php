@@ -1,15 +1,4 @@
 <x-filament-panels::page>
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Header Widgets -->
-        <div class="lg:col-span-12">
-            @livewire(\App\Filament\Widgets\UnifiedDashboardOverview::class)
-        </div>
-
-        <!-- Analytics Chart -->
-        <div class="lg:col-span-12">
-            @livewire(\App\Filament\Widgets\EnhancedUnifiedAnalyticsChart::class)
-        </div>
-
-
-    </div>
+    {{-- Widgets are rendered automatically by Filament via getHeaderWidgets() and getFooterWidgets() --}}
+    {{-- Do NOT add manual @livewire() calls here to avoid widget duplication --}}
 </x-filament-panels::page>

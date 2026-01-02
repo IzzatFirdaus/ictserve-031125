@@ -14,10 +14,10 @@
             {{-- Search Hero Header --}}
             <div class="text-center mb-10">
                 <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
-                    {{ __('unified_search.title') }}
+                    {{ __('admin_pages.unified_search.hero_title') }}
                 </h1>
                 <p class="text-lg text-gray-500 dark:text-gray-400">
-                    {{ __('unified_search.subtitle') }}
+                    {{ __('admin_pages.unified_search.hero_subtitle') }}
                 </p>
             </div>
 
@@ -28,8 +28,9 @@
                     <x-heroicon-o-magnifying-glass aria-hidden="true"
                         class="w-7 h-7 text-gray-400 group-hover:text-primary-500 transition-colors mr-4 shrink-0" />
 
-                    <input type="text" aria-label="{{ __('unified_search.input_label') }}"
-                        wire:model.live.debounce.300ms="search" placeholder="{{ __('unified_search.placeholder') }}"
+                    <input type="text" aria-label="{{ __('admin_pages.unified_search.input_label') }}"
+                        wire:model.live.debounce.300ms="search"
+                        placeholder="{{ __('admin_pages.unified_search.placeholder') }}"
                         class="flex-1 border-none focus-visible:ring-0 p-0 text-xl text-gray-900 dark:text-white placeholder-gray-400 bg-transparent"
                         autofocus autocomplete="off" x-data x-init="document.addEventListener('keydown', (e) => {
                             if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -42,7 +43,7 @@
                         @if ($search)
                             <button wire:click="clearSearch" type="button"
                                 class="focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded p-1 min-h-11 min-w-11 flex items-center justify-center"
-                                aria-label="{{ __('unified_search.clear') }}">
+                                aria-label="{{ __('admin_pages.unified_search.clear') }}">
                                 <x-heroicon-m-x-circle aria-hidden="true"
                                     class="w-6 h-6 text-gray-400 hover:text-danger-500 transition-colors" />
                             </button>
@@ -51,8 +52,8 @@
                             aria-hidden="true">
                             <span class="text-xs font-bold text-gray-500 dark:text-gray-400">Ctrl/⌘</span>
                             <span class="text-xs font-bold text-gray-500 dark:text-gray-400">K</span>
-                            <span class="sr-only">{{ __('unified_search.shortcut_hint') }}</span>
                         </div>
+                        <span class="sr-only">{{ __('admin_pages.unified_search.shortcut_hint') }}</span>
                     </div>
                 </div>
             </div>
@@ -61,16 +62,30 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl mx-auto mb-12">
                 @php
                     $resources = [
-                        'tickets' => ['label' => 'Search Tickets', 'icon' => 'heroicon-o-ticket'],
-                        'loans' => ['label' => 'Search Loans', 'icon' => 'heroicon-o-document-text'],
-                        'assets' => ['label' => 'Search Assets', 'icon' => 'heroicon-o-computer-desktop'],
-                        'users' => ['label' => 'Search Users', 'icon' => 'heroicon-o-user'],
+                        'tickets' => [
+                            'label' => __('admin_pages.unified_search.filters.tickets'),
+                            'icon' => 'heroicon-o-ticket',
+                        ],
+                        'loans' => [
+                            'label' => __('admin_pages.unified_search.filters.loans'),
+                            'icon' => 'heroicon-o-document-text',
+                        ],
+                        'assets' => [
+                            'label' => __('admin_pages.unified_search.filters.assets'),
+                            'icon' => 'heroicon-o-computer-desktop',
+                        ],
+                        'users' => [
+                            'label' => __('admin_pages.unified_search.filters.users'),
+                            'icon' => 'heroicon-o-user',
+                        ],
                     ];
                 @endphp
 
                 @foreach ($resources as $key => $data)
                     <button wire:click="toggleResource('{{ $key }}')"
-                        class="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 border rounded-xl transition-all duration-200 cursor-pointer group
+                        aria-pressed="{{ in_array($key, $selectedResources) ? 'true' : 'false' }}"
+                        aria-label="{{ __('admin_pages.unified_search.toggle_filter', ['filter' => $data['label']]) }}"
+                        class="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 border rounded-xl transition-all duration-200 cursor-pointer group focus-visible:ring-3 focus-visible:ring-primary-500 focus-visible:ring-offset-2
                         {{ in_array($key, $selectedResources)
                             ? 'border-primary-500 ring-1 ring-primary-500 shadow-sm'
                             : 'border-gray-200 dark:border-gray-700 hover:border-primary-400 hover:shadow-md' }}">
@@ -89,7 +104,8 @@
             {{-- Loading State --}}
             <div wire:loading wire:target="search" class="w-full text-center py-12" role="status" aria-live="polite">
                 <x-filament::loading-indicator class="h-10 w-10 mx-auto text-primary-600" />
-                <p class="mt-4 text-gray-500 dark:text-gray-400 animate-pulse">{{ __('unified_search.searching') }}</p>
+                <p class="mt-4 text-gray-500 dark:text-gray-400 animate-pulse">
+                    {{ __('admin_pages.unified_search.searching') }}</p>
             </div>
 
             {{-- Results Section --}}
@@ -101,7 +117,7 @@
                             <div
                                 class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 px-2">
                                 <span>
-                                    {{ __('unified_search.found_results', ['count' => $this->totalResults, 'query' => $search]) }}
+                                    {{ __('admin_pages.unified_search.found_results', ['count' => $this->totalResults, 'query' => $search]) }}
                                 </span>
                             </div>
 
@@ -111,7 +127,7 @@
                                     <x-slot name="heading">
                                         <div class="flex items-center gap-2">
                                             <x-heroicon-o-ticket aria-hidden="true" class="w-5 h-5 text-primary-600" />
-                                            <span>Helpdesk Tickets</span>
+                                            <span>{{ __('admin_pages.unified_search.sections.tickets') }}</span>
                                             <x-filament::badge
                                                 color="gray">{{ count($results['tickets']) }}</x-filament::badge>
                                         </div>
@@ -160,7 +176,7 @@
                                         <div class="flex items-center gap-2">
                                             <x-heroicon-o-document-text aria-hidden="true"
                                                 class="w-5 h-5 text-primary-600" />
-                                            <span>Loan Applications</span>
+                                            <span>{{ __('admin_pages.unified_search.sections.loans') }}</span>
                                             <x-filament::badge
                                                 color="gray">{{ count($results['loans']) }}</x-filament::badge>
                                         </div>
@@ -185,7 +201,7 @@
                                                             </x-filament::badge>
                                                             <span
                                                                 class="text-xs text-gray-400">{{ $loan['metadata']['assets_count'] }}
-                                                                Assets</span>
+                                                                {{ __('admin_pages.unified_search.assets_count_label') }}</span>
                                                         </div>
                                                     </div>
                                                     <x-heroicon-m-chevron-right aria-hidden="true"
@@ -204,7 +220,7 @@
                                         <div class="flex items-center gap-2">
                                             <x-heroicon-o-computer-desktop aria-hidden="true"
                                                 class="w-5 h-5 text-primary-600" />
-                                            <span>Assets</span>
+                                            <span>{{ __('admin_pages.unified_search.sections.assets') }}</span>
                                             <x-filament::badge
                                                 color="gray">{{ count($results['assets']) }}</x-filament::badge>
                                         </div>
@@ -248,7 +264,7 @@
                                     <x-slot name="heading">
                                         <div class="flex items-center gap-2">
                                             <x-heroicon-o-user aria-hidden="true" class="w-5 h-5 text-primary-600" />
-                                            <span>Users</span>
+                                            <span>{{ __('admin_pages.unified_search.sections.users') }}</span>
                                             <x-filament::badge
                                                 color="gray">{{ count($results['users']) }}</x-filament::badge>
                                         </div>
@@ -292,13 +308,13 @@
                                 <x-heroicon-o-magnifying-glass aria-hidden="true" class="w-12 h-12 text-gray-400" />
                             </div>
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                                {{ __('unified_search.no_results_title') }}</h3>
+                                {{ __('admin_pages.unified_search.no_results_title') }}</h3>
                             <p class="text-gray-500 dark:text-gray-400 max-w-sm">
-                                {{ __('unified_search.no_results_message', ['query' => $search]) }}
+                                {{ __('admin_pages.unified_search.no_results_message', ['query' => $search]) }}
                             </p>
                             <button wire:click="clearSearch"
                                 class="mt-6 text-primary-600 hover:text-primary-500 font-medium min-h-11 flex items-center justify-center focus:outline-none focus-visible:ring-3 focus-visible:ring-primary-500 rounded px-4">
-                                {{ __('unified_search.clear') }}
+                                {{ __('admin_pages.unified_search.clear') }}
                             </button>
                         </div>
                     @endif
