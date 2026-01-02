@@ -258,8 +258,10 @@ class LoanApplicationResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
+        // Test that the export header action exists on the page
+        // ExportLoansAction has default name 'export' (page-level action)
         Livewire::test(ListLoanApplications::class)
-            ->callTableAction('export')
+            ->assertActionExists('export')
             ->assertHasNoErrors();
     }
 

@@ -17,6 +17,7 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Two\InvalidStateException;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -36,9 +37,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->handler = new GoogleServicesErrorHandler;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function service_is_bound_in_container(): void
     {
         $service = app(GoogleServicesErrorHandlerInterface::class);
@@ -46,9 +45,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertInstanceOf(GoogleServicesErrorHandler::class, $service);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handles_invalid_email_domain_exception(): void
     {
         $exception = new InvalidEmailDomainException('test@gmail.com', ['motac.gov.my']);
@@ -65,9 +62,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertEquals(GoogleServicesException::SERVICE_SSO, $response['service_type']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handles_invalid_state_exception(): void
     {
         $exception = new InvalidStateException('Invalid state');
@@ -83,9 +78,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertEquals(GoogleServicesException::TYPE_OAUTH_STATE, $response['error_type']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handles_connect_exception(): void
     {
         $request = new Request('GET', 'https://accounts.google.com');
@@ -103,9 +96,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertTrue($response['recoverable']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handles_google_verification_exception(): void
     {
         $exception = GoogleVerificationException::testUserRequired('test@motac.gov.my', 'testing');
@@ -122,9 +113,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertTrue($response['fallback_available']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handles_gmail_quota_exceeded_exception(): void
     {
         $exception = new GmailQuotaExceededException('Quota exceeded', 500, 500);
@@ -141,9 +130,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertNotEmpty($response['user_message']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handles_gmail_rate_limit_exception(): void
     {
         $exception = new GmailRateLimitException('Rate limit exceeded', 60);
@@ -158,9 +145,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertFalse($response['success']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handles_gmail_authentication_exception(): void
     {
         $exception = GmailAuthenticationException::tokenExpired('oauth');
@@ -176,9 +161,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertEquals(GoogleServicesException::TYPE_AUTHENTICATION, $response['error_type']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handles_general_exception(): void
     {
         $exception = new \Exception('Unknown error');
@@ -194,9 +177,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertEquals(GoogleServicesException::TYPE_GENERAL, $response['error_type']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returns_redirect_response_by_default(): void
     {
         $exception = new InvalidEmailDomainException('test@gmail.com');
@@ -210,9 +191,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returns_json_response_when_requested(): void
     {
         $exception = new InvalidEmailDomainException('test@gmail.com');
@@ -230,9 +209,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertFalse($response['success']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_error_message_returns_localized_message(): void
     {
         $message = $this->handler->getErrorMessage(GoogleServicesException::TYPE_DOMAIN);
@@ -241,9 +218,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertIsString($message);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_help_text_returns_localized_help(): void
     {
         $helpText = $this->handler->getHelpText(GoogleServicesException::TYPE_DOMAIN);
@@ -252,9 +227,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertIsString($helpText);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function should_trigger_fallback_for_network_errors(): void
     {
         $this->assertTrue($this->handler->shouldTriggerFallback(GoogleServicesException::TYPE_NETWORK));
@@ -263,18 +236,14 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertTrue($this->handler->shouldTriggerFallback(GoogleServicesException::TYPE_RATE_LIMIT));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function should_not_trigger_fallback_for_domain_errors(): void
     {
         $this->assertFalse($this->handler->shouldTriggerFallback(GoogleServicesException::TYPE_DOMAIN));
         $this->assertFalse($this->handler->shouldTriggerFallback(GoogleServicesException::TYPE_GENERAL));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function google_services_exception_provides_user_message(): void
     {
         $exception = new GoogleServicesException(
@@ -289,9 +258,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertNotEquals('Technical error message', $userMessage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function google_services_exception_provides_help_text(): void
     {
         $exception = new GoogleServicesException(
@@ -305,9 +272,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertNotEmpty($helpText);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function google_services_exception_determines_fallback_correctly(): void
     {
         $networkException = new GoogleServicesException(
@@ -326,9 +291,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertFalse($domainException->shouldOfferFallback());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function google_verification_exception_provides_status(): void
     {
         $exception = GoogleVerificationException::testUserRequired('test@motac.gov.my', 'testing');
@@ -338,9 +301,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertFalse($exception->isTestUser());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gmail_authentication_exception_provides_reason(): void
     {
         $exception = GmailAuthenticationException::tokenExpired('oauth');
@@ -350,9 +311,7 @@ class GoogleServicesErrorHandlerTest extends TestCase
         $this->assertTrue($exception->canReauthenticate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gmail_authentication_exception_credentials_missing_cannot_reauthenticate(): void
     {
         $exception = GmailAuthenticationException::credentialsMissing();

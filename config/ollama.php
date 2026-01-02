@@ -153,11 +153,28 @@ return [
             'Hello! 😊 Saya adalah pembantu AI ICTServe. Sila tanya saya tentang sistem helpdesk, pinjaman aset ICT, atau sebarang soalan berkaitan perkhidmatan ICT.',
         ],
         'greeting_patterns' => [
-            'hai', 'helo', 'hello', 'hi', 'hey',
-            'salam', 'assalamualaikum', 'selamat pagi', 'selamat petang', 'selamat malam',
-            'apa khabar', 'terima kasih', 'thanks', 'ok', 'okay',
-            'good morning', 'good afternoon', 'good evening', 'good night',
-            'thank you', 'thx', 'ty',
+            'hai',
+            'helo',
+            'hello',
+            'hi',
+            'hey',
+            'salam',
+            'assalamualaikum',
+            'selamat pagi',
+            'selamat petang',
+            'selamat malam',
+            'apa khabar',
+            'terima kasih',
+            'thanks',
+            'ok',
+            'okay',
+            'good morning',
+            'good afternoon',
+            'good evening',
+            'good night',
+            'thank you',
+            'thx',
+            'ty',
         ],
     ],
 
@@ -310,6 +327,19 @@ return [
         'fallback' => 'Maaf, saya tidak dapat memberikan jawapan yang tepat untuk pertanyaan anda. Sila hubungi pasukan sokongan ICT atau cipta tiket helpdesk.',
         'error' => 'Perkhidmatan AI tidak tersedia pada masa ini. Sila cuba lagi kemudian.',
         'no_results' => 'Tiada hasil yang berkaitan ditemui. Sila cuba dengan kata kunci yang berbeza.',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Controls
+    |--------------------------------------------------------------------------
+    |
+    | Konfigurasi untuk kawalan pentadbir AI services.
+    |
+    */
+    'admin' => [
+        // Allow manual restart of AI services from dashboard (superuser only)
+        'allow_manual_restart' => env('AI_ALLOW_MANUAL_RESTART', false),
     ],
 
     /*
