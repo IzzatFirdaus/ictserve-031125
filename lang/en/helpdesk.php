@@ -309,6 +309,11 @@ return [
     'filter_indicator_sla' => 'SLA Status',
     'filter_indicator_sla_breached' => 'SLA Breached',
     'filter_indicator_asset' => 'Asset',
+    'filter_indicator_my_tickets' => 'My Tickets',
+    'filter_urgent_priority' => 'Priority: Urgent',
+    'filter_open_status' => 'Status: New / Open',
+    'filter_indicator_urgent' => 'Urgent',
+    'filter_indicator_open' => 'Open',
 
     // SLA Status translations - Per Requirements 5.5
     'sla_status' => 'SLA Status',

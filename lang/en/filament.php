@@ -93,6 +93,20 @@ return [
         'portal_approval' => 'Portal',
     ],
 
+    // Resources - Resource labels for navigation and model names
+    'resources' => [
+        'asset' => [
+            'navigation' => 'Assets',
+            'singular' => 'Asset',
+            'plural' => 'Assets',
+        ],
+        'asset_category' => [
+            'navigation' => 'Asset Categories',
+            'singular' => 'Asset Category',
+            'plural' => 'Asset Categories',
+        ],
+    ],
+
     'actions' => [
         'send_for_approval' => 'Send for Approval',
         'approve' => 'Approve',

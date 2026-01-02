@@ -1,8 +1,5 @@
 <?php
 
-// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)
-// See lang/en/README.md for details
-
 return [
 
     /*
@@ -13,8 +10,6 @@ return [
     | The following language lines contain the default error messages used by
     | the validator class. Some of these rules have multiple versions such
     | as the size rules. Feel free to tweak each of these messages here.
-    |
-    | Updated: 2025-12-17 - Added technical reference comment (v3.6.1)
     |
     */
 
@@ -57,6 +52,7 @@ return [
     'doesnt_end_with' => 'The :attribute field must not end with one of the following: :values.',
     'doesnt_start_with' => 'The :attribute field must not start with one of the following: :values.',
     'email' => 'The :attribute field must be a valid email address.',
+    'encoding' => 'The :attribute field must be encoded in :encoding.',
     'ends_with' => 'The :attribute field must end with one of the following: :values.',
     'enum' => 'The selected :attribute is invalid.',
     'exists' => 'The selected :attribute is invalid.',
@@ -200,38 +196,5 @@ return [
     */
 
     'attributes' => [],
-
-    /*
-    |--------------------------------------------------------------------------
-    | IP Blocking & Rate Limiting
-    |--------------------------------------------------------------------------
-    */
-
-    'rate_limit_exceeded' => 'Too many requests. Please try again in :seconds seconds.',
-    'rate_limit_warning' => 'Warning: :remaining more violations will result in temporary access block.',
-    'ip_blocked' => 'Your access has been temporarily blocked due to suspicious activity.',
-    'ip_blocked_until' => 'Your access has been blocked. It will be restored :time.',
-
-    /*
-    |--------------------------------------------------------------------------
-    | reCAPTCHA Enterprise
-    |--------------------------------------------------------------------------
-    */
-
-    'recaptcha_required' => 'reCAPTCHA verification is required.',
-    'recaptcha_invalid' => 'Invalid reCAPTCHA token. Please refresh the page and try again.',
-    'recaptcha_action_mismatch' => 'reCAPTCHA action mismatch. Please refresh the page.',
-    'recaptcha_suspicious' => 'Suspicious activity detected. Please try again.',
-    'recaptcha_configuration_error' => 'reCAPTCHA configuration error. Please contact administrator.',
-    'recaptcha_failed' => 'reCAPTCHA verification failed. Please try again.',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Virus Scanning (ClamAV)
-    |--------------------------------------------------------------------------
-    */
-
-    'virus_detected' => 'The :attribute file contains a virus (:virus) and has been rejected.',
-    'virus_scan_failed' => 'Virus scan for :attribute failed: :error',
 
 ];

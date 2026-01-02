@@ -1,8 +1,5 @@
 <?php
 
-// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)
-// See lang/en/README.md for details
-
 return [
 
     /*
@@ -13,8 +10,6 @@ return [
     | The following language lines are the default lines which match reasons
     | that are given by the password broker for a password update attempt
     | outcome such as failure due to an invalid password / reset token.
-    |
-    | Updated: 2025-12-17 - Added technical reference comment (v3.6.1)
     |
     */
 
