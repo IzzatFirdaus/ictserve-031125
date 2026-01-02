@@ -439,8 +439,9 @@ class ReportTemplateService
         }
 
         $compliant = $tickets->filter(function ($ticket) {
-            return $ticket->resolved_at && $ticket->sla_deadline &&
-                   $ticket->resolved_at <= $ticket->sla_deadline;
+            // Use sla_resolution_due_at instead of sla_deadline
+            return $ticket->resolved_at && $ticket->sla_resolution_due_at &&
+                $ticket->resolved_at <= $ticket->sla_resolution_due_at;
         })->count();
 
         $avgResponse = $tickets->whereNotNull('resolved_at')->avg(function ($ticket) {

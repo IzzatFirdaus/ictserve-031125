@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\LoanStatus;
 use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
@@ -378,19 +379,19 @@ class DataVisualizationService
     {
         return collect($chartData)->map(function ($moduleData) {
             if ($moduleData['module'] === 'Helpdesk') {
-                $breaches = HelpdeskTicket::where('sla_deadline', '<', now())
+                $breaches = HelpdeskTicket::where('sla_resolution_due_at', '<', now())
                     ->whereNotIn('status', ['resolved', 'closed'])
                     ->get()
                     ->map(function ($ticket) {
                         return [
                             'identifier' => $ticket->ticket_number,
-                            'title' => $ticket->title,
-                            'days_overdue' => $ticket->sla_deadline ? now()->diffInDays($ticket->sla_deadline) : 0,
+                            'title' => $ticket->subject,
+                            'days_overdue' => $ticket->sla_resolution_due_at ? now()->diffInDays($ticket->sla_resolution_due_at) : 0,
                             'priority' => $ticket->priority,
                         ];
                     });
             } else {
-                $breaches = LoanApplication::where('status', 'pending_approval')
+                $breaches = LoanApplication::where('status', LoanStatus::PENDING_APPROVAL->value)
                     ->where('created_at', '<', now()->subHours(48))
                     ->get()
                     ->map(function ($loan) {
@@ -444,8 +445,9 @@ class DataVisualizationService
         }
 
         $compliant = $tickets->filter(function ($ticket) {
-            return $ticket->resolved_at && $ticket->sla_deadline &&
-                $ticket->resolved_at <= $ticket->sla_deadline;
+            // Use sla_resolution_due_at instead of sla_deadline
+            return $ticket->resolved_at && $ticket->sla_resolution_due_at &&
+                $ticket->resolved_at <= $ticket->sla_resolution_due_at;
         })->count();
 
         return [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\LoanStatus;
 use App\Models\Asset;
 use App\Models\AssetTransaction;
 use App\Models\CrossModuleIntegration;
@@ -165,12 +166,12 @@ class UnifiedAnalyticsService
         };
 
         $total = $baseQuery()->count();
-        $approved = $baseQuery()->where('status', 'approved')->count();
-        $active = $baseQuery()->whereIn('status', ['issued', 'in_use'])->count();
+        $approved = $baseQuery()->where('status', LoanStatus::APPROVED->value)->count();
+        $active = $baseQuery()->whereIn('status', LoanStatus::activeStatuses())->count();
         $overdue = $baseQuery()->where('loan_end_date', '<', now()->toDateString())
-            ->whereIn('status', ['issued', 'in_use'])
+            ->whereIn('status', LoanStatus::activeStatuses())
             ->count();
-        $pendingApproval = $baseQuery()->where('status', 'under_review')->count();
+        $pendingApproval = $baseQuery()->where('status', LoanStatus::UNDER_REVIEW->value)->count();
 
         $totalValue = $baseQuery()->sum('total_value') ?? 0;
 
@@ -496,7 +497,7 @@ class UnifiedAnalyticsService
     private function getOverdueLoansDetail(array $filters): array
     {
         $query = LoanApplication::where('loan_end_date', '<', now()->toDateString())
-            ->whereIn('status', ['issued', 'in_use'])
+            ->whereIn('status', LoanStatus::activeStatuses())
             ->with(['loanItems.asset']);
 
         return $query->get()->map(function ($loan) {
