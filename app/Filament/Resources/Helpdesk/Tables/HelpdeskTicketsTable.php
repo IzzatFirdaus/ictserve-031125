@@ -82,7 +82,7 @@ class HelpdeskTicketsTable
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->label(__('helpdesk.status'))
+                    ->label(__('helpdesk.status_label'))
                     ->badge()
                     ->color(fn (string $state) => self::statusColors()[$state] ?? 'gray')
                     ->formatStateUsing(fn (string $state) => ucfirst(str_replace('_', ' ', $state)))

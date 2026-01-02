@@ -72,9 +72,7 @@ return [
         'report_builder' => [
             'group' => 'Laporan & Analitik',
         ],
-        'data_visualization' => [
-            'group' => 'Laporan & Analitik',
-        ],
+        // Note: data_visualization moved to lang/ms/admin_pages.php (canonical location)
         'unified_analytics' => [
             'group' => 'Laporan & Analitik',
         ],

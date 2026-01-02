@@ -1381,7 +1381,7 @@ This implementation plan breaks down the Filament admin frontend redesign into d
     - **Property 57: Actionable Empty States**
     - **Validates: Requirements 50.1, 50.2**
 
-- [-] 54. Global "Create Another" Label Override
+- [x] 54. Global "Create Another" Label Override
   - [x] 54.1 Create Filament Vendor Translation Override
     - Create `lang/vendor/filament-panels/ms/resources/pages/create-record.php`
     - Set `form.actions.create_another.label` to "Simpan & Tambah Lagi"
@@ -1706,7 +1706,7 @@ This implementation plan breaks down the Filament admin frontend redesign into d
 
 ## Phase 31: Helpdesk Reports & Analytics Page Fixes
 
-- [ ] 70. Consolidate Translation Files
+- [-] 70. Consolidate Translation Files
   - [ ] 70.1 Audit and Merge Duplicate admin_pages.php Files
     - Identify canonical location (`lang/ms/admin_pages.php` vs `resources/lang/ms/admin_pages.php`)
     - Merge both arrays into single source of truth
@@ -1714,7 +1714,7 @@ This implementation plan breaks down the Filament admin frontend redesign into d
     - Delete redundant file after merge
     - _Requirements: 64.1, 64.2, 64.3_
 
-  - [ ] 70.2 Add Complete Helpdesk Reports Translation Keys
+  - [x] 70.2 Add Complete Helpdesk Reports Translation Keys
     - Add to `admin_pages.helpdesk_reports`:
       - `title` → "Laporan & Analitik Meja Bantuan"
       - `label` → "Laporan & Analitik"
@@ -1736,27 +1736,27 @@ This implementation plan breaks down the Filament admin frontend redesign into d
       - `by_category` → "Tiket mengikut Kategori"
     - _Requirements: 65.1, 65.2, 65.3, 65.4, 65.5_
 
-- [ ] 71. Fix HelpdeskReports Page Class
-  - [ ] 71.1 Update Page to Use Translation Keys
+- [x] 71. Fix HelpdeskReports Page Class
+  - [x] 71.1 Update Page to Use Translation Keys
     - Change `getTitle()` to return `__('admin_pages.helpdesk_reports.title')`
     - Change `getNavigationLabel()` to return `__('admin_pages.helpdesk_reports.label')`
     - Update form field labels to use `__('admin_pages.helpdesk_reports.start_date')` etc.
     - Update header action labels to use translation keys
     - _Requirements: 65.1, 65.2_
 
-  - [ ] 71.2 Remove Duplicate Section Wrapper in Form Schema
+  - [x] 71.2 Remove Duplicate Section Wrapper in Form Schema
     - Remove `Section::make('Report Filters')` wrapper from `form()` method
     - Keep only DatePicker components in form schema
     - Let Blade view handle section wrapper
     - _Requirements: 66.1, 66.2_
 
-  - [ ] 71.3 Fix Mount Behavior (Don't Auto-Generate)
+  - [x] 71.3 Fix Mount Behavior (Don't Auto-Generate)
     - Remove `$this->generateReport()` call from `mount()`
     - Initialize `$this->reportData = []` as empty
     - Let user explicitly click "Jana Laporan" to generate
     - _Requirements: 67.1, 67.2_
 
-  - [ ] 71.4 Consolidate Header Actions
+  - [x] 71.4 Consolidate Header Actions
     - Keep single "Jana Laporan" action in header
     - Make "Eksport Data" action visible only when `!empty($this->reportData)`
     - Remove any duplicate generate buttons
@@ -1766,22 +1766,22 @@ This implementation plan breaks down the Filament admin frontend redesign into d
     - **Property 65: HelpdeskReports Uses Translation Keys**
     - **Validates: Requirements 65.1, 65.2**
 
-- [ ] 72. Fix Helpdesk Reports Blade View
-  - [ ] 72.1 Remove Duplicate Filter Section
+- [x] 72. Fix Helpdesk Reports Blade View
+  - [x] 72.1 Remove Duplicate Filter Section
     - Keep single `<x-filament::section>` wrapper for filters
     - Use `__('admin_pages.helpdesk_reports.filters_heading')` for heading
     - Use `__('admin_pages.helpdesk_reports.filters_description')` for description
     - Render `{{ $this->form }}` without additional Section wrapper
     - _Requirements: 66.1, 66.2, 66.3_
 
-  - [ ] 72.2 Implement Three-State Report Display
+  - [x] 72.2 Implement Three-State Report Display
     - State 1 (Not Generated): Show instruction "Sila pilih julat tarikh dan klik 'Jana Laporan'."
     - State 2 (Generated, No Data): Show "Tiada tiket dijumpai untuk julat tarikh yang dipilih."
     - State 3 (Generated, Has Data): Show KPIs and breakdown sections
     - Use `@if(!$hasReport)` / `@elseif($totalTickets === 0)` / `@else` pattern
     - _Requirements: 67.1, 67.2, 67.3_
 
-  - [ ] 72.3 Update KPI Cards with Malay Labels
+  - [x] 72.3 Update KPI Cards with Malay Labels
     - Replace `__('Total Tickets')` with `__('admin_pages.helpdesk_reports.kpi_total_tickets')`
     - Replace `__('Guest Submissions')` with `__('admin_pages.helpdesk_reports.kpi_guest_submissions')`
     - Replace `__('Avg Resolution Time')` with `__('admin_pages.helpdesk_reports.kpi_avg_resolution_time')`
@@ -1789,13 +1789,13 @@ This implementation plan breaks down the Filament admin frontend redesign into d
     - Use "j" (jam) suffix for time values instead of "h"
     - _Requirements: 65.3, 65.4_
 
-  - [ ] 72.4 Update Section Headings with Malay Labels
+  - [x] 72.4 Update Section Headings with Malay Labels
     - Replace "Tickets by Status" with `__('admin_pages.helpdesk_reports.by_status')`
     - Replace "Tickets by Priority" with `__('admin_pages.helpdesk_reports.by_priority')`
     - Replace "Tickets by Category" with `__('admin_pages.helpdesk_reports.by_category')`
     - _Requirements: 65.3, 65.5_
 
-  - [ ] 72.5 Add Empty State for Chart Sections
+  - [x] 72.5 Add Empty State for Chart Sections
     - When breakdown arrays are empty, show `__('admin_pages.helpdesk_reports.no_chart_data')`
     - Use `@forelse` / `@empty` pattern for each breakdown section
     - Apply consistent styling with `text-sm text-gray-600 dark:text-gray-400`
@@ -1805,7 +1805,7 @@ This implementation plan breaks down the Filament admin frontend redesign into d
     - **Property 66: HelpdeskReports Empty State Handling**
     - **Validates: Requirements 67.1, 67.2, 67.3**
 
-- [ ] 73. Checkpoint - Verify Helpdesk Reports Page Fixes (Phase 31 Tasks 70-72)
+- [x] 73. Checkpoint - Verify Helpdesk Reports Page Fixes (Phase 31 Tasks 70-72)
   - Verify single `admin_pages.php` file exists (no duplicates)
   - Verify page title shows "Laporan & Analitik Meja Bantuan"
   - Verify filter section appears only once (no duplicate headings)

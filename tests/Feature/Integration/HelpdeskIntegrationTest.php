@@ -61,7 +61,7 @@ class HelpdeskIntegrationTest extends TestCase
         // Verify ticket created
         $this->assertNotNull($ticket);
         $this->assertNotNull($ticket->ticket_number);
-        $this->assertStringStartsWith('HD2025', $ticket->ticket_number);
+        $this->assertStringStartsWith('HD'.date('Y'), $ticket->ticket_number);
         $this->assertTrue($ticket->isGuestSubmission());
         $this->assertFalse($ticket->isAuthenticatedSubmission());
         $this->assertEquals('John Doe', $ticket->getSubmitterName());

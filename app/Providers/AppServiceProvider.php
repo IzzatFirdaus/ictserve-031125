@@ -223,7 +223,16 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Configure language path for Laravel 12 (uses lang/ instead of resources/lang/)
         app()->useLangPath(base_path('lang'));
+
+        // Add the lang path to the translator loader
+        // This is necessary because the translator is initialized before boot()
+        $translator = app('translator');
+        $loader = $translator->getLoader();
+        if (method_exists($loader, 'addPath')) {
+            $loader->addPath(base_path('lang'));
+        }
 
         if (app()->runningUnitTests()) {
             config([
