@@ -220,6 +220,11 @@ return [
         'update_location' => 'Kemaskini Lokasi',
         'new_location' => 'Lokasi Baru',
         'export' => 'Eksport',
+        // Create form actions - Task 40.1
+        'create' => 'Cipta',
+        'create_another' => 'Simpan & Tambah Lagi',
+        'save' => 'Simpan',
+        'cancel' => 'Batal',
     ],
 
     'notifications' => [

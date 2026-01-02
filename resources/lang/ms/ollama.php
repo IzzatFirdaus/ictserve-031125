@@ -407,6 +407,34 @@ return [
         'timeout_error' => 'Permintaan tamat masa. Sila cuba lagi.',
     ],
 
+    // Empty States
+    'empty_states' => [
+        'document' => [
+            'heading' => 'Tiada dokumen',
+            'description' => 'Muat naik dokumen untuk diproses oleh AI. Format yang disokong: PDF, DOCX, TXT.',
+            'action' => 'Muat Naik Dokumen',
+        ],
+        'message_log' => [
+            'heading' => 'Tiada log mesej',
+            'description' => 'Log akan dipaparkan selepas pengguna berinteraksi dengan sistem AI.',
+        ],
+        'bedrock' => [
+            'heading' => 'Tiada konfigurasi model',
+            'description' => 'Tambah konfigurasi model Bedrock untuk mengaktifkan integrasi AI.',
+            'action' => 'Tambah Konfigurasi',
+        ],
+        'template' => [
+            'heading' => 'Tiada template auto-reply',
+            'description' => 'Cipta template untuk menjana respons automatik kepada pertanyaan pengguna.',
+            'action' => 'Cipta Template',
+        ],
+        'faq' => [
+            'heading' => 'Tiada FAQ',
+            'description' => 'Tambah soalan lazim untuk membantu pengguna mendapatkan jawapan dengan cepat.',
+            'action' => 'Tambah FAQ',
+        ],
+    ],
+
     // Validation
     'validation' => [
         'query_required' => 'Sila masukkan pertanyaan anda.',

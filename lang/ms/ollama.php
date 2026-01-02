@@ -18,6 +18,59 @@ return [
     // Navigation
     'navigation_label' => 'Ollama AI',
 
+    // Bedrock Model Config Resource
+    'bedrock' => [
+        'navigation_label' => 'Konfigurasi Model Bedrock',
+        'model_label' => 'Konfigurasi Model',
+        'plural_label' => 'Konfigurasi Model',
+
+        // Section labels
+        'section_model_info' => 'Maklumat Model',
+        'section_model_info_description' => 'Konfigurasi asas model AI',
+        'section_task_routing' => 'Penghalaan Tugas',
+        'section_task_routing_description' => 'Tentukan jenis tugas yang dikendalikan oleh model ini',
+        'section_cost_limits' => 'Kos & Had',
+        'section_cost_limits_description' => 'Tetapan kos dan had token',
+        'section_advanced' => 'Tetapan Lanjutan',
+        'section_advanced_description' => 'Konfigurasi tambahan untuk model',
+
+        // Field labels
+        'model_id' => 'ID Model',
+        'model_id_helper' => 'ID model AWS Bedrock (cth: us.anthropic.claude-haiku-4-5-20251001-v1:0)',
+        'model_name' => 'Nama Model',
+        'model_name_helper' => 'Nama mesra pengguna untuk model',
+        'provider' => 'Pembekal',
+        'provider_helper' => 'Pembekal model AI',
+        'task_types' => 'Jenis Tugas',
+        'task_types_helper' => 'Pilih jenis tugas yang sesuai untuk model ini',
+        'cost_per_token' => 'Kos Per Token',
+        'cost_per_token_helper' => 'Kos dalam USD per token (cth: 0.00025)',
+        'max_tokens' => 'Token Maksimum',
+        'max_tokens_helper' => 'Had token maksimum untuk respons (100-200000)',
+        'enabled' => 'Diaktifkan',
+        'enabled_helper' => 'Aktifkan atau nyahaktifkan model ini',
+        'configuration' => 'Konfigurasi',
+        'config_key' => 'Kunci',
+        'config_value' => 'Nilai',
+        'add_config' => 'Tambah Konfigurasi',
+        'configuration_helper' => 'Tetapan konfigurasi tambahan dalam format kunci-nilai',
+        'created_by' => 'Dicipta Oleh',
+        'updated_at' => 'Dikemaskini Pada',
+
+        // Actions
+        'enable' => 'Aktifkan',
+        'disable' => 'Nyahaktifkan',
+        'model_enabled' => 'Model telah diaktifkan',
+        'model_disabled' => 'Model telah dinyahaktifkan',
+
+        // Table
+        'search_placeholder' => 'Cari model...',
+
+        // Boolean values
+        'yes' => 'Ya',
+        'no' => 'Tidak',
+    ],
+
     // FAQ Resource
     'faq' => [
         'navigation_label' => 'Pengurusan FAQ',
@@ -88,6 +141,13 @@ return [
         'metadata_key' => 'Kunci',
         'metadata_value' => 'Nilai',
         'metadata_add' => 'Tambah Metadata',
+
+        // FileUpload strings
+        'file_upload_placeholder' => 'Seret & Lepas fail atau Klik untuk pilih',
+        'file_upload_max_size' => 'Saiz maksimum: :size',
+        'file_upload_uploading' => 'Memuat naik...',
+        'file_upload_processing' => 'Memproses fail...',
+        'file_upload_remove' => 'Buang fail',
 
         // Status labels
         'status_pending' => 'Menunggu',
@@ -219,10 +279,32 @@ return [
         'processed_at' => 'Masa Diproses',
         'created_at' => 'Tarikh Dicipta',
 
+        // Table column labels (Requirements 47.6, 51.3)
+        'columns' => [
+            'user' => 'Pengguna',
+            'model' => 'Model AI',
+            'status' => 'Status',
+            'response_time_ms' => 'Masa Respons (ms)',
+            'created_at' => 'Tarikh Dicipta',
+            'sanitized_input' => 'Input (Disanitasi)',
+            'response_summary' => 'Ringkasan Respons',
+            'token_count' => 'Bilangan Token',
+            'cost_estimate' => 'Anggaran Kos',
+            'operation_type' => 'Jenis Operasi',
+            'processed_at' => 'Masa Diproses',
+            'request_id' => 'ID Permintaan',
+        ],
+
         // Operation types
         'operation_faq_query' => 'Pertanyaan FAQ',
         'operation_document_analysis' => 'Analisis Dokumen',
         'operation_auto_reply_generation' => 'Penjanaan Auto-Reply',
+
+        // Status labels
+        'status_success' => 'Berjaya',
+        'status_failed' => 'Gagal',
+        'status_pending' => 'Menunggu',
+        'status_processing' => 'Memproses',
 
         // Filters
         'filter_operation_type' => 'Jenis Operasi',
@@ -237,6 +319,14 @@ return [
         'navigation_label' => 'Prestasi AI',
         'page_title' => 'Papan Pemuka Prestasi Ollama AI',
         'page_description' => 'Pantau prestasi dan kesihatan sistem AI',
+
+        // Period and timestamp
+        'period_context' => 'Tempoh: 24 jam terakhir',
+        'last_updated' => 'Kemaskini terakhir: :time',
+
+        // No data states
+        'no_data' => 'Tiada data',
+        'no_data_guidance' => 'Data prestasi akan dipaparkan selepas pengguna berinteraksi dengan sistem AI.',
 
         // Widgets
         'response_time' => 'Masa Respons',
@@ -390,6 +480,34 @@ return [
         'server_error' => 'Ralat pelayan. Sila hubungi pentadbir sistem.',
         'connection_error' => 'Tidak dapat menyambung ke pelayan AI.',
         'timeout_error' => 'Permintaan tamat masa. Sila cuba lagi.',
+    ],
+
+    // Empty States
+    'empty_states' => [
+        'document' => [
+            'heading' => 'Tiada dokumen',
+            'description' => 'Muat naik dokumen untuk diproses oleh AI. Format yang disokong: PDF, DOCX, TXT.',
+            'action' => 'Muat Naik Dokumen',
+        ],
+        'message_log' => [
+            'heading' => 'Tiada log mesej',
+            'description' => 'Log akan dipaparkan selepas pengguna berinteraksi dengan sistem AI.',
+        ],
+        'bedrock' => [
+            'heading' => 'Tiada konfigurasi model',
+            'description' => 'Tambah konfigurasi model Bedrock untuk mengaktifkan integrasi AI.',
+            'action' => 'Tambah Konfigurasi',
+        ],
+        'template' => [
+            'heading' => 'Tiada template auto-reply',
+            'description' => 'Cipta template untuk menjana respons automatik kepada pertanyaan pengguna.',
+            'action' => 'Cipta Template',
+        ],
+        'faq' => [
+            'heading' => 'Tiada FAQ',
+            'description' => 'Tambah soalan lazim untuk membantu pengguna mendapatkan jawapan dengan cepat.',
+            'action' => 'Tambah FAQ',
+        ],
     ],
 
     // Validation

@@ -3,7 +3,6 @@
 // ICTServe v3.6.1 - Bahasa Melayu Sahaja
 // Rujukan: D15_LANGUAGE_MS_EN.md
 
-
 declare(strict_types=1);
 
 return [
@@ -25,4 +24,16 @@ return [
     'role_superuser' => 'Superuser',
     'status_active' => 'Aktif',
     'status_inactive' => 'Tidak Aktif',
+
+    // Impersonation
+    'impersonate' => 'Lakon Sebagai',
+    'impersonate_confirm_title' => 'Sahkan Lakon Sebagai',
+    'impersonate_confirm_body' => 'Adakah anda pasti mahu lakon sebagai pengguna ini?',
+    'impersonate_unauthorized' => 'Anda tidak dibenarkan untuk lakon sebagai pengguna lain.',
+    'impersonate_self_error' => 'Anda tidak boleh lakon sebagai diri sendiri.',
+    'impersonate_superuser_error' => 'Anda tidak boleh lakon sebagai superuser lain.',
+
+    // CreateUser notifications
+    'created_success' => 'Pengguna berjaya dicipta',
+    'welcome_email_sent' => 'Emel alu-aluan telah dihantar ke :email.',
 ];

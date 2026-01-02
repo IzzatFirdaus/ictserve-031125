@@ -25,6 +25,53 @@ return [
         'management' => 'Pengurusan',
         'system' => 'Sistem',
         'reports' => 'Laporan',
+        'helpdesk_management' => 'Pengurusan Helpdesk',
+        'inventory' => 'Inventori',
+        'loan_management' => 'Pengurusan Pinjaman',
+    ],
+
+    // Resources - Model labels for Filament resources
+    'resources' => [
+        'asset' => [
+            'singular' => 'Aset',
+            'plural' => 'Aset',
+            'navigation' => 'Aset',
+        ],
+        'asset_category' => [
+            'singular' => 'Kategori Aset',
+            'plural' => 'Kategori Aset',
+            'navigation' => 'Kategori Aset',
+        ],
+        'helpdesk_ticket' => [
+            'singular' => 'Tiket Meja Bantuan',
+            'plural' => 'Tiket Meja Bantuan',
+            'navigation' => 'Tiket Meja Bantuan',
+        ],
+        'ticket_category' => [
+            'singular' => 'Kategori Tiket',
+            'plural' => 'Kategori Tiket',
+            'navigation' => 'Kategori Tiket',
+        ],
+        'loan_application' => [
+            'singular' => 'Permohonan Pinjaman',
+            'plural' => 'Permohonan Pinjaman',
+            'navigation' => 'Permohonan Pinjaman',
+        ],
+        'division' => [
+            'singular' => 'Bahagian',
+            'plural' => 'Bahagian',
+            'navigation' => 'Bahagian',
+        ],
+        'grade' => [
+            'singular' => 'Gred',
+            'plural' => 'Gred',
+            'navigation' => 'Gred',
+        ],
+        'user' => [
+            'singular' => 'Pengguna',
+            'plural' => 'Pengguna',
+            'navigation' => 'Pengguna',
+        ],
     ],
 
     // Labels - Table/Form columns (used in Resources/Tables)
@@ -154,6 +201,59 @@ return [
         'financial_info' => 'Maklumat Kewangan',
         'maintenance_attachments' => 'Lampiran Penyelenggaraan',
         'asset_tag' => 'Tag Aset',
+    ],
+
+    // Resources - Resource labels for navigation and model names
+    'resources' => [
+        'asset' => [
+            'navigation' => 'Aset',
+            'singular' => 'Aset',
+            'plural' => 'Aset',
+        ],
+        'asset_category' => [
+            'navigation' => 'Kategori Aset',
+            'singular' => 'Kategori Aset',
+            'plural' => 'Kategori Aset',
+        ],
+    ],
+
+    // Actions - Export and other actions
+    'actions' => [
+        'export' => 'Eksport',
+        'export_data' => 'Eksport Data',
+        'export_excel' => 'Eksport Excel',
+        'export_pdf' => 'Eksport PDF',
+        'export_csv' => 'Eksport CSV',
+        'export_report' => 'Eksport Laporan',
+        'export_report_description' => 'Ini akan menjana laporan PDF dengan statistik untuk semua rekod.',
+        'export_selected' => 'Eksport Dipilih',
+        'import' => 'Import',
+        'create' => 'Cipta',
+        'create_another' => 'Simpan & Tambah Lagi',
+        'edit' => 'Kemaskini',
+        'view' => 'Lihat',
+        'delete' => 'Padam',
+        'save' => 'Simpan',
+        'cancel' => 'Batal',
+        'submit' => 'Hantar',
+        'approve' => 'Lulus',
+        'reject' => 'Tolak',
+    ],
+
+    // Boolean values for accessibility
+    'boolean' => [
+        'yes' => 'Ya',
+        'no' => 'Tidak',
+        'active' => 'Aktif',
+        'inactive' => 'Tidak Aktif',
+    ],
+
+    // System - System-related translations
+    'system' => [
+        'email_logs' => 'Log E-mel',
+        'audit_logs' => 'Log Audit',
+        'failed_jobs' => 'Tugas Gagal',
+        'api_tokens' => 'Token API',
     ],
 
     // User Module - v3.6.1

@@ -97,7 +97,7 @@ return [
                             'label' => 'Cipta',
                         ],
                         'create_another' => [
-                            'label' => 'Cipta & cipta lagi',
+                            'label' => 'Simpan & Tambah Lagi',
                         ],
                         'cancel' => [
                             'label' => 'Batal',

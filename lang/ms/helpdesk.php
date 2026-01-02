@@ -307,6 +307,11 @@ return [
     'filter_has_asset' => 'Aset',
     'filter_indicator_sla' => 'Status SLA',
     'filter_indicator_sla_breached' => 'SLA Melebihi',
+    'filter_indicator_my_tickets' => 'Tiket Saya',
+    'filter_urgent_priority' => 'Keutamaan: Segera',
+    'filter_open_status' => 'Status: Baru / Dibuka',
+    'filter_indicator_urgent' => 'Segera',
+    'filter_indicator_open' => 'Dibuka',
 
     // SLA Status translations - Per Requirements 5.5
     'sla_overdue' => 'Melebihi',
@@ -361,6 +366,16 @@ return [
     'status_pending_user' => 'Menunggu Pengguna',
     'status_resolved' => 'Diselesaikan',
     'status_closed' => 'Ditutup',
+
+    // Status enum keys (for HelpdeskTicketStatus enum)
+    'status' => [
+        'open' => 'Terbuka',
+        'in_progress' => 'Dalam Proses',
+        'pending_info' => 'Menunggu Maklumat',
+        'resolved' => 'Diselesaikan',
+        'closed' => 'Ditutup',
+        'cancelled' => 'Dibatalkan',
+    ],
     'status_change_notes' => 'Catatan Perubahan Status',
     'status_timeline' => 'Garis Masa Status',
     'status_updated' => 'Status Dikemaskini',
