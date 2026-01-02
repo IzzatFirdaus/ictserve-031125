@@ -92,18 +92,14 @@ class ReportBuilder extends Page implements HasForms
     }
 
     /**
-     * Get header actions
+     * Get header actions - removed to avoid duplicate CTA
+     * Single "Jana Pratonton" button is in the Blade view
      *
      * @return array<Action>
      */
     protected function getHeaderActions(): array
     {
-        return [
-            Action::make('generate')
-                ->label('Jana Pratonton')
-                ->icon('heroicon-o-eye')
-                ->action('generatePreview'),
-        ];
+        return [];
     }
 
     /**
@@ -113,16 +109,16 @@ class ReportBuilder extends Page implements HasForms
     {
         return $schema
             ->components([
-                Section::make('Konfigurasi Laporan')
+                Section::make(__('report_builder.config.heading'))
                     ->collapsible(false)
                     ->collapsed(false)
                     ->components([
                         Select::make('module')
-                            ->label('Modul')
+                            ->label(__('report_builder.config.module'))
                             ->options([
-                                'helpdesk' => 'Tiket Helpdesk',
-                                'loans' => 'Permohonan Pinjaman',
-                                'assets' => 'Aset',
+                                'helpdesk' => __('report_builder.modules.helpdesk'),
+                                'loans' => __('report_builder.modules.loans'),
+                                'assets' => __('report_builder.modules.assets'),
                             ])
                             ->required()
                             ->live()
@@ -131,13 +127,13 @@ class ReportBuilder extends Page implements HasForms
                         Grid::make(2)
                             ->components([
                                 DatePicker::make('date_from')
-                                    ->label('Tarikh Dari')
+                                    ->label(__('report_builder.config.date_from'))
                                     ->native(false)
                                     ->displayFormat('d/m/Y')
                                     ->maxDate(now()),
 
                                 DatePicker::make('date_to')
-                                    ->label('Tarikh Hingga')
+                                    ->label(__('report_builder.config.date_to'))
                                     ->native(false)
                                     ->displayFormat('d/m/Y')
                                     ->maxDate(now())
@@ -145,41 +141,23 @@ class ReportBuilder extends Page implements HasForms
                             ]),
 
                         Select::make('status')
-                            ->label('Status')
-                            ->options(function ($get) {
-                                return match ($get('module')) {
-                                    'helpdesk' => [
-                                        'open' => 'Terbuka',
-                                        'assigned' => 'Ditugaskan',
-                                        'in_progress' => 'Dalam Proses',
-                                        'resolved' => 'Diselesaikan',
-                                        'closed' => 'Ditutup',
-                                    ],
-                                    'loans' => [
-                                        'pending' => 'Menunggu',
-                                        'approved' => 'Diluluskan',
-                                        'in_use' => 'Sedang Digunakan',
-                                        'completed' => 'Selesai',
-                                    ],
-                                    'assets' => [
-                                        'available' => 'Tersedia',
-                                        'on_loan' => 'Dipinjam',
-                                        'maintenance' => 'Penyelenggaraan',
-                                        'retired' => 'Bersara',
-                                    ],
-                                    default => [],
-                                };
+                            ->label(__('report_builder.config.status'))
+                            ->options(fn ($get) => match ($get('module')) {
+                                'helpdesk' => __('report_builder.statuses.helpdesk'),
+                                'loans' => __('report_builder.statuses.loans'),
+                                'assets' => __('report_builder.statuses.assets'),
+                                default => [],
                             })
                             ->multiple()
                             ->native(false)
                             ->visible(fn ($get) => ! empty($get('module'))),
 
                         Select::make('format')
-                            ->label('Format Export')
+                            ->label(__('report_builder.config.format'))
                             ->options([
-                                'csv' => 'CSV',
-                                'excel' => 'Excel (XLSX)',
-                                'pdf' => 'PDF',
+                                'csv' => __('report_builder.formats.csv'),
+                                'excel' => __('report_builder.formats.excel'),
+                                'pdf' => __('report_builder.formats.pdf'),
                             ])
                             ->default('csv')
                             ->required()
@@ -209,8 +187,8 @@ class ReportBuilder extends Page implements HasForms
         if (empty($data['module'])) {
             Notification::make()
                 ->warning()
-                ->title('Modul Diperlukan')
-                ->body('Sila pilih modul untuk menjana laporan.')
+                ->title(__('report_builder.messages.module_required'))
+                ->body(__('report_builder.messages.module_required_body'))
                 ->send();
 
             return;
@@ -224,14 +202,14 @@ class ReportBuilder extends Page implements HasForms
             'status' => $data['status'] ?? [],
         ];
 
-        $module = is_string($data['module'] ?? null) ? $data['module'] : '';
+        $module = \is_string($data['module'] ?? null) ? $data['module'] : '';
         $this->reportData = $service->generateReport($module, $filters);
         $this->showPreview = true;
 
         Notification::make()
             ->success()
-            ->title('Laporan Dijana')
-            ->body("Ditemui {$this->reportData['total_records']} rekod.")
+            ->title(__('report_builder.messages.report_generated'))
+            ->body(__('report_builder.messages.records_found', ['count' => $this->reportData['total_records']]))
             ->send();
     }
 
@@ -251,13 +229,13 @@ class ReportBuilder extends Page implements HasForms
         $data = $this->getFormState();
         $service = app(ReportBuilderService::class);
 
-        $format = is_string($data['format'] ?? null) ? $data['format'] : 'csv';
+        $format = \is_string($data['format'] ?? null) ? $data['format'] : 'csv';
         $exportData = $service->formatForExport($this->reportData ?? [], $format);
 
         Notification::make()
             ->success()
-            ->title('Export Berjaya')
-            ->body("Laporan {$exportData['filename']} telah dijana.")
+            ->title(__('report_builder.messages.export_success'))
+            ->body(__('report_builder.messages.export_success_body', ['filename' => $exportData['filename']]))
             ->send();
 
         // Note: Actual file download would be implemented here
@@ -269,25 +247,21 @@ class ReportBuilder extends Page implements HasForms
      */
     private function getFormState(): array
     {
-        if (is_object($this->form) && method_exists($this->form, 'getState')) {
+        if (\is_object($this->form) && method_exists($this->form, 'getState')) {
             $state = $this->form->getState();
 
-            return is_array($state) ? $state : $this->data;
+            return \is_array($state) ? $state : $this->data;
         }
 
         return $this->data;
     }
 
     /**
-     * @param  array<string, mixed>|null  $state
-     */
-
-    /**
      * @param  array<string, mixed>  $state
      */
     private function fillForm(?array $state = null): void
     {
-        if (is_object($this->form) && method_exists($this->form, 'fill')) {
+        if (\is_object($this->form) && method_exists($this->form, 'fill')) {
             $this->form->fill($state ?? []);
         }
     }

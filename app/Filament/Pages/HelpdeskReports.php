@@ -12,7 +12,6 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -61,7 +60,7 @@ class HelpdeskReports extends Page implements HasForms
 
     public function getTitle(): string|Htmlable
     {
-        return __('Helpdesk Reports & Analytics');
+        return __('admin_pages.helpdesk_reports.title');
     }
 
     public function getView(): string
@@ -72,28 +71,24 @@ class HelpdeskReports extends Page implements HasForms
     public function mount(): void
     {
         $this->data = [];
-        $this->generateReport();
+        $this->reportData = [];
     }
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                Section::make('Report Filters')
-                    ->description('Select date range for report generation')
-                    ->schema([
-                        DatePicker::make('start_date')
-                            ->label('Start Date')
-                            ->native(false)
-                            ->maxDate(now()),
-                        DatePicker::make('end_date')
-                            ->label('End Date')
-                            ->native(false)
-                            ->maxDate(now())
-                            ->afterOrEqual('start_date'),
-                    ])
-                    ->columns(2),
+                DatePicker::make('start_date')
+                    ->label(__('admin_pages.helpdesk_reports.start_date'))
+                    ->native(false)
+                    ->maxDate(now()),
+                DatePicker::make('end_date')
+                    ->label(__('admin_pages.helpdesk_reports.end_date'))
+                    ->native(false)
+                    ->maxDate(now())
+                    ->afterOrEqual('start_date'),
             ])
+            ->columns(2)
             ->statePath('data');
     }
 
@@ -101,13 +96,14 @@ class HelpdeskReports extends Page implements HasForms
     {
         return [
             Action::make('generateReport')
-                ->label('Generate Report')
+                ->label(__('admin_pages.helpdesk_reports.generate'))
                 ->icon('heroicon-o-arrow-path')
                 ->action('generateReport'),
             ExportAction::make()
-                ->label('Export Data')
+                ->label(__('admin_pages.helpdesk_reports.export'))
                 ->icon('heroicon-o-arrow-down-tray')
                 ->exporter(HelpdeskTicketExporter::class)
+                ->visible(fn (): bool => ! empty($this->reportData))
                 ->modifyQueryUsing(function ($query) {
                     if ($this->startDate) {
                         $query->where('created_at', '>=', $this->startDate);
@@ -127,10 +123,10 @@ class HelpdeskReports extends Page implements HasForms
         $startDateValue = $this->data['start_date'] ?? null;
         $endDateValue = $this->data['end_date'] ?? null;
 
-        $this->startDate = is_string($startDateValue) && $startDateValue !== ''
+        $this->startDate = \is_string($startDateValue) && $startDateValue !== ''
             ? \Carbon\Carbon::parse($startDateValue)->startOfDay()
             : null;
-        $this->endDate = is_string($endDateValue) && $endDateValue !== ''
+        $this->endDate = \is_string($endDateValue) && $endDateValue !== ''
             ? \Carbon\Carbon::parse($endDateValue)->endOfDay()
             : null;
 
@@ -144,5 +140,13 @@ class HelpdeskReports extends Page implements HasForms
     public function getReportData(): array
     {
         return $this->reportData;
+    }
+
+    /**
+     * Check if report has been generated (user clicked "Jana Laporan").
+     */
+    public function hasReport(): bool
+    {
+        return ! empty($this->reportData) || $this->startDate !== null || $this->endDate !== null;
     }
 }

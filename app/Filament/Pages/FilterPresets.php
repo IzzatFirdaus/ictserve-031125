@@ -84,29 +84,32 @@ class FilterPresets extends Page
     {
         return [
             Action::make('create')
-                ->label('Cipta Preset Baharu')
+                ->label(__('admin_pages.filter_presets.actions.create'))
                 ->icon('heroicon-o-plus')
                 ->color('primary')
                 ->form([
                     TextInput::make('name')
-                        ->label('Nama Preset')
+                        ->label(__('admin_pages.filter_presets.fields.name'))
                         ->required()
                         ->maxLength(100),
 
                     Select::make('resource')
-                        ->label('Sumber')
+                        ->label(__('admin_pages.filter_presets.fields.resource'))
                         ->options([
-                            'helpdesk-tickets' => 'Tiket Helpdesk',
-                            'loan-applications' => 'Permohonan Pinjaman',
-                            'assets' => 'Aset',
-                            'users' => 'Pengguna',
+                            'helpdesk-tickets' => __('admin_pages.filter_presets.resources.helpdesk_tickets'),
+                            'loan-applications' => __('admin_pages.filter_presets.resources.loan_applications'),
+                            'assets' => __('admin_pages.filter_presets.resources.assets'),
+                            'users' => __('admin_pages.filter_presets.resources.users'),
                         ])
                         ->default($this->selectedResource)
                         ->required(),
 
                     Checkbox::make('is_default')
-                        ->label('Jadikan sebagai preset lalai'),
+                        ->label(__('admin_pages.filter_presets.fields.is_default'))
+                        ->helperText(__('admin_pages.filter_presets.fields.is_default_help')),
                 ])
+                ->modalSubmitActionLabel(__('admin_pages.filter_presets.actions.save'))
+                ->modalCancelActionLabel(__('admin_pages.filter_presets.actions.cancel'))
                 ->action(function (array $data): void {
                     // For demo purposes, create a sample filter
                     $sampleFilters = $this->getSampleFilters($data['resource']);
@@ -124,7 +127,7 @@ class FilterPresets extends Page
                     $this->loadPresets();
 
                     Notification::make()
-                        ->title('Preset berjaya dicipta')
+                        ->title(__('admin_pages.filter_presets.notifications.created'))
                         ->success()
                         ->send();
                 }),
@@ -139,7 +142,7 @@ class FilterPresets extends Page
         $this->loadPresets();
 
         Notification::make()
-            ->title('Preset berjaya dipadam')
+            ->title(__('admin_pages.filter_presets.notifications.deleted'))
             ->success()
             ->send();
     }
@@ -158,7 +161,7 @@ class FilterPresets extends Page
         $this->loadPresets();
 
         Notification::make()
-            ->title('Preset ditetapkan sebagai lalai')
+            ->title(__('admin_pages.filter_presets.notifications.set_default'))
             ->success()
             ->send();
     }
@@ -169,7 +172,7 @@ class FilterPresets extends Page
 
         if (! $preset) {
             Notification::make()
-                ->title('Preset tidak dijumpai')
+                ->title(__('admin_pages.filter_presets.notifications.not_found'))
                 ->danger()
                 ->send();
 

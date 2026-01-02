@@ -66,7 +66,7 @@ class PulseDashboard extends Page
             return false;
         }
 
-        return $user->hasRole(['admin', 'superuser']);
+        return $user->hasAnyRole(['admin', 'superuser']);
     }
 
     /**

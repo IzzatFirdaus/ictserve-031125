@@ -66,13 +66,14 @@ class AdminDashboard extends Page
 
     /**
      * Header widgets - Overview stats, AI monitoring, and critical alerts
+     * CriticalAlertsWidget is placed first for immediate visibility
      */
     public function getHeaderWidgets(): array
     {
         $widgets = [
+            CriticalAlertsWidget::class,
             UnifiedDashboardOverview::class,
             PulseOverviewWidget::class,
-            CriticalAlertsWidget::class,
         ];
 
         // Add AI widgets for admin and superuser roles only

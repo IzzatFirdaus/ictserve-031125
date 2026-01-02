@@ -33,7 +33,12 @@ class OllamaAI extends Cluster
 
     public static function getNavigationLabel(): string
     {
-        return static::trans('filament.navigation.ollama_ai', 'Ollama AI');
+        return static::trans('ollama.navigation_label', 'Ollama AI');
+    }
+
+    public static function getClusterBreadcrumb(): ?string
+    {
+        return static::trans('ollama.navigation_label', 'Ollama AI');
     }
 
     public static function canAccess(): bool

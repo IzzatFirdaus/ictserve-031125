@@ -27,6 +27,11 @@ class Management extends Cluster
 
     public static function getNavigationLabel(): string
     {
-        return static::trans('filament.navigation.management', 'Management');
+        return static::trans('filament.navigation.management', 'Pengurusan');
+    }
+
+    public static function getClusterBreadcrumb(): ?string
+    {
+        return static::trans('filament.navigation.management', 'Pengurusan');
     }
 }

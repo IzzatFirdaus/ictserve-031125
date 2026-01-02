@@ -45,6 +45,8 @@ class NotificationCenter extends Page
 
     public int $unreadCount = 0;
 
+    public int $limit = 50;
+
     /** @var array<string, int> */
     public array $notificationStats = [];
 
@@ -83,33 +85,35 @@ class NotificationCenter extends Page
     {
         return [
             Action::make('mark_all_read')
-                ->label('Tandai Semua Dibaca')
+                ->label(__('admin_pages.notification_center.actions.mark_all_read'))
                 ->icon('heroicon-o-check')
                 ->color('success')
                 ->action('markAllAsRead')
                 ->visible(fn () => $this->unreadCount > 0),
 
             Action::make('clear_all')
-                ->label('Kosongkan Semua')
+                ->label(__('admin_pages.notification_center.actions.clear_all'))
                 ->icon('heroicon-o-trash')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->modalHeading('Kosongkan Semua Pemberitahuan')
-                ->modalDescription('Adakah anda pasti mahu mengosongkan semua pemberitahuan? Tindakan ini tidak boleh dibuat asal.')
+                ->modalHeading(__('admin_pages.notification_center.modals.clear_all_heading'))
+                ->modalDescription(__('admin_pages.notification_center.modals.clear_all_description'))
+                ->modalSubmitActionLabel(__('admin_pages.notification_center.actions.confirm'))
+                ->modalCancelActionLabel(__('admin_pages.notification_center.actions.cancel'))
                 ->action('clearAllNotifications'),
 
             Action::make('notification_preferences')
-                ->label('Keutamaan')
+                ->label(__('admin_pages.notification_center.actions.preferences'))
                 ->icon('heroicon-o-cog-6-tooth')
                 ->color('gray')
                 ->url('/admin/notification-preferences')
                 ->openUrlInNewTab(false),
 
             Action::make('refresh')
-                ->label('Muat Semula')
+                ->label(__('admin_pages.notification_center.actions.refresh'))
                 ->icon('heroicon-o-arrow-path')
                 ->color('info')
-                ->action('loadNotifications')
+                ->action('refreshData')
                 ->keyBindings(['ctrl+r', 'cmd+r']),
         ];
     }
@@ -138,7 +142,7 @@ class NotificationCenter extends Page
             $query->whereNotNull('read_at');
         }
 
-        $notifications = $query->limit(50)->get();
+        $notifications = $query->limit($this->limit)->get();
 
         $this->notifications = $notifications->map(function ($notification) {
             $data = json_decode($notification->data, true);
@@ -167,6 +171,18 @@ class NotificationCenter extends Page
             ->where('notifiable_type', get_class($user))
             ->whereNull('read_at')
             ->count();
+    }
+
+    public function refreshData(): void
+    {
+        $this->loadNotifications();
+        $this->loadNotificationStats();
+    }
+
+    public function loadMoreNotifications(): void
+    {
+        $this->limit += 50;
+        $this->loadNotifications();
     }
 
     public function loadNotificationStats(): void

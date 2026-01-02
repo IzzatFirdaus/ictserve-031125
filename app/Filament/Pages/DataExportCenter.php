@@ -137,31 +137,34 @@ class DataExportCenter extends Page implements HasForms
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('exportData')
-                ->label('Eksport Data')
+            \Filament\Actions\ActionGroup::make([
+                Action::make('exportData')
+                    ->label('Eksport Data')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('primary')
+                    ->action('exportData')
+                    ->requiresConfirmation()
+                    ->modalHeading('Eksport Data ICTServe')
+                    ->modalDescription('Adakah anda pasti untuk mengeksport data dengan parameter yang dipilih?')
+                    ->modalSubmitActionLabel('Ya, Eksport'),
+
+                ExportAction::make('quickExport')
+                    ->label('Eksport Pantas')
+                    ->icon('heroicon-o-bolt')
+                    ->color('success')
+                    ->exporter(UnifiedAnalyticsExporter::class)
+                    ->modifyQueryUsing(fn ($query) => $query),
+
+                Action::make('downloadSample')
+                    ->label('Muat Turun Contoh')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('gray')
+                    ->action('downloadSample'),
+            ])
+                ->label('Eksport')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('primary')
-                ->action('exportData')
-                ->requiresConfirmation()
-                ->modalHeading('Eksport Data ICTServe')
-                ->modalDescription('Adakah anda pasti untuk mengeksport data dengan parameter yang dipilih?')
-                ->modalSubmitActionLabel('Ya, Eksport'),
-
-            ExportAction::make('quickExport')
-                ->label('Eksport Pantas')
-                ->icon('heroicon-o-bolt')
-                ->color('success')
-                ->exporter(UnifiedAnalyticsExporter::class)
-                ->modifyQueryUsing(function ($query) {
-                    // This will be handled by the exporter's getRecords method
-                    return $query;
-                }),
-
-            Action::make('downloadSample')
-                ->label('Muat Turun Contoh')
-                ->icon('heroicon-o-document-arrow-down')
-                ->color('gray')
-                ->action('downloadSample'),
+                ->button(),
         ];
     }
 

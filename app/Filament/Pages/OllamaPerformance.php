@@ -39,7 +39,7 @@ class OllamaPerformance extends Page
 
     protected static ?string $cluster = OllamaAI::class;
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 21;
 
     public static function getNavigationLabel(): string
     {

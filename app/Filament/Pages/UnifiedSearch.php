@@ -58,7 +58,7 @@ class UnifiedSearch extends Page
      */
     public static function getNavigationBadge(): ?string
     {
-        return 'Ctrl+K';
+        return 'Ctrl/⌘K';
     }
 
     public static function getNavigationLabel(): string
