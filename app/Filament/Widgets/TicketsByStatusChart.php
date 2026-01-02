@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Filament\Traits\WidgetMetadata;
+use App\Filament\Widgets\Concerns\HandlesEmptyChartData;
 use App\Models\HelpdeskTicket;
 use Filament\Widgets\ChartWidget;
 
@@ -18,6 +19,7 @@ use Filament\Widgets\ChartWidget;
  */
 class TicketsByStatusChart extends ChartWidget
 {
+    use HandlesEmptyChartData;
     use WidgetMetadata;
 
     protected ?string $heading = 'Tiket Mengikut Status';

@@ -6,6 +6,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Traits\ThemeAwareChartColors;
 use App\Filament\Traits\WidgetMetadata;
+use App\Filament\Widgets\Concerns\HandlesEmptyChartData;
 use App\Services\HelpdeskReportService;
 use Filament\Widgets\ChartWidget;
 
@@ -21,6 +22,7 @@ use Filament\Widgets\ChartWidget;
  */
 class TicketVolumeChart extends ChartWidget
 {
+    use HandlesEmptyChartData;
     use ThemeAwareChartColors;
     use WidgetMetadata;
 

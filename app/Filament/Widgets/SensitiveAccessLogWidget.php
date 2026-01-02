@@ -8,18 +8,45 @@ use App\Filament\Traits\WidgetMetadata;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
+use Illuminate\Support\Facades\Auth;
 use OwenIt\Auditing\Models\Audit;
 
 class SensitiveAccessLogWidget extends TableWidget
 {
     use WidgetMetadata;
 
-    protected static ?string $heading = 'Akses Data Sensitif Terkini';
+    protected static ?string $heading = null;
 
     protected int|string|array $columnSpan = 'full';
 
+    public static function getHeading(): ?string
+    {
+        return __('admin_pages.pdpa_dashboard.sensitive_access_log');
+    }
+
+    public static function canView(): bool
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user !== null && $user->hasRole('superuser');
+    }
+
     public function table(Table $table): Table
     {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        $isSuperuser = $user !== null && $user->hasRole('superuser');
+
+        if (! $isSuperuser) {
+            return $table
+                ->query(Audit::query()->whereRaw('1 = 0'))
+                ->columns([])
+                ->emptyStateHeading(__('admin_pages.pdpa_dashboard.restricted_to_superuser'))
+                ->emptyStateDescription(__('admin_pages.pdpa_dashboard.restricted_description'))
+                ->emptyStateIcon('heroicon-o-lock-closed');
+        }
+
         return $table
             ->query(
                 Audit::whereIn('auditable_type', [

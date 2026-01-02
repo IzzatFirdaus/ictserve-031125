@@ -48,9 +48,11 @@ class DataRetentionAlertWidget extends StatsOverviewWidget
         $oldRecordsCount = Audit::where('created_at', '<', now()->subYears(7))->count();
 
         return [
-            Stat::make('Rekod Melebihi 7 Tahun', $oldRecordsCount)
-                ->description('Rekod perlu diarkib atau dipadam')
-                ->descriptionIcon('heroicon-o-exclamation-triangle')
+            Stat::make(__('admin_pages.pdpa_dashboard.records_exceeding_7_years'), $oldRecordsCount)
+                ->description($oldRecordsCount > 0
+                    ? __('admin_pages.pdpa_dashboard.records_need_archival')
+                    : __('admin_pages.pdpa_dashboard.no_records_need_archival'))
+                ->descriptionIcon($oldRecordsCount > 0 ? 'heroicon-o-exclamation-triangle' : 'heroicon-o-check-circle')
                 ->color($oldRecordsCount > 0 ? 'danger' : 'success'),
         ];
     }

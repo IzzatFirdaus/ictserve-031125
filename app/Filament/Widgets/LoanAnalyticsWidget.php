@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Filament\Traits\WidgetMetadata;
+use App\Filament\Widgets\Concerns\HandlesEmptyChartData;
 use App\Models\LoanApplication;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\DB;
  */
 class LoanAnalyticsWidget extends ChartWidget
 {
+    use HandlesEmptyChartData;
     use WidgetMetadata;
 
     protected ?string $heading = 'Trend Permohonan Pinjaman';

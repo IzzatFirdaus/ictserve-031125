@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Filament\Traits\WidgetMetadata;
+use App\Filament\Widgets\Concerns\HandlesEmptyChartData;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use Filament\Widgets\ChartWidget;
@@ -12,6 +13,7 @@ use Illuminate\Support\Carbon;
 
 class UnifiedAnalyticsChart extends ChartWidget
 {
+    use HandlesEmptyChartData;
     use WidgetMetadata;
 
     /**

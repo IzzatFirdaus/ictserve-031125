@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Jobs\RestartAIServiceJob;
 use App\Services\AIMetricsCollector;
+use Filament\Notifications\Notification;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Auth;
+
+use function Spatie\Activitylog\activity;
 
 /**
  * AI Health Widget
@@ -19,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
  * trace: D04-§6.4 (AI Architecture), D11-§8.1 (System Monitoring)
  *
  * @see docs/D18_AI_CHATBOT_OLLAMA_BEDROCK.md
+ * @see Requirements 19.6
  */
 class AIHealthWidget extends BaseWidget
 {
@@ -27,6 +32,11 @@ class AIHealthWidget extends BaseWidget
     protected static bool $isLazy = false;
 
     protected int|string|array $columnSpan = 'full';
+
+    /**
+     * @var array<string>
+     */
+    protected $listeners = ['refreshAIHealth' => '$refresh'];
 
     /**
      * Widget metadata for registry system
@@ -50,6 +60,129 @@ class AIHealthWidget extends BaseWidget
         $user = Auth::user();
 
         return $user && $user->hasAnyRole(['admin', 'superuser']);
+    }
+
+    /**
+     * Check if manual restart is allowed
+     */
+    public function canRestartServices(): bool
+    {
+        $user = Auth::user();
+
+        // Only superusers can restart services
+        if (! $user || ! $user->hasRole('superuser')) {
+            return false;
+        }
+
+        // Check feature flag
+        return (bool) config('ollama.admin.allow_manual_restart', false);
+    }
+
+    /**
+     * Restart AI services
+     */
+    public function restartAIServices(string $service = 'all'): void
+    {
+        if (! $this->canRestartServices()) {
+            Notification::make()
+                ->title('Akses Ditolak')
+                ->body('Anda tidak mempunyai kebenaran untuk memulakan semula perkhidmatan AI.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $user = Auth::user();
+
+        // Dispatch the restart job
+        RestartAIServiceJob::dispatch($service, $user?->id);
+
+        // Create audit log entry
+        $this->logRestartAction($service, $user?->id);
+
+        Notification::make()
+            ->title('Permintaan Dimulakan')
+            ->body("Permintaan untuk memulakan semula perkhidmatan AI ({$this->translateService($service)}) telah dihantar.")
+            ->success()
+            ->send();
+
+        // Refresh the widget
+        $this->dispatch('refreshAIHealth');
+    }
+
+    /**
+     * Log the restart action for audit purposes
+     */
+    private function logRestartAction(string $service, ?int $userId): void
+    {
+        activity()
+            ->causedBy($userId)
+            ->withProperties([
+                'operation_type' => 'ai_service_restart',
+                'service' => $service,
+                'timestamp' => now()->toIso8601String(),
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+            ])
+            ->log("AI service restart requested: {$service}");
+    }
+
+    /**
+     * Translate service name to Bahasa Melayu
+     */
+    private function translateService(string $service): string
+    {
+        return match ($service) {
+            'ollama' => 'Ollama (Tempatan)',
+            'bedrock' => 'Bedrock (Awan)',
+            'all' => 'Semua Perkhidmatan',
+            default => $service,
+        };
+    }
+
+    /**
+     * Get header actions for the widget
+     *
+     * @return array<\Filament\Actions\Action>
+     */
+    protected function getHeaderActions(): array
+    {
+        if (! $this->canRestartServices()) {
+            return [];
+        }
+
+        return [
+            \Filament\Actions\Action::make('restartAll')
+                ->label('Mulakan Semula Semua')
+                ->icon('heroicon-o-arrow-path')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->modalHeading('Mulakan Semula Perkhidmatan AI')
+                ->modalDescription('Adakah anda pasti mahu memulakan semula semua perkhidmatan AI? Ini akan menyegarkan semula cache kesihatan dan melakukan pemeriksaan kesihatan baharu.')
+                ->modalSubmitActionLabel('Ya, Mulakan Semula')
+                ->action(fn () => $this->restartAIServices('all')),
+
+            \Filament\Actions\Action::make('restartOllama')
+                ->label('Mulakan Semula Ollama')
+                ->icon('heroicon-o-server')
+                ->color('info')
+                ->requiresConfirmation()
+                ->modalHeading('Mulakan Semula Ollama')
+                ->modalDescription('Adakah anda pasti mahu memulakan semula perkhidmatan Ollama?')
+                ->modalSubmitActionLabel('Ya, Mulakan Semula')
+                ->action(fn () => $this->restartAIServices('ollama')),
+
+            \Filament\Actions\Action::make('restartBedrock')
+                ->label('Mulakan Semula Bedrock')
+                ->icon('heroicon-o-cloud')
+                ->color('info')
+                ->requiresConfirmation()
+                ->modalHeading('Mulakan Semula Bedrock')
+                ->modalDescription('Adakah anda pasti mahu memulakan semula perkhidmatan Bedrock?')
+                ->modalSubmitActionLabel('Ya, Mulakan Semula')
+                ->action(fn () => $this->restartAIServices('bedrock')),
+        ];
     }
 
     /**
